@@ -1,0 +1,255 @@
+.abp01-button-icon, .abp01-editor-icon {
+    display: inline-block;
+    height: 18px;
+    vertical-align: text-top;
+    width: 18px;
+    margin-right: 5px;
+}
+
+.abp01-open-button-icon:before, .abp01-editor-icon:before {
+    content: "\f319";
+    font: 400 18px/1 dashicons;
+}
+
+.abp01-editor-icon {
+    margin-top: 2px;
+}
+
+.abp01-editor-wrapper {
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    width: 700px;
+    padding: 10px;
+    height: 570px;
+}
+
+.abp01-editor-title {
+    font-size: 14px;
+    color: rgb(34,34,34);
+    margin-bottom: 10px;
+    height: 20px;
+    line-height: 20px;
+    vertical-align: middle;
+    font-weight: bold;
+    float: left;
+}
+
+.abp01-editor-title-close {
+    float: right;
+}
+
+.abp01-editor-content {
+    background-color: #FFF;
+    border-radius: 4px;
+    height: 503px;
+    border: 1px solid #ddd;
+    position: relative;
+}
+
+.abp01-clear {
+    clear: both;
+    width: 0;
+    height: 0
+}
+
+a.abp01-close-editor {
+    text-decoration: none;
+    color: rgb(34,34,34);
+}
+
+a.abp01-close-editor:hover {
+    text-decoration: none;
+}
+
+.abp01-editor-tabs {
+    height: 40px;
+    border-bottom: 1px solid #ddd;
+    margin: 0px !important;
+    padding: 0px !important;
+}
+
+.abp01-tab {
+    width: 349px;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    vertical-align: middle;
+    color: #555;
+    font-size: 13px;
+    font-weight: bold;
+    float: left;
+    margin: 0px !important;
+}
+
+.abp01-tab-active {
+    height: 41px;
+    background-color: #fff;
+}
+
+.abp01-tab .dashicons {
+    vertical-align: middle;
+    margin-right: 5px;
+    font-size: 15px;
+    width: 16px;
+    height: 16px;
+}
+
+.abp01-tab a, .abp01-tab a:hover {
+    display: inline-block;
+    width: 100%;
+    text-decoration: none;
+    color: #555;
+    height: 40px;
+}
+
+.abp01-tab a, .abp01-tab a:hover,.abp01-tab a:visited, .abp01-tab a:focus {
+    outline: 0;
+    box-shadow: none;
+}
+
+.abp01-tab-info {
+    border-right: 1px solid #ddd;
+    width: 348px;
+}
+
+.abp01-tab-info.abp01-tab-active {
+    border-top-left-radius: 4px;
+}
+
+.abp01-tab-map.abp01-tab-active {
+    border-top-right-radius: 4px;
+}
+
+.abp01-editor-footer {
+    margin-top: 5px;
+}
+
+.abp01-editor-footer .button-save-summary {
+    float: right;
+    width: 100px;
+    text-align: center;
+    margin-left: 10px;
+}
+
+.abp01-editor-footer .button-cancel {
+    float: right;
+    width: 100px;
+    text-align: center;
+}
+
+.abp01-editor-footer .button-reset {
+    float: left;
+    width: 100px;
+    text-align: center;
+    display: none;
+}
+
+.abp01-type-selector-container {
+    margin-top: 150px;
+}
+
+.abp01-form-info-selector-notice, .abp01-form-map-selector-notice {
+    font-size: 14px !important;
+    font-weight: bold;
+    text-align: center !important;
+    margin-bottom: 10px;
+}
+
+.abp01-type-selector {
+    float: left;
+    margin-right: 10px !important;
+    width: 150px;
+    text-align: center;
+}
+
+.abp01-type-selector.first {
+    margin-left: 109px !important;
+}
+
+.abp01-form-line {
+    margin-left: 10px;
+    margin-bottom: 15px;
+}
+
+.abp01-form-line label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.abp01-form-line label.abp01-option-label {
+    display: inline !important;
+    color: #444;
+    font-size: 13px;
+    font-weight: normal !important;
+}
+
+.abp01-form-line input[type='text'] {
+    width: 674px;
+}
+
+.abp01-form-line select {
+    width: 676px;
+}
+
+.abp01-optionContainer {
+    vertical-align: middle;
+    line-height: 15px;
+    margin-right: 15px;
+}
+
+.abp01-track-selector {
+    margin-left: 279px !important;
+}
+
+#toast-container {
+    position: absolute !important;
+}
+
+.abp01-toast-success {
+    background-color: #51a351;
+}
+
+.abp01-toast-error {
+    background-color: #bd362f;
+}
+
+#toast-container > div {
+    padding: 10px 15px 10px 15px !important;
+    width: auto !important;
+}
+
+.abp01-progress-container {
+    width: 400px;
+    height: 45px;
+}
+
+.abp01-progress-label {
+    width: 400px;
+    height: 25px;
+    text-align: center;
+    line-height: 25px;
+    vertical-align: middle;
+    font-size: 13px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.abp01-progress-bar {
+    width: 400px;
+    height: 20px;
+}
+
+.abp01-map-container {
+    width: 688px;
+    margin: 5px 5px 3px 5px;
+    height: 451px;
+}
+
+.abp01-map {
+    width: 100%;
+    height: 451px;
+    margin: 0;
+    padding: 0;
+}
