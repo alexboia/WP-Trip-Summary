@@ -1,3 +1,3 @@
 WP-Trip-Summary
 ===============
-A WordPress trip summary plugin.
+A WordPress trip summary plugin

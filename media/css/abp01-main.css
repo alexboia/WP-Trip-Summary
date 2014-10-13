@@ -17,6 +17,8 @@
 
 .abp01-editor-wrapper {
     background-color: #f5f5f5;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
     border-radius: 4px;
     width: 700px;
     padding: 10px;
@@ -40,6 +42,8 @@
 
 .abp01-editor-content {
     background-color: #FFF;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
     border-radius: 4px;
     height: 503px;
     border: 1px solid #ddd;
