@@ -1,0 +1,202 @@
+# Copyright (C) 2014 WP Trip Summary
+# This file is distributed under the same license as the WP Trip Summary package.
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Trip Summary 0.1.1\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/abp01-travel-tech-"
+"box\n"
+"POT-Creation-Date: 2014-10-14 22:25:32+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-10-15 01:37+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team:  <alexandru.boia [at] outlook [dot] com>\n"
+"Language: ro_RO\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: abp01-plugin-main.php:489 abp01-plugin-main.php:596
+msgid "The data could not be saved due to a possible database error"
+msgstr "Datele nu au putut fi salvate din cauza unei posibile erori interne"
+
+#: abp01-plugin-main.php:721
+msgid "Track file could not be parsed"
+msgstr "Fișierul nu a putut fi procesat"
+
+#: abp01-plugin-main.php:724
+msgid "Track file not found or is not readable"
+msgstr "Fișierul track-ului nu există sau nu a putut fi citit"
+
+#: abp01-plugin-main.php:782
+msgid "The data could not be updated due to a possible database error"
+msgstr ""
+"Datele nu au putut fi actualizate din cauza unei posibile erori interne"
+
+#: views/techbox-button.php:5 views/techbox-editor.php:24
+#: views/techbox-editor.php:34
+msgid "Edit trip summary"
+msgstr "Modifică sumarul turei"
+
+#: views/techbox-editor.php:47
+msgid "Info"
+msgstr "Informații"
+
+#: views/techbox-editor.php:52 views/techbox-frontend.php:28
+msgid "Map"
+msgstr "Hartă & Track GPS"
+
+#: views/techbox-editor.php:64
+msgid "Clear"
+msgstr "Șterge"
+
+#: views/techbox-editor.php:65
+msgid "Save"
+msgstr "Salvează"
+
+#: views/techbox-editor.php:74
+msgid "Chose the type of your tour"
+msgstr "Alege tipul turei"
+
+#: views/techbox-editor.php:77
+msgid "Biking"
+msgstr "Cu bicicleta"
+
+#: views/techbox-editor.php:80
+msgid "Hiking"
+msgstr "Per-pedes"
+
+#: views/techbox-editor.php:83
+msgid "Train Ride"
+msgstr "Cu trenul"
+
+#: views/techbox-editor.php:92 views/techbox-editor.php:142
+#: views/techbox-editor.php:188 views/techbox-frontend.php:38
+#: views/techbox-frontend.php:46 views/techbox-frontend.php:54
+msgid "Total distance"
+msgstr "Distanța totală"
+
+#: views/techbox-editor.php:96 views/techbox-editor.php:146
+#: views/techbox-frontend.php:39 views/techbox-frontend.php:47
+msgid "Total climb"
+msgstr "Diferența de nivel"
+
+#: views/techbox-editor.php:100 views/techbox-editor.php:150
+#: views/techbox-frontend.php:40 views/techbox-frontend.php:48
+msgid "Difficulty level"
+msgstr "Nivelul de dificultate"
+
+#: views/techbox-editor.php:102 views/techbox-editor.php:152
+msgid "-- Choose an option --"
+msgstr "-- Alege o opțiune --"
+
+#: views/techbox-editor.php:109 views/techbox-editor.php:159
+#: views/techbox-frontend.php:41 views/techbox-frontend.php:49
+msgid "Access information"
+msgstr "Informații de acces"
+
+#: views/techbox-editor.php:113 views/techbox-editor.php:163
+#: views/techbox-frontend.php:42 views/techbox-frontend.php:50
+msgid "Open during seasons"
+msgstr "Practicabil în sezoanele"
+
+#: views/techbox-editor.php:121 views/techbox-editor.php:171
+#: views/techbox-frontend.php:43 views/techbox-frontend.php:51
+msgid "Path surface type"
+msgstr "Suprafața drumului/potecii"
+
+#: views/techbox-editor.php:129
+msgid "Bike type"
+msgstr "Tip recomandat de bicicletă"
+
+#: views/techbox-editor.php:179
+msgid "Route markers"
+msgstr "Marcaje turistice"
+
+#: views/techbox-editor.php:192 views/techbox-frontend.php:55
+msgid "Exchanged trains"
+msgstr "Numărul de trenuri schimbate"
+
+#: views/techbox-editor.php:196 views/techbox-frontend.php:56
+msgid "Line gauge"
+msgstr "Ecartamentul liniei"
+
+#: views/techbox-editor.php:200 views/techbox-frontend.php:57
+msgid "Railroad operators"
+msgstr "Operatori feroviari"
+
+#: views/techbox-editor.php:208 views/techbox-frontend.php:58
+msgid "Line status"
+msgstr "Statusul liniei"
+
+#: views/techbox-editor.php:216 views/techbox-frontend.php:59
+msgid "Electrification status"
+msgstr "Electrificare"
+
+#: views/techbox-editor.php:224 views/techbox-frontend.php:60
+msgid "Line type"
+msgstr "Tipul liniei"
+
+#: views/techbox-editor.php:237
+msgid "Upload a GPX track file"
+msgstr "Încarcă un fișier GPX"
+
+#: views/techbox-editor.php:240
+msgid "Chose file"
+msgstr "Alege un fișier"
+
+#: views/techbox-frontend-teaser.php:8
+msgid ""
+"For the pragmatic sort, there is also a trip summary at the bottom of this "
+"page. Click here to consult it"
+msgstr ""
+"Pentru firi pragmatice sau curioase există și un sumar tehnic al turei în "
+"josul paginii. Click aici pentru a-l consulta."
+
+#: views/techbox-frontend.php:19
+msgid "Trip summary"
+msgstr "Tura pe scurt"
+
+#: views/techbox-frontend.php:25
+msgid "Prosaic details"
+msgstr "Detalii prozaice"
+
+#: views/techbox-frontend.php:44
+msgid "Recommended bike type"
+msgstr "Tip recomandat de bicicletă"
+
+#: views/techbox-frontend.php:52
+msgid "Path markers"
+msgstr "Marcaj turistic"
+
+#: views/techbox-frontend.php:75
+msgid ""
+"It looks like you skipped the story. You should check it out. Click here to "
+"go back to beginning"
+msgstr ""
+"Se pare că ai sărit peste poveste. E păcat să o ratezi. Nu ai vrea să o "
+"citești? Click aici pentru început!"
+
+#. Plugin Name of the plugin/theme
+msgid "WP Trip Summary"
+msgstr "WP Trip Summary"
+
+#. Plugin URI of the plugin/theme
+msgid "http://alexboia.net/abp01-trip-summary"
+msgstr "http://alexboia.net/abp01-trip-summary"
+
+#. Description of the plugin/theme
+msgid ""
+"Aids a travel blogger to add structured information about his tours (biking, "
+"hiking, train travels etc.)"
+msgstr ""
+"Util celor care își povestesc turele pe blog, ajutându-i să adauge "
+"informații structurate despre turele pe care le fac"
+
+#. Author of the plugin/theme
+msgid "Alexandru Boia"
+msgstr "Alexandru Boia"
+
+#. Author URI of the plugin/theme
+msgid "http://alexboia.net"
+msgstr "http://alexboia.net"

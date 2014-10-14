@@ -7,7 +7,7 @@
  * Description: Aids a travel blogger to add structured information about his tours (biking, hiking, train travels etc.)
  * License: New BSD License
  * Plugin URI: http://alexboia.net/abp01-trip-summary
- * Text Domain: abp01-trip-sum
+ * Text Domain: abp01-trip-summary
  */
 
 /**
@@ -98,7 +98,7 @@ function abp01_verify_get_track_nonce($postId) {
  * @return void
  */
 function abp01_render_techbox_button(stdClass $data) {
-    require_once ABP01_PLUGIN_ROOT . '/views/techbox-button.phtml';
+    require_once ABP01_PLUGIN_ROOT . '/views/techbox-button.php';
 }
 
 /**
@@ -107,8 +107,8 @@ function abp01_render_techbox_button(stdClass $data) {
  * @return void
  */
 function abp01_render_techbox_editor(stdClass $data) {
-    require_once ABP01_PLUGIN_ROOT . '/views/helpers/controls.phtml';
-    require_once ABP01_PLUGIN_ROOT . '/views/techbox-editor.phtml';
+    require_once ABP01_PLUGIN_ROOT . '/views/helpers/controls.php';
+    require_once ABP01_PLUGIN_ROOT . '/views/techbox-editor.php';
 }
 
 /**
@@ -117,8 +117,8 @@ function abp01_render_techbox_editor(stdClass $data) {
  * @return void
  */
 function abp01_render_techbox_frontend(stdClass $data) {
-    require_once ABP01_PLUGIN_ROOT . '/views/helpers/controls.frontend.phtml';
-    require_once ABP01_PLUGIN_ROOT . '/views/techbox-frontend.phtml';
+    require_once ABP01_PLUGIN_ROOT . '/views/helpers/controls.frontend.php';
+    require_once ABP01_PLUGIN_ROOT . '/views/techbox-frontend.php';
 }
 
 /**
@@ -126,8 +126,8 @@ function abp01_render_techbox_frontend(stdClass $data) {
  * @param stdClass $data The trip summary and context data
  */
 function abp01_render_techbox_frontend_teaser(stdClass $data) {
-    require_once ABP01_PLUGIN_ROOT . '/views/helpers/controls.frontend.phtml';
-    require_once ABP01_PLUGIN_ROOT . '/views/techbox-frontend-teaser.phtml';
+    require_once ABP01_PLUGIN_ROOT . '/views/helpers/controls.frontend.php';
+    require_once ABP01_PLUGIN_ROOT . '/views/techbox-frontend-teaser.php';
 }
 
 /**
@@ -276,6 +276,10 @@ function abp01_get_cached_track($postId) {
 function abp01_activate() {
     $installer = new Abp01_Installer();
     $installer->activate();
+}
+
+function abp01_init_plugin() {
+    load_plugin_textdomain('abp01-trip-summary', false, dirname(plugin_basename(__FILE__)) . '/lang/');
 }
 
 /**
@@ -486,7 +490,7 @@ function abp01_save_info() {
     if ($manager->saveRouteInfo($postId, get_current_user_id(), $info)) {
         $response->success = true;
     } else {
-        $response->message = __('The data could not be saved due to a possible database error');
+        $response->message = __('The data could not be saved due to a possible database error', 'abp01-trip-summary');
     }
 
     abp01_send_json($response);
@@ -593,7 +597,7 @@ function abp01_remove_info() {
         if ($manager->deleteRouteInfo($postId)) {
             $response->success = true;
         } else {
-            $response->message = __('The data could not be saved due to a possible database error');
+            $response->message = __('The data could not be saved due to a possible database error', 'abp01-trip-summary');
         }
     } else {
         $response->success = true;
@@ -718,10 +722,10 @@ function abp01_get_track() {
                     $response->success = true;
                     abp01_save_cached_track($postId, $route);
                 } else {
-                    $response->message = __('Track file could not be parsed');
+                    $response->message = __('Track file could not be parsed', 'abp01-trip-summary');
                 }
             } else {
-                $response->message = __('Track file not found or is not readable');
+                $response->message = __('Track file not found or is not readable', 'abp01-trip-summary');
             }
         }
     } else {
@@ -779,7 +783,7 @@ function abp01_remove_track() {
 
         $response->success = true;
     } else {
-        $response->message = __('The data could not be updated due to a possible database error');
+        $response->message = __('The data could not be updated due to a possible database error', 'abp01-trip-summary');
     }
 
     abp01_send_json($response);
@@ -810,4 +814,6 @@ if (function_exists('add_action')) {
 
     remove_filter('the_content', 'wpautop');
     add_filter('the_content', 'abp01_get_info', 0);
+
+    add_action('init', 'abp01_init_plugin');
 }
