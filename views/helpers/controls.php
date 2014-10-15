@@ -1,34 +1,41 @@
 <?php
-    defined('ABP01_LOADED') or die;
-?>
+if (!defined('ABP01_LOADED')) {
+    die;
+}
 
-<?php function extractValueFromData($data, $field) {
-        if ($data->tourInfo && isset($data->tourInfo[$field])) {
-            return $data->tourInfo[$field];
-        } else {
-            return null;
-        }
-} ?>
+function extractValueFromData($data, $field) {
+    if ($data->tourInfo && isset($data->tourInfo[$field])) {
+        return $data->tourInfo[$field];
+    } else {
+        return null;
+    }
+}
 
-<?php function renderDifficultyLevelOptions(array $difficultyLevels, $selected) { ?>
-    <?php foreach ($difficultyLevels as $option): ?>
-        <option value="<?php echo $option->id ?>" <?php echo ($selected == $option->id ? 'selected="selected"' : ''); ?>><?php echo __($option->label) ?></option>
-    <?php endforeach; ?>
-<?php } ?>
+function renderDifficultyLevelOptions(array $difficultyLevels, $selected) {
+    $content = '';
+    foreach ($difficultyLevels as $option) {
+        $content .= '<option value="' . $option->id . '" '. ($selected == $option->id ? 'selected="selected"' : '') . '>' . $option->label . '</option>';
+    }
+    echo $content;
+}
 
-<?php function renderCheckboxOption($option, $fieldName, $selected) { ?>
-    <?php $id = 'ctrl_abp01_' . $fieldName . '_' . $option->id; ?>
-    <span class="abp01-optionContainer">
-        <input type="checkbox" name="<?php echo $fieldName ?>[]" id="<?php echo $id; ?>" value="<?php echo $option->id; ?>"
-            <?php echo ($selected == $option->id || (is_array($selected) && in_array($option->id, $selected))
-                ? 'checked="checked"' : ''); ?> />
-        <label for="<?php echo $id; ?>" class="abp01-option-label"><?php echo __($option->label);?></label>
-    </span>
-<?php } ?>
+function renderCheckboxOption($option, $fieldName, $selected) {
+    $content = '';
+    $id = 'ctrl_abp01_' . $fieldName . '_' . $option->id;
+    $checked = ($selected == $option->id || (is_array($selected) && in_array($option->id, $selected)));
+    $name = 'ctrl_abp01_' . $fieldName;
 
-<?php function renderCheckboxOptions(array $options, $fieldName, $data) { ?>
-    <?php $selected = extractValueFromData($data, $fieldName); ?>
-    <?php foreach ($options as $option): ?>
-        <?php renderCheckboxOption($option, $fieldName, $selected); ?>
-    <?php endforeach; ?>
-<?php } ?>
+    $content .= '<span class="abp01-optionContainer">';
+    $content .= '<input type="checkbox" name="' . $name . '[]" id="' . $id . '" ' . ($checked ? 'checked="checked"' : '') . ' value="' . $option->id . '" />';
+    $content .= '<label for="' . $id . '" class="abp01-option-label">' . $option->label . '</label>';
+    $content .= '</span>';
+
+    echo $content;
+}
+
+function renderCheckboxOptions(array $options, $fieldName, $data) {
+    $selected = extractValueFromData($data, $fieldName);
+    foreach ($options as $option) {
+        renderCheckboxOption($option, $fieldName, $selected);
+    }
+}

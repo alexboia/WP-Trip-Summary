@@ -24,3 +24,6 @@ Structured information is supported for the following types of trips:
 #### For train rides
 
 ### The track
+
+## Licence
+The source code is published under the terms of the [MIT](http://opensource.org/licenses/MIT) licence.
