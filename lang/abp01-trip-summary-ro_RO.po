@@ -5,30 +5,143 @@ msgstr ""
 "Project-Id-Version: WP Trip Summary 0.1.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/abp01-travel-tech-"
 "box\n"
-"POT-Creation-Date: 2014-10-14 22:25:32+00:00\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2014-10-15 01:37+0200\n"
+"POT-Creation-Date: 2014-10-15 19:15:23+00:00\n"
+"PO-Revision-Date: 2014-10-15 22:33+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team:  <alexandru.boia [at] outlook [dot] com>\n"
 "Language: ro_RO\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.7\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: abp01-plugin-main.php:489 abp01-plugin-main.php:596
+#: abp01-plugin-main.php:279
+msgid "Clear info"
+msgstr "Șterge info"
+
+#: abp01-plugin-main.php:280
+msgid "Clear track"
+msgstr "Șterge track"
+
+#: abp01-plugin-main.php:282
+msgid "GPX files"
+msgstr "Fișiere GPX"
+
+#: abp01-plugin-main.php:283
+msgid "Generating preview. Please wait..."
+msgstr "Se generează harta și traseul. Te rog să aștepți..."
+
+#: abp01-plugin-main.php:285
+msgid "Uploading track"
+msgstr "Se încarcă track-ul"
+
+#: abp01-plugin-main.php:286
+msgid "The track has been uploaded and saved successfully"
+msgstr "Fișierul a fost încărcat și procesat cu succes"
+
+#: abp01-plugin-main.php:288
+msgid "Clearing track. Please wait..."
+msgstr "Se șterge track-ul. Te rog să aștepți..."
+
+#: abp01-plugin-main.php:289
+msgid "The track has been successfully cleared"
+msgstr "Track-ul a fost șters cu succes"
+
+#: abp01-plugin-main.php:290
+msgid "The data could not be updated"
+msgstr "Datele nu au putut fi salvate"
+
+#: abp01-plugin-main.php:291
+msgid ""
+"The data could not be updated due to a possible network error or an internal "
+"server issue"
+msgstr ""
+"Datele nu au putut fi salvade din cauza unei posibile erori de rețea sau a "
+"unei erori interne"
+
+#: abp01-plugin-main.php:293
+msgid "Saving data. Please wait..."
+msgstr "Se salvează datele. Te rog să aștepți..."
+
+#: abp01-plugin-main.php:294
+msgid "The data has been saved"
+msgstr "Datele au fost salvate"
+
+#: abp01-plugin-main.php:295
+msgid "The data could not be saved"
+msgstr "Datele nu au putut fi salvate"
+
+#: abp01-plugin-main.php:296
+msgid ""
+"The data could not be saved due to a possible network error or an internal "
+"server issue"
+msgstr ""
+"Datele nu au putut fi salvate din cauza unei posibile erori de rețea sau a "
+"unei erori interne"
+
+#: abp01-plugin-main.php:298
+msgid "Clearing trip info. Please wait..."
+msgstr "Șterg informațiile traseului. Te rog să aștepți..."
+
+#: abp01-plugin-main.php:299
+msgid "The trip info has been cleared"
+msgstr "Informațiile traseului au fost șterse"
+
+#: abp01-plugin-main.php:300
+msgid "The trip info could not be cleared"
+msgstr "Informațiile traseului nu au putut fi șterse"
+
+#: abp01-plugin-main.php:301
+msgid ""
+"The trip info could not be cleared due to a possible network error or an "
+"internal server issue"
+msgstr ""
+"Informațiile traseului nu au putut fi șterse din cauza unei posibile erori "
+"de rețea sau a unei erori interne"
+
+#: abp01-plugin-main.php:303 abp01-plugin-main.php:311
+msgid "The selected file is too large. Maximum allowed size is 10MB"
+msgstr "Fișierul selectat e prea mare. Dimensiunea maximă admisă e 10MB"
+
+#: abp01-plugin-main.php:304 abp01-plugin-main.php:310
+msgid "The selected file type is not valid. Only GPX files are allowed"
+msgstr ""
+"Tipul selectat de fișier nu este valid. Sunt permise doar fișierele GPX"
+
+#: abp01-plugin-main.php:305 abp01-plugin-main.php:306
+msgid "The file could not be read"
+msgstr "Fișierul nu a putu fi citit"
+
+#: abp01-plugin-main.php:307
+msgid "The uploader could not be initialized"
+msgstr "Una din componente nu a putut fi inițializată corect"
+
+#: abp01-plugin-main.php:308 abp01-plugin-main.php:314
+msgid "The file could not be uploaded"
+msgstr "Fișierul nu a putut fi încărcat"
+
+#: abp01-plugin-main.php:312
+msgid "No file was uploaded"
+msgstr "Nu a fost încărcat nici un fișier"
+
+#: abp01-plugin-main.php:313
+msgid "The file could not be uploaded due to a possible internal server issue"
+msgstr "Fișierul nu a putut fi încărcat din cauza unei posibile erori interne"
+
+#: abp01-plugin-main.php:545 abp01-plugin-main.php:652
 msgid "The data could not be saved due to a possible database error"
 msgstr "Datele nu au putut fi salvate din cauza unei posibile erori interne"
 
-#: abp01-plugin-main.php:721
+#: abp01-plugin-main.php:777
 msgid "Track file could not be parsed"
 msgstr "Fișierul nu a putut fi procesat"
 
-#: abp01-plugin-main.php:724
+#: abp01-plugin-main.php:780
 msgid "Track file not found or is not readable"
 msgstr "Fișierul track-ului nu există sau nu a putut fi citit"
 
-#: abp01-plugin-main.php:782
+#: abp01-plugin-main.php:838
 msgid "The data could not be updated due to a possible database error"
 msgstr ""
 "Datele nu au putut fi actualizate din cauza unei posibile erori interne"
@@ -145,7 +258,7 @@ msgstr "Încarcă un fișier GPX"
 msgid "Chose file"
 msgstr "Alege un fișier"
 
-#: views/techbox-frontend-teaser.php:8
+#: views/techbox-frontend-teaser.php:7
 msgid ""
 "For the pragmatic sort, there is also a trip summary at the bottom of this "
 "page. Click here to consult it"
@@ -169,7 +282,7 @@ msgstr "Tip recomandat de bicicletă"
 msgid "Path markers"
 msgstr "Marcaj turistic"
 
-#: views/techbox-frontend.php:75
+#: views/techbox-frontend.php:74
 msgid ""
 "It looks like you skipped the story. You should check it out. Click here to "
 "go back to beginning"

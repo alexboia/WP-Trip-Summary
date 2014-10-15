@@ -271,6 +271,63 @@ function abp01_get_cached_track($postId) {
 }
 
 /**
+ * Retrieve translations used in the main editor script
+ * @return array key-value pairs where keys are javascript property names and values are the translation strings
+ */
+function abp01_get_main_admin_script_translations() {
+    return array(
+        'btnClearInfo' => __('Clear info', 'abp01-trip-summary'),
+        'btnClearTrack' => __('Clear track', 'abp01-trip-summary'),
+
+        'lblPluploadFileTypeSelector' => __('GPX files', 'abp01-trip-summary'),
+        'lblGeneratingPreview' => __('Generating preview. Please wait...', 'abp01-trip-summary'),
+
+        'lblTrackUploadingWait' => __('Uploading track', 'abp01-trip-summary'),
+        'lblTrackUploaded' => __('The track has been uploaded and saved successfully', 'abp01-trip-summary'),
+
+        'lblTypeBiking' => __('Biking', 'abp01-trip-summary'),
+        'lblTypeHiking' => __('Hiking', 'abp01-trip-summary'),
+        'lblTypeTrainRide' => __('Train ride', 'abp01-trip-summary'),
+
+        'lblClearingTrackWait' => __('Clearing track. Please wait...', 'abp01-trip-summary'),
+        'lblTrackClearOk' => __('The track has been successfully cleared', 'abp01-trip-summary'),
+        'lblTrackClearFail' => __('The data could not be updated', 'abp01-trip-summary'),
+        'lblTrackClearFailNetwork' => __('The data could not be updated due to a possible network error or an internal server issue', 'abp01-trip-summary'),
+
+        'lblSavingDataWait' => __('Saving data. Please wait...', 'abp01-trip-summary'),
+        'lblDataSaveOk' => __('The data has been saved', 'abp01-trip-summary'),
+        'lblDataSaveFail' => __('The data could not be saved', 'abp01-trip-summary'),
+        'lblDataSaveFailNetwork' => __('The data could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'),
+
+        'lblClearingInfoWait' => __('Clearing trip info. Please wait...', 'abp01-trip-summary'),
+        'lblClearInfoOk' => __('The trip info has been cleared', 'abp01-trip-summary'),
+        'lblClearInfoFail' => __('The trip info could not be cleared', 'abp01-trip-summary'),
+        'lblClearInfoFailNetwork' => __('The trip info could not be cleared due to a possible network error or an internal server issue', 'abp01-trip-summary'),
+
+        'errPluploadTooLarge' => __('The selected file is too large. Maximum allowed size is 10MB', 'abp01-trip-summary'),
+        'errPluploadFileType' => __('The selected file type is not valid. Only GPX files are allowed', 'abp01-trip-summary'),
+        'errPluploadIoError' => __('The file could not be read', 'abp01-trip-summary'),
+        'errPluploadSecurityError' => __('The file could not be read', 'abp01-trip-summary'),
+        'errPluploadInitError' => __('The uploader could not be initialized', 'abp01-trip-summary'),
+        'errPluploadHttp' => __('The file could not be uploaded', 'abp01-trip-summary'),
+
+        'errServerUploadFileType' => __('The selected file type is not valid. Only GPX files are allowed', 'abp01-trip-summary'),
+        'errServerUploadTooLarge' => __('The selected file is too large. Maximum allowed size is 10MB', 'abp01-trip-summary'),
+        'errServerUploadNoFile' => __('No file was uploaded', 'abp01-trip-summary'),
+        'errServerUploadInternal' => __('The file could not be uploaded due to a possible internal server issue', 'abp01-trip-summary'),
+        'errServerUploadFail' => __('The file could not be uploaded', 'abp01-trip-summary')
+    );
+}
+
+/**
+ * Retrieve translations used in the main frontend script
+ * @return array key-value pairs where keys are javascript property names and values are the translation strings
+ */
+function abp01_get_main_frontend_translations() {
+    return array();
+}
+
+/**
  * Handles plug-in activation
  */
 function abp01_activate() {
@@ -278,6 +335,9 @@ function abp01_activate() {
     $installer->activate();
 }
 
+/**
+ * Run plug-in init sequence
+ */
 function abp01_init_plugin() {
     load_plugin_textdomain('abp01-trip-summary', false, dirname(plugin_basename(__FILE__)) . '/lang/');
 }
@@ -416,14 +476,18 @@ function abp01_add_admin_scripts() {
             array(), '0.3.1', false);
         wp_enqueue_script('machina', plugins_url('media/js/3rdParty/machina/machina.js', __FILE__),
             array(), '0.3.1', false);
-        wp_enqueue_script('abp01-map-script', plugins_url('media/js/abp01-map.js', __FILE__),
-            array(), '0.1', false);
-        wp_enqueue_script('abp01-progress-overlay-script', plugins_url('media/js/abp01-progress-overlay.js', __FILE__),
-            array(), '0.1', false);
-        wp_enqueue_script('abp01-main-admin-script', plugins_url('media/js/abp01-admin-main.js', __FILE__),
-            array(), '0.1', false);
         wp_enqueue_script('kite-js', plugins_url('media/js/3rdParty/kite.js', __FILE__),
             array(), '1.0', false);
+
+        wp_enqueue_script('abp01-map', plugins_url('media/js/abp01-map.js', __FILE__),
+            array(), '0.1', false);
+        wp_enqueue_script('abp01-progress-overlay', plugins_url('media/js/abp01-progress-overlay.js', __FILE__),
+            array(), '0.1', false);
+        wp_enqueue_script('abp01-main-admin', plugins_url('media/js/abp01-admin-main.js', __FILE__),
+            array(), '0.1', false);
+
+        wp_localize_script('abp01-main-admin', 'abp01MainL10n',
+            abp01_get_main_admin_script_translations());
     }
 }
 
@@ -442,10 +506,14 @@ function abp01_add_frontend_scripts() {
             array(), '3.2.0', false);
         wp_enqueue_script('leaflfet', plugins_url('media/js/3rdParty/leaflet/leaflet-src.js', __FILE__),
             array(), '0.7.3', false);
-        wp_enqueue_script('abp01-map-script', plugins_url('media/js/abp01-map.js', __FILE__),
+
+        wp_enqueue_script('abp01-map', plugins_url('media/js/abp01-map.js', __FILE__),
             array(), '0.1', false);
-        wp_enqueue_script('abp01-main-frontend-script', plugins_url('media/js/abp01-frontend-main.js', __FILE__),
+        wp_enqueue_script('abp01-main-frontend', plugins_url('media/js/abp01-frontend-main.js', __FILE__),
             array(), '0.1', false);
+
+        wp_localize_script('abp01-main-frontend', 'abp01FrontendL10n',
+            abp01_get_main_frontend_translations());
     }
 }
 

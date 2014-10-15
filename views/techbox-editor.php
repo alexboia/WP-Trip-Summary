@@ -71,7 +71,7 @@
 <script id="tpl-abp01-formInfo-unselected" type="text/x-kite">
     <div id="abp01-form-info-typeSelection" class="abp01-type-selector-container">
         <h3 class="abp01-form-info-selector-notice">
-            <?php echo __('Chose the type of your tour'); ?>
+            <?php echo __('Chose the type of your tour', 'abp01-trip-summary'); ?>
         </h3>
         <a href="javascript:void(0)" class="button button-hero abp01-type-selector first" data-action="abp01-typeSelect" data-type="bike">
             <?php echo __('Biking', 'abp01-trip-summary'); ?>

@@ -182,7 +182,7 @@
     function toggleFormInfoReset(enable) {
         if (enable) {
             var resetHandler = arguments.length == 2 ? arguments[1] : null;
-            $ctrlResetTechBox.text('Clear info').show();
+            $ctrlResetTechBox.text(abp01MainL10n.btnClearInfo).show();
             $ctrlResetTechBox.data('formInfoResetHandler', resetHandler);
         } else {
             $ctrlResetTechBox.hide();
@@ -193,7 +193,7 @@
     function toggleFormMapReset(enable) {
         if (enable) {
             var resetHandler = arguments.length == 2 ? arguments[1] : null;
-            $ctrlResetTechBox.text('Clear track').show();
+            $ctrlResetTechBox.text(abp01MainL10n.btnClearTrack).show();
             $ctrlResetTechBox.data('formMapResetHandler', resetHandler);
         } else {
             $ctrlResetTechBox.hide();
@@ -274,9 +274,9 @@
         typeSelectRenderers[TOUR_TYPE_HIKING] = renderFormInfoHikingTour;
         typeSelectRenderers[TOUR_TYPE_TRAIN_RIDE] = renderFormInfoTrainRideTour;
 
-        typeTitles[TOUR_TYPE_BIKE] = 'Biking';
-        typeTitles[TOUR_TYPE_HIKING] = 'Hiking';
-        typeTitles[TOUR_TYPE_TRAIN_RIDE] = 'Train ride';
+        typeTitles[TOUR_TYPE_BIKE] = abp01MainL10n.lblTypeBiking;
+        typeTitles[TOUR_TYPE_HIKING] = abp01MainL10n.lblTypeHiking;
+        typeTitles[TOUR_TYPE_TRAIN_RIDE] = abp01MainL10n.lblTypeTrainRide;
     }
 
     function resetFormInfo() {
@@ -376,7 +376,7 @@
     }
 
     function saveInfo() {
-        showProgress(false, 'Saving data. Please wait...');
+        showProgress(false, abp01MainL10n.lblSavingDataWait);
         $.ajax(getAjaxEditInfoUrl(), {
             type: 'POST',
             dataType: 'json',
@@ -385,21 +385,21 @@
             hideProgress();
             if (data) {
                 if (data.success) {
-                    toastMessage(true, 'The data has been saved');
+                    toastMessage(true, abp01MainL10n.lblDataSaveOk);
                 } else {
-                    toastMessage(false, data.message || 'The data could not be saved');
+                    toastMessage(false, data.message || abp01MainL10n.lblDataSaveFail);
                 }
             } else {
-                toastMessage(false, 'The data could not be saved');
+                toastMessage(false, abp01MainL10n.lblDataSaveFail);
             }
         }).fail(function() {
             hideProgress();
-            toastMessage(false, 'The data could not be saved due to a possible network error or an internal server issue');
+            toastMessage(false, abp01MainL10n.lblDataSaveFailNetwork);
         });
     }
 
     function clearInfo() {
-        showProgress(false, 'Clearing trip info. Please wait...');
+        showProgress(false, abp01MainL10n.lblClearingInfoWait);
         $.ajax(getAjaxClearInfoUrl(), {
             type: 'POST',
             dataType: 'json',
@@ -409,16 +409,16 @@
             if (data) {
                 if (data.success) {
                     switchToFormInfoSelection();
-                    toastMessage(true, 'The trip info has been cleared');
+                    toastMessage(true, abp01MainL10n.lblClearInfoOk);
                 } else {
-                    toastMessage(false, data.message || 'The trip info could not be clear');
+                    toastMessage(false, data.message || abp01MainL10n.lblClearInfoFail);
                 }
             } else {
-                toastMessage(false, 'The trip info could not be cleared');
+                toastMessage(false, abp01MainL10n.lblClearInfoFail);
             }
         }).fail(function() {
             hideProgress();
-            toastMessage(false, 'The trip info could not be cleared due to a possible network error or an internal server issue');
+            toastMessage(false, abp01MainL10n.lblClearInfoFailNetwork);
         });
     }
 
@@ -427,18 +427,18 @@
      * */
 
     function initFormMap() {
-        uploaderErrors.client[plupload.FILE_SIZE_ERROR] = 'The selected file is too large. Maximum allowed size is 10MB';
-        uploaderErrors.client[plupload.FILE_EXTENSION_ERROR] = 'The selected file type is not valid. Only GPX files are allowed';
-        uploaderErrors.client[plupload.IO_ERROR] = 'The file could not be read';
-        uploaderErrors.client[plupload.SECURITY_ERROR] = 'The file could not be read';
-        uploaderErrors.client[plupload.INIT_ERROR] = 'The uploader could not be initialized';
-        uploaderErrors.client[plupload.HTTP_ERROR] = 'The file could not be uploaded';
+        uploaderErrors.client[plupload.FILE_SIZE_ERROR] = abp01MainL10n.errPluploadTooLarge;
+        uploaderErrors.client[plupload.FILE_EXTENSION_ERROR] = abp01MainL10n.errPluploadFileType;
+        uploaderErrors.client[plupload.IO_ERROR] = abp01MainL10n.errPluploadIoError;
+        uploaderErrors.client[plupload.SECURITY_ERROR] = abp01MainL10n.errPluploadSecurityError;
+        uploaderErrors.client[plupload.INIT_ERROR] = abp01MainL10n.errPluploadInitError;
+        uploaderErrors.client[plupload.HTTP_ERROR] = abp01MainL10n.errPluploadHttp;
 
-        uploaderErrors.server[UPLOAD_INVALID_MIME_TYPE] = 'The selected file type is not valid. Only GPX files are allowed';
-        uploaderErrors.server[UPLOAD_TOO_LARGE] = 'The selected file is too large. Maximum allowed size is 10MB';
-        uploaderErrors.server[UPLOAD_NO_FILE] = 'No file was uploaded';
-        uploaderErrors.server[UPLOAD_INTERNAL_ERROR] = 'The file could not be uploaded due to a possible internal server issue';
-        uploaderErrors.server[UPLOAD_FAILED] = 'The file could not be uploaded';
+        uploaderErrors.server[UPLOAD_INVALID_MIME_TYPE] = abp01MainL10n.errServerUploadFileType;
+        uploaderErrors.server[UPLOAD_TOO_LARGE] = abp01MainL10n.errServerUploadTooLarge;
+        uploaderErrors.server[UPLOAD_NO_FILE] = abp01MainL10n.errServerUploadNoFile;
+        uploaderErrors.server[UPLOAD_INTERNAL_ERROR] = abp01MainL10n.errServerUploadInternal;
+        uploaderErrors.server[UPLOAD_FAILED] = abp01MainL10n.errServerUploadFail;
     }
 
     function resetFormMap() {
@@ -476,7 +476,7 @@
     }
 
     function clearTrack() {
-        showProgress(false, 'Clearing track. Please wait...');
+        showProgress(false, abp01MainL10n.lblClearingTrackWait);
         $.ajax(getAjaxClearTrackUrl(), {
             type: 'POST',
             dataType: 'json',
@@ -485,13 +485,13 @@
             hideProgress();
             if (data && data.success) {
                 resetFormMap();
-                toastMessage(true, 'The track has been successfully cleared');
+                toastMessage(true, abp01MainL10n.lblTrackClearOk);
             } else {
-                toastMessage(false, data.message || 'The data could not be updated');
+                toastMessage(false, data.message || abp01MainL10n.lblTrackClearFail);
             }
         }).fail(function(xhr, status, error) {
             hideProgress();
-            toastMessage(false, 'The data could not be updated due to a possible network error or an internal server issue');
+            toastMessage(false, abp01MainL10n.lblTrackClearFailNetwork);
         });
     }
 
@@ -505,7 +505,8 @@
             filters: {
                 max_file_size: window.abp01_uploadMaxFileSize || 10485760,
                 mime_types: [
-                    { title: 'GPX files', extensions: 'gpx' }
+                    { title: abp01MainL10n.lblPluploadFileTypeSelector,
+                        extensions: 'gpx' }
                 ]
             },
             runtimes: 'html5,flash,silverlight',
@@ -570,7 +571,7 @@
 
         destroyTrackUploader();
         toggleFormMapReset(true, clearTrack);
-        toastMessage(true, 'The track has been uploaded and saved successfully');
+        toastMessage(true, abp01MainL10n.lblTrackUploaded);
         showMap();
     }
 
@@ -600,7 +601,7 @@
     }
 
     function handleUploaderProgress(upl, file) {
-        showProgress(file.percent / 100, 'Uploading track: ' + file.percent + '%');
+        showProgress(file.percent / 100, abp01MainL10n.lblTrackUploadingWait + ': ' + file.percent + '%');
     }
 
     function getTrackUploaderErrorMessage(err) {
@@ -624,7 +625,7 @@
                 iconBaseUrl: context.imgBase,
                 trackDataUrl: getAjaxLoadTrackUrl(),
                 handlePreLoad: function() {
-                    showProgress(false, 'Generating preview. Please wait...');
+                    showProgress(false, abp01MainL10n.lblGeneratingPreview);
                 },
                 handleLoad: function(success) {
                     hideProgress();
