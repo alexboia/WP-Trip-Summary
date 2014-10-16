@@ -67,6 +67,8 @@ Thus, I developed a module to do just that: upload a GPX track, parse it and dis
 9. [Toastr](https://github.com/CodeSeven/toastr) - Javascript library for non-blocking notifications
 10. [URI.js](https://github.com/medialize/URI.js) - JavaScript URI builder and parser.
 11. [Visible](https://github.com/teamdf/jquery-visible) - jQuery plugin which allows us to quickly check if an element is within the browsers visual viewport regardless of the window scroll position
+12. [blockUI](https://github.com/malsup/blockui/) - jQuery modal view plug-in
+13. [kite](http://code.google.com/p/kite/) - super small and simple JavaScript template engine
 
 ## Licence
 The source code is published under the terms of the [MIT](http://opensource.org/licenses/MIT) licence.
