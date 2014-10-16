@@ -187,6 +187,7 @@ a.abp01-close-editor:hover {
     color: #444;
     font-size: 13px;
     font-weight: normal !important;
+    padding-left: 3px;
 }
 
 .abp01-form-line input[type='text'] {
