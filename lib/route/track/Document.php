@@ -114,13 +114,10 @@ class Abp01_Route_Track_Document {
     }
 
     public function getBounds() {
-        $bounds = new stdClass();
-        $bounds->minLat = $this->minLat;
-        $bounds->minLng = $this->minLng;
-        $bounds->maxLat = $this->maxLat;
-        $bounds->maxLng = $this->maxLng;
-        $bounds->minAlt = $this->minAlt;
-        $bounds->maxAlt = $this->maxAlt;
+        $bounds = new Abp01_Route_Track_Bbox($this->minLat,
+            $this->minLng,
+            $this->maxLat,
+            $this->maxLng);
         return $bounds;
     }
 

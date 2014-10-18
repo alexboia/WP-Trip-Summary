@@ -10,6 +10,8 @@ class Abp01_Route_Manager {
 
     private $_env = null;
 
+    private  $_proj = null;
+
     public static function getInstance() {
         if (self::$_instance == null) {
             self::$_instance = new self();
@@ -19,6 +21,7 @@ class Abp01_Route_Manager {
 
     private function __construct() {
         $this->_env = Abp01_Env::getInstance();
+        $this->_proj = new Abp01_Route_SphericalMercator();
     }
 
     public function saveRouteInfo($postId, $currentUserId, Abp01_Route_Info $info) {
@@ -59,6 +62,9 @@ class Abp01_Route_Manager {
         if ($postId <= 0) {
             throw new InvalidArgumentException();
         }
+        if (!$this->hasRouteInfo($postId)) {
+            return true;
+        }
 
         $db = $this->_env->getDb();
         $table = $this->_env->getRouteDetailsTableName();
@@ -77,19 +83,28 @@ class Abp01_Route_Manager {
             throw new InvalidArgumentException();
         }
 
+        $proj = $this->_proj;
         $db = $this->_env->getDb();
         $table = $this->_env->getRouteTrackTableName();
         $bounds = $track->getBounds();
 
+        $sw = $bounds->southWest;
+        $ne = $bounds->northEast;
+
+        $minCoord = array_values($proj->forward($sw->lat, $sw->lng));
+        $maxCoord = array_values($proj->forward($ne->lat, $ne->lng));
+        $lineBetween = array($minCoord[0], $minCoord[1],
+            $maxCoord[0],
+            $maxCoord[1]);
+
         $data = array(
             'post_ID' => $postId,
             'route_track_file' => $track->getFile(),
-            'route_min_lat' => $bounds->minLat,
-            'route_min_lng' => $bounds->minLng,
-            'route_max_lat' => $bounds->maxLat,
-            'route_max_lng' => $bounds->maxLng,
-            'route_min_alt' => $bounds->minAlt,
-            'route_max_alt' => $bounds->maxAlt,
+            'route_bbox' => $db->func("Envelope(LineString(GeometryFromText(AsText(Point(?, ?)), 3857), GeometryFromText(AsText(Point(?, ?)), 3857)))", $lineBetween),
+            'route_min_coord' => $db->func("GeometryFromText(AsText(Point(?, ?)), 3857)", $minCoord),
+            'route_max_coord' => $db->func("GeometryFromText(AsText(Point(?, ?)), 3857)", $maxCoord),
+            'route_min_alt' => $track->minAlt,
+            'route_max_alt' => $track->maxAlt,
             'route_track_modified_at' => $db->now(),
             'route_track_modified_by' => $currentUserId
         );
@@ -114,6 +129,9 @@ class Abp01_Route_Manager {
         $postId = intval($postId);
         if ($postId <= 0) {
             throw new InvalidArgumentException();
+        }
+        if (!$this->hasRouteTrack($postId)) {
+            return true;
         }
 
         $db = $this->_env->getDb();
@@ -162,21 +180,38 @@ class Abp01_Route_Manager {
         $table = $this->_env->getRouteTrackTableName();
 
         $db->where('post_ID', $postId);
-        $row = $db->getOne($table);
+        $row = $db->getOne($table, array(
+            'route_min_alt',
+            'route_max_alt',
+            'route_track_file',
+            'X(route_min_coord) AS route_min_lng',
+            'Y(route_min_coord) AS route_min_lat',
+            'X(route_max_coord) AS route_max_lng',
+            'Y(route_max_coord) AS route_min_lng'
+        ));
         if (!$row) {
             return null;
         }
 
         if (isset($row['route_track_file']) && $row['route_track_file']) {
+            $proj = $this->_proj;
             $file = $row['route_track_file'];
-            $bounds = new stdClass();
-            $bounds->minLat = floatval($row['route_min_lat']);
-            $bounds->minLng = floatval($row['route_min_lng']);
-            $bounds->maxLat = floatval($row['route_max_lat']);
-            $bounds->maxLng = floatval($row['route_max_lng']);
-            $bounds->minAlt = floatval($row['route_min_alt']);
-            $bounds->maxAlt = floatval($row['route_max_alt']);
-            return new Abp01_Route_Track($file, $bounds);
+
+            $minCoord = $proj->inverse(floatval($row['route_min_lat']),
+                floatval($row['route_min_lng']));
+            $maxCoord = $proj->inverse(floatval($row['route_max_lat']),
+                floatval($row['route_max_lng']));
+
+            $bounds = new Abp01_Route_Track_Bbox($minCoord['lat'],
+                $minCoord['lng'],
+                $maxCoord['lat'],
+                $maxCoord['lng']);
+
+            $track = new Abp01_Route_Track($file, $bounds,
+                floatval($row['route_min_alt']),
+                floatval($row['route_min_alt']));
+
+            return $track;
         } else {
             return null;
         }

@@ -661,12 +661,8 @@ function abp01_remove_info() {
     $response->message = null;
 
     $manager = Abp01_Route_Manager::getInstance();
-    if ($manager->hasRouteInfo($postId)) {
-        if ($manager->deleteRouteInfo($postId)) {
-            $response->success = true;
-        } else {
-            $response->message = __('The data could not be saved due to a possible database error', 'abp01-trip-summary');
-        }
+    if (!$manager->deleteRouteInfo($postId)) {
+        $response->message = __('The data could not be saved due to a possible database error', 'abp01-trip-summary');
     } else {
         $response->success = true;
     }
@@ -687,12 +683,12 @@ function abp01_remove_info() {
 function abp01_upload_track() {
     //only HTTP POST method is allowed
     if (abp01_get_http_method() != 'post') {
-        die;
+        die('1');
     }
 
     $postId = abp01_get_current_post_id();
     if (!abp01_can_edit_trip_summary($postId) || !abp01_verify_edit_nonce($postId)) {
-        die;
+        die('2');
     }
 
     //increase script execution limits: memory & cpu time
@@ -736,7 +732,11 @@ function abp01_upload_track() {
             if ($route && !$parser->hasErrors()) {
                 $manager = Abp01_Route_Manager::getInstance();
                 $destination = plugin_basename($destination);
-                $track = new Abp01_Route_Track($destination, $route->getBounds());
+
+                $track = new Abp01_Route_Track($destination, $route->getBounds(),
+                    $route->minAlt,
+                    $route->maxAlt);
+
                 if (!$manager->saveRouteTrack($postId, $currentUserId, $track)) {
                     $result->status = Abp01_Uploader::UPLOAD_INTERNAL_ERROR;
                 }

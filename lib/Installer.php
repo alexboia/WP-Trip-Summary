@@ -197,25 +197,25 @@ class Abp01_Installer {
         $tableDef .= 'ENGINE=MyISAM';
 
         $db->rawQuery($tableDef, null, false);
-        $lastError = $db->getLastError();
+        $lastError = trim($db->getLastError());
 
         return empty($lastError);
     }
 
     private function _getRouteTrackTableDefinition() {
-        return "CREATE TABLE IF NOT EXISTS `" . $this->_getRouteTrackTableName() . "` (
+        return "CREATE TABLE `" . $this->_getRouteTrackTableName() . "` (
             `post_ID` BIGINT(20) UNSIGNED NOT NULL,
             `route_track_file` LONGTEXT NOT NULL,
-            `route_min_lat` FLOAT NULL DEFAULT '0',
-            `route_min_lng` FLOAT NULL DEFAULT '0',
-            `route_max_lat` FLOAT NULL DEFAULT '0',
-            `route_max_lng` FLOAT NULL DEFAULT '0',
+            `route_min_coord` POINT NOT NULL,
+            `route_max_coord` POINT NOT NULL,
+            `route_bbox` POLYGON NOT NULL,
             `route_min_alt` FLOAT NULL DEFAULT '0',
             `route_max_alt` FLOAT NULL DEFAULT '0',
             `route_track_created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             `route_track_modified_at` TIMESTAMP NULL DEFAULT NULL,
             `route_track_modified_by` BIGINT(20) NULL DEFAULT NULL,
-                PRIMARY KEY (`post_ID`)
+                PRIMARY KEY (`post_ID`),
+                SPATIAL INDEX `idx_route_track_bbox` (`route_bbox`)
         )";
     }
 

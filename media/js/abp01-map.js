@@ -17,8 +17,8 @@
         }
 
         function renderMap(bounds) {
-            var centerLat = (bounds.maxLat - bounds.minLat) / 2;
-            var centerLng = (bounds.maxLng - bounds.minLng) / 2;
+            var centerLat = (bounds.northEast.lat - bounds.southWest.lat) / 2;
+            var centerLng = (bounds.northEast.lng - bounds.southWest.lng) / 2;
 
             map = L.map($me.attr('id'), {
                 center: L.latLng(centerLat, centerLng)
@@ -29,8 +29,8 @@
             }));
 
             map.fitBounds(L.latLngBounds(
-                L.latLng(bounds.minLat, bounds.minLng),
-                L.latLng(bounds.maxLat, bounds.maxLng)
+                L.latLng(bounds.southWest.lat, bounds.southWest.lng),
+                L.latLng(bounds.northEast.lat, bounds.northEast.lng)
             ));
         }
 

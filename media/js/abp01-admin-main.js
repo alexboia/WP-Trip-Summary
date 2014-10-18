@@ -543,6 +543,7 @@
     }
 
     function handleUploaderError(upl, error) {
+        console.log(error);
         uploader.disableBrowse(false);
         uploader.refresh();
         hideProgress();
@@ -590,9 +591,9 @@
         }
 
         if (status != UPLOAD_OK) {
+            hideProgress();
             uploader.stop();
             uploader.disableBrowse(false);
-            hideProgress();
             toastMessage(false, getTrackUploaderErrorMessage({
                 server: true,
                 code: status
@@ -601,7 +602,9 @@
     }
 
     function handleUploaderProgress(upl, file) {
-        showProgress(file.percent / 100, abp01MainL10n.lblTrackUploadingWait + ': ' + file.percent + '%');
+        if (upl.state == plupload.STARTED) {
+            showProgress(file.percent / 100, abp01MainL10n.lblTrackUploadingWait + ': ' + file.percent + '%');
+        }
     }
 
     function getTrackUploaderErrorMessage(err) {

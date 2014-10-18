@@ -4,7 +4,11 @@ class Abp01_Route_Track {
 
     private $_file;
 
-    public function __construct($file, $bounds) {
+    public $maxAlt;
+
+    public $minAlt;
+
+    public function __construct($file, Abp01_Route_Track_Bbox $bounds, $minAlt = 0, $maxAlt = 0) {
         if (empty($file)) {
             throw new InvalidArgumentException();
         }
@@ -14,6 +18,9 @@ class Abp01_Route_Track {
 
         $this->_file = $file;
         $this->_bounds = $bounds;
+
+        $this->minAlt = $minAlt;
+        $this->maxAlt = $maxAlt;
     }
 
     public function getBounds() {
