@@ -444,6 +444,7 @@ function abp01_add_admin_editor($post) {
         $data->tourInfo = $tripData;
         $data->tourType = $info->getType();
     } else {
+        $data->tourType = null;
         $data->tourInfo = null;
     }
 

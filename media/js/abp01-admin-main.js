@@ -58,6 +58,7 @@
     var $ctrlFormInfoContainer = null;
     var $ctrlFormMapContainer = null;
     var $ctrlEditor = null;
+    var $ctrlSave = null;
 
     /**
      * Cache rendered content
@@ -258,10 +259,13 @@
             if (clearForm) {
                 clearInputValues($ctrlFormInfoContainer);
             }
+
+            $ctrlSave.show();
         } else {
             updateTitle(null);
             toggleFormInfoReset(false);
             currentTourType = null;
+            $ctrlSave.hide();
         }
     }
 
@@ -280,6 +284,7 @@
     }
 
     function resetFormInfo() {
+        $ctrlSave.hide();
         clearInputValues($ctrlFormInfoContainer);
         clearInfo();
     }
@@ -667,6 +672,7 @@
         $ctrlFormInfoContainer = $('#abp01-form-info');
         $ctrlFormMapContainer = $('#abp01-form-map');
         $ctrlResetTechBox = $('#abp01-resetTechBox');
+        $ctrlSave = $('#abp01-saveTechBox');
     }
 
     function initToastMessages() {
@@ -688,7 +694,7 @@
             executeResetAction();
         });
 
-        $('#abp01-saveTechBox').click(function() {
+        $ctrlSave.click(function() {
             saveInfo();
         });
 

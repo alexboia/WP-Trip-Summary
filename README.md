@@ -58,8 +58,18 @@ Thus, I developed a module to do just that: upload a GPX track, parse it and dis
 ## Requirements
 1. MySQL spatial support;
 2. Wordpress 4.0 (maybe lower, but I haven't checked it up yet so I'd rather err on the safe side for now);
-3. libxml extension
-4. mysqli extension
+3. libxml extension;
+4. mysqli extension.
+
+## Screenshots
+##### Editor - Info
+![Editor - Info](/screenshots/E1.png?raw=true)
+
+##### Editor - Map
+![Editor - Map](/screenshots/E2.png?raw=true)
+
+##### Viewer - Info
+![Viewer - Info](/screenshots/V1.png?raw=true)
 
 ## Credits
 1. [PHP-MySQLi-Database-Class](https://github.com/joshcam/PHP-MySQLi-Database-Class) - small mysqli wrapper for PHP. I used it instead of the builtin wpdb class

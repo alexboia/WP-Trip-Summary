@@ -62,7 +62,7 @@
         </div>
         <div class="abp01-editor-footer">
             <a id="abp01-resetTechBox" href="javascript:void(0)" class="button button-large button-reset"><?php echo __('Clear', 'abp01-trip-summary'); ?></a>
-            <a id="abp01-saveTechBox" href="javascript:void(0)" class="button button-primary button-large button-save-summary"><?php echo __('Save', 'abp01-trip-summary'); ?></a>
+            <a id="abp01-saveTechBox" href="javascript:void(0)" class="button button-primary button-large button-save-summary" style="<?php echo empty($data->tourType) ? 'display:none;' : '' ?>"><?php echo __('Save', 'abp01-trip-summary'); ?></a>
             <div class="abp01-clear"></div>
         </div>
     </div>
