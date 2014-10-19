@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WP Trip Summary 0.1.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/abp01-travel-tech-"
 "box\n"
-"POT-Creation-Date: 2014-10-15 19:15:23+00:00\n"
+"POT-Creation-Date: 2014-10-19 15:11:47+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,125 +13,162 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: abp01-plugin-main.php:279
+#: abp01-plugin-main.php:283
 msgid "Clear info"
 msgstr ""
 
-#: abp01-plugin-main.php:280
+#: abp01-plugin-main.php:284
 msgid "Clear track"
 msgstr ""
 
-#: abp01-plugin-main.php:282
+#: abp01-plugin-main.php:286
 msgid "GPX files"
 msgstr ""
 
-#: abp01-plugin-main.php:283
+#: abp01-plugin-main.php:287
 msgid "Generating preview. Please wait..."
 msgstr ""
 
-#: abp01-plugin-main.php:285
+#: abp01-plugin-main.php:289
 msgid "Uploading track"
 msgstr ""
 
-#: abp01-plugin-main.php:286
+#: abp01-plugin-main.php:290
 msgid "The track has been uploaded and saved successfully"
 msgstr ""
 
-#: abp01-plugin-main.php:288
+#: abp01-plugin-main.php:292 views/techbox-editor.php:77
+msgid "Biking"
+msgstr ""
+
+#: abp01-plugin-main.php:293 views/techbox-editor.php:80
+msgid "Hiking"
+msgstr ""
+
+#: abp01-plugin-main.php:294
+msgid "Train ride"
+msgstr ""
+
+#: abp01-plugin-main.php:296
 msgid "Clearing track. Please wait..."
 msgstr ""
 
-#: abp01-plugin-main.php:289
+#: abp01-plugin-main.php:297
 msgid "The track has been successfully cleared"
 msgstr ""
 
-#: abp01-plugin-main.php:290
+#: abp01-plugin-main.php:298
 msgid "The data could not be updated"
 msgstr ""
 
-#: abp01-plugin-main.php:291
+#: abp01-plugin-main.php:299
 msgid ""
 "The data could not be updated due to a possible network error or an internal "
 "server issue"
 msgstr ""
 
-#: abp01-plugin-main.php:293
+#: abp01-plugin-main.php:301
 msgid "Saving data. Please wait..."
 msgstr ""
 
-#: abp01-plugin-main.php:294
+#: abp01-plugin-main.php:302
 msgid "The data has been saved"
 msgstr ""
 
-#: abp01-plugin-main.php:295
+#: abp01-plugin-main.php:303
 msgid "The data could not be saved"
 msgstr ""
 
-#: abp01-plugin-main.php:296
+#: abp01-plugin-main.php:304
 msgid ""
 "The data could not be saved due to a possible network error or an internal "
 "server issue"
 msgstr ""
 
-#: abp01-plugin-main.php:298
+#: abp01-plugin-main.php:306
 msgid "Clearing trip info. Please wait..."
 msgstr ""
 
-#: abp01-plugin-main.php:299
+#: abp01-plugin-main.php:307
 msgid "The trip info has been cleared"
 msgstr ""
 
-#: abp01-plugin-main.php:300
+#: abp01-plugin-main.php:308
 msgid "The trip info could not be cleared"
 msgstr ""
 
-#: abp01-plugin-main.php:301
+#: abp01-plugin-main.php:309
 msgid ""
 "The trip info could not be cleared due to a possible network error or an "
 "internal server issue"
 msgstr ""
 
-#: abp01-plugin-main.php:303 abp01-plugin-main.php:311
+#: abp01-plugin-main.php:311 abp01-plugin-main.php:319
 msgid "The selected file is too large. Maximum allowed size is 10MB"
 msgstr ""
 
-#: abp01-plugin-main.php:304 abp01-plugin-main.php:310
+#: abp01-plugin-main.php:312 abp01-plugin-main.php:318
 msgid "The selected file type is not valid. Only GPX files are allowed"
 msgstr ""
 
-#: abp01-plugin-main.php:305 abp01-plugin-main.php:306
+#: abp01-plugin-main.php:313 abp01-plugin-main.php:314
 msgid "The file could not be read"
 msgstr ""
 
-#: abp01-plugin-main.php:307
+#: abp01-plugin-main.php:315
 msgid "The uploader could not be initialized"
 msgstr ""
 
-#: abp01-plugin-main.php:308 abp01-plugin-main.php:314
+#: abp01-plugin-main.php:316 abp01-plugin-main.php:322
 msgid "The file could not be uploaded"
 msgstr ""
 
-#: abp01-plugin-main.php:312
+#: abp01-plugin-main.php:320
 msgid "No file was uploaded"
 msgstr ""
 
-#: abp01-plugin-main.php:313
+#: abp01-plugin-main.php:321
 msgid "The file could not be uploaded due to a possible internal server issue"
 msgstr ""
 
-#: abp01-plugin-main.php:545 abp01-plugin-main.php:652
+#: abp01-plugin-main.php:334
+msgid "Minimum required PHP version is %s"
+msgstr ""
+
+#: abp01-plugin-main.php:336
+msgid "Minimum required WP version is %s"
+msgstr ""
+
+#: abp01-plugin-main.php:338
+msgid "LIBXML support was not found on your system"
+msgstr ""
+
+#: abp01-plugin-main.php:340
+msgid ""
+"Mysqli extension was not found on your system or is not fully compatible"
+msgstr ""
+
+#: abp01-plugin-main.php:342
+msgid "MySQL spatial support was not found on your system"
+msgstr ""
+
+#: abp01-plugin-main.php:362
+msgid "The plugin cannot be installed on your system"
+msgstr ""
+
+#: abp01-plugin-main.php:593 abp01-plugin-main.php:697
 msgid "The data could not be saved due to a possible database error"
 msgstr ""
 
-#: abp01-plugin-main.php:777
+#: abp01-plugin-main.php:825
 msgid "Track file could not be parsed"
 msgstr ""
 
-#: abp01-plugin-main.php:780
+#: abp01-plugin-main.php:828
 msgid "Track file not found or is not readable"
 msgstr ""
 
-#: abp01-plugin-main.php:838
+#: abp01-plugin-main.php:886
 msgid "The data could not be updated due to a possible database error"
 msgstr ""
 
@@ -158,14 +195,6 @@ msgstr ""
 
 #: views/techbox-editor.php:74
 msgid "Chose the type of your tour"
-msgstr ""
-
-#: views/techbox-editor.php:77
-msgid "Biking"
-msgstr ""
-
-#: views/techbox-editor.php:80
-msgid "Hiking"
 msgstr ""
 
 #: views/techbox-editor.php:83

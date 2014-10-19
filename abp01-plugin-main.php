@@ -52,8 +52,12 @@ function abp01_init_autoloaders() {
  * @return void
  */
 function abp01_increase_limits() {
-    @set_time_limit(5 * 60);
-    @ini_set('memory_limit', WP_MAX_MEMORY_LIMIT);
+    if (function_exists('set_time_limit')) {
+        @set_time_limit(5 * 60);
+    }
+    if (function_exists('ini_set')) {
+        @ini_set('memory_limit', WP_MAX_MEMORY_LIMIT);
+    }
 }
 
 /**
@@ -320,6 +324,27 @@ function abp01_get_main_admin_script_translations() {
 }
 
 /**
+ * Retrieve translations used when installing the plug-in
+ * @return array key-value pairs where keys are installation error codes and values are the translated strings
+ */
+function abp01_get_installation_error_translations() {
+    $env = Abp01_Env::getInstance();
+    load_plugin_textdomain('abp01-trip-summary', false, dirname(plugin_basename(__FILE__)) . '/lang/');
+    return array(
+        Abp01_Installer::INCOMPATIBLE_PHP_VERSION =>
+            sprintf(__('Minimum required PHP version is %s', 'abp01-trip-summary'), $env->getRequiredPhpVersion()),
+        Abp01_Installer::INCOMPATIBLE_WP_VERSION =>
+            sprintf(__('Minimum required WP version is %s', 'abp01-trip-summary'), $env->getRequiredWpVersion()),
+        Abp01_Installer::SUPPORT_LIBXML_NOT_FOUND =>
+            __('LIBXML support was not found on your system', 'abp01-trip-summary'),
+        Abp01_Installer::SUPPORT_MYSQLI_NOT_FOUND =>
+            __('Mysqli extension was not found on your system or is not fully compatible', 'abp01-trip-summary'),
+        Abp01_Installer::SUPPORT_MYSQL_SPATIAL_NOT_FOUND =>
+            __('MySQL spatial support was not found on your system', 'abp01-trip-summary')
+    );
+}
+
+/**
  * Retrieve translations used in the main frontend script
  * @return array key-value pairs where keys are javascript property names and values are the translation strings
  */
@@ -332,7 +357,15 @@ function abp01_get_main_frontend_translations() {
  */
 function abp01_activate() {
     $installer = new Abp01_Installer();
-    $installer->activate();
+    $test = $installer->canBeInstalled();
+    if ($test !== 0) {
+        $errors = abp01_get_installation_error_translations();
+        $message = isset($errors[$test]) ? $errors[$test] : __('The plugin cannot be installed on your system', 'abp01-trip-summary');
+        deactivate_plugins(plugin_basename(__FIILE__));
+        wp_die($message);
+    } else {
+        $installer->activate();
+    }
 }
 
 /**
@@ -883,5 +916,5 @@ if (function_exists('add_action')) {
     remove_filter('the_content', 'wpautop');
     add_filter('the_content', 'abp01_get_info', 0);
 
-    add_action('init', 'abp01_init_plugin');
+    add_action('plugins_loaded', 'abp01_init_plugin');
 }

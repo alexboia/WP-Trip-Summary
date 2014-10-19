@@ -28,6 +28,10 @@ class Abp01_Env {
 
     private $_db = null;
 
+    private $_wpVersion;
+
+    private $_phpVersion;
+
     public static function getInstance() {
         if (self::$_instance == null) {
             self::$_instance = new self();
@@ -37,6 +41,7 @@ class Abp01_Env {
 
     private function __construct() {
         $this->_initFromWpConfig();
+        $this->_initVersions();
     }
 
     private function _initFromWpConfig() {
@@ -61,6 +66,11 @@ class Abp01_Env {
             . 'abp01_techbox_route_details';
         $this->_lookupTableName = $this->_dbTablePrefix
             . 'abp01_techbox_lookup';
+    }
+
+    private function _initVersions() {
+        $this->_phpVersion = PHP_VERSION;
+        $this->_wpVersion = get_bloginfo('version', 'raw');
     }
 
     public function getLang() {
@@ -97,6 +107,9 @@ class Abp01_Env {
                 $this->getDbUserName(),
                 $this->getDbPassword(),
                 $this->getDbName());
+
+            $driver = new mysqli_driver();
+            $driver->report_mode =  MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT;
         }
         return $this->_db;
     }
@@ -111,5 +124,21 @@ class Abp01_Env {
 
     public function getLookupTableName() {
         return $this->_lookupTableName;
+    }
+
+    public function getPhpVersion() {
+        return $this->_phpVersion;
+    }
+
+    public function getRequiredPhpVersion() {
+        return '5.2.4';
+    }
+
+    public function getWpVersion() {
+        return $this->_wpVersion;
+    }
+
+    public function getRequiredWpVersion() {
+        return '4.0';
     }
 }

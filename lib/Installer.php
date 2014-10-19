@@ -4,6 +4,16 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Installer {
+    const INCOMPATIBLE_PHP_VERSION = 1;
+
+    const INCOMPATIBLE_WP_VERSION = 2;
+
+    const SUPPORT_LIBXML_NOT_FOUND = 3;
+
+    const SUPPORT_MYSQL_SPATIAL_NOT_FOUND = 4;
+
+    const SUPPORT_MYSQLI_NOT_FOUND = 5;
+
     private $_env;
 
     private $_lookupData = array();
@@ -67,6 +77,98 @@ class Abp01_Installer {
         );
     }
 
+    public function canBeInstalled() {
+        if (!$this->_isCompatPhpVersion()) {
+            return self::INCOMPATIBLE_PHP_VERSION;
+        }
+        if (!$this->_isCompatWpVersion()) {
+            return self::INCOMPATIBLE_WP_VERSION;
+        }
+        if (!$this->_hasMysqli()) {
+            return self::SUPPORT_MYSQLI_NOT_FOUND;
+        }
+        if (!$this->_hasLibxml()) {
+            return self::SUPPORT_LIBXML_NOT_FOUND;
+        }
+        if (!$this->_hasMysqlSpatialSupport() ||
+            !$this->_hasRequiredMysqlSpatialFunctions()) {
+            return self::SUPPORT_MYSQL_SPATIAL_NOT_FOUND;
+        }
+        return 0;
+    }
+
+    private function _isCompatPhpVersion() {
+        $current = $this->_env->getPhpVersion();
+        $required = $this->_env->getRequiredPhpVersion();
+        return version_compare($current, $required, '>=');
+    }
+
+    private function _isCompatWpVersion() {
+        $current = $this->_env->getWpVersion();
+        $required = $this->_env->getRequiredWpVersion();
+        return version_compare($current, $required, '>=');
+    }
+
+    private function _hasLibxml() {
+        return function_exists('simplexml_load_string') &&
+            function_exists('simplexml_load_file');
+    }
+
+    private function _hasMysqli() {
+        return extension_loaded('mysqli') &&
+            class_exists('mysqli_driver') &&
+            class_exists('mysqli');
+    }
+
+    private function _hasMysqlSpatialSupport() {
+        $result = false;
+        $db = $this->_env->getDb();
+
+        if (!$db) {
+            return $result;
+        }
+
+        try {
+            $haveGeometry = $db->rawQuery("SHOW VARIABLES WHERE Variable_name = 'have_geometry'");
+            if (!empty($haveGeometry) && is_array($haveGeometry)) {
+                $haveGeometry = $haveGeometry[0];
+                $result = !empty($haveGeometry['Value']) &&
+                    strcasecmp($haveGeometry['Value'], 'YES') === 0;
+            }
+        } catch (mysqli_sql_exception $e) {
+            $result = false;
+        }
+
+        return $result;
+    }
+
+    private function _hasRequiredMysqlSpatialFunctions() {
+        $result = false;
+        $db = $this->_env->getDb();
+
+        if (!$db) {
+            return false;
+        }
+
+        try {
+            $spatialTest = $db->rawQuery('SELECT
+                AsText(Envelope(LineString(
+                    GeometryFromText(AsText(Point(1, 2)), 3857),
+                    GeometryFromText(AsText(Point(3, 4)), 3857)
+                ))) AS SPATIAL_TEST');
+
+            if (!empty($spatialTest) && is_array($spatialTest)) {
+                $spatialTest = $spatialTest[0];
+                $result = strcasecmp($spatialTest['SPATIAL_TEST'], 'POLYGON((1 2,3 2,3 4,1 4,1 2))')
+                    === 0;
+            }
+        } catch (mysqli_sql_exception $e) {
+            $result = false;
+        }
+
+        return $result;
+    }
+
     public function activate() {
         if (!$this->_installSchema()) {
             return false;
@@ -88,6 +190,14 @@ class Abp01_Installer {
     public function uninstall() {
         return $this->deactivate() &&
             $this->_uninstallSchema();
+    }
+
+    public function getRequiredPhpVersion() {
+        return $this->_env->getRequiredPhpVersion();
+    }
+
+    public function getRequiredWpVersion() {
+        return $this->_env->getRequiredWpVersion();
     }
 
     private function _createCapabilities() {
@@ -203,7 +313,7 @@ class Abp01_Installer {
     }
 
     private function _getRouteTrackTableDefinition() {
-        return "CREATE TABLE `" . $this->_getRouteTrackTableName() . "` (
+        return "CREATE TABLE IF NOT EXISTS `" . $this->_getRouteTrackTableName() . "` (
             `post_ID` BIGINT(20) UNSIGNED NOT NULL,
             `route_track_file` LONGTEXT NOT NULL,
             `route_min_coord` POINT NOT NULL,

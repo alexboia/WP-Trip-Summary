@@ -1,4 +1,8 @@
 <?php
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+    exit;
+}
+
 class Abp01_Route_SphericalMercator {
     const A = 6378137.0;
 
