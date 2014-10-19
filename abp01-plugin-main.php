@@ -760,7 +760,7 @@ function abp01_upload_track() {
     if ($result->ready) {
         $route = file_get_contents($destination);
         if (!empty($route)) {
-            $parser = new Abp01_Route_Track_GPXDocumentParser();
+            $parser = new Abp01_Route_Track_GpxDocumentParser();
             $route = $parser->parse($route);
             if ($route && !$parser->hasErrors()) {
                 $manager = Abp01_Route_Manager::getInstance();
@@ -816,7 +816,7 @@ function abp01_get_track() {
         if ($track) {
             $file = abp01_get_absolute_track_file_path($track);
             if (is_readable($file)) {
-                $parser = new Abp01_Route_Track_GPXDocumentParser();
+                $parser = new Abp01_Route_Track_GpxDocumentParser();
                 $route = $parser->parse(file_get_contents($file));
                 if ($route) {
                     $route = $route->simplify(0.01);

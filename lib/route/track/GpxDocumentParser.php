@@ -10,7 +10,7 @@
  * - http://wiki.openstreetmap.org/wiki/GPX
  * */
 
-class Abp01_Route_Track_GPXDocumentParser implements Abp01_Route_Track_DocumentParser {
+class Abp01_Route_Track_GpxDocumentParser implements Abp01_Route_Track_DocumentParser {
     private $_parseErrors = array();
 
     function __construct() {
