@@ -1,7 +1,7 @@
 WP-Trip-Summary
 ===============
 A WordPress trip summary plugin. I initially wrote this for my own personal use, as I needed something to help me keep structured information about my trips.
-However, as I was getting ready to push this to production I realised it would be a good idea to go public and publish the source code.
+However, as I was getting ready to push this to production I realised it would be a good idea to publish the source code.
 
 There are, of course, some things to be done before this would be of any real use to anyone but me and, in the process, some breaking changes may occur.
 Please see the [issues](https://github.com/alexboia/WP-Trip-Summary/issues) area for the progress on those things.
@@ -54,6 +54,12 @@ I really wanted to host the GPX tracks myself for various reasons:
 - I want to use the resulting data in the near future to do some other stuff on my website.
 
 Thus, I developed a module to do just that: upload a GPX track, parse it and display it.
+
+## Requirements
+1. MySQL spatial support;
+2. Wordpress 4.0 (maybe lower, but I haven't checked it up yet so I'd rather err on the safe side for now);
+3. libxml extension
+4. mysqli extension
 
 ## Credits
 1. [PHP-MySQLi-Database-Class](https://github.com/joshcam/PHP-MySQLi-Database-Class) - small mysqli wrapper for PHP. I used it instead of the builtin wpdb class
