@@ -483,6 +483,7 @@ function abp01_add_frontend_styles() {
             array(), '0.7.3', 'all');
         wp_enqueue_style('abp01-frontend-main-css', plugins_url('media/css/abp01-frontend-main.css', __FILE__),
             array(), '0.1', 'all');
+        wp_enqueue_style('dashicons');
     }
 }
 
