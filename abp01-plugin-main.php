@@ -477,13 +477,13 @@ function abp01_add_admin_styles() {
  */
 function abp01_add_frontend_styles() {
     if (is_single()) {
+        wp_enqueue_style('dashicons');
         wp_enqueue_style('nprogress-css', plugins_url('media/js/3rdParty/nprogress/nprogress.css', __FILE__),
             array(), '2.0.3', 'all');
         wp_enqueue_style('leaflet-css', plugins_url('media/js/3rdParty/leaflet/leaflet.css', __FILE__),
             array(), '0.7.3', 'all');
         wp_enqueue_style('abp01-frontend-main-css', plugins_url('media/css/abp01-frontend-main.css', __FILE__),
             array(), '0.1', 'all');
-        wp_enqueue_style('dashicons');
     }
 }
 

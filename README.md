@@ -71,6 +71,9 @@ Thus, I developed a module to do just that: upload a GPX track, parse it and dis
 ##### Viewer - Info
 ![Viewer - Info](/screenshots/V1.png?raw=true)
 
+##### Viewer - Map
+![Viewer - Map](/screenshots/V2.png?raw=true)
+
 ## Credits
 1. [PHP-MySQLi-Database-Class](https://github.com/joshcam/PHP-MySQLi-Database-Class) - small mysqli wrapper for PHP. I used it instead of the builtin wpdb class
 2. [MimeReader](http://social-library.org/) - PHP mime sniffer written by Shane Thompson
