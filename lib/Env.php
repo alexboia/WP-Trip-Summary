@@ -26,6 +26,8 @@ class Abp01_Env {
 
     private $_lookupTableName;
 
+    private $_lookupLangTableName;
+
     private $_db = null;
 
     private $_wpVersion;
@@ -70,6 +72,8 @@ class Abp01_Env {
             . 'abp01_techbox_route_details';
         $this->_lookupTableName = $this->_dbTablePrefix
             . 'abp01_techbox_lookup';
+        $this->_lookupLangTableName = $this->_dbTablePrefix
+            . 'abp01_techbox_lookup_lang';
     }
 
     private function _initVersions() {
@@ -124,6 +128,10 @@ class Abp01_Env {
 
     public function getRouteDetailsTableName() {
         return $this->_routeDetailsTableName;
+    }
+
+    public function getLookupLangTableName() {
+        return $this->_lookupLangTableName;
     }
 
     public function getLookupTableName() {

@@ -257,6 +257,7 @@ class Abp01_Installer {
         $ok = true;
         $tables = array(
             $this->_getLookupTableDefinition(),
+            $this->_getLookupLangTableDefinition(),
             $this->_getRouteDetailsTableDefinition(),
             $this->_getRouteTrackTableDefinition()
         );
@@ -334,6 +335,15 @@ class Abp01_Installer {
         )";
     }
 
+    private function _getLookupLangTableDefinition() {
+        return "CREATE TABLE IF NOT EXISTS `" . $this->_getLookupLangTableDefinition() . "` (
+            `ID` INT(10) UNSIGNED NOT NULL,
+            `lookup_lang` VARCHAR(10) NOT NULL,
+            `lookup_label` VARCHAR(255) NOT NULL,
+                PRIMARY KEY (`ID`, `lookup_lang`)
+        )";
+    }
+
     private function _getLookupTableDefinition() {
         return "CREATE TABLE IF NOT EXISTS `" . $this->_getLookupTableName() . "` (
             `ID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -376,6 +386,10 @@ class Abp01_Installer {
 
     private function _getRouteDetailsTableName() {
         return $this->_env->getRouteDetailsTableName();
+    }
+
+    private function _getLookupLangTableName() {
+        return $this->_env->getLookupLangTableName();
     }
 
     private function _getLookupTableName() {

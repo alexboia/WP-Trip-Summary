@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lookup>
+    <difficultyLevel>
+        <lookup default="Usor">
+            <lang code="en_US">Easy</lang>
+        </lookup>
+        <lookup default="Mediu">
+            <lang code="en_US">Medium</lang>
+        </lookup>
+        <lookup default="Dificil">
+            <lang code="en_US">Hard</lang>
+        </lookup>
+        <lookup default="Tortura medievala">
+            <lang code="en_US">Medieval torture</lang>
+        </lookup>
+    </difficultyLevel>
+
+    <pathSurfaceType>
+        <lookup default="Asfalt">
+            <lang code="en_US">Asphalt</lang>
+        </lookup>
+        <lookup default="Placi de beton">
+            <lang code="en_US">Concrete</lang>
+        </lookup>
+        <lookup default="Pamant">
+            <lang code="en_US">Dust or dirt</lang>
+        </lookup>
+        <lookup default="Iarba">
+            <lang code="en_US">Grass</lang>
+        </lookup>
+        <lookup default="Macadam">
+            <lang code="en_US">Stone pavement</lang>
+        </lookup>
+        <lookup default="Piatra neasezata">
+            <lang code="en_US">Loose rocks</lang>
+        </lookup>
+    </pathSurfaceType>
+
+    <bikeType>
+        <lookup default="MTB">
+            <lang code="en_US">MTB</lang>
+        </lookup>
+        <lookup default="Cursiera">
+            <lang code="en_US">Road bike</lang>
+        </lookup>
+        <lookup default="Trekking">
+            <lang code="en_US">Trekking</lang>
+        </lookup>
+        <lookup default="Bicicleta de oras">
+            <lang code="en_US">City bike</lang>
+        </lookup>
+    </bikeType>
+
+    <railroadLineType>
+        <lookup default="Linie simpla">
+            <lang code="en_US">Simple line</lang>
+        </lookup>
+        <lookup default="Linie dubla">
+            <lang code="en_US">Double line</lang>
+        </lookup>
+    </railroadLineType>
+
+    <railroadOperator>
+        <lookup default="CFR" />
+        <lookup default="Regiotrans" />
+        <lookup default="TFC - Transferoviar Calatori" />
+        <lookup default="Regional" />
+    </railroadOperator>
+
+    <railroadLineStatus>
+        <lookup default="In exploatare">
+            <lang code="en_US">In production</lang>
+        </lookup>
+        <lookup default="Inchisa">
+            <lang code="en_US">Closed</lang>
+        </lookup>
+        <lookup default="Desfiintata">
+            <lang code="en_US">Disbanded</lang>
+        </lookup>
+        <lookup default="In reabilitare">
+            <lang code="en_US">In rehabilitation</lang>
+        </lookup>
+    </railroadLineStatus>
+
+    <recommendSeasons>
+        <lookup default="Primavara">
+            <lang code="en_US">Spring</lang>
+        </lookup>
+        <lookup default="Vara">
+            <lang code="en_US">Summer</lang>
+        </lookup>
+        <lookup default="Toamna">
+            <lang code="en_US">Toamna</lang>
+        </lookup>
+        <lookup default="Iarna">
+            <lang code="en_US">Winter</lang>
+        </lookup>
+    </recommendSeasons>
+
+    <railroadElectrificationStatus>
+        <lookup default="Electrificata">
+            <lang code="en_US">Electrified</lang>
+        </lookup>
+        <lookup default="Neelectrificata">
+            <lang code="en_US">Not electrified</lang>
+        </lookup>
+        <lookup default="Partial electrificata">
+            <lang code="en_US">Partially electrified</lang>
+        </lookup>
+    </railroadElectrificationStatus>
+</lookup>
