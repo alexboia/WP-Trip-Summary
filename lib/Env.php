@@ -44,6 +44,10 @@ class Abp01_Env {
         $this->_initVersions();
     }
 
+    public  function __clone() {
+        throw new Exception('Cloning a singleton of type ' . __CLASS__ . ' is not allowed');
+    }
+
     private function _initFromWpConfig() {
         $this->_lang = 'en_US';
         $this->_isDebugMode = defined('WP_DEBUG') && WP_DEBUG == true;

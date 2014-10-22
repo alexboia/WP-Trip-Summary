@@ -18,6 +18,8 @@ class Abp01_Installer {
 
     private $_lookupData = array();
 
+    private $_lastError = null;
+
     public function __construct() {
         $this->_env = Abp01_Env::getInstance();
 
@@ -78,23 +80,74 @@ class Abp01_Installer {
     }
 
     public function canBeInstalled() {
-        if (!$this->_isCompatPhpVersion()) {
-            return self::INCOMPATIBLE_PHP_VERSION;
+        $this->_reset();
+        try {
+            if (!$this->_isCompatPhpVersion()) {
+                return self::INCOMPATIBLE_PHP_VERSION;
+            }
+            if (!$this->_isCompatWpVersion()) {
+                return self::INCOMPATIBLE_WP_VERSION;
+            }
+            if (!$this->_hasMysqli()) {
+                return self::SUPPORT_MYSQLI_NOT_FOUND;
+            }
+            if (!$this->_hasLibxml()) {
+                return self::SUPPORT_LIBXML_NOT_FOUND;
+            }
+            if (!$this->_hasMysqlSpatialSupport() ||
+                !$this->_hasRequiredMysqlSpatialFunctions()) {
+                return self::SUPPORT_MYSQL_SPATIAL_NOT_FOUND;
+            }
+        } catch (Exception $e) {
+            $this->_lastError = $e;
         }
-        if (!$this->_isCompatWpVersion()) {
-            return self::INCOMPATIBLE_WP_VERSION;
+        return empty($this->_lastError) ? 0 : false;
+    }
+
+    public function activate() {
+        $this->_reset();
+        try {
+            if (!$this->_installSchema()) {
+                return false;
+            }
+            if (!$this->_installData()) {
+                $this->_uninstallSchema();
+                return false;
+            } else {
+                return $this->_createCapabilities();
+            }
+        } catch (Exception $e) {
+            $this->_lastError = $e;
         }
-        if (!$this->_hasMysqli()) {
-            return self::SUPPORT_MYSQLI_NOT_FOUND;
+        return false;
+    }
+
+    public function deactivate() {
+        $this->_reset();
+        try {
+            return $this->_removeCapabilities();
+        } catch (Exception $e) {
+            $this->_lastError = $e;
         }
-        if (!$this->_hasLibxml()) {
-            return self::SUPPORT_LIBXML_NOT_FOUND;
-        }
-        if (!$this->_hasMysqlSpatialSupport() ||
-            !$this->_hasRequiredMysqlSpatialFunctions()) {
-            return self::SUPPORT_MYSQL_SPATIAL_NOT_FOUND;
-        }
-        return 0;
+        return false;
+    }
+
+    public function uninstall() {
+        $this->_reset();
+        return $this->deactivate() &&
+            $this->_uninstallSchema();
+    }
+
+    public function getRequiredPhpVersion() {
+        return $this->_env->getRequiredPhpVersion();
+    }
+
+    public function getRequiredWpVersion() {
+        return $this->_env->getRequiredWpVersion();
+    }
+
+    public function getLastError() {
+        return $this->_lastError;
     }
 
     private function _isCompatPhpVersion() {
@@ -125,18 +178,14 @@ class Abp01_Installer {
         $db = $this->_env->getDb();
 
         if (!$db) {
-            return $result;
+            return false;
         }
 
-        try {
-            $haveGeometry = $db->rawQuery("SHOW VARIABLES WHERE Variable_name = 'have_geometry'");
-            if (!empty($haveGeometry) && is_array($haveGeometry)) {
-                $haveGeometry = $haveGeometry[0];
-                $result = !empty($haveGeometry['Value']) &&
-                    strcasecmp($haveGeometry['Value'], 'YES') === 0;
-            }
-        } catch (mysqli_sql_exception $e) {
-            $result = false;
+        $haveGeometry = $db->rawQuery("SHOW VARIABLES WHERE Variable_name = 'have_geometry'");
+        if (!empty($haveGeometry) && is_array($haveGeometry)) {
+            $haveGeometry = $haveGeometry[0];
+            $result = !empty($haveGeometry['Value']) &&
+                strcasecmp($haveGeometry['Value'], 'YES') === 0;
         }
 
         return $result;
@@ -145,88 +194,32 @@ class Abp01_Installer {
     private function _hasRequiredMysqlSpatialFunctions() {
         $result = false;
         $db = $this->_env->getDb();
+        $expected = 'POLYGON((1 2,3 2,3 4,1 4,1 2))';
 
         if (!$db) {
             return false;
         }
 
-        try {
-            $spatialTest = $db->rawQuery('SELECT
-                AsText(Envelope(LineString(
-                    GeometryFromText(AsText(Point(1, 2)), 3857),
-                    GeometryFromText(AsText(Point(3, 4)), 3857)
-                ))) AS SPATIAL_TEST');
+        $spatialTest = $db->rawQuery('SELECT AsText(Envelope(LineString(
+            GeometryFromText(AsText(Point(1, 2)), 3857),
+            GeometryFromText(AsText(Point(3, 4)), 3857)
+        ))) AS SPATIAL_TEST');
 
-            if (!empty($spatialTest) && is_array($spatialTest)) {
-                $spatialTest = $spatialTest[0];
-                $result = strcasecmp($spatialTest['SPATIAL_TEST'], 'POLYGON((1 2,3 2,3 4,1 4,1 2))')
-                    === 0;
-            }
-        } catch (mysqli_sql_exception $e) {
-            $result = false;
+        if (!empty($spatialTest) && is_array($spatialTest)) {
+            $result = strcasecmp($spatialTest[0]['SPATIAL_TEST'], $expected) === 0;
         }
 
         return $result;
     }
 
-    public function activate() {
-        if (!$this->_installSchema()) {
-            return false;
-        }
-        if (!$this->_installData()) {
-            $this->_uninstallSchema();
-            return false;
-        } else {
-            $this->_createCapabilities();
-            return true;
-        }
-    }
-
-    public function deactivate() {
-        $this->_removeCapabilities();
-        return true;
-    }
-
-    public function uninstall() {
-        return $this->deactivate() &&
-            $this->_uninstallSchema();
-    }
-
-    public function getRequiredPhpVersion() {
-        return $this->_env->getRequiredPhpVersion();
-    }
-
-    public function getRequiredWpVersion() {
-        return $this->_env->getRequiredWpVersion();
-    }
-
     private function _createCapabilities() {
         Abp01_Auth::getInstance()->installCapabilities();
+        return true;
     }
 
     private function _removeCapabilities() {
         Abp01_Auth::getInstance()->removeCapabilities();
-    }
-
-    private function _removeDirRecursive($dir) {
-        $items = @scandir($dir);
-        if (!$items || !is_array($items)) {
-            return;
-        }
-
-        foreach ($items as $item) {
-            if ($item == '.' || $item == '..') {
-                continue;
-            }
-            $path = $dir . DIRECTORY_SEPARATOR . $item;
-            if (is_file($path)) {
-                @unlink($path);
-            } else if (is_dir($path)) {
-                $this->_removeDirRecursive($path);
-            }
-        }
-
-        @rmdir($dir);
+        return true;
     }
 
     private function _installData() {
@@ -363,6 +356,10 @@ class Abp01_Installer {
     private function _uninstallLookupTable() {
         $db = $this->_env->getDb();
         return $db != null ? $db->rawQuery('DROP TABLE IF EXISTS `' . $this->_getLookupTableName() . '`', null, false) : false;
+    }
+
+    private function _reset() {
+        $this->_lastError = null;
     }
 
     private function _getDefaultCharset() {

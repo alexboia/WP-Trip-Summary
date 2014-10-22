@@ -47,6 +47,37 @@ function abp01_init_autoloaders() {
     Abp01_Autoloader::init(ABP01_LIB_DIR);
 }
 
+function abp0_dump($var) {
+    if (function_exists('xdebug_var_dump')) {
+        xdebug_var_dump($var);
+    } else {
+        print '<pre>';
+        var_dump($var);
+        print '</pre>';
+    }
+}
+
+/**
+ * Appends the given error to the given message if WP_DEBUG is set to true; otherwise returns the original message
+ * @param string $message
+ * @param mixed $error
+ * @return string The processed message
+ */
+function abp01_append_error($message, $error) {
+    if (WP_DEBUG) {
+        if ($error instanceof Exception) {
+            $message .= sprintf(': %s (%s) in file %s line %d',
+                $error->getMessage(),
+                $error->getCode(),
+                $error->getFile(),
+                $error->getLine());
+        } else if (!empty($e)) {
+            $message .= ': ' . $e;
+        }
+    }
+    return $message;
+}
+
 /**
  * Increase script execution limit and maximum memory limit
  * @return void
@@ -354,8 +385,12 @@ function abp01_get_main_frontend_translations() {
 
 /**
  * Handles plug-in activation
+ * @return void
  */
 function abp01_activate() {
+    if (!current_user_can('activate_plugins')) {
+        return;
+    }
     $installer = new Abp01_Installer();
     $test = $installer->canBeInstalled();
     if ($test !== 0) {
@@ -363,8 +398,40 @@ function abp01_activate() {
         $message = isset($errors[$test]) ? $errors[$test] : __('The plugin cannot be installed on your system', 'abp01-trip-summary');
         deactivate_plugins(plugin_basename(__FIILE__));
         wp_die($message);
+    } else if ($test === false) {
+        wp_die(abp01_append_error('Failed plug-in compatibility check', $installer->getLastError()), 'Activation error');
     } else {
-        $installer->activate();
+        if (!$installer->activate()) {
+            wp_die(abp01_append_error('Could not activate plug-in', $installer->getLastError()), 'Activation error');
+        }
+    }
+}
+
+/**
+ * Handles plug-in deactivation
+ * @return void
+ */
+function abp01_deactivate() {
+    if (!current_user_can('activate_plugins')) {
+        return;
+    }
+    $installer = new Abp01_Installer();
+    if (!$installer->deactivate()) {
+        wp_die(abp01_append_error('Could not deactivate plug-in', $installer->getLastError()), 'Deactivation error');
+    }
+}
+
+/**
+ * Handles plug-in removal
+ * @return void
+ */
+function abp01_uninstall() {
+    if (!current_user_can('activate_plugins')) {
+        return;
+    }
+    $installer = new Abp01_Installer();
+    if (!$installer->uninstall()) {
+        wp_die(abp01_append_error('Could not uninstall plug-in', $installer->getLastError()), 'Uninstall error');
     }
 }
 
@@ -896,6 +963,14 @@ abp01_init_autoloaders();
 
 if (function_exists('register_activation_hook')) {
     register_activation_hook(__FILE__, 'abp01_activate');
+}
+
+if (function_exists('register_deactivation_hook')) {
+    register_deactivation_hook(__FILE__, 'abp01_deactivate');
+}
+
+if (function_exists('register_uninstall_hook')) {
+    register_uninstall_hook(__FILE__, 'abp01_uninstall');
 }
 
 if (function_exists('add_action')) {
