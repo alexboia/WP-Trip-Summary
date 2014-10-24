@@ -34,6 +34,8 @@ class Abp01_Env {
 
     private $_phpVersion;
 
+    private $_dataDir;
+
     public static function getInstance() {
         if (self::$_instance == null) {
             self::$_instance = new self();
@@ -46,12 +48,12 @@ class Abp01_Env {
         $this->_initVersions();
     }
 
-    public  function __clone() {
+    public function __clone() {
         throw new Exception('Cloning a singleton of type ' . __CLASS__ . ' is not allowed');
     }
 
     private function _initFromWpConfig() {
-        $this->_lang = 'en_US';
+        $this->_lang = get_locale();
         $this->_isDebugMode = defined('WP_DEBUG') && WP_DEBUG == true;
 
         $this->_dbHost = defined('DB_HOST') ? DB_HOST
@@ -74,6 +76,13 @@ class Abp01_Env {
             . 'abp01_techbox_lookup';
         $this->_lookupLangTableName = $this->_dbTablePrefix
             . 'abp01_techbox_lookup_lang';
+
+        $relativePath = plugin_basename(__FILE__);
+        $relativePath = explode('/', $relativePath);
+        if (is_array($relativePath) && !empty($relativePath)) {
+            $pluginDirName = $relativePath[0];
+            $this->_dataDir = wp_normalize_path(sprintf('%s/%s/data', WP_PLUGIN_DIR, $pluginDirName));
+        }
     }
 
     private function _initVersions() {
@@ -136,6 +145,10 @@ class Abp01_Env {
 
     public function getLookupTableName() {
         return $this->_lookupTableName;
+    }
+
+    public function getDataDir() {
+        return $this->_dataDir;
     }
 
     public function getPhpVersion() {

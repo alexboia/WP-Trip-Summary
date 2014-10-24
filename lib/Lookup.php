@@ -38,9 +38,20 @@ class Abp01_Lookup {
     }
 
     private function _loadDataIfNeeded() {
-        $db = $this->_env->getDb();
-        $table = $this->_env->getLookupTableName();
-        $rows = $db->rawQuery('SELECT * FROM `' . $table . '` ORDER BY `lookup_label` ASC', null, false);
+        $env = $this->_env;
+        $db = $env->getDb();
+        $lang = $env->getLang();
+        $table = $env->getLookupTableName();
+        $langTable = $env->getLookupLangTableName();
+
+        $rows = $db->rawQuery('
+            SELECT l.ID, l.lookup_category,
+                COALESCE(lg.lookup_label, l.lookup_label) AS lookup_label
+            FROM `' . $table . '` l
+            LEFT JOIN `' . $langTable . '` lg
+                ON lg.ID = l.ID AND  lg.lookup_lang = ?
+            ORDER BY lg.lookup_label ASC,
+                l.lookup_label ASC', array($lang), false);
 
         $this->_cache = array();
         if (is_array($rows)) {

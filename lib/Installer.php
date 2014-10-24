@@ -16,67 +16,10 @@ class Abp01_Installer {
 
     private $_env;
 
-    private $_lookupData = array();
-
     private $_lastError = null;
 
     public function __construct() {
         $this->_env = Abp01_Env::getInstance();
-
-        $this->_lookupData[Abp01_Lookup::DIFFICULTY_LEVEL] = array(
-            'Usor',
-            'Mediu',
-            'Dificil',
-            'Tortura medievala'
-        );
-
-        $this->_lookupData[Abp01_Lookup::PATH_SURFACE_TYPE] = array(
-            'Asfalt',
-            'Placi de beton',
-            'Pamant',
-            'Iarba',
-            'Macadam',
-            'Piatra neasezata'
-        );
-
-        $this->_lookupData[Abp01_Lookup::BIKE_TYPE] = array(
-            'MTB',
-            'Cursiera',
-            'Trekking',
-            'Bicicleta de oras'
-        );
-
-        $this->_lookupData[Abp01_Lookup::RAILROAD_OPERATOR] = array(
-            'CFR',
-            'Regiotrans',
-            'TFC - Transferoviar Calatori',
-            'Regional'
-        );
-
-        $this->_lookupData[Abp01_Lookup::RAILROAD_LINE_STATUS] = array(
-            'In exploatare',
-            'Inchisa',
-            'Desfiintata',
-            'In reabilitare'
-        );
-
-        $this->_lookupData[Abp01_Lookup::RAILROAD_LINE_TYPE] = array(
-            'Linie simpla',
-            'Linie dubla'
-        );
-
-        $this->_lookupData[Abp01_Lookup::RECOMMEND_SEASONS] = array(
-            'Primavara',
-            'Vara',
-            'Toamna',
-            'Iarna'
-        );
-
-        $this->_lookupData[Abp01_Lookup::RAILROAD_ELECTRIFICATION] = array(
-            'Electrificata',
-            'Neelectrificata',
-            'Partial electrificata'
-        );
     }
 
     public function canBeInstalled() {
@@ -148,6 +91,83 @@ class Abp01_Installer {
 
     public function getLastError() {
         return $this->_lastError;
+    }
+
+    private function _readLookupDefinitions() {
+        $definitions = array();
+        $filePath = $this->_getLookupDefsFile();
+        $categories = array(
+            Abp01_Lookup::BIKE_TYPE,
+            Abp01_Lookup::DIFFICULTY_LEVEL,
+            Abp01_Lookup::PATH_SURFACE_TYPE,
+            Abp01_Lookup::RAILROAD_ELECTRIFICATION,
+            Abp01_Lookup::RAILROAD_LINE_STATUS,
+            Abp01_Lookup::RAILROAD_OPERATOR,
+            Abp01_Lookup::RAILROAD_LINE_TYPE,
+            Abp01_Lookup::RECOMMEND_SEASONS
+        );
+
+        if (!is_readable($filePath)) {
+            return null;
+        }
+
+        $prevUseErrors = libxml_use_internal_errors(true);
+        $xml = simplexml_load_file($filePath, 'SimpleXMLElement');
+
+        if ($xml) {
+            foreach ($categories as $c) {
+                $definitions[$c] = $this->_parseDefinitions($xml, $c);
+            }
+        } else {
+            $this->_lastError = libxml_get_last_error();
+            libxml_clear_errors();
+        }
+
+        libxml_use_internal_errors($prevUseErrors);
+        return $definitions;
+    }
+
+    private function _parseDefinitions($xml, $category) {
+        $lookup = array();
+        $node = $xml->{$category};
+        if (empty($node) || empty($node->lookup)) {
+            return array();
+        }
+        foreach ($node->lookup as $lookupNode) {
+            if (empty($lookupNode['default'])) {
+                continue;
+            }
+            $lookup[] = array(
+                'default' => (string)$lookupNode['default'],
+                'translations' => $this->_readLookupTranslations($lookupNode)
+            );
+        }
+
+        return $lookup;
+    }
+
+    private function _readLookupTranslations($xml) {
+        $translations = array();
+        if (empty($xml->lang)) {
+            return array();
+        }
+        foreach ($xml->lang as $langNode) {
+            if (empty($langNode['code'])) {
+                continue;
+            }
+            $tx = (string)$langNode;
+            if (!empty($tx)) {
+                $translations[(string)$langNode['code']] = $tx;
+            }
+        }
+        return $translations;
+    }
+
+    private function _getLookupDefsFile() {
+        $dataDir = $this->_env->getDataDir();
+        $dirName = $this->_env->isDebugMode() ? 'dev/setup' : 'setup';
+        $filePath = sprintf('%s/%s/lookup-definitions.xml', $dataDir, $dirName);
+        return $filePath;
     }
 
     private function _isCompatPhpVersion() {
@@ -225,9 +245,11 @@ class Abp01_Installer {
     private function _installData() {
         $db = $this->_env->getDb();
         $table = $this->_getLookupTableName();
+        $langTable = $this->_getLookupLangTableName();
+        $definitions = $this->_readLookupDefinitions();
         $ok = true;
 
-        if (!$db) {
+        if (!$db || !is_array($definitions)) {
             return false;
         }
 
@@ -238,14 +260,30 @@ class Abp01_Installer {
         }
 
         //save lookup data
-        foreach ($this->_lookupData as $category => $data) {
-            foreach ($data as $label) {
-                $ok = $ok && $db->insert($table, array(
+        foreach ($definitions as $category => $data) {
+            if (empty($data)) {
+                continue;
+            }
+            foreach ($data as $lookup) {
+                $id = $db->insert($table, array(
                     'lookup_category' => $category,
-                    'lookup_label' => $label
-                )) !== false;
+                    'lookup_label' => $lookup['default']
+                ));
+
+                $ok = $ok && $id !== false;
                 if (!$ok) {
                     break 2;
+                }
+
+                foreach ($lookup['translations'] as $lang => $label) {
+                    $ok = $ok && $db->insert($langTable, array(
+                        'ID' => $id,
+                        'lookup_lang' => $lang,
+                        'lookup_label' => $label
+                    )) !== false;
+                    if (!$ok) {
+                        break 3;
+                    }
                 }
             }
         }
@@ -276,7 +314,8 @@ class Abp01_Installer {
     private function _uninstallSchema() {
         return $this->_uninstallRouteDetailsTable() !== false &&
             $this->_uninstallRouteTrackTable() !== false &&
-            $this->_uninstallLookupTable() !== false;
+            $this->_uninstallLookupTable() !== false &&
+            $this->_uninstallLookupLangTable() !== false;
     }
 
     private function _createTable($tableDef) {
@@ -336,7 +375,7 @@ class Abp01_Installer {
     }
 
     private function _getLookupLangTableDefinition() {
-        return "CREATE TABLE IF NOT EXISTS `" . $this->_getLookupLangTableDefinition() . "` (
+        return "CREATE TABLE IF NOT EXISTS `" . $this->_getLookupLangTableName() . "` (
             `ID` INT(10) UNSIGNED NOT NULL,
             `lookup_lang` VARCHAR(10) NOT NULL,
             `lookup_label` VARCHAR(255) NOT NULL,
@@ -366,6 +405,11 @@ class Abp01_Installer {
     private function _uninstallLookupTable() {
         $db = $this->_env->getDb();
         return $db != null ? $db->rawQuery('DROP TABLE IF EXISTS `' . $this->_getLookupTableName() . '`', null, false) : false;
+    }
+
+    private function _uninstallLookupLangTable() {
+        $db = $this->_env->getDb();
+        return $db != null ? $db->rawQuery('DROP TABLE IF EXISTS `' . $this->_getLookupLangTableName() . '`', null, false) : false;
     }
 
     private function _reset() {
