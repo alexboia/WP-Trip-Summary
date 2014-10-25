@@ -27,8 +27,8 @@ class Abp01_Validate_GpxDocument {
             $xmlPos = mb_stripos($buffer, '<?xml', 0, 'UTF-8');
             $gpxMarkerPos = mb_stripos($buffer, '<gpx', 0, 'UTF-8');
         } else {
-            $xmlPos = stripos($buffer, '<?xml', 0, 'UTF-8');
-            $gpxMarkerPos = stripos($buffer, '<gpx', 0, 'UTF-8');
+            $xmlPos = stripos($buffer, '<?xml');
+            $gpxMarkerPos = stripos($buffer, '<gpx');
         }
 
         return ($xmlPos === 0 || $xmlPos === 1) && $gpxMarkerPos > 0;
