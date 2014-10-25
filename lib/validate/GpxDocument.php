@@ -13,12 +13,12 @@ class Abp01_Validate_GpxDocument {
         if (!is_readable($filePath)) {
             return false;
         }
-        $fp = fopen($filePath, 'rb');
+        $fp = @fopen($filePath, 'rb');
         if (!$fp) {
             return false;
         }
 
-        $buffer = fread($fp, $this->_bufferLength);
+        $buffer = @fread($fp, $this->_bufferLength);
         if (!$buffer) {
             return false;
         }
@@ -31,6 +31,8 @@ class Abp01_Validate_GpxDocument {
             $gpxMarkerPos = stripos($buffer, '<gpx');
         }
 
-        return ($xmlPos === 0 || $xmlPos === 1) && $gpxMarkerPos > 0;
+        @fclose($fp);
+        return ($xmlPos === 0 || $xmlPos === 1)
+            && $gpxMarkerPos > 0;
     }
 }

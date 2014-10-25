@@ -35,29 +35,29 @@
                     <div id="abp01-techbox-info" class="abp01-techbox-info" style="<?php echo $data->track->exists ? 'display: none;' : ''; ?>">
                         <ul>
                             <?php if ($data->info->isBikingTour): ?>
-                                <?php displayInfoItem($data, 'bikeDistance', __('Total distance', 'abp01-trip-summary'), 'km'); ?>
-                                <?php displayInfoItem($data, 'bikeTotalClimb', __('Total climb', 'abp01-trip-summary'), 'm'); ?>
-                                <?php displayInfoItem($data, 'bikeDifficultyLevel', __('Difficulty level', 'abp01-trip-summary'), ''); ?>
-                                <?php displayInfoItem($data, 'bikeAccess', __('Access information', 'abp01-trip-summary'), ''); ?>
-                                <?php displayInfoItem($data, 'bikeRecommendedSeasons', __('Open during seasons', 'abp01-trip-summary'), ''); ?>
-                                <?php displayInfoItem($data, 'bikePathSurfaceType', __('Path surface type', 'abp01-trip-summary'), ''); ?>
-                                <?php displayInfoItem($data, 'bikeBikeType', __('Recommended bike type', 'abp01-trip-summary'), ''); ?>
+                                <?php abp01_display_info_item($data, 'bikeDistance', __('Total distance', 'abp01-trip-summary'), 'km'); ?>
+                                <?php abp01_display_info_item($data, 'bikeTotalClimb', __('Total climb', 'abp01-trip-summary'), 'm'); ?>
+                                <?php abp01_display_info_item($data, 'bikeDifficultyLevel', __('Difficulty level', 'abp01-trip-summary'), ''); ?>
+                                <?php abp01_display_info_item($data, 'bikeAccess', __('Access information', 'abp01-trip-summary'), ''); ?>
+                                <?php abp01_display_info_item($data, 'bikeRecommendedSeasons', __('Open during seasons', 'abp01-trip-summary'), ''); ?>
+                                <?php abp01_display_info_item($data, 'bikePathSurfaceType', __('Path surface type', 'abp01-trip-summary'), ''); ?>
+                                <?php abp01_display_info_item($data, 'bikeBikeType', __('Recommended bike type', 'abp01-trip-summary'), ''); ?>
                             <?php elseif ($data->info->isHikingTour): ?>
-                                <?php displayInfoItem($data, 'hikingDistance', __('Total distance', 'abp01-trip-summary'), 'km'); ?>
-                                <?php displayInfoItem($data, 'hikingTotalClimb', __('Total climb', 'abp01-trip-summary'), 'm'); ?>
-                                <?php displayInfoItem($data, 'hikingDifficultyLevel', __('Difficulty level', 'abp01-trip-summary'), ''); ?>
-                                <?php displayInfoItem($data, 'hikingAccess', __('Access information', 'abp01-trip-summary'), ''); ?>
-                                <?php displayInfoItem($data, 'hikingRecommendedSeasons', __('Open during seasons', 'abp01-trip-summary'), ''); ?>
-                                <?php displayInfoItem($data, 'hikingSurfaceType', __('Path surface type', 'abp01-trip-summary'), ''); ?>
-                                <?php displayInfoItem($data, 'hikingRouteMarkers', __('Path markers', 'abp01-trip-summary'), ''); ?>
+                                <?php abp01_display_info_item($data, 'hikingDistance', __('Total distance', 'abp01-trip-summary'), 'km'); ?>
+                                <?php abp01_display_info_item($data, 'hikingTotalClimb', __('Total climb', 'abp01-trip-summary'), 'm'); ?>
+                                <?php abp01_display_info_item($data, 'hikingDifficultyLevel', __('Difficulty level', 'abp01-trip-summary'), ''); ?>
+                                <?php abp01_display_info_item($data, 'hikingAccess', __('Access information', 'abp01-trip-summary'), ''); ?>
+                                <?php abp01_display_info_item($data, 'hikingRecommendedSeasons', __('Open during seasons', 'abp01-trip-summary'), ''); ?>
+                                <?php abp01_display_info_item($data, 'hikingSurfaceType', __('Path surface type', 'abp01-trip-summary'), ''); ?>
+                                <?php abp01_display_info_item($data, 'hikingRouteMarkers', __('Path markers', 'abp01-trip-summary'), ''); ?>
                             <?php elseif ($data->info->isTrainRideTour): ?>
-                                <?php displayInfoItem($data, 'trainRideDistance', __('Total distance', 'abp01-trip-summary'), 'km'); ?>
-                                <?php displayInfoItem($data, 'trainRideChangeNumber', __('Exchanged trains', 'abp01-trip-summary'), ''); ?>
-                                <?php displayInfoItem($data, 'trainRideGauge', __('Line gauge', 'abp01-trip-summary'), ''); ?>
-                                <?php displayInfoItem($data, 'trainRideOperator', __('Railroad operators', 'abp01-trip-summary'), ''); ?>
-                                <?php displayInfoItem($data, 'trainRideLineStatus', __('Line status', 'abp01-trip-summary'), ''); ?>
-                                <?php displayInfoItem($data, 'trainRideElectrificationStatus', __('Electrification status', 'abp01-trip-summary'), ''); ?>
-                                <?php displayInfoItem($data, 'trainRideLineType', __('Line type', 'abp01-trip-summary'), ''); ?>
+                                <?php abp01_display_info_item($data, 'trainRideDistance', __('Total distance', 'abp01-trip-summary'), 'km'); ?>
+                                <?php abp01_display_info_item($data, 'trainRideChangeNumber', __('Exchanged trains', 'abp01-trip-summary'), ''); ?>
+                                <?php abp01_display_info_item($data, 'trainRideGauge', __('Line gauge', 'abp01-trip-summary'), ''); ?>
+                                <?php abp01_display_info_item($data, 'trainRideOperator', __('Railroad operators', 'abp01-trip-summary'), ''); ?>
+                                <?php abp01_display_info_item($data, 'trainRideLineStatus', __('Line status', 'abp01-trip-summary'), ''); ?>
+                                <?php abp01_display_info_item($data, 'trainRideElectrificationStatus', __('Electrification status', 'abp01-trip-summary'), ''); ?>
+                                <?php abp01_display_info_item($data, 'trainRideLineType', __('Line type', 'abp01-trip-summary'), ''); ?>
                             <?php endif; ?>
                         </ul>
                     </div>

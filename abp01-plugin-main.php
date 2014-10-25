@@ -128,44 +128,6 @@ function abp01_verify_get_track_nonce($postId) {
 }
 
 /**
- * Render the button that opens the editor, in the post creation or post edit screen
- * @param stdClass $data Context data
- * @return void
- */
-function abp01_render_techbox_button(stdClass $data) {
-    require_once ABP01_PLUGIN_ROOT . '/views/techbox-button.php';
-}
-
-/**
- * Renders the editor in the post creation or post edit screen
- * @param stdClass $data The existing trip summary and context data
- * @return void
- */
-function abp01_render_techbox_editor(stdClass $data) {
-    require_once ABP01_PLUGIN_ROOT . '/views/helpers/controls.php';
-    require_once ABP01_PLUGIN_ROOT . '/views/techbox-editor.php';
-}
-
-/**
- * Render the trip summary viewer
- * @param stdClass $data The trip summary and context data
- * @return void
- */
-function abp01_render_techbox_frontend(stdClass $data) {
-    require_once ABP01_PLUGIN_ROOT . '/views/helpers/controls.frontend.php';
-    require_once ABP01_PLUGIN_ROOT . '/views/techbox-frontend.php';
-}
-
-/**
- * Render the trip summary teaser
- * @param stdClass $data The trip summary and context data
- */
-function abp01_render_techbox_frontend_teaser(stdClass $data) {
-    require_once ABP01_PLUGIN_ROOT . '/views/helpers/controls.frontend.php';
-    require_once ABP01_PLUGIN_ROOT . '/views/techbox-frontend-teaser.php';
-}
-
-/**
  * Encodes and outputs the given data as JSON and sets the appropriate headers
  * @param mixed $data The data to be encoded and sent to client
  * @return void
@@ -213,8 +175,9 @@ function abp01_get_absolute_track_file_path(Abp01_Route_Track $track) {
  * @return string The computed path
  */
 function abp01_get_track_upload_destination($postId) {
+    $env = Abp01_Env::getInstance();
     $fileName = sprintf('track-%d.gpx', $postId);
-    $directory = wp_normalize_path(dirname(__FILE__) . '/data/storage');
+    $directory = wp_normalize_path($env->getDataDir() . '/storage');
     return wp_normalize_path($directory . '/' . $fileName);
 }
 
@@ -310,6 +273,19 @@ function abp01_get_cached_track($postId) {
 }
 
 /**
+ * Get the directories in which the frontend viewer templates should be searched.
+ * @return stdClass
+ */
+function abp01_get_frontend_template_locations() {
+    $env = Abp01_Env::getInstance();
+    $dirs = new stdClass();
+    $dirs->default = ABP01_PLUGIN_ROOT . '/views';
+    $dirs->theme = $env->getCurrentThemeDir() . '/abp01-viewer';
+    $dirs->themeUrl = $env->getCurrentThemeUrl() . '/abp01-viewer';
+    return $dirs;
+}
+
+/**
  * Retrieve translations used in the main editor script
  * @return array key-value pairs where keys are javascript property names and values are the translation strings
  */
@@ -385,6 +361,70 @@ function abp01_get_installation_error_translations() {
  */
 function abp01_get_main_frontend_translations() {
     return array();
+}
+
+/**
+ * Render the button that opens the editor, in the post creation or post edit screen
+ * @param stdClass $data Context data
+ * @return void
+ */
+function abp01_render_techbox_button(stdClass $data) {
+    require_once ABP01_PLUGIN_ROOT . '/views/techbox-button.php';
+}
+
+/**
+ * Renders the editor in the post creation or post edit screen
+ * @param stdClass $data The existing trip summary and context data
+ * @return void
+ */
+function abp01_render_techbox_editor(stdClass $data) {
+    require_once ABP01_PLUGIN_ROOT . '/views/helpers/controls.php';
+    require_once ABP01_PLUGIN_ROOT . '/views/techbox-editor.php';
+}
+
+/**
+ * Render the trip summary viewer
+ * @param stdClass $data The trip summary and context data
+ * @return void
+ */
+function abp01_render_techbox_frontend(stdClass $data) {
+    $locations = abp01_get_frontend_template_locations();
+    $themeHelpers = $locations->theme . '/helpers/controls.frontend.php';
+
+    if (is_readable($themeHelpers)) {
+        require_once $themeHelpers;
+    }
+
+    require_once $locations->default . '/helpers/controls.frontend.php';
+
+    $themeViewer = $locations->theme . '/techbox-frontend.php';
+    if (!is_readable($themeViewer)) {
+        require_once $locations->default . '/techbox-frontend.php';
+    } else {
+        require_once $themeViewer;
+    }
+}
+
+/**
+ * Render the trip summary teaser
+ * @param stdClass $data The trip summary and context data
+ */
+function abp01_render_techbox_frontend_teaser(stdClass $data) {
+    $locations = abp01_get_frontend_template_locations();
+    $themeHelpers = $locations->theme . '/helpers/controls.frontend.php';
+
+    if (is_readable($themeHelpers)) {
+        require_once $themeHelpers;
+    }
+
+    require_once $locations->default . '/helpers/controls.frontend.php';
+
+    $themeTeaser = $locations->theme . '/techbox-frontend-teaser.php';
+    if (!is_readable($themeTeaser)) {
+        require_once $locations->default . '/techbox-frontend-teaser.php';
+    } else {
+        require_once $themeTeaser;
+    }
 }
 
 /**
@@ -553,8 +593,17 @@ function abp01_add_frontend_styles() {
             array(), '2.0.3', 'all');
         wp_enqueue_style('leaflet-css', plugins_url('media/js/3rdParty/leaflet/leaflet.css', __FILE__),
             array(), '0.7.3', 'all');
-        wp_enqueue_style('abp01-frontend-main-css', plugins_url('media/css/abp01-frontend-main.css', __FILE__),
-            array(), '0.1', 'all');
+
+        $locations = abp01_get_frontend_template_locations();
+        $cssRelativePath = 'media/css/abp01-frontend-main.css';
+        $themeCssFile = $locations->theme . '/' . $cssRelativePath;
+        if (is_readable($themeCssFile)) {
+            wp_enqueue_style('abp01-frontend-main-css', $locations->themeUrl . '/' . $cssRelativePath,
+                array(), '0.1', 'all');
+        } else {
+            wp_enqueue_style('abp01-frontend-main-css', plugins_url($cssRelativePath, __FILE__),
+                array(), '0.1', 'all');
+        }
     }
 }
 

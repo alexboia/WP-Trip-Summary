@@ -36,6 +36,8 @@ class Abp01_Env {
 
     private $_dataDir;
 
+    private $_theme;
+
     public static function getInstance() {
         if (self::$_instance == null) {
             self::$_instance = new self();
@@ -45,7 +47,10 @@ class Abp01_Env {
 
     private function __construct() {
         $this->_initFromWpConfig();
+        $this->_initTableNames();
         $this->_initVersions();
+        $this->_initDataDir();
+        $this->_initTheme();
     }
 
     public function __clone() {
@@ -67,16 +72,14 @@ class Abp01_Env {
 
         $this->_dbTablePrefix = isset($GLOBALS['table_prefix']) ? $GLOBALS['table_prefix']
             : null;
+    }
 
-        $this->_routeTrackTableName = $this->_dbTablePrefix
-            . 'abp01_techbox_route_track';
-        $this->_routeDetailsTableName = $this->_dbTablePrefix
-            . 'abp01_techbox_route_details';
-        $this->_lookupTableName = $this->_dbTablePrefix
-            . 'abp01_techbox_lookup';
-        $this->_lookupLangTableName = $this->_dbTablePrefix
-            . 'abp01_techbox_lookup_lang';
+    private function _initVersions() {
+        $this->_phpVersion = PHP_VERSION;
+        $this->_wpVersion = get_bloginfo('version', 'raw');
+    }
 
+    private function _initDataDir() {
         $relativePath = plugin_basename(__FILE__);
         $relativePath = explode('/', $relativePath);
         if (is_array($relativePath) && !empty($relativePath)) {
@@ -85,9 +88,19 @@ class Abp01_Env {
         }
     }
 
-    private function _initVersions() {
-        $this->_phpVersion = PHP_VERSION;
-        $this->_wpVersion = get_bloginfo('version', 'raw');
+    private function _initTableNames() {
+        $this->_routeTrackTableName = $this->_dbTablePrefix
+            . 'abp01_techbox_route_track';
+        $this->_routeDetailsTableName = $this->_dbTablePrefix
+            . 'abp01_techbox_route_details';
+        $this->_lookupTableName = $this->_dbTablePrefix
+            . 'abp01_techbox_lookup';
+        $this->_lookupLangTableName = $this->_dbTablePrefix
+            . 'abp01_techbox_lookup_lang';
+    }
+
+    private function _initTheme() {
+        $this->_theme = wp_get_theme();
     }
 
     public function getLang() {
@@ -129,6 +142,14 @@ class Abp01_Env {
             $driver->report_mode =  MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT;
         }
         return $this->_db;
+    }
+
+    public function getCurrentThemeDir() {
+        return $this->_theme != null ? $this->_theme->get_stylesheet_directory() : null;
+    }
+
+    public function getCurrentThemeUrl() {
+        return $this->_theme != null ? $this->_theme->get_stylesheet_directory_uri() : null;
     }
 
     public function getRouteTrackTableName() {
