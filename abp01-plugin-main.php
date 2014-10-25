@@ -171,13 +171,17 @@ function abp01_render_techbox_frontend_teaser(stdClass $data) {
  * @return void
  */
 function abp01_send_json($data) {
-    if (extension_loaded('zlib') && function_exists('ini_set')) {
-        @ini_set('zlib.output_compression', 'On');
-        @ini_set('zlib.output_compression_level', 8);
-    }
+    $data = json_encode($data);
     header('Content-Type: application/json');
-    echo json_encode($data);
-    die;
+    if (extension_loaded('zlib') && function_exists('ini_set')) {
+        @ini_set('zlib.output_compression', false);
+        @ini_set('zlib.output_compression_level', 0);
+        if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && stripos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false) {
+            header('Content-Encoding: gzip');
+            $data = gzencode($data, 8, FORCE_GZIP);
+        }
+    }
+    die($data);
 }
 
 /**
@@ -820,6 +824,7 @@ function abp01_upload_track() {
             'text/xml'
         )
     ));
+    $uploader->setCustomValidator(array(new Abp01_Validate_GpxDocument(), 'validate'));
 
     $result = new stdClass();
     $result->status = $uploader->receive();

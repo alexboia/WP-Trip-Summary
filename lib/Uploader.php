@@ -129,6 +129,13 @@ class Abp01_Uploader {
         return $this->_isReady;
     }
 
+    public function setCustomValidator($customValidator) {
+        if (!empty($customValidator) && !is_callable($customValidator)) {
+            throw new InvalidArgumentException('The custom validator must be a valid callable');
+        }
+        $this->_customValidator = !empty($customValidator) ? $customValidator : null;
+    }
+
     private function _isTypeValid() {
         if (count($this->_allowedFileTypes) == 0) {
             return true;

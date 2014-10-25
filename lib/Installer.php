@@ -77,8 +77,12 @@ class Abp01_Installer {
 
     public function uninstall() {
         $this->_reset();
-        return $this->deactivate() &&
-            $this->_uninstallSchema();
+        try {
+            return $this->deactivate() && $this->_uninstallSchema();
+        } catch (Exception $e) {
+            $this->_lastError = $e;
+        }
+        return false;
     }
 
     public function getRequiredPhpVersion() {

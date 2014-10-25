@@ -187,7 +187,7 @@ class Abp01_Route_Manager {
             'X(route_min_coord) AS route_min_lng',
             'Y(route_min_coord) AS route_min_lat',
             'X(route_max_coord) AS route_max_lng',
-            'Y(route_max_coord) AS route_min_lng'
+            'Y(route_max_coord) AS route_max_lat'
         ));
         if (!$row) {
             return null;
