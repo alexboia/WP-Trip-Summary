@@ -3,6 +3,11 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
+/**
+ * Sources:
+ * - The OSM article on the Mercator projection: http://wiki.openstreetmap.org/wiki/Mercator
+ * - NodeJs Spherical Mercator implementation: https://github.com/mapbox/node-sphericalmercator
+ */
 class Abp01_Route_SphericalMercator {
     const A = 6378137.0;
 
