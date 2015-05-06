@@ -391,14 +391,18 @@ function abp01_render_techbox_frontend(stdClass $data) {
     $locations = abp01_get_frontend_template_locations();
     $themeHelpers = $locations->theme . '/helpers/controls.frontend.php';
 
+    //if the custom viewer theme has overridden the helpers, include those helpers
     if (is_readable($themeHelpers)) {
         require_once $themeHelpers;
     }
 
+    //include the default helpers - the actual functions will only be defined if no overrides are found
     require_once $locations->default . '/helpers/controls.frontend.php';
 
+    //if the custom viewer theme has overridden the main view, include the override
     $themeViewer = $locations->theme . '/techbox-frontend.php';
     if (!is_readable($themeViewer)) {
+        //otherwise, include the default main view
         require_once $locations->default . '/techbox-frontend.php';
     } else {
         require_once $themeViewer;
@@ -413,14 +417,18 @@ function abp01_render_techbox_frontend_teaser(stdClass $data) {
     $locations = abp01_get_frontend_template_locations();
     $themeHelpers = $locations->theme . '/helpers/controls.frontend.php';
 
+    //if the custom viewer theme has overridden the helpers, include those helpers
     if (is_readable($themeHelpers)) {
         require_once $themeHelpers;
     }
 
+    //include the default helpers - the actual functions will only be defined if no overrides are found
     require_once $locations->default . '/helpers/controls.frontend.php';
 
+    //if the custom viewer theme has overridden the teaser view, include the override
     $themeTeaser = $locations->theme . '/techbox-frontend-teaser.php';
     if (!is_readable($themeTeaser)) {
+        //otherwise, include the default teaser view
         require_once $locations->default . '/techbox-frontend-teaser.php';
     } else {
         require_once $themeTeaser;
@@ -597,10 +605,13 @@ function abp01_add_frontend_styles() {
         $locations = abp01_get_frontend_template_locations();
         $cssRelativePath = 'media/css/abp01-frontend-main.css';
         $themeCssFile = $locations->theme . '/' . $cssRelativePath;
+
+        //if the the theme has overridden the css file, include the override
         if (is_readable($themeCssFile)) {
             wp_enqueue_style('abp01-frontend-main-css', $locations->themeUrl . '/' . $cssRelativePath,
                 array(), '0.1', 'all');
         } else {
+            //otherwise, include the default css file
             wp_enqueue_style('abp01-frontend-main-css', plugins_url($cssRelativePath, __FILE__),
                 array(), '0.1', 'all');
         }

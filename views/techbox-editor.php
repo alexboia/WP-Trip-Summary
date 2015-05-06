@@ -90,30 +90,30 @@
     <div id="abp01-form-info-bike">
         <div class="abp01-form-line">
             <label for="ctrl_abp01_bikeDistance"><?php echo __('Total distance', 'abp01-trip-summary'); ?>:</label>
-            <input type="text" id="ctrl_abp01_bikeDistance" name="ctrl_abp01_bikeDistance" class="abp01-input-text" value="<?php echo extractValueFromData($data, 'bikeDistance'); ?>" />
+            <input type="text" id="ctrl_abp01_bikeDistance" name="ctrl_abp01_bikeDistance" class="abp01-input-text" value="<?php echo abp01_extract_value_from_data($data, 'bikeDistance'); ?>" />
         </div>
         <div class="abp01-form-line">
             <label for="ctrl_abp01_bikeTotalClimb"><?php echo __('Total climb', 'abp01-trip-summary'); ?></label>
-            <input type="text" id="ctrl_abp01_bikeTotalClimb" name="ctrl_abp01_bikeTotalClimb" class="abp01-input-text" value="<?php echo extractValueFromData($data, 'bikeTotalClimb'); ?>" />
+            <input type="text" id="ctrl_abp01_bikeTotalClimb" name="ctrl_abp01_bikeTotalClimb" class="abp01-input-text" value="<?php echo abp01_extract_value_from_data($data, 'bikeTotalClimb'); ?>" />
         </div>
         <div class="abp01-form-line">
             <label for="ctrl_abp01_bikeDifficultyLevel"><?php echo __('Difficulty level', 'abp01-trip-summary'); ?></label>
             <select id="ctrl_abp01_bikeDifficultyLevel" name="ctrl_abp01_bikeDifficultyLevel" class="ab01-input-select">
                 <option value="0"><?php echo __('-- Choose an option --', 'abp01-trip-summary'); ?></option>
                 <?php if (isset($data->difficultyLevels) && is_array($data->difficultyLevels)): ?>
-                    <?php renderDifficultyLevelOptions($data->difficultyLevels, extractValueFromData($data, 'bikeDifficultyLevel')); ?>
+                    <?php abp01_render_difficulty_level_options($data->difficultyLevels, abp01_extract_value_from_data($data, 'bikeDifficultyLevel')); ?>
                 <?php endif; ?>
             </select>
         </div>
         <div class="abp01-form-line">
             <label for="ctrl_abp01_bikeAccess"><?php echo __('Access information', 'abp01-trip-summary'); ?></label>
-            <input type="text" id="ctrl_abp01_bikeAccess" name="ctrl_abp01_bikeAccess" class="abp01-input-text" value="<?php echo extractValueFromData($data, 'bikeAccess') ?>" />
+            <input type="text" id="ctrl_abp01_bikeAccess" name="ctrl_abp01_bikeAccess" class="abp01-input-text" value="<?php echo abp01_extract_value_from_data($data, 'bikeAccess') ?>" />
         </div>
         <div class="abp01-form-line">
             <label><?php echo __('Open during seasons', 'abp01-trip-summary'); ?></label>
             <div id="ctrl_abp01_bikeRecommendedSeasons_container">
                 <?php if (isset($data->recommendedSeasons) && is_array($data->recommendedSeasons)): ?>
-                    <?php renderCheckboxOptions($data->recommendedSeasons, 'bikeRecommendedSeasons', $data); ?>
+                    <?php abp01_render_checkbox_options($data->recommendedSeasons, 'bikeRecommendedSeasons', $data); ?>
                 <?php endif; ?>
             </div>
         </div>
@@ -121,7 +121,7 @@
             <label><?php echo __('Path surface type', 'abp01-trip-summary'); ?></label>
             <div id="ctrl_abp01_bikePathSurfaceType_container">
                 <?php if (isset($data->pathSurfaceTypes) && is_array($data->pathSurfaceTypes)): ?>
-                    <?php renderCheckboxOptions($data->pathSurfaceTypes, 'bikePathSurfaceType', $data); ?>
+                    <?php abp01_render_checkbox_options($data->pathSurfaceTypes, 'bikePathSurfaceType', $data); ?>
                 <?php endif; ?>
             </div>
         </div>
@@ -129,7 +129,7 @@
             <label><?php echo __('Bike type', 'abp01-trip-summary'); ?></label>
             <div id="ctrl_abp01_bikeBikeType_container">
                 <?php if (isset($data->bikeTypes) && is_array($data->bikeTypes)): ?>
-                    <?php renderCheckboxOptions($data->bikeTypes, 'bikeBikeType', $data); ?>
+                    <?php abp01_render_checkbox_options($data->bikeTypes, 'bikeBikeType', $data); ?>
                 <?php endif; ?>
             </div>
         </div>
@@ -140,30 +140,30 @@
     <div id="abp01-form-info-hiking">
         <div class="abp01-form-line">
             <label for="ctrl_abp01_hikingDistance"><?php echo __('Total distance', 'abp01-trip-summary') ?></label>
-            <input type="text" id="ctrl_abp01_hikingDistance" name="ctrl_abp01_hikingDistance" class="abp01-input-text" value="<?php echo extractValueFromData($data, 'hikingDistance') ?>" />
+            <input type="text" id="ctrl_abp01_hikingDistance" name="ctrl_abp01_hikingDistance" class="abp01-input-text" value="<?php echo abp01_extract_value_from_data($data, 'hikingDistance') ?>" />
         </div>
         <div class="abp01-form-line">
             <label for="ctrl_abp01_hikingTotalClimb"><?php echo __('Total climb', 'abp01-trip-summary'); ?></label>
-            <input type="text" id="ctrl_abp01_hikingTotalClimb" name="ctrl_abp01_hikingTotalClimb" class="abp01-input-text" value="<?php echo extractValueFromData($data, 'hikingTotalClimb'); ?>" />
+            <input type="text" id="ctrl_abp01_hikingTotalClimb" name="ctrl_abp01_hikingTotalClimb" class="abp01-input-text" value="<?php echo abp01_extract_value_from_data($data, 'hikingTotalClimb'); ?>" />
         </div>
         <div class="abp01-form-line">
             <label for="abp01_hikingDifficultyLevel"><?php echo __('Difficulty level', 'abp01-trip-summary'); ?></label>
             <select name="abp01_hikingDifficultyLevel" id="abp01_hikingDifficultyLevel" class="abp01-input-select">
                 <option value="0"><?php echo __('-- Choose an option --', 'abp01-trip-summary'); ?></option>
                 <?php if (isset($data->difficultyLevels) && is_array($data->difficultyLevels)): ?>
-                    <?php renderDifficultyLevelOptions($data->difficultyLevels, extractValueFromData($data, 'hikingDifficultyLevel')); ?>
+                    <?php abp01_render_difficulty_level_options($data->difficultyLevels, abp01_extract_value_from_data($data, 'hikingDifficultyLevel')); ?>
                 <?php endif; ?>
             </select>
         </div>
         <div class="abp01-form-line">
             <label for="ctrl_abp01_hikingAccess"><?php echo __('Access information', 'abp01-trip-summary'); ?></label>
-            <input type="text" id="ctrl_abp01_hikingAccess" name="ctrl_abp01_hikingAccess" class="abp01-input-text" value="<?php echo extractValueFromData($data, 'hikingAccess'); ?>" />
+            <input type="text" id="ctrl_abp01_hikingAccess" name="ctrl_abp01_hikingAccess" class="abp01-input-text" value="<?php echo abp01_extract_value_from_data($data, 'hikingAccess'); ?>" />
         </div>
         <div class="abp01-form-line">
             <label><?php echo __('Open during seasons', 'abp01-trip-summary'); ?></label>
             <div id="ctrl_abp01_hikingRecommendedSeasons_container">
                 <?php if (isset($data->recommendedSeasons) && is_array($data->recommendedSeasons)): ?>
-                    <?php renderCheckboxOptions($data->recommendedSeasons, 'hikingRecommendedSeasons', $data); ?>
+                    <?php abp01_render_checkbox_options($data->recommendedSeasons, 'hikingRecommendedSeasons', $data); ?>
                 <?php endif; ?>
             </div>
         </div>
@@ -171,13 +171,13 @@
             <label><?php echo __('Path surface type', 'abp01-trip-summary'); ?></label>
             <div id="ctrl_abp01_hikingSurfaceType_container">
                 <?php if (isset($data->pathSurfaceTypes) && is_array($data->pathSurfaceTypes)): ?>
-                    <?php renderCheckboxOptions($data->pathSurfaceTypes, 'hikingSurfaceType', $data); ?>
+                    <?php abp01_render_checkbox_options($data->pathSurfaceTypes, 'hikingSurfaceType', $data); ?>
                 <?php endif; ?>
             </div>
         </div>
         <div class="abp01-form-line">
             <label for="ctrl_abp01_hikingRouteMarkers"><?php echo __('Route markers', 'abp01-trip-summary'); ?></label>
-            <input type="text" id="ctrl_abp01_hikingRouteMarkers" name="ctrl_abp01_hikingRouteMarkers" class="abp01-input-text" value="<?php echo extractValueFromData($data, 'hikingRouteMarkers'); ?>" />
+            <input type="text" id="ctrl_abp01_hikingRouteMarkers" name="ctrl_abp01_hikingRouteMarkers" class="abp01-input-text" value="<?php echo abp01_extract_value_from_data($data, 'hikingRouteMarkers'); ?>" />
         </div>
     </div>
 </script>
@@ -186,21 +186,21 @@
     <div id="abp01-form-info-trainRide">
         <div class="abp01-form-line">
             <label for="ctrl_abp01_trainRideDistance"><?php echo __('Total distance', 'abp01-trip-summary') ?></label>
-            <input type="text" id="ctrl_abp01_trainRideDistance" name="ctrl_abp01_trainRideDistance" class="abp01-input-text" value="<?php echo extractValueFromData($data, 'trainRideDistance'); ?>" />
+            <input type="text" id="ctrl_abp01_trainRideDistance" name="ctrl_abp01_trainRideDistance" class="abp01-input-text" value="<?php echo abp01_extract_value_from_data($data, 'trainRideDistance'); ?>" />
         </div>
         <div class="abp01-form-line">
             <label for="ctrl_abp01_trainRideChangeNumber"><?php echo __('Exchanged trains', 'abp01-trip-summary'); ?></label>
-            <input type="text" id="ctrl_abp01_trainRideChangeNumber" name="ctrl_abp01_trainRideChangeNumber" class="abp01-input-text" value="<?php echo extractValueFromData($data, 'trainRideChangeNumber'); ?>" />
+            <input type="text" id="ctrl_abp01_trainRideChangeNumber" name="ctrl_abp01_trainRideChangeNumber" class="abp01-input-text" value="<?php echo abp01_extract_value_from_data($data, 'trainRideChangeNumber'); ?>" />
         </div>
         <div class="abp01-form-line">
             <label for="ctrl_abp01_trainRideGauge"><?php echo __('Line gauge', 'abp01-trip-summary'); ?></label>
-            <input type="text" id="ctrl_abp01_trainRideGauge" name="ctrl_abp01_trainRideGauge" class="abp01-input-text" value="<?php echo extractValueFromData($data, 'trainRideGauge') ?>" />
+            <input type="text" id="ctrl_abp01_trainRideGauge" name="ctrl_abp01_trainRideGauge" class="abp01-input-text" value="<?php echo abp01_extract_value_from_data($data, 'trainRideGauge') ?>" />
         </div>
         <div class="abp01-form-line">
             <label><?php echo __('Railroad operators', 'abp01-trip-summary'); ?></label>
             <div id="ctrl_abp01_trainRideOperator_container">
                 <?php if (isset($data->railroadOperators) && is_array($data->railroadOperators)): ?>
-                    <?php renderCheckboxOptions($data->railroadOperators, 'trainRideOperator', $data); ?>
+                    <?php abp01_render_checkbox_options($data->railroadOperators, 'trainRideOperator', $data); ?>
                 <?php endif; ?>
             </div>
         </div>
@@ -208,7 +208,7 @@
             <label><?php echo __('Line status', 'abp01-trip-summary'); ?></label>
             <div id="ctrl_abp01_trainRideLineStatus_container">
                 <?php if (isset($data->railroadLineStatuses) && is_array($data->railroadLineStatuses)): ?>
-                    <?php renderCheckboxOptions($data->railroadLineStatuses, 'trainRideLineStatus', $data); ?>
+                    <?php abp01_render_checkbox_options($data->railroadLineStatuses, 'trainRideLineStatus', $data); ?>
                 <?php endif; ?>
             </div>
         </div>
@@ -216,7 +216,7 @@
             <label><?php echo __('Electrification status', 'abp01-trip-summary'); ?></label>
             <div id="ctrl_abp01_trainRideElectrificationStatus_container">
                 <?php if (isset($data->railroadElectrification) && is_array($data->railroadElectrification)): ?>
-                    <?php renderCheckboxOptions($data->railroadElectrification, 'trainRideElectrificationStatus', $data); ?>
+                    <?php abp01_render_checkbox_options($data->railroadElectrification, 'trainRideElectrificationStatus', $data); ?>
                 <?php endif; ?>
             </div>
         </div>
@@ -224,7 +224,7 @@
             <label><?php echo __('Line type', 'abp01-trip-summary'); ?></label>
             <div id="ctrl_abp01_trainRideLineType_container">
                 <?php if (isset($data->railroadLineTypes) && is_array($data->railroadLineTypes)): ?>
-                    <?php renderCheckboxOptions($data->railroadLineTypes, 'trainRideLineType', $data); ?>
+                    <?php abp01_render_checkbox_options($data->railroadLineTypes, 'trainRideLineType', $data); ?>
                 <?php endif; ?>
             </div>
         </div>
