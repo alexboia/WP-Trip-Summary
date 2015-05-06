@@ -20,10 +20,6 @@ class Abp01_Autoloader {
             $classPath = str_replace(self::$_prefix, '', $className);
             $classPath = self::_getRelativePath($classPath);
             $classPath = self::$_libDir . '/' . $classPath . '.php';
-            if ($className == 'Abp01_Route_Track_GPXDocumentParser') {
-                var_dump($classPath);
-                var_dump(file_exists($classPath));
-            }
         } else {
             $classPath = self::$_libDir . '/3rdParty/' . $className . '.php';
         }
