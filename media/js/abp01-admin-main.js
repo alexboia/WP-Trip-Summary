@@ -273,6 +273,10 @@
      * Tour info editor management functions
      * */
 
+    function isFormInfoSaved() {
+        return context.isFormInfoSaved;
+    }
+
     function initFormInfo() {
         typeSelectRenderers[TOUR_TYPE_BIKE] = renderFormInfoBikeTour;
         typeSelectRenderers[TOUR_TYPE_HIKING] = renderFormInfoHikingTour;
@@ -286,7 +290,11 @@
     function resetFormInfo() {
         $ctrlSave.hide();
         clearInputValues($ctrlFormInfoContainer);
-        clearInfo();
+        if (isFormInfoSaved()) {
+            clearInfo();
+        } else {
+            switchToFormInfoSelection();
+        }
     }
 
     function switchToFormInfoSelection() {
@@ -391,6 +399,7 @@
             if (data) {
                 if (data.success) {
                     toastMessage(true, abp01MainL10n.lblDataSaveOk);
+                    context.isFormInfoSaved = true;
                 } else {
                     toastMessage(false, data.message || abp01MainL10n.lblDataSaveFail);
                 }
@@ -415,6 +424,7 @@
                 if (data.success) {
                     switchToFormInfoSelection();
                     toastMessage(true, abp01MainL10n.lblClearInfoOk);
+                    context.isFormInfoSaved = false;
                 } else {
                     toastMessage(false, data.message || abp01MainL10n.lblClearInfoFail);
                 }
@@ -657,7 +667,8 @@
             ajaxUploadTrackAction: window['abp01_ajaxUploadTrackAction'] || null,
             ajaxEditInfoAction: window['abp01_ajaxEditInfoAction'] || null,
             ajaxClearTrackAction: window['abp01_ajaxClearTrackAction'] || null,
-            ajaxClearInfoAction: window['abp01_ajaxClearInfoAction'] || null
+            ajaxClearInfoAction: window['abp01_ajaxClearInfoAction'] || null,
+            isFormInfoSaved: !!window['abp01_tourType']
         };
     }
 
