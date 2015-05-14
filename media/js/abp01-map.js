@@ -6,6 +6,8 @@
         var $me = this;
         var trackDataUrl = null;
         var mapRedrawTimer = null;
+        var mapLoaded = false;
+        var mapDestroyed = false;
 
         function destroyMap() {
             if (map != null) {
@@ -13,6 +15,8 @@
                 map = null;
                 $me = null;
                 trackDataUrl = null;
+                mapLoaded = false;
+                mapDestroyed = true;
             }
         }
 
@@ -91,7 +95,16 @@
             }).addTo(map);
         }
 
-        function loadTrack(onReady) {
+        /**
+         * Loads the track data from the configured URL and reports the result to the given callback as:
+         * - success - whether or not the operation was completed successfully;
+         * - bounds - the overall bounds of the loaded track;
+         * - track - the actual track vector data.
+         *
+         * @param onReady The callback to be invoked upon completion
+         * @return void
+         * */
+         function loadTrack(onReady) {
             function onReadyFn(success, bounds, route) {
                 if (onReady && $.isFunction(onReady)) {
                     onReady(success, bounds, route);
@@ -113,16 +126,56 @@
             });
         }
 
+        /**
+         * Loads the map. This is a multi step process:
+         * 1. Renders the map and centers it within the given bounds
+         * 2. Renders the track on the map
+         * 3. Renders the start and end track markers
+         *
+         * The loading process will not be carried out if the map has already been loaded
+         * or if the map has been destroyed.
+         *
+         * It invokes the following handlers, if configured:
+         *
+         * - handlePreLoad, before loading the track data
+         * - handleLoad, after all of the above steps have been completed
+         *
+         * @return void
+         * */
+        function loadMap() {
+            if (mapLoaded || mapDestroyed) {
+                return;
+            }
+
+            if (opts.handlePreLoad && $.isFunction(opts.handlePreLoad)) {
+                opts.handlePreLoad.apply($me);
+            }
+
+            loadTrack(function(success, bounds, track) {
+                try {
+                    if (success) {
+                        renderMap(bounds);
+                        plotRoute(track.route);
+                        plotStartAndEnd(track, opts.iconBaseUrl || null);
+                    }
+                } catch (e) {
+                    success = false;
+                }
+
+                if (opts.handleLoad && $.isFunction(opts.handleLoad)) {
+                    opts.handleLoad.apply($me, [success]);
+                }
+            });
+        }
+
+        //track data URL is mandatory, so we must exit if it has not been defined
         trackDataUrl = opts.trackDataUrl || null;
         if (!trackDataUrl) {
             return null;
         }
 
-        $me = this;
-        if (opts.handlePreLoad && $.isFunction(opts.handlePreLoad)) {
-            opts.handlePreLoad.apply($me);
-        }
-
+        //watch for window resize events - map needs to be redrawn
+        //when certain user actions get combined with window resize
         $(window).resize(function() {
             if (map == null) {
                 mapRedrawTimer = null;
@@ -137,23 +190,12 @@
             }
         });
 
-        loadTrack(function(success, bounds, track) {
-            try {
-                if (success) {
-                    renderMap(bounds);
-                    plotRoute(track.route);
-                    plotStartAndEnd(track, opts.iconBaseUrl || null);
-                }
-            } catch (e) {
-                success = false;
-            }
+        //invoke map loading
+        loadMap();
 
-            if (opts.handleLoad && $.isFunction(opts.handleLoad)) {
-                opts.handleLoad.apply($me, [success]);
-            }
-        });
-
+        //return public API
         return {
+            loadMap: loadMap,
             destroyMap: destroyMap,
             forceRedraw: function() {
                 map.invalidateSize();

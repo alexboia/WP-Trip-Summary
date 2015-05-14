@@ -59,6 +59,7 @@
     var $ctrlFormMapContainer = null;
     var $ctrlEditor = null;
     var $ctrlSave = null;
+    var $ctrlMapRetry = null;
 
     /**
      * Cache rendered content
@@ -441,6 +442,18 @@
      * Tour map editor management functions
      * */
 
+    function initMapRetry() {
+        if ($ctrlMapRetry) {
+            $ctrlMapRetry.unbind('click');
+        }
+        $ctrlMapRetry = $('#abp01-map-retry');
+        $ctrlMapRetry.click(function() {
+            if (map) {
+                map.loadMap();
+            }
+        });
+    }
+
     function initFormMap() {
         uploaderErrors.client[plupload.FILE_SIZE_ERROR] = abp01MainL10n.errPluploadTooLarge;
         uploaderErrors.client[plupload.FILE_EXTENSION_ERROR] = abp01MainL10n.errPluploadFileType;
@@ -462,6 +475,7 @@
 
         context.hasTrack = false;
         $ctrlFormMapContainer.empty().html(renderFormMapUnselected());
+        $ctrlMapRetry.hide();
 
         toggleFormMapReset(false);
         createTrackUploader();
@@ -558,7 +572,6 @@
     }
 
     function handleUploaderError(upl, error) {
-        console.log(error);
         uploader.disableBrowse(false);
         uploader.refresh();
         hideProgress();
@@ -636,17 +649,25 @@
     }
 
     function showMap() {
-        map = $ctrlFormMapContainer.empty()
-            .html(renderFormMapUploaded())
-            .find('#abp01-map')
+        $ctrlFormMapContainer.empty()
+            .html(renderFormMapUploaded());
+
+        initMapRetry();
+        map = $('#abp01-map')
             .mapTrack({
                 iconBaseUrl: context.imgBase,
                 trackDataUrl: getAjaxLoadTrackUrl(),
                 handlePreLoad: function() {
                     showProgress(false, abp01MainL10n.lblGeneratingPreview);
+                    $ctrlMapRetry.hide();
                 },
                 handleLoad: function(success) {
                     hideProgress();
+                    if (!success) {
+                        $ctrlMapRetry.show();
+                    } else {
+                        $ctrlMapRetry.hide();
+                    }
                 }
             });
     }

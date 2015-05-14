@@ -180,6 +180,7 @@ ul.abp01-techbox-tabs {
     width: 633px;
     padding: 5px 5px 0px 5px;
     height: 350px;
+    position: relative;
 }
 
 .abp01-map {
@@ -201,4 +202,28 @@ ul.abp01-techbox-tabs {
     position: absolute;
     left: 206px;
     top: 170px;
+}
+
+.abp01-map-retry {
+    width: 200px;
+    height: 45px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #e6e6e6;
+    background-color: #f7f7f7;
+    color: #808080 !important;
+    display: block;
+    z-index: 10000;
+    position: absolute;
+    line-height: 45px;
+    box-shadow: 0 1px 0 #fff inset, 0 1px 0 rgba(0, 0, 0, 0.08);
+    text-decoration: none;
+    top: 50%;
+    left: 50%;
+    margin-left: -101px;
+    margin-top: -23px;
+}
+
+.abp01-map-retry:hover {
+    text-decoration: underline;
 }

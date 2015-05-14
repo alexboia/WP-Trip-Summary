@@ -17,6 +17,7 @@
     var $ctrlTeaser = null;
     var $ctrlContentSkipTeaser = null;
     var $ctrlTitle = null;
+    var $ctrlMapRetry = null;
 
     function hideMapLoadingProgress() {
         $ctrlMapProgress.remove();
@@ -39,9 +40,23 @@
             iconBaseUrl: context.imgBase,
             handlePreLoad: function() {
                 displayMapLoadingProgress();
+                $ctrlMapRetry.hide();
             },
-            handleLoad: function() {
+            handleLoad: function(success) {
                 hideMapLoadingProgress();
+                if (!success) {
+                    $ctrlMapRetry.show();
+                } else {
+                    $ctrlMapRetry.hide();
+                }
+            }
+        });
+    }
+
+    function initMapRetry() {
+        $ctrlMapRetry.click(function() {
+            if (map) {
+                map.loadMap();
             }
         });
     }
@@ -126,6 +141,7 @@
         $ctrlTeaser = $('#abp01-techbox-teaser');
         $ctrlContentSkipTeaser = $('#abp01-techbox-content-skip-teaser');
         $ctrlTitle = $('h1.entry-title');
+        $ctrlMapRetry = $('#abp01-map-retry');
     }
 
     function initDocument() {
@@ -141,6 +157,7 @@
         initControls();
         initTeasers();
         initDocument();
+        initMapRetry();
         if (context.hasInfo  && context.hasTrack) {
             initTabs();
         } else if (context.hasTrack) {

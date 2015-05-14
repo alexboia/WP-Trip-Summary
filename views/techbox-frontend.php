@@ -66,6 +66,7 @@
                     <div id="abp01-techbox-map" class="abp01-techbox-map" style="<?php echo $data->info->exists ? 'display: none;' : ''; ?>">
                         <div id="abp01-map-container" class="abp01-map-container" data-role="map-container">
                             <div id="abp01-map" class="abp01-map" data-role="map-holder"></div>
+                            <a id="abp01-map-retry" class="abp01-map-retry" data-role="map-retry" href="javascript:void(0)" style="display: none;"><?php echo __('Retry', 'abp01-trip-summary'); ?></a>
                         </div>
                     </div>
                 <?php endif; ?>

@@ -208,6 +208,14 @@ a.abp01-close-editor:hover {
     margin-left: 279px !important;
 }
 
+.abp01-map-retry {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -54px !important;
+    margin-top: -23px;
+}
+
 #toast-container {
     position: absolute !important;
 }
@@ -250,6 +258,7 @@ a.abp01-close-editor:hover {
     width: 688px;
     margin: 5px 5px 3px 5px;
     height: 451px;
+    position: relative;
 }
 
 .abp01-map {
