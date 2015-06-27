@@ -18,6 +18,7 @@
     var $ctrlContentSkipTeaser = null;
     var $ctrlTitle = null;
     var $ctrlMapRetry = null;
+    var $ctrlMapRetryContainer = null;
 
     function hideMapLoadingProgress() {
         $ctrlMapProgress.remove();
@@ -40,14 +41,14 @@
             iconBaseUrl: context.imgBase,
             handlePreLoad: function() {
                 displayMapLoadingProgress();
-                $ctrlMapRetry.hide();
+                $ctrlMapRetryContainer.hide();
             },
             handleLoad: function(success) {
                 hideMapLoadingProgress();
                 if (!success) {
-                    $ctrlMapRetry.show();
+                    $ctrlMapRetryContainer.show();
                 } else {
-                    $ctrlMapRetry.hide();
+                    $ctrlMapRetryContainer.hide();
                 }
             }
         });
@@ -142,6 +143,7 @@
         $ctrlContentSkipTeaser = $('#abp01-techbox-content-skip-teaser');
         $ctrlTitle = $('h1.entry-title');
         $ctrlMapRetry = $('#abp01-map-retry');
+        $ctrlMapRetryContainer = $('#abp01-map-retry-container');
     }
 
     function initDocument() {

@@ -60,6 +60,7 @@
     var $ctrlEditor = null;
     var $ctrlSave = null;
     var $ctrlMapRetry = null;
+    var $ctrlMapRetryContainer = null;
 
     /**
      * Cache rendered content
@@ -443,10 +444,14 @@
      * */
 
     function initMapRetry() {
+        //if an instance of this control already exist - clear the listener
+        //as this means is either stale reference to a DOM element that no longer exists
+        //or map retry initialization is re-done by accident
         if ($ctrlMapRetry) {
             $ctrlMapRetry.unbind('click');
         }
         $ctrlMapRetry = $('#abp01-map-retry');
+        $ctrlMapRetryContainer = $('#abp01-map-retry-container');
         $ctrlMapRetry.click(function() {
             if (map) {
                 map.loadMap();
@@ -475,7 +480,7 @@
 
         context.hasTrack = false;
         $ctrlFormMapContainer.empty().html(renderFormMapUnselected());
-        $ctrlMapRetry.hide();
+        $ctrlMapRetryContainer.hide();
 
         toggleFormMapReset(false);
         createTrackUploader();
@@ -652,6 +657,7 @@
         $ctrlFormMapContainer.empty()
             .html(renderFormMapUploaded());
 
+        //due to the way the map is rendered, this needs to be initialized each time map rendering is attempted
         initMapRetry();
         map = $('#abp01-map')
             .mapTrack({
@@ -659,14 +665,14 @@
                 trackDataUrl: getAjaxLoadTrackUrl(),
                 handlePreLoad: function() {
                     showProgress(false, abp01MainL10n.lblGeneratingPreview);
-                    $ctrlMapRetry.hide();
+                    $ctrlMapRetryContainer.hide();
                 },
                 handleLoad: function(success) {
                     hideProgress();
                     if (!success) {
-                        $ctrlMapRetry.show();
+                        $ctrlMapRetryContainer.show();
                     } else {
-                        $ctrlMapRetry.hide();
+                        $ctrlMapRetryContainer.hide();
                     }
                 }
             });

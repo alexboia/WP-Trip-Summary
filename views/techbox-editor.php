@@ -253,8 +253,9 @@
 <script id="tpl-abp01-formMap-uploaded" type="text/x-kite">
     <div id="abp01-map-container" class="abp01-map-container" data-role="map-container">
         <div id="abp01-map" class="abp01-map" data-role="map-holder"></div>
-        <a id="abp01-map-retry" href="javascript:void(0)" class="button button-hero abp01-map-retry first" data-action="abp01-mapRetry" style="display: none;">
-            <?php echo __('Retry', 'abp01-trip-summary'); ?>
-        </a>
+        <div id="abp01-map-retry-container" class="abp01-map-retry-container" style="display: none;">
+            <div id="abp01-map-retry-message" class="abp01-map-retry-message"><?php echo __('The map could not be loaded due to either a network error or a possible server issue.', 'abp01-trip-summary'); ?></div>
+            <a id="abp01-map-retry" href="javascript:void(0)" class="button button-hero abp01-map-retry first" data-action="abp01-mapRetry"><?php echo __('Retry', 'abp01-trip-summary'); ?></a>
+        </div>
     </div>
 </script>

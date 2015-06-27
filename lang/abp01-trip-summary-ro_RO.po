@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: WP Trip Summary 0.1.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/abp01-travel-tech-"
 "box\n"
-"POT-Creation-Date: 2014-10-19 15:11:47+00:00\n"
-"PO-Revision-Date: 2014-10-19 18:15+0200\n"
+"POT-Creation-Date: 2015-06-27 16:47:31+00:00\n"
+"PO-Revision-Date: 2015-06-27 19:51+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team:  <alexandru.boia [at] outlook [dot] com>\n"
 "Language: ro_RO\n"
@@ -16,55 +16,55 @@ msgstr ""
 "X-Generator: Poedit 1.5.7\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: abp01-plugin-main.php:283
+#: abp01-plugin-main.php:294
 msgid "Clear info"
 msgstr "Șterge info"
 
-#: abp01-plugin-main.php:284
+#: abp01-plugin-main.php:295
 msgid "Clear track"
 msgstr "Șterge track"
 
-#: abp01-plugin-main.php:286
+#: abp01-plugin-main.php:297
 msgid "GPX files"
 msgstr "Fișiere GPX"
 
-#: abp01-plugin-main.php:287
+#: abp01-plugin-main.php:298
 msgid "Generating preview. Please wait..."
 msgstr "Se generează harta și traseul. Te rog să aștepți..."
 
-#: abp01-plugin-main.php:289
+#: abp01-plugin-main.php:300
 msgid "Uploading track"
 msgstr "Se încarcă track-ul"
 
-#: abp01-plugin-main.php:290
+#: abp01-plugin-main.php:301
 msgid "The track has been uploaded and saved successfully"
 msgstr "Fișierul a fost încărcat și procesat cu succes"
 
-#: abp01-plugin-main.php:292 views/techbox-editor.php:77
+#: abp01-plugin-main.php:303 views/techbox-editor.php:77
 msgid "Biking"
 msgstr "Cu bicicleta"
 
-#: abp01-plugin-main.php:293 views/techbox-editor.php:80
+#: abp01-plugin-main.php:304 views/techbox-editor.php:80
 msgid "Hiking"
 msgstr "Per-pedes"
 
-#: abp01-plugin-main.php:294
+#: abp01-plugin-main.php:305
 msgid "Train ride"
 msgstr "Cu trenul"
 
-#: abp01-plugin-main.php:296
+#: abp01-plugin-main.php:307
 msgid "Clearing track. Please wait..."
 msgstr "Se șterge track-ul. Te rog să aștepți..."
 
-#: abp01-plugin-main.php:297
+#: abp01-plugin-main.php:308
 msgid "The track has been successfully cleared"
 msgstr "Track-ul a fost șters cu succes"
 
-#: abp01-plugin-main.php:298
+#: abp01-plugin-main.php:309
 msgid "The data could not be updated"
 msgstr "Datele nu au putut fi salvate"
 
-#: abp01-plugin-main.php:299
+#: abp01-plugin-main.php:310
 msgid ""
 "The data could not be updated due to a possible network error or an internal "
 "server issue"
@@ -72,19 +72,19 @@ msgstr ""
 "Datele nu au putut fi salvade din cauza unei posibile erori de rețea sau a "
 "unei erori interne"
 
-#: abp01-plugin-main.php:301
+#: abp01-plugin-main.php:312
 msgid "Saving data. Please wait..."
 msgstr "Se salvează datele. Te rog să aștepți..."
 
-#: abp01-plugin-main.php:302
+#: abp01-plugin-main.php:313
 msgid "The data has been saved"
 msgstr "Datele au fost salvate"
 
-#: abp01-plugin-main.php:303
+#: abp01-plugin-main.php:314
 msgid "The data could not be saved"
 msgstr "Datele nu au putut fi salvate"
 
-#: abp01-plugin-main.php:304
+#: abp01-plugin-main.php:315
 msgid ""
 "The data could not be saved due to a possible network error or an internal "
 "server issue"
@@ -92,19 +92,19 @@ msgstr ""
 "Datele nu au putut fi salvate din cauza unei posibile erori de rețea sau a "
 "unei erori interne"
 
-#: abp01-plugin-main.php:306
+#: abp01-plugin-main.php:317
 msgid "Clearing trip info. Please wait..."
 msgstr "Șterg informațiile traseului. Te rog să aștepți..."
 
-#: abp01-plugin-main.php:307
+#: abp01-plugin-main.php:318
 msgid "The trip info has been cleared"
 msgstr "Informațiile traseului au fost șterse"
 
-#: abp01-plugin-main.php:308
+#: abp01-plugin-main.php:319
 msgid "The trip info could not be cleared"
 msgstr "Informațiile traseului nu au putut fi șterse"
 
-#: abp01-plugin-main.php:309
+#: abp01-plugin-main.php:320
 msgid ""
 "The trip info could not be cleared due to a possible network error or an "
 "internal server issue"
@@ -112,73 +112,73 @@ msgstr ""
 "Informațiile traseului nu au putut fi șterse din cauza unei posibile erori "
 "de rețea sau a unei erori interne"
 
-#: abp01-plugin-main.php:311 abp01-plugin-main.php:319
+#: abp01-plugin-main.php:322 abp01-plugin-main.php:330
 msgid "The selected file is too large. Maximum allowed size is 10MB"
 msgstr "Fișierul selectat e prea mare. Dimensiunea maximă admisă e 10MB"
 
-#: abp01-plugin-main.php:312 abp01-plugin-main.php:318
+#: abp01-plugin-main.php:323 abp01-plugin-main.php:329
 msgid "The selected file type is not valid. Only GPX files are allowed"
 msgstr ""
 "Tipul selectat de fișier nu este valid. Sunt permise doar fișierele GPX"
 
-#: abp01-plugin-main.php:313 abp01-plugin-main.php:314
+#: abp01-plugin-main.php:324 abp01-plugin-main.php:325
 msgid "The file could not be read"
 msgstr "Fișierul nu a putu fi citit"
 
-#: abp01-plugin-main.php:315
+#: abp01-plugin-main.php:326
 msgid "The uploader could not be initialized"
 msgstr "Una din componente nu a putut fi inițializată corect"
 
-#: abp01-plugin-main.php:316 abp01-plugin-main.php:322
+#: abp01-plugin-main.php:327 abp01-plugin-main.php:333
 msgid "The file could not be uploaded"
 msgstr "Fișierul nu a putut fi încărcat"
 
-#: abp01-plugin-main.php:320
+#: abp01-plugin-main.php:331
 msgid "No file was uploaded"
 msgstr "Nu a fost încărcat nici un fișier"
 
-#: abp01-plugin-main.php:321
+#: abp01-plugin-main.php:332
 msgid "The file could not be uploaded due to a possible internal server issue"
 msgstr "Fișierul nu a putut fi încărcat din cauza unei posibile erori interne"
 
-#: abp01-plugin-main.php:334
+#: abp01-plugin-main.php:346
 msgid "Minimum required PHP version is %s"
 msgstr "Versiunea necesară minimă de PHP este %s"
 
-#: abp01-plugin-main.php:336
+#: abp01-plugin-main.php:348
 msgid "Minimum required WP version is %s"
 msgstr "Versiunea necesară minimă de Wordpress este %s"
 
-#: abp01-plugin-main.php:338
+#: abp01-plugin-main.php:350
 msgid "LIBXML support was not found on your system"
 msgstr "Extensia LIBXML nu a fost găsită pe sistemul tău"
 
-#: abp01-plugin-main.php:340
+#: abp01-plugin-main.php:352
 msgid ""
 "Mysqli extension was not found on your system or is not fully compatible"
 msgstr "Extensia Mysqli nu a fost găsită pe sistemul tău"
 
-#: abp01-plugin-main.php:342
+#: abp01-plugin-main.php:354
 msgid "MySQL spatial support was not found on your system"
 msgstr "Server-ul MySQL nu are suport pentru date spațiale"
 
-#: abp01-plugin-main.php:362
+#: abp01-plugin-main.php:450
 msgid "The plugin cannot be installed on your system"
 msgstr "Acest plug-in nu este compatibil cu sistemul tău"
 
-#: abp01-plugin-main.php:593 abp01-plugin-main.php:697
+#: abp01-plugin-main.php:727 abp01-plugin-main.php:831
 msgid "The data could not be saved due to a possible database error"
 msgstr "Datele nu au putut fi salvate din cauza unei posibile erori interne"
 
-#: abp01-plugin-main.php:825
+#: abp01-plugin-main.php:960
 msgid "Track file could not be parsed"
 msgstr "Fișierul nu a putut fi procesat"
 
-#: abp01-plugin-main.php:828
+#: abp01-plugin-main.php:963
 msgid "Track file not found or is not readable"
 msgstr "Fișierul track-ului nu există sau nu a putut fi citit"
 
-#: abp01-plugin-main.php:886
+#: abp01-plugin-main.php:1021
 msgid "The data could not be updated due to a possible database error"
 msgstr ""
 "Datele nu au putut fi actualizate din cauza unei posibile erori interne"
@@ -287,6 +287,18 @@ msgstr "Încarcă un fișier GPX"
 msgid "Chose file"
 msgstr "Alege un fișier"
 
+#: views/techbox-editor.php:257 views/techbox-frontend.php:70
+msgid ""
+"The map could not be loaded due to either a network error or a possible "
+"server issue."
+msgstr ""
+"Harta nu a putut fi înărcată din cauza unei erori de comunicație sau a unei "
+"posibile erori interne"
+
+#: views/techbox-editor.php:258 views/techbox-frontend.php:71
+msgid "Retry"
+msgstr "Reîncearcă"
+
 #: views/techbox-frontend-teaser.php:7
 msgid ""
 "For the pragmatic sort, there is also a trip summary at the bottom of this "
@@ -311,7 +323,7 @@ msgstr "Tip recomandat de bicicletă"
 msgid "Path markers"
 msgstr "Marcaj turistic"
 
-#: views/techbox-frontend.php:74
+#: views/techbox-frontend.php:78
 msgid ""
 "It looks like you skipped the story. You should check it out. Click here to "
 "go back to beginning"
