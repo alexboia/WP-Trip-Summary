@@ -1,4 +1,4 @@
-Copyright (c) 2014, Alexandru Boia
+Copyright (c) 2014-2015, Alexandru Boia
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
