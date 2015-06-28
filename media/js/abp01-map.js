@@ -8,10 +8,41 @@
         var mapRedrawTimer = null;
         var mapLoaded = false;
         var mapDestroyed = false;
+        var magnifyingGlassControl = null;
+        var magnifyingGlassLayer = null;
+
+        //default is to show scale, but not show magnifying glass, because I see no real use for it
+        opts = $.extend({
+            showFullScreen: false,
+            showMagnifyingGlass: false,
+            showScale: true
+        }, opts);
+
+        /**
+         * Check if the plug-ins required for showing the magnifying glass are loaded
+         * @return boolean True if they are, False otherwise
+         * */
+        function isMagnifyingGlassCapabilityLoaded() {
+            return !!L.magnifyingGlass && !!L.control.magnifyingGlassButton;
+        }
+
+        /**
+         * Check if the plug-ins required for showing the fullscreen capability are loaded
+         * @return boolean True if they are, False otherwise
+         * */
+        function isFullScreenCapabilityLoaded() {
+            return !!L.control.fullScreen;
+        }
 
         function destroyMap() {
             if (map != null) {
+                if (magnifyingGlassLayer) {
+                    magnifyingGlassLayer.removeFromMap(map);
+                }
+
                 map.remove();
+                magnifyingGlassControl = null;
+                magnifyingGlassLayer = null;
                 map = null;
                 $me = null;
                 trackDataUrl = null;
@@ -20,22 +51,58 @@
             }
         }
 
+        function addScaleIndicator(map) {
+            L.control.scale({
+                position: 'bottomleft',
+                updateWhenIdle: true,
+                imperial: false,
+                metric: true
+            }).addTo(map);
+        }
+
+        function addMagnifyingGlassCapability(map, tileLayerUrl) {
+            magnifyingGlassLayer = L.magnifyingGlass({
+                layers: [ L.tileLayer(tileLayerUrl) ],
+                zoomOffset: 3
+            });
+
+            magnifyingGlassControl = L.control.magnifyingGlassButton(magnifyingGlassLayer, {
+                forceSeparateButton: true
+            }).addTo(map);
+        }
+
         function renderMap(bounds) {
             var centerLat = (bounds.northEast.lat - bounds.southWest.lat) / 2;
             var centerLng = (bounds.northEast.lng - bounds.southWest.lng) / 2;
+            var tileLayerUrl = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
 
             map = L.map($me.attr('id'), {
-                center: L.latLng(centerLat, centerLng)
+                center: L.latLng(centerLat, centerLng),
+                fullscreenControl: opts.showFullScreen && isFullScreenCapabilityLoaded()
             });
 
-            map.addLayer(L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            }));
+            map.on('fullscreenchange', function() {
+                if (magnifyingGlassLayer) {
+                    magnifyingGlassLayer.removeFromMap(map);
+                }
+            });
 
             map.fitBounds(L.latLngBounds(
                 L.latLng(bounds.southWest.lat, bounds.southWest.lng),
                 L.latLng(bounds.northEast.lat, bounds.northEast.lng)
             ));
+
+            map.addLayer(L.tileLayer(tileLayerUrl, {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            }));
+
+            if (opts.showMagnifyingGlass && isMagnifyingGlassCapabilityLoaded()) {
+                addMagnifyingGlassCapability(map, tileLayerUrl);
+            }
+
+            if (opts.showScale) {
+                addScaleIndicator(map);
+            }
         }
 
         function plotRoute(route) {
@@ -175,7 +242,7 @@
         }
 
         //watch for window resize events - map needs to be redrawn
-        //when certain user actions get combined with window resize
+        //when certain user actions get combined with window resize - have no freackin' clue why
         $(window).resize(function() {
             if (map == null) {
                 mapRedrawTimer = null;

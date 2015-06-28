@@ -1,0 +1,4 @@
+/* http://commons.wikimedia.org/wiki/File:Magnifying_glass_icon.svg */
+.leaflet-control-magnifying-glass {
+    background-image: url(./images/magnifying-glass-icon.png);
+}

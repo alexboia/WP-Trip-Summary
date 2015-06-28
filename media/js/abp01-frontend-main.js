@@ -37,8 +37,16 @@
         $('#abp01-techbox-map').show();
         $ctrlMapHolder = $('#abp01-map');
         map = $ctrlMapHolder.mapTrack({
+            //view options
+            showScale: true,
+            showMagnifyingGlass: true,
+            showFullScreen: true,
+
+            //map and data options
             trackDataUrl: getAjaxLoadTrackUrl(),
             iconBaseUrl: context.imgBase,
+
+            //callbacks
             handlePreLoad: function() {
                 displayMapLoadingProgress();
                 $ctrlMapRetryContainer.hide();

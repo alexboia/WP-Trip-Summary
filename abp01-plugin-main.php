@@ -586,7 +586,7 @@ function abp01_add_admin_styles() {
         wp_enqueue_style('jquery-toastr-css', plugins_url('media/js/3rdParty/toastr/toastr.css', __FILE__),
             array(), '2.0.3', 'all');
         wp_enqueue_style('abp01-main-css', plugins_url('media/css/abp01-main.css', __FILE__),
-            array(), '0.1', 'all');
+            array(), '0.2', 'all');
     }
 }
 
@@ -599,8 +599,15 @@ function abp01_add_frontend_styles() {
         wp_enqueue_style('dashicons');
         wp_enqueue_style('nprogress-css', plugins_url('media/js/3rdParty/nprogress/nprogress.css', __FILE__),
             array(), '2.0.3', 'all');
+
         wp_enqueue_style('leaflet-css', plugins_url('media/js/3rdParty/leaflet/leaflet.css', __FILE__),
             array(), '0.7.3', 'all');
+        wp_enqueue_style('leaflet-magnifyingglass-css', plugins_url('media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.css', __FILE__),
+            array(), '0.1', 'all');
+        wp_enqueue_style('leaflet-magnifyingglass-button-css', plugins_url('media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.button.css', __FILE__),
+            array(), '0.1', 'all');
+        wp_enqueue_style('leaflet-fullscreen-css', plugins_url('media/js/3rdParty/leaflet-plugins/leaflet-fullscreen/leaflet.fullscreen.css', __FILE__),
+            array(), '0.0.4', 'all');
 
         $locations = abp01_get_frontend_template_locations();
         $cssRelativePath = 'media/css/abp01-frontend-main.css';
@@ -609,11 +616,11 @@ function abp01_add_frontend_styles() {
         //if the the theme has overridden the css file, include the override
         if (is_readable($themeCssFile)) {
             wp_enqueue_style('abp01-frontend-main-css', $locations->themeUrl . '/' . $cssRelativePath,
-                array(), '0.1', 'all');
+                array(), '0.2', 'all');
         } else {
             //otherwise, include the default css file
             wp_enqueue_style('abp01-frontend-main-css', plugins_url($cssRelativePath, __FILE__),
-                array(), '0.1', 'all');
+                array(), '0.2', 'all');
         }
     }
 }
@@ -646,11 +653,11 @@ function abp01_add_admin_scripts() {
             array(), '1.0', false);
 
         wp_enqueue_script('abp01-map', plugins_url('media/js/abp01-map.js', __FILE__),
-            array(), '0.1', false);
+            array(), '0.2', false);
         wp_enqueue_script('abp01-progress-overlay', plugins_url('media/js/abp01-progress-overlay.js', __FILE__),
-            array(), '0.1', false);
+            array(), '0.2', false);
         wp_enqueue_script('abp01-main-admin', plugins_url('media/js/abp01-admin-main.js', __FILE__),
-            array(), '0.1', false);
+            array(), '0.2', false);
 
         wp_localize_script('abp01-main-admin', 'abp01MainL10n',
             abp01_get_main_admin_script_translations());
@@ -670,13 +677,20 @@ function abp01_add_frontend_scripts() {
             array(), '1.14.1', false);
         wp_enqueue_script('jquery-easytabs', plugins_url('media/js/3rdParty/easytabs/jquery.easytabs.js', __FILE__),
             array(), '3.2.0', false);
+
         wp_enqueue_script('leaflfet', plugins_url('media/js/3rdParty/leaflet/leaflet-src.js', __FILE__),
             array(), '0.7.3', false);
+        wp_enqueue_script('leaflet-magnifyingglass', plugins_url('media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.js', __FILE__),
+            array(), '0.1', false);
+        wp_enqueue_script('leaflet-magnifyingglass-button', plugins_url('media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.button.js', __FILE__),
+            array(), '0.1', false);
+        wp_enqueue_script('leaflet-fullscreen', plugins_url('media/js/3rdParty/leaflet-plugins/leaflet-fullscreen/leaflet.fullscreen.js', __FILE__),
+            array(), '0.0.4', false);
 
         wp_enqueue_script('abp01-map', plugins_url('media/js/abp01-map.js', __FILE__),
-            array(), '0.1', false);
+            array(), '0.2', false);
         wp_enqueue_script('abp01-main-frontend', plugins_url('media/js/abp01-frontend-main.js', __FILE__),
-            array(), '0.1', false);
+            array(), '0.2', false);
 
         wp_localize_script('abp01-main-frontend', 'abp01FrontendL10n',
             abp01_get_main_frontend_translations());
@@ -1024,6 +1038,7 @@ function abp01_remove_track() {
     abp01_send_json($response);
 }
 
+//the autoloaders are ready, general!
 abp01_init_autoloaders();
 
 if (function_exists('register_activation_hook')) {
