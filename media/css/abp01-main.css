@@ -1,3 +1,7 @@
+body, html {
+    height: 100%;
+}
+
 .abp01-button-icon, .abp01-editor-icon {
     display: inline-block;
     height: 18px;
@@ -282,4 +286,38 @@ a.abp01-close-editor:hover {
     height: 451px;
     margin: 0;
     padding: 0;
+}
+
+.abp01-settings-container th {
+    padding: 10px 5px 10px 0px !important;
+}
+
+.abp01-settings-container td {
+    padding: 5px 0px 5px 0px;
+}
+
+.abp01-select {
+    width: 350px !important;
+}
+
+.abp01-textarea-input {
+    width: 350px;
+    height: 125px;
+    resize: none;
+}
+
+.abp01-text-input {
+    width: 350px !important;
+}
+
+.apb01-settings-save {
+    margin-top: 10px;
+}
+
+#abp01-submit-settings {
+    text-align: center;
+}
+
+.abp01-settings-info {
+    font-style: italic;
 }

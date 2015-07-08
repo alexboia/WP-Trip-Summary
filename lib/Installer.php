@@ -14,12 +14,44 @@ class Abp01_Installer {
 
     const SUPPORT_MYSQLI_NOT_FOUND = 5;
 
+    const OPT_VERSION = 'abp01.option.version';
+
     private $_env;
 
     private $_lastError = null;
 
     public function __construct() {
         $this->_env = Abp01_Env::getInstance();
+    }
+
+    private function _getVersion() {
+        return $this->_env->getVersion();
+    }
+
+    private function _isUpdatedNeeded($version, $installedVersion) {
+        return $version != $installedVersion;
+    }
+
+    private function _getInstalledVersion() {
+        $version = null;
+        if (function_exists('get_option')) {
+            $version = get_option(self::OPT_VERSION, null);
+        }
+        return $version;
+    }
+
+    private function _update($version, $installedVersion) {
+        update_option(self::OPT_VERSION, $version);
+        return 0;
+    }
+
+    public function updateIfNeeded() {
+        $version = $this->_getVersion();
+        $installedVersion = $this->_getInstalledVersion();
+        if (!$this->_isUpdatedNeeded($version, $installedVersion)) {
+            return 0;
+        }
+        return $this->_update($version, $installedVersion);
     }
 
     public function canBeInstalled() {
@@ -78,7 +110,10 @@ class Abp01_Installer {
     public function uninstall() {
         $this->_reset();
         try {
-            return $this->deactivate() && $this->_uninstallSchema();
+            return $this->deactivate()
+                && $this->_uninstallSchema()
+                && $this->_uninstallSettings()
+                && $this->_uninstallVersion();
         } catch (Exception $e) {
             $this->_lastError = $e;
         }
@@ -243,6 +278,16 @@ class Abp01_Installer {
 
     private function _removeCapabilities() {
         Abp01_Auth::getInstance()->removeCapabilities();
+        return true;
+    }
+
+    private function _uninstallVersion() {
+        delete_option(self::OPT_VERSION);
+        return true;
+    }
+
+    private function _uninstallSettings() {
+        Abp01_Settings::getInstance()->purgeAllSettings();
         return true;
     }
 

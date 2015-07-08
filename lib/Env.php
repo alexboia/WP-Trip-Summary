@@ -38,6 +38,8 @@ class Abp01_Env {
 
     private $_theme;
 
+    private  $_version = '0.2b';
+
     public static function getInstance() {
         if (self::$_instance == null) {
             self::$_instance = new self();
@@ -152,6 +154,10 @@ class Abp01_Env {
         return $this->_theme != null ? $this->_theme->get_stylesheet_directory_uri() : null;
     }
 
+    public function getCurrentPage() {
+        return isset($GLOBALS['pagenow']) ? strtolower($GLOBALS['pagenow']) : null;
+    }
+
     public function getRouteTrackTableName() {
         return $this->_routeTrackTableName;
     }
@@ -186,5 +192,9 @@ class Abp01_Env {
 
     public function getRequiredWpVersion() {
         return '4.0';
+    }
+
+    public function getVersion() {
+        return $this->_version;
     }
 }

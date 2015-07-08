@@ -30,9 +30,11 @@ define('ABP01_ACTION_CLEAR_INFO', 'abp01_clear_info');
 define('ABP01_ACTION_CLEAR_TRACK', 'abp01_clear_track');
 define('ABP01_ACTION_UPLOAD_TRACK', 'abp01_upload_track');
 define('ABP01_ACTION_GET_TRACK', 'abp01_get_track');
+define('ABP01_ACTION_SAVE_SETTINGS', 'abp01_save_Settings');
 
 define('ABP01_NONCE_TOUR_EDITOR', 'abp01.nonce.tourEditor');
 define('ABP01_NONCE_GET_TRACK', 'abp01.nonce.getTrack');
+define('ABP01_NONCE_EDIT_SETTINGS', 'abp01.nonce.editSettings');
 
 define('ABP01_TRACK_UPLOAD_KEY', 'abp01_track_file');
 define('ABP01_TRACK_UPLOAD_CHUNK_SIZE', 102400);
@@ -110,6 +112,14 @@ function abp01_create_get_track_nonce($postId) {
 }
 
 /**
+ * Creates a nonce to be used when saving plugin settings
+ * @return string The created nonce
+ */
+function abp01_create_edit_settings_nonce() {
+    return wp_create_nonce(ABP01_NONCE_EDIT_SETTINGS);
+}
+
+/**
  * Checks whether the current request has a valid nonce for the given post ID in the context of track editing
  * @param int $postId
  * @return bool True if valid, False otherwise
@@ -125,6 +135,10 @@ function abp01_verify_edit_nonce($postId) {
  */
 function abp01_verify_get_track_nonce($postId) {
     return check_ajax_referer(ABP01_NONCE_GET_TRACK . ':' . $postId, 'abp01_nonce_get', false);
+}
+
+function abp01_verify_edit_settings_nonce() {
+    return check_ajax_referer(ABP01_NONCE_EDIT_SETTINGS, 'abp01_nonce_settings', false);
 }
 
 /**
@@ -195,10 +209,20 @@ function abp01_get_http_method() {
  * @return bool
  */
 function abp01_is_editing_post() {
-    $currentPage = isset($GLOBALS['pagenow']) ? strtolower($GLOBALS['pagenow']) : null;
+    $currentPage = Abp01_Env::getInstance()->getCurrentPage();
     return in_array($currentPage, array(
         'post-new.php',
         'post.php'));
+}
+
+/**
+ * Check whether the currently displayed screen is the plugin settings management screen
+ * @return boolean True if on plugin settings page, false otherwise
+ */
+function abp01_is_editing_settings() {
+    $currentPage = Abp01_Env::getInstance()->getCurrentPage();
+    $isOnSettingsPage = isset($_GET['page']) ? $_GET['page'] == 'abp01-trip-summary-settings' : false;
+    return $currentPage == 'admin.php' && $isOnSettingsPage;
 }
 
 /**
@@ -235,6 +259,10 @@ function abp01_can_edit_trip_summary($post = null) {
         $postId = abp01_get_current_post_id();
     }
     return Abp01_Auth::getInstance()->canEditTourSummary($postId);
+}
+
+function abp01_can_manage_plugin_settings() {
+    return Abp01_Auth::getInstance()->canManagePluginSettings();
 }
 
 /**
@@ -383,6 +411,21 @@ function abp01_render_techbox_editor(stdClass $data) {
 }
 
 /**
+ * Renders the plugin settings editor page
+ * @param stdClass $data The settings context and existing settings values
+ * @return void
+ */
+function abp01_admin_settings_page_render(stdClass $data) {
+    require_once ABP01_PLUGIN_ROOT . '/views/techbox-settings.php';
+}
+
+function abp01_create_admin_menu() {
+    add_menu_page(__('Trip Summary Settings', 'abp01-trip-summary'), __('Trip Summary', 'abp01-trip-summary'), Abp01_Auth::CAP_MANAGE_TOUR_SUMMARY,
+        'abp01-trip-summary-settings','abp01_admin_settings_page',
+            'dashicons-chart-area', 81);
+}
+
+/**
  * Render the trip summary viewer
  * @param stdClass $data The trip summary and context data
  * @return void
@@ -491,6 +534,7 @@ function abp01_uninstall() {
  * Run plug-in init sequence
  */
 function abp01_init_plugin() {
+    Abp01_Includes::setRefPluginsPath(__FILE__);
     load_plugin_textdomain('abp01-trip-summary', false, dirname(plugin_basename(__FILE__)) . '/lang/');
 }
 
@@ -576,17 +620,21 @@ function abp01_add_admin_editor($post) {
  * @return void
  */
 function abp01_add_admin_styles() {
+    //if in post editing page and IF the user is allowed to edit a post's trip summary
+    //include the the styles required by the trip summary editor
     if (abp01_is_editing_post() && abp01_can_edit_trip_summary(null)) {
-        wp_enqueue_style('nprogress-css', plugins_url('media/js/3rdParty/nprogress/nprogress.css', __FILE__),
-            array(), '0.1.6', 'all');
-        wp_enqueue_style('jquery-icheck-css', plugins_url('media/js/3rdParty/icheck/skins/minimal/_all.css', __FILE__),
-            array(), '1.0.2', 'all');
-        wp_enqueue_style('leaflet-css', plugins_url('media/js/3rdParty/leaflet/leaflet.css', __FILE__),
-            array(), '0.7.3', 'all');
-        wp_enqueue_style('jquery-toastr-css', plugins_url('media/js/3rdParty/toastr/toastr.css', __FILE__),
-            array(), '2.0.3', 'all');
-        wp_enqueue_style('abp01-main-css', plugins_url('media/css/abp01-main.css', __FILE__),
-            array(), '0.2', 'all');
+        Abp01_Includes::includeStyleNProgress();
+        Abp01_Includes::includeStyleLeaflet();
+        Abp01_Includes::includeStyleJQueryICheck();
+        Abp01_Includes::includeStyleJQueryToastr();
+        Abp01_Includes::includeStyleAdminMain();
+    }
+
+    //if in plug-in editing page and IF the user is allowed to edit the plug-in's settings
+    //include the styles required by the settings editor
+    if (abp01_is_editing_settings() && abp01_can_manage_plugin_settings()) {
+        Abp01_Includes::includeStyleNProgress();
+        Abp01_Includes::includeStyleAdminMain();
     }
 }
 
@@ -596,18 +644,12 @@ function abp01_add_admin_styles() {
  */
 function abp01_add_frontend_styles() {
     if (is_single()) {
-        wp_enqueue_style('dashicons');
-        wp_enqueue_style('nprogress-css', plugins_url('media/js/3rdParty/nprogress/nprogress.css', __FILE__),
-            array(), '2.0.3', 'all');
+        Abp01_Includes::includeStyleDashIcons();
+        Abp01_Includes::includeStyleNProgress();
 
-        wp_enqueue_style('leaflet-css', plugins_url('media/js/3rdParty/leaflet/leaflet.css', __FILE__),
-            array(), '0.7.3', 'all');
-        wp_enqueue_style('leaflet-magnifyingglass-css', plugins_url('media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.css', __FILE__),
-            array(), '0.1', 'all');
-        wp_enqueue_style('leaflet-magnifyingglass-button-css', plugins_url('media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.button.css', __FILE__),
-            array(), '0.1', 'all');
-        wp_enqueue_style('leaflet-fullscreen-css', plugins_url('media/js/3rdParty/leaflet-plugins/leaflet-fullscreen/leaflet.fullscreen.css', __FILE__),
-            array(), '0.0.4', 'all');
+        Abp01_Includes::includeStyleLeaflet();
+        Abp01_Includes::includeStyleLeafletMagnifyingGlass();
+        Abp01_Includes::includeStyleLeafletFullScreen();
 
         $locations = abp01_get_frontend_template_locations();
         $cssRelativePath = 'media/css/abp01-frontend-main.css';
@@ -615,12 +657,11 @@ function abp01_add_frontend_styles() {
 
         //if the the theme has overridden the css file, include the override
         if (is_readable($themeCssFile)) {
-            wp_enqueue_style('abp01-frontend-main-css', $locations->themeUrl . '/' . $cssRelativePath,
-                array(), '0.2', 'all');
+            $cssPath = $locations->themeUrl . '/' . $cssRelativePath;
+            wp_enqueue_style('abp01-frontend-main-css', $cssPath, array(), '0.2', 'all');
         } else {
             //otherwise, include the default css file
-            wp_enqueue_style('abp01-frontend-main-css', plugins_url($cssRelativePath, __FILE__),
-                array(), '0.2', 'all');
+            Abp01_Includes::includeStyleFrontendMain();
         }
     }
 }
@@ -631,36 +672,33 @@ function abp01_add_frontend_styles() {
  */
 function abp01_add_admin_scripts() {
     if (abp01_is_editing_post() && abp01_can_edit_trip_summary(null)) {
-        wp_enqueue_script('uri-js', plugins_url('media/js/3rdParty/uri/URI.js', __FILE__),
-            array(), '1.14.1', false);
-        wp_enqueue_script('jquery-icheck', plugins_url('media/js/3rdParty/icheck/icheck.js', __FILE__),
-            array(), '1.0.2', false);
-        wp_enqueue_script('jquery-blockui', plugins_url('media/js/3rdParty/jquery.blockUI.js', __FILE__),
-            array(), '2.66', false);
-        wp_enqueue_script('jquery-toastr', plugins_url('media/js/3rdParty/toastr/toastr.js', __FILE__),
-            array(), '2.0.3', false);
-        wp_enqueue_script('nprogress', plugins_url('media/js/3rdParty/nprogress/nprogress.js', __FILE__),
-            array(), '0.2.0', false);
-        wp_enqueue_script('jquery-easytabs', plugins_url('media/js/3rdParty/easytabs/jquery.easytabs.js', __FILE__),
-            array(), '3.2.0', false);
-        wp_enqueue_script('leaflfet', plugins_url('media/js/3rdParty/leaflet/leaflet-src.js', __FILE__),
-            array(), '0.7.3', false);
-        wp_enqueue_script('lodash', plugins_url('media/js/3rdParty/lodash/lodash.js', __FILE__),
-            array(), '0.3.1', false);
-        wp_enqueue_script('machina', plugins_url('media/js/3rdParty/machina/machina.js', __FILE__),
-            array(), '0.3.1', false);
-        wp_enqueue_script('kite-js', plugins_url('media/js/3rdParty/kite.js', __FILE__),
-            array(), '1.0', false);
+        Abp01_Includes::includeScriptURIJs();
+        Abp01_Includes::includeScriptJQueryICheck();
+        Abp01_Includes::includeScriptJQueryBlockUI();
+        Abp01_Includes::includeScriptJQueryToastr();
+        Abp01_Includes::includeScriptNProgress();
+        Abp01_Includes::includeScriptJQueryEasyTabs();
 
-        wp_enqueue_script('abp01-map', plugins_url('media/js/abp01-map.js', __FILE__),
-            array(), '0.2', false);
-        wp_enqueue_script('abp01-progress-overlay', plugins_url('media/js/abp01-progress-overlay.js', __FILE__),
-            array(), '0.2', false);
-        wp_enqueue_script('abp01-main-admin', plugins_url('media/js/abp01-admin-main.js', __FILE__),
-            array(), '0.2', false);
+        Abp01_Includes::includeScriptLeaflet();
+        Abp01_Includes::includeScriptLodash();
+        Abp01_Includes::includeScriptMachina();
+        Abp01_Includes::includeScriptKiteJs();
+
+        Abp01_Includes::includeScriptMap();
+        Abp01_Includes::includeScriptProgressOverlay();
+        Abp01_Includes::includeScriptAdminEditorMain();
 
         wp_localize_script('abp01-main-admin', 'abp01MainL10n',
             abp01_get_main_admin_script_translations());
+    }
+    if (abp01_is_editing_settings() && abp01_can_manage_plugin_settings()) {
+        Abp01_Includes::includeScriptJQueryBlockUI();
+        Abp01_Includes::includeScriptKiteJs();
+        Abp01_Includes::includeScriptLodash();
+        Abp01_Includes::includeScriptMachina();
+        Abp01_Includes::includeScriptNProgress();
+        Abp01_Includes::includeScriptProgressOverlay();
+        Abp01_Includes::includeScriptAdminSettings();
     }
 }
 
@@ -670,31 +708,78 @@ function abp01_add_admin_scripts() {
  */
 function abp01_add_frontend_scripts() {
     if (is_single()) {
-        wp_enqueue_script('jquery');
-        wp_enqueue_script('jquery-visible', plugins_url('media/js/3rdParty/visible/jquery.visible.js', __FILE__),
-            array(), '1.1.0', false);
-        wp_enqueue_script('uri-js', plugins_url('media/js/3rdParty/uri/URI.js', __FILE__),
-            array(), '1.14.1', false);
-        wp_enqueue_script('jquery-easytabs', plugins_url('media/js/3rdParty/easytabs/jquery.easytabs.js', __FILE__),
-            array(), '3.2.0', false);
+        Abp01_Includes::includeScriptJQuery();
+        Abp01_Includes::includeScriptJQueryVisible();
+        Abp01_Includes::includeScriptURIJs();
+        Abp01_Includes::includeScriptJQueryEasyTabs();
 
-        wp_enqueue_script('leaflfet', plugins_url('media/js/3rdParty/leaflet/leaflet-src.js', __FILE__),
-            array(), '0.7.3', false);
-        wp_enqueue_script('leaflet-magnifyingglass', plugins_url('media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.js', __FILE__),
-            array(), '0.1', false);
-        wp_enqueue_script('leaflet-magnifyingglass-button', plugins_url('media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.button.js', __FILE__),
-            array(), '0.1', false);
-        wp_enqueue_script('leaflet-fullscreen', plugins_url('media/js/3rdParty/leaflet-plugins/leaflet-fullscreen/leaflet.fullscreen.js', __FILE__),
-            array(), '0.0.4', false);
+        Abp01_Includes::includeScriptLeaflet();
+        Abp01_Includes::includeScriptLeafletMagnifyingGlass();
+        Abp01_Includes::includeScriptLeafletFullscreen();
 
-        wp_enqueue_script('abp01-map', plugins_url('media/js/abp01-map.js', __FILE__),
-            array(), '0.2', false);
-        wp_enqueue_script('abp01-main-frontend', plugins_url('media/js/abp01-frontend-main.js', __FILE__),
-            array(), '0.2', false);
+        Abp01_Includes::includeScriptMap();
+        Abp01_Includes::includeScriptFrontendMain();
 
         wp_localize_script('abp01-main-frontend', 'abp01FrontendL10n',
             abp01_get_main_frontend_translations());
     }
+}
+
+function abp01_admin_settings_page() {
+    if (!abp01_can_manage_plugin_settings()) {
+        return;
+    }
+
+    $data = new stdClass();
+    $data->nonce = abp01_create_edit_settings_nonce();
+    $data->ajaxSaveAction = ABP01_ACTION_SAVE_SETTINGS;
+    $data->settings = new stdClass();
+
+    $settings = Abp01_Settings::getInstance();
+    $allowedUnitSystems = $settings->getAllowedUnitSystems();
+    $tileLayerUrls = $settings->getTileLayerUrls();
+
+    $data->settings->showTeaser = $settings->getShowTeaser();
+    $data->settings->topTeaserText = abp01_escape_value($settings->getTopTeaserText());
+    $data->settings->bottomTeaserText = abp01_escape_value($settings->getBottomTeaserText());
+    $data->settings->tileLayerUrl = isset($tileLayerUrls[0]) ? $tileLayerUrls[0] : null;
+    $data->settings->showFullScreen = $settings->getShowFullScreen();
+    $data->settings->showMagnifyingGlass = $settings->getShowMagnifyingGlass();
+    $data->settings->unitSystem = $settings->getUnitSystem();
+
+    $data->settings->allowedUnitSystems = array();
+    foreach ($allowedUnitSystems as $system) {
+        $data->settings->allowedUnitSystems[$system] = ucfirst($system);
+    }
+
+    abp01_admin_settings_page_render($data);
+}
+
+function abp01_save_admin_settings_page_save() {
+    if (!abp01_get_http_method() != 'post' || !abp01_can_manage_plugin_settings()) {
+        die;
+    }
+
+    $response = new stdClass();
+    $response->success = false;
+    $response->message = null;
+    $settings = Abp01_Settings::getInstance();
+
+    $settings->setShowTeaser(isset($_POST['showTeaser']) ? $_POST['showTeaser'] == 'true' : false);
+    $settings->setTopTeaserText(isset($_POST['topTeaserText']) ? $_POST['topTeaserText'] : null);
+    $settings->setBottomTeaserText(isset($_POST['bottomTeaserText']) ? $_POST['bottomTeaserText'] : null);
+    $settings->setUnitSystem(isset($_POST['unitSystem']) ? $_POST['unitSystem'] : null);
+    $settings->setTileLayerUrls(isset($_POST['tileLayerUrl']) ? array($_POST['tileLayerUrl']) : null);
+    $settings->setShowFullScreen(isset($_POST['showFullScreen']) ? $_POST['showFullScreen'] == 'true' : false);
+    $settings->setShowMagnifyingGlass(isset($_POST['showMagnifyingGlass']) ? $_POST['showMagnifyingGlass'] == 'true' : false);
+
+    if ($settings->saveSettings()) {
+        $response->success = true;
+    } else {
+        $response->message = __('The settings could not be saved. Please try again.', 'abp01-trip-summary');
+    }
+
+    abp01_send_json($response);
 }
 
 /**
@@ -1063,6 +1148,7 @@ if (function_exists('add_action')) {
     add_action('wp_ajax_' . ABP01_ACTION_UPLOAD_TRACK, 'abp01_upload_track');
     add_action('wp_ajax_' . ABP01_ACTION_CLEAR_TRACK, 'abp01_remove_track');
     add_action('wp_ajax_' . ABP01_ACTION_CLEAR_INFO, 'abp01_remove_info');
+    add_action('wp_ajax_' . ABP01_ACTION_SAVE_SETTINGS, 'abp01_save_admin_settings_page_save');
 
     add_action('wp_ajax_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
     add_action('wp_ajax_nopriv_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
@@ -1074,4 +1160,5 @@ if (function_exists('add_action')) {
     add_filter('the_content', 'abp01_get_info', 0);
 
     add_action('plugins_loaded', 'abp01_init_plugin');
+    add_action('admin_menu', 'abp01_create_admin_menu');
 }

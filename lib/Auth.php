@@ -56,4 +56,8 @@ class Abp01_Auth {
     public function canManageTourSummary() {
         return current_user_can(self::CAP_MANAGE_TOUR_SUMMARY);
     }
+
+    public function canManagePluginSettings() {
+        return current_user_can(self::CAP_MANAGE_TOUR_SUMMARY);
+    }
 }
