@@ -72,12 +72,28 @@
                     <label for="abp01-tileLayerUrl"><?php echo __('Tile layer URL', 'abp01-trip-summary'); ?>:</label>
                 </th>
                 <td>
-                    <input type="text" id="abp01-tileLayerUrl" name="tileLayerUrl" class="regular-text abp01-text-input" value="<?php echo $data->settings->tileLayerUrl; ?>" />
+                    <input type="text" id="abp01-tileLayerUrl" name="tileLayerUrl" class="regular-text abp01-text-input" value="<?php echo $data->settings->tileLayer->url; ?>" />
                 </td>
             </tr>
             <tr>
+            	<th scope="row">
+            		<label for="abp01-abp01-tileLayerAttributionUrl"><?php echo __('Tile layer attribution URL', 'abp01-trip-summary'); ?></label>
+            	</th>
+            	<td>
+            		<input type="text" id="abp01-tileLayerAttributionUrl" name="tileLayerAttributionUrl" class="regular-text abp01-text-input" value="<?php echo $data->settings->tileLayer->attributionUrl; ?>" />
+            	</td>
+            </tr>
+            <tr>
+            	<th scope="row">
+            		<label for="abp01-abp01-tileLayerAttributionTxt"><?php echo __('Tile layer attribution text', 'abp01-trip-summary'); ?></label>
+            	</th>
+            	<td>
+            		<input type="text" id="abp01-tileLayerAttributionTxt" name="tileLayerAttributionTxt" class="regular-text abp01-text-input" value="<?php echo $data->settings->tileLayer->attributionTxt; ?>" />
+            	</td>
+            </tr>
+            <tr>
                 <th scope="row">
-                    <label for="abp01-showFullScreen"><?php echo __('Enable map fullscreen mode?'); ?></label>
+                    <label for="abp01-showFullScreen"><?php echo __('Enable map fullscreen mode?', 'abp01-trip-summary'); ?></label>
                 </th>
                 <td>
                     <input type="checkbox" id="abp01-showFullScreen" name="showFullScreen" class="abp01-checkbox" value="true" checked="<?php echo $data->settings->showFullScreen ? 'checked' : ''; ?>" />

@@ -737,12 +737,18 @@ function abp01_admin_settings_page() {
 
     $settings = Abp01_Settings::getInstance();
     $allowedUnitSystems = $settings->getAllowedUnitSystems();
-    $tileLayerUrls = $settings->getTileLayerUrls();
+    
+    $tileLayers = $settings->getTileLayers();
+	foreach ($tileLayers as $tileLayer) {
+		$tileLayer->url = abp01_escape_value($tileLayer->url);
+		$tileLayer->attributionUrl = abp01_escape_value($tileLayer->attributionUrl);
+		$tileLayer->attributionTxt = abp01_escape_value($tileLayer->attributionTxt);
+	}
 
     $data->settings->showTeaser = $settings->getShowTeaser();
     $data->settings->topTeaserText = abp01_escape_value($settings->getTopTeaserText());
     $data->settings->bottomTeaserText = abp01_escape_value($settings->getBottomTeaserText());
-    $data->settings->tileLayerUrl = isset($tileLayerUrls[0]) ? $tileLayerUrls[0] : null;
+    $data->settings->tileLayer = $tileLayers[0];
     $data->settings->showFullScreen = $settings->getShowFullScreen();
     $data->settings->showMagnifyingGlass = $settings->getShowMagnifyingGlass();
     $data->settings->unitSystem = $settings->getUnitSystem();
@@ -756,22 +762,42 @@ function abp01_admin_settings_page() {
 }
 
 function abp01_save_admin_settings_page_save() {
-    if (!abp01_get_http_method() != 'post' || !abp01_can_manage_plugin_settings()) {
+    if (!abp01_get_http_method() != 'post' || 
+    	!abp01_can_manage_plugin_settings() || 
+    	!abp01_verify_edit_settings_nonce()) {
         die;
     }
 
-    $response = new stdClass();
+	$response = new stdClass();
     $response->success = false;
     $response->message = null;
-    $settings = Abp01_Settings::getInstance();
+	
+	//check that given unit system is supported
+	$unitSystem = isset($_POST['unitSystem']) ? $_POST['unitSystem'] : null;
+	if (!Abp01_UnitSystem::isSupported($unitSystem)) {
+		$response->message = __('Unsupported unit system', 'abp01-trip-summary');
+		return $response;
+	}
 
+	//check tile layer parameters
+	$tileLayer = new stdClass();
+	$tileLayer->url = isset($_POST['tileLayerUrl']) ? $_POST['tileLayerUrl'] : null;
+	$tileLayer->attributionUrl = isset($_POST['tileLayerAttributionUrl']) ? $_POST['tileLayerAttributionUrl'] : null;
+	$tileLayer->attributionTxt = isset($_POST['tileLayerAttributionTxt']) ? $_POST['tileLayerAttributionTxt'] : null;
+	
+	if (empty($tileLayer->url)) {
+		$response->message = __('Tile layer URL is required', 'abp01-trip-summary');
+		return $response;
+	}
+
+    $settings = Abp01_Settings::getInstance();
     $settings->setShowTeaser(isset($_POST['showTeaser']) ? $_POST['showTeaser'] == 'true' : false);
     $settings->setTopTeaserText(isset($_POST['topTeaserText']) ? $_POST['topTeaserText'] : null);
-    $settings->setBottomTeaserText(isset($_POST['bottomTeaserText']) ? $_POST['bottomTeaserText'] : null);
-    $settings->setUnitSystem(isset($_POST['unitSystem']) ? $_POST['unitSystem'] : null);
-    $settings->setTileLayerUrls(isset($_POST['tileLayerUrl']) ? array($_POST['tileLayerUrl']) : null);
+    $settings->setBottomTeaserText(isset($_POST['bottomTeaserText']) ? $_POST['bottomTeaserText'] : null);    
     $settings->setShowFullScreen(isset($_POST['showFullScreen']) ? $_POST['showFullScreen'] == 'true' : false);
     $settings->setShowMagnifyingGlass(isset($_POST['showMagnifyingGlass']) ? $_POST['showMagnifyingGlass'] == 'true' : false);
+	$settings->setTileLayers(array($tileLayer));
+	$settings->setUnitSystem($unitSystem);
 
     if ($settings->saveSettings()) {
         $response->success = true;

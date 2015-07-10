@@ -60,13 +60,29 @@ class Abp01_Settings {
 
     private function _setOption($key, $type, $value) {
         $this->_loadSettingsIfNeeded();
-        if (settype($value, $type)) {
-            $this->_data[$key] = $value;
-            return true;
-        } else {
-            return false;
-        }
+		$this->_data[$key] = Abp01_InputFiltering::filterValue($value, $type);
     }
+	
+	private function _checkAndNormalizeTileLayer($tileLayer) {
+		if (!is_object($tileLayer) || !isset($tileLayer->url)) {
+			return false;
+		}
+		if (!isset($tileLayer->attributionTxt)) {
+			$tileLayer->attributionTxt = null;
+		}
+		if (!isset($tileLayer->attributionUrl)) {
+			$tileLayer->attributionUrl = null;
+		}
+		return $tileLayer;
+	}
+	
+	private function _getDefaultTileLayer() {
+		$tileLayer = new stdClass();
+		$tileLayer->url = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
+		$tileLayer->attributionTxt = 'OpenStreetMap & Contributors';
+		$tileLayer->attributionUrl = 'http://osm.org/copyright';
+		return $tileLayer;
+	}
 
     public function getShowTeaser() {
         return $this->_getOption(self::OPT_TEASER_SHOW, 'boolean', true);
@@ -97,12 +113,23 @@ class Abp01_Settings {
         return $this;
     }
 
-    public function getTileLayerUrls() {
-        return $this->_getOption(self::OPT_MAP_TILE_LAYER_URLS, 'array', array('http://{s}.tile.osm.org/{z}/{x}/{y}.png'));
+    public function getTileLayers() {
+        return $this->_getOption(self::OPT_MAP_TILE_LAYER_URLS, 'array', 
+        	array($this->_getDefaultTileLayer()));
     }
 
-    public function setTileLayerUrls(array $tileLayerUrls) {
-        $this->_setOption(self::OPT_MAP_TILE_LAYER_URLS, 'string', $tileLayerUrls);
+    public function setTileLayers(array $tileLayers) {
+    	$saveLayers = array();
+		foreach ($tileLayers as $layer) {
+			$layer = $this->_checkAndNormalizeTileLayer($layer);
+			if ($layer) {
+				$saveLayers[] = $layer;
+			}
+		}
+		if (!count($saveLayers)) {
+			throw new InvalidArgumentException('tileLayers');
+		}
+        $this->_setOption(self::OPT_MAP_TILE_LAYER_URLS, 'string', $saveLayers);
         return $this;
     }
 
@@ -147,6 +174,6 @@ class Abp01_Settings {
     }
 
     public function getAllowedUnitSystems() {
-        return array('metric', 'imperial');
+        return array(Abp01_UnitSystem::METRIC, Abp01_UnitSystem::IMPERIAL);
     }
 }
