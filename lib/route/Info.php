@@ -154,16 +154,19 @@ class Abp01_Route_Info {
     }
 
     private function _filterSingleValue($value, $def) {
-        $value = strip_tags($value);
-        if (get_magic_quotes_gpc()) {
+    	if (get_magic_quotes_gpc()) {
             $value = stripslashes($value);
         }
+		
+        $value = wp_strip_all_tags($value);        
         settype($value, $def['type']);
+        
         if (is_numeric($value)) {
             if ($value < $def['minVal']) {
                 $value = $def['minVal'];
             }
         }
+        
         return $value;
     }
 

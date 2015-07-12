@@ -20,7 +20,8 @@ class Abp01_InputFiltering {
 	public static function filterValue($input, $asType) {
 		$extraParams = array();
 		$nArgs = func_num_args();
-		$callback = array(self, 'filterSingleValue');
+		$callback = array(__CLASS__, 'filterSingleValue');
+		$callbackRecurse = array(__CLASS__, 'filterValue');
 		
 		if ($nArgs > 2) {
 			for ($i = 2; $i < $nArgs; $i ++) {
@@ -28,14 +29,22 @@ class Abp01_InputFiltering {
 			}
 		}
 		
-		if (is_array($value)) {
+		if (is_array($input)) {
 			$result = array();
 			foreach ($input as $value) {
-				$result[] = call_user_func_array($callback, array_merge(array($value), $extraParams));
+				$result[] = call_user_func_array($callbackRecurse, array_merge(array($value, $asType), $extraParams));
 			}
 			return $result;
+		} else if (is_object($input)) {
+			$props = get_object_vars($input);
+			if (is_array($props)) {
+				foreach ($props as $propName => $value) {
+					$input->$propName = call_user_func_array($callbackRecurse, array_merge(array($value, $asType), $extraParams));
+				}
+			}
+			return $input;
 		} else {
-			return call_user_func_array($callback, array_merge(array($input), $extraParams));
+			return call_user_func_array($callback, array_merge(array($input, $asType), $extraParams));
 		}
 	}
 }

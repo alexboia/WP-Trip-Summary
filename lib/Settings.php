@@ -118,8 +118,11 @@ class Abp01_Settings {
         	array($this->_getDefaultTileLayer()));
     }
 
-    public function setTileLayers(array $tileLayers) {
+    public function setTileLayers($tileLayers) {
     	$saveLayers = array();
+		if (!is_array($tileLayers)) {
+			$tileLayers = array($tileLayers);
+		}
 		foreach ($tileLayers as $layer) {
 			$layer = $this->_checkAndNormalizeTileLayer($layer);
 			if ($layer) {
@@ -166,7 +169,8 @@ class Abp01_Settings {
 
     public function saveSettings() {
         $this->_loadSettingsIfNeeded();
-        return update_option(self::OPT_SETTINGS_KEY, $this->_data);
+        update_option(self::OPT_SETTINGS_KEY, $this->_data);
+		return true;
     }
 
     public function purgeAllSettings() {

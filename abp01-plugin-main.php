@@ -30,7 +30,7 @@ define('ABP01_ACTION_CLEAR_INFO', 'abp01_clear_info');
 define('ABP01_ACTION_CLEAR_TRACK', 'abp01_clear_track');
 define('ABP01_ACTION_UPLOAD_TRACK', 'abp01_upload_track');
 define('ABP01_ACTION_GET_TRACK', 'abp01_get_track');
-define('ABP01_ACTION_SAVE_SETTINGS', 'abp01_save_Settings');
+define('ABP01_ACTION_SAVE_SETTINGS', 'abp01_save_settings');
 
 define('ABP01_NONCE_TOUR_EDITOR', 'abp01.nonce.tourEditor');
 define('ABP01_NONCE_GET_TRACK', 'abp01.nonce.getTrack');
@@ -363,6 +363,19 @@ function abp01_get_main_admin_script_translations() {
 }
 
 /**
+ * Retrieve translations used in the setttings editor script
+ * @return array key-value pairs where keys are javascript property names and values are the translation strings
+ */
+function abp01_get_settings_admin_script_translations() {
+	return array(
+		'errSaveFailNetwork' => __('The settings could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'),
+		'errSaveFailGeneric' => __('The settings could not be saved due to a possible internal server issue', 'abp01-trip-summary'),
+		'msgSaveOk' => __('Settings successfully saved', 'abp01-trip-summary'),
+		'msgSaveWorking' => __('Saving settings. Please wait...', 'abp01-trip-summary')
+ 	);
+}
+
+/**
  * Retrieve translations used when installing the plug-in
  * @return array key-value pairs where keys are installation error codes and values are the translated strings
  */
@@ -692,6 +705,7 @@ function abp01_add_admin_scripts() {
             abp01_get_main_admin_script_translations());
     }
     if (abp01_is_editing_settings() && abp01_can_manage_plugin_settings()) {
+    	Abp01_Includes::includeScriptURIJs();
         Abp01_Includes::includeScriptJQueryBlockUI();
         Abp01_Includes::includeScriptKiteJs();
         Abp01_Includes::includeScriptLodash();
@@ -699,6 +713,9 @@ function abp01_add_admin_scripts() {
         Abp01_Includes::includeScriptNProgress();
         Abp01_Includes::includeScriptProgressOverlay();
         Abp01_Includes::includeScriptAdminSettings();
+		
+		wp_localize_script('abp01-settings-admin', 'abp01SettingsL10n', 
+			abp01_get_settings_admin_script_translations());
     }
 }
 
@@ -733,6 +750,7 @@ function abp01_admin_settings_page() {
     $data = new stdClass();
     $data->nonce = abp01_create_edit_settings_nonce();
     $data->ajaxSaveAction = ABP01_ACTION_SAVE_SETTINGS;
+	$data->ajaxUrl = get_admin_url(null, 'admin-ajax.php', 'admin');
     $data->settings = new stdClass();
 
     $settings = Abp01_Settings::getInstance();
@@ -762,12 +780,12 @@ function abp01_admin_settings_page() {
 }
 
 function abp01_save_admin_settings_page_save() {
-    if (!abp01_get_http_method() != 'post' || 
+    if (abp01_get_http_method() != 'post' || 
     	!abp01_can_manage_plugin_settings() || 
     	!abp01_verify_edit_settings_nonce()) {
         die;
     }
-
+		
 	$response = new stdClass();
     $response->success = false;
     $response->message = null;
@@ -776,27 +794,43 @@ function abp01_save_admin_settings_page_save() {
 	$unitSystem = isset($_POST['unitSystem']) ? $_POST['unitSystem'] : null;
 	if (!Abp01_UnitSystem::isSupported($unitSystem)) {
 		$response->message = __('Unsupported unit system', 'abp01-trip-summary');
-		return $response;
+		abp01_send_json($response);
 	}
 
-	//check tile layer parameters
+	//collect and fill in layer parameters
 	$tileLayer = new stdClass();
 	$tileLayer->url = isset($_POST['tileLayerUrl']) ? $_POST['tileLayerUrl'] : null;
 	$tileLayer->attributionUrl = isset($_POST['tileLayerAttributionUrl']) ? $_POST['tileLayerAttributionUrl'] : null;
 	$tileLayer->attributionTxt = isset($_POST['tileLayerAttributionTxt']) ? $_POST['tileLayerAttributionTxt'] : null;
 	
+	//tile layer URL must not be empty
 	if (empty($tileLayer->url)) {
 		$response->message = __('Tile layer URL is required', 'abp01-trip-summary');
-		return $response;
+		abp01_send_json($response);
+	}
+	
+	//check tile layer URL format
+	$tileLayerUrlValidator = new Abp01_Validate_TileLayerUrl();
+	if (!$tileLayerUrlValidator->validate($tileLayer->url)) {
+		$response->message = __('Tile layer URL does not have a valid format', 'abp01-trip-summary');
+		abp01_send_json($response);
+	}
+	
+	//check tile layer attribution URL, but only if not empty
+	$urlValidator = new Abp01_Validate_Url();
+	if (!empty($tileLayer->attributionUrl) && !$urlValidator->validate($tileLayer->attributionUrl)) {
+		$response->message = __('Tile layer attribution URL does not have a valid format', 'abp01-trip-summary');
+		abp01_send_json($response);
 	}
 
+	//fill in and save settings
     $settings = Abp01_Settings::getInstance();
     $settings->setShowTeaser(isset($_POST['showTeaser']) ? $_POST['showTeaser'] == 'true' : false);
     $settings->setTopTeaserText(isset($_POST['topTeaserText']) ? $_POST['topTeaserText'] : null);
     $settings->setBottomTeaserText(isset($_POST['bottomTeaserText']) ? $_POST['bottomTeaserText'] : null);    
     $settings->setShowFullScreen(isset($_POST['showFullScreen']) ? $_POST['showFullScreen'] == 'true' : false);
     $settings->setShowMagnifyingGlass(isset($_POST['showMagnifyingGlass']) ? $_POST['showMagnifyingGlass'] == 'true' : false);
-	$settings->setTileLayers(array($tileLayer));
+	$settings->setTileLayers($tileLayer);
 	$settings->setUnitSystem($unitSystem);
 
     if ($settings->saveSettings()) {

@@ -206,5 +206,5 @@
                 $progressLabel = null;
             }
         };
-    }
+    };
 })(jQuery);

@@ -1,5 +1,7 @@
 body, html {
-    height: 100%;
+	height: auto !important;
+    min-height: 100% !important;
+    overflow: auto !important;
 }
 
 .abp01-button-icon, .abp01-editor-icon {
@@ -320,4 +322,8 @@ a.abp01-close-editor:hover {
 
 .abp01-settings-info {
     font-style: italic;
+}
+
+.abp01-settings-save-result {
+	margin-left: 0px !important;
 }
