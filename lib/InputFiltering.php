@@ -1,4 +1,8 @@
 <?php
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+	exit;
+}
+
 class Abp01_InputFiltering {
 	public static function filterSingleValue($input, $asType) {
 		if (get_magic_quotes_gpc()) {
@@ -16,19 +20,19 @@ class Abp01_InputFiltering {
 		}
 		return $input;
 	}
-	
+
 	public static function filterValue($input, $asType) {
 		$extraParams = array();
 		$nArgs = func_num_args();
 		$callback = array(__CLASS__, 'filterSingleValue');
 		$callbackRecurse = array(__CLASS__, 'filterValue');
-		
+
 		if ($nArgs > 2) {
-			for ($i = 2; $i < $nArgs; $i ++) {
+			for ($i = 2; $i < $nArgs; $i++) {
 				$extraParams = func_get_arg($i);
 			}
 		}
-		
+
 		if (is_array($input)) {
 			$result = array();
 			foreach ($input as $value) {
@@ -47,4 +51,5 @@ class Abp01_InputFiltering {
 			return call_user_func_array($callback, array_merge(array($input, $asType), $extraParams));
 		}
 	}
+
 }

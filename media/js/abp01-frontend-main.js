@@ -4,6 +4,7 @@
 	var map = null;
 	var context = null;
 	var settings = null;
+	var settings = null;
 	var hasSkippedContent = false;
 	var scrollTimer = null;
 
@@ -36,8 +37,6 @@
 	}
 
 	function showMap() {
-		var settings = getSettings();
-		
 		$ctrlMapTabContainer.show();
 		map = $ctrlMapHolder.mapTrack({
 			tileLayer: settings.mapTileLayer,
@@ -88,12 +87,12 @@
 	}
 
 	function getSettings() {
-		var pluginSettings = jQuery.extend({}, window['abp01Settings'] || {});
-		pluginSettings.showTeaser = pluginSettings.showTeaser === 'true';
-		pluginSettings.mapShowFullScreen = pluginSettings.mapShowFullScreen === 'true';
-		pluginSettings.mapShowMagnifyingGlass = pluginSettings.mapShowMagnifyingGlass === 'true';
-		pluginSettings.mapTileLayer = pluginSettings.mapTileLayer || {};
-		return pluginSettings;
+		return {
+			showTeaser: abp01Settings.showTeaser === 'true',
+			mapShowFullScreen: abp01Settings.mapShowFullScreen === 'true',
+			mapShowMagnifyingGlass: abp01Settings.mapShowMagnifyingGlass === 'true',
+			mapTileLayer: abp01Settings.mapTileLayer || {}
+		};
 	}
 
 	function getAjaxLoadTrackUrl() {
@@ -125,7 +124,7 @@
 			updateHash : false
 		});
 
-		$ctrlTechboxTabs.bind('easytabs:after', function(e, $clicked, $target, settings) {
+		$ctrlTechboxTabs.bind('easytabs:after', function(e, $clicked, $target, eventSettings) {
 			if ($target.attr('id') == 'abp01-techbox-map') {
 				if (map != null) {
 					map.forceRedraw();
@@ -137,6 +136,7 @@
 	}
 
 	function initTeasers() {
+		//skip teaser initialization if it has been hidden
 		if (!settings.showTeaser) {
 			return;
 		}

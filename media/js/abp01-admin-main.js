@@ -33,6 +33,7 @@
     var formMapRendered = false;
     var firstTime = true;
     var uploader = null;
+    var settings = null;
     var context = null;
     var map = null;
 
@@ -654,8 +655,6 @@
     }
 
     function showMap() {
-    	var settings = getSettings();
-    	   	
         $ctrlFormMapContainer.empty()
             .html(renderFormMapUploaded());
 
@@ -703,11 +702,14 @@
     }
     
     function getSettings() {
-    	return window['abp01Settings'];
+    	return {
+    		mapTileLayer: abp01Settings.mapTileLayer || {}
+    	};
     }
 
     function initEditorState() {
         context = getContext();
+        settings = getSettings();
         baseTitle = window['abp01_baseTitle'] || '';
     }
 

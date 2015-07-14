@@ -896,6 +896,13 @@ function abp01_get_info($content) {
 	$data->settings->showTeaser = $settings->getShowTeaser();
 	$data->settings->topTeaserText =  abp01_escape_value($settings->getTopTeaserText());
 	$data->settings->bottomTeaserText = abp01_escape_value($settings->getBottomTeaserText());
+	
+	//get measurement units from the configured unit system
+	$unitSystem = Abp01_UnitSystem::create($settings->getUnitSystem());
+	$data->unitSystem = new stdClass();
+	$data->unitSystem->distanceUnit = $unitSystem->getDistanceUnit();
+	$data->unitSystem->lengthUnit = $unitSystem->getLengthUnit();
+	$data->unitSystem->heightUnit = $unitSystem->getHeightUnit();
 
 	//render the teaser and the viewer and attach the results to the post content
 	if ($data->info->exists || $data->track->exists) {
@@ -974,6 +981,7 @@ function abp01_upload_track() {
 	$currentUserId = get_current_user_id();
 	$destination = abp01_get_track_upload_destination($postId);
 
+	//detect chunking
 	if (ABP01_TRACK_UPLOAD_CHUNK_SIZE > 0) {
 		$chunk = isset($_REQUEST['chunk']) ? intval($_REQUEST['chunk']) : 0;
 		$chunks = isset($_REQUEST['chunks']) ? intval($_REQUEST['chunks']) : 0;
@@ -982,7 +990,18 @@ function abp01_upload_track() {
 	}
 
 	//create and configure the uploader
-	$uploader = new Abp01_Uploader(ABP01_TRACK_UPLOAD_KEY, $destination, array('chunk' => $chunk, 'chunks' => $chunks, 'chunkSize' => ABP01_TRACK_UPLOAD_CHUNK_SIZE, 'maxFileSize' => ABP01_TRACK_UPLOAD_MAX_FILE_SIZE, 'allowedFileTypes' => array('application/gpx', 'application/x-gpx+xml', 'application/xml-gpx', 'application/xml', 'text/xml')));
+	$uploader = new Abp01_Uploader(ABP01_TRACK_UPLOAD_KEY, $destination, array(
+		'chunk' => $chunk, 
+		'chunks' => $chunks, 
+		'chunkSize' => ABP01_TRACK_UPLOAD_CHUNK_SIZE, 
+		'maxFileSize' => ABP01_TRACK_UPLOAD_MAX_FILE_SIZE, 
+		'allowedFileTypes' => array(
+			'application/gpx', 
+			'application/x-gpx+xml', 
+			'application/xml-gpx', 
+			'application/xml', 
+			'text/xml'
+	)));
 	$uploader->setCustomValidator(array(new Abp01_Validate_GpxDocument(), 'validate'));
 
 	$result = new stdClass();

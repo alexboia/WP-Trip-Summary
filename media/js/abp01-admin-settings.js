@@ -31,6 +31,11 @@
 		};
 	}
 
+	/**
+	 * Show or hide the progress indicator
+	 * @param boolean show Whether to show or hide the progress indicator
+	 * @return void
+	 *  */
     function toggleBusy(show) {
         if (show) {
             if (progressBar == null) {
@@ -47,6 +52,10 @@
         }
     }
     
+    /**
+     * Construct the URL that will handle the form save action
+     * @return string The constructed URL
+     *  */
     function getFormSaveUrl() {
     	return URI(context.ajaxBaseUrl)
     		.addSearch('action', context.ajaxSaveAction)
@@ -54,33 +63,45 @@
     		.toString();
     }
     
+    /**
+     * Display the operation result
+     * @param boolean success The success status
+     * @param string message The message to display
+     * @return void
+     *  */
     function displaySaveResult(success, message) {
+    	//first clear the result container
     	$ctrlSettingsSaveResult
     		.removeClass('notice')
     		.removeClass('error')
     		.html('');
 
-    	if (success) {
-    		$ctrlSettingsSaveResult.addClass('notice');
-    	} else {
-    		$ctrlSettingsSaveResult.addClass('error');
-    	}
-    	
-    	$ctrlSettingsSaveResult
-    		.html('<p>' + message + '</p>')
+		//style the message box according to success/error status
+		//and show the message
+		$ctrlSettingsSaveResult
+			.addClass(success ? 'notice' : 'error')
+			.html('<p>' + message + '</p>')
     		.show();
-    		
-		$('body,html').animate({
-            scrollTop: $ctrlSettingsFormBeacon.offset().top
-        }, 500);
+
+    	//scroll back to the top of the page
+		$('body,html').scrollTop(0);
     }
     
+    /**
+     * Clears and hides the operation result
+     * @return void
+     *  */
     function hideSaveResult() {
     	$ctrlSettingsSaveResult.hide()
     		.html('');
     }
 
-    function saveSettings(onReady) {
+	/**
+	 * Saves the settings form and displays the result. 
+	 * The operation is async and a progress indicator is displayed while it's underway
+	 * @return void
+	 *  */
+    function saveSettings() {
     	toggleBusy(true);
     	hideSaveResult();
     	$.ajax(getFormSaveUrl(), {
@@ -101,12 +122,20 @@
     	});
     }
     
+    /**
+     * Initializes and caches controls references for future use
+     * @return void
+     *  */
     function initControls() {
     	$ctrlSettingsForm = $('#abp01-settings-form');
     	$ctrlSettingsFormBeacon = $('#abp01-settings-form-beacon');
     	$ctrlSettingsSaveResult = $('#abp01-settings-save-result');
     }
 
+	/**
+	 * Set default styles for the blockUI overlay manager
+	 * @return void
+	 *  */
     function initBlockUIDefaultStyles() {
         $.blockUI.defaults.css = {
             width: '100%',
@@ -114,7 +143,11 @@
         };
     }
 
-    function initSaveListener() {
+	/**
+	 * Initialize event listeners
+	 * @return void
+	 *  */
+    function initListeners() {
         $('#abp01-submit-settings').click(saveSettings);
     }
     
@@ -130,6 +163,6 @@
         initFormState();
         initControls();
         initBlockUIDefaultStyles();
-        initSaveListener();
+        initListeners();
     });
 })(jQuery);

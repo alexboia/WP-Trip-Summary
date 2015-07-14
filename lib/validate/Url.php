@@ -1,4 +1,8 @@
 <?php
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+	exit;
+}
+
 class Abp01_Validate_Url {
 	private $_allowEmpty = true;
 	

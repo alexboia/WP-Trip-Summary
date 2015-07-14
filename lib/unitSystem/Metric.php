@@ -1,5 +1,9 @@
 <?php
-class Abp01_UnitSystem_Metric {
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+	exit;
+}
+
+class Abp01_UnitSystem_Metric extends Abp01_UnitSystem {
 	public function getDistanceUnit() {
 		return 'km';
 	}

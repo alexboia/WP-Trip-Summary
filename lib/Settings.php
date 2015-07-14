@@ -152,7 +152,7 @@ class Abp01_Settings {
 	}
 
 	public function getUnitSystem() {
-		return $this->_getOption(self::OPT_UNIT_SYSTEM, 'string', 'metric');
+		return $this->_getOption(self::OPT_UNIT_SYSTEM, 'string', Abp01_UnitSystem::METRIC);
 	}
 
 	public function setUnitSystem($unitSystem) {
@@ -177,5 +177,4 @@ class Abp01_Settings {
 	public function getAllowedUnitSystems() {
 		return array(Abp01_UnitSystem::METRIC, Abp01_UnitSystem::IMPERIAL);
 	}
-
 }

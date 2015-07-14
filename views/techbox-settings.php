@@ -74,7 +74,7 @@
 	        <table class="form-table">
 	            <tr>
 	                <th scope="row">
-	                    <label for="abp01-tileLayerUrl"><?php echo __('Tile layer URL', 'abp01-trip-summary'); ?>:</label>
+	                    <label for="abp01-tileLayerUrl"><?php echo __('Tile layer URL template', 'abp01-trip-summary'); ?>:</label>
 	                </th>
 	                <td>
 	                    <input type="text" id="abp01-tileLayerUrl" name="tileLayerUrl" class="regular-text abp01-text-input" value="<?php echo $data->settings->tileLayer->url; ?>" />
