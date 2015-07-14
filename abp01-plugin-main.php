@@ -890,11 +890,12 @@ function abp01_get_info($content) {
 	$data->ajaxGetTrackAction = ABP01_ACTION_GET_TRACK;
 	$data->imgBaseUrl = plugins_url('media/img', __FILE__);
 	
+	//get relevant plug-in settings
 	$settings = Abp01_Settings::getInstance();
 	$data->settings = new stdClass();
 	$data->settings->showTeaser = $settings->getShowTeaser();
-	$data->settings->topTeaserText = $settings->getTopTeaserText();
-	$data->settings->bottomTeaserText = $settings->getBottomTeaserText();
+	$data->settings->topTeaserText =  abp01_escape_value($settings->getTopTeaserText());
+	$data->settings->bottomTeaserText = abp01_escape_value($settings->getBottomTeaserText());
 
 	//render the teaser and the viewer and attach the results to the post content
 	if ($data->info->exists || $data->track->exists) {
@@ -997,9 +998,8 @@ function abp01_upload_track() {
 			if ($route && !$parser->hasErrors()) {
 				$manager = Abp01_Route_Manager::getInstance();
 				$destination = plugin_basename($destination);
-
 				$track = new Abp01_Route_Track($destination, $route->getBounds(), $route->minAlt, $route->maxAlt);
-
+				
 				if (!$manager->saveRouteTrack($postId, $currentUserId, $track)) {
 					$result->status = Abp01_Uploader::UPLOAD_INTERNAL_ERROR;
 				}
