@@ -15,8 +15,14 @@
         opts = $.extend({
             showFullScreen: false,
             showMagnifyingGlass: false,
-            showScale: true
+            showScale: true,
+            tileLayer: null
         }, opts);
+        
+        //tile layer is mandatory, so we will exit with error if not provided
+        if (!opts.tileLayer || !opts.tileLayer.url) {
+        	throw new Error('No valid tile layer configuration provided');
+        }
 
         /**
          * Check if the plug-ins required for showing the magnifying glass are loaded
@@ -70,12 +76,38 @@
                 forceSeparateButton: true
             }).addTo(map);
         }
+        
+        /**
+         * Render the tile layer attribution from th given options:
+         * - tileLayer.attributionTxt - the label of the attribution text;
+         * - tileLayer.attributionUrl - URL to point to (maybe author home page or further credits page)
+         * 
+         * @param opts object The options used to initialize the plug-in
+         * @return string The rendered attribution text
+         *  */
+        function getTileLayerAttribution(opts) {
+        	var tileLayerAttribution = null;
+        	var tileLayerAttributionTxt = opts.tileLayer.attributionTxt || opts.tileLayer.attributionUrl;            
+            
+            //only display attribution if there is a label (which is comprised of either the configured text or URL)
+            if (tileLayerAttributionTxt) {
+            	//if we have an URL, then display as an HTML link
+            	if (opts.tileLayer.attributionUrl) {
+            		tileLayerAttribution = '<a href="' + opts.tileLayer.attributionUrl + '" target="_blank">&copy; ' + tileLayerAttributionTxt + '</a>';
+            	} else {
+            		//otherwise, just display it as plain text
+            		tileLayerAttribution = '&copy; ' + tileLayerAttributionTxt;
+            	}
+            }
+            
+            return tileLayerAttribution;
+        }
 
         function renderMap(bounds) {
             var centerLat = (bounds.northEast.lat - bounds.southWest.lat) / 2;
             var centerLng = (bounds.northEast.lng - bounds.southWest.lng) / 2;
-            var tileLayerUrl = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
-
+            var tileLayerUrl = opts.tileLayer.url;                        
+ 
             map = L.map($me.attr('id'), {
                 center: L.latLng(centerLat, centerLng),
                 fullscreenControl: opts.showFullScreen && isFullScreenCapabilityLoaded()
@@ -93,7 +125,7 @@
             ));
 
             map.addLayer(L.tileLayer(tileLayerUrl, {
-                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                attribution: getTileLayerAttribution(opts)
             }));
 
             if (opts.showMagnifyingGlass && isMagnifyingGlassCapabilityLoaded()) {

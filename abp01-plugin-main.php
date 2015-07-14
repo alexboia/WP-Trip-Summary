@@ -45,18 +45,18 @@ define('ABP01_TRACK_UPLOAD_MAX_FILE_SIZE', max(wp_max_upload_size(), 10485760));
  * @return void
  */
 function abp01_init_autoloaders() {
-    require_once ABP01_LIB_DIR . '/Autoloader.php';
-    Abp01_Autoloader::init(ABP01_LIB_DIR);
+	require_once ABP01_LIB_DIR . '/Autoloader.php';
+	Abp01_Autoloader::init(ABP01_LIB_DIR);
 }
 
 function abp0_dump($var) {
-    if (function_exists('xdebug_var_dump')) {
-        xdebug_var_dump($var);
-    } else {
-        print '<pre>';
-        var_dump($var);
-        print '</pre>';
-    }
+	if (function_exists('xdebug_var_dump')) {
+		xdebug_var_dump($var);
+	} else {
+		print '<pre>';
+		var_dump($var);
+		print '</pre>';
+	}
 }
 
 /**
@@ -66,18 +66,14 @@ function abp0_dump($var) {
  * @return string The processed message
  */
 function abp01_append_error($message, $error) {
-    if (WP_DEBUG) {
-        if ($error instanceof Exception) {
-            $message .= sprintf(': %s (%s) in file %s line %d',
-                $error->getMessage(),
-                $error->getCode(),
-                $error->getFile(),
-                $error->getLine());
-        } else if (!empty($e)) {
-            $message .= ': ' . $e;
-        }
-    }
-    return $message;
+	if (WP_DEBUG) {
+		if ($error instanceof Exception) {
+			$message .= sprintf(': %s (%s) in file %s line %d', $error->getMessage(), $error->getCode(), $error->getFile(), $error->getLine());
+		} else if (!empty($e)) {
+			$message .= ': ' . $e;
+		}
+	}
+	return $message;
 }
 
 /**
@@ -85,12 +81,12 @@ function abp01_append_error($message, $error) {
  * @return void
  */
 function abp01_increase_limits() {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(5 * 60);
-    }
-    if (function_exists('ini_set')) {
-        @ini_set('memory_limit', WP_MAX_MEMORY_LIMIT);
-    }
+	if (function_exists('set_time_limit')) {
+		@set_time_limit(5 * 60);
+	}
+	if (function_exists('ini_set')) {
+		@ini_set('memory_limit', WP_MAX_MEMORY_LIMIT);
+	}
 }
 
 /**
@@ -99,7 +95,7 @@ function abp01_increase_limits() {
  * @return string The created nonce
  */
 function abp01_create_edit_nonce($postId) {
-    return wp_create_nonce(ABP01_NONCE_TOUR_EDITOR . ':' . $postId);
+	return wp_create_nonce(ABP01_NONCE_TOUR_EDITOR . ':' . $postId);
 }
 
 /**
@@ -108,7 +104,7 @@ function abp01_create_edit_nonce($postId) {
  * @return string The created nonce
  */
 function abp01_create_get_track_nonce($postId) {
-    return wp_create_nonce(ABP01_NONCE_GET_TRACK . ':' . $postId);
+	return wp_create_nonce(ABP01_NONCE_GET_TRACK . ':' . $postId);
 }
 
 /**
@@ -116,7 +112,7 @@ function abp01_create_get_track_nonce($postId) {
  * @return string The created nonce
  */
 function abp01_create_edit_settings_nonce() {
-    return wp_create_nonce(ABP01_NONCE_EDIT_SETTINGS);
+	return wp_create_nonce(ABP01_NONCE_EDIT_SETTINGS);
 }
 
 /**
@@ -125,7 +121,7 @@ function abp01_create_edit_settings_nonce() {
  * @return bool True if valid, False otherwise
  */
 function abp01_verify_edit_nonce($postId) {
-    return check_ajax_referer(ABP01_NONCE_TOUR_EDITOR . ':' . $postId, 'abp01_nonce', false);
+	return check_ajax_referer(ABP01_NONCE_TOUR_EDITOR . ':' . $postId, 'abp01_nonce', false);
 }
 
 /**
@@ -134,11 +130,11 @@ function abp01_verify_edit_nonce($postId) {
  * @return bool True if valid, False otherwise
  */
 function abp01_verify_get_track_nonce($postId) {
-    return check_ajax_referer(ABP01_NONCE_GET_TRACK . ':' . $postId, 'abp01_nonce_get', false);
+	return check_ajax_referer(ABP01_NONCE_GET_TRACK . ':' . $postId, 'abp01_nonce_get', false);
 }
 
 function abp01_verify_edit_settings_nonce() {
-    return check_ajax_referer(ABP01_NONCE_EDIT_SETTINGS, 'abp01_nonce_settings', false);
+	return check_ajax_referer(ABP01_NONCE_EDIT_SETTINGS, 'abp01_nonce_settings', false);
 }
 
 /**
@@ -147,17 +143,17 @@ function abp01_verify_edit_settings_nonce() {
  * @return void
  */
 function abp01_send_json($data) {
-    $data = json_encode($data);
-    header('Content-Type: application/json');
-    if (extension_loaded('zlib') && function_exists('ini_set')) {
-        @ini_set('zlib.output_compression', false);
-        @ini_set('zlib.output_compression_level', 0);
-        if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && stripos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false) {
-            header('Content-Encoding: gzip');
-            $data = gzencode($data, 8, FORCE_GZIP);
-        }
-    }
-    die($data);
+	$data = json_encode($data);
+	header('Content-Type: application/json');
+	if (extension_loaded('zlib') && function_exists('ini_set')) {
+		@ini_set('zlib.output_compression', false);
+		@ini_set('zlib.output_compression_level', 0);
+		if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && stripos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false) {
+			header('Content-Encoding: gzip');
+			$data = gzencode($data, 8, FORCE_GZIP);
+		}
+	}
+	die($data);
 }
 
 /**
@@ -166,10 +162,10 @@ function abp01_send_json($data) {
  * @return mixed The encoded value
  */
 function abp01_escape_value($value) {
-    if (gettype($value) == 'string') {
-        $value = esc_html($value);
-    }
-    return $value;
+	if (gettype($value) == 'string') {
+		$value = esc_html($value);
+	}
+	return $value;
 }
 
 /**
@@ -178,9 +174,9 @@ function abp01_escape_value($value) {
  * @return string The computed path
  */
 function abp01_get_absolute_track_file_path(Abp01_Route_Track $track) {
-    $file = $track->getFile();
-    $parent = wp_normalize_path(realpath(dirname(__FILE__) . '/../'));
-    return wp_normalize_path($parent . '/' . $file);
+	$file = $track->getFile();
+	$parent = wp_normalize_path(realpath(dirname(__FILE__) . '/../'));
+	return wp_normalize_path($parent . '/' . $file);
 }
 
 /**
@@ -189,10 +185,10 @@ function abp01_get_absolute_track_file_path(Abp01_Route_Track $track) {
  * @return string The computed path
  */
 function abp01_get_track_upload_destination($postId) {
-    $env = Abp01_Env::getInstance();
-    $fileName = sprintf('track-%d.gpx', $postId);
-    $directory = wp_normalize_path($env->getDataDir() . '/storage');
-    return wp_normalize_path($directory . '/' . $fileName);
+	$env = Abp01_Env::getInstance();
+	$fileName = sprintf('track-%d.gpx', $postId);
+	$directory = wp_normalize_path($env->getDataDir() . '/storage');
+	return wp_normalize_path($directory . '/' . $fileName);
 }
 
 /**
@@ -200,8 +196,7 @@ function abp01_get_track_upload_destination($postId) {
  * @return string The current HTTP method or null if it cannot be determined
  */
 function abp01_get_http_method() {
-    return isset($_SERVER['REQUEST_METHOD']) ?
-        strtolower($_SERVER['REQUEST_METHOD']) : null;
+	return isset($_SERVER['REQUEST_METHOD']) ? strtolower($_SERVER['REQUEST_METHOD']) : null;
 }
 
 /**
@@ -209,10 +204,8 @@ function abp01_get_http_method() {
  * @return bool
  */
 function abp01_is_editing_post() {
-    $currentPage = Abp01_Env::getInstance()->getCurrentPage();
-    return in_array($currentPage, array(
-        'post-new.php',
-        'post.php'));
+	$currentPage = Abp01_Env::getInstance()->getCurrentPage();
+	return in_array($currentPage, array('post-new.php', 'post.php'));
 }
 
 /**
@@ -220,9 +213,9 @@ function abp01_is_editing_post() {
  * @return boolean True if on plugin settings page, false otherwise
  */
 function abp01_is_editing_settings() {
-    $currentPage = Abp01_Env::getInstance()->getCurrentPage();
-    $isOnSettingsPage = isset($_GET['page']) ? $_GET['page'] == 'abp01-trip-summary-settings' : false;
-    return $currentPage == 'admin.php' && $isOnSettingsPage;
+	$currentPage = Abp01_Env::getInstance()->getCurrentPage();
+	$isOnSettingsPage = isset($_GET['page']) ? $_GET['page'] == 'abp01-trip-summary-settings' : false;
+	return $currentPage == 'admin.php' && $isOnSettingsPage;
 }
 
 /**
@@ -233,15 +226,15 @@ function abp01_is_editing_settings() {
  * @return mixed Int if a post ID is found, null otherwise
  */
 function abp01_get_current_post_id() {
-    $post = isset($GLOBALS['post']) ? $GLOBALS['post'] : null;
-    if ($post && isset($post->ID)) {
-        return intval($post->ID);
-    } else if (isset($_GET['post'])) {
-        return intval($_GET['post']);
-    } else if (isset($_GET['abp01_postId'])) {
-        return intval($_GET['abp01_postId']);
-    }
-    return null;
+	$post = isset($GLOBALS['post']) ? $GLOBALS['post'] : null;
+	if ($post && isset($post->ID)) {
+		return intval($post->ID);
+	} else if (isset($_GET['post'])) {
+		return intval($_GET['post']);
+	} else if (isset($_GET['abp01_postId'])) {
+		return intval($_GET['abp01_postId']);
+	}
+	return null;
 }
 
 /**
@@ -251,18 +244,18 @@ function abp01_get_current_post_id() {
  * @return bool True if can edit, false otherwise
  */
 function abp01_can_edit_trip_summary($post = null) {
-    if ($post && is_object($post)) {
-        $postId = intval($post->ID);
-    } else if ($post && is_numeric($post)) {
-        $postId = $post;
-    } else {
-        $postId = abp01_get_current_post_id();
-    }
-    return Abp01_Auth::getInstance()->canEditTourSummary($postId);
+	if ($post && is_object($post)) {
+		$postId = intval($post->ID);
+	} else if ($post && is_numeric($post)) {
+		$postId = $post;
+	} else {
+		$postId = abp01_get_current_post_id();
+	}
+	return Abp01_Auth::getInstance()->canEditTourSummary($postId);
 }
 
 function abp01_can_manage_plugin_settings() {
-    return Abp01_Auth::getInstance()->canManagePluginSettings();
+	return Abp01_Auth::getInstance()->canManagePluginSettings();
 }
 
 /**
@@ -271,8 +264,8 @@ function abp01_can_manage_plugin_settings() {
  * @return string
  */
 function abp01_get_track_cache_file_path($postId) {
-    $path = sprintf('%s/data/cache/track-%d.cache', ABP01_PLUGIN_ROOT, $postId);
-    return wp_normalize_path($path);
+	$path = sprintf('%s/data/cache/track-%d.cache', ABP01_PLUGIN_ROOT, $postId);
+	return wp_normalize_path($path);
 }
 
 /**
@@ -282,8 +275,8 @@ function abp01_get_track_cache_file_path($postId) {
  * @return void
  */
 function abp01_save_cached_track($postId, Abp01_Route_Track_Document $route) {
-    $path = abp01_get_track_cache_file_path($postId);
-    file_put_contents($path, $route->serializeDocument(), LOCK_EX);
+	$path = abp01_get_track_cache_file_path($postId);
+	file_put_contents($path, $route->serializeDocument(), LOCK_EX);
 }
 
 /**
@@ -292,12 +285,12 @@ function abp01_save_cached_track($postId, Abp01_Route_Track_Document $route) {
  * @return Abp01_Route_Track_Document The deserialized document
  */
 function abp01_get_cached_track($postId) {
-    $path = abp01_get_track_cache_file_path($postId);
-    if (!is_readable($path)) {
-        return null;
-    }
-    $contents = file_get_contents($path);
-    return Abp01_Route_Track_Document::fromSerializedDocument($contents);
+	$path = abp01_get_track_cache_file_path($postId);
+	if (!is_readable($path)) {
+		return null;
+	}
+	$contents = file_get_contents($path);
+	return Abp01_Route_Track_Document::fromSerializedDocument($contents);
 }
 
 /**
@@ -305,12 +298,12 @@ function abp01_get_cached_track($postId) {
  * @return stdClass
  */
 function abp01_get_frontend_template_locations() {
-    $env = Abp01_Env::getInstance();
-    $dirs = new stdClass();
-    $dirs->default = ABP01_PLUGIN_ROOT . '/views';
-    $dirs->theme = $env->getCurrentThemeDir() . '/abp01-viewer';
-    $dirs->themeUrl = $env->getCurrentThemeUrl() . '/abp01-viewer';
-    return $dirs;
+	$env = Abp01_Env::getInstance();
+	$dirs = new stdClass();
+	$dirs->default = ABP01_PLUGIN_ROOT . '/views';
+	$dirs->theme = $env->getCurrentThemeDir() . '/abp01-viewer';
+	$dirs->themeUrl = $env->getCurrentThemeUrl() . '/abp01-viewer';
+	return $dirs;
 }
 
 /**
@@ -318,48 +311,7 @@ function abp01_get_frontend_template_locations() {
  * @return array key-value pairs where keys are javascript property names and values are the translation strings
  */
 function abp01_get_main_admin_script_translations() {
-    return array(
-        'btnClearInfo' => __('Clear info', 'abp01-trip-summary'),
-        'btnClearTrack' => __('Clear track', 'abp01-trip-summary'),
-
-        'lblPluploadFileTypeSelector' => __('GPX files', 'abp01-trip-summary'),
-        'lblGeneratingPreview' => __('Generating preview. Please wait...', 'abp01-trip-summary'),
-
-        'lblTrackUploadingWait' => __('Uploading track', 'abp01-trip-summary'),
-        'lblTrackUploaded' => __('The track has been uploaded and saved successfully', 'abp01-trip-summary'),
-
-        'lblTypeBiking' => __('Biking', 'abp01-trip-summary'),
-        'lblTypeHiking' => __('Hiking', 'abp01-trip-summary'),
-        'lblTypeTrainRide' => __('Train ride', 'abp01-trip-summary'),
-
-        'lblClearingTrackWait' => __('Clearing track. Please wait...', 'abp01-trip-summary'),
-        'lblTrackClearOk' => __('The track has been successfully cleared', 'abp01-trip-summary'),
-        'lblTrackClearFail' => __('The data could not be updated', 'abp01-trip-summary'),
-        'lblTrackClearFailNetwork' => __('The data could not be updated due to a possible network error or an internal server issue', 'abp01-trip-summary'),
-
-        'lblSavingDataWait' => __('Saving data. Please wait...', 'abp01-trip-summary'),
-        'lblDataSaveOk' => __('The data has been saved', 'abp01-trip-summary'),
-        'lblDataSaveFail' => __('The data could not be saved', 'abp01-trip-summary'),
-        'lblDataSaveFailNetwork' => __('The data could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'),
-
-        'lblClearingInfoWait' => __('Clearing trip info. Please wait...', 'abp01-trip-summary'),
-        'lblClearInfoOk' => __('The trip info has been cleared', 'abp01-trip-summary'),
-        'lblClearInfoFail' => __('The trip info could not be cleared', 'abp01-trip-summary'),
-        'lblClearInfoFailNetwork' => __('The trip info could not be cleared due to a possible network error or an internal server issue', 'abp01-trip-summary'),
-
-        'errPluploadTooLarge' => __('The selected file is too large. Maximum allowed size is 10MB', 'abp01-trip-summary'),
-        'errPluploadFileType' => __('The selected file type is not valid. Only GPX files are allowed', 'abp01-trip-summary'),
-        'errPluploadIoError' => __('The file could not be read', 'abp01-trip-summary'),
-        'errPluploadSecurityError' => __('The file could not be read', 'abp01-trip-summary'),
-        'errPluploadInitError' => __('The uploader could not be initialized', 'abp01-trip-summary'),
-        'errPluploadHttp' => __('The file could not be uploaded', 'abp01-trip-summary'),
-
-        'errServerUploadFileType' => __('The selected file type is not valid. Only GPX files are allowed', 'abp01-trip-summary'),
-        'errServerUploadTooLarge' => __('The selected file is too large. Maximum allowed size is 10MB', 'abp01-trip-summary'),
-        'errServerUploadNoFile' => __('No file was uploaded', 'abp01-trip-summary'),
-        'errServerUploadInternal' => __('The file could not be uploaded due to a possible internal server issue', 'abp01-trip-summary'),
-        'errServerUploadFail' => __('The file could not be uploaded', 'abp01-trip-summary')
-    );
+	return array('btnClearInfo' => __('Clear info', 'abp01-trip-summary'), 'btnClearTrack' => __('Clear track', 'abp01-trip-summary'), 'lblPluploadFileTypeSelector' => __('GPX files', 'abp01-trip-summary'), 'lblGeneratingPreview' => __('Generating preview. Please wait...', 'abp01-trip-summary'), 'lblTrackUploadingWait' => __('Uploading track', 'abp01-trip-summary'), 'lblTrackUploaded' => __('The track has been uploaded and saved successfully', 'abp01-trip-summary'), 'lblTypeBiking' => __('Biking', 'abp01-trip-summary'), 'lblTypeHiking' => __('Hiking', 'abp01-trip-summary'), 'lblTypeTrainRide' => __('Train ride', 'abp01-trip-summary'), 'lblClearingTrackWait' => __('Clearing track. Please wait...', 'abp01-trip-summary'), 'lblTrackClearOk' => __('The track has been successfully cleared', 'abp01-trip-summary'), 'lblTrackClearFail' => __('The data could not be updated', 'abp01-trip-summary'), 'lblTrackClearFailNetwork' => __('The data could not be updated due to a possible network error or an internal server issue', 'abp01-trip-summary'), 'lblSavingDataWait' => __('Saving data. Please wait...', 'abp01-trip-summary'), 'lblDataSaveOk' => __('The data has been saved', 'abp01-trip-summary'), 'lblDataSaveFail' => __('The data could not be saved', 'abp01-trip-summary'), 'lblDataSaveFailNetwork' => __('The data could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'), 'lblClearingInfoWait' => __('Clearing trip info. Please wait...', 'abp01-trip-summary'), 'lblClearInfoOk' => __('The trip info has been cleared', 'abp01-trip-summary'), 'lblClearInfoFail' => __('The trip info could not be cleared', 'abp01-trip-summary'), 'lblClearInfoFailNetwork' => __('The trip info could not be cleared due to a possible network error or an internal server issue', 'abp01-trip-summary'), 'errPluploadTooLarge' => __('The selected file is too large. Maximum allowed size is 10MB', 'abp01-trip-summary'), 'errPluploadFileType' => __('The selected file type is not valid. Only GPX files are allowed', 'abp01-trip-summary'), 'errPluploadIoError' => __('The file could not be read', 'abp01-trip-summary'), 'errPluploadSecurityError' => __('The file could not be read', 'abp01-trip-summary'), 'errPluploadInitError' => __('The uploader could not be initialized', 'abp01-trip-summary'), 'errPluploadHttp' => __('The file could not be uploaded', 'abp01-trip-summary'), 'errServerUploadFileType' => __('The selected file type is not valid. Only GPX files are allowed', 'abp01-trip-summary'), 'errServerUploadTooLarge' => __('The selected file is too large. Maximum allowed size is 10MB', 'abp01-trip-summary'), 'errServerUploadNoFile' => __('No file was uploaded', 'abp01-trip-summary'), 'errServerUploadInternal' => __('The file could not be uploaded due to a possible internal server issue', 'abp01-trip-summary'), 'errServerUploadFail' => __('The file could not be uploaded', 'abp01-trip-summary'));
 }
 
 /**
@@ -367,12 +319,7 @@ function abp01_get_main_admin_script_translations() {
  * @return array key-value pairs where keys are javascript property names and values are the translation strings
  */
 function abp01_get_settings_admin_script_translations() {
-	return array(
-		'errSaveFailNetwork' => __('The settings could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'),
-		'errSaveFailGeneric' => __('The settings could not be saved due to a possible internal server issue', 'abp01-trip-summary'),
-		'msgSaveOk' => __('Settings successfully saved', 'abp01-trip-summary'),
-		'msgSaveWorking' => __('Saving settings. Please wait...', 'abp01-trip-summary')
- 	);
+	return array('errSaveFailNetwork' => __('The settings could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'), 'errSaveFailGeneric' => __('The settings could not be saved due to a possible internal server issue', 'abp01-trip-summary'), 'msgSaveOk' => __('Settings successfully saved', 'abp01-trip-summary'), 'msgSaveWorking' => __('Saving settings. Please wait...', 'abp01-trip-summary'));
 }
 
 /**
@@ -380,20 +327,9 @@ function abp01_get_settings_admin_script_translations() {
  * @return array key-value pairs where keys are installation error codes and values are the translated strings
  */
 function abp01_get_installation_error_translations() {
-    $env = Abp01_Env::getInstance();
-    load_plugin_textdomain('abp01-trip-summary', false, dirname(plugin_basename(__FILE__)) . '/lang/');
-    return array(
-        Abp01_Installer::INCOMPATIBLE_PHP_VERSION =>
-            sprintf(__('Minimum required PHP version is %s', 'abp01-trip-summary'), $env->getRequiredPhpVersion()),
-        Abp01_Installer::INCOMPATIBLE_WP_VERSION =>
-            sprintf(__('Minimum required WP version is %s', 'abp01-trip-summary'), $env->getRequiredWpVersion()),
-        Abp01_Installer::SUPPORT_LIBXML_NOT_FOUND =>
-            __('LIBXML support was not found on your system', 'abp01-trip-summary'),
-        Abp01_Installer::SUPPORT_MYSQLI_NOT_FOUND =>
-            __('Mysqli extension was not found on your system or is not fully compatible', 'abp01-trip-summary'),
-        Abp01_Installer::SUPPORT_MYSQL_SPATIAL_NOT_FOUND =>
-            __('MySQL spatial support was not found on your system', 'abp01-trip-summary')
-    );
+	$env = Abp01_Env::getInstance();
+	load_plugin_textdomain('abp01-trip-summary', false, dirname(plugin_basename(__FILE__)) . '/lang/');
+	return array(Abp01_Installer::INCOMPATIBLE_PHP_VERSION => sprintf(__('Minimum required PHP version is %s', 'abp01-trip-summary'), $env->getRequiredPhpVersion()), Abp01_Installer::INCOMPATIBLE_WP_VERSION => sprintf(__('Minimum required WP version is %s', 'abp01-trip-summary'), $env->getRequiredWpVersion()), Abp01_Installer::SUPPORT_LIBXML_NOT_FOUND => __('LIBXML support was not found on your system', 'abp01-trip-summary'), Abp01_Installer::SUPPORT_MYSQLI_NOT_FOUND => __('Mysqli extension was not found on your system or is not fully compatible', 'abp01-trip-summary'), Abp01_Installer::SUPPORT_MYSQL_SPATIAL_NOT_FOUND => __('MySQL spatial support was not found on your system', 'abp01-trip-summary'));
 }
 
 /**
@@ -401,7 +337,7 @@ function abp01_get_installation_error_translations() {
  * @return array key-value pairs where keys are javascript property names and values are the translation strings
  */
 function abp01_get_main_frontend_translations() {
-    return array();
+	return array();
 }
 
 /**
@@ -410,7 +346,7 @@ function abp01_get_main_frontend_translations() {
  * @return void
  */
 function abp01_render_techbox_button(stdClass $data) {
-    require_once ABP01_PLUGIN_ROOT . '/views/techbox-button.php';
+	require_once ABP01_PLUGIN_ROOT . '/views/techbox-button.php';
 }
 
 /**
@@ -419,8 +355,8 @@ function abp01_render_techbox_button(stdClass $data) {
  * @return void
  */
 function abp01_render_techbox_editor(stdClass $data) {
-    require_once ABP01_PLUGIN_ROOT . '/views/helpers/controls.php';
-    require_once ABP01_PLUGIN_ROOT . '/views/techbox-editor.php';
+	require_once ABP01_PLUGIN_ROOT . '/views/helpers/controls.php';
+	require_once ABP01_PLUGIN_ROOT . '/views/techbox-editor.php';
 }
 
 /**
@@ -429,13 +365,11 @@ function abp01_render_techbox_editor(stdClass $data) {
  * @return void
  */
 function abp01_admin_settings_page_render(stdClass $data) {
-    require_once ABP01_PLUGIN_ROOT . '/views/techbox-settings.php';
+	require_once ABP01_PLUGIN_ROOT . '/views/techbox-settings.php';
 }
 
 function abp01_create_admin_menu() {
-    add_menu_page(__('Trip Summary Settings', 'abp01-trip-summary'), __('Trip Summary', 'abp01-trip-summary'), Abp01_Auth::CAP_MANAGE_TOUR_SUMMARY,
-        'abp01-trip-summary-settings','abp01_admin_settings_page',
-            'dashicons-chart-area', 81);
+	add_menu_page(__('Trip Summary Settings', 'abp01-trip-summary'), __('Trip Summary', 'abp01-trip-summary'), Abp01_Auth::CAP_MANAGE_TOUR_SUMMARY, 'abp01-trip-summary-settings', 'abp01_admin_settings_page', 'dashicons-chart-area', 81);
 }
 
 /**
@@ -444,51 +378,51 @@ function abp01_create_admin_menu() {
  * @return void
  */
 function abp01_render_techbox_frontend(stdClass $data) {
-    $locations = abp01_get_frontend_template_locations();
-    $themeHelpers = $locations->theme . '/helpers/controls.frontend.php';
+	$locations = abp01_get_frontend_template_locations();
+	$themeHelpers = $locations->theme . '/helpers/controls.frontend.php';
 
-    //if the custom viewer theme has overridden the helpers, include those helpers
-    if (is_readable($themeHelpers)) {
-        require_once $themeHelpers;
-    }
+	//if the custom viewer theme has overridden the helpers, include those helpers
+	if (is_readable($themeHelpers)) {
+		require_once $themeHelpers;
+	}
 
-    //include the default helpers - the actual functions will only be defined if no overrides are found
-    require_once $locations->default . '/helpers/controls.frontend.php';
+	//include the default helpers - the actual functions will only be defined if no overrides are found
+	require_once $locations->default . '/helpers/controls.frontend.php';
 
-    //if the custom viewer theme has overridden the main view, include the override
-    $themeViewer = $locations->theme . '/techbox-frontend.php';
-    if (!is_readable($themeViewer)) {
-        //otherwise, include the default main view
-        require_once $locations->default . '/techbox-frontend.php';
-    } else {
-        require_once $themeViewer;
-    }
+	//if the custom viewer theme has overridden the main view, include the override
+	$themeViewer = $locations->theme . '/techbox-frontend.php';
+	if (!is_readable($themeViewer)) {
+		//otherwise, include the default main view
+		require_once $locations->default . '/techbox-frontend.php';
+	} else {
+		require_once $themeViewer;
+	}
 }
 
 /**
  * Render the trip summary teaser
  * @param stdClass $data The trip summary and context data
  */
-function abp01_render_techbox_frontend_teaser(stdClass $data) {
-    $locations = abp01_get_frontend_template_locations();
-    $themeHelpers = $locations->theme . '/helpers/controls.frontend.php';
+function abp01_render_techbox_frontend_teaser(stdClass $data) {	
+	$locations = abp01_get_frontend_template_locations();
+	$themeHelpers = $locations->theme . '/helpers/controls.frontend.php';
 
-    //if the custom viewer theme has overridden the helpers, include those helpers
-    if (is_readable($themeHelpers)) {
-        require_once $themeHelpers;
-    }
+	//if the custom viewer theme has overridden the helpers, include those helpers
+	if (is_readable($themeHelpers)) {
+		require_once $themeHelpers;
+	}
 
-    //include the default helpers - the actual functions will only be defined if no overrides are found
-    require_once $locations->default . '/helpers/controls.frontend.php';
+	//include the default helpers - the actual functions will only be defined if no overrides are found
+	require_once $locations->default . '/helpers/controls.frontend.php';
 
-    //if the custom viewer theme has overridden the teaser view, include the override
-    $themeTeaser = $locations->theme . '/techbox-frontend-teaser.php';
-    if (!is_readable($themeTeaser)) {
-        //otherwise, include the default teaser view
-        require_once $locations->default . '/techbox-frontend-teaser.php';
-    } else {
-        require_once $themeTeaser;
-    }
+	//if the custom viewer theme has overridden the teaser view, include the override
+	$themeTeaser = $locations->theme . '/techbox-frontend-teaser.php';
+	if (!is_readable($themeTeaser)) {
+		//otherwise, include the default teaser view
+		require_once $locations->default . '/techbox-frontend-teaser.php';
+	} else {
+		require_once $themeTeaser;
+	}
 }
 
 /**
@@ -496,23 +430,23 @@ function abp01_render_techbox_frontend_teaser(stdClass $data) {
  * @return void
  */
 function abp01_activate() {
-    if (!current_user_can('activate_plugins')) {
-        return;
-    }
-    $installer = new Abp01_Installer();
-    $test = $installer->canBeInstalled();
-    if ($test !== 0) {
-        $errors = abp01_get_installation_error_translations();
-        $message = isset($errors[$test]) ? $errors[$test] : __('The plugin cannot be installed on your system', 'abp01-trip-summary');
-        deactivate_plugins(plugin_basename(__FIILE__));
-        wp_die($message);
-    } else if ($test === false) {
-        wp_die(abp01_append_error('Failed plug-in compatibility check', $installer->getLastError()), 'Activation error');
-    } else {
-        if (!$installer->activate()) {
-            wp_die(abp01_append_error('Could not activate plug-in', $installer->getLastError()), 'Activation error');
-        }
-    }
+	if (!current_user_can('activate_plugins')) {
+		return;
+	}
+	$installer = new Abp01_Installer();
+	$test = $installer->canBeInstalled();
+	if ($test !== 0) {
+		$errors = abp01_get_installation_error_translations();
+		$message = isset($errors[$test]) ? $errors[$test] : __('The plugin cannot be installed on your system', 'abp01-trip-summary');
+		deactivate_plugins(plugin_basename(__FIILE__));
+		wp_die($message);
+	} else if ($test === false) {
+		wp_die(abp01_append_error('Failed plug-in compatibility check', $installer->getLastError()), 'Activation error');
+	} else {
+		if (!$installer->activate()) {
+			wp_die(abp01_append_error('Could not activate plug-in', $installer->getLastError()), 'Activation error');
+		}
+	}
 }
 
 /**
@@ -520,13 +454,13 @@ function abp01_activate() {
  * @return void
  */
 function abp01_deactivate() {
-    if (!current_user_can('activate_plugins')) {
-        return;
-    }
-    $installer = new Abp01_Installer();
-    if (!$installer->deactivate()) {
-        wp_die(abp01_append_error('Could not deactivate plug-in', $installer->getLastError()), 'Deactivation error');
-    }
+	if (!current_user_can('activate_plugins')) {
+		return;
+	}
+	$installer = new Abp01_Installer();
+	if (!$installer->deactivate()) {
+		wp_die(abp01_append_error('Could not deactivate plug-in', $installer->getLastError()), 'Deactivation error');
+	}
 }
 
 /**
@@ -534,21 +468,21 @@ function abp01_deactivate() {
  * @return void
  */
 function abp01_uninstall() {
-    if (!current_user_can('activate_plugins')) {
-        return;
-    }
-    $installer = new Abp01_Installer();
-    if (!$installer->uninstall()) {
-        wp_die(abp01_append_error('Could not uninstall plug-in', $installer->getLastError()), 'Uninstall error');
-    }
+	if (!current_user_can('activate_plugins')) {
+		return;
+	}
+	$installer = new Abp01_Installer();
+	if (!$installer->uninstall()) {
+		wp_die(abp01_append_error('Could not uninstall plug-in', $installer->getLastError()), 'Uninstall error');
+	}
 }
 
 /**
  * Run plug-in init sequence
  */
 function abp01_init_plugin() {
-    Abp01_Includes::setRefPluginsPath(__FILE__);
-    load_plugin_textdomain('abp01-trip-summary', false, dirname(plugin_basename(__FILE__)) . '/lang/');
+	Abp01_Includes::setRefPluginsPath(__FILE__);
+	load_plugin_textdomain('abp01-trip-summary', false, dirname(plugin_basename(__FILE__)) . '/lang/');
 }
 
 /**
@@ -557,7 +491,7 @@ function abp01_init_plugin() {
  * @return void
  */
 function abp01_add_editor_media_buttons() {
-    abp01_render_techbox_button(new stdClass());
+	abp01_render_techbox_button(new stdClass());
 }
 
 /**
@@ -566,66 +500,66 @@ function abp01_add_editor_media_buttons() {
  * @return void
  */
 function abp01_add_admin_editor($post) {
-    if (!abp01_can_edit_trip_summary($post)) {
-        return;
-    }
+	if (!abp01_can_edit_trip_summary($post)) {
+		return;
+	}
 
-    $data = new stdClass();
-    $lookup = Abp01_Lookup::getInstance();
-    $manager = Abp01_Route_Manager::getInstance();
+	$data = new stdClass();
+	$lookup = Abp01_Lookup::getInstance();
+	$manager = Abp01_Route_Manager::getInstance();
 
-    //get the lookup data
-    $data->difficultyLevels = $lookup->getDifficultyLevelOptions();
-    $data->pathSurfaceTypes = $lookup->getPathSurfaceTypeOptions();
-    $data->recommendedSeasons = $lookup->getRecommendedSeasonsOptions();
-    $data->bikeTypes = $lookup->getBikeTypeOptions();
-    $data->railroadOperators = $lookup->getRailroadOperatorOptions();
-    $data->railroadLineStatuses = $lookup->getRailroadLineStatusOptions();
-    $data->railroadLineTypes = $lookup->getRailroadLineTypeOptions();
-    $data->railroadElectrification = $lookup->getRailroadElectrificationOptions();
+	//get the lookup data
+	$data->difficultyLevels = $lookup->getDifficultyLevelOptions();
+	$data->pathSurfaceTypes = $lookup->getPathSurfaceTypeOptions();
+	$data->recommendedSeasons = $lookup->getRecommendedSeasonsOptions();
+	$data->bikeTypes = $lookup->getBikeTypeOptions();
+	$data->railroadOperators = $lookup->getRailroadOperatorOptions();
+	$data->railroadLineStatuses = $lookup->getRailroadLineStatusOptions();
+	$data->railroadLineTypes = $lookup->getRailroadLineTypeOptions();
+	$data->railroadElectrification = $lookup->getRailroadElectrificationOptions();
 
-    //current context information
-    $data->postId = intval($post->ID);
-    $data->hasTrack = $manager->hasRouteTrack($post->ID);
+	//current context information
+	$data->postId = intval($post->ID);
+	$data->hasTrack = $manager->hasRouteTrack($post->ID);
 
-    $data->ajaxEditInfoAction = ABP01_ACTION_EDIT;
-    $data->ajaxUploadTrackAction = ABP01_ACTION_UPLOAD_TRACK;
-    $data->ajaxGetTrackAction = ABP01_ACTION_GET_TRACK;
-    $data->ajaxClearTrackAction = ABP01_ACTION_CLEAR_TRACK;
-    $data->ajaxClearInfoAction = ABP01_ACTION_CLEAR_INFO;
+	$data->ajaxEditInfoAction = ABP01_ACTION_EDIT;
+	$data->ajaxUploadTrackAction = ABP01_ACTION_UPLOAD_TRACK;
+	$data->ajaxGetTrackAction = ABP01_ACTION_GET_TRACK;
+	$data->ajaxClearTrackAction = ABP01_ACTION_CLEAR_TRACK;
+	$data->ajaxClearInfoAction = ABP01_ACTION_CLEAR_INFO;
 
-    $data->ajaxUrl = get_admin_url(null, 'admin-ajax.php', 'admin');
-    $data->imgBaseUrl = plugins_url('media/img', __FILE__);
-    $data->nonce = abp01_create_edit_nonce($data->postId);
-    $data->nonceGet = abp01_create_get_track_nonce($data->postId);
+	$data->ajaxUrl = get_admin_url(null, 'admin-ajax.php', 'admin');
+	$data->imgBaseUrl = plugins_url('media/img', __FILE__);
+	$data->nonce = abp01_create_edit_nonce($data->postId);
+	$data->nonceGet = abp01_create_get_track_nonce($data->postId);
 
-    $data->flashUploaderUrl = includes_url('js/plupload/plupload.flash.swf');
-    $data->xapUploaderUrl = includes_url('js/plupload/plupload.silverlight.xap');
-    $data->uploadMaxFileSize = ABP01_TRACK_UPLOAD_MAX_FILE_SIZE;
-    $data->uploadChunkSize = ABP01_TRACK_UPLOAD_CHUNK_SIZE;
-    $data->uploadKey = ABP01_TRACK_UPLOAD_KEY;
+	$data->flashUploaderUrl = includes_url('js/plupload/plupload.flash.swf');
+	$data->xapUploaderUrl = includes_url('js/plupload/plupload.silverlight.xap');
+	$data->uploadMaxFileSize = ABP01_TRACK_UPLOAD_MAX_FILE_SIZE;
+	$data->uploadChunkSize = ABP01_TRACK_UPLOAD_CHUNK_SIZE;
+	$data->uploadKey = ABP01_TRACK_UPLOAD_KEY;
 
-    //the already existing values
-    $info = $manager->getRouteInfo($data->postId);
-    if ($info instanceof Abp01_Route_Info) {
-        $tripData = $info->getData();
-        foreach ($tripData as $key => $value) {
-            if (is_array($value)) {
-                $value = array_map('abp01_escape_value', $value);
-            } else {
-                $value = abp01_escape_value($value);
-            }
-            $tripData[$key] = $value;
-        }
-        $data->tourInfo = $tripData;
-        $data->tourType = $info->getType();
-    } else {
-        $data->tourType = null;
-        $data->tourInfo = null;
-    }
+	//the already existing values
+	$info = $manager->getRouteInfo($data->postId);
+	if ($info instanceof Abp01_Route_Info) {
+		$tripData = $info->getData();
+		foreach ($tripData as $key => $value) {
+			if (is_array($value)) {
+				$value = array_map('abp01_escape_value', $value);
+			} else {
+				$value = abp01_escape_value($value);
+			}
+			$tripData[$key] = $value;
+		}
+		$data->tourInfo = $tripData;
+		$data->tourType = $info->getType();
+	} else {
+		$data->tourType = null;
+		$data->tourInfo = null;
+	}
 
-    //finally, render the editor
-    abp01_render_techbox_editor($data);
+	//finally, render the editor	
+	abp01_render_techbox_editor($data);
 }
 
 /**
@@ -633,22 +567,22 @@ function abp01_add_admin_editor($post) {
  * @return void
  */
 function abp01_add_admin_styles() {
-    //if in post editing page and IF the user is allowed to edit a post's trip summary
-    //include the the styles required by the trip summary editor
-    if (abp01_is_editing_post() && abp01_can_edit_trip_summary(null)) {
-        Abp01_Includes::includeStyleNProgress();
-        Abp01_Includes::includeStyleLeaflet();
-        Abp01_Includes::includeStyleJQueryICheck();
-        Abp01_Includes::includeStyleJQueryToastr();
-        Abp01_Includes::includeStyleAdminMain();
-    }
+	//if in post editing page and IF the user is allowed to edit a post's trip summary
+	//include the the styles required by the trip summary editor
+	if (abp01_is_editing_post() && abp01_can_edit_trip_summary(null)) {
+		Abp01_Includes::includeStyleNProgress();
+		Abp01_Includes::includeStyleLeaflet();
+		Abp01_Includes::includeStyleJQueryICheck();
+		Abp01_Includes::includeStyleJQueryToastr();
+		Abp01_Includes::includeStyleAdminMain();
+	}
 
-    //if in plug-in editing page and IF the user is allowed to edit the plug-in's settings
-    //include the styles required by the settings editor
-    if (abp01_is_editing_settings() && abp01_can_manage_plugin_settings()) {
-        Abp01_Includes::includeStyleNProgress();
-        Abp01_Includes::includeStyleAdminMain();
-    }
+	//if in plug-in editing page and IF the user is allowed to edit the plug-in's settings
+	//include the styles required by the settings editor
+	if (abp01_is_editing_settings() && abp01_can_manage_plugin_settings()) {
+		Abp01_Includes::includeStyleNProgress();
+		Abp01_Includes::includeStyleAdminMain();
+	}
 }
 
 /**
@@ -656,27 +590,27 @@ function abp01_add_admin_styles() {
  * @return void
  */
 function abp01_add_frontend_styles() {
-    if (is_single()) {
-        Abp01_Includes::includeStyleDashIcons();
-        Abp01_Includes::includeStyleNProgress();
+	if (is_single()) {
+		Abp01_Includes::includeStyleDashIcons();
+		Abp01_Includes::includeStyleNProgress();
 
-        Abp01_Includes::includeStyleLeaflet();
-        Abp01_Includes::includeStyleLeafletMagnifyingGlass();
-        Abp01_Includes::includeStyleLeafletFullScreen();
+		Abp01_Includes::includeStyleLeaflet();
+		Abp01_Includes::includeStyleLeafletMagnifyingGlass();
+		Abp01_Includes::includeStyleLeafletFullScreen();
 
-        $locations = abp01_get_frontend_template_locations();
-        $cssRelativePath = 'media/css/abp01-frontend-main.css';
-        $themeCssFile = $locations->theme . '/' . $cssRelativePath;
+		$locations = abp01_get_frontend_template_locations();
+		$cssRelativePath = 'media/css/abp01-frontend-main.css';
+		$themeCssFile = $locations->theme . '/' . $cssRelativePath;
 
-        //if the the theme has overridden the css file, include the override
-        if (is_readable($themeCssFile)) {
-            $cssPath = $locations->themeUrl . '/' . $cssRelativePath;
-            wp_enqueue_style('abp01-frontend-main-css', $cssPath, array(), '0.2', 'all');
-        } else {
-            //otherwise, include the default css file
-            Abp01_Includes::includeStyleFrontendMain();
-        }
-    }
+		//if the the theme has overridden the css file, include the override
+		if (is_readable($themeCssFile)) {
+			$cssPath = $locations->themeUrl . '/' . $cssRelativePath;
+			wp_enqueue_style('abp01-frontend-main-css', $cssPath, array(), '0.2', 'all');
+		} else {
+			//otherwise, include the default css file
+			Abp01_Includes::includeStyleFrontendMain();
+		}
+	}
 }
 
 /**
@@ -684,39 +618,41 @@ function abp01_add_frontend_styles() {
  * @return void
  */
 function abp01_add_admin_scripts() {
-    if (abp01_is_editing_post() && abp01_can_edit_trip_summary(null)) {
-        Abp01_Includes::includeScriptURIJs();
-        Abp01_Includes::includeScriptJQueryICheck();
-        Abp01_Includes::includeScriptJQueryBlockUI();
-        Abp01_Includes::includeScriptJQueryToastr();
-        Abp01_Includes::includeScriptNProgress();
-        Abp01_Includes::includeScriptJQueryEasyTabs();
+	if (abp01_is_editing_post() && abp01_can_edit_trip_summary(null)) {
+		Abp01_Includes::includeScriptURIJs();
+		Abp01_Includes::includeScriptJQueryICheck();
+		Abp01_Includes::includeScriptJQueryBlockUI();
+		Abp01_Includes::includeScriptJQueryToastr();
+		Abp01_Includes::includeScriptNProgress();
+		Abp01_Includes::includeScriptJQueryEasyTabs();
 
-        Abp01_Includes::includeScriptLeaflet();
-        Abp01_Includes::includeScriptLodash();
-        Abp01_Includes::includeScriptMachina();
-        Abp01_Includes::includeScriptKiteJs();
+		Abp01_Includes::includeScriptLeaflet();
+		Abp01_Includes::includeScriptLodash();
+		Abp01_Includes::includeScriptMachina();
+		Abp01_Includes::includeScriptKiteJs();
 
-        Abp01_Includes::includeScriptMap();
-        Abp01_Includes::includeScriptProgressOverlay();
-        Abp01_Includes::includeScriptAdminEditorMain();
+		Abp01_Includes::includeScriptMap();
+		Abp01_Includes::includeScriptProgressOverlay();
+		Abp01_Includes::includeScriptAdminEditorMain();
 
-        wp_localize_script('abp01-main-admin', 'abp01MainL10n',
-            abp01_get_main_admin_script_translations());
-    }
-    if (abp01_is_editing_settings() && abp01_can_manage_plugin_settings()) {
-    	Abp01_Includes::includeScriptURIJs();
-        Abp01_Includes::includeScriptJQueryBlockUI();
-        Abp01_Includes::includeScriptKiteJs();
-        Abp01_Includes::includeScriptLodash();
-        Abp01_Includes::includeScriptMachina();
-        Abp01_Includes::includeScriptNProgress();
-        Abp01_Includes::includeScriptProgressOverlay();
-        Abp01_Includes::includeScriptAdminSettings();
+		Abp01_Includes::injectSettings(Abp01_Includes::JS_ADMIN_MAIN);
 		
-		wp_localize_script('abp01-settings-admin', 'abp01SettingsL10n', 
+		wp_localize_script(Abp01_Includes::JS_ADMIN_MAIN, 'abp01MainL10n', 
+			abp01_get_main_admin_script_translations());
+	}
+	if (abp01_is_editing_settings() && abp01_can_manage_plugin_settings()) {
+		Abp01_Includes::includeScriptURIJs();
+		Abp01_Includes::includeScriptJQueryBlockUI();
+		Abp01_Includes::includeScriptKiteJs();
+		Abp01_Includes::includeScriptLodash();
+		Abp01_Includes::includeScriptMachina();
+		Abp01_Includes::includeScriptNProgress();
+		Abp01_Includes::includeScriptProgressOverlay();
+		Abp01_Includes::includeScriptAdminSettings();
+
+		wp_localize_script(Abp01_Includes::JS_ADMIN_SETTINGS, 'abp01SettingsL10n', 
 			abp01_get_settings_admin_script_translations());
-    }
+	}
 }
 
 /**
@@ -724,72 +660,79 @@ function abp01_add_admin_scripts() {
  * @return void
  */
 function abp01_add_frontend_scripts() {
-    if (is_single()) {
-        Abp01_Includes::includeScriptJQuery();
-        Abp01_Includes::includeScriptJQueryVisible();
-        Abp01_Includes::includeScriptURIJs();
-        Abp01_Includes::includeScriptJQueryEasyTabs();
+	if (is_single()) {
+		Abp01_Includes::includeScriptJQuery();
+		Abp01_Includes::includeScriptJQueryVisible();
+		Abp01_Includes::includeScriptURIJs();
+		Abp01_Includes::includeScriptJQueryEasyTabs();
 
-        Abp01_Includes::includeScriptLeaflet();
-        Abp01_Includes::includeScriptLeafletMagnifyingGlass();
-        Abp01_Includes::includeScriptLeafletFullscreen();
+		Abp01_Includes::includeScriptLeaflet();
+		Abp01_Includes::includeScriptLeafletMagnifyingGlass();
+		Abp01_Includes::includeScriptLeafletFullscreen();
 
-        Abp01_Includes::includeScriptMap();
-        Abp01_Includes::includeScriptFrontendMain();
+		Abp01_Includes::includeScriptMap();
+		Abp01_Includes::includeScriptFrontendMain();
 
-        wp_localize_script('abp01-main-frontend', 'abp01FrontendL10n',
-            abp01_get_main_frontend_translations());
-    }
+		Abp01_Includes::injectSettings(Abp01_Includes::JS_FRONTEND_MAIN);
+
+		wp_localize_script(Abp01_Includes::JS_FRONTEND_MAIN, 'abp01FrontendL10n', 
+			abp01_get_main_frontend_translations());
+	}
 }
 
 function abp01_admin_settings_page() {
-    if (!abp01_can_manage_plugin_settings()) {
-        return;
-    }
+	if (!abp01_can_manage_plugin_settings()) {
+		return;
+	}
 
-    $data = new stdClass();
-    $data->nonce = abp01_create_edit_settings_nonce();
-    $data->ajaxSaveAction = ABP01_ACTION_SAVE_SETTINGS;
+	$data = new stdClass();
+	$data->nonce = abp01_create_edit_settings_nonce();
+	$data->ajaxSaveAction = ABP01_ACTION_SAVE_SETTINGS;
 	$data->ajaxUrl = get_admin_url(null, 'admin-ajax.php', 'admin');
-    $data->settings = new stdClass();
+	$data->settings = new stdClass();
 
-    $settings = Abp01_Settings::getInstance();
-    $allowedUnitSystems = $settings->getAllowedUnitSystems();
-    
-    $tileLayers = $settings->getTileLayers();
+	$settings = Abp01_Settings::getInstance();
+	$allowedUnitSystems = $settings->getAllowedUnitSystems();
+
+	$tileLayers = $settings->getTileLayers();
 	foreach ($tileLayers as $tileLayer) {
 		$tileLayer->url = abp01_escape_value($tileLayer->url);
 		$tileLayer->attributionUrl = abp01_escape_value($tileLayer->attributionUrl);
 		$tileLayer->attributionTxt = abp01_escape_value($tileLayer->attributionTxt);
 	}
 
-    $data->settings->showTeaser = $settings->getShowTeaser();
-    $data->settings->topTeaserText = abp01_escape_value($settings->getTopTeaserText());
-    $data->settings->bottomTeaserText = abp01_escape_value($settings->getBottomTeaserText());
-    $data->settings->tileLayer = $tileLayers[0];
-    $data->settings->showFullScreen = $settings->getShowFullScreen();
-    $data->settings->showMagnifyingGlass = $settings->getShowMagnifyingGlass();
-    $data->settings->unitSystem = $settings->getUnitSystem();
+	$data->settings->showTeaser = $settings->getShowTeaser();
+	$data->settings->topTeaserText = abp01_escape_value($settings->getTopTeaserText());
+	$data->settings->bottomTeaserText = abp01_escape_value($settings->getBottomTeaserText());
+	$data->settings->tileLayer = $tileLayers[0];
+	$data->settings->showFullScreen = $settings->getShowFullScreen();
+	$data->settings->showMagnifyingGlass = $settings->getShowMagnifyingGlass();
+	$data->settings->unitSystem = $settings->getUnitSystem();
 
-    $data->settings->allowedUnitSystems = array();
-    foreach ($allowedUnitSystems as $system) {
-        $data->settings->allowedUnitSystems[$system] = ucfirst($system);
-    }
+	$data->settings->allowedUnitSystems = array();
+	foreach ($allowedUnitSystems as $system) {
+		$data->settings->allowedUnitSystems[$system] = ucfirst($system);
+	}
 
-    abp01_admin_settings_page_render($data);
+	abp01_admin_settings_page_render($data);
 }
 
 function abp01_save_admin_settings_page_save() {
-    if (abp01_get_http_method() != 'post' || 
-    	!abp01_can_manage_plugin_settings() || 
-    	!abp01_verify_edit_settings_nonce()) {
-        die;
-    }
+	//only HTTP POST methods are allowed
+	if (abp01_get_http_method() != 'post') {
+		die;
+	}
 		
+	//current user must have the right to edit plugin settings
+	//and the received nonce must be valid
+	if (!abp01_can_manage_plugin_settings() || !abp01_verify_edit_settings_nonce()) {
+		die;
+	}
+
 	$response = new stdClass();
-    $response->success = false;
-    $response->message = null;
-	
+	$response->success = false;
+	$response->message = null;
+
 	//check that given unit system is supported
 	$unitSystem = isset($_POST['unitSystem']) ? $_POST['unitSystem'] : null;
 	if (!Abp01_UnitSystem::isSupported($unitSystem)) {
@@ -802,44 +745,44 @@ function abp01_save_admin_settings_page_save() {
 	$tileLayer->url = isset($_POST['tileLayerUrl']) ? $_POST['tileLayerUrl'] : null;
 	$tileLayer->attributionUrl = isset($_POST['tileLayerAttributionUrl']) ? $_POST['tileLayerAttributionUrl'] : null;
 	$tileLayer->attributionTxt = isset($_POST['tileLayerAttributionTxt']) ? $_POST['tileLayerAttributionTxt'] : null;
-	
+
 	//tile layer URL must not be empty
 	if (empty($tileLayer->url)) {
 		$response->message = __('Tile layer URL is required', 'abp01-trip-summary');
 		abp01_send_json($response);
 	}
-	
+
 	//check tile layer URL format
 	$tileLayerUrlValidator = new Abp01_Validate_TileLayerUrl();
 	if (!$tileLayerUrlValidator->validate($tileLayer->url)) {
 		$response->message = __('Tile layer URL does not have a valid format', 'abp01-trip-summary');
 		abp01_send_json($response);
 	}
-	
+
 	//check tile layer attribution URL, but only if not empty
-	$urlValidator = new Abp01_Validate_Url();
-	if (!empty($tileLayer->attributionUrl) && !$urlValidator->validate($tileLayer->attributionUrl)) {
+	$urlValidator = new Abp01_Validate_Url(true);
+	if (!$urlValidator->validate($tileLayer->attributionUrl)) {
 		$response->message = __('Tile layer attribution URL does not have a valid format', 'abp01-trip-summary');
 		abp01_send_json($response);
 	}
 
 	//fill in and save settings
-    $settings = Abp01_Settings::getInstance();
-    $settings->setShowTeaser(isset($_POST['showTeaser']) ? $_POST['showTeaser'] == 'true' : false);
-    $settings->setTopTeaserText(isset($_POST['topTeaserText']) ? $_POST['topTeaserText'] : null);
-    $settings->setBottomTeaserText(isset($_POST['bottomTeaserText']) ? $_POST['bottomTeaserText'] : null);    
-    $settings->setShowFullScreen(isset($_POST['showFullScreen']) ? $_POST['showFullScreen'] == 'true' : false);
-    $settings->setShowMagnifyingGlass(isset($_POST['showMagnifyingGlass']) ? $_POST['showMagnifyingGlass'] == 'true' : false);
+	$settings = Abp01_Settings::getInstance();
+	$settings->setShowTeaser(isset($_POST['showTeaser']) ? $_POST['showTeaser'] == 'true' : false);
+	$settings->setTopTeaserText(isset($_POST['topTeaserText']) ? $_POST['topTeaserText'] : null);
+	$settings->setBottomTeaserText(isset($_POST['bottomTeaserText']) ? $_POST['bottomTeaserText'] : null);
+	$settings->setShowFullScreen(isset($_POST['showFullScreen']) ? $_POST['showFullScreen'] == 'true' : false);
+	$settings->setShowMagnifyingGlass(isset($_POST['showMagnifyingGlass']) ? $_POST['showMagnifyingGlass'] == 'true' : false);
 	$settings->setTileLayers($tileLayer);
 	$settings->setUnitSystem($unitSystem);
 
-    if ($settings->saveSettings()) {
-        $response->success = true;
-    } else {
-        $response->message = __('The settings could not be saved. Please try again.', 'abp01-trip-summary');
-    }
+	if ($settings->saveSettings()) {
+		$response->success = true;
+	} else {
+		$response->message = __('The settings could not be saved. Please try again.', 'abp01-trip-summary');
+	}
 
-    abp01_send_json($response);
+	abp01_send_json($response);
 }
 
 /**
@@ -852,41 +795,41 @@ function abp01_save_admin_settings_page_save() {
  * @return void
  */
 function abp01_save_info() {
-    //only HTTP post method is allowed
-    if (abp01_get_http_method() != 'post') {
-        die;
-    }
+	//only HTTP post method is allowed
+	if (abp01_get_http_method() != 'post') {
+		die;
+	}
 
-    $postId = abp01_get_current_post_id();
-    if (!abp01_can_edit_trip_summary($postId) || !abp01_verify_edit_nonce($postId)) {
-        die;
-    }
+	$postId = abp01_get_current_post_id();
+	if (!abp01_can_edit_trip_summary($postId) || !abp01_verify_edit_nonce($postId)) {
+		die;
+	}
 
-    $type = isset($_POST['type']) ? $_POST['type'] : null;
-    if (!$type) {
-        die;
-    }
+	$type = isset($_POST['type']) ? $_POST['type'] : null;
+	if (!$type) {
+		die;
+	}
 
-    $response = new stdClass();
-    $manager = Abp01_Route_Manager::getInstance();
-    $info = new Abp01_Route_Info($type);
+	$response = new stdClass();
+	$manager = Abp01_Route_Manager::getInstance();
+	$info = new Abp01_Route_Info($type);
 
-    $response->success = false;
-    $response->message = null;
+	$response->success = false;
+	$response->message = null;
 
-    foreach ($info->getValidFieldNames() as $field) {
-        if (isset($_POST[$field])) {
-            $info->$field = $_POST[$field];
-        }
-    }
+	foreach ($info->getValidFieldNames() as $field) {
+		if (isset($_POST[$field])) {
+			$info->$field = $_POST[$field];
+		}
+	}
 
-    if ($manager->saveRouteInfo($postId, get_current_user_id(), $info)) {
-        $response->success = true;
-    } else {
-        $response->message = __('The data could not be saved due to a possible database error', 'abp01-trip-summary');
-    }
+	if ($manager->saveRouteInfo($postId, get_current_user_id(), $info)) {
+		$response->success = true;
+	} else {
+		$response->message = __('The data could not be saved due to a possible database error', 'abp01-trip-summary');
+	}
 
-    abp01_send_json($response);
+	abp01_send_json($response);
 }
 
 /**
@@ -897,68 +840,74 @@ function abp01_save_info() {
  * @return string The filtered post content
  */
 function abp01_get_info($content) {
-    $content = wpautop($content);
-    if (!is_single()) {
-        return $content;
-    }
+	$content = wpautop($content);
+	if (!is_single()) {
+		return $content;
+	}
 
-    $postId = abp01_get_current_post_id();
-    if (!$postId) {
-        return $content;
-    }
+	$postId = abp01_get_current_post_id();
+	if (!$postId) {
+		return $content;
+	}
 
-    $data = new stdClass();
-    $lookup = Abp01_Lookup::getInstance();
-    $manager = Abp01_Route_Manager::getInstance();
-    $info = $manager->getRouteInfo($postId);
+	$data = new stdClass();
+	$lookup = Abp01_Lookup::getInstance();
+	$manager = Abp01_Route_Manager::getInstance();
+	$info = $manager->getRouteInfo($postId);
 
-    $data->info = new stdClass();
-    $data->info->exists = false;
+	$data->info = new stdClass();
+	$data->info->exists = false;
 
-    $data->track = new stdClass();
-    $data->track->exists = $manager->hasRouteTrack($postId);
+	$data->track = new stdClass();
+	$data->track->exists = $manager->hasRouteTrack($postId);
 
-    //set the current trip summary information
-    if ($info) {
-        $data->info->exists = true;
-        $data->info->isBikingTour = $info->isBikingTour();
-        $data->info->isHikingTour = $info->isHikingTour();
-        $data->info->isTrainRideTour = $info->isTrainRideTour();
+	//set the current trip summary information
+	if ($info) {
+		$data->info->exists = true;
+		$data->info->isBikingTour = $info->isBikingTour();
+		$data->info->isHikingTour = $info->isHikingTour();
+		$data->info->isTrainRideTour = $info->isTrainRideTour();
 
-        foreach ($info->getData() as $field => $value) {
-            $lookupKey = $info->getLookupKey($field);
-            if ($lookupKey) {
-                if (is_array($value)) {
-                    foreach ($value as $k => $v) {
-                        $value[$k] = $lookup->lookup($lookupKey, $v);
-                    }
-                } else {
-                    $value = $lookup->lookup($lookupKey, $value);
-                }
-            }
-            $data->info->$field = $value;
-        }
-    }
+		foreach ($info->getData() as $field => $value) {
+			$lookupKey = $info->getLookupKey($field);
+			if ($lookupKey) {
+				if (is_array($value)) {
+					foreach ($value as $k => $v) {
+						$value[$k] = $lookup->lookup($lookupKey, $v);
+					}
+				} else {
+					$value = $lookup->lookup($lookupKey, $value);
+				}
+			}
+			$data->info->$field = $value;
+		}
+	}
 
-    //current context information
-    $data->postId = $postId;
-    $data->nonceGet = abp01_create_get_track_nonce($postId);
-    $data->ajaxUrl = get_admin_url(null, 'admin-ajax.php', 'admin');
-    $data->ajaxGetTrackAction = ABP01_ACTION_GET_TRACK;
-    $data->imgBaseUrl = plugins_url('media/img', __FILE__);
+	//current context information
+	$data->postId = $postId;
+	$data->nonceGet = abp01_create_get_track_nonce($postId);
+	$data->ajaxUrl = get_admin_url(null, 'admin-ajax.php', 'admin');
+	$data->ajaxGetTrackAction = ABP01_ACTION_GET_TRACK;
+	$data->imgBaseUrl = plugins_url('media/img', __FILE__);
+	
+	$settings = Abp01_Settings::getInstance();
+	$data->settings = new stdClass();
+	$data->settings->showTeaser = $settings->getShowTeaser();
+	$data->settings->topTeaserText = $settings->getTopTeaserText();
+	$data->settings->bottomTeaserText = $settings->getBottomTeaserText();
 
-    //render the teaser and the viewer and attach the results to the post content
-    if ($data->info->exists || $data->track->exists) {
-        ob_start();
-        abp01_render_techbox_frontend_teaser($data);
-        $content = ob_get_clean() . $content;
+	//render the teaser and the viewer and attach the results to the post content
+	if ($data->info->exists || $data->track->exists) {
+		ob_start();
+		abp01_render_techbox_frontend_teaser($data);
+		$content = ob_get_clean() . $content;
 
-        ob_start();
-        abp01_render_techbox_frontend($data);
-        $content = $content . ob_get_clean();
-    }
+		ob_start();
+		abp01_render_techbox_frontend($data);
+		$content = $content . ob_get_clean();
+	}
 
-    return $content;
+	return $content;
 }
 
 /**
@@ -971,28 +920,28 @@ function abp01_get_info($content) {
  * @return void
  */
 function abp01_remove_info() {
-    //only HTTP POST method is allowed
-    if (abp01_get_http_method() != 'post') {
-        die;
-    }
+	//only HTTP POST method is allowed
+	if (abp01_get_http_method() != 'post') {
+		die;
+	}
 
-    $postId = abp01_get_current_post_id();
-    if (!abp01_can_edit_trip_summary($postId) || !abp01_verify_edit_nonce($postId)) {
-        die;
-    }
+	$postId = abp01_get_current_post_id();
+	if (!abp01_can_edit_trip_summary($postId) || !abp01_verify_edit_nonce($postId)) {
+		die;
+	}
 
-    $response = new stdClass();
-    $response->success = false;
-    $response->message = null;
+	$response = new stdClass();
+	$response->success = false;
+	$response->message = null;
 
-    $manager = Abp01_Route_Manager::getInstance();
-    if (!$manager->deleteRouteInfo($postId)) {
-        $response->message = __('The data could not be saved due to a possible database error', 'abp01-trip-summary');
-    } else {
-        $response->success = true;
-    }
+	$manager = Abp01_Route_Manager::getInstance();
+	if (!$manager->deleteRouteInfo($postId)) {
+		$response->message = __('The data could not be saved due to a possible database error', 'abp01-trip-summary');
+	} else {
+		$response->success = true;
+	}
 
-    abp01_send_json($response);
+	abp01_send_json($response);
 }
 
 /**
@@ -1006,75 +955,63 @@ function abp01_remove_info() {
  * @return void
  */
 function abp01_upload_track() {
-    //only HTTP POST method is allowed
-    if (abp01_get_http_method() != 'post') {
-        die('1');
-    }
+	//only HTTP POST method is allowed
+	if (abp01_get_http_method() != 'post') {
+		die;
+	}
 
-    $postId = abp01_get_current_post_id();
-    if (!abp01_can_edit_trip_summary($postId) || !abp01_verify_edit_nonce($postId)) {
-        die('2');
-    }
+	//current user must have rights to edit the trip summary for the current post
+	//and the received nonce has to be valid for the current post
+	$postId = abp01_get_current_post_id();
+	if (!abp01_can_edit_trip_summary($postId) || !abp01_verify_edit_nonce($postId)) {
+		die;
+	}
 
-    //increase script execution limits: memory & cpu time
-    abp01_increase_limits();
+	//increase script execution limits: memory & cpu time
+	abp01_increase_limits();
 
-    $currentUserId = get_current_user_id();
-    $destination = abp01_get_track_upload_destination($postId);
+	$currentUserId = get_current_user_id();
+	$destination = abp01_get_track_upload_destination($postId);
 
-    if (ABP01_TRACK_UPLOAD_CHUNK_SIZE > 0) {
-        $chunk = isset($_REQUEST['chunk']) ? intval($_REQUEST['chunk']) : 0;
-        $chunks = isset($_REQUEST['chunks']) ? intval($_REQUEST['chunks']) : 0;
-    } else {
-        $chunk = $chunks = 0;
-    }
+	if (ABP01_TRACK_UPLOAD_CHUNK_SIZE > 0) {
+		$chunk = isset($_REQUEST['chunk']) ? intval($_REQUEST['chunk']) : 0;
+		$chunks = isset($_REQUEST['chunks']) ? intval($_REQUEST['chunks']) : 0;
+	} else {
+		$chunk = $chunks = 0;
+	}
 
-    //create and configure the uploader
-    $uploader = new Abp01_Uploader(ABP01_TRACK_UPLOAD_KEY, $destination, array(
-        'chunk' => $chunk,
-        'chunks' => $chunks,
-        'chunkSize' => ABP01_TRACK_UPLOAD_CHUNK_SIZE,
-        'maxFileSize' => ABP01_TRACK_UPLOAD_MAX_FILE_SIZE,
-        'allowedFileTypes' => array(
-            'application/gpx',
-            'application/x-gpx+xml',
-            'application/xml-gpx',
-            'application/xml',
-            'text/xml'
-        )
-    ));
-    $uploader->setCustomValidator(array(new Abp01_Validate_GpxDocument(), 'validate'));
+	//create and configure the uploader
+	$uploader = new Abp01_Uploader(ABP01_TRACK_UPLOAD_KEY, $destination, array('chunk' => $chunk, 'chunks' => $chunks, 'chunkSize' => ABP01_TRACK_UPLOAD_CHUNK_SIZE, 'maxFileSize' => ABP01_TRACK_UPLOAD_MAX_FILE_SIZE, 'allowedFileTypes' => array('application/gpx', 'application/x-gpx+xml', 'application/xml-gpx', 'application/xml', 'text/xml')));
+	$uploader->setCustomValidator(array(new Abp01_Validate_GpxDocument(), 'validate'));
 
-    $result = new stdClass();
-    $result->status = $uploader->receive();
-    $result->ready = $uploader->isReady();
+	$result = new stdClass();
+	$result->status = $uploader->receive();
+	$result->ready = $uploader->isReady();
 
-    //if the upload has completed, then process the newly uploaded file and save the track information
-    if ($result->ready) {
-        $route = file_get_contents($destination);
-        if (!empty($route)) {
-            $parser = new Abp01_Route_Track_GpxDocumentParser();
-            $route = $parser->parse($route);
-            if ($route && !$parser->hasErrors()) {
-                $manager = Abp01_Route_Manager::getInstance();
-                $destination = plugin_basename($destination);
+	//if the upload has completed, then process the newly uploaded file and save the track information
+	if ($result->ready) {
+		$route = file_get_contents($destination);
+		if (!empty($route)) {
+			$parser = new Abp01_Route_Track_GpxDocumentParser();
+			$route = $parser->parse($route);
+			if ($route && !$parser->hasErrors()) {
+				$manager = Abp01_Route_Manager::getInstance();
+				$destination = plugin_basename($destination);
 
-                $track = new Abp01_Route_Track($destination, $route->getBounds(),
-                    $route->minAlt,
-                    $route->maxAlt);
+				$track = new Abp01_Route_Track($destination, $route->getBounds(), $route->minAlt, $route->maxAlt);
 
-                if (!$manager->saveRouteTrack($postId, $currentUserId, $track)) {
-                    $result->status = Abp01_Uploader::UPLOAD_INTERNAL_ERROR;
-                }
-            } else {
-                $result->status = Abp01_Uploader::UPLOAD_NOT_VALID;
-            }
-        } else {
-            $result->status = Abp01_Uploader::UPLOAD_NOT_VALID;
-        }
-    }
+				if (!$manager->saveRouteTrack($postId, $currentUserId, $track)) {
+					$result->status = Abp01_Uploader::UPLOAD_INTERNAL_ERROR;
+				}
+			} else {
+				$result->status = Abp01_Uploader::UPLOAD_NOT_VALID;
+			}
+		} else {
+			$result->status = Abp01_Uploader::UPLOAD_NOT_VALID;
+		}
+	}
 
-    abp01_send_json($result);
+	abp01_send_json($result);
 }
 
 /**
@@ -1084,57 +1021,57 @@ function abp01_upload_track() {
  * @return void
  */
 function abp01_get_track() {
-    //only HTTP GET method is allowed
-    if (abp01_get_http_method() != 'get') {
-        die;
-    }
+	//only HTTP GET method is allowed
+	if (abp01_get_http_method() != 'get') {
+		die;
+	}
 
-    $postId = abp01_get_current_post_id();
-    if (!abp01_verify_get_track_nonce($postId)) {
-        die;
-    }
+	$postId = abp01_get_current_post_id();
+	if (!abp01_verify_get_track_nonce($postId)) {
+		die;
+	}
 
-    //increase script execution limits: memory & cpu time
-    abp01_increase_limits();
+	//increase script execution limits: memory & cpu time
+	abp01_increase_limits();
 
-    $response = new stdClass();
-    $response->success = false;
-    $response->message = null;
-    $response->track = null;
+	$response = new stdClass();
+	$response->success = false;
+	$response->message = null;
+	$response->track = null;
 
-    $route = abp01_get_cached_track($postId);
-    if (!($route instanceof Abp01_Route_Track_Document)) {
-        $manager = Abp01_Route_Manager::getInstance();
-        $track = $manager->getRouteTrack($postId);
-        if ($track) {
-            $file = abp01_get_absolute_track_file_path($track);
-            if (is_readable($file)) {
-                $parser = new Abp01_Route_Track_GpxDocumentParser();
-                $route = $parser->parse(file_get_contents($file));
-                if ($route) {
-                    $route = $route->simplify(0.01);
-                    $response->success = true;
-                    abp01_save_cached_track($postId, $route);
-                } else {
-                    $response->message = __('Track file could not be parsed', 'abp01-trip-summary');
-                }
-            } else {
-                $response->message = __('Track file not found or is not readable', 'abp01-trip-summary');
-            }
-        }
-    } else {
-        $response->success = true;
-    }
+	$route = abp01_get_cached_track($postId);
+	if (!($route instanceof Abp01_Route_Track_Document)) {
+		$manager = Abp01_Route_Manager::getInstance();
+		$track = $manager->getRouteTrack($postId);
+		if ($track) {
+			$file = abp01_get_absolute_track_file_path($track);
+			if (is_readable($file)) {
+				$parser = new Abp01_Route_Track_GpxDocumentParser();
+				$route = $parser->parse(file_get_contents($file));
+				if ($route) {
+					$route = $route->simplify(0.01);
+					$response->success = true;
+					abp01_save_cached_track($postId, $route);
+				} else {
+					$response->message = __('Track file could not be parsed', 'abp01-trip-summary');
+				}
+			} else {
+				$response->message = __('Track file not found or is not readable', 'abp01-trip-summary');
+			}
+		}
+	} else {
+		$response->success = true;
+	}
 
-    if ($response->success) {
-        $response->track = new stdClass();
-        $response->track->route = $route;
-        $response->track->bounds = $route->getBounds();
-        $response->track->start = $route->getStartPoint();
-        $response->track->end = $route->getEndPoint();
-    }
+	if ($response->success) {
+		$response->track = new stdClass();
+		$response->track->route = $route;
+		$response->track->bounds = $route->getBounds();
+		$response->track->start = $route->getStartPoint();
+		$response->track->end = $route->getEndPoint();
+	}
 
-    abp01_send_json($response);
+	abp01_send_json($response);
 }
 
 /**
@@ -1147,78 +1084,78 @@ function abp01_get_track() {
  * @return void
  */
 function abp01_remove_track() {
-    //only HTTP post method is allowed
-    if (abp01_get_http_method() != 'post') {
-        die;
-    }
+	//only HTTP post method is allowed
+	if (abp01_get_http_method() != 'post') {
+		die;
+	}
 
-    $postId = abp01_get_current_post_id();
-    if (!abp01_verify_edit_nonce($postId) || !abp01_can_edit_trip_summary($postId)) {
-        die;
-    }
+	$postId = abp01_get_current_post_id();
+	if (!abp01_verify_edit_nonce($postId) || !abp01_can_edit_trip_summary($postId)) {
+		die;
+	}
 
-    $response = new stdClass();
-    $response->success = false;
-    $response->message = null;
+	$response = new stdClass();
+	$response->success = false;
+	$response->message = null;
 
-    $manager = Abp01_Route_Manager::getInstance();
-    if ($manager->deleteRouteTrack($postId)) {
-        //delete track file
-        $trackFile = abp01_get_track_upload_destination($postId);
-        if (file_exists($trackFile)) {
-            @unlink($trackFile);
-        }
+	$manager = Abp01_Route_Manager::getInstance();
+	if ($manager->deleteRouteTrack($postId)) {
+		//delete track file
+		$trackFile = abp01_get_track_upload_destination($postId);
+		if (file_exists($trackFile)) {
+			@unlink($trackFile);
+		}
 
-        //delete cached track file
-        $cacheFile = abp01_get_track_cache_file_path($postId);
-        if (file_exists($cacheFile)) {
-            @unlink($cacheFile);
-        }
+		//delete cached track file
+		$cacheFile = abp01_get_track_cache_file_path($postId);
+		if (file_exists($cacheFile)) {
+			@unlink($cacheFile);
+		}
 
-        $response->success = true;
-    } else {
-        $response->message = __('The data could not be updated due to a possible database error', 'abp01-trip-summary');
-    }
+		$response->success = true;
+	} else {
+		$response->message = __('The data could not be updated due to a possible database error', 'abp01-trip-summary');
+	}
 
-    abp01_send_json($response);
+	abp01_send_json($response);
 }
 
 //the autoloaders are ready, general!
 abp01_init_autoloaders();
 
 if (function_exists('register_activation_hook')) {
-    register_activation_hook(__FILE__, 'abp01_activate');
+	register_activation_hook(__FILE__, 'abp01_activate');
 }
 
 if (function_exists('register_deactivation_hook')) {
-    register_deactivation_hook(__FILE__, 'abp01_deactivate');
+	register_deactivation_hook(__FILE__, 'abp01_deactivate');
 }
 
 if (function_exists('register_uninstall_hook')) {
-    register_uninstall_hook(__FILE__, 'abp01_uninstall');
+	register_uninstall_hook(__FILE__, 'abp01_uninstall');
 }
 
 if (function_exists('add_action')) {
-    add_action('media_buttons', 'abp01_add_editor_media_buttons', 20);
-    add_action('admin_enqueue_scripts', 'abp01_add_admin_styles');
-    add_action('admin_enqueue_scripts', 'abp01_add_admin_scripts');
-    add_action('edit_form_after_editor', 'abp01_add_admin_editor');
+	add_action('media_buttons', 'abp01_add_editor_media_buttons', 20);
+	add_action('admin_enqueue_scripts', 'abp01_add_admin_styles');
+	add_action('admin_enqueue_scripts', 'abp01_add_admin_scripts');
+	add_action('edit_form_after_editor', 'abp01_add_admin_editor');
 
-    add_action('wp_ajax_' . ABP01_ACTION_EDIT, 'abp01_save_info');
-    add_action('wp_ajax_' . ABP01_ACTION_UPLOAD_TRACK, 'abp01_upload_track');
-    add_action('wp_ajax_' . ABP01_ACTION_CLEAR_TRACK, 'abp01_remove_track');
-    add_action('wp_ajax_' . ABP01_ACTION_CLEAR_INFO, 'abp01_remove_info');
-    add_action('wp_ajax_' . ABP01_ACTION_SAVE_SETTINGS, 'abp01_save_admin_settings_page_save');
+	add_action('wp_ajax_' . ABP01_ACTION_EDIT, 'abp01_save_info');
+	add_action('wp_ajax_' . ABP01_ACTION_UPLOAD_TRACK, 'abp01_upload_track');
+	add_action('wp_ajax_' . ABP01_ACTION_CLEAR_TRACK, 'abp01_remove_track');
+	add_action('wp_ajax_' . ABP01_ACTION_CLEAR_INFO, 'abp01_remove_info');
+	add_action('wp_ajax_' . ABP01_ACTION_SAVE_SETTINGS, 'abp01_save_admin_settings_page_save');
 
-    add_action('wp_ajax_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
-    add_action('wp_ajax_nopriv_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
+	add_action('wp_ajax_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
+	add_action('wp_ajax_nopriv_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
 
-    add_action('wp_enqueue_scripts', 'abp01_add_frontend_styles');
-    add_action('wp_enqueue_scripts', 'abp01_add_frontend_scripts');
+	add_action('wp_enqueue_scripts', 'abp01_add_frontend_styles');
+	add_action('wp_enqueue_scripts', 'abp01_add_frontend_scripts');
 
-    remove_filter('the_content', 'wpautop');
-    add_filter('the_content', 'abp01_get_info', 0);
+	remove_filter('the_content', 'wpautop');
+	add_filter('the_content', 'abp01_get_info', 0);
 
-    add_action('plugins_loaded', 'abp01_init_plugin');
-    add_action('admin_menu', 'abp01_create_admin_menu');
+	add_action('plugins_loaded', 'abp01_init_plugin');
+	add_action('admin_menu', 'abp01_create_admin_menu');
 }

@@ -654,6 +654,8 @@
     }
 
     function showMap() {
+    	var settings = getSettings();
+    	   	
         $ctrlFormMapContainer.empty()
             .html(renderFormMapUploaded());
 
@@ -661,6 +663,7 @@
         initMapRetry();
         map = $('#abp01-map')
             .mapTrack({
+            	tileLayer: settings.mapTileLayer,
                 iconBaseUrl: context.imgBase,
                 trackDataUrl: getAjaxLoadTrackUrl(),
                 handlePreLoad: function() {
@@ -697,6 +700,10 @@
             ajaxClearInfoAction: window['abp01_ajaxClearInfoAction'] || null,
             isFormInfoSaved: !!window['abp01_tourType']
         };
+    }
+    
+    function getSettings() {
+    	return window['abp01Settings'];
     }
 
     function initEditorState() {

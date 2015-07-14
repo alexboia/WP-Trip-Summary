@@ -1,12 +1,28 @@
 (function ($) {
     "use strict";
+    
+    /**
+     * Current form controls
+     *  */
 
 	var $ctrlSettingsForm = null;
 	var $ctrlSettingsFormBeacon = null;
 	var $ctrlSettingsSaveResult = null;
     var progressBar = null;
+    
+    /**
+     * Current form state
+     *  */
+    
     var context = null;
 
+	/**
+	 * Reads and returns the current form context/state:
+     * - nonce - the nonce used to authenticate the AJAX calls made when saving the settings;
+     * - ajaxSaveAction - AJAX admin action used to save the settings;
+     * - ajaxBaseUrl - AJAX base URL used when saving the settings.
+     * @return object The context object comprised of the above-mentioned properties
+	 *  */
 	function getContext() {
 		return {
 			nonce: window['abp01_nonce'] || null,
@@ -102,6 +118,10 @@
         $('#abp01-submit-settings').click(saveSettings);
     }
     
+    /**
+     * Reads and saves the current form state. See getContext() for more information.
+     * @return void
+     *  */
     function initFormState() {
     	context = getContext();
     }

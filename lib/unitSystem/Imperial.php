@@ -1,5 +1,5 @@
 <?php
-class Abp10_UnitSystem_Imperial extends Abp01_UnitSystem {
+class Abp01_UnitSystem_Imperial extends Abp01_UnitSystem {
 	public function getDistanceUnit() {
 		return 'mi';
 	}

@@ -220,6 +220,18 @@ class Abp01_Includes {
             wp_enqueue_style($handle);
         }
     }
+	
+	public static function injectSettings($scriptHandle) {
+		$settings = Abp01_Settings::getInstance();
+		$tileLayers = $settings->getTileLayers();
+
+		wp_localize_script($scriptHandle, 'abp01Settings', array(
+			'showTeaser' => $settings->getShowTeaser() ? 'true' : 'false',
+			'mapShowFullScreen' => $settings->getShowFullScreen() ? 'true' : 'false',
+			'mapShowMagnifyingGlass' => $settings->getShowMagnifyingGlass() ? 'true' : 'false',
+			'mapTileLayer' => $tileLayers[0]
+		));
+	}
 
     public static function includeScriptJQuery() {
         self::_enqueueScript(self::JS_JQUERY);

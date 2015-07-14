@@ -74,9 +74,11 @@
                     </div>
                 <?php endif; ?>
             </div>
-            <div id="abp01-techbox-content-skip-teaser" class="abp01-techbox-content-skip-teaser" style="display: none;">
-                <a id="abp01-techbox-content-skip-teaser-action" href="javascript:void(0)"><?php echo __('It looks like you skipped the story. You should check it out. Click here to go back to beginning', 'abp01-trip-summary'); ?></a>
-            </div>
+            <?php if ($data->settings->showTeaser): ?>
+	            <div id="abp01-techbox-content-skip-teaser" class="abp01-techbox-content-skip-teaser" style="display: none;">
+	                <a id="abp01-techbox-content-skip-teaser-action" href="javascript:void(0)"><?php echo $data->settings->bottomTeaserText; ?></a>
+	            </div>
+            <?php endif; ?>
         </div>
     </div>
 <?php endif; ?>
