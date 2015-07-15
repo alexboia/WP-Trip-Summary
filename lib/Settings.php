@@ -16,8 +16,10 @@ class Abp01_Settings {
 
 	const OPT_MAP_FEATURES_FULL_SCREEN_SHOW = 'mapFullScreenShow';
 
-	const OPT_UNIT_SYSTEM = 'unitSystem';
+	const OPT_MAP_FEATURES_SCALE_SHOW = 'mapScaleShow';
 
+	const OPT_UNIT_SYSTEM = 'unitSystem';
+	
 	const OPT_SETTINGS_KEY = 'abp01.settings';
 
 	private static $_instance = null;
@@ -139,6 +141,15 @@ class Abp01_Settings {
 
 	public function setShowFullScreen($showFullScreen) {
 		$this->_setOption(self::OPT_MAP_FEATURES_FULL_SCREEN_SHOW, 'boolean', $showFullScreen);
+		return $this;
+	}
+	
+	public function getShowMapScale() {
+		return $this->_getOption(self::OPT_MAP_FEATURES_SCALE_SHOW, 'boolean', true);
+	}
+	
+	public function setShowMapScale($showMapScale) {
+		$this->_setOption(self::OPT_MAP_FEATURES_SCALE_SHOW, 'boolean', $showMapScale);
 		return $this;
 	}
 

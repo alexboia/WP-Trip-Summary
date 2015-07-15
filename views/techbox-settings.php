@@ -112,6 +112,14 @@
 	                    <input type="checkbox" id="abp01-showMagnifyingGlass" name="showMagnifyingGlass" class="abp01-checkbox" value="true" checked="<?php echo $data->settings->showMagnifyingGlass ? 'checked' : ''; ?>" />
 	                </td>
 	            </tr>
+	            <tr>
+	            	<th scope="row">
+	            		<label for="abp01-showMapScale"><?php echo __('Show map scale?', 'abp01-trip-summary'); ?></label>
+	            	</th>
+	            	<td>
+	            		<input type="checkbox" id="abp01-showMapScale" name="showMapScale" class="abp01-checkbox" value="true" checked="<?php echo $data->settings->showMapScale ? 'checked' : ''; ?>" />
+	            	</td>
+	            </tr>
 	        </table>
 	    </div>
 	

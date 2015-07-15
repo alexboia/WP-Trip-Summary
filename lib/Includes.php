@@ -111,7 +111,13 @@ class Abp01_Includes {
 		$settings = Abp01_Settings::getInstance();
 		$tileLayers = $settings->getTileLayers();
 
-		wp_localize_script($scriptHandle, 'abp01Settings', array('showTeaser' => $settings->getShowTeaser() ? 'true' : 'false', 'mapShowFullScreen' => $settings->getShowFullScreen() ? 'true' : 'false', 'mapShowMagnifyingGlass' => $settings->getShowMagnifyingGlass() ? 'true' : 'false', 'mapTileLayer' => $tileLayers[0]));
+		wp_localize_script($scriptHandle, 'abp01Settings', array(
+			'showTeaser' => $settings->getShowTeaser() ? 'true' : 'false', 
+			'mapShowFullScreen' => $settings->getShowFullScreen() ? 'true' : 'false', 
+			'mapShowMagnifyingGlass' => $settings->getShowMagnifyingGlass() ? 'true' : 'false', 
+			'mapShowScale' => $settings->getShowMapScale() ? 'true' : 'false',
+			'mapTileLayer' => $tileLayers[0]
+		));
 	}
 
 	public static function includeScriptJQuery() {

@@ -708,6 +708,7 @@ function abp01_admin_settings_page() {
 	$data->settings->showFullScreen = $settings->getShowFullScreen();
 	$data->settings->showMagnifyingGlass = $settings->getShowMagnifyingGlass();
 	$data->settings->unitSystem = $settings->getUnitSystem();
+	$data->settings->showMapScale = $settings->getShowMapScale();
 
 	$data->settings->allowedUnitSystems = array();
 	foreach ($allowedUnitSystems as $system) {
@@ -773,6 +774,7 @@ function abp01_save_admin_settings_page_save() {
 	$settings->setBottomTeaserText(isset($_POST['bottomTeaserText']) ? $_POST['bottomTeaserText'] : null);
 	$settings->setShowFullScreen(isset($_POST['showFullScreen']) ? $_POST['showFullScreen'] == 'true' : false);
 	$settings->setShowMagnifyingGlass(isset($_POST['showMagnifyingGlass']) ? $_POST['showMagnifyingGlass'] == 'true' : false);
+	$settings->setShowMapScale(isset($_POST['showMapScale']) ? $_POST['showMapScale'] == 'true' : false);
 	$settings->setTileLayers($tileLayer);
 	$settings->setUnitSystem($unitSystem);
 

@@ -662,6 +662,7 @@
         initMapRetry();
         map = $('#abp01-map')
             .mapTrack({
+            	showScale: settings.mapShowScale,
             	tileLayer: settings.mapTileLayer,
                 iconBaseUrl: context.imgBase,
                 trackDataUrl: getAjaxLoadTrackUrl(),
@@ -703,6 +704,7 @@
     
     function getSettings() {
     	return {
+    		mapShowScale: abp01Settings.mapShowScale == 'true',
     		mapTileLayer: abp01Settings.mapTileLayer || {}
     	};
     }

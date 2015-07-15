@@ -42,7 +42,7 @@
 			tileLayer: settings.mapTileLayer,
 			
 			//view options
-			showScale : true,
+			showScale : settings.mapShowScale,
 			showMagnifyingGlass : settings.mapShowMagnifyingGlass,
 			showFullScreen : settings.mapShowFullScreen,
 
@@ -91,6 +91,7 @@
 			showTeaser: abp01Settings.showTeaser === 'true',
 			mapShowFullScreen: abp01Settings.mapShowFullScreen === 'true',
 			mapShowMagnifyingGlass: abp01Settings.mapShowMagnifyingGlass === 'true',
+			mapShowScale: abp01Settings.mapShowScale == 'true',
 			mapTileLayer: abp01Settings.mapTileLayer || {}
 		};
 	}
