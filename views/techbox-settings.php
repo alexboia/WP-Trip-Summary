@@ -90,7 +90,7 @@
 	            </tr>
 	            <tr>
 	            	<th scope="row">
-	            		<label for="abp01-abp01-tileLayerAttributionTxt"><?php echo __('Tile layer attribution text', 'abp01-trip-summary'); ?></label>
+	            		<label for="abp01-tileLayerAttributionTxt"><?php echo __('Tile layer attribution text', 'abp01-trip-summary'); ?></label>
 	            	</th>
 	            	<td>
 	            		<input type="text" id="abp01-tileLayerAttributionTxt" name="tileLayerAttributionTxt" class="regular-text abp01-text-input" value="<?php echo $data->settings->tileLayer->attributionTxt; ?>" />

@@ -33,7 +33,7 @@
 
 	/**
 	 * Show or hide the progress indicator
-	 * @param boolean show Whether to show or hide the progress indicator
+	 * @param show boolean Whether to show or hide the progress indicator
 	 * @return void
 	 *  */
     function toggleBusy(show) {
@@ -65,8 +65,8 @@
     
     /**
      * Display the operation result
-     * @param boolean success The success status
-     * @param string message The message to display
+     * @param success boolean The success status
+     * @param message string The message to display
      * @return void
      *  */
     function displaySaveResult(success, message) {
