@@ -1,4 +1,8 @@
 <?php
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+	exit;
+}
+
 abstract class Abp01_UnitSystem {
 	const METRIC = 'metric';
 

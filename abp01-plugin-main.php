@@ -680,27 +680,35 @@ function abp01_add_frontend_scripts() {
 	}
 }
 
+/**
+ * Prepares the required data and renders the plug-in's settings administration page.
+ * If the current user does not have the required permissions to manage the plug-in, then the function returns directly.
+ * @return void
+ * */
 function abp01_admin_settings_page() {
+	//check if the current user is allowed to access the settings page
 	if (!abp01_can_manage_plugin_settings()) {
 		return;
 	}
 
+	//init data and populate execution context
 	$data = new stdClass();
 	$data->nonce = abp01_create_edit_settings_nonce();
 	$data->ajaxSaveAction = ABP01_ACTION_SAVE_SETTINGS;
-	$data->ajaxUrl = get_admin_url(null, 'admin-ajax.php', 'admin');
-	$data->settings = new stdClass();
+	$data->ajaxUrl = get_admin_url(null, 'admin-ajax.php', 'admin');	
 
-	$settings = Abp01_Settings::getInstance();
-	$allowedUnitSystems = $settings->getAllowedUnitSystems();
-
+	//fetch and process tile layer information
+	$settings = Abp01_Settings::getInstance();	
 	$tileLayers = $settings->getTileLayers();
+	
 	foreach ($tileLayers as $tileLayer) {
 		$tileLayer->url = abp01_escape_value($tileLayer->url);
 		$tileLayer->attributionUrl = abp01_escape_value($tileLayer->attributionUrl);
 		$tileLayer->attributionTxt = abp01_escape_value($tileLayer->attributionTxt);
 	}
 
+	//fetch the bulk of the settings
+	$data->settings = new stdClass();
 	$data->settings->showTeaser = $settings->getShowTeaser();
 	$data->settings->topTeaserText = abp01_escape_value($settings->getTopTeaserText());
 	$data->settings->bottomTeaserText = abp01_escape_value($settings->getBottomTeaserText());
@@ -710,7 +718,10 @@ function abp01_admin_settings_page() {
 	$data->settings->unitSystem = $settings->getUnitSystem();
 	$data->settings->showMapScale = $settings->getShowMapScale();
 
+	//fetch all the allowed unit systems
 	$data->settings->allowedUnitSystems = array();
+	$allowedUnitSystems = $settings->getAllowedUnitSystems();
+	
 	foreach ($allowedUnitSystems as $system) {
 		$data->settings->allowedUnitSystems[$system] = ucfirst($system);
 	}
@@ -718,6 +729,14 @@ function abp01_admin_settings_page() {
 	abp01_admin_settings_page_render($data);
 }
 
+/**
+ * This function handles the plug-in settings save actions It receives and processes the corresponding HTTP request.
+ * Execution halts if the given request context is not valid:
+ * - invalid HTTP method or...
+ * - no valid nonce detected or...
+ * - current user lacks proper capabilities
+ * @return void
+ * */
 function abp01_save_admin_settings_page_save() {
 	//only HTTP POST methods are allowed
 	if (abp01_get_http_method() != 'post') {
@@ -760,7 +779,7 @@ function abp01_save_admin_settings_page_save() {
 		abp01_send_json($response);
 	}
 
-	//check tile layer attribution URL, but only if not empty
+	//check tile layer attribution URL; empty values are allowed
 	$urlValidator = new Abp01_Validate_Url(true);
 	if (!$urlValidator->validate($tileLayer->attributionUrl)) {
 		$response->message = __('Tile layer attribution URL does not have a valid format', 'abp01-trip-summary');

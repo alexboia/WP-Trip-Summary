@@ -3,6 +3,15 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit ;
 }
 
+/**
+ * Provides the means of managing plug-in settings. 
+ * It contains methods to get, set and persist plug-in settings.
+ * The settings are retrieved automatically the first time one of these events happen:
+ * - An option is read;
+ * - An option is set to a new value.
+ * In order to be persisted, however, the saveSettings() method has to be called explicitly.
+ * It uses the WP options API (see https://codex.wordpress.org/Options_API) to read and persist settings.
+ * */
 class Abp01_Settings {
 	const OPT_TEASER_SHOW = 'showTeaser';
 
@@ -65,8 +74,15 @@ class Abp01_Settings {
 		$this->_data[$key] = Abp01_InputFiltering::filterValue($value, $type);
 	}
 
+	/**
+	 * Normalizes the given tile layer instance. Normalization consists of: 
+	 * - checking that the given object is indeed an object and that it has the url property set;
+	 * - if attributionTxt property does not exist, it is set to null;
+	 * - if attributionUrl property does not exist, it is set to null.
+	 * @return object Either false (if the tile layer is not an object, or if the url property is not set), or the normalized object.
+	 * */
 	private function _checkAndNormalizeTileLayer($tileLayer) {
-		if (!is_object($tileLayer) || !isset($tileLayer->url)) {
+		if (!is_object($tileLayer) || empty($tileLayer->url)) {
 			return false;
 		}
 		if (!isset($tileLayer->attributionTxt)) {

@@ -68,9 +68,123 @@ class Abp01_Includes {
 
 	private static $_scriptsInFooter = false;
 
-	private static $_scripts = array(self::JS_URI_JS => array('path' => 'media/js/3rdParty/uri/URI.js', 'version' => '1.14.1'), self::JS_JQUERY_VISIBLE => array('path' => 'media/js/3rdParty/visible/jquery.visible.js', 'version' => '1.1.0'), self::JS_JQUERY_ICHECK => array('path' => 'media/js/3rdParty/icheck/icheck.js', 'version' => '1.0.2'), self::JS_JQUERY_BLOCKUI => array('path' => 'media/js/3rdParty/jquery.blockUI.js', 'version' => '2.66'), self::JS_JQUERY_TOASTR => array('path' => 'media/js/3rdParty/toastr/toastr.js', 'version' => '2.0.3'), self::JS_NPROGRESS => array('path' => 'media/js/3rdParty/nprogress/nprogress.js', 'version' => '0.2.0'), self::JS_JQUERY_EASYTABS => array('path' => 'media/js/3rdParty/easytabs/jquery.easytabs.js', 'version' => '3.2.0'), self::JS_LEAFLET => array('path' => 'media/js/3rdParty/leaflet/leaflet-src.js', 'version' => '0.7.3'), self::JS_LEAFLET_MAGNIFYING_GLASS => array('path' => 'media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.js', 'version' => '0.1'), self::JS_LEAFLET_MAGNIFYING_GLASS_BUTTON => array('path' => 'media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.button.js', 'version' => '0.1'), self::JS_LEAFLET_FULLSCREEN => array('path' => 'media/js/3rdParty/leaflet-plugins/leaflet-fullscreen/leaflet.fullscreen.js', 'version' => '0.1'), self::JS_LODASH => array('path' => 'media/js/3rdParty/lodash/lodash.js', 'version' => '0.3.1'), self::JS_MACHINA => array('path' => 'media/js/3rdParty/machina/machina.js', 'version' => '0.3.1'), self::JS_KITE_JS => array('path' => 'media/js/3rdParty/kite.js', 'version' => '1.0'), self::JS_ABP01_MAP => array('path' => 'media/js/abp01-map.js', 'version' => '0.2'), self::JS_ABP01_PROGRESS_OVERLAY => array('path' => 'media/js/abp01-progress-overlay.js', 'version' => '0.2'), self::JS_ADMIN_MAIN => array('path' => 'media/js/abp01-admin-main.js', 'version' => '0.2'), self::JS_FRONTEND_MAIN => array('path' => 'media/js/abp01-frontend-main.js', 'version' => '0.2'), self::JS_ADMIN_SETTINGS => array('path' => 'media/js/abp01-admin-settings.js', 'version' => '0.1'));
+	private static $_scripts = array(
+		self::JS_URI_JS => array(
+			'path' => 'media/js/3rdParty/uri/URI.js', 
+			'version' => '1.14.1'
+		), 
+		self::JS_JQUERY_VISIBLE => array(
+			'path' => 'media/js/3rdParty/visible/jquery.visible.js', 
+			'version' => '1.1.0'
+		), 
+		self::JS_JQUERY_ICHECK => array(
+			'path' => 'media/js/3rdParty/icheck/icheck.js', 
+			'version' => '1.0.2'
+		), 
+		self::JS_JQUERY_BLOCKUI => array(
+			'path' => 'media/js/3rdParty/jquery.blockUI.js', 
+			'version' => '2.66'
+		), 
+		self::JS_JQUERY_TOASTR => array(
+			'path' => 'media/js/3rdParty/toastr/toastr.js', 
+			'version' => '2.0.3'
+		), 
+		self::JS_NPROGRESS => array(
+			'path' => 'media/js/3rdParty/nprogress/nprogress.js', 
+			'version' => '0.2.0'
+		), 
+		self::JS_JQUERY_EASYTABS => array(
+			'path' => 'media/js/3rdParty/easytabs/jquery.easytabs.js', 
+			'version' => '3.2.0'
+		), 
+		self::JS_LEAFLET => array(
+			'path' => 'media/js/3rdParty/leaflet/leaflet-src.js', 
+			'version' => '0.7.3'
+		), 
+		self::JS_LEAFLET_MAGNIFYING_GLASS => array(
+			'path' => 'media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.js', 
+			'version' => '0.1'
+		), 
+		self::JS_LEAFLET_MAGNIFYING_GLASS_BUTTON => array(
+			'path' => 'media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.button.js', 
+			'version' => '0.1'
+		), 
+		self::JS_LEAFLET_FULLSCREEN => array(
+			'path' => 'media/js/3rdParty/leaflet-plugins/leaflet-fullscreen/leaflet.fullscreen.js', 
+			'version' => '0.1'
+		), 
+		self::JS_LODASH => array(
+			'path' => 'media/js/3rdParty/lodash/lodash.js', 
+			'version' => '0.3.1'
+		), 
+		self::JS_MACHINA => array(
+			'path' => 'media/js/3rdParty/machina/machina.js', 
+			'version' => '0.3.1'
+		), 
+		self::JS_KITE_JS => array(
+			'path' => 'media/js/3rdParty/kite.js', 
+			'version' => '1.0'
+		), 
+		self::JS_ABP01_MAP => array(
+			'path' => 'media/js/abp01-map.js', 
+			'version' => '0.2'
+		), 
+		self::JS_ABP01_PROGRESS_OVERLAY => array(
+			'path' => 'media/js/abp01-progress-overlay.js', 
+			'version' => '0.2'
+		), 
+		self::JS_ADMIN_MAIN => array(
+			'path' => 'media/js/abp01-admin-main.js', 
+			'version' => '0.2'
+		), 
+		self::JS_FRONTEND_MAIN => array(
+			'path' => 'media/js/abp01-frontend-main.js', 
+			'version' => '0.2'
+		), 
+		self::JS_ADMIN_SETTINGS => array(
+			'path' => 'media/js/abp01-admin-settings.js', 
+			'version' => '0.1'
+		)
+	);
 
-	private static $_styles = array(self::STYLE_NPROGRESS => array('path' => 'media/js/3rdParty/nprogress/nprogress.css', 'version' => '2.0.3'), self::STYLE_LEAFLET => array('path' => 'media/js/3rdParty/leaflet/leaflet.css', 'version' => '0.7.3'), self::STYLE_LEAFLET_MAGNIFYING_GLASS => array('path' => 'media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.css', 'version' => '0.1'), self::STYLE_LEAFLET_MAGNIFYING_GLASS_BUTTON => array('path' => 'media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.button.css', 'version' => '0.1'), self::STYLE_LEAFLET_FULLSCREEN => array('path' => 'media/js/3rdParty/leaflet-plugins/leaflet-fullscreen/leaflet.fullscreen.css', 'version' => '0.0.4'), self::STYLE_FRONTEND_MAIN => array('path' => 'media/css/abp01-frontend-main.css', 'version' => '0.2'), self::STYLE_JQUERY_ICHECK => array('path' => 'media/js/3rdParty/icheck/skins/minimal/_all.css', 'version' => '1.0.2'), self::STYLE_JQUERY_TOASTR => array('path' => 'media/js/3rdParty/toastr/toastr.css', 'version' => '2.0.3'), self::STYLE_ADMIN_MAIN => array('path' => 'media/css/abp01-main.css', 'version' => '0.2'));
+	private static $_styles = array(
+		self::STYLE_NPROGRESS => array(
+			'path' => 'media/js/3rdParty/nprogress/nprogress.css', 
+			'version' => '2.0.3'
+		), 
+		self::STYLE_LEAFLET => array(
+			'path' => 'media/js/3rdParty/leaflet/leaflet.css', 
+			'version' => '0.7.3'
+		), 
+		self::STYLE_LEAFLET_MAGNIFYING_GLASS => array(
+			'path' => 'media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.css', 
+			'version' => '0.1'
+		), 
+		self::STYLE_LEAFLET_MAGNIFYING_GLASS_BUTTON => array(
+			'path' => 'media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.button.css', 
+			'version' => '0.1'
+		), 
+		self::STYLE_LEAFLET_FULLSCREEN => array(
+			'path' => 'media/js/3rdParty/leaflet-plugins/leaflet-fullscreen/leaflet.fullscreen.css', 
+			'version' => '0.0.4'
+		), 
+		self::STYLE_FRONTEND_MAIN => array(
+			'path' => 'media/css/abp01-frontend-main.css', 
+			'version' => '0.2'
+		), 
+		self::STYLE_JQUERY_ICHECK => array(
+			'path' => 'media/js/3rdParty/icheck/skins/minimal/_all.css', 
+			'version' => '1.0.2'
+		), 
+		self::STYLE_JQUERY_TOASTR => array(
+			'path' => 'media/js/3rdParty/toastr/toastr.css', 
+			'version' => '2.0.3'
+		), 
+		self::STYLE_ADMIN_MAIN => array(
+			'path' => 'media/css/abp01-main.css', 
+			'version' => '0.2'
+		)
+	);
 
 	public static function setRefPluginsPath($refPluginsPath) {
 		self::$_refPluginsPath = $refPluginsPath;
