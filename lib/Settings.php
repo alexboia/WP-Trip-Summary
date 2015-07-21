@@ -79,6 +79,7 @@ class Abp01_Settings {
 	 * - checking that the given object is indeed an object and that it has the url property set;
 	 * - if attributionTxt property does not exist, it is set to null;
 	 * - if attributionUrl property does not exist, it is set to null.
+     * @param Object $tileLayer The tile layer descriptor to be checked and normalized
 	 * @return object Either false (if the tile layer is not an object, or if the url property is not set), or the normalized object.
 	 * */
 	private function _checkAndNormalizeTileLayer($tileLayer) {
@@ -185,7 +186,7 @@ class Abp01_Settings {
 	public function setUnitSystem($unitSystem) {
 		$allowedUnitSystems = $this->getAllowedUnitSystems();
 		if (!in_array($unitSystem, $allowedUnitSystems)) {
-			$unitSystem = 'metric';
+			$unitSystem = $this->getUnitSystem();
 		}
 		$this->_setOption(self::OPT_UNIT_SYSTEM, 'string', $unitSystem);
 		return $this;
@@ -198,8 +199,13 @@ class Abp01_Settings {
 	}
 
 	public function purgeAllSettings() {
+        $this->clearSettingsCache();
 		return delete_option(self::OPT_SETTINGS_KEY);
 	}
+
+    public function clearSettingsCache() {
+        $this->_data = null;
+    }
 
 	public function getAllowedUnitSystems() {
 		return array(Abp01_UnitSystem::METRIC, Abp01_UnitSystem::IMPERIAL);

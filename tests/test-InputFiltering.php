@@ -118,9 +118,7 @@ class InputFilteringTests extends WP_UnitTestCase {
 		$strValues = array('clean', '<script>alert("dirty")</script>', '<script type="text/javascript">alert("dirty");</script>', '', '<a href="test.html">test</a>');
 		$result = Abp01_InputFiltering::filterValue($strValues, 'string');
 		$this->assertEquals(array('clean', '', '', '', 'test'), $result);
-		foreach ($result as $resultValue) {
-			$this->assertTrue(is_string($resultValue));
-		}
+        $this->_assertArrayElementType($result, 'is_string');
 	}
 
 	public function testCanFilterObjectOfScalars_asInt() {
@@ -138,9 +136,7 @@ class InputFilteringTests extends WP_UnitTestCase {
 		$expected->prop4 = 0;
 		
 		$this->assertEquals($expected, $result);
-		foreach (get_object_vars($result) as $val) {
-			$this->assertTrue(is_int($val));
-		}
+        $this->_assertObjectPropertyTypes($result, 'is_int');
 	}
 	
 	public function testCanFilterObjectOfScalars_asFloat() {
@@ -160,9 +156,7 @@ class InputFilteringTests extends WP_UnitTestCase {
 		$expected->prop5 = 999.99;
 		
 		$this->assertEquals($expected, $result);
-		foreach (get_object_vars($result) as $val) {
-			$this->assertTrue(is_float($val));
-		}
+		$this->_assertObjectPropertyTypes($result, 'is_float');
 	}
 	
 	public function testCanFilterObjectOfScalars_asString() {
@@ -180,12 +174,49 @@ class InputFilteringTests extends WP_UnitTestCase {
 		$expected->prop4 = 'Test me';
 		
 		$this->assertEquals($expected, $result);
-		foreach (get_object_vars($result) as $val) {
-			$this->assertTrue(is_string($val));
-		}
+        $this->_assertObjectPropertyTypes($result, 'is_string');
 	}
 	
 	public function testCanFilterArrayOfObjects_asInt() {
-		
+		$intValues1 = new stdClass();
+        $intValues1->prop1 = '1';
+        $intValues1->prop2 = '10bca';
+
+        $intValues2 = new stdClass();
+        $intValues2->prop1 = 'a45';
+        $intValues2->prop2 = 'test';
+        $intValues2->prop3 = '<p>5</p>';
+
+        $objectValues = array($intValues1, $intValues2);
+        $result = Abp01_InputFiltering::filterValue($objectValues, 'integer');
+
+        $expectedValues1 = new stdClass();
+        $expectedValues1->prop1 = 1;
+        $expectedValues1->prop2 = 10;
+
+        $expectedValues2 = new stdClass();
+        $expectedValues2->prop1 = 0;
+        $expectedValues2->prop2 = 0;
+        $expectedValues2->prop3 = 5;
+
+        $this->assertEquals(2, count($result));
+
+        $this->assertEquals($expectedValues1, $result[0]);
+        $this->_assertObjectPropertyTypes($result[0], 'is_int');
+
+        $this->assertEquals($expectedValues2, $result[1]);
+        $this->_assertObjectPropertyTypes($result[1], 'is_int');
 	}
+
+    private function _assertObjectPropertyTypes($object, $checkCallback) {
+        foreach (get_object_vars($object) as $val) {
+            $this->assertTrue(call_user_func($checkCallback, $val));
+        }
+    }
+
+    private function _assertArrayElementType($array, $checkCallback) {
+        foreach ($array as $val) {
+            $this->assertTrue(call_user_func($checkCallback, $val));
+        }
+    }
 }
