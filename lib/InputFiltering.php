@@ -13,8 +13,8 @@ class Abp01_InputFiltering {
 		settype($input, $asType);
 
 		if (is_numeric($input)) {
-			$minVal = func_num_args() >= 3 ? func_get_arg(2) : ~PHP_INT_MAX;
-			$maxVal = func_num_args() == 4 ? func_get_arg(3) : PHP_INT_MAX;
+			$minVal = func_num_args() >= 3 ? func_get_arg(2) : -INF;
+			$maxVal = func_num_args() == 4 ? func_get_arg(3) : INF;
 			$input = max($minVal, $input);
 			$input = min($maxVal, $input);
 		}
@@ -27,10 +27,8 @@ class Abp01_InputFiltering {
 		$callback = array(__CLASS__, 'filterSingleValue');
 		$callbackRecurse = array(__CLASS__, 'filterValue');
 
-		if ($nArgs > 2) {
-			for ($i = 2; $i < $nArgs; $i++) {
-				$extraParams = func_get_arg($i);
-			}
+		for ($i = 2; $i < $nArgs; $i++) {
+			$extraParams[] = func_get_arg($i);
 		}
 
 		if (is_array($input)) {
@@ -51,5 +49,4 @@ class Abp01_InputFiltering {
 			return call_user_func_array($callback, array_merge(array($input, $asType), $extraParams));
 		}
 	}
-
 }
