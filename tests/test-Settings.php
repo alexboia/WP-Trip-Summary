@@ -48,8 +48,9 @@ class SettingsTests extends WP_UnitTestCase {
         $settings->setTileLayers($expected->tileLayers);
 
         $settings->saveSettings();
+		$this->assertEquals($expected, $this->_collectSettings($settings));
+		
         $settings->clearSettingsCache();
-
         $this->assertEquals($expected, $this->_collectSettings($settings));
     }
 
@@ -62,9 +63,9 @@ class SettingsTests extends WP_UnitTestCase {
     public function testCanPurgeAllSettings_whenModifiedAndSaved() {
         $settings = $this->_getSettings();
         $settings->setTopTeaserText('Test top teaser text');
+		$settings->setBottomTeaserText('Test bottom teaser text');
         $settings->saveSettings();
         $settings->clearSettingsCache();
-        $this->assertEquals('Test top teaser text', $settings->getTopTeaserText());
 
         $settings->purgeAllSettings();
         $this->assertEquals($this->_getDefaults(), $this->_collectSettings($settings));
