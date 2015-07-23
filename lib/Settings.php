@@ -13,26 +13,56 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
  * It uses the WP options API (see https://codex.wordpress.org/Options_API) to read and persist settings.
  * */
 class Abp01_Settings {
+    /**
+     * Key for the "show teaser" setting
+     * */
 	const OPT_TEASER_SHOW = 'showTeaser';
 
+    /**
+     * Key for the "top teaser text" setting
+     * */
 	const OPT_TEASER_TOP = 'teaserTopTxt';
 
+    /**
+     * Key for the "bottom teaser text" setting
+     * */
 	const OPT_TEASER_BOTTOM = 'teaserBottomTxt';
 
+    /**
+     * Key for the tile layer settings
+     * */
 	const OPT_MAP_TILE_LAYER_URLS = 'mapTileLayerUrls';
 
+    /**
+     * Key for the "show magnifying glass" setting
+     * */
 	const OPT_MAP_FEATURES_MAGNIFYING_GLASS_SHOW = 'mapMagnifyingGlassShow';
 
+    /**
+     * Key for the "show full screen" setting
+     * */
 	const OPT_MAP_FEATURES_FULL_SCREEN_SHOW = 'mapFullScreenShow';
 
+    /**
+     * Key for the "show map scale" setting
+     * */
 	const OPT_MAP_FEATURES_SCALE_SHOW = 'mapScaleShow';
 
+    /**
+     * Key for the unit system setting
+     * */
 	const OPT_UNIT_SYSTEM = 'unitSystem';
-	
+
+    /**
+     * The key used to store the serialized settings, using the WP options API
+     * */
 	const OPT_SETTINGS_KEY = 'abp01.settings';
 
 	private static $_instance = null;
 
+    /**
+     * Holds a cache of the setting array, to avoid repeatedly looking up the settings
+     * */
 	private $_data = null;
 
 	private function __construct() {
@@ -50,6 +80,12 @@ class Abp01_Settings {
 		return self::$_instance;
 	}
 
+    /**
+     * Loads the settings if the local cache is not yet set.
+     * The cache is considered unset if it has a null value.
+     * If no data is found, the cache is initialized with an empty array.
+     * @return void
+     * */
 	private function _loadSettingsIfNeeded() {
 		if ($this->_data === null) {
 			$this->_data = get_option(self::OPT_SETTINGS_KEY, array());
