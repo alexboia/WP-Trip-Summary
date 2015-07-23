@@ -70,7 +70,8 @@ class Abp01_Installer {
                 return self::SUPPORT_LIBXML_NOT_FOUND;
             }
             if (!$this->_hasMysqlSpatialSupport() ||
-                !$this->_hasRequiredMysqlSpatialFunctions()) {
+                !$this->_hasRequiredMysqlSpatialFunctions()
+            ) {
                 return self::SUPPORT_MYSQL_SPATIAL_NOT_FOUND;
             }
         } catch (Exception $e) {

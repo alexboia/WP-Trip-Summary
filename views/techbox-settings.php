@@ -44,7 +44,7 @@
 	                    <label for="abp01-showTeaser"><?php echo __('Show teaser?', 'abp01-trip-summary'); ?></label>
 	                </th>
 	                <td>
-	                    <input name="showTeaser" id="abp01-showTeaser" type="checkbox" class="abp01-checkbox" value="true" checked="<?php echo $data->settings->showTeaser ? 'checked' : ''; ?>" />
+	                    <input name="showTeaser" id="abp01-showTeaser" type="checkbox" class="abp01-checkbox" value="true" <?php echo $data->settings->showTeaser ? 'checked="checked"' : ''; ?>/>
 	                </td>
 	            </tr>
 	            <tr>
@@ -101,7 +101,7 @@
 	                    <label for="abp01-showFullScreen"><?php echo __('Enable map fullscreen mode?', 'abp01-trip-summary'); ?></label>
 	                </th>
 	                <td>
-	                    <input type="checkbox" id="abp01-showFullScreen" name="showFullScreen" class="abp01-checkbox" value="true" checked="<?php echo $data->settings->showFullScreen ? 'checked' : ''; ?>" />
+	                    <input type="checkbox" id="abp01-showFullScreen" name="showFullScreen" class="abp01-checkbox" value="true" <?php echo $data->settings->showFullScreen ? 'checked="checked"' : ''; ?>/>
 	                </td>
 	            </tr>
 	            <tr>
@@ -109,7 +109,7 @@
 	                    <label for="abp01-showMagnifyingGlass"><?php echo __('Show magnifying glass?', 'abp01-trip-summary'); ?></label>
 	                </th>
 	                <td>
-	                    <input type="checkbox" id="abp01-showMagnifyingGlass" name="showMagnifyingGlass" class="abp01-checkbox" value="true" checked="<?php echo $data->settings->showMagnifyingGlass ? 'checked' : ''; ?>" />
+	                    <input type="checkbox" id="abp01-showMagnifyingGlass" name="showMagnifyingGlass" class="abp01-checkbox" value="true" <?php echo $data->settings->showMagnifyingGlass ? 'checked="checked"' : ''; ?>/>
 	                </td>
 	            </tr>
 	            <tr>
@@ -117,7 +117,7 @@
 	            		<label for="abp01-showMapScale"><?php echo __('Show map scale?', 'abp01-trip-summary'); ?></label>
 	            	</th>
 	            	<td>
-	            		<input type="checkbox" id="abp01-showMapScale" name="showMapScale" class="abp01-checkbox" value="true" checked="<?php echo $data->settings->showMapScale ? 'checked' : ''; ?>" />
+	            		<input type="checkbox" id="abp01-showMapScale" name="showMapScale" class="abp01-checkbox" value="true" <?php echo $data->settings->showMapScale ? 'checked="checked"' : ''; ?>/>
 	            	</td>
 	            </tr>
 	        </table>

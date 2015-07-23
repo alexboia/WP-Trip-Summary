@@ -32,7 +32,7 @@ class Abp01_Autoloader {
         $classPath = array();
         $pathParts = explode('_', $className);
         $className = array_pop($pathParts);
-        foreach($pathParts as $namePart) {
+        foreach ($pathParts as $namePart) {
             $namePart[0] = strtolower($namePart[0]);
             $classPath[] = $namePart;
         }
