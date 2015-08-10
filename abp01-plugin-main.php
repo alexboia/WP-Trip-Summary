@@ -31,10 +31,12 @@ define('ABP01_ACTION_CLEAR_TRACK', 'abp01_clear_track');
 define('ABP01_ACTION_UPLOAD_TRACK', 'abp01_upload_track');
 define('ABP01_ACTION_GET_TRACK', 'abp01_get_track');
 define('ABP01_ACTION_SAVE_SETTINGS', 'abp01_save_settings');
+define('ABP01_ACTION_DOWNLOAD_TRACK', 'abp01_download_track');
 
 define('ABP01_NONCE_TOUR_EDITOR', 'abp01.nonce.tourEditor');
 define('ABP01_NONCE_GET_TRACK', 'abp01.nonce.getTrack');
 define('ABP01_NONCE_EDIT_SETTINGS', 'abp01.nonce.editSettings');
+define('ABP01_NONCE_DOWNLOAD_TRACK', 'abp01.nonce.downloadTrack');
 
 define('ABP01_TRACK_UPLOAD_KEY', 'abp01_track_file');
 define('ABP01_TRACK_UPLOAD_CHUNK_SIZE', 102400);
@@ -49,6 +51,12 @@ function abp01_init_autoloaders() {
 	Abp01_Autoloader::init(ABP01_LIB_DIR);
 }
 
+/**
+ * Dumps information about the given variable.
+ * It uses xdebug_var_dump if available, otherwise it falls back to the standard var_dump, wrapping it in <pre /> tags.
+ * @param mixed $var The variable to dump
+ * @return void
+ */
 function abp0_dump($var) {
 	if (function_exists('xdebug_var_dump')) {
 		xdebug_var_dump($var);
@@ -108,6 +116,15 @@ function abp01_create_get_track_nonce($postId) {
 }
 
 /**
+ * Creates a nonce to be used when downloading a trips' GPX track
+ * @param int $postId The ID of the post for which the nonce will be generated
+ * @return string The created nonce
+ */
+function abp01_create_download_track_nonce($postId) {
+    return wp_create_nonce(ABP01_NONCE_DOWNLOAD_TRACK . ':' . $postId);
+}
+
+/**
  * Creates a nonce to be used when saving plugin settings
  * @return string The created nonce
  */
@@ -133,6 +150,19 @@ function abp01_verify_get_track_nonce($postId) {
 	return check_ajax_referer(ABP01_NONCE_GET_TRACK . ':' . $postId, 'abp01_nonce_get', false);
 }
 
+/**
+ * Checks whether the current request has a valid nonce for the given post ID in the context of downloading a trip's GPS track
+ * @param int $postId
+ * @return bool True if valid, False otherwise
+ */
+function abp01_verify_download_track_nonce($postId) {
+    return check_ajax_referer(ABP01_NONCE_DOWNLOAD_TRACK . ':' . $postId, 'abp01_nonce_download', false);
+}
+
+/**
+ * Checks whether the current request has a valid edit settings nonce
+ * @return bool True if valid, False otherwise
+ */
 function abp01_verify_edit_settings_nonce() {
 	return check_ajax_referer(ABP01_NONCE_EDIT_SETTINGS, 'abp01_nonce_settings', false);
 }
@@ -717,6 +747,7 @@ function abp01_admin_settings_page() {
 	$data->settings->showMagnifyingGlass = $settings->getShowMagnifyingGlass();
 	$data->settings->unitSystem = $settings->getUnitSystem();
 	$data->settings->showMapScale = $settings->getShowMapScale();
+    $data->settings->allowTrackDownload = $settings->getAllowTrackDownload();
 
 	//fetch all the allowed unit systems
 	$data->settings->allowedUnitSystems = array();
@@ -794,6 +825,7 @@ function abp01_save_admin_settings_page_save() {
 	$settings->setShowFullScreen(isset($_POST['showFullScreen']) ? $_POST['showFullScreen'] == 'true' : false);
 	$settings->setShowMagnifyingGlass(isset($_POST['showMagnifyingGlass']) ? $_POST['showMagnifyingGlass'] == 'true' : false);
 	$settings->setShowMapScale(isset($_POST['showMapScale']) ? $_POST['showMapScale'] == 'true' : false);
+    $settings->setAllowTrackDownload(isset($_POST['allowTrackDownload']) ? $_POST['allowTrackDownload'] == 'true' : false);
 	$settings->setTileLayers($tileLayer);
 	$settings->setUnitSystem($unitSystem);
 
@@ -1067,7 +1099,7 @@ function abp01_get_track() {
 	}
 
 	$postId = abp01_get_current_post_id();
-	if (!abp01_verify_get_track_nonce($postId)) {
+	if (!$postId || !abp01_verify_get_track_nonce($postId)) {
 		die;
 	}
 
@@ -1112,6 +1144,42 @@ function abp01_get_track() {
 	}
 
 	abp01_send_json($response);
+}
+
+function abp01_download_track() {
+    //only HTTP GET method is allowed
+    if (abp01_get_http_method() != 'get') {
+        die;
+    }
+
+    $postId = abp01_get_current_post_id();
+    if (!$postId) {
+        die;
+    }
+
+    //check if track downloads are enabled
+    if (!Abp01_Settings::getInstance()->getAllowTrackDownload()) {
+        die;
+    }
+
+    //increase script execution limits: memory & cpu time
+    abp01_increase_limits();
+
+    //get the file path and check if it's readable
+    $trackFile = abp01_get_track_upload_destination($postId);
+    if (!is_readable($trackFile)) {
+        die;
+    }
+
+    $fileSize = filesize($trackFile);
+    $fileName = basename($trackFile);
+
+    header('Content-Type: application/gpx');
+    header('Content-Length: ' . $fileSize);
+    header('Content-Disposition: attachment; filename="' . $fileName . '"');
+
+    readfile($trackFile);
+    die;
 }
 
 /**
@@ -1186,6 +1254,7 @@ if (function_exists('add_action')) {
 	add_action('wp_ajax_' . ABP01_ACTION_CLEAR_TRACK, 'abp01_remove_track');
 	add_action('wp_ajax_' . ABP01_ACTION_CLEAR_INFO, 'abp01_remove_info');
 	add_action('wp_ajax_' . ABP01_ACTION_SAVE_SETTINGS, 'abp01_save_admin_settings_page_save');
+    add_action('wp_ajax_' . ABP01_ACTION_DOWNLOAD_TRACK, 'abp01_download_track');
 
 	add_action('wp_ajax_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
 	add_action('wp_ajax_nopriv_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
@@ -1193,9 +1262,11 @@ if (function_exists('add_action')) {
 	add_action('wp_enqueue_scripts', 'abp01_add_frontend_styles');
 	add_action('wp_enqueue_scripts', 'abp01_add_frontend_scripts');
 
-	remove_filter('the_content', 'wpautop');
-	add_filter('the_content', 'abp01_get_info', 0);
-
 	add_action('plugins_loaded', 'abp01_init_plugin');
 	add_action('admin_menu', 'abp01_create_admin_menu');
+}
+
+if (function_exists('add_filter') && function_exists('remove_filter')) {
+    remove_filter('the_content', 'wpautop');
+    add_filter('the_content', 'abp01_get_info', 0);
 }

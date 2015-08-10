@@ -54,6 +54,11 @@ class Abp01_Settings {
 	const OPT_UNIT_SYSTEM = 'unitSystem';
 
     /**
+     * Key for the "allow track download" setting
+     * */
+    const OPT_ALLOW_TRACK_DOWNLOAD = 'allowTrackDownload';
+
+    /**
      * The key used to store the serialized settings, using the WP options API
      * */
 	const OPT_SETTINGS_KEY = 'abp01.settings';
@@ -187,6 +192,15 @@ class Abp01_Settings {
 		$this->_setOption(self::OPT_MAP_TILE_LAYER_URLS, 'string', $saveLayers);
 		return $this;
 	}
+
+    public function getAllowTrackDownload() {
+        return $this->_getOption(self::OPT_ALLOW_TRACK_DOWNLOAD, 'boolean', true);
+    }
+
+    public function setAllowTrackDownload($allowTrackDownload) {
+        $this->_setOption(self::OPT_ALLOW_TRACK_DOWNLOAD, 'boolean', $allowTrackDownload);
+        return $this;
+    }
 
 	public function getShowFullScreen() {
 		return $this->_getOption(self::OPT_MAP_FEATURES_FULL_SCREEN_SHOW, 'boolean', true);

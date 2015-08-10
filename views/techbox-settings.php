@@ -120,6 +120,14 @@
 	            		<input type="checkbox" id="abp01-showMapScale" name="showMapScale" class="abp01-checkbox" value="true" <?php echo $data->settings->showMapScale ? 'checked="checked"' : ''; ?>/>
 	            	</td>
 	            </tr>
+                <tr>
+                    <th scope="row">
+                        <label for="abp01-allowTrackDownload"><?php echo __('Allow track download?', 'abp01-trip-summary'); ?></label>
+                    </th>
+                    <td>
+                        <input type="checkbox" id="abp01-allowTrackDownload" name="allowTrackDownload" class="abp01-checkbox" value="true" <?php echo $data->settings->allowTrackDownload ? 'checked="checked"' : '' ?>/>
+                    </td>
+                </tr>
 	        </table>
 	    </div>
 	

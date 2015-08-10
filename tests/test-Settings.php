@@ -32,6 +32,7 @@ class SettingsTests extends WP_UnitTestCase {
         $expected->showMagnifyingGlass = false;
         $expected->showTeaser = false;
         $expected->showMapScale = false;
+        $expected->allowTrackDownload = false;
         $expected->topTeaserText = 'Test top teaser text';
         $expected->bottomTeaserText = 'Test bottom teaser text';
         $expected->tileLayers = array($tileLayer);
@@ -46,6 +47,7 @@ class SettingsTests extends WP_UnitTestCase {
         $settings->setBottomTeaserText($expected->bottomTeaserText);
         $settings->setUnitSystem($expected->unitSystem);
         $settings->setTileLayers($expected->tileLayers);
+        $settings->setAllowTrackDownload($expected->allowTrackDownload);
 
         $settings->saveSettings();
 		$this->assertEquals($expected, $this->_collectSettings($settings));
@@ -81,6 +83,7 @@ class SettingsTests extends WP_UnitTestCase {
         $data->bottomTeaserText = $settings->getBottomTeaserText();
         $data->tileLayers = $settings->getTileLayers();
         $data->unitSystem = $settings->getUnitSystem();
+        $data->allowTrackDownload = $settings->getAllowTrackDownload();
         return $data;
     }
 
@@ -90,6 +93,7 @@ class SettingsTests extends WP_UnitTestCase {
         $defaults->showMagnifyingGlass = true;
         $defaults->showTeaser = true;
         $defaults->showMapScale = true;
+        $defaults->allowTrackDownload = true;
         $defaults->topTeaserText = $this->_getExpectedDefaultTopTeaserText();
         $defaults->bottomTeaserText = $this->_getExpectedDefaultBottomTeaserText();
         $defaults->tileLayers = array($this->_getExpectedDefaultTileLayer());
