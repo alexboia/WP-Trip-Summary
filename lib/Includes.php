@@ -27,6 +27,8 @@ class Abp01_Includes {
 	const JS_LEAFLET_MAGNIFYING_GLASS_BUTTON = 'leaflet-magnifyingglass-button';
 
 	const JS_LEAFLET_FULLSCREEN = 'leaflet-fullscreen';
+	
+	const JS_LEAFLET_ICON_BUTTON = 'abp01-leaflet-icon-button';
 
 	const JS_LODASH = 'lodash';
 
@@ -113,6 +115,10 @@ class Abp01_Includes {
 			'path' => 'media/js/3rdParty/leaflet-plugins/leaflet-fullscreen/leaflet.fullscreen.js', 
 			'version' => '0.1'
 		), 
+		self::JS_LEAFLET_ICON_BUTTON => array(
+			'path' => 'media/js/abp01-icon-button.js',
+			'version' => '0.1'
+		),
 		self::JS_LODASH => array(
 			'path' => 'media/js/3rdParty/lodash/lodash.js', 
 			'version' => '0.3.1'
@@ -229,6 +235,7 @@ class Abp01_Includes {
 			'showTeaser' => $settings->getShowTeaser() ? 'true' : 'false', 
 			'mapShowFullScreen' => $settings->getShowFullScreen() ? 'true' : 'false', 
 			'mapShowMagnifyingGlass' => $settings->getShowMagnifyingGlass() ? 'true' : 'false', 
+			'mapAllowTrackDownloadUrl' => $settings->getAllowTrackDownload() ? 'true' : 'false',
 			'mapShowScale' => $settings->getShowMapScale() ? 'true' : 'false',
 			'mapTileLayer' => $tileLayers[0]
 		));
@@ -277,6 +284,10 @@ class Abp01_Includes {
 
 	public static function includeScriptLeafletFullscreen() {
 		self::_enqueueScript(self::JS_LEAFLET_FULLSCREEN);
+	}
+	
+	public static function includeScriptLeafletIconButton() {
+		self::_enqueueScript(self::JS_LEAFLET_ICON_BUTTON);
 	}
 
 	public static function includeScriptLodash() {

@@ -341,7 +341,40 @@ function abp01_get_frontend_template_locations() {
  * @return array key-value pairs where keys are javascript property names and values are the translation strings
  */
 function abp01_get_main_admin_script_translations() {
-	return array('btnClearInfo' => __('Clear info', 'abp01-trip-summary'), 'btnClearTrack' => __('Clear track', 'abp01-trip-summary'), 'lblPluploadFileTypeSelector' => __('GPX files', 'abp01-trip-summary'), 'lblGeneratingPreview' => __('Generating preview. Please wait...', 'abp01-trip-summary'), 'lblTrackUploadingWait' => __('Uploading track', 'abp01-trip-summary'), 'lblTrackUploaded' => __('The track has been uploaded and saved successfully', 'abp01-trip-summary'), 'lblTypeBiking' => __('Biking', 'abp01-trip-summary'), 'lblTypeHiking' => __('Hiking', 'abp01-trip-summary'), 'lblTypeTrainRide' => __('Train ride', 'abp01-trip-summary'), 'lblClearingTrackWait' => __('Clearing track. Please wait...', 'abp01-trip-summary'), 'lblTrackClearOk' => __('The track has been successfully cleared', 'abp01-trip-summary'), 'lblTrackClearFail' => __('The data could not be updated', 'abp01-trip-summary'), 'lblTrackClearFailNetwork' => __('The data could not be updated due to a possible network error or an internal server issue', 'abp01-trip-summary'), 'lblSavingDataWait' => __('Saving data. Please wait...', 'abp01-trip-summary'), 'lblDataSaveOk' => __('The data has been saved', 'abp01-trip-summary'), 'lblDataSaveFail' => __('The data could not be saved', 'abp01-trip-summary'), 'lblDataSaveFailNetwork' => __('The data could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'), 'lblClearingInfoWait' => __('Clearing trip info. Please wait...', 'abp01-trip-summary'), 'lblClearInfoOk' => __('The trip info has been cleared', 'abp01-trip-summary'), 'lblClearInfoFail' => __('The trip info could not be cleared', 'abp01-trip-summary'), 'lblClearInfoFailNetwork' => __('The trip info could not be cleared due to a possible network error or an internal server issue', 'abp01-trip-summary'), 'errPluploadTooLarge' => __('The selected file is too large. Maximum allowed size is 10MB', 'abp01-trip-summary'), 'errPluploadFileType' => __('The selected file type is not valid. Only GPX files are allowed', 'abp01-trip-summary'), 'errPluploadIoError' => __('The file could not be read', 'abp01-trip-summary'), 'errPluploadSecurityError' => __('The file could not be read', 'abp01-trip-summary'), 'errPluploadInitError' => __('The uploader could not be initialized', 'abp01-trip-summary'), 'errPluploadHttp' => __('The file could not be uploaded', 'abp01-trip-summary'), 'errServerUploadFileType' => __('The selected file type is not valid. Only GPX files are allowed', 'abp01-trip-summary'), 'errServerUploadTooLarge' => __('The selected file is too large. Maximum allowed size is 10MB', 'abp01-trip-summary'), 'errServerUploadNoFile' => __('No file was uploaded', 'abp01-trip-summary'), 'errServerUploadInternal' => __('The file could not be uploaded due to a possible internal server issue', 'abp01-trip-summary'), 'errServerUploadFail' => __('The file could not be uploaded', 'abp01-trip-summary'));
+	return array(
+		'btnClearInfo' => __('Clear info', 'abp01-trip-summary'), 
+		'btnClearTrack' => __('Clear track', 'abp01-trip-summary'), 
+		'lblPluploadFileTypeSelector' => __('GPX files', 'abp01-trip-summary'), 
+		'lblGeneratingPreview' => __('Generating preview. Please wait...', 'abp01-trip-summary'), 
+		'lblTrackUploadingWait' => __('Uploading track', 'abp01-trip-summary'), 
+		'lblTrackUploaded' => __('The track has been uploaded and saved successfully', 'abp01-trip-summary'), 
+		'lblTypeBiking' => __('Biking', 'abp01-trip-summary'), 
+		'lblTypeHiking' => __('Hiking', 'abp01-trip-summary'), 
+		'lblTypeTrainRide' => __('Train ride', 'abp01-trip-summary'), 
+		'lblClearingTrackWait' => __('Clearing track. Please wait...', 'abp01-trip-summary'), 
+		'lblTrackClearOk' => __('The track has been successfully cleared', 'abp01-trip-summary'), 
+		'lblTrackClearFail' => __('The data could not be updated', 'abp01-trip-summary'), 
+		'lblTrackClearFailNetwork' => __('The data could not be updated due to a possible network error or an internal server issue', 'abp01-trip-summary'), 
+		'lblSavingDataWait' => __('Saving data. Please wait...', 'abp01-trip-summary'), 
+		'lblDataSaveOk' => __('The data has been saved', 'abp01-trip-summary'), 
+		'lblDataSaveFail' => __('The data could not be saved', 'abp01-trip-summary'), 
+		'lblDataSaveFailNetwork' => __('The data could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'), 
+		'lblClearingInfoWait' => __('Clearing trip info. Please wait...', 'abp01-trip-summary'), 
+		'lblClearInfoOk' => __('The trip info has been cleared', 'abp01-trip-summary'), 
+		'lblClearInfoFail' => __('The trip info could not be cleared', 'abp01-trip-summary'), 
+		'lblClearInfoFailNetwork' => __('The trip info could not be cleared due to a possible network error or an internal server issue', 'abp01-trip-summary'), 
+		'errPluploadTooLarge' => __('The selected file is too large. Maximum allowed size is 10MB', 'abp01-trip-summary'), 
+		'errPluploadFileType' => __('The selected file type is not valid. Only GPX files are allowed', 'abp01-trip-summary'), 
+		'errPluploadIoError' => __('The file could not be read', 'abp01-trip-summary'), 
+		'errPluploadSecurityError' => __('The file could not be read', 'abp01-trip-summary'), 
+		'errPluploadInitError' => __('The uploader could not be initialized', 'abp01-trip-summary'), 
+		'errPluploadHttp' => __('The file could not be uploaded', 'abp01-trip-summary'), 
+		'errServerUploadFileType' => __('The selected file type is not valid. Only GPX files are allowed', 'abp01-trip-summary'), 
+		'errServerUploadTooLarge' => __('The selected file is too large. Maximum allowed size is 10MB', 'abp01-trip-summary'), 
+		'errServerUploadNoFile' => __('No file was uploaded', 'abp01-trip-summary'), 
+		'errServerUploadInternal' => __('The file could not be uploaded due to a possible internal server issue', 'abp01-trip-summary'), 
+		'errServerUploadFail' => __('The file could not be uploaded', 'abp01-trip-summary')
+	);
 }
 
 /**
@@ -349,7 +382,12 @@ function abp01_get_main_admin_script_translations() {
  * @return array key-value pairs where keys are javascript property names and values are the translation strings
  */
 function abp01_get_settings_admin_script_translations() {
-	return array('errSaveFailNetwork' => __('The settings could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'), 'errSaveFailGeneric' => __('The settings could not be saved due to a possible internal server issue', 'abp01-trip-summary'), 'msgSaveOk' => __('Settings successfully saved', 'abp01-trip-summary'), 'msgSaveWorking' => __('Saving settings. Please wait...', 'abp01-trip-summary'));
+	return array(
+		'errSaveFailNetwork' => __('The settings could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'), 
+		'errSaveFailGeneric' => __('The settings could not be saved due to a possible internal server issue', 'abp01-trip-summary'), 
+		'msgSaveOk' => __('Settings successfully saved', 'abp01-trip-summary'), 
+		'msgSaveWorking' => __('Saving settings. Please wait...', 'abp01-trip-summary')
+	);
 }
 
 /**
@@ -398,8 +436,14 @@ function abp01_admin_settings_page_render(stdClass $data) {
 	require_once ABP01_PLUGIN_ROOT . '/views/techbox-settings.php';
 }
 
+/**
+ * Creates the admin menu required to navigate to the plug-in's management pages
+ * @return void
+ */
 function abp01_create_admin_menu() {
-	add_menu_page(__('Trip Summary Settings', 'abp01-trip-summary'), __('Trip Summary', 'abp01-trip-summary'), Abp01_Auth::CAP_MANAGE_TOUR_SUMMARY, 'abp01-trip-summary-settings', 'abp01_admin_settings_page', 'dashicons-chart-area', 81);
+	add_menu_page(__('Trip Summary Settings', 'abp01-trip-summary'), __('Trip Summary', 'abp01-trip-summary'), 
+		Abp01_Auth::CAP_MANAGE_TOUR_SUMMARY, 'abp01-trip-summary-settings', 'abp01_admin_settings_page', 
+			'dashicons-chart-area', 81);
 }
 
 /**
@@ -699,6 +743,7 @@ function abp01_add_frontend_scripts() {
 		Abp01_Includes::includeScriptLeaflet();
 		Abp01_Includes::includeScriptLeafletMagnifyingGlass();
 		Abp01_Includes::includeScriptLeafletFullscreen();
+		Abp01_Includes::includeScriptLeafletIconButton();
 
 		Abp01_Includes::includeScriptMap();
 		Abp01_Includes::includeScriptFrontendMain();
@@ -939,8 +984,10 @@ function abp01_get_info($content) {
 	//current context information
 	$data->postId = $postId;
 	$data->nonceGet = abp01_create_get_track_nonce($postId);
+	$data->nonceDownload = abp01_create_download_track_nonce($postId);
 	$data->ajaxUrl = get_admin_url(null, 'admin-ajax.php', 'admin');
 	$data->ajaxGetTrackAction = ABP01_ACTION_GET_TRACK;
+	$data->downloadTrackAction = ABP01_ACTION_DOWNLOAD_TRACK;
 	$data->imgBaseUrl = plugins_url('media/img', __FILE__);
 	
 	//get relevant plug-in settings
@@ -1146,14 +1193,23 @@ function abp01_get_track() {
 	abp01_send_json($response);
 }
 
+/**
+ * Handles the track file download request. Script execution halts if the request context is not valid:
+ *  - invalid HTTP method or...
+ *  - invalid nonce provided or...
+ *  - invalid or no post ID provided or...
+ *  - track download has been disabled
+ * @return void
+ */
 function abp01_download_track() {
     //only HTTP GET method is allowed
     if (abp01_get_http_method() != 'get') {
         die;
     }
 
+	//check post ID and the required nonce
     $postId = abp01_get_current_post_id();
-    if (!$postId) {
+    if (!$postId || !abp01_verify_download_track_nonce($postId)) {
         die;
     }
 
@@ -1254,7 +1310,9 @@ if (function_exists('add_action')) {
 	add_action('wp_ajax_' . ABP01_ACTION_CLEAR_TRACK, 'abp01_remove_track');
 	add_action('wp_ajax_' . ABP01_ACTION_CLEAR_INFO, 'abp01_remove_info');
 	add_action('wp_ajax_' . ABP01_ACTION_SAVE_SETTINGS, 'abp01_save_admin_settings_page_save');
-    add_action('wp_ajax_' . ABP01_ACTION_DOWNLOAD_TRACK, 'abp01_download_track');
+
+	add_action('wp_ajax_' . ABP01_ACTION_DOWNLOAD_TRACK, 'abp01_download_track');
+	add_action('wp_ajax_nopriv_' . ABP01_ACTION_DOWNLOAD_TRACK, 'abp01_download_track');
 
 	add_action('wp_ajax_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
 	add_action('wp_ajax_nopriv_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
