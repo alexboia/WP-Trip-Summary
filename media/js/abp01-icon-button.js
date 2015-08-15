@@ -1,4 +1,6 @@
 (function() {
+    "use strict";
+    
     L.Control.IconButton = L.Control.extend({
         _targetUrl: null,
         _iconCssClass: null,
