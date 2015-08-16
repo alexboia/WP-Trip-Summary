@@ -284,6 +284,10 @@ function abp01_can_edit_trip_summary($post = null) {
 	return Abp01_Auth::getInstance()->canEditTourSummary($postId);
 }
 
+/**
+ * Checks if the current user can manage this plug-in's settings or not
+ * @return bool True if can manage settings, false otherwise
+ */
 function abp01_can_manage_plugin_settings() {
 	return Abp01_Auth::getInstance()->canManagePluginSettings();
 }
@@ -1218,14 +1222,14 @@ function abp01_download_track() {
         die;
     }
 
-    //increase script execution limits: memory & cpu time
-    abp01_increase_limits();
-
     //get the file path and check if it's readable
     $trackFile = abp01_get_track_upload_destination($postId);
     if (!is_readable($trackFile)) {
         die;
     }
+
+	//increase script execution limits: memory & cpu time
+    abp01_increase_limits();
 
     $fileSize = filesize($trackFile);
     $fileName = basename($trackFile);

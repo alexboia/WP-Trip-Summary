@@ -42,7 +42,7 @@
         }
 
         function destroyMap() {
-            if (map != null) {
+            if (map) {
                 if (magnifyingGlassLayer) {
                     magnifyingGlassLayer.removeFromMap(map);
                 }
@@ -67,12 +67,22 @@
             }).addTo(map);
         }
 
+        /**
+         * Adds the magnifying glass feature, comprised of:
+         * - the magnifying glass map layer;
+         * - the magnifying glass button.
+         * @param map Object The map to which this feature will be added
+         * @param tileLayerUrl String The URL of the tile source used by the magnifying glass layer
+         * @return void
+         * */
         function addMagnifyingGlassCapability(map, tileLayerUrl) {
+            //create magnifying glass layer
             magnifyingGlassLayer = L.magnifyingGlass({
                 layers: [ L.tileLayer(tileLayerUrl) ],
                 zoomOffset: 3
             });
 
+            //add the control to map, using the newly created layer
             magnifyingGlassControl = L.control.magnifyingGlassButton(magnifyingGlassLayer, {
                 forceSeparateButton: true
             }).addTo(map);
@@ -295,7 +305,7 @@
         //watch for window resize events - map needs to be redrawn
         //when certain user actions get combined with window resize - have no freackin' clue why
         $(window).resize(function() {
-            if (map == null) {
+            if (!map) {
                 mapRedrawTimer = null;
                 return;
             }

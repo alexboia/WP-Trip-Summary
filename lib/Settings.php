@@ -1,6 +1,6 @@
 <?php
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit ;
+	exit;
 }
 
 /**
@@ -13,61 +13,61 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
  * It uses the WP options API (see https://codex.wordpress.org/Options_API) to read and persist settings.
  * */
 class Abp01_Settings {
-    /**
-     * Key for the "show teaser" setting
-     * */
+	/**
+	 * Key for the "show teaser" setting
+	 * */
 	const OPT_TEASER_SHOW = 'showTeaser';
 
-    /**
-     * Key for the "top teaser text" setting
-     * */
+	/**
+	 * Key for the "top teaser text" setting
+	 * */
 	const OPT_TEASER_TOP = 'teaserTopTxt';
 
-    /**
-     * Key for the "bottom teaser text" setting
-     * */
+	/**
+	 * Key for the "bottom teaser text" setting
+	 * */
 	const OPT_TEASER_BOTTOM = 'teaserBottomTxt';
 
-    /**
-     * Key for the tile layer settings
-     * */
+	/**
+	 * Key for the tile layer settings
+	 * */
 	const OPT_MAP_TILE_LAYER_URLS = 'mapTileLayerUrls';
 
-    /**
-     * Key for the "show magnifying glass" setting
-     * */
+	/**
+	 * Key for the "show magnifying glass" setting
+	 * */
 	const OPT_MAP_FEATURES_MAGNIFYING_GLASS_SHOW = 'mapMagnifyingGlassShow';
 
-    /**
-     * Key for the "show full screen" setting
-     * */
+	/**
+	 * Key for the "show full screen" setting
+	 * */
 	const OPT_MAP_FEATURES_FULL_SCREEN_SHOW = 'mapFullScreenShow';
 
-    /**
-     * Key for the "show map scale" setting
-     * */
+	/**
+	 * Key for the "show map scale" setting
+	 * */
 	const OPT_MAP_FEATURES_SCALE_SHOW = 'mapScaleShow';
 
-    /**
-     * Key for the unit system setting
-     * */
+	/**
+	 * Key for the unit system setting
+	 * */
 	const OPT_UNIT_SYSTEM = 'unitSystem';
 
-    /**
-     * Key for the "allow track download" setting
-     * */
-    const OPT_ALLOW_TRACK_DOWNLOAD = 'allowTrackDownload';
+	/**
+	 * Key for the "allow track download" setting
+	 * */
+	const OPT_ALLOW_TRACK_DOWNLOAD = 'allowTrackDownload';
 
-    /**
-     * The key used to store the serialized settings, using the WP options API
-     * */
+	/**
+	 * The key used to store the serialized settings, using the WP options API
+	 * */
 	const OPT_SETTINGS_KEY = 'abp01.settings';
 
 	private static $_instance = null;
 
-    /**
-     * Holds a cache of the setting array, to avoid repeatedly looking up the settings
-     * */
+	/**
+	 * Holds a cache of the setting array, to avoid repeatedly looking up the settings
+	 * */
 	private $_data = null;
 
 	private function __construct() {
@@ -85,12 +85,12 @@ class Abp01_Settings {
 		return self::$_instance;
 	}
 
-    /**
-     * Loads the settings if the local cache is not yet set.
-     * The cache is considered unset if it has a null value.
-     * If no data is found, the cache is initialized with an empty array.
-     * @return void
-     * */
+	/**
+	 * Loads the settings if the local cache is not yet set.
+	 * The cache is considered unset if it has a null value.
+	 * If no data is found, the cache is initialized with an empty array.
+	 * @return void
+	 * */
 	private function _loadSettingsIfNeeded() {
 		if ($this->_data === null) {
 			$this->_data = get_option(self::OPT_SETTINGS_KEY, array());
@@ -120,7 +120,7 @@ class Abp01_Settings {
 	 * - checking that the given object is indeed an object and that it has the url property set;
 	 * - if attributionTxt property does not exist, it is set to null;
 	 * - if attributionUrl property does not exist, it is set to null.
-     * @param Object $tileLayer The tile layer descriptor to be checked and normalized
+	 * @param Object $tileLayer The tile layer descriptor to be checked and normalized
 	 * @return object Either false (if the tile layer is not an object, or if the url property is not set), or the normalized object.
 	 * */
 	private function _checkAndNormalizeTileLayer($tileLayer) {
@@ -193,14 +193,14 @@ class Abp01_Settings {
 		return $this;
 	}
 
-    public function getAllowTrackDownload() {
-        return $this->_getOption(self::OPT_ALLOW_TRACK_DOWNLOAD, 'boolean', true);
-    }
+	public function getAllowTrackDownload() {
+		return $this->_getOption(self::OPT_ALLOW_TRACK_DOWNLOAD, 'boolean', true);
+	}
 
-    public function setAllowTrackDownload($allowTrackDownload) {
-        $this->_setOption(self::OPT_ALLOW_TRACK_DOWNLOAD, 'boolean', $allowTrackDownload);
-        return $this;
-    }
+	public function setAllowTrackDownload($allowTrackDownload) {
+		$this->_setOption(self::OPT_ALLOW_TRACK_DOWNLOAD, 'boolean', $allowTrackDownload);
+		return $this;
+	}
 
 	public function getShowFullScreen() {
 		return $this->_getOption(self::OPT_MAP_FEATURES_FULL_SCREEN_SHOW, 'boolean', true);
@@ -210,11 +210,11 @@ class Abp01_Settings {
 		$this->_setOption(self::OPT_MAP_FEATURES_FULL_SCREEN_SHOW, 'boolean', $showFullScreen);
 		return $this;
 	}
-	
+
 	public function getShowMapScale() {
 		return $this->_getOption(self::OPT_MAP_FEATURES_SCALE_SHOW, 'boolean', true);
 	}
-	
+
 	public function setShowMapScale($showMapScale) {
 		$this->_setOption(self::OPT_MAP_FEATURES_SCALE_SHOW, 'boolean', $showMapScale);
 		return $this;
@@ -249,13 +249,13 @@ class Abp01_Settings {
 	}
 
 	public function purgeAllSettings() {
-        $this->clearSettingsCache();
+		$this->clearSettingsCache();
 		return delete_option(self::OPT_SETTINGS_KEY);
 	}
 
-    public function clearSettingsCache() {
-        $this->_data = null;
-    }
+	public function clearSettingsCache() {
+		$this->_data = null;
+	}
 
 	public function getAllowedUnitSystems() {
 		return array(Abp01_UnitSystem::METRIC, Abp01_UnitSystem::IMPERIAL);

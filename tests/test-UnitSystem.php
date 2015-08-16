@@ -5,7 +5,7 @@ class UnitSystemTest extends WP_UnitTestCase {
 		$this->_assertUnitSystemCorrect($imperial, 'Abp01_UnitSystem_Imperial');
 		
 		$metric = Abp01_UnitSystem::create(Abp01_UnitSystem::METRIC);
-		$this->_assertUnitSystemCorrect($metric, 'Abp01_UnitSystem_Metric');	
+		$this->_assertUnitSystemCorrect($metric, 'Abp01_UnitSystem_Metric');
 	}
 	
 	public function test_unitSystem_tryCreateUnitSystem_nonExistingOrEmpty() {
