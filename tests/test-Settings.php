@@ -1,6 +1,7 @@
 <?php
 class SettingsTests extends WP_UnitTestCase {
     public function tearDown() {
+		parent::tearDown();
         delete_option(Abp01_Settings::OPT_SETTINGS_KEY);
     }
 

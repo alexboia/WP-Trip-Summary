@@ -20,8 +20,11 @@ class Abp01_Installer {
 
     private $_lastError = null;
 
-    public function __construct() {
+	private $_installLookupData;
+
+    public function __construct($installLookupData = true) {
         $this->_env = Abp01_Env::getInstance();
+		$this->_installLookupData = $installLookupData;
     }
 
     private function _getVersion() {
@@ -41,15 +44,113 @@ class Abp01_Installer {
     }
 
     private function _update($version, $installedVersion) {
-        update_option(self::OPT_VERSION, $version);
-        return 0;
+		$this->_reset();
+		$result = true;
+		if ($version == '0.2b' && empty($installedVersion)) {
+			$result = $this->_updateTo02Beta();
+		}
+		if ($result) {
+			update_option(self::OPT_VERSION, $version);
+		}
+        return $result;
     }
+
+	private function _updateTo02Beta() {
+		try {
+			if ($this->_createTable($this->_getRouteDetailsLookupTableDefinition())) {
+				return $this->_syncExistingLookupAssociations();
+			} else {
+				return false;
+			}
+		} catch (Exception $exc) {
+			$this->_lastError = $exc;
+		}
+		return false;
+	}
+
+	private function _syncExistingLookupAssociations() {
+		$db = $this->_env->getDb();
+		if (!$db) {
+			return false;
+		}
+		
+		$tableName = $this->_getRouteDetailsLookupTableName();
+		$detailsTableName = $this->_getRouteDetailsTableName();
+
+		//remove all existing entries
+		if ($db->rawQuery('TRUNCATE TABLE `' . $tableName . '`', null, false) === false) {
+			return false;
+		}
+
+		//extract the current values
+		$data = $db->rawQuery('SELECT post_ID, route_data_serialized FROM `' . $detailsTableName . '`');
+		if (!is_array($data)) {
+			return false;
+		}
+
+		foreach ($data as $row) {
+			$postId = intval($row['post_ID']);
+			if (empty($row['route_data_serialized'])) {
+				continue;
+			}
+
+			$routeDetails = json_decode($row['route_data_serialized'], false);
+			if (!empty($routeDetails->bikeRecommendedSeasons)) {
+				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->bikeRecommendedSeasons);
+			}
+			if (!empty($routeDetails->bikePathSurfaceType)) {
+				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->bikePathSurfaceType);
+			}
+			if (!empty($routeDetails->bikeBikeType)) {
+				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->bikeBikeType);
+			}
+			if (!empty($routeDetails->bikeDifficultyLevel)) {
+				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->bikeDifficultyLevel);
+			}
+			if (!empty($routeDetails->hikingDifficultyLevel)) {
+				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->hikingDifficultyLevel);
+			}
+			if (!empty($routeDetails->hikingRecommendedSeasons)) {
+				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->hikingRecommendedSeasons);
+			}
+			if (!empty($routeDetails->hikingSurfaceType)) {
+				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->hikingSurfaceType);
+			}
+			if (!empty($routeDetails->trainRideOperator)) {
+				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->trainRideOperator);
+			}
+			if (!empty($routeDetails->trainRideLineStatus)) {
+				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->trainRideLineStatus);
+			}
+			if (!empty($routeDetails->trainRideElectrificationStatus)) {
+				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->trainRideElectrificationStatus);
+			}
+			if (!empty($routeDetails->trainRideLineType)) {
+				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->trainRideLineType);
+			}
+		}
+
+		return true;
+	}
+
+	private function _addLookupAssociation($db, $tableName, $postId, $lookupId) {
+		if (is_array($lookupId)) {
+			foreach ($lookupId as $id) {
+				$this->_addLookupAssociation($db, $tableName, $postId, $id);
+			}
+		} else {
+			$db->insert($tableName, array(
+				'lookup_ID' => $lookupId,
+				'post_ID' => $postId
+			));
+		}
+	}
 
     public function updateIfNeeded() {
         $version = $this->_getVersion();
         $installedVersion = $this->_getInstalledVersion();
         if (!$this->_isUpdatedNeeded($version, $installedVersion)) {
-            return 0;
+            return true;
         }
         return $this->_update($version, $installedVersion);
     }
@@ -293,6 +394,10 @@ class Abp01_Installer {
     }
 
     private function _installData() {
+		if (!$this->_installLookupData) {
+			return true;
+		}
+		
         $db = $this->_env->getDb();
         $table = $this->_getLookupTableName();
         $langTable = $this->_getLookupLangTableName();
@@ -347,7 +452,8 @@ class Abp01_Installer {
             $this->_getLookupTableDefinition(),
             $this->_getLookupLangTableDefinition(),
             $this->_getRouteDetailsTableDefinition(),
-            $this->_getRouteTrackTableDefinition()
+            $this->_getRouteTrackTableDefinition(),
+			$this->_getRouteDetailsLookupTableDefinition()
         );
 
         foreach ($tables as $table) {
@@ -365,7 +471,8 @@ class Abp01_Installer {
         return $this->_uninstallRouteDetailsTable() !== false &&
             $this->_uninstallRouteTrackTable() !== false &&
             $this->_uninstallLookupTable() !== false &&
-            $this->_uninstallLookupLangTable() !== false;
+            $this->_uninstallLookupLangTable() !== false &&
+			$this->_uninstallRouteDetailsLookupTable() !== false;
     }
 
     private function _createTable($tableDef) {
@@ -442,6 +549,14 @@ class Abp01_Installer {
         )";
     }
 
+	private function _getRouteDetailsLookupTableDefinition() {
+		return "CREATE TABLE IF NOT EXISTS `" . $this->_getRouteDetailsLookupTableName() . "` (
+			`post_ID` BIGINT(10) UNSIGNED NOT NULL,
+			`lookup_ID` INT(10) UNSIGNED NOT NULL,
+				PRIMARY KEY (`post_ID`, `lookup_ID`)
+		)";
+	}
+
     private function _uninstallRouteTrackTable() {
         $db = $this->_env->getDb();
         return $db != null ? $db->rawQuery('DROP TABLE IF EXISTS `' . $this->_getRouteTrackTableName() . '`', null, false) : false;
@@ -461,6 +576,11 @@ class Abp01_Installer {
         $db = $this->_env->getDb();
         return $db != null ? $db->rawQuery('DROP TABLE IF EXISTS `' . $this->_getLookupLangTableName() . '`', null, false) : false;
     }
+
+	private function _uninstallRouteDetailsLookupTable() {
+		$db = $this->_env->getDb();
+		return $db != null ? $db->rawQuery('DROP TABLE IF EXISTS `' . $this->_getRouteDetailsLookupTableName() . '`', null, false) : false;
+	}
 
     private function _reset() {
         $this->_lastError = null;
@@ -489,4 +609,8 @@ class Abp01_Installer {
     private function _getLookupTableName() {
         return $this->_env->getLookupTableName();
     }
+
+	private function _getRouteDetailsLookupTableName() {
+		return $this->_env->getRouteDetailsLookupTableName();
+	}
 }

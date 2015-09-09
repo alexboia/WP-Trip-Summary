@@ -511,8 +511,13 @@ function abp01_uninstall() {
  * Run plug-in init sequence
  */
 function abp01_init_plugin() {
+	//configure script&styles includes and load the text domain
 	Abp01_Includes::setRefPluginsPath(__FILE__);
 	load_plugin_textdomain('abp01-trip-summary', false, dirname(plugin_basename(__FILE__)) . '/lang/');
+
+	//check if update is needed
+	$installer = new Abp01_Installer();
+	$installer->updateIfNeeded();
 }
 
 /**
@@ -535,7 +540,7 @@ function abp01_add_admin_editor($post) {
 	}
 
 	$data = new stdClass();
-	$lookup = Abp01_Lookup::getInstance();
+	$lookup = new Abp01_Lookup();
 	$manager = Abp01_Route_Manager::getInstance();
 
 	//get the lookup data
@@ -904,7 +909,7 @@ function abp01_get_info($content) {
 	}
 
 	$data = new stdClass();
-	$lookup = Abp01_Lookup::getInstance();
+	$lookup = new Abp01_Lookup();
 	$manager = Abp01_Route_Manager::getInstance();
 	$info = $manager->getRouteInfo($postId);
 
@@ -1262,7 +1267,7 @@ if (function_exists('add_action')) {
 	add_action('wp_enqueue_scripts', 'abp01_add_frontend_styles');
 	add_action('wp_enqueue_scripts', 'abp01_add_frontend_scripts');
 
-	add_action('plugins_loaded', 'abp01_init_plugin');
+	add_action('init', 'abp01_init_plugin');
 	add_action('admin_menu', 'abp01_create_admin_menu');
 }
 

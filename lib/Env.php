@@ -28,6 +28,8 @@ class Abp01_Env {
 
     private $_lookupLangTableName;
 
+	private $_routeDetailsLookupTableName;
+
     private $_db = null;
 
     private $_wpVersion;
@@ -40,6 +42,9 @@ class Abp01_Env {
 
     private  $_version = '0.2b';
 
+	/**
+	 * @return Abp01_Env The singleton instance
+	 */
     public static function getInstance() {
         if (self::$_instance == null) {
             self::$_instance = new self();
@@ -82,12 +87,8 @@ class Abp01_Env {
     }
 
     private function _initDataDir() {
-        $relativePath = plugin_basename(__FILE__);
-        $relativePath = explode('/', $relativePath);
-        if (is_array($relativePath) && !empty($relativePath)) {
-            $pluginDirName = $relativePath[0];
-            $this->_dataDir = wp_normalize_path(sprintf('%s/%s/data', WP_PLUGIN_DIR, $pluginDirName));
-        }
+        $pluginRoot = dirname(dirname(__FILE__));
+		$this->_dataDir = wp_normalize_path(sprintf('%s/data', $pluginRoot));
     }
 
     private function _initTableNames() {
@@ -99,7 +100,16 @@ class Abp01_Env {
             . 'abp01_techbox_lookup';
         $this->_lookupLangTableName = $this->_dbTablePrefix
             . 'abp01_techbox_lookup_lang';
+		$this->_routeDetailsLookupTableName = $this->_dbTablePrefix
+			. 'abp01_techbox_route_details_lookup';
     }
+
+	public function overrideDataDir($dataDir) {
+		if (empty($dataDir) || !is_dir($dataDir)) {
+			throw new InvalidArgumentException();
+		}
+		$this->_dataDir = $dataDir;
+	}
 
     private function _initTheme() {
         $this->_theme = wp_get_theme();
@@ -173,6 +183,10 @@ class Abp01_Env {
     public function getLookupTableName() {
         return $this->_lookupTableName;
     }
+
+	public function getRouteDetailsLookupTableName() {
+		return $this->_routeDetailsLookupTableName;
+	}
 
     public function getDataDir() {
         return $this->_dataDir;
