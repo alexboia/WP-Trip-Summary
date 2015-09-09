@@ -6,11 +6,13 @@
     var abp01_imgBase = '<?php echo $data->imgBaseUrl; ?>';
     var abp01_ajaxUrl = '<?php echo $data->ajaxUrl; ?>';
     var abp01_ajaxGetTrackAction = '<?php echo $data->ajaxGetTrackAction; ?>';
+	var abp01_downloadTrackAction = '<?php echo $data->downloadTrackAction ?>';
 
     var abp01_hasInfo = <?php echo $data->info->exists ? 'true' : 'false' ?>;
     var abp01_hasTrack = <?php echo $data->track->exists ? 'true' : 'false' ?>;
     var abp01_postId = <?php echo $data->postId; ?>;
     var abp01_nonceGet = '<?php echo $data->nonceGet; ?>';
+	var abp01_nonceDownload = '<?php echo $data->nonceDownload ?>';
 </script>
 
 <?php if ($data && ($data->info->exists || $data->track->exists)): ?>

@@ -15,6 +15,7 @@
         opts = $.extend({
             showFullScreen: false,
             showMagnifyingGlass: false,
+            trackDownloadUrl: null,
             showScale: true,
             tileLayer: null
         }, opts);
@@ -41,7 +42,7 @@
         }
 
         function destroyMap() {
-            if (map != null) {
+            if (map) {
                 if (magnifyingGlassLayer) {
                     magnifyingGlassLayer.removeFromMap(map);
                 }
@@ -66,15 +67,36 @@
             }).addTo(map);
         }
 
+        /**
+         * Adds the magnifying glass feature, comprised of:
+         * - the magnifying glass map layer;
+         * - the magnifying glass button.
+         * @param map Object The map to which this feature will be added
+         * @param tileLayerUrl String The URL of the tile source used by the magnifying glass layer
+         * @return void
+         * */
         function addMagnifyingGlassCapability(map, tileLayerUrl) {
+            //create magnifying glass layer
             magnifyingGlassLayer = L.magnifyingGlass({
                 layers: [ L.tileLayer(tileLayerUrl) ],
                 zoomOffset: 3
             });
 
+            //add the control to map, using the newly created layer
             magnifyingGlassControl = L.control.magnifyingGlassButton(magnifyingGlassLayer, {
                 forceSeparateButton: true
             }).addTo(map);
+        }
+
+        /**
+         * Adds the track download button to the given map, with the given URL
+         * @param map Object The map to which the button will be added
+         * @param trackDownloadUrl String The URL to which the button will direct the user
+         * @return void
+         * */
+        function addTrackDownloadCapability(map, trackDownloadUrl) {
+            var control = new L.Control.IconButton('dashicons dashicons-download abp01-track-download-link', trackDownloadUrl);
+            control.addTo(map);
         }
         
         /**
@@ -128,10 +150,17 @@
                 attribution: getTileLayerAttribution(opts)
             }));
 
+            //check if we should add the track download url
+            if (opts.trackDownloadUrl) {
+                addTrackDownloadCapability(map, opts.trackDownloadUrl);
+            }
+
+            //check if we should add the magnifying glass
             if (opts.showMagnifyingGlass && isMagnifyingGlassCapabilityLoaded()) {
                 addMagnifyingGlassCapability(map, tileLayerUrl);
             }
 
+            //check if we should add the map scale
             if (opts.showScale) {
                 addScaleIndicator(map);
             }
@@ -276,7 +305,7 @@
         //watch for window resize events - map needs to be redrawn
         //when certain user actions get combined with window resize - have no freackin' clue why
         $(window).resize(function() {
-            if (map == null) {
+            if (!map) {
                 mapRedrawTimer = null;
                 return;
             }

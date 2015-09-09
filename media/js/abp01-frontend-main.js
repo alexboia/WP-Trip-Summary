@@ -45,6 +45,7 @@
 			showScale : settings.mapShowScale,
 			showMagnifyingGlass : settings.mapShowMagnifyingGlass,
 			showFullScreen : settings.mapShowFullScreen,
+                        trackDownloadUrl: settings.mapAllowTrackDownloadUrl ? getDownloadTrackUrl() : null,
 
 			//map and data options
 			trackDataUrl : getAjaxLoadTrackUrl(),
@@ -79,9 +80,11 @@
 			imgBase: window['abp01_imgBase'] || null,
 			ajaxBaseUrl: window['abp01_ajaxUrl'] || null,
 			ajaxGetTrackAction: window['abp01_ajaxGetTrackAction'] || null,
+                        downloadTrackAction: window['abp01_downloadTrackAction'] || null,
 			hasInfo: window['abp01_hasInfo'] || false,
 			hasTrack: window['abp01_hasTrack'] || false,
 			nonceGet: window['abp01_nonceGet'],
+                        nonceDownload: window['abp01_nonceDownload'] || null,
 			postId: window['abp01_postId'] || 0
 		};
 	}
@@ -91,7 +94,8 @@
 			showTeaser: abp01Settings.showTeaser === 'true',
 			mapShowFullScreen: abp01Settings.mapShowFullScreen === 'true',
 			mapShowMagnifyingGlass: abp01Settings.mapShowMagnifyingGlass === 'true',
-			mapShowScale: abp01Settings.mapShowScale == 'true',
+			mapShowScale: abp01Settings.mapShowScale === 'true',
+                        mapAllowTrackDownloadUrl: abp01Settings.mapAllowTrackDownloadUrl === 'true',
 			mapTileLayer: abp01Settings.mapTileLayer || {}
 		};
 	}
@@ -103,6 +107,14 @@
 			.addSearch('abp01_postId', context.postId)
 			.toString();
 	}
+        
+        function getDownloadTrackUrl() {
+            return URI(context.ajaxBaseUrl)
+                    .addSearch('action', context.downloadTrackAction)
+                    .addSearch('abp01_nonce_download', context.nonceDownload)
+                    .addSearch('abp01_postId', context.postId)
+                    .toString();
+        }
 
 	function handlePageScroll() {
 		if (scrollTimer !== null) {

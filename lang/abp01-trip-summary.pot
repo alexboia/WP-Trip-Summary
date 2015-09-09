@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WP Trip Summary 0.1.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/abp01-travel-tech-"
 "box\n"
-"POT-Creation-Date: 2015-06-27 16:47:31+00:00\n"
+"POT-Creation-Date: 2015-08-15 18:30:04+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,163 +13,221 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: abp01-plugin-main.php:294
+#: abp01-plugin-main.php:345
 msgid "Clear info"
 msgstr ""
 
-#: abp01-plugin-main.php:295
+#: abp01-plugin-main.php:346
 msgid "Clear track"
 msgstr ""
 
-#: abp01-plugin-main.php:297
+#: abp01-plugin-main.php:347
 msgid "GPX files"
 msgstr ""
 
-#: abp01-plugin-main.php:298
+#: abp01-plugin-main.php:348
 msgid "Generating preview. Please wait..."
 msgstr ""
 
-#: abp01-plugin-main.php:300
+#: abp01-plugin-main.php:349
 msgid "Uploading track"
 msgstr ""
 
-#: abp01-plugin-main.php:301
+#: abp01-plugin-main.php:350
 msgid "The track has been uploaded and saved successfully"
 msgstr ""
 
-#: abp01-plugin-main.php:303 views/techbox-editor.php:77
+#: abp01-plugin-main.php:351 views/techbox-editor.php:77
 msgid "Biking"
 msgstr ""
 
-#: abp01-plugin-main.php:304 views/techbox-editor.php:80
+#: abp01-plugin-main.php:352 views/techbox-editor.php:80
 msgid "Hiking"
 msgstr ""
 
-#: abp01-plugin-main.php:305
+#: abp01-plugin-main.php:353
 msgid "Train ride"
 msgstr ""
 
-#: abp01-plugin-main.php:307
+#: abp01-plugin-main.php:354
 msgid "Clearing track. Please wait..."
 msgstr ""
 
-#: abp01-plugin-main.php:308
+#: abp01-plugin-main.php:355
 msgid "The track has been successfully cleared"
 msgstr ""
 
-#: abp01-plugin-main.php:309
+#: abp01-plugin-main.php:356
 msgid "The data could not be updated"
 msgstr ""
 
-#: abp01-plugin-main.php:310
+#: abp01-plugin-main.php:357
 msgid ""
 "The data could not be updated due to a possible network error or an internal "
 "server issue"
 msgstr ""
 
-#: abp01-plugin-main.php:312
+#: abp01-plugin-main.php:358
 msgid "Saving data. Please wait..."
 msgstr ""
 
-#: abp01-plugin-main.php:313
+#: abp01-plugin-main.php:359
 msgid "The data has been saved"
 msgstr ""
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:360
 msgid "The data could not be saved"
 msgstr ""
 
-#: abp01-plugin-main.php:315
+#: abp01-plugin-main.php:361
 msgid ""
 "The data could not be saved due to a possible network error or an internal "
 "server issue"
 msgstr ""
 
-#: abp01-plugin-main.php:317
+#: abp01-plugin-main.php:362
 msgid "Clearing trip info. Please wait..."
 msgstr ""
 
-#: abp01-plugin-main.php:318
+#: abp01-plugin-main.php:363
 msgid "The trip info has been cleared"
 msgstr ""
 
-#: abp01-plugin-main.php:319
+#: abp01-plugin-main.php:364
 msgid "The trip info could not be cleared"
 msgstr ""
 
-#: abp01-plugin-main.php:320
+#: abp01-plugin-main.php:365
 msgid ""
 "The trip info could not be cleared due to a possible network error or an "
 "internal server issue"
 msgstr ""
 
-#: abp01-plugin-main.php:322 abp01-plugin-main.php:330
+#: abp01-plugin-main.php:366 abp01-plugin-main.php:373
 msgid "The selected file is too large. Maximum allowed size is 10MB"
 msgstr ""
 
-#: abp01-plugin-main.php:323 abp01-plugin-main.php:329
+#: abp01-plugin-main.php:367 abp01-plugin-main.php:372
 msgid "The selected file type is not valid. Only GPX files are allowed"
 msgstr ""
 
-#: abp01-plugin-main.php:324 abp01-plugin-main.php:325
+#: abp01-plugin-main.php:368 abp01-plugin-main.php:369
 msgid "The file could not be read"
 msgstr ""
 
-#: abp01-plugin-main.php:326
+#: abp01-plugin-main.php:370
 msgid "The uploader could not be initialized"
 msgstr ""
 
-#: abp01-plugin-main.php:327 abp01-plugin-main.php:333
+#: abp01-plugin-main.php:371 abp01-plugin-main.php:376
 msgid "The file could not be uploaded"
 msgstr ""
 
-#: abp01-plugin-main.php:331
+#: abp01-plugin-main.php:374
 msgid "No file was uploaded"
 msgstr ""
 
-#: abp01-plugin-main.php:332
+#: abp01-plugin-main.php:375
 msgid "The file could not be uploaded due to a possible internal server issue"
 msgstr ""
 
-#: abp01-plugin-main.php:346
+#: abp01-plugin-main.php:386
+msgid ""
+"The settings could not be saved due to a possible network error or an "
+"internal server issue"
+msgstr ""
+
+#: abp01-plugin-main.php:387
+msgid "The settings could not be saved due to a possible internal server issue"
+msgstr ""
+
+#: abp01-plugin-main.php:388
+msgid "Settings successfully saved"
+msgstr ""
+
+#: abp01-plugin-main.php:389
+msgid "Saving settings. Please wait..."
+msgstr ""
+
+#: abp01-plugin-main.php:400
 msgid "Minimum required PHP version is %s"
 msgstr ""
 
-#: abp01-plugin-main.php:348
+#: abp01-plugin-main.php:400
 msgid "Minimum required WP version is %s"
 msgstr ""
 
-#: abp01-plugin-main.php:350
+#: abp01-plugin-main.php:400
 msgid "LIBXML support was not found on your system"
 msgstr ""
 
-#: abp01-plugin-main.php:352
+#: abp01-plugin-main.php:400
 msgid ""
 "Mysqli extension was not found on your system or is not fully compatible"
 msgstr ""
 
-#: abp01-plugin-main.php:354
+#: abp01-plugin-main.php:400
 msgid "MySQL spatial support was not found on your system"
 msgstr ""
 
-#: abp01-plugin-main.php:450
+#: abp01-plugin-main.php:444 views/techbox-settings.php:8
+msgid "Trip Summary Settings"
+msgstr ""
+
+#: abp01-plugin-main.php:444
+msgid "Trip Summary"
+msgstr ""
+
+#: abp01-plugin-main.php:514
 msgid "The plugin cannot be installed on your system"
 msgstr ""
 
-#: abp01-plugin-main.php:727 abp01-plugin-main.php:831
+#: abp01-plugin-main.php:835
+msgid "Unsupported unit system"
+msgstr ""
+
+#: abp01-plugin-main.php:847
+msgid "Tile layer URL is required"
+msgstr ""
+
+#: abp01-plugin-main.php:854
+msgid "Tile layer URL does not have a valid format"
+msgstr ""
+
+#: abp01-plugin-main.php:861
+msgid "Tile layer attribution URL does not have a valid format"
+msgstr ""
+
+#: abp01-plugin-main.php:880
+msgid "The settings could not be saved. Please try again."
+msgstr ""
+
+#: abp01-plugin-main.php:927 abp01-plugin-main.php:1047
 msgid "The data could not be saved due to a possible database error"
 msgstr ""
 
-#: abp01-plugin-main.php:960
+#: abp01-plugin-main.php:1175
 msgid "Track file could not be parsed"
 msgstr ""
 
-#: abp01-plugin-main.php:963
+#: abp01-plugin-main.php:1178
 msgid "Track file not found or is not readable"
 msgstr ""
 
-#: abp01-plugin-main.php:1021
+#: abp01-plugin-main.php:1281
 msgid "The data could not be updated due to a possible database error"
+msgstr ""
+
+#: lib/Settings.php:157 tests/test-Settings.php:117
+msgid ""
+"For the pragmatic sort, there is also a trip summary at the bottom of this "
+"page. Click here to consult it"
+msgstr ""
+
+#: lib/Settings.php:166 tests/test-Settings.php:113
+msgid ""
+"It looks like you skipped the story. You should check it out. Click here to "
+"go back to beginning"
 msgstr ""
 
 #: views/techbox-button.php:5 views/techbox-editor.php:24
@@ -181,7 +239,7 @@ msgstr ""
 msgid "Info"
 msgstr ""
 
-#: views/techbox-editor.php:52 views/techbox-frontend.php:28
+#: views/techbox-editor.php:52 views/techbox-frontend.php:30
 msgid "Map"
 msgstr ""
 
@@ -202,18 +260,18 @@ msgid "Train Ride"
 msgstr ""
 
 #: views/techbox-editor.php:92 views/techbox-editor.php:142
-#: views/techbox-editor.php:188 views/techbox-frontend.php:38
-#: views/techbox-frontend.php:46 views/techbox-frontend.php:54
+#: views/techbox-editor.php:188 views/techbox-frontend.php:40
+#: views/techbox-frontend.php:48 views/techbox-frontend.php:56
 msgid "Total distance"
 msgstr ""
 
 #: views/techbox-editor.php:96 views/techbox-editor.php:146
-#: views/techbox-frontend.php:39 views/techbox-frontend.php:47
+#: views/techbox-frontend.php:41 views/techbox-frontend.php:49
 msgid "Total climb"
 msgstr ""
 
 #: views/techbox-editor.php:100 views/techbox-editor.php:150
-#: views/techbox-frontend.php:40 views/techbox-frontend.php:48
+#: views/techbox-frontend.php:42 views/techbox-frontend.php:50
 msgid "Difficulty level"
 msgstr ""
 
@@ -222,17 +280,17 @@ msgid "-- Choose an option --"
 msgstr ""
 
 #: views/techbox-editor.php:109 views/techbox-editor.php:159
-#: views/techbox-frontend.php:41 views/techbox-frontend.php:49
+#: views/techbox-frontend.php:43 views/techbox-frontend.php:51
 msgid "Access information"
 msgstr ""
 
 #: views/techbox-editor.php:113 views/techbox-editor.php:163
-#: views/techbox-frontend.php:42 views/techbox-frontend.php:50
+#: views/techbox-frontend.php:44 views/techbox-frontend.php:52
 msgid "Open during seasons"
 msgstr ""
 
 #: views/techbox-editor.php:121 views/techbox-editor.php:171
-#: views/techbox-frontend.php:43 views/techbox-frontend.php:51
+#: views/techbox-frontend.php:45 views/techbox-frontend.php:53
 msgid "Path surface type"
 msgstr ""
 
@@ -244,27 +302,27 @@ msgstr ""
 msgid "Route markers"
 msgstr ""
 
-#: views/techbox-editor.php:192 views/techbox-frontend.php:55
+#: views/techbox-editor.php:192 views/techbox-frontend.php:57
 msgid "Exchanged trains"
 msgstr ""
 
-#: views/techbox-editor.php:196 views/techbox-frontend.php:56
+#: views/techbox-editor.php:196 views/techbox-frontend.php:58
 msgid "Line gauge"
 msgstr ""
 
-#: views/techbox-editor.php:200 views/techbox-frontend.php:57
+#: views/techbox-editor.php:200 views/techbox-frontend.php:59
 msgid "Railroad operators"
 msgstr ""
 
-#: views/techbox-editor.php:208 views/techbox-frontend.php:58
+#: views/techbox-editor.php:208 views/techbox-frontend.php:60
 msgid "Line status"
 msgstr ""
 
-#: views/techbox-editor.php:216 views/techbox-frontend.php:59
+#: views/techbox-editor.php:216 views/techbox-frontend.php:61
 msgid "Electrification status"
 msgstr ""
 
-#: views/techbox-editor.php:224 views/techbox-frontend.php:60
+#: views/techbox-editor.php:224 views/techbox-frontend.php:62
 msgid "Line type"
 msgstr ""
 
@@ -276,42 +334,103 @@ msgstr ""
 msgid "Chose file"
 msgstr ""
 
-#: views/techbox-editor.php:257 views/techbox-frontend.php:70
+#: views/techbox-editor.php:257 views/techbox-frontend.php:72
 msgid ""
 "The map could not be loaded due to either a network error or a possible "
 "server issue."
 msgstr ""
 
-#: views/techbox-editor.php:258 views/techbox-frontend.php:71
+#: views/techbox-editor.php:258 views/techbox-frontend.php:73
 msgid "Retry"
 msgstr ""
 
-#: views/techbox-frontend-teaser.php:7
-msgid ""
-"For the pragmatic sort, there is also a trip summary at the bottom of this "
-"page. Click here to consult it"
-msgstr ""
-
-#: views/techbox-frontend.php:19
+#: views/techbox-frontend.php:21
 msgid "Trip summary"
 msgstr ""
 
-#: views/techbox-frontend.php:25
+#: views/techbox-frontend.php:27
 msgid "Prosaic details"
 msgstr ""
 
-#: views/techbox-frontend.php:44
+#: views/techbox-frontend.php:46
 msgid "Recommended bike type"
 msgstr ""
 
-#: views/techbox-frontend.php:52
+#: views/techbox-frontend.php:54
 msgid "Path markers"
 msgstr ""
 
-#: views/techbox-frontend.php:78
+#: views/techbox-settings.php:11
+msgid "General Settings"
+msgstr ""
+
+#: views/techbox-settings.php:13
 msgid ""
-"It looks like you skipped the story. You should check it out. Click here to "
-"go back to beginning"
+"These settings control various aspects that do not belong to any one topic"
+msgstr ""
+
+#: views/techbox-settings.php:19
+msgid "Unit system"
+msgstr ""
+
+#: views/techbox-settings.php:36
+msgid "Viewer settings"
+msgstr ""
+
+#: views/techbox-settings.php:38
+msgid "These settings configure the trip summary viewer"
+msgstr ""
+
+#: views/techbox-settings.php:44
+msgid "Show teaser?"
+msgstr ""
+
+#: views/techbox-settings.php:52
+msgid "Top teaser text"
+msgstr ""
+
+#: views/techbox-settings.php:60
+msgid "Bottom teaser text"
+msgstr ""
+
+#: views/techbox-settings.php:69
+msgid "Map Settings"
+msgstr ""
+
+#: views/techbox-settings.php:71
+msgid "These settings configure the map component"
+msgstr ""
+
+#: views/techbox-settings.php:77
+msgid "Tile layer URL template"
+msgstr ""
+
+#: views/techbox-settings.php:85
+msgid "Tile layer attribution URL"
+msgstr ""
+
+#: views/techbox-settings.php:93
+msgid "Tile layer attribution text"
+msgstr ""
+
+#: views/techbox-settings.php:101
+msgid "Enable map fullscreen mode?"
+msgstr ""
+
+#: views/techbox-settings.php:109
+msgid "Show magnifying glass?"
+msgstr ""
+
+#: views/techbox-settings.php:117
+msgid "Show map scale?"
+msgstr ""
+
+#: views/techbox-settings.php:125
+msgid "Allow track download?"
+msgstr ""
+
+#: views/techbox-settings.php:135
+msgid "Save settings"
 msgstr ""
 
 #. Plugin Name of the plugin/theme

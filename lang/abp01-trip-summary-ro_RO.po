@@ -5,66 +5,66 @@ msgstr ""
 "Project-Id-Version: WP Trip Summary 0.1.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/abp01-travel-tech-"
 "box\n"
-"POT-Creation-Date: 2015-07-16 20:27:47+00:00\n"
-"PO-Revision-Date: 2015-07-16 23:44+0200\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team:  <alexandru.boia [at] outlook [dot] com>\n"
+"POT-Creation-Date: 2015-08-15 21:31+0300\n"
+"PO-Revision-Date: 2015-08-15 21:32+0300\n"
+"Last-Translator: \n"
+"Language-Team: alexandru.boia [at] outlook [dot] com\n"
 "Language: ro_RO\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Poedit 1.8.4\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:345
 msgid "Clear info"
 msgstr "Șterge info"
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:346
 msgid "Clear track"
 msgstr "Șterge track"
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:347
 msgid "GPX files"
 msgstr "Fișiere GPX"
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:348
 msgid "Generating preview. Please wait..."
 msgstr "Se generează harta și traseul. Te rog să aștepți..."
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:349
 msgid "Uploading track"
 msgstr "Se încarcă track-ul"
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:350
 msgid "The track has been uploaded and saved successfully"
 msgstr "Fișierul a fost încărcat și procesat cu succes"
 
-#: abp01-plugin-main.php:314 views/techbox-editor.php:77
+#: abp01-plugin-main.php:351 views/techbox-editor.php:77
 msgid "Biking"
 msgstr "Cu bicicleta"
 
-#: abp01-plugin-main.php:314 views/techbox-editor.php:80
+#: abp01-plugin-main.php:352 views/techbox-editor.php:80
 msgid "Hiking"
 msgstr "Per-pedes"
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:353
 msgid "Train ride"
 msgstr "Cu trenul"
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:354
 msgid "Clearing track. Please wait..."
 msgstr "Se șterge track-ul. Te rog să aștepți..."
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:355
 msgid "The track has been successfully cleared"
 msgstr "Track-ul a fost șters cu succes"
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:356
 msgid "The data could not be updated"
 msgstr "Datele nu au putut fi salvate"
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:357
 msgid ""
 "The data could not be updated due to a possible network error or an internal "
 "server issue"
@@ -72,19 +72,19 @@ msgstr ""
 "Datele nu au putut fi salvade din cauza unei posibile erori de rețea sau a "
 "unei erori interne"
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:358
 msgid "Saving data. Please wait..."
 msgstr "Se salvează datele. Te rog să aștepți..."
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:359
 msgid "The data has been saved"
 msgstr "Datele au fost salvate"
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:360
 msgid "The data could not be saved"
 msgstr "Datele nu au putut fi salvate"
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:361
 msgid ""
 "The data could not be saved due to a possible network error or an internal "
 "server issue"
@@ -92,148 +92,145 @@ msgstr ""
 "Datele nu au putut fi salvate din cauza unei posibile erori de rețea sau a "
 "unei erori interne"
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:362
 msgid "Clearing trip info. Please wait..."
 msgstr "Șterg informațiile traseului. Te rog să aștepți..."
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:363
 msgid "The trip info has been cleared"
 msgstr "Informațiile traseului au fost șterse"
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:364
 msgid "The trip info could not be cleared"
 msgstr "Informațiile traseului nu au putut fi șterse"
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:365
 msgid ""
 "The trip info could not be cleared due to a possible network error or an "
 "internal server issue"
 msgstr ""
-"Informațiile traseului nu au putut fi șterse din cauza unei posibile erori "
-"de rețea sau a unei erori interne"
+"Informațiile traseului nu au putut fi șterse din cauza unei posibile erori de "
+"rețea sau a unei erori interne"
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:366 abp01-plugin-main.php:373
 msgid "The selected file is too large. Maximum allowed size is 10MB"
 msgstr "Fișierul selectat e prea mare. Dimensiunea maximă admisă e 10MB"
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:367 abp01-plugin-main.php:372
 msgid "The selected file type is not valid. Only GPX files are allowed"
-msgstr ""
-"Tipul selectat de fișier nu este valid. Sunt permise doar fișierele GPX"
+msgstr "Tipul selectat de fișier nu este valid. Sunt permise doar fișierele GPX"
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:368 abp01-plugin-main.php:369
 msgid "The file could not be read"
 msgstr "Fișierul nu a putu fi citit"
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:370
 msgid "The uploader could not be initialized"
 msgstr "Una din componente nu a putut fi inițializată corect"
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:371 abp01-plugin-main.php:376
 msgid "The file could not be uploaded"
 msgstr "Fișierul nu a putut fi încărcat"
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:374
 msgid "No file was uploaded"
 msgstr "Nu a fost încărcat nici un fișier"
 
-#: abp01-plugin-main.php:314
+#: abp01-plugin-main.php:375
 msgid "The file could not be uploaded due to a possible internal server issue"
 msgstr "Fișierul nu a putut fi încărcat din cauza unei posibile erori interne"
 
-#: abp01-plugin-main.php:322
+#: abp01-plugin-main.php:386
 msgid ""
-"The settings could not be saved due to a possible network error or an "
-"internal server issue"
+"The settings could not be saved due to a possible network error or an internal "
+"server issue"
 msgstr ""
-"Opțiunile nu au putut fi salvate din cauza unei posibile erori de rețea sau "
-"a unei erori interne"
+"Opțiunile nu au putut fi salvate din cauza unei posibile erori de rețea sau a "
+"unei erori interne"
 
-#: abp01-plugin-main.php:322
+#: abp01-plugin-main.php:387
 msgid "The settings could not be saved due to a possible internal server issue"
 msgstr "Opțiunile nu au putut fi salvate din cauza unei posibile erori interne"
 
-#: abp01-plugin-main.php:322
+#: abp01-plugin-main.php:388
 msgid "Settings successfully saved"
 msgstr "Opțiunile au fost salvate cu succes"
 
-#: abp01-plugin-main.php:322
+#: abp01-plugin-main.php:389
 msgid "Saving settings. Please wait..."
 msgstr "Se salvează opțiunile. Te rog să aștepți..."
 
-#: abp01-plugin-main.php:332
+#: abp01-plugin-main.php:400
 msgid "Minimum required PHP version is %s"
 msgstr "Versiunea necesară minimă de PHP este %s"
 
-#: abp01-plugin-main.php:332
+#: abp01-plugin-main.php:400
 msgid "Minimum required WP version is %s"
 msgstr "Versiunea necesară minimă de Wordpress este %s"
 
-#: abp01-plugin-main.php:332
+#: abp01-plugin-main.php:400
 msgid "LIBXML support was not found on your system"
 msgstr "Extensia LIBXML nu a fost găsită pe sistemul tău"
 
-#: abp01-plugin-main.php:332
-msgid ""
-"Mysqli extension was not found on your system or is not fully compatible"
+#: abp01-plugin-main.php:400
+msgid "Mysqli extension was not found on your system or is not fully compatible"
 msgstr "Extensia Mysqli nu a fost găsită pe sistemul tău"
 
-#: abp01-plugin-main.php:332
+#: abp01-plugin-main.php:400
 msgid "MySQL spatial support was not found on your system"
 msgstr "Server-ul MySQL nu are suport pentru date spațiale"
 
-#: abp01-plugin-main.php:372 views/techbox-settings.php:8
+#: abp01-plugin-main.php:444 views/techbox-settings.php:8
 msgid "Trip Summary Settings"
 msgstr "Setări WP-Trip-Summary"
 
-#: abp01-plugin-main.php:372
+#: abp01-plugin-main.php:444
 msgid "Trip Summary"
 msgstr "Trip Summary"
 
-#: abp01-plugin-main.php:440
+#: abp01-plugin-main.php:514
 msgid "The plugin cannot be installed on your system"
 msgstr "Acest plug-in nu este compatibil cu sistemul tău"
 
-#: abp01-plugin-main.php:759
+#: abp01-plugin-main.php:835
 msgid "Unsupported unit system"
 msgstr "Sistemul de unități de măsură ales nu este suportat"
 
-#: abp01-plugin-main.php:771
+#: abp01-plugin-main.php:847
 msgid "Tile layer URL is required"
 msgstr "Trebuie să completezi URL-ul sursei de tile-uri de hartă"
 
-#: abp01-plugin-main.php:778
+#: abp01-plugin-main.php:854
 msgid "Tile layer URL does not have a valid format"
 msgstr "URL-ul sursei de tile-uri de hartă nu are un format valid"
 
-#: abp01-plugin-main.php:785
+#: abp01-plugin-main.php:861
 msgid "Tile layer attribution URL does not have a valid format"
 msgstr ""
 "URL-ul către pagina de copyright a sursei de tile-uri de hartă nu are un "
 "format valid"
 
-#: abp01-plugin-main.php:803
+#: abp01-plugin-main.php:880
 msgid "The settings could not be saved. Please try again."
 msgstr "Opțiunile nu au putut fi salvate. Te rog să reîncerci."
 
-#: abp01-plugin-main.php:850 abp01-plugin-main.php:968
+#: abp01-plugin-main.php:927 abp01-plugin-main.php:1047
 msgid "The data could not be saved due to a possible database error"
 msgstr "Datele nu au putut fi salvate din cauza unei posibile erori interne"
 
-#: abp01-plugin-main.php:1096
+#: abp01-plugin-main.php:1175
 msgid "Track file could not be parsed"
 msgstr "Fișierul nu a putut fi procesat"
 
-#: abp01-plugin-main.php:1099
+#: abp01-plugin-main.php:1178
 msgid "Track file not found or is not readable"
 msgstr "Fișierul track-ului nu există sau nu a putut fi citit"
 
-#: abp01-plugin-main.php:1157
+#: abp01-plugin-main.php:1281
 msgid "The data could not be updated due to a possible database error"
-msgstr ""
-"Datele nu au putut fi actualizate din cauza unei posibile erori interne"
+msgstr "Datele nu au putut fi actualizate din cauza unei posibile erori interne"
 
-#: lib/Settings.php:115
+#: lib/Settings.php:157 tests/test-Settings.php:117
 msgid ""
 "For the pragmatic sort, there is also a trip summary at the bottom of this "
 "page. Click here to consult it"
@@ -241,10 +238,10 @@ msgstr ""
 "Pentru firi pragmatice sau curioase există și un sumar tehnic al turei în "
 "josul paginii. Click aici pentru a-l consulta."
 
-#: lib/Settings.php:124
+#: lib/Settings.php:166 tests/test-Settings.php:113
 msgid ""
-"It looks like you skipped the story. You should check it out. Click here to "
-"go back to beginning"
+"It looks like you skipped the story. You should check it out. Click here to go "
+"back to beginning"
 msgstr ""
 "Se pare că ai sărit peste poveste. E păcat să o ratezi. Nu ai vrea să o "
 "citești? Click aici pentru început!"
@@ -258,7 +255,7 @@ msgstr "Modifică sumarul turei"
 msgid "Info"
 msgstr "Informații"
 
-#: views/techbox-editor.php:52 views/techbox-frontend.php:28
+#: views/techbox-editor.php:52 views/techbox-frontend.php:30
 msgid "Map"
 msgstr "Hartă & Track GPS"
 
@@ -279,18 +276,18 @@ msgid "Train Ride"
 msgstr "Cu trenul"
 
 #: views/techbox-editor.php:92 views/techbox-editor.php:142
-#: views/techbox-editor.php:188 views/techbox-frontend.php:38
-#: views/techbox-frontend.php:46 views/techbox-frontend.php:54
+#: views/techbox-editor.php:188 views/techbox-frontend.php:40
+#: views/techbox-frontend.php:48 views/techbox-frontend.php:56
 msgid "Total distance"
 msgstr "Distanța totală"
 
 #: views/techbox-editor.php:96 views/techbox-editor.php:146
-#: views/techbox-frontend.php:39 views/techbox-frontend.php:47
+#: views/techbox-frontend.php:41 views/techbox-frontend.php:49
 msgid "Total climb"
 msgstr "Diferența de nivel"
 
 #: views/techbox-editor.php:100 views/techbox-editor.php:150
-#: views/techbox-frontend.php:40 views/techbox-frontend.php:48
+#: views/techbox-frontend.php:42 views/techbox-frontend.php:50
 msgid "Difficulty level"
 msgstr "Nivelul de dificultate"
 
@@ -299,17 +296,17 @@ msgid "-- Choose an option --"
 msgstr "-- Alege o opțiune --"
 
 #: views/techbox-editor.php:109 views/techbox-editor.php:159
-#: views/techbox-frontend.php:41 views/techbox-frontend.php:49
+#: views/techbox-frontend.php:43 views/techbox-frontend.php:51
 msgid "Access information"
 msgstr "Informații de acces"
 
 #: views/techbox-editor.php:113 views/techbox-editor.php:163
-#: views/techbox-frontend.php:42 views/techbox-frontend.php:50
+#: views/techbox-frontend.php:44 views/techbox-frontend.php:52
 msgid "Open during seasons"
 msgstr "Practicabil în sezoanele"
 
 #: views/techbox-editor.php:121 views/techbox-editor.php:171
-#: views/techbox-frontend.php:43 views/techbox-frontend.php:51
+#: views/techbox-frontend.php:45 views/techbox-frontend.php:53
 msgid "Path surface type"
 msgstr "Suprafața drumului/potecii"
 
@@ -321,27 +318,27 @@ msgstr "Tip recomandat de bicicletă"
 msgid "Route markers"
 msgstr "Marcaje turistice"
 
-#: views/techbox-editor.php:192 views/techbox-frontend.php:55
+#: views/techbox-editor.php:192 views/techbox-frontend.php:57
 msgid "Exchanged trains"
 msgstr "Numărul de trenuri schimbate"
 
-#: views/techbox-editor.php:196 views/techbox-frontend.php:56
+#: views/techbox-editor.php:196 views/techbox-frontend.php:58
 msgid "Line gauge"
 msgstr "Ecartamentul liniei"
 
-#: views/techbox-editor.php:200 views/techbox-frontend.php:57
+#: views/techbox-editor.php:200 views/techbox-frontend.php:59
 msgid "Railroad operators"
 msgstr "Operatori feroviari"
 
-#: views/techbox-editor.php:208 views/techbox-frontend.php:58
+#: views/techbox-editor.php:208 views/techbox-frontend.php:60
 msgid "Line status"
 msgstr "Statusul liniei"
 
-#: views/techbox-editor.php:216 views/techbox-frontend.php:59
+#: views/techbox-editor.php:216 views/techbox-frontend.php:61
 msgid "Electrification status"
 msgstr "Electrificare"
 
-#: views/techbox-editor.php:224 views/techbox-frontend.php:60
+#: views/techbox-editor.php:224 views/techbox-frontend.php:62
 msgid "Line type"
 msgstr "Tipul liniei"
 
@@ -353,31 +350,31 @@ msgstr "Încarcă un fișier GPX"
 msgid "Chose file"
 msgstr "Alege un fișier"
 
-#: views/techbox-editor.php:257 views/techbox-frontend.php:70
+#: views/techbox-editor.php:257 views/techbox-frontend.php:72
 msgid ""
-"The map could not be loaded due to either a network error or a possible "
-"server issue."
+"The map could not be loaded due to either a network error or a possible server "
+"issue."
 msgstr ""
 "Harta nu a putut fi înărcată din cauza unei erori de comunicație sau a unei "
 "posibile erori interne"
 
-#: views/techbox-editor.php:258 views/techbox-frontend.php:71
+#: views/techbox-editor.php:258 views/techbox-frontend.php:73
 msgid "Retry"
 msgstr "Reîncearcă"
 
-#: views/techbox-frontend.php:19
+#: views/techbox-frontend.php:21
 msgid "Trip summary"
 msgstr "Tura pe scurt"
 
-#: views/techbox-frontend.php:25
+#: views/techbox-frontend.php:27
 msgid "Prosaic details"
 msgstr "Detalii prozaice"
 
-#: views/techbox-frontend.php:44
+#: views/techbox-frontend.php:46
 msgid "Recommended bike type"
 msgstr "Tip recomandat de bicicletă"
 
-#: views/techbox-frontend.php:52
+#: views/techbox-frontend.php:54
 msgid "Path markers"
 msgstr "Marcaj turistic"
 
@@ -449,7 +446,11 @@ msgstr "Se activează lupa?"
 msgid "Show map scale?"
 msgstr "Se afișează scara hărții"
 
-#: views/techbox-settings.php:127
+#: views/techbox-settings.php:125
+msgid "Allow track download?"
+msgstr "Se permite descărcarea track-ului?"
+
+#: views/techbox-settings.php:135
 msgid "Save settings"
 msgstr "Salvează opțiunile"
 
@@ -466,8 +467,8 @@ msgid ""
 "Aids a travel blogger to add structured information about his tours (biking, "
 "hiking, train travels etc.)"
 msgstr ""
-"Util celor care își povestesc turele pe blog, ajutându-i să adauge "
-"informații structurate despre turele pe care le fac"
+"Util celor care își povestesc turele pe blog, ajutându-i să adauge informații "
+"structurate despre turele pe care le fac"
 
 #. Author of the plugin/theme
 msgid "Alexandru Boia"
