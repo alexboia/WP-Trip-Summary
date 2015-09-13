@@ -63,16 +63,7 @@ class Abp01_Lookup {
 	 * @return boolean True if it's supported, false otherwise
 	 */
 	private function _isTypeSupported($type) {
-		return in_array($type, array(
-			self::DIFFICULTY_LEVEL,
-			self::PATH_SURFACE_TYPE,
-			self::BIKE_TYPE,
-			self::RAILROAD_LINE_TYPE,
-			self::RAILROAD_OPERATOR,
-			self::RAILROAD_LINE_STATUS,
-			self::RECOMMEND_SEASONS,
-			self::RAILROAD_ELECTRIFICATION
-		));
+		return in_array($type, $this->getSupportedCategories());
 	}
 
 	/**
@@ -139,6 +130,19 @@ class Abp01_Lookup {
         $option->type = $type;
         return $option;
     }
+
+	public function getSupportedCategories() {
+		return array(
+			self::DIFFICULTY_LEVEL,
+			self::PATH_SURFACE_TYPE,
+			self::BIKE_TYPE,
+			self::RAILROAD_LINE_TYPE,
+			self::RAILROAD_OPERATOR,
+			self::RAILROAD_LINE_STATUS,
+			self::RECOMMEND_SEASONS,
+			self::RAILROAD_ELECTRIFICATION
+		);
+	}
 
 	/**
 	 * Checks whether the given lookup item is in use or not.

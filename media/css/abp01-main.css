@@ -325,5 +325,29 @@ a.abp01-close-editor:hover {
 }
 
 .abp01-settings-save-result {
-	margin-left: 0px !important;
+    margin-left: 0px !important;
 }
+
+/* START Lookup data management section */
+.abp01-lookupControl {
+    width: 350px;
+    margin-right: 10px;
+}
+
+.abp01-lookupControl-item {
+    float: left;
+}
+
+.abp01-lookupControl-item label {
+    display: block;
+}
+
+#abp01-admin-lookup-control-container {
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+#abp01-admin-lookup-listing-container {
+    margin-right: 10px;
+}
+/* END Lookup data management section */

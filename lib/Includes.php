@@ -46,6 +46,8 @@ class Abp01_Includes {
 
 	const JS_ADMIN_SETTINGS = 'abp01-settings-admin';
 
+	const JS_ADMIN_LOOKUP_MGMT = 'abp01-admin-lookup-management';
+
 	const STYLE_DASHICONS = 'dashicons';
 
 	const STYLE_NPROGRESS = 'nprogress-css';
@@ -149,6 +151,10 @@ class Abp01_Includes {
 		), 
 		self::JS_ADMIN_SETTINGS => array(
 			'path' => 'media/js/abp01-admin-settings.js', 
+			'version' => '0.1'
+		),
+		self::JS_ADMIN_LOOKUP_MGMT => array(
+			'path' => 'media/js/abp01-admin-lookup-management.js',
 			'version' => '0.1'
 		)
 	);
@@ -320,6 +326,10 @@ class Abp01_Includes {
 
 	public static function includeScriptAdminSettings() {
 		self::_enqueueScript(self::JS_ADMIN_SETTINGS);
+	}
+
+	public static function includeScriptAdminLookupMgmt() {
+		self::_enqueueScript(self::JS_ADMIN_LOOKUP_MGMT);
 	}
 
 	public static function includeStyleDashIcons() {
