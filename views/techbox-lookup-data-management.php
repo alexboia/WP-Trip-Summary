@@ -6,53 +6,67 @@
 	var abp01_ajaxEditLookupAction = '<?php echo esc_js($data->context->editLookupAction); ?>';
 	var abp01_ajaxDeleteLookupAction = '<?php echo esc_js($data->context->deleteLookupAction); ?>';
 </script>
-<h2><?php echo __('Lookup data management', 'abp01-trip-summary'); ?></h2>
-<div id="abp01-admin-lookup-page-beacon"></div>
-<div id="abp01-admin-lookup-container">
-	<div id="abp01-admin-lookup-control-container">
-		<div class="abp01-lookupControl-item">
-			<label for="abp01-lookupTypeSelect"><?php echo __('Lookup type:', 'abp01-trip-summary'); ?></label>
-			<select id="abp01-lookupTypeSelect" class="abp01-lookupControl">
-				<?php foreach ($data->controllers->availableTypes as $value => $label): ?>
-					<option value="<?php echo esc_attr($value); ?>" <?php echo $value == $data->controllers->selectedType ? 'selected="selected"' : '' ?>>
-						<?php echo esc_html($label); ?>
-					</option>
-				<?php endforeach; ?>
-			</select>
+<div id="abp01-admin-lookup-page">
+	<h2><?php echo __('Lookup data management', 'abp01-trip-summary'); ?></h2>
+	<div id="abp01-admin-lookup-page-beacon"></div>
+	<div id="abp01-lookup-operation-result" class="updated settings-error abp01-settings-save-result" style="display:none"></div>
+	<div id="abp01-admin-lookup-container">
+		<div id="abp01-admin-lookup-control-container">
+			<div class="abp01-lookupControl-item">
+				<label for="abp01-lookupTypeSelect"><?php echo __('Lookup type:', 'abp01-trip-summary'); ?></label>
+				<select id="abp01-lookupTypeSelect" class="abp01-lookupControl">
+					<?php foreach ($data->controllers->availableTypes as $value => $label): ?>
+						<option value="<?php echo esc_attr($value); ?>" <?php echo $value == $data->controllers->selectedType ? 'selected="selected"' : '' ?>>
+							<?php echo esc_html($label); ?>
+						</option>
+					<?php endforeach; ?>
+				</select>
+			</div>
+			<div class="abp01-lookupControl-item">
+				<label for="abp01-lookupLangSelect"><?php echo __('Language:', 'abp01-trip-summary'); ?></label>
+				<select id="abp01-lookupLangSelect" class="abp01-lookupControl">
+					<?php foreach ($data->controllers->availableLanguages as $value => $label): ?>
+						<option value="<?php echo esc_attr($value); ?>" <?php echo $value == $data->controllers->selectedLanguage ? 'selected="selected"' : ''; ?>>
+							<?php echo esc_html($label); ?>
+						</option>
+					<?php endforeach; ?>
+				</select>
+			</div>
+			<div class="abp01-clear"></div>
 		</div>
-		<div class="abp01-lookupControl-item">
-			<label for="abp01-lookupLangSelect"><?php echo __('Language:', 'abp01-trip-summary'); ?></label>
-			<select id="abp01-lookupLangSelect" class="abp01-lookupControl">
-				<?php foreach ($data->controllers->availableLanguages as $value => $label): ?>
-					<option value="<?php echo esc_attr($value); ?>" <?php echo $value == $data->controllers->selectedLanguage ? 'selected="selected"' : ''; ?>>
-						<?php echo esc_html($label); ?>
-					</option>
-				<?php endforeach; ?>
-			</select>
+		<div id="abp01-admin-lookup-listing-container">
+			<div class="abp01-lookup-general-buttons-top">
+				<a href="javascript:void(0)" class="button button-primary button-large button-save-summary"><?php echo __('Add new item', 'abp01-trip-summary'); ?></a>
+			</div>
+			<table id="abp01-admin-lookup-listing" class="wp-list-table widefat fixed striped">
+				<thead>
+					<tr>
+						<th width="50%"><?php echo __('Label', 'abp01-trip-summary'); ?></th>
+						<th width="50%"><?php echo __('Actions', 'abp01-trip-summary'); ?></th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+			<div class="abp01-lookup-general-buttons-bottom">
+				<a href="javascript:void(0)" class="button button-primary button-large button-save-summary"><?php echo __('Add new item', 'abp01-trip-summary'); ?></a>
+			</div>
 		</div>
-		<div class="abp01-clear"></div>
 	</div>
-	<div id="abp01-admin-lookup-listing-container">
-		<table id="abp01-admin-lookup-listing" class="wp-list-table widefat fixed striped">
-			<thead>
-				<tr>
-					<th width="50%"><?php echo __('Label', 'abp01-trip-summary'); ?></th>
-					<th width="20%"><?php echo __('Language', 'abp01-trip-summary'); ?></th>
-					<th width="30%"><?php echo __('Actions', 'abp01-trip-summary'); ?></th>
-				</tr>
-			</thead>
-			<tbody></tbody>
-		</table>
-	</div>
+	<script id="tpl-abp01-lookupDataRow" type="text/x-kite">
+		{{#lookupItems}}
+			<tr>
+				<td width="50%">{{label}}</td>
+				<td width="50%">
+					<a href="javascript:void(0)" rel="item-edit" data-lookupId="{{id}}">Edit</a> |
+					<a href="javascript:void(0)" rel="item-delete" data-lookupId="{{id}}">Delete</a>
+				</td>
+			</tr>
+		{{/lookupItems}}
+	</script>
+	<script id="tpl-abp01-progress-container" type="text/x-kite">
+		<div id="abp01-progress-container" class="abp01-progress-container">
+			<div data-role="progressLabel" id="abp01-progress-label" class="abp01-progress-label"></div>
+			<div data-role="progressParent" id="abp01-progress-bar" class="abp01-progress-bar"></div>
+		</div>
+	</script>
 </div>
-<script id="tpl-abp01-lookupDataRow" type="text/x-kite">
-	{{#lookupData}}
-		<tr data-lookupId="{{ID}}">
-			<th width="50%">{{label}}</th>
-			<th width="20%">{{language}}</th>
-			<th width="30%">
-				
-			</th>
-		</tr>
-	{{/lookupData}}
-</script>

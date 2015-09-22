@@ -40,7 +40,7 @@
         if (show) {
             if (progressBar == null) {
                 progressBar = $('#tpl-abp01-progress-container').progressOverlay({
-                    $target: $('body'),
+                    $target: $('#wpwrap'),
                     message: abp01SettingsL10n.msgSaveWorking
                 });
             }
@@ -76,12 +76,12 @@
             .removeClass('error')
             .html('');
 
-            //style the message box according to success/error status
-            //and show the message
-            $ctrlSettingsSaveResult
-                .addClass(success ? 'notice' : 'error')
-                .html('<p>' + message + '</p>')
-                .show();
+        //style the message box according to success/error status
+        //and show the message
+        $ctrlSettingsSaveResult
+            .addClass(success ? 'notice' : 'error')
+            .html('<p>' + message + '</p>')
+            .show();
 
     	//scroll back to the top of the page
         $('body,html').scrollTop(0);

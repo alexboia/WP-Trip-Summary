@@ -62,8 +62,8 @@ class Abp01_Lookup {
 	 * @param string $type The lookup item type
 	 * @return boolean True if it's supported, false otherwise
 	 */
-	private function _isTypeSupported($type) {
-		return in_array($type, $this->getSupportedCategories());
+	public static function isTypeSupported($type) {
+		return in_array($type, self::getSupportedCategories());
 	}
 
 	/**
@@ -105,7 +105,7 @@ class Abp01_Lookup {
         }
     }
 
-    private function _getLookupOptions($type) {
+    public function getLookupOptions($type) {
         $this->_loadDataIfNeeded();
         $options = array();
         if (isset($this->_cache[$type])) {
@@ -131,7 +131,7 @@ class Abp01_Lookup {
         return $option;
     }
 
-	public function getSupportedCategories() {
+	public static function getSupportedCategories() {
 		return array(
 			self::DIFFICULTY_LEVEL,
 			self::PATH_SURFACE_TYPE,
@@ -142,6 +142,19 @@ class Abp01_Lookup {
 			self::RECOMMEND_SEASONS,
 			self::RAILROAD_ELECTRIFICATION
 		);
+	}
+
+	public static function getSupportedLanguages() {
+		require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
+		$translations = array(
+			'_default' => __('Default', 'abp01-trip-summary'),
+			'en_US' => 'English (United States)'
+		);
+		$systemTranslations = wp_get_available_translations();
+		foreach ($systemTranslations as $tx) {
+			$translations[$tx['language']] = sprintf('%s (%s)', $tx['english_name'], $tx['native_name']);
+		}
+		return $translations;
 	}
 
 	/**
@@ -253,7 +266,7 @@ class Abp01_Lookup {
 		if (empty($defaultLabel)) {
 			throw new InvalidArgumentException();
 		}
-		if (!$this->_isTypeSupported($type)) {
+		if (!self::isTypeSupported($type)) {
 			throw new InvalidArgumentException();
 		}
 
@@ -385,7 +398,7 @@ class Abp01_Lookup {
 	 * @return array The available options
 	 */
     public function getDifficultyLevelOptions() {
-        return $this->_getLookupOptions(self::DIFFICULTY_LEVEL);
+        return $this->getLookupOptions(self::DIFFICULTY_LEVEL);
     }
 
 	/**
@@ -394,7 +407,7 @@ class Abp01_Lookup {
 	 * @return array The available options
 	 */
     public function getPathSurfaceTypeOptions() {
-        return $this->_getLookupOptions(self::PATH_SURFACE_TYPE);
+        return $this->getLookupOptions(self::PATH_SURFACE_TYPE);
     }
 
 	/**
@@ -403,7 +416,7 @@ class Abp01_Lookup {
 	 * @return array The available options
 	 */
     public function getBikeTypeOptions() {
-        return $this->_getLookupOptions(self::BIKE_TYPE);
+        return $this->getLookupOptions(self::BIKE_TYPE);
     }
 
 	/**
@@ -412,7 +425,7 @@ class Abp01_Lookup {
 	 * @return array The available options
 	 */
     public function getRecommendedSeasonsOptions() {
-        return $this->_getLookupOptions(self::RECOMMEND_SEASONS);
+        return $this->getLookupOptions(self::RECOMMEND_SEASONS);
     }
 
 	/**
@@ -421,7 +434,7 @@ class Abp01_Lookup {
 	 * @return array The available options
 	 */
     public function getRailroadLineTypeOptions() {
-        return $this->_getLookupOptions(self::RAILROAD_LINE_TYPE);
+        return $this->getLookupOptions(self::RAILROAD_LINE_TYPE);
     }
 
 	/**
@@ -430,7 +443,7 @@ class Abp01_Lookup {
 	 * @return array The available options
 	 */
     public function getRailroadOperatorOptions() {
-        return $this->_getLookupOptions(self::RAILROAD_OPERATOR);
+        return $this->getLookupOptions(self::RAILROAD_OPERATOR);
     }
 
 	/**
@@ -439,7 +452,7 @@ class Abp01_Lookup {
 	 * @return array The available options
 	 */
     public function getRailroadLineStatusOptions() {
-        return $this->_getLookupOptions(self::RAILROAD_LINE_STATUS);
+        return $this->getLookupOptions(self::RAILROAD_LINE_STATUS);
     }
 
 	/**
@@ -448,7 +461,7 @@ class Abp01_Lookup {
 	 * @return array The available options
 	 */
     public function getRailroadElectrificationOptions() {
-        return $this->_getLookupOptions(self::RAILROAD_ELECTRIFICATION);
+        return $this->getLookupOptions(self::RAILROAD_ELECTRIFICATION);
     }
 
 	/**

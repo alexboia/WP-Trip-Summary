@@ -11,11 +11,6 @@
  */
 
 /**
- * We need the translations api for some stuff
- */
-require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
-
-/**
  * Any file used by this plugin can be protected against direct browser access by checking this flag
  */
 define('ABP01_LOADED', true);
@@ -37,10 +32,10 @@ define('ABP01_ACTION_UPLOAD_TRACK', 'abp01_upload_track');
 define('ABP01_ACTION_GET_TRACK', 'abp01_get_track');
 define('ABP01_ACTION_SAVE_SETTINGS', 'abp01_save_settings');
 define('ABP01_ACTION_DOWNLOAD_TRACK', 'abp01_download_track');
-define('ABP01_ACTION_GET_LOOKUP', 'abpo1_get_lookup');
-define('ABP01_ACTION_DELETE_LOOKUP', 'abpo1_delete_lookup');
-define('ABP01_ACTION_ADD_LOOKUP', 'abpo1_add_lookup');
-define('ABP01_ACTION_EDIT_LOOKUP', 'abpo1_edit_lookup');
+define('ABP01_ACTION_GET_LOOKUP', 'abp01_get_lookup');
+define('ABP01_ACTION_DELETE_LOOKUP', 'abp01_delete_lookup');
+define('ABP01_ACTION_ADD_LOOKUP', 'abp01_add_lookup');
+define('ABP01_ACTION_EDIT_LOOKUP', 'abp01_edit_lookup');
 
 define('ABP01_NONCE_TOUR_EDITOR', 'abp01.nonce.tourEditor');
 define('ABP01_NONCE_GET_TRACK', 'abp01.nonce.getTrack');
@@ -436,8 +431,8 @@ function abp01_get_main_admin_script_translations() {
 }
 
 /**
- * Retrieve translations used in the setttings editor script
- * @return array key-value pairs where keys are javascript property names and values are the translation strings
+ * Retrieve translations used in the settings editor script
+ * @return array Key-value pairs where keys are javascript property names and values are the translation strings
  */
 function abp01_get_settings_admin_script_translations() {
 	return array(
@@ -449,13 +444,29 @@ function abp01_get_settings_admin_script_translations() {
 }
 
 /**
+ * Retrieve translations used in the settings editor script
+ * @return array Key-value pairs where keys are javascript property names and values are the translation strings
+ */
+function abp01_get_lookup_admin_script_translations() {
+	return array(
+		'msgWorking' => __('Working. Please wait...', 'abp01-trip-summary')
+	);
+}
+
+/**
  * Retrieve translations used when installing the plug-in
  * @return array key-value pairs where keys are installation error codes and values are the translated strings
  */
 function abp01_get_installation_error_translations() {
 	$env = Abp01_Env::getInstance();
 	load_plugin_textdomain('abp01-trip-summary', false, dirname(plugin_basename(__FILE__)) . '/lang/');
-	return array(Abp01_Installer::INCOMPATIBLE_PHP_VERSION => sprintf(__('Minimum required PHP version is %s', 'abp01-trip-summary'), $env->getRequiredPhpVersion()), Abp01_Installer::INCOMPATIBLE_WP_VERSION => sprintf(__('Minimum required WP version is %s', 'abp01-trip-summary'), $env->getRequiredWpVersion()), Abp01_Installer::SUPPORT_LIBXML_NOT_FOUND => __('LIBXML support was not found on your system', 'abp01-trip-summary'), Abp01_Installer::SUPPORT_MYSQLI_NOT_FOUND => __('Mysqli extension was not found on your system or is not fully compatible', 'abp01-trip-summary'), Abp01_Installer::SUPPORT_MYSQL_SPATIAL_NOT_FOUND => __('MySQL spatial support was not found on your system', 'abp01-trip-summary'));
+	return array(
+		Abp01_Installer::INCOMPATIBLE_PHP_VERSION => sprintf(__('Minimum required PHP version is %s', 'abp01-trip-summary'), $env->getRequiredPhpVersion()), 
+		Abp01_Installer::INCOMPATIBLE_WP_VERSION => sprintf(__('Minimum required WP version is %s', 'abp01-trip-summary'), $env->getRequiredWpVersion()), 
+		Abp01_Installer::SUPPORT_LIBXML_NOT_FOUND => __('LIBXML support was not found on your system', 'abp01-trip-summary'), 
+		Abp01_Installer::SUPPORT_MYSQLI_NOT_FOUND => __('Mysqli extension was not found on your system or is not fully compatible', 'abp01-trip-summary'), 
+		Abp01_Installer::SUPPORT_MYSQL_SPATIAL_NOT_FOUND => __('MySQL spatial support was not found on your system', 'abp01-trip-summary')
+	);
 }
 
 /**
@@ -839,10 +850,15 @@ function abp01_add_admin_scripts() {
 		Abp01_Includes::includeScriptKiteJs();
 		Abp01_Includes::includeScriptJQueryBlockUI();
 		Abp01_Includes::includeScriptJQueryToastr();
+		Abp01_Includes::includeScriptLodash();
+		Abp01_Includes::includeScriptMachina();
 		Abp01_Includes::includeScriptNProgress();
 
 		Abp01_Includes::includeScriptProgressOverlay();
 		Abp01_Includes::includeScriptAdminLookupMgmt();
+
+		wp_localize_script(Abp01_Includes::JS_ADMIN_LOOKUP_MGMT, 'abp01LookupMgmL10n', 
+			abp01_get_lookup_admin_script_translations());
 	}
 }
 
@@ -1015,17 +1031,12 @@ function abp01_admin_lookup_page() {
 	//set available lookup categories/types
 	$data->controllers = new stdClass();
 	$data->controllers->availableTypes = array();
-	foreach ($lookup->getSupportedCategories() as $category) {
+	foreach (Abp01_Lookup::getSupportedCategories() as $category) {
 		$data->controllers->availableTypes[$category] = abp01_get_lookup_type_label($category);
 	}
 
 	//set available languages
-	$data->controllers->availableLanguages = array();
-	$systemTranslations = wp_get_available_translations();
-	$data->controllers->availableLanguages['_default'] = __('Default', 'abp01-trip-summary');
-	foreach ($systemTranslations as $tx) {
-		$data->controllers->availableLanguages[$tx['language']] = sprintf('%s (%s)', $tx['english_name'], $tx['native_name']);
-	}
+	$data->controllers->availableLanguages = Abp01_Lookup::getSupportedLanguages();
 
 	//set selected language
 	if (!empty($_GET['abp01_lang']) && array_key_exists($_GET['abp01_lang'], $data->controllers->availableLanguages)) {
@@ -1052,6 +1063,47 @@ function abp01_admin_lookup_page() {
 
 	//render the page
 	abp01_admin_lookup_page_render($data);
+}
+
+/**
+ * Retrieves the list of lookup items for the given lookup item type and language.
+ * Lookup item type and language are passed as URl parameters
+ * Execution halts if the given request context is not valid:
+ * - invalit HTTP method or...
+ * - no valid nonce detected or...
+ * - the current user lacks proper capabilities or...
+ * - one of the above-mentioned parameters is empty or...
+ * - the given lookup item type is not supported
+ * @return void
+ */
+function abp01_get_lookup_items() {
+	if (abp01_get_http_method() != 'get') {
+		die;
+	}
+
+	if (!abp01_can_manage_plugin_settings() || !abp01_verify_manage_lookup_nonce()) {
+		die;
+	}
+
+	$response = new stdClass();
+	$response->success = false;
+	$response->message = null;
+
+	$type = isset($_GET['type']) ? $_GET['type'] : null;
+	$lang = isset($_GET['lang']) ? $_GET['lang'] : null;
+	if (empty($type) || empty($lang) || !Abp01_Lookup::isTypeSupported($type)) {
+		die;
+	}
+
+	$lookup = new Abp01_Lookup($lang);
+	$items = $lookup->getLookupOptions($type);
+		
+	$response->lang = $lang;
+	$response->type = $type;
+	$response->items = $items;
+	$response->success = true;
+	
+	abp01_send_json($response);
 }
 
 /**
@@ -1471,6 +1523,7 @@ if (function_exists('add_action')) {
 	add_action('wp_ajax_' . ABP01_ACTION_CLEAR_INFO, 'abp01_remove_info');
 	add_action('wp_ajax_' . ABP01_ACTION_SAVE_SETTINGS, 'abp01_save_admin_settings_page_save');
     add_action('wp_ajax_' . ABP01_ACTION_DOWNLOAD_TRACK, 'abp01_download_track');
+	add_action('wp_ajax_' . ABP01_ACTION_GET_LOOKUP, 'abp01_get_lookup_items');
 
 	add_action('wp_ajax_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
 	add_action('wp_ajax_nopriv_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');

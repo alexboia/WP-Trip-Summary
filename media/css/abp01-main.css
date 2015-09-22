@@ -1,7 +1,7 @@
 body, html {
-	height: auto !important;
+    /*height: auto !important;
     min-height: 100% !important;
-    overflow: auto !important;
+    overflow: auto !important;*/
 }
 
 .abp01-button-icon, .abp01-editor-icon {
@@ -349,5 +349,13 @@ a.abp01-close-editor:hover {
 
 #abp01-admin-lookup-listing-container {
     margin-right: 10px;
+}
+
+.abp01-lookup-general-buttons-bottom {
+    margin-top: 5px;
+}
+
+.abp01-lookup-general-buttons-top {
+    margin-bottom: 5px;
 }
 /* END Lookup data management section */
