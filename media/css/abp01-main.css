@@ -358,4 +358,42 @@ a.abp01-close-editor:hover {
 .abp01-lookup-general-buttons-top {
     margin-bottom: 5px;
 }
+
+.abp01-lookup-item-form-container {
+    position: relative;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.abp01-lookup-item-form-fields {
+    margin-top: 10px;
+    position: relative;
+}
+
+.abp01-lookup-item-form-fields .abp01-form-line {
+    margin: 0;
+    padding: 0;
+}
+
+.abp01-lookup-item-form-fields .abp01-form-line input[type="text"] {
+    width: 100% !important;    
+}
+
+.abp01-lookup-item-form-controls {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    padding-bottom: 10px;
+    height: auto;
+}
+
+.abp01-lookup-item-form-controls a.button {
+    margin-right: 5px;
+}
+
+.abp01-languageDetails {
+    margin-left: 5px;
+}
 /* END Lookup data management section */

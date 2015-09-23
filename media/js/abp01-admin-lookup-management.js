@@ -9,6 +9,8 @@
     var $ctlTypeSelector = null;
     var $ctlLangSelector = null;
     var $ctlLookupListing = null;
+    var $ctlLookupItemDefaultLabel = null;
+    var $ctlLookupItemTranslatedLabel = null;
 
     /**
      * Cached template references
@@ -20,6 +22,7 @@
      * */
 
     var context = null;
+    var currentItems = {};
 
     /**
      * Reads and returns the current form context/state:
@@ -78,6 +81,7 @@
      * @return void
      * */
     function cleanupLookupItems() {
+        currentItems = {};
         $ctlLookupListing.find('tbody').html('');
     }
 
@@ -105,7 +109,7 @@
         var lookupType = $ctlTypeSelector.val();
         var lookupLang = $ctlLangSelector.val();
 
-        toggleBusy(true);
+        toggleBusy(true);        
         $.ajax(getLoadLookupDataUrl(), {
             cache: false,
             dataType: 'json',
@@ -119,10 +123,71 @@
             if (data && data.success && data.items) {
                 cleanupLookupItems();
                 renderLookupItems(data.items);
+                $.each(data.items, function(idx, item) {
+                    currentItems[item.id] = item;
+                });
             }
         }).fail(function() {
             toggleBusy(false);
         });
+    }
+
+    /**
+     * Show the lookup item editor
+     * @param String currentItemId The identifier of the item being edited, or null if we are adding a new item
+     * @return void
+     * */
+    function showEditor(currentItemId) {
+        var type = $ctlTypeSelector.val();
+        var lang = $ctlLangSelector.val();
+        var langLabel = $ctlLangSelector.find('option:selected').text();
+        var title = !!currentItem 
+            ? abp01LookupMgmL10n.editItemTitle 
+            : abp01LookupMgmL10n.addItemTitle;
+
+        var height = 147;
+        var $translatedLabelFieldLine = $ctlLookupItemDefaultLabel.closest('div.abp01-form-line');
+
+        //if the selected language is other than the default one
+        //also show the translated label field
+        //this way we allow setting the translated label 
+        //without the user having to take an extra action
+        if (lang !== '_default') {
+            height = 200;
+            $translatedLabelFieldLine.show();
+            $translatedLabelFieldLine.find('span[rel=abp01-languageDetails]')
+                .html('(' + langLabel + ')');
+        } else {
+            $translatedLabelFieldLine.hide();
+        }
+
+        //set the initial values, if given
+        if (currentItemId) {
+            var currentItem = currentItems[currentItemId] || null;
+            if (currentItem) {
+                $ctlLookupItemDefaultLabel.val(currentItem.defaultLabel);
+                $ctlLookupItemTranslatedLabel.val(currentItem.label);
+            }
+        } else {
+            $ctlLookupItemDefaultLabel.val('');
+            $ctlLookupItemTranslatedLabel.val('');
+        }
+
+        //show the editor
+        tb_show(title, '#TB_inline?width=' + 450 + '&height=' + height + '&inlineId=abp01-lookup-item-form');
+    }
+
+    /**
+     * Closes the currently open lookup item editor.
+     * Upon doing so, it will also reset the field values
+     * @return void
+     * */
+    function closeEditor() {
+        //reset field values
+        $ctlLookupItemDefaultLabel.val('');
+        $ctlLookupItemTranslatedLabel.val('');
+        //close the window
+        tb_remove();
     }
 
     /**
@@ -136,12 +201,36 @@
         };
     }
 
+    /**
+     * Initializes the current page controls:
+     * - retain references to elements we are repeatedly using
+     * - bind even listeners
+     * @return void
+     * */
     function initControls() {
         $ctlTypeSelector = $('#abp01-lookupTypeSelect')
             .change(reloadLookupItems);
         $ctlLangSelector = $('#abp01-lookupLangSelect')
             .change(reloadLookupItems);
         $ctlLookupListing = $('#abp01-admin-lookup-listing');
+
+        $ctlLookupItemDefaultLabel = $('#abp01-lookup-item-defaultLabel');
+        $ctlLookupItemTranslatedLabel = $('#abp01-lookup-item-translatedLabel');        
+
+        //bind click action for the "Add new item" buttons
+        $('#abp01-add-lookup-bottom, #abp01-add-lookup-top').click(function() {
+            showEditor(null);
+        });
+
+        //bind action for edit buttons
+        $(document).on('click', 'a[rel=item-edit]', function() {
+            var $me = $(this);
+            var id = $me.attr('data-lookupId');
+            showEditor(id);
+        });
+
+        //bind actions for form controls
+        $('#abp01-cancel-lookup-item').click(closeEditor);
     }
 
     function initFormState() {

@@ -16,9 +16,7 @@
 				<label for="abp01-lookupTypeSelect"><?php echo __('Lookup type:', 'abp01-trip-summary'); ?></label>
 				<select id="abp01-lookupTypeSelect" class="abp01-lookupControl">
 					<?php foreach ($data->controllers->availableTypes as $value => $label): ?>
-						<option value="<?php echo esc_attr($value); ?>" <?php echo $value == $data->controllers->selectedType ? 'selected="selected"' : '' ?>>
-							<?php echo esc_html($label); ?>
-						</option>
+						<option value="<?php echo esc_attr($value); ?>" <?php echo $value == $data->controllers->selectedType ? 'selected="selected"' : '' ?>><?php echo esc_html($label); ?></option>
 					<?php endforeach; ?>
 				</select>
 			</div>
@@ -26,9 +24,7 @@
 				<label for="abp01-lookupLangSelect"><?php echo __('Language:', 'abp01-trip-summary'); ?></label>
 				<select id="abp01-lookupLangSelect" class="abp01-lookupControl">
 					<?php foreach ($data->controllers->availableLanguages as $value => $label): ?>
-						<option value="<?php echo esc_attr($value); ?>" <?php echo $value == $data->controllers->selectedLanguage ? 'selected="selected"' : ''; ?>>
-							<?php echo esc_html($label); ?>
-						</option>
+						<option value="<?php echo esc_attr($value); ?>" <?php echo $value == $data->controllers->selectedLanguage ? 'selected="selected"' : ''; ?>><?php echo esc_html($label); ?></option>
 					<?php endforeach; ?>
 				</select>
 			</div>
@@ -36,7 +32,7 @@
 		</div>
 		<div id="abp01-admin-lookup-listing-container">
 			<div class="abp01-lookup-general-buttons-top">
-				<a href="javascript:void(0)" class="button button-primary button-large button-save-summary"><?php echo __('Add new item', 'abp01-trip-summary'); ?></a>
+				<a id="abp01-add-lookup-top" href="javascript:void(0)" class="button button-primary button-large"><?php echo __('Add new item', 'abp01-trip-summary'); ?></a>
 			</div>
 			<table id="abp01-admin-lookup-listing" class="wp-list-table widefat fixed striped">
 				<thead>
@@ -48,9 +44,27 @@
 				<tbody></tbody>
 			</table>
 			<div class="abp01-lookup-general-buttons-bottom">
-				<a href="javascript:void(0)" class="button button-primary button-large button-save-summary"><?php echo __('Add new item', 'abp01-trip-summary'); ?></a>
+				<a id="abp01-add-lookup-bottom" href="javascript:void(0)" class="button button-primary button-large"><?php echo __('Add new item', 'abp01-trip-summary'); ?></a>
 			</div>
 		</div>
+	</div>
+	<div id="abp01-lookup-item-form" style="display: none;">
+		<div class="abp01-lookup-item-form-container">
+			<div class="abp01-lookup-item-form-fields">
+				<div class="abp01-form-line">
+					<label for="abp01-lookup-item-defaultLabel"><?php echo __('Default label', 'abp01-trip-summary'); ?>:</label>
+					<input type="text" id="abp01-lookup-item-defaultLabel" name="defaultLabel" />
+				</div>
+				<div class="abp01-form-line">
+					<label for="abp01-lookup-item-translatedLabel"><?php echo __('Translated label', 'abp01-trip-summary'); ?><span class="abp01-languageDetails" rel="abp01-languageDetails"></span>:</label>
+					<input type="text" id="abp01-lookup-item-translatedLabel" name="translatedLabel" />
+				</div>
+			</div>			
+			<div class="abp01-lookup-item-form-controls">
+				<a id="abp01-save-lookup-item" href="javascript:void(0)" class="button button-primary button-large"><?php echo __('Save item', 'abp01-trip-summary'); ?></a>
+				<a id="abp01-cancel-lookup-item" href="javascript:void(0)" class="button button-large"><?php echo __('Cancel', 'abp01-trip-summary'); ?></a>
+			</div>
+		</div>		
 	</div>
 	<script id="tpl-abp01-lookupDataRow" type="text/x-kite">
 		{{#lookupItems}}

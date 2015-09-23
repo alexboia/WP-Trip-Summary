@@ -449,7 +449,9 @@ function abp01_get_settings_admin_script_translations() {
  */
 function abp01_get_lookup_admin_script_translations() {
 	return array(
-		'msgWorking' => __('Working. Please wait...', 'abp01-trip-summary')
+		'msgWorking' => __('Working. Please wait...', 'abp01-trip-summary'),
+		'addItemTitle' => __('Add new item', 'abp01-trip-summary'),
+		'editItemTitle' => __('Modify item', 'abp01-trip-summary')
 	);
 }
 
@@ -708,14 +710,14 @@ function abp01_add_admin_editor($post) {
 
 	$data->ajaxEditInfoAction = ABP01_ACTION_EDIT;
 	$data->ajaxUploadTrackAction = ABP01_ACTION_UPLOAD_TRACK;
-	$data->ajaxGetTrackAction = ABP01_ACTION_GET_TRACK;
+	$data->ajaxGetTrackAction = ABP01_ACTION_GET_TRACK;	
 	$data->ajaxClearTrackAction = ABP01_ACTION_CLEAR_TRACK;
 	$data->ajaxClearInfoAction = ABP01_ACTION_CLEAR_INFO;
 
 	$data->ajaxUrl = get_admin_url(null, 'admin-ajax.php', 'admin');
 	$data->imgBaseUrl = plugins_url('media/img', __FILE__);
 	$data->nonce = abp01_create_edit_nonce($data->postId);
-	$data->nonceGet = abp01_create_get_track_nonce($data->postId);
+	$data->nonceGet = abp01_create_get_track_nonce($data->postId);	
 
 	$data->flashUploaderUrl = includes_url('js/plupload/plupload.flash.swf');
 	$data->xapUploaderUrl = includes_url('js/plupload/plupload.silverlight.xap');
@@ -769,6 +771,7 @@ function abp01_add_admin_styles() {
 	}
 
 	if (abp01_is_managing_lookup() && abp01_can_manage_plugin_settings()) {
+		Abp01_Includes::includeStyleSystemThickBox();
 		Abp01_Includes::includeStyleNProgress();
 		Abp01_Includes::includeStyleJQueryToastr();
 		Abp01_Includes::includeStyleAdminMain();
@@ -846,6 +849,7 @@ function abp01_add_admin_scripts() {
 	}
 
 	if (abp01_is_managing_lookup() && abp01_can_manage_plugin_settings()) {
+		Abp01_Includes::includeScriptSystemThickbox();
 		Abp01_Includes::includeScriptURIJs();
 		Abp01_Includes::includeScriptKiteJs();
 		Abp01_Includes::includeScriptJQueryBlockUI();
@@ -876,6 +880,7 @@ function abp01_add_frontend_scripts() {
 		Abp01_Includes::includeScriptLeaflet();
 		Abp01_Includes::includeScriptLeafletMagnifyingGlass();
 		Abp01_Includes::includeScriptLeafletFullscreen();
+		Abp01_Includes::includeScriptLeafletIconButton();
 
 		Abp01_Includes::includeScriptMap();
 		Abp01_Includes::includeScriptFrontendMain();
@@ -1077,10 +1082,12 @@ function abp01_admin_lookup_page() {
  * @return void
  */
 function abp01_get_lookup_items() {
+	//check http method - must be GET
 	if (abp01_get_http_method() != 'get') {
 		die;
 	}
 
+	//check acces rights and look for valid nonce
 	if (!abp01_can_manage_plugin_settings() || !abp01_verify_manage_lookup_nonce()) {
 		die;
 	}
@@ -1097,12 +1104,12 @@ function abp01_get_lookup_items() {
 
 	$lookup = new Abp01_Lookup($lang);
 	$items = $lookup->getLookupOptions($type);
-		
+
 	$response->lang = $lang;
 	$response->type = $type;
 	$response->items = $items;
 	$response->success = true;
-	
+
 	abp01_send_json($response);
 }
 
@@ -1207,8 +1214,10 @@ function abp01_get_info($content) {
 	//current context information
 	$data->postId = $postId;
 	$data->nonceGet = abp01_create_get_track_nonce($postId);
+	$data->nonceDownload = abp01_create_download_track_nonce($data->postId);	
 	$data->ajaxUrl = get_admin_url(null, 'admin-ajax.php', 'admin');
 	$data->ajaxGetTrackAction = ABP01_ACTION_GET_TRACK;
+	$data->downloadTrackAction = ABP01_ACTION_DOWNLOAD_TRACK;
 	$data->imgBaseUrl = plugins_url('media/img', __FILE__);
 	
 	//get relevant plug-in settings

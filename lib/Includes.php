@@ -47,6 +47,8 @@ class Abp01_Includes {
 	const JS_ADMIN_SETTINGS = 'abp01-settings-admin';
 
 	const JS_ADMIN_LOOKUP_MGMT = 'abp01-admin-lookup-management';
+	
+	const JS_SYSTEM_THICKBOX = 'thickbox';
 
 	const STYLE_DASHICONS = 'dashicons';
 
@@ -67,6 +69,8 @@ class Abp01_Includes {
 	const STYLE_JQUERY_TOASTR = 'jquery-toastr-css';
 
 	const STYLE_ADMIN_MAIN = 'abp01-main-css';
+
+	const STYLE_SYSTEM_THICKBOX = 'thickbox';
 
 	private static $_refPluginsPath;
 
@@ -332,6 +336,10 @@ class Abp01_Includes {
 		self::_enqueueScript(self::JS_ADMIN_LOOKUP_MGMT);
 	}
 
+	public static function includeScriptSystemThickbox() {
+		self::_enqueueScript(self::JS_SYSTEM_THICKBOX);
+	}
+
 	public static function includeStyleDashIcons() {
 		self::_enqueueStyle(self::STYLE_DASHICONS);
 	}
@@ -369,4 +377,7 @@ class Abp01_Includes {
 		self::_enqueueStyle(self::STYLE_ADMIN_MAIN);
 	}
 
+	public static function includeStyleSystemThickBox() {
+		self::_enqueueStyle(self::STYLE_SYSTEM_THICKBOX);
+	}
 }

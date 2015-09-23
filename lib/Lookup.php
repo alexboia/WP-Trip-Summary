@@ -85,8 +85,8 @@ class Abp01_Lookup {
 		}
 
         $rows = $db->rawQuery('
-            SELECT l.ID, l.lookup_category,
-                COALESCE(lg.lookup_label, l.lookup_label) AS lookup_label
+            SELECT l.ID, l.lookup_category, l.lookup_label AS default_lookup_label,
+                lg.lookup_label AS translated_lookup_label
             FROM `' . $table . '` l
             LEFT JOIN `' . $langTable . '` lg
                 ON lg.ID = l.ID AND  lg.lookup_lang = ?
@@ -100,7 +100,10 @@ class Abp01_Lookup {
                 if (!isset($this->_cache[$category])) {
                     $this->_cache[$category] = array();
                 }
-                $this->_cache[$category][$row['ID']] = $row['lookup_label'];
+                $this->_cache[$category][$row['ID']] = array(
+					'defaultLabel' => $row['default_lookup_label'],
+					'translatedLabel' => $row['translated_lookup_label']
+				);
             }
         }
     }
@@ -117,17 +120,28 @@ class Abp01_Lookup {
     }
 
 	/**
-	 * Creates an option object of type stdClass with the following properties: id, type and label
+	 * Creates an option object of type stdClass with the following properties: id, type, defaultLabel and label
 	 * @param integer $id Populates the id property
-	 * @param string $label Populates the label property
+	 * @param mixed $label Populates the two label properties
 	 * @param string $type Populates the type property
 	 * @return stdClass The resulting option object
 	 */
     private function _createOption($id, $label, $type) {
+		if (is_string($label)) {
+			$label = array(
+				'defaultLabel' => $label,
+				'translatedLabel' => $label
+			);
+		}
+		
         $option = new stdClass();
-        $option->id = $id;
-        $option->label = $label;
+        $option->id = $id;		
         $option->type = $type;
+		$option->defaultLabel = $label['defaultLabel'];
+		$option->label = !empty($label['translatedLabel']) 
+			? $label['translatedLabel'] 
+			: $label['defaultLabel'];
+
         return $option;
     }
 
@@ -468,7 +482,7 @@ class Abp01_Lookup {
 	 * Looks up the given lookup item, given the item type/category and the item id
 	 * @param string $type The item type
 	 * @param integer $id The item id
-	 * @return stdClass The entire lookup item as an object with the following properties: id, label and type
+	 * @return stdClass The entire lookup item as an object with the following properties: id, defaultLabel, label and type
 	 */
     public function lookup($type, $id) {
         $this->_loadDataIfNeeded();
