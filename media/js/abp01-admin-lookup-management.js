@@ -11,6 +11,8 @@
     var $ctlLookupListing = null;
     var $ctlLookupItemDefaultLabel = null;
     var $ctlLookupItemTranslatedLabel = null;
+    var $ctlOperationResultContainer = null;
+    var $ctlListingResultContainer = null;
 
     /**
      * Cached template references
@@ -18,11 +20,19 @@
     var tplLookupListing = null;
 
     /**
-     * Current form state
+     * Current state
      * */
 
     var context = null;
     var currentItems = {};
+    var editingItem = null;
+
+    function getLookupListingTemplate() {
+        if (!tplLookupListing) {
+            tplLookupListing = kite('#tpl-abp01-lookupDataRow');
+        }
+        return tplLookupListing;
+    }
 
     /**
      * Reads and returns the current form context/state:
@@ -45,16 +55,13 @@
         };
     }
 
-    function toggleBusy(show) {
+    function toggleBusy(show, $target) {
         if (show) {
             if (!progressBar) {
-                var message = arguments.length == 2 
-                    ? arguments[1] || abp01LookupMgmL10n.msgWorking 
-                    : abp01LookupMgmL10n.msgWorking;
-
                 progressBar = $('#tpl-abp01-progress-container').progressOverlay({
-                    $target: $('#wpwrap'),
-                    message: message
+                    $target: $target || $('#wpwrap'),
+                    message: abp01LookupMgmtL10n.msgWorking,
+                    centerY: !!$target
                 });
             }
         } else {
@@ -63,6 +70,26 @@
                 progressBar = null;
             }
         }
+    }
+
+    function displayMessage($container, success, message) {
+        //first clear the result container
+        clearMessage($container);
+
+        //style the message box according to success/error status
+        //and show the message
+        $container
+            .addClass(success ? 'notice' : 'error')
+            .html('<p>' + message + '</p>')
+            .show();
+    }
+
+    function clearMessage($container) {        
+    	$container
+            .removeClass('notice')
+            .removeClass('error')
+            .html('')
+            .hide();
     }
 
     /**
@@ -77,12 +104,46 @@
     }
 
     /**
+     * Builds the URL used for creating new lookup items
+     * @return String The URL
+     * */
+    function getAddLookupUrl() {
+        return URI(context.ajaxBaseUrl)
+            .addSearch('action', context.ajaxAddLookupAction)
+            .addSearch('abp01_nonce_lookup_mgmt', context.nonce)
+            .toString();
+    }
+
+    /**
+     * Builds the URL used for editing existing lookup items
+     * @return String The URL
+     * */
+    function getEditLookupUrl() {
+        return URI(context.ajaxBaseUrl)
+            .addSearch('action', context.ajaxEditLookupAction)
+            .addSearch('abp01_nonce_lookup_mgmt', context.nonce)
+            .toString();
+    }
+
+    /**
      * Removes all the lookup items that are currently displayed in the listing table
      * @return void
      * */
     function cleanupLookupItems() {
         currentItems = {};
+        editingItem = null;
         $ctlLookupListing.find('tbody').html('');
+    }
+
+    /**
+     * Clears the fields in the currently displayed form. The cleared fields are:
+     * - the default label field;
+     * - the translated label field.
+     * @return void
+     * */
+    function clearForm() {
+        $ctlLookupItemTranslatedLabel.val('');
+        $ctlLookupItemDefaultLabel.val('');
     }
 
     /**
@@ -90,14 +151,23 @@
      * @param Array items The lookup items
      * @return void
      * */
-    function renderLookupItems(items) {
-        if (!tplLookupListing) {
-            tplLookupListing = kite('#tpl-abp01-lookupDataRow');
-        }
-        var content = tplLookupListing({
+    function renderLookupItems(items, append) {
+        var content = getLookupListingTemplate()({
             lookupItems: items
         });
-        $ctlLookupListing.find('tbody').html(content);
+        var $container = $ctlLookupListing.find('tbody');
+        if (!append) {
+            $container.html(content);
+        } else {
+            $container.append(content);
+        }
+    }
+
+    function refreshLookupItem(item) {
+        var $oldRow = $('#lookupItemRow-' + item.id);
+        $oldRow.replaceWith(getLookupListingTemplate()({
+            lookupItems: [item]
+        }));
     }
 
     /**
@@ -109,7 +179,9 @@
         var lookupType = $ctlTypeSelector.val();
         var lookupLang = $ctlLangSelector.val();
 
-        toggleBusy(true);        
+        toggleBusy(true);
+        clearMessage($ctlListingResultContainer);
+
         $.ajax(getLoadLookupDataUrl(), {
             cache: false,
             dataType: 'json',
@@ -122,14 +194,90 @@
             toggleBusy(false);
             if (data && data.success && data.items) {
                 cleanupLookupItems();
-                renderLookupItems(data.items);
+                renderLookupItems(data.items, false);
                 $.each(data.items, function(idx, item) {
                     currentItems[item.id] = item;
                 });
+            } else {
+                
             }
         }).fail(function() {
             toggleBusy(false);
         });
+    }
+
+    function createLookupItem() {        
+        toggleBusy(true, $('#TB_window'));
+        clearMessage($ctlOperationResultContainer);
+
+        $.ajax(getAddLookupUrl(), {
+            cache: false,
+            dataType: 'json',
+            type: 'POST',
+            data: {
+                type: $ctlTypeSelector.val(),
+                lang: $ctlLangSelector.val(),
+                defaultLabel: $ctlLookupItemDefaultLabel.val(),
+                translatedLabel: $ctlLookupItemTranslatedLabel.val()
+            }
+        }).done(function(data) {
+            toggleBusy(false);
+            if (data && data.success) {
+                currentItems[data.item.id] = data.item;
+                renderLookupItems([data.item], true);
+                clearForm();
+                displayMessage($ctlOperationResultContainer, true, abp01LookupMgmtL10n.msgSaveOk);
+            } else {
+                displayMessage($ctlOperationResultContainer, false, data.message || abp01LookupMgmtL10n.errFailGeneric);
+            }
+        }).fail(function() {
+            toggleBusy(false);
+            displayMessage($ctlOperationResultContainer, false, abp01LookupMgmtL10n.errFailNetwork);
+        });
+    }
+
+    function modifyLookupItem() {
+        var defaultLabel = $ctlLookupItemDefaultLabel.val();
+        var translatedLabel = $ctlLookupItemTranslatedLabel.val();
+
+        toggleBusy(true, $('#TB_window'));
+        clearMessage($ctlOperationResultContainer);
+
+        $.ajax(getEditLookupUrl(), {
+            cache: false,
+            dataType: 'json',
+            type: 'POST',
+            data: {
+                id: editingItem.id,
+                lang: $ctlLangSelector.val(),
+                defaultLabel: defaultLabel,
+                translatedLabel: translatedLabel
+            }
+        }).done(function(data) {
+            toggleBusy(false);
+            if (data && data.success) {
+                editingItem.label = !!translatedLabel ? translatedLabel : defaultLabel;
+                editingItem.defaultLabel = defaultLabel;
+
+                currentItems[editingItem.id] = editingItem;
+                refreshLookupItem(editingItem);
+
+                displayMessage($ctlOperationResultContainer, true, abp01LookupMgmtL10n.msgSaveOk);
+            } else {
+                displayMessage($ctlOperationResultContainer, false, data.message || abp01LookupMgmtL10n.errFailGeneric);
+            }
+        }).fail(function() {
+            toggleBusy(false);
+            displayMessage($ctlOperationResultContainer, false, abp01LookupMgmtL10n.errFailNetwork);
+        });
+    }
+
+    function saveLookupItem() {
+        if (!editingItem) {
+            createLookupItem();
+        } else {
+            modifyLookupItem();
+        }
     }
 
     /**
@@ -138,14 +286,13 @@
      * @return void
      * */
     function showEditor(currentItemId) {
-        var type = $ctlTypeSelector.val();
         var lang = $ctlLangSelector.val();
         var langLabel = $ctlLangSelector.find('option:selected').text();
-        var title = !!currentItem 
-            ? abp01LookupMgmL10n.editItemTitle 
-            : abp01LookupMgmL10n.addItemTitle;
+        var title = !!currentItemId 
+            ? abp01LookupMgmtL10n.editItemTitle 
+            : abp01LookupMgmtL10n.addItemTitle;
 
-        var height = 147;
+        var height = 157;
         var $translatedLabelFieldLine = $ctlLookupItemDefaultLabel.closest('div.abp01-form-line');
 
         //if the selected language is other than the default one
@@ -153,7 +300,7 @@
         //this way we allow setting the translated label 
         //without the user having to take an extra action
         if (lang !== '_default') {
-            height = 200;
+            height = 210;
             $translatedLabelFieldLine.show();
             $translatedLabelFieldLine.find('span[rel=abp01-languageDetails]')
                 .html('(' + langLabel + ')');
@@ -163,17 +310,19 @@
 
         //set the initial values, if given
         if (currentItemId) {
-            var currentItem = currentItems[currentItemId] || null;
-            if (currentItem) {
-                $ctlLookupItemDefaultLabel.val(currentItem.defaultLabel);
-                $ctlLookupItemTranslatedLabel.val(currentItem.label);
+            editingItem = currentItems[currentItemId] || null;
+            if (editingItem) {
+                $ctlLookupItemDefaultLabel.val(editingItem.defaultLabel);
+                $ctlLookupItemTranslatedLabel.val(editingItem.label);
             }
         } else {
             $ctlLookupItemDefaultLabel.val('');
             $ctlLookupItemTranslatedLabel.val('');
+            editingItem = null;
         }
 
         //show the editor
+        clearMessage($ctlOperationResultContainer);
         tb_show(title, '#TB_inline?width=' + 450 + '&height=' + height + '&inlineId=abp01-lookup-item-form');
     }
 
@@ -184,9 +333,10 @@
      * */
     function closeEditor() {
         //reset field values
-        $ctlLookupItemDefaultLabel.val('');
-        $ctlLookupItemTranslatedLabel.val('');
+        clearForm();
+        editingItem = null;
         //close the window
+        clearMessage($ctlOperationResultContainer);
         tb_remove();
     }
 
@@ -208,6 +358,9 @@
      * @return void
      * */
     function initControls() {
+        $ctlListingResultContainer = $('#abp01-lookup-listing-result');
+        $ctlOperationResultContainer = $('#abp01-lookup-operation-result');
+
         $ctlTypeSelector = $('#abp01-lookupTypeSelect')
             .change(reloadLookupItems);
         $ctlLangSelector = $('#abp01-lookupLangSelect')
@@ -231,6 +384,7 @@
 
         //bind actions for form controls
         $('#abp01-cancel-lookup-item').click(closeEditor);
+        $('#abp01-save-lookup-item').click(saveLookupItem);
     }
 
     function initFormState() {

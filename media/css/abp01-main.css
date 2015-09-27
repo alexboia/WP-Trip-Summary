@@ -324,7 +324,9 @@ a.abp01-close-editor:hover {
     font-style: italic;
 }
 
-.abp01-settings-save-result {
+.abp01-settings-save-result, 
+.abp01-lookup-listing-result, 
+.abp01-lookup-operation-result {
     margin-left: 0px !important;
 }
 
@@ -395,5 +397,10 @@ a.abp01-close-editor:hover {
 
 .abp01-languageDetails {
     margin-left: 5px;
+}
+
+.abp01-lookup-operation-result p {
+    margin: 0 !important;
+    padding: 3px 0px 3px 0px !important;
 }
 /* END Lookup data management section */

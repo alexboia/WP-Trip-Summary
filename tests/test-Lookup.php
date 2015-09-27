@@ -231,8 +231,8 @@ class LookupTests extends WP_UnitTestCase {
 		$type = $this->_getRandomLookupType();
 		$existingItemId = $this->_sampleLookupData[$type]['data_id'];
 
-		$lookup = new Abp01_Lookup();
-		$result = $lookup->addLookupItemTranslation($existingItemId, $lang, $newLabel);
+		$lookup = new Abp01_Lookup($lang);
+		$result = $lookup->addLookupItemTranslation($existingItemId, $newLabel);
 
 		$this->assertTrue($result);
 		$this->_assertLookupTranslationMatchesLabel($existingItemId, $lang, $newLabel);
@@ -244,10 +244,12 @@ class LookupTests extends WP_UnitTestCase {
 		$existingItemId = $this->_sampleLookupData[$type]['data_id'];
 		$existingItemLang = self::SAMPLE_LOOKUP_LANG;
 
-		$lookup = new Abp01_Lookup();
-		$result = $lookup->modifyLookupItemTranslation($existingItemId, $existingItemLang, $newLabel);
+		$lookup = new Abp01_Lookup($existingItemLang);
+		$result = $lookup->modifyLookupItemTranslation($existingItemId, $newLabel);
+		$repeatedResult = $lookup->modifyLookupItemTranslation($existingItemId, $newLabel);
 
 		$this->assertTrue($result);
+		$this->assertTrue($repeatedResult);
 		$this->_assertLookupTranslationMatchesLabel($existingItemId, $existingItemLang, $newLabel);
 	}
 
@@ -256,8 +258,8 @@ class LookupTests extends WP_UnitTestCase {
 		$existingItemId = $this->_sampleLookupData[$type]['data_id'];
 		$existingItemLang = self::SAMPLE_LOOKUP_LANG;
 
-		$lookup = new Abp01_Lookup();
-		$result = $lookup->deleteLookupItemTranslation($existingItemId, $existingItemLang);
+		$lookup = new Abp01_Lookup($existingItemLang);
+		$result = $lookup->deleteLookupItemTranslation($existingItemId);
 		
 		$this->assertTrue($result);
 		$this->_assertLookupItemTranslationMissing($existingItemId, $existingItemLang);

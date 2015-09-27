@@ -66,13 +66,15 @@
         }
 
         function getStyle() {
-            return {
+            return $.extend({
                 top: 310,
                 width: 400,
-                height: 20,
-                centerX: true,
-                centerY: false
-            };
+                height: 20
+            }, spec.style || {});
+        }
+
+        function getCenterY() {
+            return spec.centerY || false;
         }
 
         fsm = new machina.Fsm({
@@ -131,7 +133,7 @@
             _openProgressDialog: function() {
                 var me = this;
                 getTarget().block({
-                    centerY: false,
+                    centerY: getCenterY(),
                     message: $content,
                     css: getStyle(),
                     onBlock: function() {

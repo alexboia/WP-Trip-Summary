@@ -450,8 +450,11 @@ function abp01_get_settings_admin_script_translations() {
 function abp01_get_lookup_admin_script_translations() {
 	return array(
 		'msgWorking' => __('Working. Please wait...', 'abp01-trip-summary'),
+		'msgSaveOk' => __('Item successfully saved', 'abp01-trip-summary'),
 		'addItemTitle' => __('Add new item', 'abp01-trip-summary'),
-		'editItemTitle' => __('Modify item', 'abp01-trip-summary')
+		'editItemTitle' => __('Modify item', 'abp01-trip-summary'),
+		'errFailNetwork' => __('The item could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'),
+		'errFailGeneric' => __('The item could not be saved due to a possible internal server issue', 'abp01-trip-summary')
 	);
 }
 
@@ -861,7 +864,7 @@ function abp01_add_admin_scripts() {
 		Abp01_Includes::includeScriptProgressOverlay();
 		Abp01_Includes::includeScriptAdminLookupMgmt();
 
-		wp_localize_script(Abp01_Includes::JS_ADMIN_LOOKUP_MGMT, 'abp01LookupMgmL10n', 
+		wp_localize_script(Abp01_Includes::JS_ADMIN_LOOKUP_MGMT, 'abp01LookupMgmtL10n', 
 			abp01_get_lookup_admin_script_translations());
 	}
 }
@@ -1096,11 +1099,8 @@ function abp01_get_lookup_items() {
 	$response->success = false;
 	$response->message = null;
 
-	$type = isset($_GET['type']) ? $_GET['type'] : null;
-	$lang = isset($_GET['lang']) ? $_GET['lang'] : null;
-	if (empty($type) || empty($lang) || !Abp01_Lookup::isTypeSupported($type)) {
-		die;
-	}
+	$type = Abp01_InputFiltering::getGETvalueOrDie('type', array('Abp01_Lookup', 'isTypeSupported'));
+	$lang = Abp01_InputFiltering::getGETvalueOrDie('lang', array('Abp01_Lookup', 'isLanguageSupported'));
 
 	$lookup = new Abp01_Lookup($lang);
 	$items = $lookup->getLookupOptions($type);
@@ -1109,6 +1109,115 @@ function abp01_get_lookup_items() {
 	$response->type = $type;
 	$response->items = $items;
 	$response->success = true;
+
+	abp01_send_json($response);
+}
+
+function abp01_add_lookup_item() {
+	//check HTTP method - must be POST
+	if (abp01_get_http_method() != 'post') {
+		die;
+	}
+
+	//check access rights and look for valid nonce
+	if (!abp01_can_manage_plugin_settings() || !abp01_verify_manage_lookup_nonce()) {
+		die;
+	}
+
+	$type = Abp01_InputFiltering::getPOSTValueOrDie('type', array('Abp01_Lookup', 'isTypeSupported'));
+	$lang = Abp01_InputFiltering::getPOSTValueOrDie('lang', array('Abp01_Lookup', 'isLanguageSupported'));
+
+	//initialize response
+	$response = new stdClass();
+	$response->success = false;
+	$response->message = null;
+	$response->item = null;
+
+	//fetch labels from POSTed data
+	$defaultLabel = isset($_POST['defaultLabel']) ? $_POST['defaultLabel'] : null;
+	$translatedLabel = isset($_POST['translatedLabel']) ? $_POST['translatedLabel'] : null;
+
+	//the default label must not be empty
+	if (empty($defaultLabel)) {
+		$response->message = __('The default label is mandatory', 'abp01-trip-summary');
+		abp01_send_json($response);
+	}
+	
+
+	$lookup = new Abp01_Lookup($lang);
+	$item = $lookup->createLookupItem($type, $defaultLabel);
+
+	//check if the item has been successfully created
+	if ($item == null) {
+		$response->message = __('The lookup item could not be created', 'abp01-trip-summary');
+		abp01_send_json($response);
+	}
+
+	//check if we should add the translation as well
+	if ($lang != '_default' && !empty($translatedLabel)) {
+		$response->success = $lookup->addLookupItemTranslation($item->id, $translatedLabel);
+		if (!$response->success) {
+			$response->message = __('The lookup item has been created, but the translation could not be saved', 'abp01-trip-summary');
+		} else {
+			$item->label = $translatedLabel;
+		}
+	} else {
+		$response->success = true;
+	}
+
+	$response->item = $item;
+	abp01_send_json($response);
+}
+
+function abp01_edit_lookup_item() {
+	if (abp01_get_http_method() != 'post') {
+		die;
+	}
+
+	if (!abp01_can_manage_plugin_settings() || !abp01_verify_manage_lookup_nonce()) {
+		die;
+	}
+
+	$id = Abp01_InputFiltering::getPOSTValueOrDie('id', 'is_numeric');
+	$lang = Abp01_InputFiltering::getPOSTValueOrDie('lang', array('Abp01_Lookup', 'isLanguageSupported'));
+
+	//initialize response
+	$response = new stdClass();
+	$response->success = false;
+	$response->message = null;
+	
+	//fetch labels from POSTed data
+	$defaultLabel = isset($_POST['defaultLabel']) ? $_POST['defaultLabel'] : null;
+	$translatedLabel = isset($_POST['translatedLabel']) ? $_POST['translatedLabel'] : null;
+
+	//the default label must not be empty
+	if (empty($defaultLabel)) {
+		$response->message = __('The default label is mandatory', 'abp01-trip-summary');
+		abp01_send_json($response);
+	}
+
+	$lookup = new Abp01_Lookup($lang);
+	$modifyItemOk = $lookup->modifyLookupItem($id, $defaultLabel);
+	$modifyItemTranslationOk = false;
+
+	//if there alread is a translation for the item, modify it
+	if ($lookup->hasLookupItemTranslation($id)) {
+		$modifyItemTranslationOk = empty($translatedLabel)
+			? $lookup->deleteLookupItemTranslation($id)
+			: $lookup->modifyLookupItemTranslation($id, $translatedLabel);
+	} else {
+		//otherwise, create a new one, if the translated label is not empty
+		$modifyItemTranslationOk = !empty($translatedLabel) 
+			? $lookup->addLookupItemTranslation($id, $translatedLabel) 
+			: true;
+	}
+
+	//check overall result
+	if (!$modifyItemOk || !$modifyItemTranslationOk) {
+		$response->message = __('The lookup item could not be modified', 'abp01-trip-summary');
+	} else {
+		$response->success = true;
+	}
 
 	abp01_send_json($response);
 }
@@ -1423,6 +1532,15 @@ function abp01_get_track() {
 	abp01_send_json($response);
 }
 
+/**
+ * Handles the GPX track download request.
+ * Execution halts if the given request context is not valid:
+ * - invalid HTTP method or...
+ * - not valid post ID or...
+ * - no valid nonce detected or...
+ * - track file downloading is disabled.
+ * @return void
+ */
 function abp01_download_track() {
     //only HTTP GET method is allowed
     if (abp01_get_http_method() != 'get') {
@@ -1430,7 +1548,7 @@ function abp01_download_track() {
     }
 
     $postId = abp01_get_current_post_id();
-    if (!$postId) {
+    if (empty($postId) || !abp01_verify_download_track_nonce($postId)) {
         die;
     }
 
@@ -1531,8 +1649,10 @@ if (function_exists('add_action')) {
 	add_action('wp_ajax_' . ABP01_ACTION_CLEAR_TRACK, 'abp01_remove_track');
 	add_action('wp_ajax_' . ABP01_ACTION_CLEAR_INFO, 'abp01_remove_info');
 	add_action('wp_ajax_' . ABP01_ACTION_SAVE_SETTINGS, 'abp01_save_admin_settings_page_save');
-    add_action('wp_ajax_' . ABP01_ACTION_DOWNLOAD_TRACK, 'abp01_download_track');
+	add_action('wp_ajax_' . ABP01_ACTION_DOWNLOAD_TRACK, 'abp01_download_track');
 	add_action('wp_ajax_' . ABP01_ACTION_GET_LOOKUP, 'abp01_get_lookup_items');
+	add_action('wp_ajax_' . ABP01_ACTION_ADD_LOOKUP, 'abp01_add_lookup_item');
+	add_action('wp_ajax_' . ABP01_ACTION_EDIT_LOOKUP, 'abp01_edit_lookup_item');
 
 	add_action('wp_ajax_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
 	add_action('wp_ajax_nopriv_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
@@ -1545,6 +1665,6 @@ if (function_exists('add_action')) {
 }
 
 if (function_exists('add_filter') && function_exists('remove_filter')) {
-    remove_filter('the_content', 'wpautop');
-    add_filter('the_content', 'abp01_get_info', 0);
+	remove_filter('the_content', 'wpautop');
+	add_filter('the_content', 'abp01_get_info', 0);
 }

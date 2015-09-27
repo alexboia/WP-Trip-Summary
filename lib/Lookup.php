@@ -66,6 +66,10 @@ class Abp01_Lookup {
 		return in_array($type, self::getSupportedCategories());
 	}
 
+	public static function isLanguageSupported($lang) {
+		return array_key_exists($lang, self::getSupportedLanguages());
+	}
+
 	/**
 	 * Loads all the lookup data if needed, with respect to the current language setting
 	 * First the internal cache is checked and if the cache is not set, 
@@ -243,14 +247,10 @@ class Abp01_Lookup {
 	/**
 	 * Deletes the look-up item translation, described by the given ID and the given language
 	 * @param integer $lookupId The identifier of the lookup item for which the translation should be deleted
-	 * @param string $lang The translation that should be deleted
 	 * @return boolean True on success, false otherwise
 	 */
-	public function deleteLookupItemTranslation($lookupId, $lang) {
+	public function deleteLookupItemTranslation($lookupId) {
 		if (empty($lookupId) || $lookupId <= 0) {
-			throw new InvalidArgumentException();
-		}
-		if (empty($lang)) {
 			throw new InvalidArgumentException();
 		}
 
@@ -262,7 +262,7 @@ class Abp01_Lookup {
 		}
 
 		$db->where('ID', $lookupId);
-		$db->where('lookup_lang', $lang);
+		$db->where('lookup_lang', $this->_lang);
 		$result = $db->delete($lookupLangTableName);
 
 		$this->_invalidateCache();
@@ -286,6 +286,7 @@ class Abp01_Lookup {
 
 		$db = $this->_env->getDb();
 		$lookupTableName = $this->_env->getLookupTableName();
+		$defaultLabel = Abp01_InputFiltering::filterSingleValue($defaultLabel, 'string');
 
 		if (!$db) {
 			return null;
@@ -307,15 +308,11 @@ class Abp01_Lookup {
 	/**
 	 * Add a translation for the given lookup item. The item must first exist before adding a translation.
 	 * @param integer $id The identifier of the lookup item for which to add a translation
-	 * @param string $lang The language for which to add the translation
 	 * @param string $label The translation label
 	 * @return boolean True if it succeeds, false otherwise
 	 */
-	public function addLookupItemTranslation($id, $lang, $label) {
+	public function addLookupItemTranslation($id, $label) {
 		if (empty($id) || $id < 0) {
-			throw new InvalidArgumentException();
-		}
-		if (empty($lang)) {
 			throw new InvalidArgumentException();
 		}
 		if (empty($label)) {
@@ -324,6 +321,7 @@ class Abp01_Lookup {
 
 		$db = $this->_env->getDb();
 		$lookupTranslationTableName = $this->_env->getLookupLangTableName();
+		$label = Abp01_InputFiltering::filterSingleValue($label, 'string');
 
 		if (!$db) {
 			return false;
@@ -331,7 +329,7 @@ class Abp01_Lookup {
 
 		$db->insert($lookupTranslationTableName, array(
 			'ID' => $id,
-			'lookup_lang' => $lang,
+			'lookup_lang' => $this->_lang,
 			'lookup_label' => $label
 		));	
 
@@ -374,15 +372,11 @@ class Abp01_Lookup {
 	/**
 	 * Modifies the translation for the given lookup item and the given language
 	 * @param integer $id The lookup item for which to modify the translation
-	 * @param string $lang The language for which to modify the translation
 	 * @param string $label The new translation label
 	 * @return boolean True on success, false on failure
 	 */
-	public function modifyLookupItemTranslation($id, $lang, $label) {
+	public function modifyLookupItemTranslation($id, $label) {
 		if (empty($id) || $id < 0) {
-			throw new InvalidArgumentException();
-		}
-		if (empty($lang)) {
 			throw new InvalidArgumentException();
 		}
 		if (empty($label)) {
@@ -397,13 +391,32 @@ class Abp01_Lookup {
 		}
 
 		$db->where('ID', $id);
-		$db->where('lookup_lang', $lang);
+		$db->where('lookup_lang', $this->_lang);
 		$result = $db->update($lookupTranslationTableName, array(
 			'lookup_label' => $label
 		));
 
 		$this->_invalidateCache();
 		return $result;
+	}
+
+	public function hasLookupItemTranslation($id) {
+		if (empty($id) || $id < 0) {
+			throw new InvalidArgumentException();
+		}
+
+		$db = $this->_env->getDb();
+		$tableName = $this->_env->getLookupLangTableName();
+
+		if (!$db) {
+			return false;
+		}
+
+		$result = $db->rawQuery('SELECT COUNT(ID) AS count_check FROM `' . $tableName . '` WHERE ID = ? AND lookup_lang = ?',  
+			array($id, $this->_lang), 
+			false);
+
+		return is_array($result) && isset($result[0]) && intval($result[0]['count_check']) > 0;
 	}
 
 	/**

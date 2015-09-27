@@ -9,7 +9,7 @@
 <div id="abp01-admin-lookup-page">
 	<h2><?php echo __('Lookup data management', 'abp01-trip-summary'); ?></h2>
 	<div id="abp01-admin-lookup-page-beacon"></div>
-	<div id="abp01-lookup-operation-result" class="updated settings-error abp01-settings-save-result" style="display:none"></div>
+	<div id="abp01-lookup-listing-result" class="updated settings-error abp01-lookup-listing-result" style="display:none"></div>
 	<div id="abp01-admin-lookup-container">
 		<div id="abp01-admin-lookup-control-container">
 			<div class="abp01-lookupControl-item">
@@ -37,8 +37,9 @@
 			<table id="abp01-admin-lookup-listing" class="wp-list-table widefat fixed striped">
 				<thead>
 					<tr>
-						<th width="50%"><?php echo __('Label', 'abp01-trip-summary'); ?></th>
-						<th width="50%"><?php echo __('Actions', 'abp01-trip-summary'); ?></th>
+						<th width="40%"><?php echo __('Default label', 'abp01-trip-summary'); ?></th>
+						<th width="40%"><?php echo __('Label', 'abp01-trip-summary'); ?></th>
+						<th width="20%"><?php echo __('Actions', 'abp01-trip-summary'); ?></th>
 					</tr>
 				</thead>
 				<tbody></tbody>
@@ -50,6 +51,7 @@
 	</div>
 	<div id="abp01-lookup-item-form" style="display: none;">
 		<div class="abp01-lookup-item-form-container">
+			<div id="abp01-lookup-operation-result" class="updated settings-error abp01-lookup-operation-result" style="display:none"></div>
 			<div class="abp01-lookup-item-form-fields">
 				<div class="abp01-form-line">
 					<label for="abp01-lookup-item-defaultLabel"><?php echo __('Default label', 'abp01-trip-summary'); ?>:</label>
@@ -68,9 +70,10 @@
 	</div>
 	<script id="tpl-abp01-lookupDataRow" type="text/x-kite">
 		{{#lookupItems}}
-			<tr>
-				<td width="50%">{{label}}</td>
-				<td width="50%">
+			<tr id="lookupItemRow-{{id}}">
+				<td width="40%">{{defaultLabel}}</td>
+				<td width="40%">{{label}}</td>
+				<td width="20%">
 					<a href="javascript:void(0)" rel="item-edit" data-lookupId="{{id}}">Edit</a> |
 					<a href="javascript:void(0)" rel="item-delete" data-lookupId="{{id}}">Delete</a>
 				</td>

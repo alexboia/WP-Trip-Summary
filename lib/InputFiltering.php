@@ -49,4 +49,30 @@ class Abp01_InputFiltering {
 			return call_user_func_array($callback, array_merge(array($input, $asType), $extraParams));
 		}
 	}
+	
+	private static function assertValueNotEmptyOrDie($value, $additionalValidator = null) {
+		if (empty($value)) {
+			die;
+		}
+		if (!empty($additionalValidator) && is_callable($additionalValidator) && !$additionalValidator($value)) {
+			die;
+		}
+		return $value;
+	}
+
+	public static function getPOSTValueOrDie($key, $additionalValidator = null) {
+		if (empty($key)) {
+			throw new InvalidArgumentException();
+		}
+		$value = isset($_POST[$key]) ? $_POST[$key] : null;
+		return self::assertValueNotEmptyOrDie($value, $additionalValidator);
+	}
+
+	public static function getGETvalueOrDie($key, $additionalValidator = null) {
+		if (empty($key)) {
+			throw new InvalidArgumentException();
+		}
+		$value = isset($_GET[$key]) ? $_GET[$key] : null;
+		return self::assertValueNotEmptyOrDie($value, $additionalValidator);
+	}
 }
