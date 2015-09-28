@@ -49,6 +49,7 @@
 			</div>
 		</div>
 	</div>
+
 	<div id="abp01-lookup-item-form" style="display: none;">
 		<div class="abp01-lookup-item-form-container">
 			<div id="abp01-lookup-operation-result" class="updated settings-error abp01-lookup-operation-result" style="display:none"></div>
@@ -68,11 +69,37 @@
 			</div>
 		</div>		
 	</div>
+
+	<div id="abp01-lookup-item-delete-form" style="display: none;">
+		<div class="abp01-lookup-item-form-container">
+			<div id="abp01-lookup-delete-operation-result" class="updated settings-error abp01-lookup-operation-result" style="display:none"></div>
+			<div class="abp01-lookup-item-form-fields">
+				<div class="abp01-form-line abp01-delete-item-warning">
+					<?php echo __('Are you sure you want to delete this item? This action cannot be undone', 'abp01-trip-summary'); ?>
+				</div>
+				<div class="abp01-form-line">
+					<label for="abp01-lookup-item-deleteOnlyLang"><?php echo __('Only delete item translation', 'abp01-trip-summary'); ?>:</label>
+					<input type="checkbox" id="abp01-lookup-item-deleteOnlyLang" name="deleteOnlyLang" value="1" />
+				</div>
+			</div>
+			<div class="abp01-lookup-item-form-controls">
+				<a id="abp01-delete-lookup-item" href="javascript:void(0)" class="button button-primary button-large"><?php echo __('Confirm delete', 'abp01-trip-summary'); ?></a>
+				<a id="abp01-cancel-delete-lookup-item" href="javascript:void(0)" class="button button-large"><?php echo __('Cancel', 'abp01-trip-summary'); ?></a>
+			</div>
+		</div>		
+	</div>
+
 	<script id="tpl-abp01-lookupDataRow" type="text/x-kite">
 		{{#lookupItems}}
 			<tr id="lookupItemRow-{{id}}">
-				<td width="40%">{{defaultLabel}}</td>
-				<td width="40%">{{label}}</td>
+				<td width="40%" rel="defaultLabelCell">{{defaultLabel}}</td>
+				<td width="40%" rel="translatedLabelCell">
+					{{? hasTranslation }}
+						{{label}}
+					{{^?}}
+						-
+					{{/?}}
+				</td>
 				<td width="20%">
 					<a href="javascript:void(0)" rel="item-edit" data-lookupId="{{id}}">Edit</a> |
 					<a href="javascript:void(0)" rel="item-delete" data-lookupId="{{id}}">Delete</a>

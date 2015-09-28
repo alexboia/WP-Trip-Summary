@@ -137,12 +137,13 @@ class Abp01_Lookup {
 				'translatedLabel' => $label
 			);
 		}
-		
+
         $option = new stdClass();
         $option->id = $id;		
         $option->type = $type;
 		$option->defaultLabel = $label['defaultLabel'];
-		$option->label = !empty($label['translatedLabel']) 
+		$option->hasTranslation = !empty($label['translatedLabel']);
+		$option->label = $option->hasTranslation
 			? $label['translatedLabel'] 
 			: $label['defaultLabel'];
 
@@ -266,6 +267,10 @@ class Abp01_Lookup {
 		$result = $db->delete($lookupLangTableName);
 
 		$this->_invalidateCache();
+		if (!$result) {
+			$lastError = trim($db->getLastError());
+			$result = empty($lastError);
+		}
 		return $result;
 	}
 

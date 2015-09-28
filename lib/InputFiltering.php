@@ -49,7 +49,14 @@ class Abp01_InputFiltering {
 			return call_user_func_array($callback, array_merge(array($input, $asType), $extraParams));
 		}
 	}
-	
+
+	/**
+	 * Asserts that the given value is not empty and also runs the optional assertion given as the second optional parameter.
+	 * If the check fails, the script execution halts.
+	 * @param mixed $value The input value to check for
+	 * @param callable $additionalValidator The custom assertion. Optiona. Defaults to null
+	 * @return mixed The given input value
+	 */
 	private static function assertValueNotEmptyOrDie($value, $additionalValidator = null) {
 		if (empty($value)) {
 			die;

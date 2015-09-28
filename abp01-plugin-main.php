@@ -454,7 +454,11 @@ function abp01_get_lookup_admin_script_translations() {
 		'addItemTitle' => __('Add new item', 'abp01-trip-summary'),
 		'editItemTitle' => __('Modify item', 'abp01-trip-summary'),
 		'errFailNetwork' => __('The item could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'),
-		'errFailGeneric' => __('The item could not be saved due to a possible internal server issue', 'abp01-trip-summary')
+		'errFailGeneric' => __('The item could not be saved due to a possible internal server issue', 'abp01-trip-summary'),
+		'ttlConfirmDelete' => __('Confirm item removal', 'abp01-trip-summary'),
+		'errDeleteFailedNetwork' => __('The item could not be deleted due to a possible network error or an internal server issue', 'abp01-trip-summary'),
+		'errDeleteFailedGeneric' => __('The item could not be deleted due to a possible internal server issue', 'abp01-trip-summary'),
+		'msgDeleteOk' => __('The item has been successfully deleted', 'abp01-trip-summary')
 	);
 }
 
@@ -946,7 +950,7 @@ function abp01_admin_settings_page() {
 }
 
 /**
- * This function handles the plug-in settings save actions It receives and processes the corresponding HTTP request.
+ * This function handles the plug-in settings save action. It receives and processes the corresponding HTTP request.
  * Execution halts if the given request context is not valid:
  * - invalid HTTP method or...
  * - no valid nonce detected or...
@@ -1113,6 +1117,15 @@ function abp01_get_lookup_items() {
 	abp01_send_json($response);
 }
 
+/**
+ * Handles the lookup item creation save action. 
+ * Execution halts if the given request context is not valid:
+ * - invalid HTTP method or...
+ * - the current user does not have the required permissions or...
+ * - no valid nonce was found or...
+ * - the required lang & type parameters were not provided.
+ * @return void
+ */
 function abp01_add_lookup_item() {
 	//check HTTP method - must be POST
 	if (abp01_get_http_method() != 'post') {
@@ -1156,10 +1169,11 @@ function abp01_add_lookup_item() {
 	//check if we should add the translation as well
 	if ($lang != '_default' && !empty($translatedLabel)) {
 		$response->success = $lookup->addLookupItemTranslation($item->id, $translatedLabel);
-		if (!$response->success) {
-			$response->message = __('The lookup item has been created, but the translation could not be saved', 'abp01-trip-summary');
-		} else {
+		if ($response->success) {
 			$item->label = $translatedLabel;
+			$item->hasTranslation = true;
+		} else {
+			$response->message = __('The lookup item has been created, but the translation could not be saved', 'abp01-trip-summary');
 		}
 	} else {
 		$response->success = true;
@@ -1169,6 +1183,15 @@ function abp01_add_lookup_item() {
 	abp01_send_json($response);
 }
 
+/**
+ * Handles the lookup item editing save action.
+  * Execution halts if the given request context is not valid:
+ * - invalid HTTP method or...
+ * - the current user does not have the required permissions or...
+ * - no valid nonce was found or...
+ * - the required lang & id parameters were not provided.
+ * @return void
+ */
 function abp01_edit_lookup_item() {
 	if (abp01_get_http_method() != 'post') {
 		die;
@@ -1217,6 +1240,42 @@ function abp01_edit_lookup_item() {
 		$response->message = __('The lookup item could not be modified', 'abp01-trip-summary');
 	} else {
 		$response->success = true;
+	}
+
+	abp01_send_json($response);
+}
+
+function abp01_delete_lookup_item() {
+	if (abp01_get_http_method() != 'post') {
+		die;
+	}
+
+	if (!abp01_can_manage_plugin_settings() || !abp01_verify_manage_lookup_nonce()) {
+		die;
+	}
+
+	$id = Abp01_InputFiltering::getPOSTValueOrDie('id', 'is_numeric');
+	$lang = Abp01_InputFiltering::getPOSTValueOrDie('lang', array('Abp01_Lookup', 'isLanguageSupported'));
+	$deleteOnlyLang = Abp01_InputFiltering::getPOSTValueOrDie('deleteOnlyLang') === 'true';
+
+	//initialize response
+	$response = new stdClass();
+	$response->success = false;
+	$response->message = null;
+
+	$lookup = new Abp01_Lookup($lang);
+	if ($deleteOnlyLang && $lang != '_default') {
+		if ($lookup->deleteLookupItemTranslation($id)) {
+			$response->success = true;
+		} else {
+			$response->message = __('The item translation could not be deleted.', 'abp01-trip-summary');
+		}
+	} else {
+		if ($lookup->deleteLookup($id)) {
+			$response->success = true;
+		} else {
+			$response->message = __('The item could not be deleted', 'abp01-trip-summary');
+		}
 	}
 
 	abp01_send_json($response);
@@ -1653,6 +1712,7 @@ if (function_exists('add_action')) {
 	add_action('wp_ajax_' . ABP01_ACTION_GET_LOOKUP, 'abp01_get_lookup_items');
 	add_action('wp_ajax_' . ABP01_ACTION_ADD_LOOKUP, 'abp01_add_lookup_item');
 	add_action('wp_ajax_' . ABP01_ACTION_EDIT_LOOKUP, 'abp01_edit_lookup_item');
+	add_action('wp_ajax_' . ABP01_ACTION_DELETE_LOOKUP, 'abp01_delete_lookup_item');
 
 	add_action('wp_ajax_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
 	add_action('wp_ajax_nopriv_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');

@@ -403,4 +403,8 @@ a.abp01-close-editor:hover {
     margin: 0 !important;
     padding: 3px 0px 3px 0px !important;
 }
+
+.abp01-delete-item-warning {
+    padding-bottom: 10px !important;
+}
 /* END Lookup data management section */
