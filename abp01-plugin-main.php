@@ -458,7 +458,9 @@ function abp01_get_lookup_admin_script_translations() {
 		'ttlConfirmDelete' => __('Confirm item removal', 'abp01-trip-summary'),
 		'errDeleteFailedNetwork' => __('The item could not be deleted due to a possible network error or an internal server issue', 'abp01-trip-summary'),
 		'errDeleteFailedGeneric' => __('The item could not be deleted due to a possible internal server issue', 'abp01-trip-summary'),
-		'msgDeleteOk' => __('The item has been successfully deleted', 'abp01-trip-summary')
+		'msgDeleteOk' => __('The item has been successfully deleted', 'abp01-trip-summary'),
+		'errListingFailNetwork' => __('The lookup items could not be loaded due to a possible network error or an internal server issue', 'abp01-trip-summary'),
+		'errListingFailGeneric' => __('The lookup items could not be loaded', 'abp01-trip-summary')
 	);
 }
 
@@ -1037,10 +1039,8 @@ function abp01_admin_lookup_page() {
 		return;
 	}
 	
-	$data = new stdClass();
-	$lookup = new Abp01_Lookup();
-
 	//set available lookup categories/types
+	$data = new stdClass();
 	$data->controllers = new stdClass();
 	$data->controllers->availableTypes = array();
 	foreach (Abp01_Lookup::getSupportedCategories() as $category) {
@@ -1167,7 +1167,7 @@ function abp01_add_lookup_item() {
 	}
 
 	//check if we should add the translation as well
-	if ($lang != '_default' && !empty($translatedLabel)) {
+	if (!Abp01_Lookup::isDefaultLanguage($lang) && !empty($translatedLabel)) {
 		$response->success = $lookup->addLookupItemTranslation($item->id, $translatedLabel);
 		if ($response->success) {
 			$item->label = $translatedLabel;
@@ -1245,15 +1245,27 @@ function abp01_edit_lookup_item() {
 	abp01_send_json($response);
 }
 
+/**
+ * Handles the lookup item deletion action.
+ * Execution halts if the given request context is not valid:
+ * - invalid HTTP method or...
+ * - the current user does not have the required permissions or...
+ * - no valid nonce was found or...
+ * - the required lang & id parameters were not provided or...
+ * - the required deleteOnlyLang was not provided
+ * @return void
+ */
 function abp01_delete_lookup_item() {
 	if (abp01_get_http_method() != 'post') {
 		die;
 	}
 
+	//check for required permission and if the nonce is valid
 	if (!abp01_can_manage_plugin_settings() || !abp01_verify_manage_lookup_nonce()) {
 		die;
 	}
 
+	//fetch required parameters
 	$id = Abp01_InputFiltering::getPOSTValueOrDie('id', 'is_numeric');
 	$lang = Abp01_InputFiltering::getPOSTValueOrDie('lang', array('Abp01_Lookup', 'isLanguageSupported'));
 	$deleteOnlyLang = Abp01_InputFiltering::getPOSTValueOrDie('deleteOnlyLang') === 'true';
@@ -1264,13 +1276,16 @@ function abp01_delete_lookup_item() {
 	$response->message = null;
 
 	$lookup = new Abp01_Lookup($lang);
-	if ($deleteOnlyLang && $lang != '_default') {
+	//if a translation-only deletion was requested and the language is not the default one,
+	//delete only the translation for the given language
+	if ($deleteOnlyLang && !Abp01_Lookup::isDefaultLanguage($lang)) {
 		if ($lookup->deleteLookupItemTranslation($id)) {
 			$response->success = true;
 		} else {
 			$response->message = __('The item translation could not be deleted.', 'abp01-trip-summary');
 		}
 	} else {
+		//otherwise, delete the entire item, all translations included
 		if ($lookup->deleteLookup($id)) {
 			$response->success = true;
 		} else {

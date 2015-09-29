@@ -29,6 +29,10 @@
     var currentItems = {};
     var editingItem = null;
 
+    /**
+     * Compiles and caches the template used for rendering lookup items data rows
+     * @return Function The compiled template
+     * */
     function getLookupListingTemplate() {
         if (!tplLookupListing) {
             tplLookupListing = kite('#tpl-abp01-lookupDataRow');
@@ -127,6 +131,10 @@
             .toString();
     }
 
+    /**
+     * Builds the URL used for deleting existing lookup items
+     * @return String The URL
+     * */
     function getDeleteLookupUrl() {
         return URI(context.ajaxBaseUrl)
             .addSearch('action', context.ajaxDeleteLookupAction)
@@ -172,6 +180,12 @@
         }
     }
 
+    /**
+     * Refreshes the table row that corresponds to the given item.
+     * The entire row is re-rendered and the old row is replaced with the new one
+     * @param Object item The look-up item for which the row should be refreshed
+     * @return void
+     * */
     function refreshLookupItem(item) {
         var $oldRow = $('#lookupItemRow-' + item.id);
         $oldRow.replaceWith(getLookupListingTemplate()({
@@ -179,9 +193,16 @@
         }));
     }
 
-    function deleteLookupItemRow(item, onlyUpdateLanguageCell) {
+    /**
+     * Deletes the row that corresponds to the given lookup item 
+     * or simply empties the contents of the cell that contains the translation for the current language
+     * @param Object item The item for which the update should be carried out
+     * @oaram Boolean onlyUpdateTranslationCell Whether to simply empty the translation cell, in lieu of deleting the entire row
+     * @return void
+     * */
+    function deleteLookupItemRow(item, onlyUpdateTranslationCell) {
         var $row = $('#lookupItemRow-' + item.id);
-        if (onlyUpdateLanguageCell) {
+        if (onlyUpdateTranslationCell) {
             $row.find('td[rel=translatedLabelCell]').html('-');
         } else {
             $row.remove();
@@ -217,13 +238,23 @@
                     currentItems[item.id] = item;
                 });
             } else {
-                
+                displayMessage($ctlListingResultContainer, false, abp01LookupMgmtL10n.errListingFailGeneric);
             }
         }).fail(function() {
             toggleBusy(false);
+            displayMessage($ctlListingResultContainer, false, abp01LookupMgmtL10n.errListingFailNetwork);
         });
     }
 
+    /**
+     * Manages the actual lookup item creation process:
+     * - reads the required values;
+     * - progress indicator lifecycle;
+     * - displays operation result messages;
+     * - updates the lookup item listing if required;
+     * - fires the AJAX call.
+     * @return void
+     * */
     function createLookupItem() {        
         toggleBusy(true, $('#TB_window'));
         clearMessage($ctlOperationResultContainer);
@@ -254,6 +285,15 @@
         });
     }
 
+    /**
+     * Manages the actual lookup item modification process:
+     * - reads the required values;
+     * - progress indicator lifecycle;
+     * - displays the operation result message;
+     * - updates the lookup item listing if required;
+     * - fires the AJAX call.
+     * @return void
+     * */
     function modifyLookupItem() {
         var defaultLabel = $ctlLookupItemDefaultLabel.val();
         var translatedLabel = $ctlLookupItemTranslatedLabel.val();
@@ -274,8 +314,9 @@
         }).done(function(data) {
             toggleBusy(false);
             if (data && data.success) {
-                editingItem.label = !!translatedLabel ? translatedLabel : defaultLabel;
                 editingItem.defaultLabel = defaultLabel;
+                editingItem.hasTranslation = !!translatedLabel;
+                editingItem.label = editingItem.hasTranslation ? translatedLabel : defaultLabel;
 
                 currentItems[editingItem.id] = editingItem;
                 refreshLookupItem(editingItem);
@@ -290,6 +331,15 @@
         });
     }
 
+    /**
+     * Manages the actual lookup item deletion process:
+     * - reads the required values;
+     * - progress indicator lifecycle;
+     * - displays the operation result message;
+     * - updates the lookup listing if required;
+     * - fires the AJAX call.
+     * @return void
+     * */
     function deleteLookupItem() {
         var lang = $ctlLangSelector.val();
         var deleteOnlyLang = $ctlDeleteOnlyLangTranslation.is(':checked');
@@ -386,6 +436,12 @@
         tb_show(title, '#TB_inline?width=' + 450 + '&height=' + height + '&inlineId=abp01-lookup-item-form');
     }
 
+    /**
+     * Shows the lookup item deletion dialog for the given item id.
+     * Also sets the currently edited item to the item that corresponds to the given ID.
+     * @param Integer currentItemId The identifier of the item to be deleted
+     * @return void
+     * */
     function showDeleteDialog(currentItemId) {
         editingItem = currentItems[currentItemId];
         tb_show(abp01LookupMgmtL10n.ttlConfirmDelete, '#TB_inline?width=450&height=180&inlineId=abp01-lookup-item-delete-form');
@@ -405,6 +461,10 @@
         tb_remove();
     }
 
+    /**
+     * Closes the currently open lookup item deletion dialog
+     * @return void
+     * */
     function closeDeleteDialog() {
         editingItem = null;
         $ctlDeleteOnlyLangTranslation.prop('checked', false);
@@ -476,6 +536,9 @@
         context = getContext();
     }
 
+    /**
+     * Bootstrap everything together
+     * */
     $(document).ready(function() {
         initFormState();
         initControls();

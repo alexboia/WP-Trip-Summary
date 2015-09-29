@@ -20,6 +20,8 @@ class Abp01_Lookup {
 
     const RAILROAD_ELECTRIFICATION = 'railroadElectrificationStatus';
 
+	const DEFAULT_LANGUAGE = '_default';
+
 	/**
 	 * Internal cache for the lookup data
 	 */
@@ -66,8 +68,24 @@ class Abp01_Lookup {
 		return in_array($type, self::getSupportedCategories());
 	}
 
+	/**
+	 * Checks whether the given language is supported for a lookup item translation.
+	 * @param string $lang The language code to check for
+	 * @return boolean True if it's supported, false otherwise
+	 */
 	public static function isLanguageSupported($lang) {
 		return array_key_exists($lang, self::getSupportedLanguages());
+	}
+
+	/**
+	 * Checks whether the given language code is the default lookup item translation language code.
+	 * The default language code is merely a convention, as the labels for this language code are not stored in the translation table.
+	 * This language code describes the default label of a lookup item.
+	 * @param string $lang The language code to check for
+	 * @return boolean True if it is the default language code, false otherwise
+	 */
+	public static function isDefaultLanguage($lang) {
+		return $lang == self::DEFAULT_LANGUAGE;
 	}
 
 	/**
@@ -150,6 +168,11 @@ class Abp01_Lookup {
         return $option;
     }
 
+	/**
+	 * Gets a list of all supported lookup item categories/types.
+	 * The list is a simple indexed array, that has the category/type codes as values
+	 * @return array The list of supported lookup item categories/types
+	 */
 	public static function getSupportedCategories() {
 		return array(
 			self::DIFFICULTY_LEVEL,
@@ -163,6 +186,12 @@ class Abp01_Lookup {
 		);
 	}
 
+	/**
+	 * Gets a list of all supported languages.
+	 * The list is an array that has the language code as a key and a label as a value.
+	 * The label is comprised of both the english name and the native name of the language.
+	 * @return array The list of supported languages
+	 */
 	public static function getSupportedLanguages() {
 		require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
 		$translations = array(
@@ -255,6 +284,11 @@ class Abp01_Lookup {
 			throw new InvalidArgumentException();
 		}
 
+		//nothing to do for the default language
+		if (self::isDefaultLanguage($this->_lang)) {
+			return true;
+		}
+
 		$db = $this->_env->getDb();
 		$lookupLangTableName = $this->_env->getLookupLangTableName();
 
@@ -324,6 +358,11 @@ class Abp01_Lookup {
 			throw new InvalidArgumentException();
 		}
 
+		//nothing to do for the default language
+		if (self::isDefaultLanguage($this->_lang)) {
+			return true;
+		}
+
 		$db = $this->_env->getDb();
 		$lookupTranslationTableName = $this->_env->getLookupLangTableName();
 		$label = Abp01_InputFiltering::filterSingleValue($label, 'string');
@@ -388,6 +427,11 @@ class Abp01_Lookup {
 			throw new InvalidArgumentException();
 		}
 
+		//nothing to do for the default language
+		if (self::isDefaultLanguage($this->_lang)) {
+			return true;
+		}
+
 		$db = $this->_env->getDb();
 		$lookupTranslationTableName = $this->_env->getLookupLangTableName();
 
@@ -408,6 +452,11 @@ class Abp01_Lookup {
 	public function hasLookupItemTranslation($id) {
 		if (empty($id) || $id < 0) {
 			throw new InvalidArgumentException();
+		}
+
+		//if the current language is the default one - return false - there is no translation
+		if (self::isDefaultLanguage($this->_lang)) {
+			return false;
 		}
 
 		$db = $this->_env->getDb();
