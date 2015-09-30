@@ -61,6 +61,13 @@
         };
     }
 
+    /**
+     * Shows or hides the progress indicator, optionally blocking only the given target.
+     * If no target is given and the action is to show the indicator, then the entire screen is blocked.
+     * @param {Boolean} show Whether to show the progress indicator or to hide it
+     * @param {jQuery} $target The target element that should be blocked. Valid only when the indicator is shown (show == true)
+     * @return void
+     * */
     function toggleBusy(show, $target) {
         if (show) {
             if (!progressBar) {
@@ -78,6 +85,13 @@
         }
     }
 
+    /**
+     * Displays the given message of the given type (success/failure) in the given container
+     * @param {jQuery} $container The container in which the message will be displayed
+     * @param {Boolean} success Whether the message is a success message or a failure message
+     * @param {String} message The message to be displayed
+     * @return void
+     * */
     function displayMessage($container, success, message) {
         //first clear the result container
         clearMessage($container);
@@ -90,6 +104,14 @@
             .show();
     }
 
+    /**
+     * Clears the message from the given container:
+     * - all the message-specific classes are removed;
+     * - container content is cleared;
+     * - container is hidden
+     * @param {jQuery} $container The container for which the message is to be cleared
+     * @return void
+     * */
     function clearMessage($container) {        
     	$container
             .removeClass('notice')
@@ -165,7 +187,8 @@
 
     /**
      * Renders the given lookup items and updates the listing table content
-     * @param Array items The lookup items
+     * @param {Array} items The lookup items
+     * @param {Boolean} append Whether to append the content to the listing or to replace it alltogether
      * @return void
      * */
     function renderLookupItems(items, append) {
@@ -183,7 +206,7 @@
     /**
      * Refreshes the table row that corresponds to the given item.
      * The entire row is re-rendered and the old row is replaced with the new one
-     * @param Object item The look-up item for which the row should be refreshed
+     * @param {Object} item The look-up item for which the row should be refreshed
      * @return void
      * */
     function refreshLookupItem(item) {
@@ -196,8 +219,8 @@
     /**
      * Deletes the row that corresponds to the given lookup item 
      * or simply empties the contents of the cell that contains the translation for the current language
-     * @param Object item The item for which the update should be carried out
-     * @oaram Boolean onlyUpdateTranslationCell Whether to simply empty the translation cell, in lieu of deleting the entire row
+     * @param {Object} item The item for which the update should be carried out
+     * @param {Boolean} onlyUpdateTranslationCell Whether to simply empty the translation cell, in lieu of deleting the entire row
      * @return void
      * */
     function deleteLookupItemRow(item, onlyUpdateTranslationCell) {
@@ -392,7 +415,7 @@
 
     /**
      * Show the lookup item editor
-     * @param String currentItemId The identifier of the item being edited, or null if we are adding a new item
+     * @param {String} currentItemId The identifier of the item being edited, or null if we are adding a new item
      * @return void
      * */
     function showEditor(currentItemId) {
@@ -439,7 +462,7 @@
     /**
      * Shows the lookup item deletion dialog for the given item id.
      * Also sets the currently edited item to the item that corresponds to the given ID.
-     * @param Integer currentItemId The identifier of the item to be deleted
+     * @param {Integer} currentItemId The identifier of the item to be deleted
      * @return void
      * */
     function showDeleteDialog(currentItemId) {
@@ -490,16 +513,21 @@
      * @return void
      * */
     function initControls() {
+        //result containers - they serve as display containers for various operations results
         $ctlListingResultContainer = $('#abp01-lookup-listing-result');
         $ctlOperationResultContainer = $('#abp01-lookup-operation-result');
         $ctlDeleteOperationResultContainer = $('#abp01-lookup-delete-operation-result');
 
+        //selection controls
         $ctlTypeSelector = $('#abp01-lookupTypeSelect')
             .change(reloadLookupItems);
         $ctlLangSelector = $('#abp01-lookupLangSelect')
             .change(reloadLookupItems);
+    
+        //the listing
         $ctlLookupListing = $('#abp01-admin-lookup-listing');
 
+        //form inputss
         $ctlLookupItemDefaultLabel = $('#abp01-lookup-item-defaultLabel');
         $ctlLookupItemTranslatedLabel = $('#abp01-lookup-item-translatedLabel');
         $ctlDeleteOnlyLangTranslation = $('#abp01-lookup-item-deleteOnlyLang');
@@ -532,7 +560,11 @@
         $('#abp01-delete-lookup-item').click(deleteLookupItem);
     }
 
-    function initFormState() {
+    /**
+     * Reads the global variables that represent the current state/context and stores them in the "context" variable.
+     * @return void
+     * */
+    function initContext() {
         context = getContext();
     }
 
@@ -540,7 +572,7 @@
      * Bootstrap everything together
      * */
     $(document).ready(function() {
-        initFormState();
+        initContext();
         initControls();
         initBlockUIDefaultStyles();
         reloadLookupItems();

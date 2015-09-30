@@ -130,6 +130,17 @@ class Abp01_Lookup {
         }
     }
 
+	/**
+	 * Gets a list of all the lookup items for the given lookup item type/category.
+	 * Each element of the arrary is an object with the following properties:
+	 * - id = the id of the item;
+	 * - type = the type of the item;
+	 * - defaultLabel = the default label;
+	 * - hasTranslation = whether the item has a translation in the context of the current language or not
+	 * - label = the translated item label.
+	 * @param string $type The type of the items that should be returned
+	 * @return array The list of lookup items
+	 */
     public function getLookupOptions($type) {
         $this->_loadDataIfNeeded();
         $options = array();
@@ -449,6 +460,12 @@ class Abp01_Lookup {
 		return $result;
 	}
 
+	/**
+	 * Checkes whether there is an available translation for the given item, in the context of the current language.
+	 * Will directly return false if the current language is the default language.
+	 * @param integer $id The item id for which the existence of the translation is to be checked
+	 * @return boolean True if a translation exists, false otherwise
+	 */
 	public function hasLookupItemTranslation($id) {
 		if (empty($id) || $id < 0) {
 			throw new InvalidArgumentException();
@@ -549,7 +566,7 @@ class Abp01_Lookup {
 	 * Looks up the given lookup item, given the item type/category and the item id
 	 * @param string $type The item type
 	 * @param integer $id The item id
-	 * @return stdClass The entire lookup item as an object with the following properties: id, defaultLabel, label and type
+	 * @return stdClass The item, or null if not found. Item structure: id, hasTranslation, defaultLabel, label and type
 	 */
     public function lookup($type, $id) {
         $this->_loadDataIfNeeded();
@@ -561,34 +578,74 @@ class Abp01_Lookup {
         return $result;
     }
 
+	/**
+	 * Lookup the difficulty level item that corresponds to the given id.
+	 * @param integer $id The id for which the item must be retrieved
+	 * @return stdClass The item, or null if not found. Item structure: id, hasTranslation, defaultLabel, label and type
+	 */
     public function lookupDifficultyLevel($id) {
         return $this->lookup(self::DIFFICULTY_LEVEL, $id);
     }
 
+	/**
+	 * Lookup the path surface type item that corresponds to the given id.
+	 * @param integer $id The id for which the item must be retrieved
+	 * @return stdClass The item, or null if not found. Item structure: id, hasTranslation, defaultLabel, label and type
+	 */
     public function lookupPathSurfaceType($id) {
         return $this->lookup(self::PATH_SURFACE_TYPE, $id);
     }
 
+	/**
+	 * Lookup the bike type item that corresponds to the given id.
+	 * @param integer $id The id for which the item must be retrieved
+	 * @return stdClass The item, or null if not found. Item structure: id, hasTranslation, defaultLabel, label and type
+	 */
     public function lookupBikeType($id) {
         return $this->lookup(self::BIKE_TYPE, $id);
     }
 
+	/**
+	 * Lookup the railroad line type item that corresponds to the given id.
+	 * @param integer $id The id for which the item must be retrieved
+	 * @return stdClass The item, or null if not found. Item structure: id, hasTranslation, defaultLabel, label and type
+	 */
     public function lookupRailroadLineType($id) {
         return $this->lookup(self::RAILROAD_LINE_TYPE, $id);
     }
 
+	/**
+	 * Lookup the railroad operator item that corresponds to the given id.
+	 * @param integer $id The id for which the item must be retrieved
+	 * @return stdClass The item, or null if not found. Item structure: id, hasTranslation, defaultLabel, label and type
+	 */
     public function lookupRailroadOperator($id) {
         return $this->lookup(self::RAILROAD_OPERATOR, $id);
     }
 
+	/**
+	 * Lookup the railroad line status item that corresponds to the given id.
+	 * @param integer $id The id for which the item must be retrieved
+	 * @return stdClass The item, or null if not found. Item structure: id, hasTranslation, defaultLabel, label and type
+	 */
     public function lookupRailroadLineStatus($id) {
         return $this->lookup(self::RAILROAD_LINE_STATUS, $id);
     }
 
+	/**
+	 * Lookup the railroad electrification status item that corresponds to the given id.
+	 * @param integer $id The id for which the item must be retrieved
+	 * @return stdClass The item, or null if not found. Item structure: id, hasTranslation, defaultLabel, label and type
+	 */
     public function lookupRailroadElectrification($id) {
         return $this->lookup(self::RAILROAD_ELECTRIFICATION, $id);
     }
 
+	/**
+	 * Lookup the recommended season item that corresponds to the given id.
+	 * @param integer $id The id for which the item must be retrieved
+	 * @return stdClass The item, or null if not found. Item structure: id, hasTranslation, defaultLabel, label and type
+	 */
     public function lookupRecommendedSeason($id) {
         return $this->lookup(self::RECOMMEND_SEASONS, $id);
     }
