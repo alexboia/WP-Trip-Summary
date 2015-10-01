@@ -5,66 +5,103 @@ msgstr ""
 "Project-Id-Version: WP Trip Summary 0.1.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/abp01-travel-tech-"
 "box\n"
-"POT-Creation-Date: 2015-08-15 21:31+0300\n"
-"PO-Revision-Date: 2015-08-15 21:32+0300\n"
+"POT-Creation-Date: 2015-10-02 00:19+0300\n"
+"PO-Revision-Date: 2015-10-02 00:21+0300\n"
 "Last-Translator: \n"
 "Language-Team: alexandru.boia [at] outlook [dot] com\n"
 "Language: ro_RO\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.4\n"
+"X-Generator: Poedit 1.8.5\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: abp01-plugin-main.php:345
+#: abp01-plugin-main.php:381 views/techbox-editor.php:129
+msgid "Bike type"
+msgstr "Tip recomandat de bicicletă"
+
+#: abp01-plugin-main.php:382 views/techbox-editor.php:100
+#: views/techbox-editor.php:150 views/techbox-frontend.php:42
+#: views/techbox-frontend.php:50
+msgid "Difficulty level"
+msgstr "Nivelul de dificultate"
+
+#: abp01-plugin-main.php:383 views/techbox-editor.php:121
+#: views/techbox-editor.php:171 views/techbox-frontend.php:45
+#: views/techbox-frontend.php:53
+msgid "Path surface type"
+msgstr "Suprafața drumului/potecii"
+
+#: abp01-plugin-main.php:384
+msgid "Railroad electrification status"
+msgstr "Status electrificare linie de cale ferată"
+
+#: abp01-plugin-main.php:385
+msgid "Railroad line status"
+msgstr "Starea liniei de cale ferată"
+
+#: abp01-plugin-main.php:386
+msgid "Railroad line type"
+msgstr "Tipul liniei de cale ferată"
+
+#: abp01-plugin-main.php:387 views/techbox-editor.php:200
+#: views/techbox-frontend.php:59
+msgid "Railroad operators"
+msgstr "Operatori feroviari"
+
+#: abp01-plugin-main.php:388
+msgid "Recommended seasons"
+msgstr "Practicabil în anotimpurile"
+
+#: abp01-plugin-main.php:399
 msgid "Clear info"
 msgstr "Șterge info"
 
-#: abp01-plugin-main.php:346
+#: abp01-plugin-main.php:400
 msgid "Clear track"
 msgstr "Șterge track"
 
-#: abp01-plugin-main.php:347
+#: abp01-plugin-main.php:401
 msgid "GPX files"
 msgstr "Fișiere GPX"
 
-#: abp01-plugin-main.php:348
+#: abp01-plugin-main.php:402
 msgid "Generating preview. Please wait..."
 msgstr "Se generează harta și traseul. Te rog să aștepți..."
 
-#: abp01-plugin-main.php:349
+#: abp01-plugin-main.php:403
 msgid "Uploading track"
 msgstr "Se încarcă track-ul"
 
-#: abp01-plugin-main.php:350
+#: abp01-plugin-main.php:404
 msgid "The track has been uploaded and saved successfully"
 msgstr "Fișierul a fost încărcat și procesat cu succes"
 
-#: abp01-plugin-main.php:351 views/techbox-editor.php:77
+#: abp01-plugin-main.php:405 views/techbox-editor.php:77
 msgid "Biking"
 msgstr "Cu bicicleta"
 
-#: abp01-plugin-main.php:352 views/techbox-editor.php:80
+#: abp01-plugin-main.php:405 views/techbox-editor.php:80
 msgid "Hiking"
 msgstr "Per-pedes"
 
-#: abp01-plugin-main.php:353
+#: abp01-plugin-main.php:406
 msgid "Train ride"
 msgstr "Cu trenul"
 
-#: abp01-plugin-main.php:354
+#: abp01-plugin-main.php:407
 msgid "Clearing track. Please wait..."
 msgstr "Se șterge track-ul. Te rog să aștepți..."
 
-#: abp01-plugin-main.php:355
+#: abp01-plugin-main.php:408
 msgid "The track has been successfully cleared"
 msgstr "Track-ul a fost șters cu succes"
 
-#: abp01-plugin-main.php:356
+#: abp01-plugin-main.php:409
 msgid "The data could not be updated"
 msgstr "Datele nu au putut fi salvate"
 
-#: abp01-plugin-main.php:357
+#: abp01-plugin-main.php:410
 msgid ""
 "The data could not be updated due to a possible network error or an internal "
 "server issue"
@@ -72,19 +109,19 @@ msgstr ""
 "Datele nu au putut fi salvade din cauza unei posibile erori de rețea sau a "
 "unei erori interne"
 
-#: abp01-plugin-main.php:358
+#: abp01-plugin-main.php:411
 msgid "Saving data. Please wait..."
 msgstr "Se salvează datele. Te rog să aștepți..."
 
-#: abp01-plugin-main.php:359
+#: abp01-plugin-main.php:412
 msgid "The data has been saved"
 msgstr "Datele au fost salvate"
 
-#: abp01-plugin-main.php:360
+#: abp01-plugin-main.php:413
 msgid "The data could not be saved"
 msgstr "Datele nu au putut fi salvate"
 
-#: abp01-plugin-main.php:361
+#: abp01-plugin-main.php:414
 msgid ""
 "The data could not be saved due to a possible network error or an internal "
 "server issue"
@@ -92,19 +129,19 @@ msgstr ""
 "Datele nu au putut fi salvate din cauza unei posibile erori de rețea sau a "
 "unei erori interne"
 
-#: abp01-plugin-main.php:362
+#: abp01-plugin-main.php:415
 msgid "Clearing trip info. Please wait..."
 msgstr "Șterg informațiile traseului. Te rog să aștepți..."
 
-#: abp01-plugin-main.php:363
+#: abp01-plugin-main.php:416
 msgid "The trip info has been cleared"
 msgstr "Informațiile traseului au fost șterse"
 
-#: abp01-plugin-main.php:364
+#: abp01-plugin-main.php:417
 msgid "The trip info could not be cleared"
 msgstr "Informațiile traseului nu au putut fi șterse"
 
-#: abp01-plugin-main.php:365
+#: abp01-plugin-main.php:418
 msgid ""
 "The trip info could not be cleared due to a possible network error or an "
 "internal server issue"
@@ -112,35 +149,35 @@ msgstr ""
 "Informațiile traseului nu au putut fi șterse din cauza unei posibile erori de "
 "rețea sau a unei erori interne"
 
-#: abp01-plugin-main.php:366 abp01-plugin-main.php:373
+#: abp01-plugin-main.php:419 abp01-plugin-main.php:426
 msgid "The selected file is too large. Maximum allowed size is 10MB"
 msgstr "Fișierul selectat e prea mare. Dimensiunea maximă admisă e 10MB"
 
-#: abp01-plugin-main.php:367 abp01-plugin-main.php:372
+#: abp01-plugin-main.php:420 abp01-plugin-main.php:425
 msgid "The selected file type is not valid. Only GPX files are allowed"
 msgstr "Tipul selectat de fișier nu este valid. Sunt permise doar fișierele GPX"
 
-#: abp01-plugin-main.php:368 abp01-plugin-main.php:369
+#: abp01-plugin-main.php:421 abp01-plugin-main.php:422
 msgid "The file could not be read"
 msgstr "Fișierul nu a putu fi citit"
 
-#: abp01-plugin-main.php:370
+#: abp01-plugin-main.php:423
 msgid "The uploader could not be initialized"
 msgstr "Una din componente nu a putut fi inițializată corect"
 
-#: abp01-plugin-main.php:371 abp01-plugin-main.php:376
+#: abp01-plugin-main.php:424 abp01-plugin-main.php:429
 msgid "The file could not be uploaded"
 msgstr "Fișierul nu a putut fi încărcat"
 
-#: abp01-plugin-main.php:374
+#: abp01-plugin-main.php:427
 msgid "No file was uploaded"
 msgstr "Nu a fost încărcat nici un fișier"
 
-#: abp01-plugin-main.php:375
+#: abp01-plugin-main.php:428
 msgid "The file could not be uploaded due to a possible internal server issue"
 msgstr "Fișierul nu a putut fi încărcat din cauza unei posibile erori interne"
 
-#: abp01-plugin-main.php:386
+#: abp01-plugin-main.php:439
 msgid ""
 "The settings could not be saved due to a possible network error or an internal "
 "server issue"
@@ -148,89 +185,184 @@ msgstr ""
 "Opțiunile nu au putut fi salvate din cauza unei posibile erori de rețea sau a "
 "unei erori interne"
 
-#: abp01-plugin-main.php:387
+#: abp01-plugin-main.php:440
 msgid "The settings could not be saved due to a possible internal server issue"
 msgstr "Opțiunile nu au putut fi salvate din cauza unei posibile erori interne"
 
-#: abp01-plugin-main.php:388
+#: abp01-plugin-main.php:441
 msgid "Settings successfully saved"
 msgstr "Opțiunile au fost salvate cu succes"
 
-#: abp01-plugin-main.php:389
+#: abp01-plugin-main.php:442
 msgid "Saving settings. Please wait..."
 msgstr "Se salvează opțiunile. Te rog să aștepți..."
 
-#: abp01-plugin-main.php:400
+#: abp01-plugin-main.php:452
+msgid "Working. Please wait..."
+msgstr "Lucrez. Așteaptă puțin..."
+
+#: abp01-plugin-main.php:453
+msgid "Item successfully saved"
+msgstr "Itemul a fost salvat cu succes"
+
+#: abp01-plugin-main.php:454 views/techbox-lookup-data-management.php:36
+#: views/techbox-lookup-data-management.php:50
+msgid "Add new item"
+msgstr "Adaugă item"
+
+#: abp01-plugin-main.php:455
+msgid "Modify item"
+msgstr "Modifică"
+
+#: abp01-plugin-main.php:456
+msgid ""
+"The item could not be saved due to a possible network error or an internal "
+"server issue"
+msgstr ""
+"Itemul nu a putut fi salvat din cauza unei posibile probleme de conexiune"
+
+#: abp01-plugin-main.php:457
+msgid "The item could not be saved due to a possible internal server issue"
+msgstr "Itemul nu a putut fi salvat din cauza unei posibile probleme interne"
+
+#: abp01-plugin-main.php:458
+msgid "Confirm item removal"
+msgstr "Confirmă ștergerea itemului"
+
+#: abp01-plugin-main.php:459
+msgid ""
+"The item could not be deleted due to a possible network error or an internal "
+"server issue"
+msgstr "Itemul nu a putut fi șters in cauza unei posibile probleme de conexiune"
+
+#: abp01-plugin-main.php:460
+msgid "The item could not be deleted due to a possible internal server issue"
+msgstr "Itemul nu a putut fi șters din cauza unei posibile probleme interne"
+
+#: abp01-plugin-main.php:461
+msgid "The item has been successfully deleted"
+msgstr "Itemul a fost șters cu succes"
+
+#: abp01-plugin-main.php:462
+msgid ""
+"The lookup items could not be loaded due to a possible network error or an "
+"internal server issue"
+msgstr ""
+"Itemii nu au putut fi încărcați din cauza unei posibile probleme de conexiune"
+
+#: abp01-plugin-main.php:463
+msgid "The lookup items could not be loaded"
+msgstr "Itemii nu au putut fi încărcați"
+
+#: abp01-plugin-main.php:475
 msgid "Minimum required PHP version is %s"
 msgstr "Versiunea necesară minimă de PHP este %s"
 
-#: abp01-plugin-main.php:400
+#: abp01-plugin-main.php:476
 msgid "Minimum required WP version is %s"
 msgstr "Versiunea necesară minimă de Wordpress este %s"
 
-#: abp01-plugin-main.php:400
+#: abp01-plugin-main.php:477
 msgid "LIBXML support was not found on your system"
 msgstr "Extensia LIBXML nu a fost găsită pe sistemul tău"
 
-#: abp01-plugin-main.php:400
+#: abp01-plugin-main.php:478
 msgid "Mysqli extension was not found on your system or is not fully compatible"
 msgstr "Extensia Mysqli nu a fost găsită pe sistemul tău"
 
-#: abp01-plugin-main.php:400
+#: abp01-plugin-main.php:479
 msgid "MySQL spatial support was not found on your system"
 msgstr "Server-ul MySQL nu are suport pentru date spațiale"
 
-#: abp01-plugin-main.php:444 views/techbox-settings.php:8
+#: abp01-plugin-main.php:538 abp01-plugin-main.php:549
+#: views/techbox-settings.php:9
 msgid "Trip Summary Settings"
 msgstr "Setări WP-Trip-Summary"
 
-#: abp01-plugin-main.php:444
+#: abp01-plugin-main.php:539
 msgid "Trip Summary"
 msgstr "Trip Summary"
 
-#: abp01-plugin-main.php:514
+#: abp01-plugin-main.php:550
+msgid "Settings"
+msgstr "Configurare"
+
+#: abp01-plugin-main.php:558 abp01-plugin-main.php:559
+#: views/techbox-lookup-data-management.php:10
+msgid "Lookup data management"
+msgstr "Gestiune opțiuni predefinite"
+
+#: abp01-plugin-main.php:630
 msgid "The plugin cannot be installed on your system"
 msgstr "Acest plug-in nu este compatibil cu sistemul tău"
 
-#: abp01-plugin-main.php:835
+#: abp01-plugin-main.php:981
 msgid "Unsupported unit system"
 msgstr "Sistemul de unități de măsură ales nu este suportat"
 
-#: abp01-plugin-main.php:847
+#: abp01-plugin-main.php:993
 msgid "Tile layer URL is required"
 msgstr "Trebuie să completezi URL-ul sursei de tile-uri de hartă"
 
-#: abp01-plugin-main.php:854
+#: abp01-plugin-main.php:1000
 msgid "Tile layer URL does not have a valid format"
 msgstr "URL-ul sursei de tile-uri de hartă nu are un format valid"
 
-#: abp01-plugin-main.php:861
+#: abp01-plugin-main.php:1007
 msgid "Tile layer attribution URL does not have a valid format"
 msgstr ""
 "URL-ul către pagina de copyright a sursei de tile-uri de hartă nu are un "
 "format valid"
 
-#: abp01-plugin-main.php:880
+#: abp01-plugin-main.php:1026
 msgid "The settings could not be saved. Please try again."
 msgstr "Opțiunile nu au putut fi salvate. Te rog să reîncerci."
 
-#: abp01-plugin-main.php:927 abp01-plugin-main.php:1047
+#: abp01-plugin-main.php:1155 abp01-plugin-main.php:1218
+msgid "The default label is mandatory"
+msgstr "Trebuie să completezi eticheta implicită"
+
+#: abp01-plugin-main.php:1165
+msgid "The lookup item could not be created"
+msgstr "Itemul nu a putut fi creat"
+
+#: abp01-plugin-main.php:1176
+msgid "The lookup item has been created, but the translation could not be saved"
+msgstr "Itemul a fost creat, dar varianta sa tradusă nu a putut fi salvată"
+
+#: abp01-plugin-main.php:1240
+msgid "The lookup item could not be modified"
+msgstr "Itemul nu a putut fi modificat"
+
+#: abp01-plugin-main.php:1285
+msgid "The item translation could not be deleted."
+msgstr "Varianta tradusă a itemului nu a putut fi ștearsă"
+
+#: abp01-plugin-main.php:1292
+msgid "The item could not be deleted"
+msgstr "Itemul nu a putut fi șters"
+
+#: abp01-plugin-main.php:1340 abp01-plugin-main.php:1460
 msgid "The data could not be saved due to a possible database error"
 msgstr "Datele nu au putut fi salvate din cauza unei posibile erori interne"
 
-#: abp01-plugin-main.php:1175
+#: abp01-plugin-main.php:1588
 msgid "Track file could not be parsed"
 msgstr "Fișierul nu a putut fi procesat"
 
-#: abp01-plugin-main.php:1178
+#: abp01-plugin-main.php:1591
 msgid "Track file not found or is not readable"
 msgstr "Fișierul track-ului nu există sau nu a putut fi citit"
 
-#: abp01-plugin-main.php:1281
+#: abp01-plugin-main.php:1694
 msgid "The data could not be updated due to a possible database error"
 msgstr "Datele nu au putut fi actualizate din cauza unei posibile erori interne"
 
-#: lib/Settings.php:157 tests/test-Settings.php:117
+#: lib/Lookup.php:209
+msgid "Default"
+msgstr "Implicit"
+
+#: lib/Settings.php:157 tests/test-Settings.php:118
 msgid ""
 "For the pragmatic sort, there is also a trip summary at the bottom of this "
 "page. Click here to consult it"
@@ -238,7 +370,7 @@ msgstr ""
 "Pentru firi pragmatice sau curioase există și un sumar tehnic al turei în "
 "josul paginii. Click aici pentru a-l consulta."
 
-#: lib/Settings.php:166 tests/test-Settings.php:113
+#: lib/Settings.php:166 tests/test-Settings.php:114
 msgid ""
 "It looks like you skipped the story. You should check it out. Click here to go "
 "back to beginning"
@@ -286,11 +418,6 @@ msgstr "Distanța totală"
 msgid "Total climb"
 msgstr "Diferența de nivel"
 
-#: views/techbox-editor.php:100 views/techbox-editor.php:150
-#: views/techbox-frontend.php:42 views/techbox-frontend.php:50
-msgid "Difficulty level"
-msgstr "Nivelul de dificultate"
-
 #: views/techbox-editor.php:102 views/techbox-editor.php:152
 msgid "-- Choose an option --"
 msgstr "-- Alege o opțiune --"
@@ -305,15 +432,6 @@ msgstr "Informații de acces"
 msgid "Open during seasons"
 msgstr "Practicabil în sezoanele"
 
-#: views/techbox-editor.php:121 views/techbox-editor.php:171
-#: views/techbox-frontend.php:45 views/techbox-frontend.php:53
-msgid "Path surface type"
-msgstr "Suprafața drumului/potecii"
-
-#: views/techbox-editor.php:129
-msgid "Bike type"
-msgstr "Tip recomandat de bicicletă"
-
 #: views/techbox-editor.php:179
 msgid "Route markers"
 msgstr "Marcaje turistice"
@@ -325,10 +443,6 @@ msgstr "Numărul de trenuri schimbate"
 #: views/techbox-editor.php:196 views/techbox-frontend.php:58
 msgid "Line gauge"
 msgstr "Ecartamentul liniei"
-
-#: views/techbox-editor.php:200 views/techbox-frontend.php:59
-msgid "Railroad operators"
-msgstr "Operatori feroviari"
 
 #: views/techbox-editor.php:208 views/techbox-frontend.php:60
 msgid "Line status"
@@ -378,79 +492,138 @@ msgstr "Tip recomandat de bicicletă"
 msgid "Path markers"
 msgstr "Marcaj turistic"
 
-#: views/techbox-settings.php:11
+#: views/techbox-lookup-data-management.php:16
+msgid "Lookup type:"
+msgstr "Tip item:"
+
+#: views/techbox-lookup-data-management.php:24
+msgid "Language:"
+msgstr "Limba:"
+
+#: views/techbox-lookup-data-management.php:35
+#: views/techbox-lookup-data-management.php:49
+msgid "Reload list"
+msgstr "Reîncarcă lista"
+
+#: views/techbox-lookup-data-management.php:41
+#: views/techbox-lookup-data-management.php:60
+msgid "Default label"
+msgstr "Eticheta implicită"
+
+#: views/techbox-lookup-data-management.php:42
+msgid "Label"
+msgstr "Eticheta"
+
+#: views/techbox-lookup-data-management.php:43
+msgid "Actions"
+msgstr "Acțiuni"
+
+#: views/techbox-lookup-data-management.php:64
+msgid "Translated label"
+msgstr "Eticheta tradusă"
+
+#: views/techbox-lookup-data-management.php:69
+msgid "Save item"
+msgstr "Salvează"
+
+#: views/techbox-lookup-data-management.php:70
+#: views/techbox-lookup-data-management.php:89
+msgid "Cancel"
+msgstr "Anulează"
+
+#: views/techbox-lookup-data-management.php:80
+msgid "Are you sure you want to delete this item? This action cannot be undone"
+msgstr "Sigur ștergi acest item? Datele nu vor putea fi recuperate"
+
+#: views/techbox-lookup-data-management.php:83
+msgid "Only delete item translation"
+msgstr "Șterge doar varianta tradusă a itemului"
+
+#: views/techbox-lookup-data-management.php:88
+msgid "Confirm delete"
+msgstr "Confirmă ștergerea"
+
+#: views/techbox-lookup-data-management.php:106
+msgid "Edit"
+msgstr "Modifică"
+
+#: views/techbox-lookup-data-management.php:107
+msgid "Delete"
+msgstr "Șterge"
+
+#: views/techbox-settings.php:12
 msgid "General Settings"
 msgstr "Opțiuni generale"
 
-#: views/techbox-settings.php:13
+#: views/techbox-settings.php:14
 msgid ""
 "These settings control various aspects that do not belong to any one topic"
 msgstr ""
 "Aceste opțiuni controlează diverse aspecte care nu aparțin vreunei zone anume"
 
-#: views/techbox-settings.php:19
+#: views/techbox-settings.php:20
 msgid "Unit system"
 msgstr "Sistemul de unități măsură"
 
-#: views/techbox-settings.php:36
+#: views/techbox-settings.php:37
 msgid "Viewer settings"
 msgstr "Opțiuni de vizualizare"
 
-#: views/techbox-settings.php:38
+#: views/techbox-settings.php:39
 msgid "These settings configure the trip summary viewer"
 msgstr ""
 "Aceste opțiuni controlează modul în care este vizualizat sumarul turei în "
 "articolul corespunzător"
 
-#: views/techbox-settings.php:44
+#: views/techbox-settings.php:45
 msgid "Show teaser?"
 msgstr "Se afișează teaser-ul?"
 
-#: views/techbox-settings.php:52
+#: views/techbox-settings.php:53
 msgid "Top teaser text"
 msgstr "Textul teaser-ului din partea de sus"
 
-#: views/techbox-settings.php:60
+#: views/techbox-settings.php:61
 msgid "Bottom teaser text"
 msgstr "Textul teaser-ului din partea de jos"
 
-#: views/techbox-settings.php:69
+#: views/techbox-settings.php:70
 msgid "Map Settings"
 msgstr "Opțiuni de hartă"
 
-#: views/techbox-settings.php:71
+#: views/techbox-settings.php:72
 msgid "These settings configure the map component"
 msgstr "Aceste opțiuni controlează cum este afișată harta traseului"
 
-#: views/techbox-settings.php:77
+#: views/techbox-settings.php:78
 msgid "Tile layer URL template"
 msgstr "Șablonul URL-ului sursei de tile-uri de hartă"
 
-#: views/techbox-settings.php:85
+#: views/techbox-settings.php:86
 msgid "Tile layer attribution URL"
 msgstr "URL-ul paginii de copyright a sursei de tile-uri de hartă"
 
-#: views/techbox-settings.php:93
+#: views/techbox-settings.php:94
 msgid "Tile layer attribution text"
 msgstr "Nota de copyright a sursei de tile-uri de hartă"
 
-#: views/techbox-settings.php:101
+#: views/techbox-settings.php:102
 msgid "Enable map fullscreen mode?"
 msgstr "Se permite comutărea hărții pe întreg ecranul?"
 
-#: views/techbox-settings.php:109
+#: views/techbox-settings.php:110
 msgid "Show magnifying glass?"
 msgstr "Se activează lupa?"
 
-#: views/techbox-settings.php:117
+#: views/techbox-settings.php:118
 msgid "Show map scale?"
 msgstr "Se afișează scara hărții"
 
-#: views/techbox-settings.php:125
+#: views/techbox-settings.php:126
 msgid "Allow track download?"
 msgstr "Se permite descărcarea track-ului?"
 
-#: views/techbox-settings.php:135
+#: views/techbox-settings.php:136
 msgid "Save settings"
 msgstr "Salvează opțiunile"
 

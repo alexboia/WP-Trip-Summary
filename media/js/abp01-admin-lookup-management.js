@@ -558,6 +558,10 @@
         //bind actions for delete window dialog
         $('#abp01-cancel-delete-lookup-item').click(closeDeleteDialog);
         $('#abp01-delete-lookup-item').click(deleteLookupItem);
+
+        //bind actions for reload buttons
+        $('#abp01-reload-list-top').click(reloadLookupItems);
+        $('#abp01-reload-list-bottom').click(reloadLookupItems);
     }
 
     /**

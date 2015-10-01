@@ -32,6 +32,7 @@
 		</div>
 		<div id="abp01-admin-lookup-listing-container">
 			<div class="abp01-lookup-general-buttons-top">
+				<a id="abp01-reload-list-top" href="javascript:void(0)" class="button button-large"><?php echo __('Reload list', 'abp01-trip-summary'); ?></a>
 				<a id="abp01-add-lookup-top" href="javascript:void(0)" class="button button-primary button-large"><?php echo __('Add new item', 'abp01-trip-summary'); ?></a>
 			</div>
 			<table id="abp01-admin-lookup-listing" class="wp-list-table widefat fixed striped">
@@ -45,7 +46,8 @@
 				<tbody></tbody>
 			</table>
 			<div class="abp01-lookup-general-buttons-bottom">
-				<a id="abp01-add-lookup-bottom" href="javascript:void(0)" class="button button-primary button-large"><?php echo __('Add new item', 'abp01-trip-summary'); ?></a>
+				<a id="abp01-reload-list-bottom" href="javascript:void(0)" class="button button-large"><?php echo __('Reload list', 'abp01-trip-summary'); ?></a>
+				<a id="abp01-add-lookup-bottom" href="javascript:void(0)" class="button button-primary button-large"><?php echo __('Add new item', 'abp01-trip-summary'); ?></a>				
 			</div>
 		</div>
 	</div>
@@ -101,8 +103,8 @@
 					{{/?}}
 				</td>
 				<td width="20%">
-					<a href="javascript:void(0)" rel="item-edit" data-lookupId="{{id}}">Edit</a> |
-					<a href="javascript:void(0)" rel="item-delete" data-lookupId="{{id}}">Delete</a>
+					<a href="javascript:void(0)" rel="item-edit" data-lookupId="{{id}}"><?php echo __('Edit', 'abp01-trip-summary'); ?></a> |
+					<a href="javascript:void(0)" rel="item-delete" data-lookupId="{{id}}"><?php echo __('Delete', 'abp01-trip-summary'); ?></a>
 				</td>
 			</tr>
 		{{/lookupItems}}
