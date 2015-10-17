@@ -39,6 +39,13 @@ if (!function_exists('abp01_render_checkbox_option')) {
     }
 }
 
+if (!function_exists('abp01_render_select_option')) {
+	function abp01_render_select_option($option, $selectedValue) {
+		$selected = ($selectedValue == $option->id || (is_array($selectedValue) && in_array($option->id, $selectedValue)));
+		echo '<option value="' . $option->id . '" '. ($selected ? 'selected="selected"' : '') . '>' . $option->label . '</option>';
+	}
+}
+
 if (!function_exists('abp01_render_checkbox_options')) {
     function abp01_render_checkbox_options(array $options, $fieldName, $data) {
         $selected = abp01_extract_value_from_data($data, $fieldName);
@@ -46,4 +53,13 @@ if (!function_exists('abp01_render_checkbox_options')) {
             abp01_render_checkbox_option($option, $fieldName, $selected);
         }
     }
+}
+
+if (!function_exists('abp01_render_select_options')) {
+	function abp01_render_select_options(array $options, $fieldName, $data) {
+		$selectedValue = abp01_extract_value_from_data($data, $fieldName);
+		foreach ($options as $option) {
+			abp01_render_select_option($option, $selectedValue);
+		}
+	}
 }

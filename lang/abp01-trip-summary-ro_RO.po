@@ -6,7 +6,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/abp01-travel-tech-"
 "box\n"
 "POT-Creation-Date: 2015-10-02 00:19+0300\n"
-"PO-Revision-Date: 2015-10-02 00:21+0300\n"
+"PO-Revision-Date: 2015-10-08 00:18+0300\n"
 "Last-Translator: \n"
 "Language-Team: alexandru.boia [at] outlook [dot] com\n"
 "Language: ro_RO\n"
@@ -290,7 +290,7 @@ msgstr "Configurare"
 #: abp01-plugin-main.php:558 abp01-plugin-main.php:559
 #: views/techbox-lookup-data-management.php:10
 msgid "Lookup data management"
-msgstr "Gestiune opțiuni predefinite"
+msgstr "Gestiune nomenclatoare"
 
 #: abp01-plugin-main.php:630
 msgid "The plugin cannot be installed on your system"

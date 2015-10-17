@@ -78,7 +78,7 @@ Thus, I developed a module to do just that: upload a GPX track, parse it and dis
 1. [PHP-MySQLi-Database-Class](https://github.com/joshcam/PHP-MySQLi-Database-Class) - small mysqli wrapper for PHP. I used it instead of the builtin wpdb class
 2. [MimeReader](http://social-library.org/) - PHP mime sniffer written by Shane Thompson
 3. [jQuery EasyTabs](https://github.com/JangoSteve/jQuery-EasyTabs)
-4. [iCheck](https://github.com/fronteed/iCheck) - jQuery plug-in for styling checkboxes
+4. [jQuery.SumoSelect](https://github.com/HemantNegi/jquery.sumoselect) - A jQuery Single/Multi Select plugin
 5. [Leaflet](https://github.com/Leaflet/Leaflet) - open source JavaScript library for interactive maps
 6. [Lodash](https://github.com/lodash/lodash) - utility library for JavaScript
 7. [Machina](https://github.com/ifandelse/machina.js/tree/master) - JavaScript state machine

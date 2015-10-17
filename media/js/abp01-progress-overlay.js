@@ -67,7 +67,7 @@
 
         function getStyle() {
             return $.extend({
-                top: 310,
+                top: 280,
                 width: 400,
                 height: 20
             }, spec.style || {});

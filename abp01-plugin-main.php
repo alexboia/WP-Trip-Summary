@@ -426,7 +426,10 @@ function abp01_get_main_admin_script_translations() {
 		'errServerUploadTooLarge' => __('The selected file is too large. Maximum allowed size is 10MB', 'abp01-trip-summary'), 
 		'errServerUploadNoFile' => __('No file was uploaded', 'abp01-trip-summary'), 
 		'errServerUploadInternal' => __('The file could not be uploaded due to a possible internal server issue', 'abp01-trip-summary'), 
-		'errServerUploadFail' => __('The file could not be uploaded', 'abp01-trip-summary')
+		'errServerUploadFail' => __('The file could not be uploaded', 'abp01-trip-summary'),
+		'selectBoxPlaceholder' => __('Choose options', 'abp01-trip-summary'),
+		'selectBoxCaptionFormat' => __('{0} selected', 'abp01-trip-summary'),
+		'selectBoxSelectAllText' => __('Select all', 'abp01-trip-summary')
 	);
 }
 
@@ -767,7 +770,7 @@ function abp01_add_admin_styles() {
 	if (abp01_is_editing_post() && abp01_can_edit_trip_summary(null)) {
 		Abp01_Includes::includeStyleNProgress();
 		Abp01_Includes::includeStyleLeaflet();
-		Abp01_Includes::includeStyleJQueryICheck();
+		Abp01_Includes::includeStyleSumoSelect();
 		Abp01_Includes::includeStyleJQueryToastr();
 		Abp01_Includes::includeStyleAdminMain();
 	}
@@ -822,11 +825,11 @@ function abp01_add_frontend_styles() {
 function abp01_add_admin_scripts() {
 	if (abp01_is_editing_post() && abp01_can_edit_trip_summary(null)) {
 		Abp01_Includes::includeScriptURIJs();
-		Abp01_Includes::includeScriptJQueryICheck();
 		Abp01_Includes::includeScriptJQueryBlockUI();
 		Abp01_Includes::includeScriptJQueryToastr();
 		Abp01_Includes::includeScriptNProgress();
 		Abp01_Includes::includeScriptJQueryEasyTabs();
+		Abp01_Includes::includeScriptSumoSelect();
 
 		Abp01_Includes::includeScriptLeaflet();
 		Abp01_Includes::includeScriptLodash();
@@ -921,7 +924,7 @@ function abp01_admin_settings_page() {
 	//fetch and process tile layer information
 	$settings = Abp01_Settings::getInstance();	
 	$tileLayers = $settings->getTileLayers();
-	
+
 	foreach ($tileLayers as $tileLayer) {
 		$tileLayer->url = abp01_escape_value($tileLayer->url);
 		$tileLayer->attributionUrl = abp01_escape_value($tileLayer->attributionUrl);
@@ -938,12 +941,12 @@ function abp01_admin_settings_page() {
 	$data->settings->showMagnifyingGlass = $settings->getShowMagnifyingGlass();
 	$data->settings->unitSystem = $settings->getUnitSystem();
 	$data->settings->showMapScale = $settings->getShowMapScale();
-    $data->settings->allowTrackDownload = $settings->getAllowTrackDownload();
+	$data->settings->allowTrackDownload = $settings->getAllowTrackDownload();
 
 	//fetch all the allowed unit systems
 	$data->settings->allowedUnitSystems = array();
 	$allowedUnitSystems = $settings->getAllowedUnitSystems();
-	
+
 	foreach ($allowedUnitSystems as $system) {
 		$data->settings->allowedUnitSystems[$system] = ucfirst($system);
 	}
@@ -1016,7 +1019,7 @@ function abp01_save_admin_settings_page_save() {
 	$settings->setShowFullScreen(isset($_POST['showFullScreen']) ? $_POST['showFullScreen'] == 'true' : false);
 	$settings->setShowMagnifyingGlass(isset($_POST['showMagnifyingGlass']) ? $_POST['showMagnifyingGlass'] == 'true' : false);
 	$settings->setShowMapScale(isset($_POST['showMapScale']) ? $_POST['showMapScale'] == 'true' : false);
-    $settings->setAllowTrackDownload(isset($_POST['allowTrackDownload']) ? $_POST['allowTrackDownload'] == 'true' : false);
+	$settings->setAllowTrackDownload(isset($_POST['allowTrackDownload']) ? $_POST['allowTrackDownload'] == 'true' : false);
 	$settings->setTileLayers($tileLayer);
 	$settings->setUnitSystem($unitSystem);
 

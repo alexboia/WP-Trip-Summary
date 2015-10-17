@@ -10,8 +10,6 @@ class Abp01_Includes {
 
 	const JS_JQUERY_VISIBLE = 'jquery-visible';
 
-	const JS_JQUERY_ICHECK = 'jquery-icheck';
-
 	const JS_JQUERY_BLOCKUI = 'jquery-blockui';
 
 	const JS_JQUERY_TOASTR = 'jquery-toastr';
@@ -49,10 +47,14 @@ class Abp01_Includes {
 	const JS_ADMIN_LOOKUP_MGMT = 'abp01-admin-lookup-management';
 	
 	const JS_SYSTEM_THICKBOX = 'thickbox';
+	
+	const JS_SUMO_SELECT = 'sumoSelect';
 
 	const STYLE_DASHICONS = 'dashicons';
 
 	const STYLE_NPROGRESS = 'nprogress-css';
+	
+	const STYLE_SUMO_SELECT = 'sumoSelect-css';
 
 	const STYLE_LEAFLET = 'leaflet-css';
 
@@ -63,8 +65,6 @@ class Abp01_Includes {
 	const STYLE_LEAFLET_FULLSCREEN = 'leaflet-fullscreen-css';
 
 	const STYLE_FRONTEND_MAIN = 'abp01-frontend-main-css';
-
-	const STYLE_JQUERY_ICHECK = 'jquery-icheck-css';
 
 	const STYLE_JQUERY_TOASTR = 'jquery-toastr-css';
 
@@ -85,10 +85,6 @@ class Abp01_Includes {
 			'path' => 'media/js/3rdParty/visible/jquery.visible.js', 
 			'version' => '1.1.0'
 		), 
-		self::JS_JQUERY_ICHECK => array(
-			'path' => 'media/js/3rdParty/icheck/icheck.js', 
-			'version' => '1.0.2'
-		), 
 		self::JS_JQUERY_BLOCKUI => array(
 			'path' => 'media/js/3rdParty/jquery.blockUI.js', 
 			'version' => '2.66'
@@ -105,6 +101,10 @@ class Abp01_Includes {
 			'path' => 'media/js/3rdParty/easytabs/jquery.easytabs.js', 
 			'version' => '3.2.0'
 		), 
+		self::JS_SUMO_SELECT => array(
+			'path' => 'media/js/3rdParty/summoSelect/jquery.sumoselect.js',
+			'version' => '2.0.2'
+		),
 		self::JS_LEAFLET => array(
 			'path' => 'media/js/3rdParty/leaflet/leaflet-src.js', 
 			'version' => '0.7.3'
@@ -168,6 +168,10 @@ class Abp01_Includes {
 			'path' => 'media/js/3rdParty/nprogress/nprogress.css', 
 			'version' => '2.0.3'
 		), 
+		self::STYLE_SUMO_SELECT => array(
+			'path' => 'media/js/3rdParty/summoSelect/sumoselect.css',
+			'version' => '2.0.2'
+		),
 		self::STYLE_LEAFLET => array(
 			'path' => 'media/js/3rdParty/leaflet/leaflet.css', 
 			'version' => '0.7.3'
@@ -187,10 +191,6 @@ class Abp01_Includes {
 		self::STYLE_FRONTEND_MAIN => array(
 			'path' => 'media/css/abp01-frontend-main.css', 
 			'version' => '0.2'
-		), 
-		self::STYLE_JQUERY_ICHECK => array(
-			'path' => 'media/js/3rdParty/icheck/skins/minimal/_all.css', 
-			'version' => '1.0.2'
 		), 
 		self::STYLE_JQUERY_TOASTR => array(
 			'path' => 'media/js/3rdParty/toastr/toastr.css', 
@@ -263,10 +263,6 @@ class Abp01_Includes {
 		self::_enqueueScript(self::JS_JQUERY_VISIBLE);
 	}
 
-	public static function includeScriptJQueryICheck() {
-		self::_enqueueScript(self::JS_JQUERY_ICHECK);
-	}
-
 	public static function includeScriptJQueryBlockUI() {
 		self::_enqueueScript(self::JS_JQUERY_BLOCKUI);
 	}
@@ -281,6 +277,10 @@ class Abp01_Includes {
 
 	public static function includeScriptJQueryEasyTabs() {
 		self::_enqueueScript(self::JS_JQUERY_EASYTABS);
+	}
+
+	public static function includeScriptSumoSelect() {
+		self::_enqueueScript(self::JS_SUMO_SELECT);
 	}
 
 	public static function includeScriptLeaflet() {
@@ -347,6 +347,10 @@ class Abp01_Includes {
 	public static function includeStyleNProgress() {
 		self::_enqueueStyle(self::STYLE_NPROGRESS);
 	}
+	
+	public static function includeStyleSumoSelect() {
+		self::_enqueueStyle(self::STYLE_SUMO_SELECT);
+	}
 
 	public static function includeStyleLeaflet() {
 		self::_enqueueStyle(self::STYLE_LEAFLET);
@@ -363,10 +367,6 @@ class Abp01_Includes {
 
 	public static function includeStyleFrontendMain() {
 		self::_enqueueStyle(self::STYLE_FRONTEND_MAIN);
-	}
-
-	public static function includeStyleJQueryICheck() {
-		self::_enqueueStyle(self::STYLE_JQUERY_ICHECK);
 	}
 
 	public static function includeStyleJQueryToastr() {

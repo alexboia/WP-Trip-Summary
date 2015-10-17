@@ -223,12 +223,12 @@
                     $field.val('');
                 } else if (inputType == 'checkbox') {
                     $field.prop('checked', false);
-                    if ($field.iCheck) {
-                        $field.iCheck('update');
-                    }
                 }
             } else if (tagName == 'select') {
-                $field.val('0');
+                if ($field[0].sumo) {
+                    $field[0].sumo.unSelectAll();
+                }
+                $field.val('');
             }
         });
     }
@@ -237,25 +237,32 @@
      * Checkbox management functions
      * */
 
-    function prepareCheckboxes($container) {
-        $container.find('input[type=checkbox]').iCheck({
-            checkboxClass: 'icheckbox_minimal-blue',
-            radioClass: 'iradio_minimal-blue'
+    function prepareSelectBoxes($container) {
+        $container.find('select').each(function() {
+            $(this).SumoSelect({
+                csvDispCount: 4,
+                placeholder: abp01MainL10n.selectBoxPlaceholder,
+                captionFormat: abp01MainL10n.selectBoxCaptionFormat,
+                okCancelInMulti: false,
+                selectAll: !!$(this).attr('multiple'),
+                selectAlltext: abp01MainL10n.selectBoxSelectAllText
+            });
         });
     }
 
-    function destroyCheckboxes($container) {
-        $container.find('input[type=checkbox]')
-            .iCheck('destroy');
+    function destroySelectBoxes($container) {
+        $container.find('select').each(function() {
+            this.sumo.unload();
+        });
     }
 
     function selectFormInfoTourType(type, clearForm) {
         currentTourType = type;
         $ctrlFormInfoContainer.empty();
 
-        if (typeof typeSelectRenderers[type] == 'function') {
+        if (typeof typeSelectRenderers[type] === 'function') {
             $ctrlFormInfoContainer.html(typeSelectRenderers[type]());
-            prepareCheckboxes($ctrlFormInfoContainer);
+            prepareSelectBoxes($ctrlFormInfoContainer);
             toggleFormInfoReset(true, resetFormInfo);
             updateTitle(typeTitles[type]);
 
@@ -304,7 +311,7 @@
         currentTourType = null;
 
         toggleFormInfoReset(false);
-        destroyCheckboxes($ctrlFormInfoContainer);
+        destroySelectBoxes($ctrlFormInfoContainer);
         updateTitle(null);
 
         $ctrlFormInfoContainer.empty()
@@ -350,7 +357,11 @@
                     values[name] = [];
                 }
                 if (value !== null) {
-                    values[name].push(value);
+                    if (value.push) {
+                        values[name] = values[name].concat(value);
+                    } else {
+                        values[name].push(value);
+                    }
                 }
             } else {
                 values[name] = value;
@@ -382,7 +393,7 @@
                     addFormValue(inputName, (checked ? $field.val() : null), isMultiple);
                 }
             } else if (tagName == 'select') {
-                addFormValue(inputName, $field.val(), false);
+                addFormValue(inputName, $field.val(), !!$field.attr('multiple'));
             } else if (tagName == 'textarea') {
                 addFormValue(inputName, $field.val(), false);
             }
@@ -568,7 +579,7 @@
     }
 
     function destroyTrackUploader() {
-        if (uploader == null) {
+        if (!uploader) {
             return;
         }
 
@@ -577,6 +588,12 @@
         uploader = null;
     }
 
+    /**
+     * Handles uploader error events
+     * @param {Object} upl The uploader that triggered the error
+     * @param {Object} error The object that contains the error details
+     * @return void
+     * */
     function handleUploaderError(upl, error) {
         uploader.disableBrowse(false);
         uploader.refresh();
@@ -868,8 +885,8 @@
 
     $(document).ready(function() {
         $.blockUI.defaults.css = {
-            width: 720,
-            height: 590
+            width: 682,
+            height: 545
         };
 
         initEditor();
