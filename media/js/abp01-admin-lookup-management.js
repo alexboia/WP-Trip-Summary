@@ -425,7 +425,7 @@
             ? abp01LookupMgmtL10n.editItemTitle 
             : abp01LookupMgmtL10n.addItemTitle;
 
-        var height = 157;
+        var height = 168;
         var $translatedLabelFieldLine = $ctlLookupItemTranslatedLabel.closest('div.abp01-form-line');
 
         //if the selected language is other than the default one
@@ -433,7 +433,7 @@
         //this way we allow setting the translated label 
         //without the user having to take an extra action        
         if (lang !== '_default') {
-            height = 210;
+            height = 221;
             $translatedLabelFieldLine.show();
             $translatedLabelFieldLine.find('span[rel="abp01-languageDetails"]')
                 .html('(' + langLabel + ')');

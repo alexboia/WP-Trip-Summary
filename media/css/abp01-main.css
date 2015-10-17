@@ -213,7 +213,7 @@ a.abp01-close-editor:hover {
 }
 
 .abp01-track-selector {
-    margin-left: 279px !important;
+    margin-left: 247px !important;
 }
 
 .abp01-map-retry-container {
@@ -368,16 +368,18 @@ a.abp01-close-editor:hover {
     height: 100%;
     margin: 0;
     padding: 0;
+    top: 0;
+    left: 0;
 }
 
-.abp01-lookup-item-form-fields {
-    margin-top: 10px;
+.abp01-lookup-item-form-fields {    
     position: relative;
+    top: 10px;
 }
 
 .abp01-lookup-item-form-fields .abp01-form-line {
     margin: 0;
-    padding: 0;
+    padding: 3px 0 0 0;
 }
 
 .abp01-lookup-item-form-fields .abp01-form-line input[type="text"] {
@@ -399,6 +401,12 @@ a.abp01-close-editor:hover {
 
 .abp01-languageDetails {
     margin-left: 5px;
+}
+
+#abp01-lookup-operation-result {
+    margin-top: 0px !important;
+    position: relative;
+    top: 2px;
 }
 
 .abp01-lookup-operation-result p {

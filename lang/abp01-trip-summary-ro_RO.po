@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: WP Trip Summary 0.1.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/abp01-travel-tech-"
 "box\n"
-"POT-Creation-Date: 2015-10-02 00:19+0300\n"
-"PO-Revision-Date: 2015-10-08 00:18+0300\n"
+"POT-Creation-Date: 2015-10-18 01:43+0300\n"
+"PO-Revision-Date: 2015-10-18 01:44+0300\n"
 "Last-Translator: \n"
 "Language-Team: alexandru.boia [at] outlook [dot] com\n"
 "Language: ro_RO\n"
@@ -177,7 +177,19 @@ msgstr "Nu a fost încărcat nici un fișier"
 msgid "The file could not be uploaded due to a possible internal server issue"
 msgstr "Fișierul nu a putut fi încărcat din cauza unei posibile erori interne"
 
-#: abp01-plugin-main.php:439
+#: abp01-plugin-main.php:430
+msgid "Choose options"
+msgstr "Alege opțiuni"
+
+#: abp01-plugin-main.php:431
+msgid "{0} selected"
+msgstr "{0} opțiuni selectate"
+
+#: abp01-plugin-main.php:432
+msgid "Select all"
+msgstr "Selectează tot"
+
+#: abp01-plugin-main.php:442
 msgid ""
 "The settings could not be saved due to a possible network error or an internal "
 "server issue"
@@ -185,176 +197,176 @@ msgstr ""
 "Opțiunile nu au putut fi salvate din cauza unei posibile erori de rețea sau a "
 "unei erori interne"
 
-#: abp01-plugin-main.php:440
+#: abp01-plugin-main.php:443
 msgid "The settings could not be saved due to a possible internal server issue"
 msgstr "Opțiunile nu au putut fi salvate din cauza unei posibile erori interne"
 
-#: abp01-plugin-main.php:441
+#: abp01-plugin-main.php:444
 msgid "Settings successfully saved"
 msgstr "Opțiunile au fost salvate cu succes"
 
-#: abp01-plugin-main.php:442
+#: abp01-plugin-main.php:445
 msgid "Saving settings. Please wait..."
 msgstr "Se salvează opțiunile. Te rog să aștepți..."
 
-#: abp01-plugin-main.php:452
+#: abp01-plugin-main.php:455
 msgid "Working. Please wait..."
 msgstr "Lucrez. Așteaptă puțin..."
 
-#: abp01-plugin-main.php:453
+#: abp01-plugin-main.php:456
 msgid "Item successfully saved"
 msgstr "Itemul a fost salvat cu succes"
 
-#: abp01-plugin-main.php:454 views/techbox-lookup-data-management.php:36
+#: abp01-plugin-main.php:457 views/techbox-lookup-data-management.php:36
 #: views/techbox-lookup-data-management.php:50
 msgid "Add new item"
 msgstr "Adaugă item"
 
-#: abp01-plugin-main.php:455
+#: abp01-plugin-main.php:458
 msgid "Modify item"
 msgstr "Modifică"
 
-#: abp01-plugin-main.php:456
+#: abp01-plugin-main.php:459
 msgid ""
 "The item could not be saved due to a possible network error or an internal "
 "server issue"
 msgstr ""
 "Itemul nu a putut fi salvat din cauza unei posibile probleme de conexiune"
 
-#: abp01-plugin-main.php:457
+#: abp01-plugin-main.php:460
 msgid "The item could not be saved due to a possible internal server issue"
 msgstr "Itemul nu a putut fi salvat din cauza unei posibile probleme interne"
 
-#: abp01-plugin-main.php:458
+#: abp01-plugin-main.php:461
 msgid "Confirm item removal"
 msgstr "Confirmă ștergerea itemului"
 
-#: abp01-plugin-main.php:459
+#: abp01-plugin-main.php:462
 msgid ""
 "The item could not be deleted due to a possible network error or an internal "
 "server issue"
 msgstr "Itemul nu a putut fi șters in cauza unei posibile probleme de conexiune"
 
-#: abp01-plugin-main.php:460
+#: abp01-plugin-main.php:463
 msgid "The item could not be deleted due to a possible internal server issue"
 msgstr "Itemul nu a putut fi șters din cauza unei posibile probleme interne"
 
-#: abp01-plugin-main.php:461
+#: abp01-plugin-main.php:464
 msgid "The item has been successfully deleted"
 msgstr "Itemul a fost șters cu succes"
 
-#: abp01-plugin-main.php:462
+#: abp01-plugin-main.php:465
 msgid ""
 "The lookup items could not be loaded due to a possible network error or an "
 "internal server issue"
 msgstr ""
 "Itemii nu au putut fi încărcați din cauza unei posibile probleme de conexiune"
 
-#: abp01-plugin-main.php:463
+#: abp01-plugin-main.php:466
 msgid "The lookup items could not be loaded"
 msgstr "Itemii nu au putut fi încărcați"
 
-#: abp01-plugin-main.php:475
+#: abp01-plugin-main.php:478
 msgid "Minimum required PHP version is %s"
 msgstr "Versiunea necesară minimă de PHP este %s"
 
-#: abp01-plugin-main.php:476
+#: abp01-plugin-main.php:479
 msgid "Minimum required WP version is %s"
 msgstr "Versiunea necesară minimă de Wordpress este %s"
 
-#: abp01-plugin-main.php:477
+#: abp01-plugin-main.php:480
 msgid "LIBXML support was not found on your system"
 msgstr "Extensia LIBXML nu a fost găsită pe sistemul tău"
 
-#: abp01-plugin-main.php:478
+#: abp01-plugin-main.php:481
 msgid "Mysqli extension was not found on your system or is not fully compatible"
 msgstr "Extensia Mysqli nu a fost găsită pe sistemul tău"
 
-#: abp01-plugin-main.php:479
+#: abp01-plugin-main.php:482
 msgid "MySQL spatial support was not found on your system"
 msgstr "Server-ul MySQL nu are suport pentru date spațiale"
 
-#: abp01-plugin-main.php:538 abp01-plugin-main.php:549
+#: abp01-plugin-main.php:541 abp01-plugin-main.php:552
 #: views/techbox-settings.php:9
 msgid "Trip Summary Settings"
 msgstr "Setări WP-Trip-Summary"
 
-#: abp01-plugin-main.php:539
+#: abp01-plugin-main.php:542
 msgid "Trip Summary"
 msgstr "Trip Summary"
 
-#: abp01-plugin-main.php:550
+#: abp01-plugin-main.php:553
 msgid "Settings"
 msgstr "Configurare"
 
-#: abp01-plugin-main.php:558 abp01-plugin-main.php:559
+#: abp01-plugin-main.php:561 abp01-plugin-main.php:562
 #: views/techbox-lookup-data-management.php:10
 msgid "Lookup data management"
 msgstr "Gestiune nomenclatoare"
 
-#: abp01-plugin-main.php:630
+#: abp01-plugin-main.php:633
 msgid "The plugin cannot be installed on your system"
 msgstr "Acest plug-in nu este compatibil cu sistemul tău"
 
-#: abp01-plugin-main.php:981
+#: abp01-plugin-main.php:984
 msgid "Unsupported unit system"
 msgstr "Sistemul de unități de măsură ales nu este suportat"
 
-#: abp01-plugin-main.php:993
+#: abp01-plugin-main.php:996
 msgid "Tile layer URL is required"
 msgstr "Trebuie să completezi URL-ul sursei de tile-uri de hartă"
 
-#: abp01-plugin-main.php:1000
+#: abp01-plugin-main.php:1003
 msgid "Tile layer URL does not have a valid format"
 msgstr "URL-ul sursei de tile-uri de hartă nu are un format valid"
 
-#: abp01-plugin-main.php:1007
+#: abp01-plugin-main.php:1010
 msgid "Tile layer attribution URL does not have a valid format"
 msgstr ""
 "URL-ul către pagina de copyright a sursei de tile-uri de hartă nu are un "
 "format valid"
 
-#: abp01-plugin-main.php:1026
+#: abp01-plugin-main.php:1029
 msgid "The settings could not be saved. Please try again."
 msgstr "Opțiunile nu au putut fi salvate. Te rog să reîncerci."
 
-#: abp01-plugin-main.php:1155 abp01-plugin-main.php:1218
+#: abp01-plugin-main.php:1158 abp01-plugin-main.php:1221
 msgid "The default label is mandatory"
 msgstr "Trebuie să completezi eticheta implicită"
 
-#: abp01-plugin-main.php:1165
+#: abp01-plugin-main.php:1168
 msgid "The lookup item could not be created"
 msgstr "Itemul nu a putut fi creat"
 
-#: abp01-plugin-main.php:1176
+#: abp01-plugin-main.php:1179
 msgid "The lookup item has been created, but the translation could not be saved"
 msgstr "Itemul a fost creat, dar varianta sa tradusă nu a putut fi salvată"
 
-#: abp01-plugin-main.php:1240
+#: abp01-plugin-main.php:1243
 msgid "The lookup item could not be modified"
 msgstr "Itemul nu a putut fi modificat"
 
-#: abp01-plugin-main.php:1285
+#: abp01-plugin-main.php:1288
 msgid "The item translation could not be deleted."
 msgstr "Varianta tradusă a itemului nu a putut fi ștearsă"
 
-#: abp01-plugin-main.php:1292
+#: abp01-plugin-main.php:1295
 msgid "The item could not be deleted"
 msgstr "Itemul nu a putut fi șters"
 
-#: abp01-plugin-main.php:1340 abp01-plugin-main.php:1460
+#: abp01-plugin-main.php:1343 abp01-plugin-main.php:1463
 msgid "The data could not be saved due to a possible database error"
 msgstr "Datele nu au putut fi salvate din cauza unei posibile erori interne"
 
-#: abp01-plugin-main.php:1588
+#: abp01-plugin-main.php:1591
 msgid "Track file could not be parsed"
 msgstr "Fișierul nu a putut fi procesat"
 
-#: abp01-plugin-main.php:1591
+#: abp01-plugin-main.php:1594
 msgid "Track file not found or is not readable"
 msgstr "Fișierul track-ului nu există sau nu a putut fi citit"
 
-#: abp01-plugin-main.php:1694
+#: abp01-plugin-main.php:1697
 msgid "The data could not be updated due to a possible database error"
 msgstr "Datele nu au putut fi actualizate din cauza unei posibile erori interne"
 

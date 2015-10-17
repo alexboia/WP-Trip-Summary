@@ -148,7 +148,7 @@
         </div>
         <div class="abp01-form-line">
             <label for="abp01_hikingDifficultyLevel"><?php echo __('Difficulty level', 'abp01-trip-summary'); ?></label>
-            <select name="abp01_hikingDifficultyLevel" id="abp01_hikingDifficultyLevel" class="abp01-input-select">
+            <select name="hikingDifficultyLevel" id="abp01_hikingDifficultyLevel" class="abp01-input-select">
 				<option value="0"><?php echo __('-- Choose an option --', 'abp01-trip-summary'); ?></option>
                 <?php if (isset($data->difficultyLevels) && is_array($data->difficultyLevels)): ?>
                     <?php abp01_render_difficulty_level_options($data->difficultyLevels, abp01_extract_value_from_data($data, 'hikingDifficultyLevel')); ?>

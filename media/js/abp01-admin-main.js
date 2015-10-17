@@ -234,7 +234,7 @@
     }
 
     /**
-     * Checkbox management functions
+     * Select boxes management functions
      * */
 
     function prepareSelectBoxes($container) {
@@ -486,6 +486,14 @@
         uploaderErrors.server[UPLOAD_FAILED] = abp01MainL10n.errServerUploadFail;
     }
 
+    /**
+     * Clears the map form returning it to its original state:
+     * 1. removes the map;
+     * 2. shows the initial upload controls;
+     * 3. uploader is re-initialized
+     * 4. updates the context so that we know that we don't have a map and a track anymore
+     * @return void
+     * */
     function resetFormMap() {
         map.destroyMap();
         map = null;
