@@ -1,36 +1,36 @@
 <?php
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
 class Abp01_Lookup {
-    const DIFFICULTY_LEVEL = 'difficultyLevel';
+	const DIFFICULTY_LEVEL = 'difficultyLevel';
 
-    const PATH_SURFACE_TYPE = 'pathSurfaceType';
+	const PATH_SURFACE_TYPE = 'pathSurfaceType';
 
-    const BIKE_TYPE = 'bikeType';
+	const BIKE_TYPE = 'bikeType';
 
-    const RAILROAD_LINE_TYPE = 'railroadLineType';
+	const RAILROAD_LINE_TYPE = 'railroadLineType';
 
-    const RAILROAD_OPERATOR = 'railroadOperator';
+	const RAILROAD_OPERATOR = 'railroadOperator';
 
-    const RAILROAD_LINE_STATUS = 'railroadLineStatus';
+	const RAILROAD_LINE_STATUS = 'railroadLineStatus';
 
-    const RECOMMEND_SEASONS = 'recommendSeasons';
+	const RECOMMEND_SEASONS = 'recommendSeasons';
 
-    const RAILROAD_ELECTRIFICATION = 'railroadElectrificationStatus';
+	const RAILROAD_ELECTRIFICATION = 'railroadElectrificationStatus';
 
 	const DEFAULT_LANGUAGE = '_default';
 
 	/**
 	 * Internal cache for the lookup data
 	 */
-    private $_cache = null;
+	private $_cache = null;
 
 	/**
 	 * Reference to the environment object
 	 */
-    private $_env = null;
+	private $_env = null;
 
 	/**
 	 * Current languate setting
@@ -42,8 +42,8 @@ class Abp01_Lookup {
 	 * If no language setting is provided, it is picked up from the current environment
 	 * @param string $lang The desired languate setting. Optional. Defaults to null
 	 */
-    public function __construct($lang = null) {
-        $this->_env = Abp01_Env::getInstance();
+	public function __construct($lang = null) {
+		$this->_env = Abp01_Env::getInstance();
 		if (empty($lang)) {
 			$this->_lang = $this->_env->getLang();
 		} else {
@@ -94,11 +94,11 @@ class Abp01_Lookup {
 	 *	then the database is hit in order to retrieve the data
 	 * @return void
 	 */
-    private function _loadDataIfNeeded() {
-        $env = $this->_env;
-        $db = $env->getDb();        
-        $table = $env->getLookupTableName();
-        $langTable = $env->getLookupLangTableName();
+	private function _loadDataIfNeeded() {
+		$env = $this->_env;
+		$db = $env->getDb();        
+		$table = $env->getLookupTableName();
+		$langTable = $env->getLookupLangTableName();
 		$lang = $this->_lang;
 
 		//already an array, so simply return
@@ -106,29 +106,29 @@ class Abp01_Lookup {
 			return;
 		}
 
-        $rows = $db->rawQuery('
-            SELECT l.ID, l.lookup_category, l.lookup_label AS default_lookup_label,
-                lg.lookup_label AS translated_lookup_label
-            FROM `' . $table . '` l
-            LEFT JOIN `' . $langTable . '` lg
-                ON lg.ID = l.ID AND  lg.lookup_lang = ?
-            ORDER BY lg.lookup_label ASC,
-                l.lookup_label ASC', array($lang), false);
+		$rows = $db->rawQuery('
+			SELECT l.ID, l.lookup_category, l.lookup_label AS default_lookup_label,
+				lg.lookup_label AS translated_lookup_label
+			FROM `' . $table . '` l
+			LEFT JOIN `' . $langTable . '` lg
+				ON lg.ID = l.ID AND  lg.lookup_lang = ?
+			ORDER BY lg.lookup_label ASC,
+				l.lookup_label ASC', array($lang), false);
 
-        $this->_cache = array();
-        if (is_array($rows)) {
-            foreach ($rows as $row) {
-                $category = $row['lookup_category'];
-                if (!isset($this->_cache[$category])) {
-                    $this->_cache[$category] = array();
-                }
-                $this->_cache[$category][$row['ID']] = array(
+		$this->_cache = array();
+		if (is_array($rows)) {
+			foreach ($rows as $row) {
+				$category = $row['lookup_category'];
+				if (!isset($this->_cache[$category])) {
+					$this->_cache[$category] = array();
+				}
+				$this->_cache[$category][$row['ID']] = array(
 					'defaultLabel' => $row['default_lookup_label'],
 					'translatedLabel' => $row['translated_lookup_label']
 				);
-            }
-        }
-    }
+			}
+		}
+	}
 
 	/**
 	 * Gets a list of all the lookup items for the given lookup item type/category.
@@ -141,16 +141,16 @@ class Abp01_Lookup {
 	 * @param string $type The type of the items that should be returned
 	 * @return array The list of lookup items
 	 */
-    public function getLookupOptions($type) {
-        $this->_loadDataIfNeeded();
-        $options = array();
-        if (isset($this->_cache[$type])) {
-            foreach ($this->_cache[$type] as $id => $label) {
-                $options[] = $this->_createOption($id, $label, $type);
-            }
-        }
-        return $options;
-    }
+	public function getLookupOptions($type) {
+		$this->_loadDataIfNeeded();
+		$options = array();
+		if (isset($this->_cache[$type])) {
+			foreach ($this->_cache[$type] as $id => $label) {
+				$options[] = $this->_createOption($id, $label, $type);
+			}
+		}
+		return $options;
+	}
 
 	/**
 	 * Creates an option object of type stdClass with the following properties: id, type, defaultLabel and label
@@ -159,7 +159,7 @@ class Abp01_Lookup {
 	 * @param string $type Populates the type property
 	 * @return stdClass The resulting option object
 	 */
-    private function _createOption($id, $label, $type) {
+	private function _createOption($id, $label, $type) {
 		if (is_string($label)) {
 			$label = array(
 				'defaultLabel' => $label,
@@ -167,17 +167,17 @@ class Abp01_Lookup {
 			);
 		}
 
-        $option = new stdClass();
-        $option->id = $id;		
-        $option->type = $type;
+		$option = new stdClass();
+		$option->id = $id;		
+		$option->type = $type;
 		$option->defaultLabel = $label['defaultLabel'];
 		$option->hasTranslation = !empty($label['translatedLabel']);
 		$option->label = $option->hasTranslation
 			? $label['translatedLabel'] 
 			: $label['defaultLabel'];
 
-        return $option;
-    }
+		return $option;
+	}
 
 	/**
 	 * Gets a list of all supported lookup item categories/types.
@@ -495,72 +495,72 @@ class Abp01_Lookup {
 	 * Each array element is an object with the following properties: id, type and label.
 	 * @return array The available options
 	 */
-    public function getDifficultyLevelOptions() {
-        return $this->getLookupOptions(self::DIFFICULTY_LEVEL);
-    }
+	public function getDifficultyLevelOptions() {
+		return $this->getLookupOptions(self::DIFFICULTY_LEVEL);
+	}
 
 	/**
 	 * Get the available path surface type options
 	 * Each array element is an object with the following properties: id, type and label.
 	 * @return array The available options
 	 */
-    public function getPathSurfaceTypeOptions() {
-        return $this->getLookupOptions(self::PATH_SURFACE_TYPE);
-    }
+	public function getPathSurfaceTypeOptions() {
+		return $this->getLookupOptions(self::PATH_SURFACE_TYPE);
+	}
 
 	/**
 	 * Get the available bike type options
 	 * Each array element is an object with the following properties: id, type and label.
 	 * @return array The available options
 	 */
-    public function getBikeTypeOptions() {
-        return $this->getLookupOptions(self::BIKE_TYPE);
-    }
+	public function getBikeTypeOptions() {
+		return $this->getLookupOptions(self::BIKE_TYPE);
+	}
 
 	/**
 	 * Get the available recommended seasons options
 	 * Each array element is an object with the following properties: id, type and label.
 	 * @return array The available options
 	 */
-    public function getRecommendedSeasonsOptions() {
-        return $this->getLookupOptions(self::RECOMMEND_SEASONS);
-    }
+	public function getRecommendedSeasonsOptions() {
+		return $this->getLookupOptions(self::RECOMMEND_SEASONS);
+	}
 
 	/**
 	 * Get the available railroad line type options
 	 * Each array element is an object with the following properties: id, type and label.
 	 * @return array The available options
 	 */
-    public function getRailroadLineTypeOptions() {
-        return $this->getLookupOptions(self::RAILROAD_LINE_TYPE);
-    }
+	public function getRailroadLineTypeOptions() {
+		return $this->getLookupOptions(self::RAILROAD_LINE_TYPE);
+	}
 
 	/**
 	 * Get the available railroad operator options
 	 * Each array element is an object with the following properties: id, type and label.
 	 * @return array The available options
 	 */
-    public function getRailroadOperatorOptions() {
-        return $this->getLookupOptions(self::RAILROAD_OPERATOR);
-    }
+	public function getRailroadOperatorOptions() {
+		return $this->getLookupOptions(self::RAILROAD_OPERATOR);
+	}
 
 	/**
 	 * Get the available railroad line status options
 	 * Each array element is an object with the following properties: id, type and label.
 	 * @return array The available options
 	 */
-    public function getRailroadLineStatusOptions() {
-        return $this->getLookupOptions(self::RAILROAD_LINE_STATUS);
-    }
+	public function getRailroadLineStatusOptions() {
+		return $this->getLookupOptions(self::RAILROAD_LINE_STATUS);
+	}
 
 	/**
 	 * Get the available railroad electrification status options
 	 * Each array element is an object with the following properties: id, type and label.
 	 * @return array The available options
 	 */
-    public function getRailroadElectrificationOptions() {
-        return $this->getLookupOptions(self::RAILROAD_ELECTRIFICATION);
-    }
+	public function getRailroadElectrificationOptions() {
+		return $this->getLookupOptions(self::RAILROAD_ELECTRIFICATION);
+	}
 
 	/**
 	 * Looks up the given lookup item, given the item type/category and the item id
@@ -568,85 +568,85 @@ class Abp01_Lookup {
 	 * @param integer $id The item id
 	 * @return stdClass The item, or null if not found. Item structure: id, hasTranslation, defaultLabel, label and type
 	 */
-    public function lookup($type, $id) {
-        $this->_loadDataIfNeeded();
-        if (isset($this->_cache[$type][$id])) {
-            $result = $this->_createOption(intval($id), $this->_cache[$type][$id], $type);
-        } else {
-            $result = null;
-        }
-        return $result;
-    }
+	public function lookup($type, $id) {
+		$this->_loadDataIfNeeded();
+		if (isset($this->_cache[$type][$id])) {
+			$result = $this->_createOption(intval($id), $this->_cache[$type][$id], $type);
+		} else {
+			$result = null;
+		}
+		return $result;
+	}
 
 	/**
 	 * Lookup the difficulty level item that corresponds to the given id.
 	 * @param integer $id The id for which the item must be retrieved
 	 * @return stdClass The item, or null if not found. Item structure: id, hasTranslation, defaultLabel, label and type
 	 */
-    public function lookupDifficultyLevel($id) {
-        return $this->lookup(self::DIFFICULTY_LEVEL, $id);
-    }
+	public function lookupDifficultyLevel($id) {
+		return $this->lookup(self::DIFFICULTY_LEVEL, $id);
+	}
 
 	/**
 	 * Lookup the path surface type item that corresponds to the given id.
 	 * @param integer $id The id for which the item must be retrieved
 	 * @return stdClass The item, or null if not found. Item structure: id, hasTranslation, defaultLabel, label and type
 	 */
-    public function lookupPathSurfaceType($id) {
-        return $this->lookup(self::PATH_SURFACE_TYPE, $id);
-    }
+public function lookupPathSurfaceType($id) {
+	return $this->lookup(self::PATH_SURFACE_TYPE, $id);
+}
 
 	/**
 	 * Lookup the bike type item that corresponds to the given id.
 	 * @param integer $id The id for which the item must be retrieved
 	 * @return stdClass The item, or null if not found. Item structure: id, hasTranslation, defaultLabel, label and type
 	 */
-    public function lookupBikeType($id) {
-        return $this->lookup(self::BIKE_TYPE, $id);
-    }
+	public function lookupBikeType($id) {
+		return $this->lookup(self::BIKE_TYPE, $id);
+	}
 
 	/**
 	 * Lookup the railroad line type item that corresponds to the given id.
 	 * @param integer $id The id for which the item must be retrieved
 	 * @return stdClass The item, or null if not found. Item structure: id, hasTranslation, defaultLabel, label and type
 	 */
-    public function lookupRailroadLineType($id) {
-        return $this->lookup(self::RAILROAD_LINE_TYPE, $id);
-    }
+	public function lookupRailroadLineType($id) {
+		return $this->lookup(self::RAILROAD_LINE_TYPE, $id);
+	}
 
 	/**
 	 * Lookup the railroad operator item that corresponds to the given id.
 	 * @param integer $id The id for which the item must be retrieved
 	 * @return stdClass The item, or null if not found. Item structure: id, hasTranslation, defaultLabel, label and type
 	 */
-    public function lookupRailroadOperator($id) {
-        return $this->lookup(self::RAILROAD_OPERATOR, $id);
-    }
+	public function lookupRailroadOperator($id) {
+		return $this->lookup(self::RAILROAD_OPERATOR, $id);
+	}
 
 	/**
 	 * Lookup the railroad line status item that corresponds to the given id.
 	 * @param integer $id The id for which the item must be retrieved
 	 * @return stdClass The item, or null if not found. Item structure: id, hasTranslation, defaultLabel, label and type
 	 */
-    public function lookupRailroadLineStatus($id) {
-        return $this->lookup(self::RAILROAD_LINE_STATUS, $id);
-    }
+	public function lookupRailroadLineStatus($id) {
+		return $this->lookup(self::RAILROAD_LINE_STATUS, $id);
+	}
 
 	/**
 	 * Lookup the railroad electrification status item that corresponds to the given id.
 	 * @param integer $id The id for which the item must be retrieved
 	 * @return stdClass The item, or null if not found. Item structure: id, hasTranslation, defaultLabel, label and type
 	 */
-    public function lookupRailroadElectrification($id) {
-        return $this->lookup(self::RAILROAD_ELECTRIFICATION, $id);
-    }
+	public function lookupRailroadElectrification($id) {
+		return $this->lookup(self::RAILROAD_ELECTRIFICATION, $id);
+	}
 
 	/**
 	 * Lookup the recommended season item that corresponds to the given id.
 	 * @param integer $id The id for which the item must be retrieved
 	 * @return stdClass The item, or null if not found. Item structure: id, hasTranslation, defaultLabel, label and type
 	 */
-    public function lookupRecommendedSeason($id) {
-        return $this->lookup(self::RECOMMEND_SEASONS, $id);
-    }
+	public function lookupRecommendedSeason($id) {
+		return $this->lookup(self::RECOMMEND_SEASONS, $id);
+	}
 }
