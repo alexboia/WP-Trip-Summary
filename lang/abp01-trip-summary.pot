@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WP Trip Summary 0.1.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/abp01-travel-tech-"
 "box\n"
-"POT-Creation-Date: 2015-10-17 22:42:16+00:00\n"
+"POT-Creation-Date: 2015-10-18 22:52:49+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -337,23 +337,27 @@ msgstr ""
 msgid "The item translation could not be deleted."
 msgstr ""
 
-#: abp01-plugin-main.php:1295
+#: abp01-plugin-main.php:1294
+msgid "The item could not be deleted because it is still in use"
+msgstr ""
+
+#: abp01-plugin-main.php:1301
 msgid "The item could not be deleted"
 msgstr ""
 
-#: abp01-plugin-main.php:1343 abp01-plugin-main.php:1463
+#: abp01-plugin-main.php:1349 abp01-plugin-main.php:1469
 msgid "The data could not be saved due to a possible database error"
 msgstr ""
 
-#: abp01-plugin-main.php:1591
+#: abp01-plugin-main.php:1597
 msgid "Track file could not be parsed"
 msgstr ""
 
-#: abp01-plugin-main.php:1594
+#: abp01-plugin-main.php:1600
 msgid "Track file not found or is not readable"
 msgstr ""
 
-#: abp01-plugin-main.php:1697
+#: abp01-plugin-main.php:1703
 msgid "The data could not be updated due to a possible database error"
 msgstr ""
 

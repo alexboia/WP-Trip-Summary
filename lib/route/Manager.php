@@ -24,6 +24,53 @@ class Abp01_Route_Manager {
         $this->_proj = new Abp01_Route_SphericalMercator();
     }
 
+	private function _deleteLookupDataAssociation($db, $postId) {
+		$tableName = $this->_env->getRouteDetailsLookupTableName();
+		$db->where('post_ID', $postId);
+		$db->delete($tableName);
+
+		$lastError = trim($db->getLastError());
+		return empty($lastError);
+	}
+
+	private function _updateLookupDataAssociation($db, $postId, Abp01_Route_Info $info) {
+		$tableName = $this->_env->getRouteDetailsLookupTableName();
+
+		//clear all previous associations
+		if (!$this->_deleteLookupDataAssociation($db, $postId)) {
+			return false;
+		}
+
+		$data = $info->getData();
+		foreach ($data as $field => $value) {
+			//filter info fields that are not lookup data items
+			if (!$info->getLookupKey($field)) {
+				continue;
+			}
+
+			//convert non-arrays to arrays in order to have a single
+			//saving sequence
+			if (!is_array($value)) {
+				$value = array($value);
+			}
+
+			//finally, save each item
+			foreach ($value as $v) {
+				$db->insert($tableName, array(
+					'post_ID' => $postId,
+					'lookup_ID' => $v
+				));
+
+				$lastError = trim($db->getLastError());
+				if (!empty($lastError)) {
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
     public function saveRouteInfo($postId, $currentUserId, Abp01_Route_Info $info) {
         $postId = intval($postId);
         if ($postId <= 0 || $info == null) {
@@ -32,6 +79,7 @@ class Abp01_Route_Manager {
 
         $db = $this->_env->getDb();
         $table = $this->_env->getRouteDetailsTableName();
+		$success = false;
 
         $data = array(
             'post_ID' => $postId,
@@ -40,21 +88,29 @@ class Abp01_Route_Manager {
             'route_data_last_modified_by' => $currentUserId,
             'route_data_last_modified_at' => $db->now()
         );
+		
+		$db->startTransaction();
+		if (!$this->_updateLookupDataAssociation($db, $postId, $info)) {
+			$db->rollback();
+			return false;
+		}
 
         $db->where('post_ID', $postId);
         if ($db->update($table, $data) !== false) {
             if ($db->count) {
-                return true;
-            } else {
-                if ($db->insert($table, $data) === false) {
-                    return false;
-                } else {
-                    return true;
-                }
+                $success = true;
+            } else if ($db->insert($table, $data) !== false) {
+				$success = true;
             }
-        } else {
-            return false;
         }
+
+		if ($success) {
+			$db->commit();
+		} else {
+			$db->rollback();
+		}
+		
+		return $success;
     }
 
     public function deleteRouteInfo($postId) {
@@ -69,10 +125,18 @@ class Abp01_Route_Manager {
         $db = $this->_env->getDb();
         $table = $this->_env->getRouteDetailsTableName();
 
+		$db->startTransaction();
+		if (!$this->_deleteLookupDataAssociation($db, $postId)) {
+			$db->rollback();
+			return false;
+		}
+
         $db->where('post_ID', $postId);
         if ($db->delete($table) === false) {
+			$db->rollback();
             return false;
         } else {
+			$db->commit();
             return true;
         }
     }

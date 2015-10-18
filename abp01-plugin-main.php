@@ -1289,6 +1289,12 @@ function abp01_delete_lookup_item() {
 		}
 	} else {
 		//otherwise, delete the entire item, all translations included
+		//however, check first whether or not the item is still in use
+		if ($lookup->isLookupInUse($id)) {
+			$response->message = __('The item could not be deleted because it is still in use', 'abp01-trip-summary');
+			abp01_send_json($response);
+		}
+	
 		if ($lookup->deleteLookup($id)) {
 			$response->success = true;
 		} else {

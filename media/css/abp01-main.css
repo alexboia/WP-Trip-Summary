@@ -329,7 +329,11 @@ a.abp01-close-editor:hover {
 .abp01-settings-save-result, 
 .abp01-lookup-listing-result, 
 .abp01-lookup-operation-result {
-    margin-left: 0px !important;
+    margin-left: 0px !important;    
+}
+
+.abp01-lookup-operation-result {
+    margin-right: 0px !important;
 }
 
 /* START Lookup data management section */

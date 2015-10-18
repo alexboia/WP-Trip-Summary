@@ -549,8 +549,9 @@
         });
     }
 
+    
     function createTrackUploader() {
-        if (uploader != null) {
+        if (!!uploader) {
             return;
         }
 
@@ -586,6 +587,14 @@
         uploader.init();
     }
 
+    /**
+     * Destroys the track uploader:
+     * - remove event listeners - all of them;
+     * - destroy the uploader instance itself;
+     * - set uploader reference to null.
+     * If there is no uploader instance, the method exists whitout taking any action
+     * @return void
+     * */
     function destroyTrackUploader() {
         if (!uploader) {
             return;

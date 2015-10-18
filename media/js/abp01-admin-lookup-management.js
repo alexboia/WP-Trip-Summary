@@ -1,5 +1,10 @@
 (function($) {
     "use strict";
+    
+    /**
+     * Constants
+     * */
+    var DEFAULT_LANG = '_default';
 
     /**
      * Current form controls
@@ -14,6 +19,7 @@
     var $ctlOperationResultContainer = null;
     var $ctlListingResultContainer = null;
     var $ctlDeleteOnlyLangTranslation = null;
+    var $ctlDeleteOnlyLangTranslationContainer = null;
     var $ctlDeleteOperationResultContainer = null;
 
     /**
@@ -383,7 +389,7 @@
         }).done(function(data) {
             toggleBusy(false);
             if (data && data.success) {
-                deleteLookupItemRow(editingItem, deleteOnlyLang || lang === '_default');                
+                deleteLookupItemRow(editingItem, deleteOnlyLang && lang !== DEFAULT_LANG);
 
                 delete currentItems[editingItem.id];
                 editingItem = null;
@@ -432,7 +438,7 @@
         //also show the translated label field
         //this way we allow setting the translated label 
         //without the user having to take an extra action        
-        if (lang !== '_default') {
+        if (lang !== DEFAULT_LANG) {
             height = 221;
             $translatedLabelFieldLine.show();
             $translatedLabelFieldLine.find('span[rel="abp01-languageDetails"]')
@@ -466,8 +472,19 @@
      * @return void
      * */
     function showDeleteDialog(currentItemId) {
+        var lang = $ctlLangSelector.val();
+        var height = 180;
+
+        if (lang === DEFAULT_LANG) {
+            $ctlDeleteOnlyLangTranslationContainer.hide();
+            $ctlDeleteOnlyLangTranslation.prop('checked', false);
+            height = 150;
+        } else {
+            $ctlDeleteOnlyLangTranslationContainer.show();
+        }
+
         editingItem = currentItems[currentItemId];
-        tb_show(abp01LookupMgmtL10n.ttlConfirmDelete, '#TB_inline?width=450&height=180&inlineId=abp01-lookup-item-delete-form');
+        tb_show(abp01LookupMgmtL10n.ttlConfirmDelete, '#TB_inline?width=450&height=' + height + '&inlineId=abp01-lookup-item-delete-form');
     }
 
     /**
@@ -531,6 +548,7 @@
         $ctlLookupItemDefaultLabel = $('#abp01-lookup-item-defaultLabel');
         $ctlLookupItemTranslatedLabel = $('#abp01-lookup-item-translatedLabel');
         $ctlDeleteOnlyLangTranslation = $('#abp01-lookup-item-deleteOnlyLang');
+        $ctlDeleteOnlyLangTranslationContainer = $ctlDeleteOnlyLangTranslation.closest('div.abp01-form-line');
 
         //bind click action for the "Add new item" buttons
         $('#abp01-add-lookup-bottom, #abp01-add-lookup-top').click(function() {

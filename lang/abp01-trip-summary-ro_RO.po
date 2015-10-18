@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: WP Trip Summary 0.1.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/abp01-travel-tech-"
 "box\n"
-"POT-Creation-Date: 2015-10-18 01:43+0300\n"
-"PO-Revision-Date: 2015-10-18 01:44+0300\n"
+"POT-Creation-Date: 2015-10-19 01:54+0300\n"
+"PO-Revision-Date: 2015-10-19 01:54+0300\n"
 "Last-Translator: \n"
 "Language-Team: alexandru.boia [at] outlook [dot] com\n"
 "Language: ro_RO\n"
@@ -350,23 +350,27 @@ msgstr "Itemul nu a putut fi modificat"
 msgid "The item translation could not be deleted."
 msgstr "Varianta tradusă a itemului nu a putut fi ștearsă"
 
-#: abp01-plugin-main.php:1295
+#: abp01-plugin-main.php:1294
+msgid "The item could not be deleted because it is still in use"
+msgstr "Itemul nu a fost șters deoarece este încă folosit"
+
+#: abp01-plugin-main.php:1301
 msgid "The item could not be deleted"
 msgstr "Itemul nu a putut fi șters"
 
-#: abp01-plugin-main.php:1343 abp01-plugin-main.php:1463
+#: abp01-plugin-main.php:1349 abp01-plugin-main.php:1469
 msgid "The data could not be saved due to a possible database error"
 msgstr "Datele nu au putut fi salvate din cauza unei posibile erori interne"
 
-#: abp01-plugin-main.php:1591
+#: abp01-plugin-main.php:1597
 msgid "Track file could not be parsed"
 msgstr "Fișierul nu a putut fi procesat"
 
-#: abp01-plugin-main.php:1594
+#: abp01-plugin-main.php:1600
 msgid "Track file not found or is not readable"
 msgstr "Fișierul track-ului nu există sau nu a putut fi citit"
 
-#: abp01-plugin-main.php:1697
+#: abp01-plugin-main.php:1703
 msgid "The data could not be updated due to a possible database error"
 msgstr "Datele nu au putut fi actualizate din cauza unei posibile erori interne"
 
