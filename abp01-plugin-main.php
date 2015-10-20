@@ -47,6 +47,9 @@ define('ABP01_TRACK_UPLOAD_KEY', 'abp01_track_file');
 define('ABP01_TRACK_UPLOAD_CHUNK_SIZE', 102400);
 define('ABP01_TRACK_UPLOAD_MAX_FILE_SIZE', max(wp_max_upload_size(), 10485760));
 
+define('ABP01_MAIN_MENU_SLUG', 'abp01-trip-summary-settings');
+define('ABP01_LOOKUP_SUBMENU_SLUG', 'abp01-trip-summary-lookup');
+
 /**
  * Initializes the autoloading process
  * @return void
@@ -265,7 +268,7 @@ function abp01_is_editing_post() {
  */
 function abp01_is_editing_settings() {
 	$currentPage = Abp01_Env::getInstance()->getCurrentPage();
-	$isOnSettingsPage = isset($_GET['page']) ? $_GET['page'] == 'abp01-trip-summary-settings' : false;
+	$isOnSettingsPage = isset($_GET['page']) ? $_GET['page'] == ABP01_MAIN_MENU_SLUG : false;
 	return $currentPage == 'admin.php' && $isOnSettingsPage;
 }
 
@@ -275,7 +278,7 @@ function abp01_is_editing_settings() {
  */
 function abp01_is_managing_lookup() {
 	$currentPage = Abp01_Env::getInstance()->getCurrentPage();
-	$isOnlookupPagePage = isset($_GET['page']) ? $_GET['page'] == 'abp01-trip-summary-lookup' : false;
+	$isOnlookupPagePage = isset($_GET['page']) ? $_GET['page'] == ABP01_LOOKUP_SUBMENU_SLUG : false;
 	return $currentPage == 'admin.php' && $isOnlookupPagePage;
 }
 
@@ -529,39 +532,49 @@ function abp01_admin_lookup_page_render(stdClass $data) {
 }
 
 /**
+ * Builds the URL to the lookup data management page, in the context of the given lookup type
+ * @param string $lookupType The lookup-type for which to load the list of items when first loading the page
+ * @return string The generated URL
+ */
+function abp01_get_admin_lookup_url($lookupType) {
+	$url = menu_page_url(ABP01_LOOKUP_SUBMENU_SLUG, false);
+	if (!empty($lookupType)) {
+		$url = sprintf('%s&abp01_type=%s', $url, $lookupType);
+	}
+	return $url;
+}
+
+/**
  * Creates the plug-in administration menu structure
  * @return void
  */
 function abp01_create_admin_menu() {
-	$MAIN_MENU_SLUG = 'abp01-trip-summary-settings';
-	$LOOKUP_SUBMENU_SLUG = 'abp01-trip-summary-lookup';
-
 	//add main menu entry
 	add_menu_page(
 		__('Trip Summary Settings', 'abp01-trip-summary'),  //page title
 		__('Trip Summary', 'abp01-trip-summary'), //menu title
 			Abp01_Auth::CAP_MANAGE_TOUR_SUMMARY, //required page capability
-			$MAIN_MENU_SLUG, //menu slug - unique handle for this menu
+			ABP01_MAIN_MENU_SLUG, //menu slug - unique handle for this menu
 				'abp01_admin_settings_page', //callback for rendering the page
 				'dashicons-chart-area', //icon css class
 					81);
 
 	//add submenu entries - the submenu settings page
 	add_submenu_page(
-		$MAIN_MENU_SLUG, 
+		ABP01_MAIN_MENU_SLUG, 
 			__('Trip Summary Settings', 'abp01-trip-summary'), 
 			__('Settings', 'abp01-trip-summary'), 
 				Abp01_Auth::CAP_MANAGE_TOUR_SUMMARY, 
-					$MAIN_MENU_SLUG, 
+				ABP01_MAIN_MENU_SLUG,
 					'abp01_admin_settings_page');
 
 	//add submenu entries - loookup data management apge
 	add_submenu_page(
-		$MAIN_MENU_SLUG, 
+		ABP01_MAIN_MENU_SLUG, 
 			__('Lookup data management', 'abp01-trip-summary'), 
 			__('Lookup data management', 'abp01-trip-summary'), 
 				Abp01_Auth::CAP_MANAGE_TOUR_SUMMARY, 
-					$LOOKUP_SUBMENU_SLUG, 
+				ABP01_LOOKUP_SUBMENU_SLUG, 
 					'abp01_admin_lookup_page');
 }
 
@@ -708,13 +721,28 @@ function abp01_add_admin_editor($post) {
 
 	//get the lookup data
 	$data->difficultyLevels = $lookup->getDifficultyLevelOptions();
+	$data->difficultyLevelsAdminUrl = abp01_get_admin_lookup_url(Abp01_Lookup::DIFFICULTY_LEVEL);
+
 	$data->pathSurfaceTypes = $lookup->getPathSurfaceTypeOptions();
+	$data->pathSurfaceTypesAdminUrl = abp01_get_admin_lookup_url(Abp01_Lookup::PATH_SURFACE_TYPE);
+
 	$data->recommendedSeasons = $lookup->getRecommendedSeasonsOptions();
+	$data->recommendedSeasonsAdminUrl = abp01_get_admin_lookup_url(Abp01_Lookup::RECOMMEND_SEASONS);
+
 	$data->bikeTypes = $lookup->getBikeTypeOptions();
+	$data->bikeTypesAdminUrl = abp01_get_admin_lookup_url(Abp01_Lookup::BIKE_TYPE);
+
 	$data->railroadOperators = $lookup->getRailroadOperatorOptions();
+	$data->railroadOperatorsAdminUrl = abp01_get_admin_lookup_url(Abp01_Lookup::RAILROAD_OPERATOR);
+
 	$data->railroadLineStatuses = $lookup->getRailroadLineStatusOptions();
+	$data->railroadLineStatusesAdminUrl = abp01_get_admin_lookup_url(Abp01_Lookup::RAILROAD_LINE_STATUS);
+
 	$data->railroadLineTypes = $lookup->getRailroadLineTypeOptions();
+	$data->railroadLineTypesAdminUrl = abp01_get_admin_lookup_url(Abp01_Lookup::RAILROAD_LINE_TYPE);
+
 	$data->railroadElectrification = $lookup->getRailroadElectrificationOptions();
+	$data->railroadElectrificationAdminUrl = abp01_get_admin_lookup_url(Abp01_Lookup::RAILROAD_ELECTRIFICATION);
 
 	//current context information
 	$data->postId = intval($post->ID);

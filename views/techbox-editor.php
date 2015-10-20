@@ -98,12 +98,16 @@
         </div>
         <div class="abp01-form-line">
             <label for="ctrl_abp01_bikeDifficultyLevel"><?php echo __('Difficulty level', 'abp01-trip-summary'); ?></label>
-            <select id="ctrl_abp01_bikeDifficultyLevel" name="ctrl_abp01_bikeDifficultyLevel" class="ab01-input-select">
-				<option value="0"><?php echo __('-- Choose an option --', 'abp01-trip-summary'); ?></option>
-                <?php if (isset($data->difficultyLevels) && is_array($data->difficultyLevels)): ?>
-                    <?php abp01_render_difficulty_level_options($data->difficultyLevels, abp01_extract_value_from_data($data, 'bikeDifficultyLevel')); ?>
-                <?php endif; ?>
-            </select>
+			<?php if (!empty($data->difficultyLevels) && is_array($data->difficultyLevels)): ?>
+				<select id="ctrl_abp01_bikeDifficultyLevel" name="ctrl_abp01_bikeDifficultyLevel" class="ab01-input-select">
+					<option value="0"><?php echo __('-- Choose an option --', 'abp01-trip-summary'); ?></option>
+					<?php abp01_render_difficulty_level_options($data->difficultyLevels, abp01_extract_value_from_data($data, 'bikeDifficultyLevel')); ?>
+				</select>
+			<?php else: ?>
+				<div class="abp01_no_lookup_items_notice">
+					<a href="<?php echo $data->difficultyLevelsAdminUrl; ?>" target="_blank"><?php echo __('No items to select from. Visit the lookup data management page to add some.', 'abp01-trip-summary'); ?></a>
+				</div>
+			<?php endif; ?>
         </div>
         <div class="abp01-form-line">
             <label for="ctrl_abp01_bikeAccess"><?php echo __('Access information', 'abp01-trip-summary'); ?></label>
@@ -111,27 +115,39 @@
         </div>
         <div class="abp01-form-line">
             <label for="ctrl_abp01_bikeRecommendedSeasons"><?php echo __('Open during seasons', 'abp01-trip-summary'); ?></label>
-			<select name="bikeRecommendedSeasons" id="ctrl_abp01_bikeRecommendedSeasons" multiple="multiple">
-				<?php if (isset($data->recommendedSeasons) && is_array($data->recommendedSeasons)): ?>
+			<?php if (!empty($data->recommendedSeasons) && is_array($data->recommendedSeasons)): ?>
+				<select name="bikeRecommendedSeasons" id="ctrl_abp01_bikeRecommendedSeasons" multiple="multiple">
 					<?php abp01_render_select_options($data->recommendedSeasons, 'bikeRecommendedSeasons', $data); ?>
-				<?php endif; ?>
-			</select>
+				</select>
+			<?php else: ?>
+				<div class="abp01_no_lookup_items_notice">
+					<a href="<?php echo $data->recommendedSeasonsAdminUrl; ?>" target="_blank"><?php echo __('No items to select from. Visit the lookup data management page to add some.', 'abp01-trip-summary'); ?></a>
+				</div>
+			<?php endif; ?>
         </div>
         <div class="abp01-form-line">
             <label for="ctrl_abp01_bikePathSurfaceType"><?php echo __('Path surface type', 'abp01-trip-summary'); ?></label>
-			<select name="bikePathSurfaceType" id="ctrl_abp01_bikePathSurfaceType" multiple="multiple">
-				<?php if (isset($data->pathSurfaceTypes) && is_array($data->pathSurfaceTypes)): ?>
-					<?php abp01_render_select_options($data->pathSurfaceTypes, 'bikePathSurfaceType', $data); ?>
-				<?php endif; ?>
-			</select>
+			<?php if (!empty($data->pathSurfaceTypes) && is_array($data->pathSurfaceTypes)): ?>
+				<select name="bikePathSurfaceType" id="ctrl_abp01_bikePathSurfaceType" multiple="multiple">				
+					<?php abp01_render_select_options($data->pathSurfaceTypes, 'bikePathSurfaceType', $data); ?>				
+				</select>
+			<?php else: ?>
+				<div class="abp01_no_lookup_items_notice">
+					<a href="<?php echo $data->pathSurfaceTypesAdminUrl; ?>" target="_blank"><?php echo __('No items to select from. Visit the lookup data management page to add some.', 'abp01-trip-summary'); ?></a>
+				</div>
+			<?php endif; ?>
         </div>
         <div class="abp01-form-line">
             <label for="ctrl_abp01_bikeBikeType"><?php echo __('Bike type', 'abp01-trip-summary'); ?></label>
-			<select name="bikeBikeType" id="ctrl_abp01_bikeBikeType" multiple="multiple">
-				<?php if (isset($data->bikeTypes) && is_array($data->bikeTypes)): ?>
-					<?php abp01_render_select_options($data->bikeTypes, 'bikeBikeType', $data); ?>
-				<?php endif; ?>
-			</select>
+			<?php if (!empty($data->bikeTypes) && is_array($data->bikeTypes)): ?>
+				<select name="bikeBikeType" id="ctrl_abp01_bikeBikeType" multiple="multiple">				
+					<?php abp01_render_select_options($data->bikeTypes, 'bikeBikeType', $data); ?>				
+				</select>
+			<?php else: ?>
+				<div class="abp01_no_lookup_items_notice">
+					<a href="<?php echo $data->bikeTypesAdminUrl; ?>" target="_blank"><?php echo __('No items to select from. Visit the lookup data management page to add some.', 'abp01-trip-summary'); ?></a>
+				</div>
+			<?php endif; ?>
         </div>
     </div>
 </script>
@@ -148,12 +164,16 @@
         </div>
         <div class="abp01-form-line">
             <label for="abp01_hikingDifficultyLevel"><?php echo __('Difficulty level', 'abp01-trip-summary'); ?></label>
-            <select name="hikingDifficultyLevel" id="abp01_hikingDifficultyLevel" class="abp01-input-select">
-				<option value="0"><?php echo __('-- Choose an option --', 'abp01-trip-summary'); ?></option>
-                <?php if (isset($data->difficultyLevels) && is_array($data->difficultyLevels)): ?>
-                    <?php abp01_render_difficulty_level_options($data->difficultyLevels, abp01_extract_value_from_data($data, 'hikingDifficultyLevel')); ?>
-                <?php endif; ?>
-            </select>
+			<?php if (!empty($data->difficultyLevels) && is_array($data->difficultyLevels)): ?>
+				<select name="hikingDifficultyLevel" id="abp01_hikingDifficultyLevel" class="abp01-input-select">
+					<option value="0"><?php echo __('-- Choose an option --', 'abp01-trip-summary'); ?></option>
+					<?php abp01_render_difficulty_level_options($data->difficultyLevels, abp01_extract_value_from_data($data, 'hikingDifficultyLevel')); ?>
+				</select>
+			<?php else: ?>
+				<div class="abp01_no_lookup_items_notice">
+					<a href="<?php echo $data->difficultyLevelsAdminUrl; ?>" target="_blank"><?php echo __('No items to select from. Visit the lookup data management page to add some.', 'abp01-trip-summary'); ?></a>
+				</div>
+			<?php endif; ?>
         </div>
         <div class="abp01-form-line">
             <label for="ctrl_abp01_hikingAccess"><?php echo __('Access information', 'abp01-trip-summary'); ?></label>
@@ -161,19 +181,27 @@
         </div>
         <div class="abp01-form-line">
             <label for="ctrl_abp01_hikingRecommendedSeasons"><?php echo __('Open during seasons', 'abp01-trip-summary'); ?></label>
-			<select name="hikingRecommendedSeasons" id="ctrl_abp01_hikingRecommendedSeasons" multiple="multiple">
-				<?php if (isset($data->recommendedSeasons) && is_array($data->recommendedSeasons)): ?>
+			<?php if (!empty($data->recommendedSeasons) && is_array($data->recommendedSeasons)): ?>
+				<select name="hikingRecommendedSeasons" id="ctrl_abp01_hikingRecommendedSeasons" multiple="multiple">				
 					<?php abp01_render_select_options($data->recommendedSeasons, 'hikingRecommendedSeasons', $data); ?>
-				<?php endif; ?>
-			</select>
+				</select>
+			<?php else: ?>
+				<div class="abp01_no_lookup_items_notice">
+					<a href="<?php echo $data->recommendedSeasonsAdminUrl; ?>" target="_blank"><?php echo __('No items to select from. Visit the lookup data management page to add some.', 'abp01-trip-summary'); ?></a>
+				</div>
+			<?php endif; ?>
         </div>
         <div class="abp01-form-line">
             <label for="ctrl_abp01_hikingSurfaceType"><?php echo __('Path surface type', 'abp01-trip-summary'); ?></label>
-			<select name="hikingSurfaceType" id="ctrl_abp01_hikingSurfaceType" multiple="multiple">
-				<?php if (isset($data->pathSurfaceTypes) && is_array($data->pathSurfaceTypes)): ?>
+			<?php if (!empty($data->pathSurfaceTypes) && is_array($data->pathSurfaceTypes)): ?>
+				<select name="hikingSurfaceType" id="ctrl_abp01_hikingSurfaceType" multiple="multiple">				
 					<?php abp01_render_select_options($data->pathSurfaceTypes, 'hikingSurfaceType', $data); ?>
-				<?php endif; ?>
-			</select>
+				</select>
+			<?php else: ?>
+				<div class="abp01_no_lookup_items_notice">
+					<a href="<?php echo $data->pathSurfaceTypesAdminUrl; ?>" target="_blank"><?php echo __('No items to select from. Visit the lookup data management page to add some.', 'abp01-trip-summary'); ?></a>
+				</div>
+			<?php endif; ?>
         </div>
         <div class="abp01-form-line">
             <label for="ctrl_abp01_hikingRouteMarkers"><?php echo __('Route markers', 'abp01-trip-summary'); ?></label>
@@ -198,34 +226,50 @@
         </div>
         <div class="abp01-form-line">
             <label for="ctrl_abp01_trainRideOperator"><?php echo __('Railroad operators', 'abp01-trip-summary'); ?></label>
-			<?php if (isset($data->railroadOperators) && is_array($data->railroadOperators)): ?>
+			<?php if (!empty($data->railroadOperators) && is_array($data->railroadOperators)): ?>
 				<select name="trainRideOperator" id="ctrl_abp01_trainRideOperator" multiple="multiple">
 					<?php abp01_render_select_options($data->railroadOperators, 'trainRideOperator', $data); ?>
 				</select>
+			<?php else: ?>
+				<div class="abp01_no_lookup_items_notice">
+					<a href="<?php echo $data->railroadOperatorsAdminUrl; ?>" target="_blank"><?php echo __('No items to select from. Visit the lookup data management page to add some.', 'abp01-trip-summary'); ?></a>
+				</div>
 			<?php endif; ?>
         </div>
         <div class="abp01-form-line">
             <label for="ctrl_abp01_trainRideLineStatus"><?php echo __('Line status', 'abp01-trip-summary'); ?></label>
-			<?php if (isset($data->railroadLineStatuses) && is_array($data->railroadLineStatuses)): ?>
+			<?php if (!empty($data->railroadLineStatuses) && is_array($data->railroadLineStatuses)): ?>
 				<select name="trainRideLineStatus" id="ctrl_abp01_trainRideLineStatus" multiple="multiple">
 					<?php abp01_render_select_options($data->railroadLineStatuses, 'trainRideLineStatus', $data); ?>	
-				</select>                    
+				</select>
+			<?php else: ?>
+				<div class="abp01_no_lookup_items_notice">
+					<a href="<?php echo $data->railroadLineStatusesAdminUrl; ?>" target="_blank"><?php echo __('No items to select from. Visit the lookup data management page to add some.', 'abp01-trip-summary'); ?></a>
+				</div>
 			<?php endif; ?>
         </div>
         <div class="abp01-form-line">
             <label for="trainRideElectrificationStatus"><?php echo __('Electrification status', 'abp01-trip-summary'); ?></label>
-			<?php if (isset($data->railroadElectrification) && is_array($data->railroadElectrification)): ?>
+			<?php if (!empty($data->railroadElectrification) && is_array($data->railroadElectrification)): ?>
 				<select name="trainRideElectrificationStatus" id="ctrl_abp01_trainRideElectrificationStatus" multiple="multiple">
 					<?php abp01_render_select_options($data->railroadElectrification, 'trainRideElectrificationStatus', $data); ?>
-				</select>                    
+				</select>
+			<?php else: ?>
+				<div class="abp01_no_lookup_items_notice">
+					<a href="<?php echo $data->railroadElectrificationAdminUrl; ?>" target="_blank"><?php echo __('No items to select from. Visit the lookup data management page to add some.', 'abp01-trip-summary'); ?></a>
+				</div>
 			<?php endif; ?>
         </div>
         <div class="abp01-form-line">
             <label for="ctrl_abp01_trainRideLineType"><?php echo __('Line type', 'abp01-trip-summary'); ?></label>
-			<?php if (isset($data->railroadLineTypes) && is_array($data->railroadLineTypes)): ?>
+			<?php if (!empty($data->railroadLineTypes) && is_array($data->railroadLineTypes)): ?>
 				<select name="trainRideLineType" id="ctrl_abp01_trainRideLineType" multiple="multiple">
-					<?php abp01_render_select_options($data->railroadLineTypes, 'trainRideLineType', $data); ?>	
-				</select>                    
+					<?php abp01_render_select_options($data->railroadLineTypes, 'trainRideLineType', $data); ?>
+				</select>
+			<?php else: ?>
+				<div class="abp01_no_lookup_items_notice">
+					<a href="<?php echo $data->railroadLineTypesAdminUrl; ?>" target="_blank"><?php echo __('No items to select from. Visit the lookup data management page to add some.', 'abp01-trip-summary'); ?></a>
+				</div>
 			<?php endif; ?>
         </div>
     </div>

@@ -592,9 +592,9 @@ class Abp01_Lookup {
 	 * @param integer $id The id for which the item must be retrieved
 	 * @return stdClass The item, or null if not found. Item structure: id, hasTranslation, defaultLabel, label and type
 	 */
-public function lookupPathSurfaceType($id) {
-	return $this->lookup(self::PATH_SURFACE_TYPE, $id);
-}
+	public function lookupPathSurfaceType($id) {
+		return $this->lookup(self::PATH_SURFACE_TYPE, $id);
+	}
 
 	/**
 	 * Lookup the bike type item that corresponds to the given id.
