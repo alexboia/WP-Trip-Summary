@@ -1,111 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lookup>
     <difficultyLevel>
-        <lookup default="Usor">
-            <lang code="en_US">Easy</lang>
+        <lookup default="Easy">
+            <lang code="ro_RO">Ușor</lang>
         </lookup>
-        <lookup default="Mediu">
-            <lang code="en_US">Medium</lang>
+        <lookup default="Medium">
+            <lang code="ro_RO">Mediu</lang>
         </lookup>
-        <lookup default="Dificil">
-            <lang code="en_US">Hard</lang>
+        <lookup default="Hard">
+            <lang code="ro_RO">Dificil</lang>
         </lookup>
-        <lookup default="Tortura medievala">
-            <lang code="en_US">Medieval torture</lang>
+        <lookup default="Medieval torture">
+            <lang code="ro_RO">Tortură medievală</lang>
         </lookup>
     </difficultyLevel>
 
     <pathSurfaceType>
-        <lookup default="Asfalt">
-            <lang code="en_US">Asphalt</lang>
+        <lookup default="Asphalt">
+            <lang code="ro_RO">Asfalt</lang>
         </lookup>
-        <lookup default="Placi de beton">
-            <lang code="en_US">Concrete</lang>
+        <lookup default="Concrete">
+            <lang code="ro_RO">Plăci de beton</lang>
         </lookup>
-        <lookup default="Pamant">
-            <lang code="en_US">Dust or dirt</lang>
+        <lookup default="Dust or dirt">
+            <lang code="ro_RO">Pământ</lang>
         </lookup>
-        <lookup default="Iarba">
-            <lang code="en_US">Grass</lang>
+        <lookup default="Grass">
+            <lang code="ro_RO">Iarbă</lang>
         </lookup>
-        <lookup default="Macadam">
-            <lang code="en_US">Stone pavement</lang>
+        <lookup default="Stone pavement/Gravel">
+            <lang code="ro_RO">Macadam</lang>
         </lookup>
-        <lookup default="Piatra neasezata">
-            <lang code="en_US">Loose rocks</lang>
+        <lookup default="Loose rocks">
+            <lang code="ro_RO">Piatră neașezată</lang>
         </lookup>
     </pathSurfaceType>
 
     <bikeType>
         <lookup default="MTB">
-            <lang code="en_US">MTB</lang>
+            <lang code="ro_RO">MTB</lang>
         </lookup>
-        <lookup default="Cursiera">
-            <lang code="en_US">Road bike</lang>
+        <lookup default="Road bike">
+            <lang code="ro_RO">Cursieră</lang>
         </lookup>
         <lookup default="Trekking">
-            <lang code="en_US">Trekking</lang>
+            <lang code="ro_RO">Trekking</lang>
         </lookup>
-        <lookup default="Bicicleta de oras">
-            <lang code="en_US">City bike</lang>
+        <lookup default="City bike">
+            <lang code="ro_RO">Bicicletă de oraș</lang>
         </lookup>
     </bikeType>
 
     <railroadLineType>
-        <lookup default="Linie simpla">
-            <lang code="en_US">Simple line</lang>
+        <lookup default="Simple line">
+            <lang code="ro_RO">Linie simplă</lang>
         </lookup>
-        <lookup default="Linie dubla">
-            <lang code="en_US">Double line</lang>
+        <lookup default="Double line">
+            <lang code="ro_RO">Linie dublă</lang>
         </lookup>
     </railroadLineType>
 
-    <railroadOperator>
-        <lookup default="CFR" />
-        <lookup default="Regiotrans" />
-        <lookup default="TFC - Transferoviar Calatori" />
-        <lookup default="Regional" />
-    </railroadOperator>
+    <railroadOperator />
 
     <railroadLineStatus>
-        <lookup default="In exploatare">
-            <lang code="en_US">In production</lang>
+        <lookup default="In production">
+            <lang code="ro_RO">În exploatare</lang>
         </lookup>
-        <lookup default="Inchisa">
-            <lang code="en_US">Closed</lang>
+        <lookup default="Closed">
+            <lang code="ro_RO">Închisă</lang>
         </lookup>
-        <lookup default="Desfiintata">
-            <lang code="en_US">Disbanded</lang>
+        <lookup default="Disbanded">
+            <lang code="ro_RO">Desființată</lang>
         </lookup>
-        <lookup default="In reabilitare">
-            <lang code="en_US">In rehabilitation</lang>
+        <lookup default="In rehabilitation">
+            <lang code="ro_RO">În reabilitare</lang>
         </lookup>
     </railroadLineStatus>
 
     <recommendSeasons>
-        <lookup default="Primavara">
-            <lang code="en_US">Spring</lang>
+        <lookup default="Spring">
+            <lang code="ro_RO">Primăvara</lang>
         </lookup>
-        <lookup default="Vara">
-            <lang code="en_US">Summer</lang>
+        <lookup default="Summer">
+            <lang code="ro_RO">Vara</lang>
         </lookup>
-        <lookup default="Toamna">
-            <lang code="en_US">Toamna</lang>
+        <lookup default="Autumn">
+            <lang code="ro_RO">Toamna</lang>
         </lookup>
-        <lookup default="Iarna">
-            <lang code="en_US">Winter</lang>
+        <lookup default="Winter">
+            <lang code="ro_RO">Iarna</lang>
         </lookup>
     </recommendSeasons>
 
     <railroadElectrificationStatus>
-        <lookup default="Electrificata">
-            <lang code="en_US">Electrified</lang>
+        <lookup default="Electrified">
+            <lang code="ro_RO">Electrificată</lang>
         </lookup>
-        <lookup default="Neelectrificata">
-            <lang code="en_US">Not electrified</lang>
+        <lookup default="Not electrified">
+            <lang code="ro_RO">Neelectrificată</lang>
         </lookup>
-        <lookup default="Partial electrificata">
-            <lang code="en_US">Partially electrified</lang>
+        <lookup default="Partially electrified">
+            <lang code="ro_RO">Partial electrificată</lang>
         </lookup>
     </railroadElectrificationStatus>
 </lookup>
