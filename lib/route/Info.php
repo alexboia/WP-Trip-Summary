@@ -136,7 +136,7 @@ class Abp01_Route_Info {
         }
 
         $data = json_decode($json, true);
-        if (!$data || !is_array($data)) {
+        if ($data === null || !is_array($data)) {
             return null;
         }
 
@@ -159,23 +159,6 @@ class Abp01_Route_Info {
         return in_array($type, self::getSupportedTypes());
     }
 
-    private function _filterSingleValue($value, $def) {
-    	if (get_magic_quotes_gpc()) {
-            $value = stripslashes($value);
-        }
-		
-        $value = wp_strip_all_tags($value);        
-        settype($value, $def['type']);
-        
-        if (is_numeric($value)) {
-            if ($value < $def['minVal']) {
-                $value = $def['minVal'];
-            }
-        }
-        
-        return $value;
-    }
-
     private function _filterFieldValue($field, $value) {
         if (!$this->isFieldValid($field)) {
             return null;
@@ -195,24 +178,21 @@ class Abp01_Route_Info {
         if (!isset($def['minVal'])) {
             $def['minVal'] = -INF;
         }
+		if (!isset($def['maxVal'])) {
+			$def['maxVal'] = INF;
+		}
 
         if (isset($def['multiple']) && $def['multiple'] === true) {
             if (!is_array($value)) {
                 $value = array($value);
             }
         }
-
-        $filtered = null;
-        if (is_array($value)) {
-            $filtered = array();
-            foreach ($value as $v) {
-                $filtered[] = $this->_filterSingleValue($v, $def);
-            }
-        } else {
-            $filtered = $this->_filterSingleValue($value, $def);
-        }
-
-        return $filtered;
+	
+		return Abp01_InputFiltering::filterValue($value, 
+			$def['type'], 
+			$def['minVal'], 
+			$def['maxVal']
+		);
     }
 
     private function _getValidFields() {

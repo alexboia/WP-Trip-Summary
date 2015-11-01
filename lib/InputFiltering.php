@@ -6,15 +6,29 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 class Abp01_InputFiltering {
 	public static function filterSingleValue($input, $asType) {
 		if (get_magic_quotes_gpc()) {
-			$rawInput = stripslashes($input);
+			$input = stripslashes($input);
 		}
 
-		$input = sanitize_text_field($input);
+		if (!is_numeric($input)) {
+			$input = sanitize_text_field($input);
+		}
 		settype($input, $asType);
 
 		if (is_numeric($input)) {
 			$minVal = func_num_args() >= 3 ? func_get_arg(2) : -INF;
 			$maxVal = func_num_args() == 4 ? func_get_arg(3) : INF;
+
+			//we need to cast min and max limits to the given type as well
+			//otherwise, we'll get another type after the min/max clipping
+			//however, we only cast finite values
+
+			if (!is_infinite($minVal)) {
+				settype($minVal, $asType);
+			}
+			if (!is_infinite($maxVal)) {
+				settype($maxVal, $asType);
+			}
+
 			$input = max($minVal, $input);
 			$input = min($maxVal, $input);
 		}

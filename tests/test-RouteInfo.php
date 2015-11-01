@@ -50,6 +50,125 @@ class RouteInfoTests extends WP_UnitTestCase {
 		$this->assertTrue($info->isTrainRideTour());
 	}
 
+	/**
+	 * @dataProvider _getValidTypes
+	 */
+	public function testCanGetType($type) {
+		$info = new Abp01_Route_Info($type);
+		$this->assertEquals($type, $info->getType());
+	}
+
+	/**
+	 * @dataProvider _getValidTypes
+	 */
+	public function testCanSerializeToJson_empty($type) {
+		$info = new Abp01_Route_Info($type);
+		$this->assertEquals('[]', $info->toJson());
+	}
+
+	/**
+	 * @dataProvider _getPerTypeDataSets
+	 */
+	public function testCanSerializeToJson($type, $data){
+		$info = new Abp01_Route_Info($type);
+		foreach ($data as $key => $value) {
+			$info->$key = $value;
+		}
+		$this->assertEquals(json_encode($data), $info->toJson());
+	}
+
+	/**
+	 * @dataProvider _getValidTypes
+	 */
+	public function testCanCreateFromJson_emptyJsonObject($type) {
+		$info = Abp01_Route_Info::fromJson($type, '{}');
+		$this->assertNotNull($info);
+
+		$data = $info->getData();
+		$this->assertEquals(0, count($data));
+	}
+
+	/**
+	 * @dataProvider _getPerTypeDataSets
+	 */
+	public function testCanCreateFromJson($type, $data) {
+		$json = json_encode($data);
+		$info = Abp01_Route_Info::fromJson($type, $json);
+
+		$this->assertNotNull($info);
+		$this->_assertInfoHasData($info, $data);
+	}
+
+	/**
+	 * @dataProvider _getValidTypes
+	 * @expectedException InvalidArgumentException
+	 */
+	public function testTryCreateFromJson_emptyJsonInput($type) {
+		Abp01_Route_Info::fromJson($type, '');
+	}
+
+	/**
+	 * @dataProvider _getPerTypeFields
+	 */
+	public function testCanGetLookupKey($type, $field, $descriptor) {
+		$info = new Abp01_Route_Info($type);
+		$expectedLookup = isset($descriptor['lookup']) ? $descriptor['lookup'] : null;
+
+		$lookupKey = $info->getLookupKey($field);
+		$this->assertEquals($expectedLookup, $lookupKey);
+	}
+
+	/**
+	 * @dataProvider _getPerTypeDataSets
+	 */
+	public function testCanGetData($type, $data) {
+		$info = new Abp01_Route_Info($type);
+		foreach ($data as $field => $value) {
+			$info->$field = $value;
+		}
+
+		$this->_assertInfoHasData($info, $data);
+	}
+
+	public function testCanStripTagsWhenSetting() {
+		$info = new Abp01_Route_Info(Abp01_Route_Info::BIKE);
+		$info->bikeAccess = '<script type="text/javascript">alert("Test")</script>';
+		$this->assertEquals('', $info->bikeAccess);
+
+		$info->bikeAccess = '<a href="test.html">Test</a>';
+		$this->assertEquals('Test', $info->bikeAccess);
+
+		$info->bikeAccess =  '<p class="article">Sample paragraph</p>';
+		$this->assertEquals('Sample paragraph', $info->bikeAccess);
+	}
+
+	public function _getPerTypeFields() {
+		$data = array();
+		foreach (Abp01_Route_Info::getSupportedTypes() as $type) {
+			$info = new Abp01_Route_Info($type);
+			foreach ($info->getValidFields() as $field => $descriptor) {
+				$data[] = array($type, $field, $descriptor);
+			}
+		}
+		return $data;
+	}
+
+	public function _getPerTypeDataSets() {
+		$data = array();
+		foreach (Abp01_Route_Info::getSupportedTypes() as $type) {
+			$values = array();
+			$info = new Abp01_Route_Info($type);
+			foreach ($info->getValidFields() as $name => $descriptor) {
+				$values[$name] = $this->_generateValue($descriptor);
+			}
+			$data[] = array(
+				$type,
+				$values
+			);
+		}
+		return $data;
+	}
+
 	public function _getValidKeysDataSet() {
 		$data = array();
 		foreach (Abp01_Route_Info::getSupportedTypes() as $type) {
@@ -126,14 +245,22 @@ class RouteInfoTests extends WP_UnitTestCase {
 				$value = $faker->numberBetween(0, PHP_INT_MAX);
 				break;
 			case 'float':
-				$value = $faker->numberBetween(0, PHP_INT_MAX);
+				$value = $faker->randomFloat(2, 0, null);
 				break;
 			case 'string':
-				$value = $faker->text();
+				$value = $faker->word;
 				break;
 		}
 
 		return $multiple ? array($value) : $value;
+	}
+
+	private function _assertInfoHasData(Abp01_Route_Info $info, $data) {
+		$infoData = $info->getData();
+		foreach ($data as $key => $value) {
+			$this->assertTrue(array_key_exists($key, $infoData));
+			$this->assertSame($value, $infoData[$key]);
+		}
 	}
 
 	private function _assertHasValue(Abp01_Route_Info $info, $key, $value) {
