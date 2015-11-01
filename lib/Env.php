@@ -4,45 +4,122 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Env {
+	/**
+	 * The singleton instance
+	 * @var Abp01_Env
+	 */
     private static $_instance = null;
 
+	/**
+	 * Current language
+	 * @var string
+	 */
     private $_lang;
 
+	/**
+	 * Whether we're running in debug mode or not
+	 * @var boolean
+	 */
     private $_isDebugMode;
 
+	/**
+	 * The current database host server
+	 * @var string
+	 */
     private $_dbHost;
 
+	/**
+	 * Database credentials - username
+	 * @var string
+	 */
     private $_dbUserName;
 
+	/**
+	 * Database credentials - password
+	 * @var string
+	 */
     private $_dbPassword;
 
+	/**
+	 * Database table prefix
+	 * @var string
+	 */
     private $_dbTablePrefix;
 
+	/**
+	 * The name of the database to which we're connecting
+	 * @var string
+	 */
     private $_dbName;
 
+	/**
+	 * The name of the table that holds the route details. Prefix included.
+	 * @var string
+	 */
     private $_routeDetailsTableName;
 
+	/**
+	 * The name of the table that holds the serialized route tracks. Prefix included.
+	 * @var string
+	 */
     private $_routeTrackTableName;
 
+	/**
+	 * The name of the table that holds the look-up data items. Prefix included.
+	 * @var string
+	 */
     private $_lookupTableName;
 
+	/**
+	 * The name of the table that holds the look-up data items translations. Prefix included.
+	 * @var string
+	 */
     private $_lookupLangTableName;
 
+	/**
+	 * The name of the table that holds the relationships between routes (posts) and look-up data items. Prefix included
+	 * @var string
+	 */
 	private $_routeDetailsLookupTableName;
 
+	/**
+	 * The current database object instance
+	 * @var MysqliDb
+	 */
     private $_db = null;
 
+	/**
+	 * The current WordPress version
+	 * @var string
+	 */
     private $_wpVersion;
 
+	/**
+	 * The current PHP version
+	 * @var string
+	 */
     private $_phpVersion;
 
+	/**
+	 * The path to the data directory. This is where all the tracks are stored.
+	 * @var string 
+	 */
     private $_dataDir;
 
+	/**
+	 * The WP theme currently in use
+	 * @var WP_Theme
+	 */
     private $_theme;
 
+	/**
+	 * The current plug-in version
+	 * @var string
+	 */
     private  $_version = '0.2b';
 
 	/**
+	 * Gets or creates the singleton instance
 	 * @return Abp01_Env The singleton instance
 	 */
     public static function getInstance() {

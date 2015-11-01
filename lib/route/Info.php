@@ -122,6 +122,14 @@ class Abp01_Route_Info {
         )
     );
 
+	public static function getSupportedTypes() {
+		return array(
+			self::BIKE,
+            self::TRAIN_RIDE,
+            self::HIKING
+		);
+	}
+
     public static function fromJson($type, $json) {
         if (empty($json)) {
             throw new InvalidArgumentException();
@@ -148,9 +156,7 @@ class Abp01_Route_Info {
     }
 
     private function _isTypeSupported($type) {
-        return in_array($type, array(self::BIKE,
-            self::TRAIN_RIDE,
-            self::HIKING));
+        return in_array($type, self::getSupportedTypes());
     }
 
     private function _filterSingleValue($value, $def) {
@@ -262,6 +268,10 @@ class Abp01_Route_Info {
     public function getValidFieldNames() {
         return array_keys($this->_getValidFields());
     }
+
+	public function getValidFields() {
+		return $this->_getValidFields();
+	}
 
     public function toJson() {
         return json_encode($this->_data);
