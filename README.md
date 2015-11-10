@@ -88,8 +88,8 @@ Thus, I developed a module to do just that: upload a GPX track, parse it and dis
 11. [Visible](https://github.com/teamdf/jquery-visible) - jQuery plugin which allows us to quickly check if an element is within the browsers visual viewport regardless of the window scroll position
 12. [blockUI](https://github.com/malsup/blockui/) - jQuery modal view plug-in
 13. [kite](http://code.google.com/p/kite/) - super small and simple JavaScript template engine
-14. [Leaflet.MagnifyingGlass](https://github.com/bbecquet/Leaflet.MagnifyingGlass) - super small and simple JavaScript template engine
-15. [Leaflet.fullscreen](https://github.com/Leaflet/Leaflet.fullscreen) - this plugin allows you to add a "magnifying glass" effect to a Leaflet map, able to display a portion of the map in a different zoom (and actually display different content)
+14. [Leaflet.MagnifyingGlass](https://github.com/bbecquet/Leaflet.MagnifyingGlass) - Leaflet plug-in that adds the magnifying glass feature: enlarging a discrete area on the map
+15. [Leaflet.fullscreen](https://github.com/Leaflet/Leaflet.fullscreen) - Leaflet plug-in that allows the map to be displayed in full-screen mode
 
 ## Licence
 The source code is published under the terms of the [MIT](http://opensource.org/licenses/MIT) licence.
