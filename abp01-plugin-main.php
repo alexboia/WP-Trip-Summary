@@ -49,6 +49,7 @@ define('ABP01_TRACK_UPLOAD_MAX_FILE_SIZE', max(wp_max_upload_size(), 10485760));
 
 define('ABP01_MAIN_MENU_SLUG', 'abp01-trip-summary-settings');
 define('ABP01_LOOKUP_SUBMENU_SLUG', 'abp01-trip-summary-lookup');
+define('ABP01_HELP_SUBMENU_SLUG', 'abp01-trip-summary-help');
 
 /**
  * Initializes the autoloading process
@@ -57,6 +58,18 @@ define('ABP01_LOOKUP_SUBMENU_SLUG', 'abp01-trip-summary-lookup');
 function abp01_init_autoloaders() {
 	require_once ABP01_LIB_DIR . '/Autoloader.php';
 	Abp01_Autoloader::init(ABP01_LIB_DIR);
+}
+
+/**
+ * Retrieve the help file path that corresponds to the given locale
+ * @param String $locale The locale to check for
+ * @return String The absolute help file path
+ */
+function abp01_get_help_file_for_locale($locale) {
+	if (empty($locale)) {
+		return '';
+	}
+	return sprintf('%s/help/%s/index.html', Abp01_Env::getInstance()->getDataDir(), $locale);
 }
 
 /**
@@ -280,6 +293,16 @@ function abp01_is_managing_lookup() {
 	$currentPage = Abp01_Env::getInstance()->getCurrentPage();
 	$isOnlookupPagePage = isset($_GET['page']) ? $_GET['page'] == ABP01_LOOKUP_SUBMENU_SLUG : false;
 	return $currentPage == 'admin.php' && $isOnlookupPagePage;
+}
+
+/**
+ * Check whether the currently displayed screen is the help page
+ * @return booelan True if on plugin lookup help page, false otherwise
+ */
+function abp01_is_browsing_help() {
+	$currentPage = Abp01_Env::getInstance()->getCurrentPage();
+	$isOnHelpPage = isset($_GET['page']) ? $_GET['page'] == ABP01_HELP_SUBMENU_SLUG : false;
+	return $currentPage == 'admin.php' && $isOnHelpPage;
 }
 
 /**
@@ -523,6 +546,15 @@ function abp01_admin_settings_page_render(stdClass $data) {
 }
 
 /**
+ * Renders the plugin help page
+ * @param stdClass $data The data with the help contents
+ * @return void
+ */
+function abp01_admin_help_page_render(stdClass $data) {
+	require_once ABP01_PLUGIN_ROOT . '/views/techbox-help.php';
+}
+
+/**
  * Renders the plugin lookup data management page
  * @param stdClass $data The lookup data management page context and the actual data
  * @return void
@@ -576,6 +608,13 @@ function abp01_create_admin_menu() {
 				Abp01_Auth::CAP_MANAGE_TOUR_SUMMARY, 
 				ABP01_LOOKUP_SUBMENU_SLUG, 
 					'abp01_admin_lookup_page');
+	
+	add_submenu_page(ABP01_MAIN_MENU_SLUG, 
+		__('Help', 'abp01-trip-summary'), 
+		__('Help', 'abp01-trip-summary'), 
+			Abp01_Auth::CAP_MANAGE_TOUR_SUMMARY, 
+			ABP01_HELP_SUBMENU_SLUG, 
+				'abp01_admin_help_page');
 }
 
 /**
@@ -815,6 +854,10 @@ function abp01_add_admin_styles() {
 		Abp01_Includes::includeStyleNProgress();
 		Abp01_Includes::includeStyleJQueryToastr();
 		Abp01_Includes::includeStyleAdminMain();
+	}
+	
+	if (abp01_is_browsing_help() && abp01_can_manage_plugin_settings()) {
+		Abp01_Includes::includeStyleAdminHelp();
 	}
 }
 
@@ -1058,6 +1101,28 @@ function abp01_save_admin_settings_page_save() {
 	}
 
 	abp01_send_json($response);
+}
+
+/**
+ * This function handles the admin help page. The execution halts if the user lacks the proper capabilities
+ * @return void
+ */
+function abp01_admin_help_page() {
+	if (!abp01_can_manage_plugin_settings()) {
+		return;
+	}
+
+	$locale = get_locale();
+	$helpFile = abp01_get_help_file_for_locale($locale);
+	
+	if (!is_file($helpFile) || !is_readable($helpFile)) {
+		$helpFile = abp01_get_help_file_for_locale('default');
+	}
+	
+	$data = new stdClass();	
+	$data->helpContents = file_get_contents($helpFile);	
+	
+	abp01_admin_help_page_render($data);
 }
 
 /**

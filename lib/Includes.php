@@ -69,6 +69,8 @@ class Abp01_Includes {
 	const STYLE_JQUERY_TOASTR = 'jquery-toastr-css';
 
 	const STYLE_ADMIN_MAIN = 'abp01-main-css';
+	
+	const STYLE_ADMIN_HELP = 'abp01-help-css';
 
 	const STYLE_SYSTEM_THICKBOX = 'thickbox';
 
@@ -199,6 +201,10 @@ class Abp01_Includes {
 		self::STYLE_ADMIN_MAIN => array(
 			'path' => 'media/css/abp01-main.css', 
 			'version' => '0.2'
+		),
+		self::STYLE_ADMIN_HELP => array(
+			'path' => 'media/css/abp01-help.css', 
+			'version' => '0.1'
 		)
 	);
 
@@ -379,5 +385,9 @@ class Abp01_Includes {
 
 	public static function includeStyleSystemThickBox() {
 		self::_enqueueStyle(self::STYLE_SYSTEM_THICKBOX);
+	}
+	
+	public static function includeStyleAdminHelp() {
+		self::_enqueueStyle(self::STYLE_ADMIN_HELP);
 	}
 }
