@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>WP-Trip-Summary Help</title>
-        
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta charset="UTF-8" />
-    </head>
-    <body>
-        <div class="abp01-help-document-contents"><h1>Cuprins</h1>
+<h1>Cuprins</h1>
 <ul>
 <li><a href="#detalii-generale">Detalii Generale</a></li>
 <li><a href="#componenta-vizualizare">Componenta de Vizualizare</a></li>
@@ -22,18 +12,19 @@
 Pe parcurs, însă, am realizat că s-ar mai putea să ajute pe cineva, așa că am decis să îl public în regim open-source, cu o licență cât se poate de liberală.<br />
 În mare, modulul gestionează următoarele rubrici:</p>
 <ul>
-<li>rubrica tehnică - prezintă niște detalii prozaice precum: lungime, diferența totală de nivel, tip de teren etc.;</li>
-<li>track-ul GPS al traseului, afișat simplu pe o hartă.</li>
+<li>sumarul tehnic - prezintă niște detalii prozaice precum: lungime, diferența totală de nivel, tip de teren etc.;</li>
+<li>track-ul GPS al traseului, afișat simplu pe o hartă, cu două puncte marcate: punctul de pornire (cu verde) și punctul de sosire (cu roșu).</li>
 </ul>
 <h3>Tipuri de traseu</h3>
-<p>În rubrica tehnică amintită sunt suportate următoarele următoarele tipuri de informații:</p>
+<p>În sumarul tehnic am inclus următoarele tipuri de informații:</p>
 <ul>
-<li>informații specifice traseelor de bicicletă;</li>
-<li>informații specifice drumețiilor per-pedes (trekking/hiking);</li>
-<li>informații specifice turelor cu trenul.</li>
+<li>date specifice traseelor de bicicletă;</li>
+<li>date specifice drumețiilor per-pedes (trekking/hiking);</li>
+<li>date specifice turelor cu trenul.</li>
 </ul>
+<p>Cu alte cuvinte, vă puteți documenta (doar) aceste trei tipuri de plimbări.</p>
 <h3 id="dg-componente-principale">Componente Principale</h3>
-<p>În funcție de diversele funcții îndeplinite de zonele din modul, am identificat următoarele componente:</p>
+<p>În funcție de diversele funcții îndeplinite de zonele din modul, putem discuta de următoarele componente:</p>
 <ul>
 <li>Componenta de vizualizare: este caseta afișată imediat sub articol și care prezintă toate informațiile de care am amintit mai sus (<a href="#componenta-vizualizare">Detalii aici</a>);</li>
 <li>Componenta de editare: este atașată formularului de creare/editare a articolelor și permite modificarea/ștergerea datelor despre traseul parcurs (<a href="#componenta-editare">Detalii aici</a>);</li>
@@ -41,7 +32,22 @@ Pe parcurs, însă, am realizat că s-ar mai putea să ajute pe cineva, așa că
 </ul>
 <h2 id="dg-capturi-ecran">Capturi de Ecran</h2>
 <h2 id="dg-cerinte-tehnice">Cerințe Tehnice</h2>
+<p>Pentru a rula acest modul, aveți nevoie de următoarele:</p>
+<ul>
+<li>un WordPress (evident!) - minim versiunea 4.0 (poate și mai jos - nu știu, nu am încercat și prefer să nu îmi bat capul);</li>
+<li>o bază de date MySQL cu suport pentru date GIS;</li>
+<li>extensia libxml trebuie să fie instalată;</li>
+<li>extensia mysqli trebuie să fie instalată.</li>
+</ul>
+<p>În principiu toate aceste cerințe sunt verificate la instalare, iar procesul se oprește dacă nu sunt îndeplinite.</p>
 <h2 id="dg-licenta">Licența</h2>
+<p>Acest modul este distribuit sub licența MIT (<a href="https://opensource.org/licenses/MIT">detalii aici</a>). Ce înseamnă asta:</p>
+<ul>
+<li>că îl puteți folosi absolut gratuit;</li>
+<li>că îl puteți redistribui fără vreun fel de obligație;</li>
+<li>că trebuie să includeți o copie a termenilor de licențiere acolo unde îl instalați sau de fiecare dată când îl redistribuiți;</li>
+<li>că nu este oferită nici un fel de garanție de bună funcționare, de nici un fel, nici implicită, nici explicită.</li>
+</ul>
 <h2 id="dg-mentiuni-multumiri">Mențiuni &amp; Mulțumiri</h2>
 <p>Modulul WP-Trip-Summary folosește următoarele librării:</p>
 <ol>
@@ -63,6 +69,4 @@ Pe parcurs, însă, am realizat că s-ar mai putea să ajute pe cineva, așa că
 </ol>
 <h1 id="componenta-vizualizare">Componenta de Vizualizare</h1>
 <h1 id="componenta-editare">Componenta de Editare</h1>
-<h1 id="optiuni-de-configurare-si-gestiune">Opțiuni de Configurare &amp; Gestiune</h1></div>
-    </body>
-</html>
+<h1 id="optiuni-de-configurare-si-gestiune">Opțiuni de Configurare &amp; Gestiune</h1>

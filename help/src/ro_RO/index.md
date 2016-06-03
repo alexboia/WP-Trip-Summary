@@ -15,20 +15,22 @@ Proiectul a început dintr-un motiv cât se poate de egoist: îmi doream să pă
 Pe parcurs, însă, am realizat că s-ar mai putea să ajute pe cineva, așa că am decis să îl public în regim open-source, cu o licență cât se poate de liberală.
 În mare, modulul gestionează următoarele rubrici:
 
-- rubrica tehnică - prezintă niște detalii prozaice precum: lungime, diferența totală de nivel, tip de teren etc.;
-- track-ul GPS al traseului, afișat simplu pe o hartă.
+- sumarul tehnic - prezintă niște detalii prozaice precum: lungime, diferența totală de nivel, tip de teren etc.;
+- track-ul GPS al traseului, afișat simplu pe o hartă, cu două puncte marcate: punctul de pornire (cu verde) și punctul de sosire (cu roșu).
 
 ### Tipuri de traseu
 
-În rubrica tehnică amintită sunt suportate următoarele următoarele tipuri de informații:
+În sumarul tehnic am inclus următoarele tipuri de informații:
 
-- informații specifice traseelor de bicicletă;
-- informații specifice drumețiilor per-pedes (trekking/hiking);
-- informații specifice turelor cu trenul.
+- date specifice traseelor de bicicletă;
+- date specifice drumețiilor per-pedes (trekking/hiking);
+- date specifice turelor cu trenul.
+
+Cu alte cuvinte, vă puteți documenta (doar) aceste trei tipuri de plimbări.
 
 ### Componente Principale {#dg-componente-principale}
 
-În funcție de diversele funcții îndeplinite de zonele din modul, am identificat următoarele componente:
+În funcție de diversele funcții îndeplinite de zonele din modul, putem discuta de următoarele componente:
 
 - Componenta de vizualizare: este caseta afișată imediat sub articol și care prezintă toate informațiile de care am amintit mai sus ([Detalii aici](#componenta-vizualizare));
 - Componenta de editare: este atașată formularului de creare/editare a articolelor și permite modificarea/ștergerea datelor despre traseul parcurs ([Detalii aici](#componenta-editare));
@@ -38,7 +40,23 @@ Pe parcurs, însă, am realizat că s-ar mai putea să ajute pe cineva, așa că
 
 ## Cerințe Tehnice {#dg-cerinte-tehnice}
 
+Pentru a rula acest modul, aveți nevoie de următoarele:
+
+- un WordPress (evident!) - minim versiunea 4.0 (poate și mai jos - nu știu, nu am încercat și prefer să nu îmi bat capul);
+- o bază de date MySQL cu suport pentru date GIS;
+- extensia libxml trebuie să fie instalată;
+- extensia mysqli trebuie să fie instalată.
+
+În principiu toate aceste cerințe sunt verificate la instalare, iar procesul se oprește dacă nu sunt îndeplinite.
+
 ## Licența {#dg-licenta}
+
+Acest modul este distribuit sub licența MIT ([detalii aici](https://opensource.org/licenses/MIT)). Ce înseamnă asta:
+
+- că îl puteți folosi absolut gratuit;
+- că îl puteți redistribui fără vreun fel de obligație;
+- că trebuie să includeți o copie a termenilor de licențiere acolo unde îl instalați sau de fiecare dată când îl redistribuiți;
+- că nu este oferită nici un fel de garanție de bună funcționare, de nici un fel, nici implicită, nici explicită.
 
 ## Mențiuni & Mulțumiri {#dg-mentiuni-multumiri}
 
