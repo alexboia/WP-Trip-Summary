@@ -1117,10 +1117,14 @@ function abp01_admin_help_page() {
 	
 	if (!is_file($helpFile) || !is_readable($helpFile)) {
 		$helpFile = abp01_get_help_file_for_locale('default');
+		$locale = 'default';
 	}
 	
 	$data = new stdClass();	
 	$data->helpContents = file_get_contents($helpFile);	
+	
+	$helpDataDirUrl = plugins_url('data/help/' . $locale, __FILE__);
+	$data->helpContents = str_ireplace('$helpDataDirUrl$', $helpDataDirUrl, $data->helpContents);
 	
 	abp01_admin_help_page_render($data);
 }
