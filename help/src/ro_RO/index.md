@@ -3,7 +3,7 @@
 - [Detalii Generale](#detalii-generale)
 - [Componenta de Vizualizare](#componenta-vizualizare)
 - [Componenta de Editare](#componenta-editare)
-- [Opțiuni de Configurare & Gestiune](#optiuni-de-configurare-si-gestiune)
+- [Configurare & Gestiune](#configurare-si-gestiune)
 
 # Detalii Generale {#detalii-generale}
 
@@ -103,4 +103,92 @@ Modulul WP-Trip-Summary folosește următoarele librării:
 
 # Componenta de Editare {#componenta-editare}
 
-# Opțiuni de Configurare & Gestiune {#optiuni-de-configurare-si-gestiune}
+# Configurare & Gestiune {#configurare-si-gestiune}
+
+Elementele de configurare & gestiune sunt puse la punct pentru a oferi o oarecare flexibilitate în utilizarea progrămelului. Astfel, putem vorbi despre două mari și late direcții de flexibilizare:
+
+- opțiuni generice (unități de măsură, activarea / dezactivarea unor unelte sau elemente de interfață etc.);
+- gestiunea nomenclatoarelor (adică a seturilor de opțiuni predefinite din care se completează unele câmpuri, cum ar fi Nivelul de Dificultate).
+
+## Opțiunile Generice
+
+Există o pagină dedicată din care opțiunile generice pot fi modificate. Acolo se ajunge din meniul principal, accesând: Trip Summary -> Configurare.
+
+Odată ajunși aici, există următoarele punct de configurare.
+
+#### Sistemul de unități de măsură. 
+
+Se poate ori sistemul metric (m/km), ori sistemul imperial (mile/inch). Foarte important de menționat e că nu se face nici un fel de calcul de conversie și că se presupune că atunci când se introduce sumarul unei ture valorile sunt deja exprimate în sistemul ales aici.
+
+#### Dacă se afișează sau nu teaser-ul. 
+
+Odată debifat câmpul și salvate modificările, teaser-ul din pagina articolului va fi ascuns.
+
+#### Textul teaser-ului din partea de sus
+
+Textul componentei teaser-ului care e afișată deasupra articolului. Există deja o valoare predefinită.
+
+#### Textul teaser-ului din partea de jos
+
+Textul componentei teaser-ului care afișată imediat sub caseta de sumar. Există deja o valoare predefinită.
+
+#### Șablonul URL-ului sursei de tile-uri de hartă
+
+Aici discuția e un pic mai lungă. 
+
+În primul rând, de reținut că harta utilizată nu e o singură imagine, ci e formată din mai multe imagini pătrate, denumite tile-uri care, așezate una lângă alta, formează întreaga hartă.
+
+Există mai multe seturi de tile-uri, câte unul pentru fiecare nivel de zoom, iar fiecare tile e caracterizat prin două coordonate - să zicem x și y - cam ca pe o tablă de șah.
+
+Așadar, ca să putem accesa un tile, avem nevoie de următoarele informații: 
+
+- z - nivelul de zoom;
+- x - poziția pe orizontală;
+- y - poziția pe verticală.
+
+Dar mai e o problemă: ca să încarci atâtea imagini într-un timp cât mai rapid uneori aceste tot acest mega-set de tile-uri este copiat redundant pe mai multe mașini - servere. 
+Aceste mașini sunt și ele numerotate/denumite - să zicem, spre exemplu, 1, 2, 3, 4 etc.
+Ideea aici este că pot - în loc de a le cere din același loc - pot să cer o parte de la mașina 1, o parte de la mașina 2 etc, dar asta, repet, nu e musai un comportament obligatoriu.
+
+Ca să adun toate aceste lucruri, pentru a putea încărca tile-uri de hartă dintr-o altă sursă decât cea predefinită - OpenStreetMaps - aveți la dispoziție câmpul aflat acum în discuție.
+Iar acest șablon oferă următoarele marcaje speciale:
+
+- {s} - pentru a specifica unde se introduce numărul mașinii (ex. {s}.tile.osm.org s-ar traduce în 1.tile.osm.org, 2.tile.osm.org);
+- {z} - pentru a specifica unde se introduce numărul nivelului de zoom;
+- {x} - pentru a specifica unde se introduce poziția pe orizontală a tile-ului;
+- {y} - pentru a specifica unde se introduce poziția pe verticală a tile-ului.
+
+Marcajele pot fi combinate oricum și va trebui să consultați documentația pentru furnizorul de la care vreți să afișați harta.
+
+#### URL-ul paginii de copyright a sursei de tile-uri de hartă
+
+În funcție de unde alegeți să folosiți harta, zona de copyright poate fi sau nu obligatorie. Este, în orice caz, o chestie de bun simț, așa că vă încurajez să o aveți la vedere.
+Plasarea este în colțul din dreapta jos al hărții, iar câmpul aflat acum în discuție permite introducerea unui link către furnizor.
+
+#### Nota de copyright a sursei de tile-uri de hartă
+
+În funcție de unde alegeți să folosiți harta, zona de copyright poate fi sau nu obligatorie. Este, în orice caz, o chestie de bun simț, așa că vă încurajez să o aveți la vedere.
+Plasarea este în colțul din dreapta jos al hărții, iar câmpul aflat acum în discuție permite introducerea notei propriu-zise de copyright.
+
+#### Se permite comutărea hărții pe întreg ecranul?
+
+Dacă debifați acest câmp, în caseta tehnică din pagina articolului nu va mai fi afișat butonul care comută harta pe întreg ecranul (full-screen).
+Implicit, câmpul este bifat, deci butonul este afișat.
+
+#### Se activează lupa?
+
+Dacă debifați acest câmp, în caseta tehnică din pagina articolului nu va mai fi afișat butonul care activează lupa.
+Implicit, câmpul este bifat, deci butonul este afișat.
+
+#### Se afișează scara hărții
+
+Dacă debifați acest câmp, în caseta tehnică din pagina articolului nu va mai fi afișată scara hărții (în stânga-jos).
+Implicit, câmpul este bifat, deci scara hărții este afișată.
+
+#### Se permite descărcarea track-ului?
+
+Dacă debifați acest câmp, în caseta tehnică din pagina articolului nu va mai fi afișat butonul care permite descărcarea track-ului GPX.
+Implicit, câmpul este bifat, deci butonul este afișat.
+
+## Gestiunea Nomenclatoarelor
+

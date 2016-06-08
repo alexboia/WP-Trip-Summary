@@ -3,7 +3,7 @@
 <li><a href="#detalii-generale">Detalii Generale</a></li>
 <li><a href="#componenta-vizualizare">Componenta de Vizualizare</a></li>
 <li><a href="#componenta-editare">Componenta de Editare</a></li>
-<li><a href="#optiuni-de-configurare-si-gestiune">Opțiuni de Configurare &amp; Gestiune</a></li>
+<li><a href="#configurare-si-gestiune">Configurare &amp; Gestiune</a></li>
 </ul>
 <h1 id="detalii-generale">Detalii Generale</h1>
 <h2 id="dg-despre">Despre</h2>
@@ -83,4 +83,61 @@ Pe parcurs, însă, am realizat că s-ar mai putea să ajute pe cineva, așa că
 </ol>
 <h1 id="componenta-vizualizare">Componenta de Vizualizare</h1>
 <h1 id="componenta-editare">Componenta de Editare</h1>
-<h1 id="optiuni-de-configurare-si-gestiune">Opțiuni de Configurare &amp; Gestiune</h1>
+<h1 id="configurare-si-gestiune">Configurare &amp; Gestiune</h1>
+<p>Elementele de configurare &amp; gestiune sunt puse la punct pentru a oferi o oarecare flexibilitate în utilizarea progrămelului. Astfel, putem vorbi despre două mari și late direcții de flexibilizare:</p>
+<ul>
+<li>opțiuni generice (unități de măsură, activarea / dezactivarea unor unelte sau elemente de interfață etc.);</li>
+<li>gestiunea nomenclatoarelor (adică a seturilor de opțiuni predefinite din care se completează unele câmpuri, cum ar fi Nivelul de Dificultate).</li>
+</ul>
+<h2>Opțiunile Generice</h2>
+<p>Există o pagină dedicată din care opțiunile generice pot fi modificate. Acolo se ajunge din meniul principal, accesând: Trip Summary -&gt; Configurare.</p>
+<p>Odată ajunși aici, există următoarele punct de configurare.</p>
+<h4>Sistemul de unități de măsură.</h4>
+<p>Se poate ori sistemul metric (m/km), ori sistemul imperial (mile/inch). Foarte important de menționat e că nu se face nici un fel de calcul de conversie și că se presupune că atunci când se introduce sumarul unei ture valorile sunt deja exprimate în sistemul ales aici.</p>
+<h4>Dacă se afișează sau nu teaser-ul.</h4>
+<p>Odată debifat câmpul și salvate modificările, teaser-ul din pagina articolului va fi ascuns.</p>
+<h4>Textul teaser-ului din partea de sus</h4>
+<p>Textul componentei teaser-ului care e afișată deasupra articolului. Există deja o valoare predefinită.</p>
+<h4>Textul teaser-ului din partea de jos</h4>
+<p>Textul componentei teaser-ului care afișată imediat sub caseta de sumar. Există deja o valoare predefinită.</p>
+<h4>Șablonul URL-ului sursei de tile-uri de hartă</h4>
+<p>Aici discuția e un pic mai lungă. </p>
+<p>În primul rând, de reținut că harta utilizată nu e o singură imagine, ci e formată din mai multe imagini pătrate, denumite tile-uri care, așezate una lângă alta, formează întreaga hartă.</p>
+<p>Există mai multe seturi de tile-uri, câte unul pentru fiecare nivel de zoom, iar fiecare tile e caracterizat prin două coordonate - să zicem x și y - cam ca pe o tablă de șah.</p>
+<p>Așadar, ca să putem accesa un tile, avem nevoie de următoarele informații: </p>
+<ul>
+<li>z - nivelul de zoom;</li>
+<li>x - poziția pe orizontală;</li>
+<li>y - poziția pe verticală.</li>
+</ul>
+<p>Dar mai e o problemă: ca să încarci atâtea imagini într-un timp cât mai rapid uneori aceste tot acest mega-set de tile-uri este copiat redundant pe mai multe mașini - servere.<br />
+Aceste mașini sunt și ele numerotate/denumite - să zicem, spre exemplu, 1, 2, 3, 4 etc.<br />
+Ideea aici este că pot - în loc de a le cere din același loc - pot să cer o parte de la mașina 1, o parte de la mașina 2 etc, dar asta, repet, nu e musai un comportament obligatoriu.</p>
+<p>Ca să adun toate aceste lucruri, pentru a putea încărca tile-uri de hartă dintr-o altă sursă decât cea predefinită - OpenStreetMaps - aveți la dispoziție câmpul aflat acum în discuție.<br />
+Iar acest șablon oferă următoarele marcaje speciale:</p>
+<ul>
+<li>{s} - pentru a specifica unde se introduce numărul mașinii (ex. {s}.tile.osm.org s-ar traduce în 1.tile.osm.org, 2.tile.osm.org);</li>
+<li>{z} - pentru a specifica unde se introduce numărul nivelului de zoom;</li>
+<li>{x} - pentru a specifica unde se introduce poziția pe orizontală a tile-ului;</li>
+<li>{y} - pentru a specifica unde se introduce poziția pe verticală a tile-ului.</li>
+</ul>
+<p>Marcajele pot fi combinate oricum și va trebui să consultați documentația pentru furnizorul de la care vreți să afișați harta.</p>
+<h4>URL-ul paginii de copyright a sursei de tile-uri de hartă</h4>
+<p>În funcție de unde alegeți să folosiți harta, zona de copyright poate fi sau nu obligatorie. Este, în orice caz, o chestie de bun simț, așa că vă încurajez să o aveți la vedere.<br />
+Plasarea este în colțul din dreapta jos al hărții, iar câmpul aflat acum în discuție permite introducerea unui link către furnizor.</p>
+<h4>Nota de copyright a sursei de tile-uri de hartă</h4>
+<p>În funcție de unde alegeți să folosiți harta, zona de copyright poate fi sau nu obligatorie. Este, în orice caz, o chestie de bun simț, așa că vă încurajez să o aveți la vedere.<br />
+Plasarea este în colțul din dreapta jos al hărții, iar câmpul aflat acum în discuție permite introducerea notei propriu-zise de copyright.</p>
+<h4>Se permite comutărea hărții pe întreg ecranul?</h4>
+<p>Dacă debifați acest câmp, în caseta tehnică din pagina articolului nu va mai fi afișat butonul care comută harta pe întreg ecranul (full-screen).<br />
+Implicit, câmpul este bifat, deci butonul este afișat.</p>
+<h4>Se activează lupa?</h4>
+<p>Dacă debifați acest câmp, în caseta tehnică din pagina articolului nu va mai fi afișat butonul care activează lupa.<br />
+Implicit, câmpul este bifat, deci butonul este afișat.</p>
+<h4>Se afișează scara hărții</h4>
+<p>Dacă debifați acest câmp, în caseta tehnică din pagina articolului nu va mai fi afișată scara hărții (în stânga-jos).<br />
+Implicit, câmpul este bifat, deci scara hărții este afișată.</p>
+<h4>Se permite descărcarea track-ului?</h4>
+<p>Dacă debifați acest câmp, în caseta tehnică din pagina articolului nu va mai fi afișat butonul care permite descărcarea track-ului GPX.<br />
+Implicit, câmpul este bifat, deci butonul este afișat.</p>
+<h2>Gestiunea Nomenclatoarelor</h2>
