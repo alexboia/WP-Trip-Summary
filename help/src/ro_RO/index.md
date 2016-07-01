@@ -192,3 +192,12 @@ Implicit, câmpul este bifat, deci butonul este afișat.
 
 ## Gestiunea Nomenclatoarelor
 
+Nomenclatoarele sunt seturi de opțiuni predefinite din care se completează unele câmpuri. 
+Valorile acestor opțiuni sunt modificabile în funcție de o limbă aleasă. 
+Sunt disponibile toate limbile suportate de WordPress, plus posibilitatea de a stabili o valoare implicită.
+Valoarea implicită a unei opțiuni va fi afișată atunci când nu este găsită nici o traducere pentru acea opțiune pentru limba curentă a blogului. 
+
+- Nivelul de dificultate;
+- Anotimpurile recomandate;
+- Tipurile de suprafata ale drumului/potecii;
+- Tipurile recomandate de bicicleta.
