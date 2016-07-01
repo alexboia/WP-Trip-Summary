@@ -1,4 +1,4 @@
-# Cuprins
+# Cuprins {#help-root}
 
 - [Detalii Generale](#detalii-generale)
 - [Componenta de Vizualizare](#componenta-vizualizare)
@@ -36,6 +36,8 @@ Cu alte cuvinte, vă puteți documenta (doar) aceste trei tipuri de plimbări.
 - Componenta de editare: este atașată formularului de creare/editare a articolelor și permite modificarea/ștergerea datelor despre traseul parcurs ([Detalii aici](#componenta-editare));
 - Componenta de configurare: se ocupă cu gestiunea opțiunilor generale, dar și cu gestiunea nomenclatoarelor (liste de valori predefinte ce pot fi selectate atunci când se completează datele despre traseul parcurs) ([Detalii aici](#optiuni-de-configurare-si-gestiune)).
 
+[Înapoi la Cuprins](#help-root)
+
 ## Capturi de Ecran {#dg-capturi-ecran}
 
 ####Pagina de configurare
@@ -59,6 +61,8 @@ Cu alte cuvinte, vă puteți documenta (doar) aceste trei tipuri de plimbări.
 ####Articol - Harta
 ![Articol - Harta]($helpDataDirUrl$/screenshots/viewer-map.png "Articol - Harta")
 
+[Înapoi la Cuprins](#help-root)
+
 ## Cerințe Tehnice {#dg-cerinte-tehnice}
 
 Pentru a rula acest modul, aveți nevoie de următoarele:
@@ -70,6 +74,8 @@ Pentru a rula acest modul, aveți nevoie de următoarele:
 
 În principiu toate aceste cerințe sunt verificate la instalare, iar procesul se oprește dacă nu sunt îndeplinite.
 
+[Înapoi la Cuprins](#help-root)
+
 ## Licența {#dg-licenta}
 
 Acest modul este distribuit sub licența MIT ([detalii aici](https://opensource.org/licenses/MIT)). Ce înseamnă asta:
@@ -78,6 +84,8 @@ Acest modul este distribuit sub licența MIT ([detalii aici](https://opensource.
 - că îl puteți redistribui gratuit și fără vreun alt fel de obligație materială sau financiară;
 - că trebuie să includeți o copie a termenilor de licențiere acolo unde îl instalați sau de fiecare dată când îl redistribuiți;
 - că nu este oferită nici un fel de garanție de bună funcționare, de nici un fel, nici implicită, nici explicită.
+
+[Înapoi la Cuprins](#help-root)
 
 ## Mențiuni & Mulțumiri {#dg-mentiuni-multumiri}
 
@@ -99,18 +107,23 @@ Modulul WP-Trip-Summary folosește următoarele librării:
 14. [Leaflet.MagnifyingGlass](https://github.com/bbecquet/Leaflet.MagnifyingGlass) - plug-in de Leaflet care adaugă hărții funcționalitatea de lupă: mărirea unei zone individuale de pe hartă
 15. [Leaflet.fullscreen](https://github.com/Leaflet/Leaflet.fullscreen) - plug-in de Leaflet care permite afișarea hărții pe întreg ecranul
 
+[Înapoi la Cuprins](#help-root)
+
 # Componenta de Vizualizare {#componenta-vizualizare}
 
 # Componenta de Editare {#componenta-editare}
 
 # Configurare & Gestiune {#configurare-si-gestiune}
 
+- [Opțiunile Generice](#configurare-si-gestiune-opt-generice)
+- [Gestiunea Nomenclatoarelor](#configurare-si-gestiune-gst-nomenclatoare)
+
 Elementele de configurare & gestiune sunt puse la punct pentru a oferi o oarecare flexibilitate în utilizarea progrămelului. Astfel, putem vorbi despre două mari și late direcții de flexibilizare:
 
 - opțiuni generice (unități de măsură, activarea / dezactivarea unor unelte sau elemente de interfață etc.);
 - gestiunea nomenclatoarelor (adică a seturilor de opțiuni predefinite din care se completează unele câmpuri, cum ar fi Nivelul de Dificultate).
 
-## Opțiunile Generice
+## Opțiunile Generice {#configurare-si-gestiune-opt-generice}
 
 Există o pagină dedicată din care opțiunile generice pot fi modificate. Acolo se ajunge din meniul principal, accesând: Trip Summary -> Configurare.
 
@@ -190,14 +203,70 @@ Implicit, câmpul este bifat, deci scara hărții este afișată.
 Dacă debifați acest câmp, în caseta tehnică din pagina articolului nu va mai fi afișat butonul care permite descărcarea track-ului GPX.
 Implicit, câmpul este bifat, deci butonul este afișat.
 
-## Gestiunea Nomenclatoarelor
+[Înapoi la Cuprins](#help-root)
+
+## Gestiunea Nomenclatoarelor {#configurare-si-gestiune-gst-nomenclatoare}
 
 Nomenclatoarele sunt seturi de opțiuni predefinite din care se completează unele câmpuri. 
 Valorile acestor opțiuni sunt modificabile în funcție de o limbă aleasă. 
 Sunt disponibile toate limbile suportate de WordPress, plus posibilitatea de a stabili o valoare implicită.
 Valoarea implicită a unei opțiuni va fi afișată atunci când nu este găsită nici o traducere pentru acea opțiune pentru limba curentă a blogului. 
 
+Câmpurile pentru care este necesară gestiunea nomenclatoarelor sunt:
 - Nivelul de dificultate;
 - Anotimpurile recomandate;
-- Tipurile de suprafata ale drumului/potecii;
-- Tipurile recomandate de bicicleta.
+- Tipurile de suprafață ale drumului/potecii;
+- Tipurile recomandate de bicicleta;
+- Operatori feroviari;
+- Statusul liniei;
+- Electrificare;
+- Tipul liniei.
+
+#### Nivelul de Dificultate
+
+Este disponibil pentru tipurile de traseu:
+
+- Cu bicicleta;
+- Per-pedes.
+
+Reprezintă, evident, evaluarea subiectivă a fiecăruia despre cât de greu a fost traseul parcurs.
+Modulul de față oferă următoarele opțiuni predefinite:
+
+- Ușor;
+- Mediu;
+- Dificil;
+- Tortură Medievală.
+
+#### Anotimpurile Recomandate
+
+Este disponibil pentru tipurile de traseu:
+
+- Cu bicicleta;
+- Per-pedes.
+
+Reprezintă, evident, anotimpurile în care ori este fizic posibilă parcurgerea traseului în condiții decente (adică fără un efort excesiv și fără a vă supune vreunui pericol iminent).
+Modulul oferă următoarele opțiuni predefinite:
+
+- Primăvara;
+- Vara;
+- Toamna;
+- Iarna.
+
+#### Tipurile de Suprafață ale Drumului/Potecii
+
+Este disponibil pentru tipurile de traseu:
+
+- Cu bicicleta;
+- Per-pedes.
+
+Reprezintă texturile / compozițiile suprafețelor drumurilor întâlnite. Ex: iarbă, bolovani, asfalt, macadam etc.
+Modulul oferă următoarele opțiuni predefinite:
+
+- Asfalt;
+- Plăci de beton;
+- Pământ;
+- Iarbă;
+- Macadam;
+- Piatră neașezată.
+
+[Înapoi la Cuprins](#help-root)
