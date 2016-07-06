@@ -212,6 +212,8 @@ Valorile acestor opțiuni sunt modificabile în funcție de o limbă aleasă.
 Sunt disponibile toate limbile suportate de WordPress, plus posibilitatea de a stabili o valoare implicită.
 Valoarea implicită a unei opțiuni va fi afișată atunci când nu este găsită nici o traducere pentru acea opțiune pentru limba curentă a blogului. 
 
+### Câmpurile gestionate
+
 Câmpurile pentru care este necesară gestiunea nomenclatoarelor sunt:
 - Nivelul de dificultate;
 - Anotimpurile recomandate;
@@ -268,5 +270,69 @@ Modulul oferă următoarele opțiuni predefinite:
 - Iarbă;
 - Macadam;
 - Piatră neașezată.
+
+#### Tipurile recomandate de bicicletă
+
+Este disponibil pentru tipurile de traseu:
+
+- Cu bicicleta.
+
+Reprezintă tipurile de biciclete care pot fi folosite pentru a parcurge în siguranță și confort (relativ) traseul descris.
+Modulul oferă următoarele opțiuni predefinite:
+
+- MTB;
+- Cursieră;
+- Trekking;
+- Bicicletă de oraș.
+
+#### Operatori feroviari
+
+Este disponibil pentru tipurile de traseu:
+
+- Cu trenul.
+
+Reprezintă companiile care operează curse pe traseul parcurs, fie pe toată lungimea sa, fie doar parțial.
+Modulul nu oferă opțiuni predefinite.
+
+#### Statusul Liniei
+
+Este disponibil pentru tipurile de traseu:
+
+- Cu trenul.
+
+Reprezintă starea liniei pe traseul parcurs.
+Modulul oferă următoarele opțiuni predefinnite:
+
+- În exploatare (se operează curse normale);
+- Închisă (nu se mai operează curse, dar linia este în conservare sau încă există);
+- Desființată (linia nu mai există, fiind demontată total sau parțial);
+- În reabilitare (linia se afla în proces de reabilitare la parcurgerii traseului).
+
+#### Electrificare
+
+Este disponibil pentru tipurile de traseu:
+
+- Cu trenul.
+
+Reprezintă starea lucrărilor de electrificare la linie.
+Modulul oferă următoarele opțiuni predefinite:
+
+- Electrificată;
+- Neelectrificată;
+- Partial electrificată.
+
+#### Tipul liniei
+
+Este disponibil pentru tipurile de traseu:
+
+- Cu trenul.
+
+Descrie daca linia este simplă sau dublă.
+În mod evident, opțiunile predefinite sunt următoarele:
+
+- Linie simplă (un singur fir de circulație);
+- Linie dublă (două fie de circulație, câte unul pentru fiecare sens).
+
+### Operațiunile suportate
 
 [Înapoi la Cuprins](#help-root)
