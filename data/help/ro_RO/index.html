@@ -87,6 +87,40 @@ Pe parcurs, însă, am realizat că s-ar mai putea să ajute pe cineva, așa că
 </ol>
 <p><a href="#help-root">Înapoi la Cuprins</a></p>
 <h1 id="componenta-vizualizare">Componenta de Vizualizare</h1>
+<p>Componenta de vizualizare este formată din trei zone distincte:</p>
+<ul>
+<li>teaser-ul superior;</li>
+<li>teaser-ul inferior;</li>
+<li>caseta tehnică propriu-zisă.</li>
+</ul>
+<h2>Teaser-ul Superior</h2>
+<p>Superior ca poziție, desigur, nu calitativ.<br />
+Este afișat deasupra conținutului articolului, dar sub titlu si are scopul de a ghida cititorul către caseta tehnică.<br />
+Ideea de la care am pornit este că nu toată lumea poate realiza că există un astfel de instrument pe pagină și, în caz că este singurul punct de interes, să fie direcționat acolo unde dorește.</p>
+<p><a href="#help-root">Înapoi la Cuprins</a></p>
+<h2>Teaser-ul Inferior</h2>
+<p>Inferior ca poziție, desigur, nu calitativ.<br />
+Este afișat sub conținutului articolului, chiar sub caseta tehnică.<br />
+Nu este afișat mereu, ci doar când sistemul detectează posibilitatea ca utilizatorul să fi sărit peste articol și servește ca un mijloc de a ajunge rapid la început pentru a lectura frumoasa operă.</p>
+<p><a href="#help-root">Înapoi la Cuprins</a></p>
+<h2>Caseta Tehnică</h2>
+<p>Reprezintă, desigur, zona propriu-zisă unde sunt afișate, pe câte un tab distinct:</p>
+<ul>
+<li>harta cu traseul evidențiat;</li>
+<li>informațiile tehnice (distanță, diferența de nivel etc.).</li>
+</ul>
+<p>Fiecare din aceste tab-uri este afișat doar dacă există informațiile corespunzătoare.<br />
+Dacă nu există informații pentru nici-unul din tab-uri, atunci întreaga componentă este ascunsă, inclusiv teaser-ele.</p>
+<p>Harta în sine, oferă următoarele unelte:</p>
+<ul>
+<li>Mărire hartă (zoom-in) - concentrare pe o anumită zonă;</li>
+<li>Micșorare hartă (zoom-out) - vedere de ansamblu;</li>
+<li>Afișarea hărții pe întreg ecranul (full screen);</li>
+<li>Descărcarea track-ului GPX;</li>
+<li>Lupă (zoom-in pe o regiune discretă/limitată din hartă).</li>
+</ul>
+<p>O parte din aceste opțiuni pot fi dezactivate folosind componenta de gestiune, așa cum este descris mai jos.</p>
+<p><a href="#help-root">Înapoi la Cuprins</a></p>
 <h1 id="componenta-editare">Componenta de Editare</h1>
 <h1 id="configurare-si-gestiune">Configurare &amp; Gestiune</h1>
 <ul>
@@ -268,4 +302,13 @@ Modulul oferă următoarele opțiuni predefinite:</p>
 <li>Linie dublă (două fie de circulație, câte unul pentru fiecare sens).</li>
 </ul>
 <h3>Operațiunile suportate</h3>
+<p>Următoarele operațiuni sunt disponibile, fiecare dintre ele în contextul unei limbi alese:</p>
+<ul>
+<li>Adaugarea unui item nou într-un nomenclator;</li>
+<li>Ștergerea unui item existent dintr-un nomenclator;</li>
+<li>Modificarea unui item existent;</li>
+<li>Listarea itemilor existenți într-un nomenclator.</li>
+</ul>
+<p>De notat că atunci când se adaugă un item pentru limba implicită sistemul cere eticheta doar pentru aceasta.<br />
+Pe de altă parte, când se adaugă un item pentru o limbă anume (ex. Română, Engleză etc.), sistemul cere eticheta atât pentru limba implicită, cât și pentru limba selectată.</p>
 <p><a href="#help-root">Înapoi la Cuprins</a></p>

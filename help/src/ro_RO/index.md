@@ -111,6 +111,50 @@ Modulul WP-Trip-Summary folosește următoarele librării:
 
 # Componenta de Vizualizare {#componenta-vizualizare}
 
+Componenta de vizualizare este formată din trei zone distincte:
+
+- teaser-ul superior;
+- teaser-ul inferior;
+- caseta tehnică propriu-zisă.
+
+## Teaser-ul Superior
+
+Superior ca poziție, desigur, nu calitativ. 
+Este afișat deasupra conținutului articolului, dar sub titlu si are scopul de a ghida cititorul către caseta tehnică.
+Ideea de la care am pornit este că nu toată lumea poate realiza că există un astfel de instrument pe pagină și, în caz că este singurul punct de interes, să fie direcționat acolo unde dorește.
+
+[Înapoi la Cuprins](#help-root)
+
+## Teaser-ul Inferior
+
+Inferior ca poziție, desigur, nu calitativ. 
+Este afișat sub conținutului articolului, chiar sub caseta tehnică.
+Nu este afișat mereu, ci doar când sistemul detectează posibilitatea ca utilizatorul să fi sărit peste articol și servește ca un mijloc de a ajunge rapid la început pentru a lectura frumoasa operă.
+
+[Înapoi la Cuprins](#help-root)
+
+## Caseta Tehnică
+
+Reprezintă, desigur, zona propriu-zisă unde sunt afișate, pe câte un tab distinct:
+
+- harta cu traseul evidențiat;
+- informațiile tehnice (distanță, diferența de nivel etc.).
+
+Fiecare din aceste tab-uri este afișat doar dacă există informațiile corespunzătoare. 
+Dacă nu există informații pentru nici-unul din tab-uri, atunci întreaga componentă este ascunsă, inclusiv teaser-ele.
+
+Harta în sine, oferă următoarele unelte:
+
+- Mărire hartă (zoom-in) - concentrare pe o anumită zonă;
+- Micșorare hartă (zoom-out) - vedere de ansamblu;
+- Afișarea hărții pe întreg ecranul (full screen);
+- Descărcarea track-ului GPX;
+- Lupă (zoom-in pe o regiune discretă/limitată din hartă).
+
+O parte din aceste opțiuni pot fi dezactivate folosind componenta de gestiune, așa cum este descris mai jos.
+
+[Înapoi la Cuprins](#help-root)
+
 # Componenta de Editare {#componenta-editare}
 
 # Configurare & Gestiune {#configurare-si-gestiune}
@@ -334,5 +378,15 @@ Descrie daca linia este simplă sau dublă.
 - Linie dublă (două fie de circulație, câte unul pentru fiecare sens).
 
 ### Operațiunile suportate
+
+Următoarele operațiuni sunt disponibile, fiecare dintre ele în contextul unei limbi alese:
+
+- Adaugarea unui item nou într-un nomenclator;
+- Ștergerea unui item existent dintr-un nomenclator;
+- Modificarea unui item existent;
+- Listarea itemilor existenți într-un nomenclator.
+
+De notat că atunci când se adaugă un item pentru limba implicită sistemul cere eticheta doar pentru aceasta. 
+Pe de altă parte, când se adaugă un item pentru o limbă anume (ex. Română, Engleză etc.), sistemul cere eticheta atât pentru limba implicită, cât și pentru limba selectată.
 
 [Înapoi la Cuprins](#help-root)
