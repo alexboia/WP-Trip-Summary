@@ -12,7 +12,7 @@
 ### Scopul Proiectului {#dg-scopul-proiectului}
 
 Proiectul a început dintr-un motiv cât se poate de egoist: îmi doream să păstrez un jurnal structurat despre excursiile pe care le fac.
-Pe parcurs, însă, am realizat că s-ar mai putea să ajute pe cineva, așa că am decis să îl public în regim open-source, cu o licență cât se poate de liberală.
+Pe parcurs, însă, am realizat că s-ar mai putea să ajute pe cineva, așa că am decis să îl public în regim open-source, cu o licență cât se poate de nerestrictivă.
 În mare, modulul gestionează următoarele rubrici:
 
 - sumarul tehnic - prezintă niște detalii prozaice precum: lungime, diferența totală de nivel, tip de teren etc.;
@@ -157,6 +157,46 @@ O parte din aceste opțiuni pot fi dezactivate folosind componenta de gestiune, 
 
 # Componenta de Editare {#componenta-editare}
 
+Componenta de editare permite modificarea sumarului tehnic al turei și atașarea track-ului GPS.
+Astfel, asemeni componentei de vizualizare, este organizată în două tab-uri, câte unul pentru fiecare categorie de date:
+
+- formularul de modificare a informațiilor tehnice;
+- zona de încărcare și previzualizare a track-ului GPS.
+
+## Formularul de Modificare a Informațiilor Tehnice
+
+Tab-ul corespunzător este denumit simplu, ”Informații”.
+Dacă nu a fost completat, este populat cu trei butoane, câte unul pentru fiecare tip de tură suportat:
+
+- "Cu bicicleta" - permite completarea setului de informații specifice turelor cu bicicleta;
+- "Per-pedes" - permite completare setului de informații specifice drumețiilor per-pedes (trekking/hiking);
+- "Cu trenul" - permite completarea setului de informații specifice turelor cu trenul.
+
+Odată acționat oricare din aceste butoane, va fi afișat formularul propriu-zis, conform cu tipul de tură ales.
+
+De menționat că, indiferent de formular, dacă vreunul din câmpurile care necesită existența unor valori în nomenclatorul său nu are nicio astfel de valoare definită, atunci va fi afișat un link către pagina de gestiune a nomenclatorului respectiv.
+
+În afară de formular, în partea de jos a ecranului pot fi găsite și două butoane de control, vizibile după ce a fost ales un tip de traseu:
+
+- "Salvează" - trebuie acționat pentru persistarea modificărilor;
+- "Șterge Info" - trebuie acționat atunci când se dorește ștergerea întregului set de informații tehnice.
+
+[Înapoi la Cuprins](#help-root)
+
+## Formularul de Încărcare și Previzualizare a Track-ului GPS
+
+Tab-ul corespunzător este denumit simplu, "Hartă & Track GPS".
+Dacă nu a fost ales încă nici un track, este populat cu un singur buton, care permite răsfoirea calculatorului personal întru alegerea fișierului GPX dorit spre atașare.
+
+Odată track-ul încărcat, harta va fi centrată, iar zoom-ul său ajustat astfel încât să fie vizibil întregul circuit. Sunt suportate și fișierele GPX care conține segmente deconectate.
+
+În afară de formular, în partea de jos a ecranului pot fi găsite și două butoane de control:
+
+- "Salvează" - trebuie acționat pentru persistarea modificărilor (vizibil doar dacă a fost ales un tip de traseu);
+- "Șterge track" - trebuie acționat atunci când se dorește ștergerea întregului track (vizibil, desigur, doar după ce a fost încărcat un track).
+
+[Înapoi la Cuprins](#help-root)
+
 # Configurare & Gestiune {#configurare-si-gestiune}
 
 - [Opțiunile Generice](#configurare-si-gestiune-opt-generice)
@@ -256,7 +296,7 @@ Valorile acestor opțiuni sunt modificabile în funcție de o limbă aleasă.
 Sunt disponibile toate limbile suportate de WordPress, plus posibilitatea de a stabili o valoare implicită.
 Valoarea implicită a unei opțiuni va fi afișată atunci când nu este găsită nici o traducere pentru acea opțiune pentru limba curentă a blogului. 
 
-### Câmpurile gestionate
+### Câmpurile Gestionate
 
 Câmpurile pentru care este necesară gestiunea nomenclatoarelor sunt:
 - Nivelul de dificultate;
@@ -315,7 +355,7 @@ Modulul oferă următoarele opțiuni predefinite:
 - Macadam;
 - Piatră neașezată.
 
-#### Tipurile recomandate de bicicletă
+#### Tipurile Recomandate de Bicicletă
 
 Este disponibil pentru tipurile de traseu:
 
@@ -329,7 +369,7 @@ Modulul oferă următoarele opțiuni predefinite:
 - Trekking;
 - Bicicletă de oraș.
 
-#### Operatori feroviari
+#### Operatori Feroviari
 
 Este disponibil pentru tipurile de traseu:
 
@@ -365,7 +405,7 @@ Modulul oferă următoarele opțiuni predefinite:
 - Neelectrificată;
 - Partial electrificată.
 
-#### Tipul liniei
+#### Tipul Liniei
 
 Este disponibil pentru tipurile de traseu:
 
@@ -377,7 +417,7 @@ Descrie daca linia este simplă sau dublă.
 - Linie simplă (un singur fir de circulație);
 - Linie dublă (două fie de circulație, câte unul pentru fiecare sens).
 
-### Operațiunile suportate
+### Operațiunile Disponibile
 
 Următoarele operațiuni sunt disponibile, fiecare dintre ele în contextul unei limbi alese:
 
