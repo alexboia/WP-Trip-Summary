@@ -18,7 +18,7 @@ Pe parcurs, însă, am realizat că s-ar mai putea să ajute pe cineva, așa că
 - sumarul tehnic - prezintă niște detalii prozaice precum: lungime, diferența totală de nivel, tip de teren etc.;
 - track-ul GPS al traseului, afișat simplu pe o hartă, cu două puncte marcate: punctul de pornire (cu verde) și punctul de sosire (cu roșu).
 
-### Tipuri de traseu
+### Tipuri de traseu {#dg-tipuri-traseu}
 
 În sumarul tehnic am inclus următoarele tipuri de informații:
 
@@ -223,11 +223,11 @@ Odată debifat câmpul și salvate modificările, teaser-ul din pagina articolul
 
 #### Textul teaser-ului din partea de sus
 
-Textul componentei teaser-ului care e afișată deasupra articolului. Există deja o valoare predefinită.
+Textul teaser-ului afișat deasupra articolului. Există deja o valoare predefinită.
 
 #### Textul teaser-ului din partea de jos
 
-Textul componentei teaser-ului care afișată imediat sub caseta de sumar. Există deja o valoare predefinită.
+Textul teaser-ului afișat imediat sub caseta de sumar. Există deja o valoare predefinită.
 
 #### Șablonul URL-ului sursei de tile-uri de hartă
 
@@ -299,6 +299,7 @@ Valoarea implicită a unei opțiuni va fi afișată atunci când nu este găsit�
 ### Câmpurile Gestionate
 
 Câmpurile pentru care este necesară gestiunea nomenclatoarelor sunt:
+
 - Nivelul de dificultate;
 - Anotimpurile recomandate;
 - Tipurile de suprafață ale drumului/potecii;
@@ -316,7 +317,7 @@ Este disponibil pentru tipurile de traseu:
 - Per-pedes.
 
 Reprezintă, evident, evaluarea subiectivă a fiecăruia despre cât de greu a fost traseul parcurs.
-Modulul de față oferă următoarele opțiuni predefinite:
+Modulul de față oferă următoarele opțiuni predefinite (traduse in Română și Engleză):
 
 - Ușor;
 - Mediu;
@@ -331,7 +332,7 @@ Este disponibil pentru tipurile de traseu:
 - Per-pedes.
 
 Reprezintă, evident, anotimpurile în care ori este fizic posibilă parcurgerea traseului în condiții decente (adică fără un efort excesiv și fără a vă supune vreunui pericol iminent).
-Modulul oferă următoarele opțiuni predefinite:
+Modulul oferă următoarele opțiuni predefinite (traduse in Română și Engleză):
 
 - Primăvara;
 - Vara;
@@ -346,7 +347,7 @@ Este disponibil pentru tipurile de traseu:
 - Per-pedes.
 
 Reprezintă texturile / compozițiile suprafețelor drumurilor întâlnite. Ex: iarbă, bolovani, asfalt, macadam etc.
-Modulul oferă următoarele opțiuni predefinite:
+Modulul oferă următoarele opțiuni predefinite (traduse in Română și Engleză):
 
 - Asfalt;
 - Plăci de beton;
@@ -362,7 +363,7 @@ Este disponibil pentru tipurile de traseu:
 - Cu bicicleta.
 
 Reprezintă tipurile de biciclete care pot fi folosite pentru a parcurge în siguranță și confort (relativ) traseul descris.
-Modulul oferă următoarele opțiuni predefinite:
+Modulul oferă următoarele opțiuni predefinite (traduse in Română și Engleză):
 
 - MTB;
 - Cursieră;
@@ -371,7 +372,7 @@ Modulul oferă următoarele opțiuni predefinite:
 
 #### Operatori Feroviari
 
-Este disponibil pentru tipurile de traseu:
+Este disponibil pentru tipurile de traseu (traduse in Română și Engleză):
 
 - Cu trenul.
 
@@ -385,7 +386,7 @@ Este disponibil pentru tipurile de traseu:
 - Cu trenul.
 
 Reprezintă starea liniei pe traseul parcurs.
-Modulul oferă următoarele opțiuni predefinnite:
+Modulul oferă următoarele opțiuni predefinite (traduse in Română și Engleză):
 
 - În exploatare (se operează curse normale);
 - Închisă (nu se mai operează curse, dar linia este în conservare sau încă există);
@@ -399,7 +400,7 @@ Este disponibil pentru tipurile de traseu:
 - Cu trenul.
 
 Reprezintă starea lucrărilor de electrificare la linie.
-Modulul oferă următoarele opțiuni predefinite:
+Modulul oferă următoarele opțiuni predefinite (traduse in Română și Engleză):
 
 - Electrificată;
 - Neelectrificată;
@@ -412,7 +413,7 @@ Este disponibil pentru tipurile de traseu:
 - Cu trenul.
 
 Descrie daca linia este simplă sau dublă.
-În mod evident, opțiunile predefinite sunt următoarele:
+Modulul oferă următoarele opțiuni predefinite (traduse in Română și Engleză):
 
 - Linie simplă (un singur fir de circulație);
 - Linie dublă (două fie de circulație, câte unul pentru fiecare sens).
