@@ -317,7 +317,7 @@ Este disponibil pentru tipurile de traseu:
 - Per-pedes.
 
 Reprezintă, evident, evaluarea subiectivă a fiecăruia despre cât de greu a fost traseul parcurs.
-Modulul de față oferă următoarele opțiuni predefinite (traduse in Română și Engleză):
+Modulul de față oferă următoarele opțiuni predefinite (traduse în Română și Engleză):
 
 - Ușor;
 - Mediu;
@@ -331,7 +331,7 @@ Este disponibil pentru tipurile de traseu:
 - Cu bicicleta;
 - Per-pedes.
 
-Reprezintă, evident, anotimpurile în care ori este fizic posibilă parcurgerea traseului în condiții decente (adică fără un efort excesiv și fără a vă supune vreunui pericol iminent).
+Reprezintă, evident, anotimpurile în care este fizic posibilă parcurgerea traseului în condiții decente (adică fără un efort excesiv și fără a vă supune vreunui pericol iminent).
 Modulul oferă următoarele opțiuni predefinite (traduse in Română și Engleză):
 
 - Primăvara;
@@ -363,7 +363,7 @@ Este disponibil pentru tipurile de traseu:
 - Cu bicicleta.
 
 Reprezintă tipurile de biciclete care pot fi folosite pentru a parcurge în siguranță și confort (relativ) traseul descris.
-Modulul oferă următoarele opțiuni predefinite (traduse in Română și Engleză):
+Modulul oferă următoarele opțiuni predefinite (traduse în Română și Engleză):
 
 - MTB;
 - Cursieră;
@@ -391,7 +391,7 @@ Modulul oferă următoarele opțiuni predefinite (traduse in Română și Englez
 - În exploatare (se operează curse normale);
 - Închisă (nu se mai operează curse, dar linia este în conservare sau încă există);
 - Desființată (linia nu mai există, fiind demontată total sau parțial);
-- În reabilitare (linia se afla în proces de reabilitare la parcurgerii traseului).
+- În reabilitare (linia se afla în proces de reabilitare; programul de circulație poate fi limitat/modificat).
 
 #### Electrificare
 

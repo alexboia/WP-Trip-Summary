@@ -34,7 +34,7 @@ Depending on the various functions performed by various plug-in components, we c
 
 - The Viewer Component: the box displayed just below the post; this box displayed the kind of information I just mentioned above ([More details here](#viewer-component));
 - The Editor Component: it is attached to the main post editing form and allows adding/modifying/deleting of trip related data ([More details here](#editor-component));
-- The Configuration Component: handles plug-in option management, but also the look-up data management (various lists of values from which one can be selected when filling in various fields in the trip data editor)([More details here](#configuration-component)).
+- The Configuration Component: handles plug-in option management, but also the look-up data management (various lists of values from which one can be selected when filling various selector fields in the trip data editor)([More details here](#configuration-component)).
 
 [Back to the Table of Contents](#help-root)
 
@@ -221,7 +221,7 @@ The text shown in the bottom teaser (right below the technical summary box).
 
 The discussion here is a bit longer.
 
-First of all, one has to keep in mind that the map is not displayed only one image, but using multiple images. These images - called tiles - when put together in a specific order, form the image of the map itself.
+First of all, one has to keep in mind that the map is not displayed as only one physical image, but using multiple images. These images - called tiles - when put together in a specific order, form the image of the map itself.
 
 Also, there are multiple set of tiles, one for each zoom level and, within each set, each tile is located using two coordinates - let us name them x & y - sort of like squares on a chess board.
 
@@ -254,9 +254,9 @@ The attribution is placed in the lower right corner of the map area and this fie
 Depending on where you chose to display the map from, the attribution may or may not be mandatory. It is, at a minimum, a nice thing to have, so I encourage you to do it.
 The attribution is placed in the lower right corner of the map area and this field allows you to add a text that describes the provider (a copyright notice of sorts).
 
-#### Enable Map Fullscreen Mode?
+#### Enable Map Full-screen Mode?
 
-Once the field is unchecked and the changes are saved, the fullscreen button will not be displayed in the Viewer Component anymore.
+Once the field is unchecked and the changes are saved, the full-screen button will not be displayed in the Viewer Component anymore.
 By default, this field is checked, so the button is displayed.
 
 #### Show Magnifying Glass?
@@ -397,7 +397,7 @@ This field is available for the following trip types:
 
 - train rides.
 
-It allows specifying the line status (for instance whether the line is closed, operating normally, undergoing reapairs etc.).
+It allows specifying the line status (for instance whether the line is closed, operating normally, undergoing repairs etc.).
 The plug-in provides the following pre-defined options (with English and Romanian translations):
 
 - In production;
