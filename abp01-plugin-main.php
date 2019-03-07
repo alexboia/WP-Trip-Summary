@@ -125,8 +125,8 @@ function abp01_append_error($message, $error) {
 	if (WP_DEBUG) {
 		if ($error instanceof Exception) {
 			$message .= sprintf(': %s (%s) in file %s line %d', $error->getMessage(), $error->getCode(), $error->getFile(), $error->getLine());
-		} else if (!empty($e)) {
-			$message .= ': ' . $e;
+		} else if (!empty($error)) {
+			$message .= ': ' . $error;
 		}
 	}
 	return $message;

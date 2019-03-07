@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014-2016, Alexandru Boia
+ * Copyright (c) 2014-2017, Alexandru Boia
  * All rights reserved.
 
  * Redistribution and use in source and binary forms, with or without
@@ -31,37 +31,83 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Installer {
+	/**
+	 * @var Integer Error code returned when an incompatible PHP version is detected upon installation
+	 */
     const INCOMPATIBLE_PHP_VERSION = 1;
 
+	/**
+	 * @var Integer Error code returned when an incompatible WordPress version is detected upon installation
+	 */
     const INCOMPATIBLE_WP_VERSION = 2;
 
+	/**
+	 * @var Integer Error code returned when LIBXML is not found
+	 */
     const SUPPORT_LIBXML_NOT_FOUND = 3;
 
+	/**
+	 * @var Integer Error code returned when MySQL Spatial extension is not found
+	 */
     const SUPPORT_MYSQL_SPATIAL_NOT_FOUND = 4;
 
+	/**
+	 * @var Integer Error code returned when MySqli extension is not found
+	 */
     const SUPPORT_MYSQLI_NOT_FOUND = 5;
 
+	/**
+	 * @var String WP options key for current plug-in version
+	 */
     const OPT_VERSION = 'abp01.option.version';
 
+	/**
+	 * @var Abp01_Env The current instance of the plug-in environment
+	 */
     private $_env;
 
+	/**
+	 * @var Object The last occured error
+	 */
     private $_lastError = null;
 
+	/**
+	 * @var Boolean Whether or not to install lookup data
+	 */
 	private $_installLookupData;
 
+	/**
+	 * Creates a new installer instance
+	 * @param Boolean $installLookupData Whether or not to install lookup data
+	 */
     public function __construct($installLookupData = true) {
         $this->_env = Abp01_Env::getInstance();
 		$this->_installLookupData = $installLookupData;
     }
 
+	/**
+	 * Retrieves the current plug-in version (not the currently installed one, 
+	 *	but the one in the package currently being run)
+	 * @return String The current plug-in version
+	 */
     private function _getVersion() {
         return $this->_env->getVersion();
     }
 
+	/**
+	 * Checks whether or not an update is needed
+	 * @param String $version The version to be installed
+	 * @param String $installedVersion The version to be installed
+	 */
     private function _isUpdatedNeeded($version, $installedVersion) {
         return $version != $installedVersion;
     }
 
+	/**
+	 * Retrieve the currently installed version (which may be different 
+	 *	than the one in the package currently being run)
+	 * @return String The version
+	 */
     private function _getInstalledVersion() {
         $version = null;
         if (function_exists('get_option')) {
@@ -70,6 +116,12 @@ class Abp01_Installer {
         return $version;
     }
 
+	/**
+	 * Carry out the update operation
+	 * @param String $version The version to be installed
+	 * @param String $installedVersion The version currently being installed
+	 * @return Boolean Whether the operation succeeded or not
+	 */
     private function _update($version, $installedVersion) {
 		$this->_reset();
 		$result = true;
@@ -82,6 +134,10 @@ class Abp01_Installer {
         return $result;
     }
 
+	/**
+	 * Update the version 0.2 Beta
+	 * @return Boolean Whether the operation succeeded or not
+	 */
 	private function _updateTo02Beta() {
 		try {
 			if ($this->_createTable($this->_getRouteDetailsLookupTableDefinition())) {
@@ -529,6 +585,12 @@ class Abp01_Installer {
         return empty($lastError);
     }
 
+	/**
+	 * Fetch the definition of the table which stores track data.
+	 * It needs to be within a function because the table name is dynamically computed, 
+	 *	accounting for the WP prefix
+	 * @return String The DDL SQL query
+	 */
     private function _getRouteTrackTableDefinition() {
         return "CREATE TABLE IF NOT EXISTS `" . $this->_getRouteTrackTableName() . "` (
             `post_ID` BIGINT(20) UNSIGNED NOT NULL,
@@ -546,6 +608,12 @@ class Abp01_Installer {
         )";
     }
 
+	/**
+	 * Fetch the definition of the route details table.
+	 * It needs to be within a function because the table name is dynamically computed, 
+	 *	accounting for the WP prefix
+	 * @return String The DDL SQL query
+	 */
     private function _getRouteDetailsTableDefinition() {
         return "CREATE TABLE IF NOT EXISTS `" . $this->_getRouteDetailsTableName() . "` (
             `post_ID` BIGINT(10) UNSIGNED NOT NULL,
@@ -558,6 +626,12 @@ class Abp01_Installer {
         )";
     }
 
+	/**
+	 * Fetch the definition of the table which stores per-language lookup data definitions.
+	 * It needs to be within a function because the table name is dynamically computed, 
+	 *	accounting for the WP prefix
+	 * @return String The DDL SQL query
+	 */
     private function _getLookupLangTableDefinition() {
         return "CREATE TABLE IF NOT EXISTS `" . $this->_getLookupLangTableName() . "` (
             `ID` INT(10) UNSIGNED NOT NULL,
@@ -567,6 +641,12 @@ class Abp01_Installer {
         )";
     }
 
+	/**
+	 * Fetch the definition of the table which stores the base lookup data definitions.
+	 * It needs to be within a function because the table name is dynamically computed, 
+	 *	accounting for the WP prefix
+	 * @return String The DDL SQL query
+	 */
     private function _getLookupTableDefinition() {
         return "CREATE TABLE IF NOT EXISTS `" . $this->_getLookupTableName() . "` (
             `ID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -576,6 +656,12 @@ class Abp01_Installer {
         )";
     }
 
+	/**
+	 * Fetch the definition of the table which stores the correspondence between posts and lookup data.
+	 * It needs to be within a function because the table name is dynamically computed, 
+	 *	accounting for the WP prefix
+	 * @return String The DDL SQL query
+	 */
 	private function _getRouteDetailsLookupTableDefinition() {
 		return "CREATE TABLE IF NOT EXISTS `" . $this->_getRouteDetailsLookupTableName() . "` (
 			`post_ID` BIGINT(10) UNSIGNED NOT NULL,
@@ -584,26 +670,41 @@ class Abp01_Installer {
 		)";
 	}
 
+	/**
+	 * Remove the table which stores track data.
+	 */
     private function _uninstallRouteTrackTable() {
         $db = $this->_env->getDb();
         return $db != null ? $db->rawQuery('DROP TABLE IF EXISTS `' . $this->_getRouteTrackTableName() . '`', null, false) : false;
     }
 
+	/**
+	 * Remove the table which stores track details.
+	 */
     private function _uninstallRouteDetailsTable() {
         $db = $this->_env->getDb();
         return $db != null ? $db->rawQuery('DROP TABLE IF EXISTS `' . $this->_getRouteDetailsTableName() . '`', null, false) : false;
     }
 
+	/**
+	 * Remove the table which stores the base lookup data definitions.
+	 */
     private function _uninstallLookupTable() {
         $db = $this->_env->getDb();
         return $db != null ? $db->rawQuery('DROP TABLE IF EXISTS `' . $this->_getLookupTableName() . '`', null, false) : false;
     }
 
+	/**
+	 * Remove the table which stores per-language lookup data definitions.
+	 */
     private function _uninstallLookupLangTable() {
         $db = $this->_env->getDb();
         return $db != null ? $db->rawQuery('DROP TABLE IF EXISTS `' . $this->_getLookupLangTableName() . '`', null, false) : false;
     }
 
+	/**
+	 * Remove the table which stores the correspondence between posts and lookup data.
+	 */
 	private function _uninstallRouteDetailsLookupTable() {
 		$db = $this->_env->getDb();
 		return $db != null ? $db->rawQuery('DROP TABLE IF EXISTS `' . $this->_getRouteDetailsLookupTableName() . '`', null, false) : false;
