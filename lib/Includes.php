@@ -101,6 +101,22 @@ class Abp01_Includes {
 
 	const STYLE_SYSTEM_THICKBOX = 'thickbox';
 
+	const STYLE_FRONTEND_MAIN_TWENTY_TEN = 'abp01-frontend-main-twentyten-css';
+
+	const STYLE_FRONTEND_MAIN_TWENTY_ELEVEN = 'abp01-frontend-main-twentyeleven-css';
+
+	const STYLE_FRONTEND_MAIN_TWENTY_THIRTEEN = 'abp01-frontend-main-twentythirteen-css';
+
+	const STYLE_FRONTEND_MAIN_TWENTY_FOURTEEN = 'abp01-frontend-main-twentyfourteen-css';
+
+	const STYLE_FRONTEND_MAIN_TWENTY_FIFTEEN = 'abp01-frontend-main-twentyfifteen-css';
+
+	const STYLE_FRONTEND_MAIN_TWENTY_SIXTEEN = 'abp01-frontend-main-twentysixteen-css';
+
+	const STYLE_FRONTEND_MAIN_TWENTY_SEVENTEEN = 'abp01-frontend-main-twentyseventeen-css';
+
+	const STYLE_FRONTEND_MAIN_TWENTY_NINETEEN = 'abp01-frontend-main-twentynineteen-css';
+
 	private static $_refPluginsPath;
 
 	private static $_scriptsInFooter = false;
@@ -221,6 +237,38 @@ class Abp01_Includes {
 			'path' => 'media/css/abp01-frontend-main.css', 
 			'version' => '0.2'
 		), 
+		self::STYLE_FRONTEND_MAIN_TWENTY_TEN => array(
+			'path' => 'media/css/twentyten/theme.css', 
+			'version' => '0.1'
+		),
+		self::STYLE_FRONTEND_MAIN_TWENTY_ELEVEN => array(
+			'path' => 'media/css/twentyeleven/theme.css', 
+			'version' => '0.1'
+		), 
+		self::STYLE_FRONTEND_MAIN_TWENTY_THIRTEEN => array(
+			'path' => 'media/css/twentythirteen/theme.css', 
+			'version' => '0.1'
+		),
+		self::STYLE_FRONTEND_MAIN_TWENTY_FIFTEEN => array(
+			'path' => 'media/css/twentyfifteen/theme.css', 
+			'version' => '0.1'
+		), 
+		self::STYLE_FRONTEND_MAIN_TWENTY_FOURTEEN => array(
+			'path' => 'media/css/twentyfourteen/theme.css', 
+			'version' => '0.1'
+		),
+		self::STYLE_FRONTEND_MAIN_TWENTY_SIXTEEN => array(
+			'path' => 'media/css/twentysixteen/theme.css', 
+			'version' => '0.1'
+		),
+		self::STYLE_FRONTEND_MAIN_TWENTY_SEVENTEEN => array(
+			'path' => 'media/css/twentyseventeen/theme.css', 
+			'version' => '0.1'
+		),
+		self::STYLE_FRONTEND_MAIN_TWENTY_NINETEEN => array(
+			'path' => 'media/css/twentynineteen/theme.css', 
+			'version' => '0.1'
+		),
 		self::STYLE_JQUERY_TOASTR => array(
 			'path' => 'media/js/3rdParty/toastr/toastr.css', 
 			'version' => '2.0.3'
@@ -235,6 +283,17 @@ class Abp01_Includes {
 		)
 	);
 
+	private static $_styleSlugsForThemeIds = array(
+		'twentyten' => self::STYLE_FRONTEND_MAIN_TWENTY_TEN,
+		'twentyeleven' => self::STYLE_FRONTEND_MAIN_TWENTY_ELEVEN,
+		'twentyfifteen' => self::STYLE_FRONTEND_MAIN_TWENTY_FIFTEEN,
+		'twentyfourteen' => self::STYLE_FRONTEND_MAIN_TWENTY_FOURTEEN,
+		'twentythirteen' => self::STYLE_FRONTEND_MAIN_TWENTY_THIRTEEN,
+		'twentysixteen' => self::STYLE_FRONTEND_MAIN_TWENTY_SIXTEEN,
+		'twentyseventeen' => self::STYLE_FRONTEND_MAIN_TWENTY_SEVENTEEN,
+		'twentynineteen' => self::STYLE_FRONTEND_MAIN_TWENTY_NINETEEN
+	);
+	
 	public static function setRefPluginsPath($refPluginsPath) {
 		self::$_refPluginsPath = $refPluginsPath;
 	}
@@ -400,6 +459,14 @@ class Abp01_Includes {
 
 	public static function includeStyleFrontendMain() {
 		self::_enqueueStyle(self::STYLE_FRONTEND_MAIN);
+	}
+
+	public static function includeStyleFrontendMainThemeSpecificIfPresent() {
+		$themeId = Abp01_Env::getInstance()->getCurrentThemeId();
+		if (isset(self::$_styleSlugsForThemeIds[$themeId])) {
+			$styleSlug = self::$_styleSlugsForThemeIds[$themeId];
+			self::_enqueueStyle($styleSlug);
+		}
 	}
 
 	public static function includeStyleJQueryToastr() {

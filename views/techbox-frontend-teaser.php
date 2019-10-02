@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014-2016, Alexandru Boia
+ * Copyright (c) 2014-2019, Alexandru Boia
  * All rights reserved.
 
  * Redistribution and use in source and binary forms, with or without

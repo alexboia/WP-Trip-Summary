@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014-2016, Alexandru Boia
+ * Copyright (c) 2014-2019, Alexandru Boia
  * All rights reserved.
 
  * Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,7 @@
 
 <?php if ($data && ($data->info->exists || $data->track->exists)): ?>
     <div id="abp01-techbox-frontend" class="abp01-techbox-frontend">
-        <div id="abp01-techbox-title" class="abp0-techbox-title">
+        <div id="abp01-techbox-title" class="abp01-techbox-title">
             <span class="abp01-techbox-icon"></span><?php echo __('Trip summary', 'abp01-trip-summary'); ?>
         </div>
         <div id="abp01-techbox-wrapper" class="abp01-techbox-wrapper">

@@ -1,4 +1,3 @@
-<?php
 /**
  * Copyright (c) 2014-2019, Alexandru Boia
  * All rights reserved.
@@ -25,9 +24,63 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-    defined('ABP01_LOADED') or die;
-?>
 
-<a href="javascript:void(0)" data-action="abp01-openTechBox" class="button">
-    <span class="abp01-button-icon abp01-open-button-icon"></span><?php echo __('Edit trip summary', 'abp01-trip-summary'); ?>
-</a>
+.abp01-techbox-frontend {
+    background-color: #f7f7f7;
+}
+
+.abp01-techbox-title {
+    font-weight: 600;
+    color: #333 !important;
+    font-size: 14px;
+}
+
+.abp01-techbox-icon:before {
+    color: #333 !important;
+}
+
+.abp01-tab a,
+.abp01-tab a:hover {
+    color: #333 !important;
+    font-size: 14px;
+}
+
+.abp01-info-label {
+    font-size: 14px;
+    width: 40% !important;
+    min-width: 230px !important;
+}
+
+.abp01-info-value {
+    font-size: 14px;
+}
+
+.abp01-map-retry-message {
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.abp01-map-retry,
+.abp01-map-retry:hover,
+.abp01-map-retry:visited,
+.abp01-map-retry:active {
+    font-size: 14px;
+    border: none !important;
+    text-decoration:  none !important;
+    box-shadow: none !important;
+}
+
+.leaflet-control-attribution a,
+.leaflet-control-attribution a:hover,
+.leaflet-control-zoom a,
+.leaflet-control-zoom a:hover,
+.leaflet-control-fullscreen a,
+.leaflet-control-fullscreen a:hover, 
+.abp01-leaflet-icon-button-link,
+.abp01-leaflet-icon-button-link:hover,
+.leaflet-control-magnifying-glass,
+.leaflet-control-magnifying-glass:hover {
+    border: none !important;
+    box-shadow: none !important;
+    text-decoration:  none !important;
+}

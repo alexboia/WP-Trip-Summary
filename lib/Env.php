@@ -259,6 +259,10 @@ class Abp01_Env {
         }
         return $this->_db;
     }
+	
+	public function getCurrentThemeId() {
+		return get_stylesheet();
+	}
 
     public function getCurrentThemeDir() {
         return $this->_theme != null ? $this->_theme->get_stylesheet_directory() : null;

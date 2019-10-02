@@ -1,4 +1,3 @@
-<?php
 /**
  * Copyright (c) 2014-2019, Alexandru Boia
  * All rights reserved.
@@ -25,9 +24,67 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-    defined('ABP01_LOADED') or die;
-?>
 
-<a href="javascript:void(0)" data-action="abp01-openTechBox" class="button">
-    <span class="abp01-button-icon abp01-open-button-icon"></span><?php echo __('Edit trip summary', 'abp01-trip-summary'); ?>
-</a>
+.abp01-techbox-frontend,
+.abp01-techbox-teaser a {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+}
+
+.abp01-techbox-teaser a,
+.abp01-techbox-content-skip-teaser a {
+    font-size: 14px;
+}
+
+ .abp01-techbox-title {
+    font-weight: 600;
+    color: #111 !important;
+    font-size: 16px;
+}
+
+.abp01-techbox-icon:before {
+    color: #111 !important;
+}
+
+.abp01-tab a,
+.abp01-tab a:hover {
+    color: #0073aa !important;
+    font-size: 16px;
+}
+
+.abp01-techbox-info ul li {
+    line-height: normal !important;
+}
+
+.abp01-info-label {
+    font-size: 15px;
+    width: 40% !important;
+    min-width: 250px !important;
+}
+
+.abp01-info-value {
+    font-size: 15px;
+}
+
+.abp01-map-retry-message {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.abp01-map-retry,
+.abp01-map-retry:hover {
+    font-size: 14px;
+    border: none !important;
+    text-decoration:  none !important;
+    box-shadow: none !important;
+}
+
+.leaflet-control-zoom a,
+.leaflet-control-zoom a:hover,
+.leaflet-control-fullscreen a,
+.leaflet-control-fullscreen a:hover, 
+.abp01-leaflet-icon-button-link,
+.abp01-leaflet-icon-button-link:hover,
+.leaflet-control-magnifying-glass,
+.leaflet-control-magnifying-glass:hover {
+    box-shadow: none !important;
+}

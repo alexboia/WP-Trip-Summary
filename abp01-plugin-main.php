@@ -11,7 +11,7 @@
  */
 
 /**
- * Copyright (c) 2014-2017, Alexandru Boia
+ * Copyright (c) 2014-2019, Alexandru Boia
  * All rights reserved.
 
  * Redistribution and use in source and binary forms, with or without
@@ -900,7 +900,7 @@ function abp01_add_frontend_styles() {
 		Abp01_Includes::includeStyleLeaflet();
 		Abp01_Includes::includeStyleLeafletMagnifyingGlass();
 		Abp01_Includes::includeStyleLeafletFullScreen();
-
+		
 		$locations = abp01_get_frontend_template_locations();
 		$cssRelativePath = 'media/css/abp01-frontend-main.css';
 		$themeCssFile = $locations->theme . '/' . $cssRelativePath;
@@ -912,6 +912,7 @@ function abp01_add_frontend_styles() {
 		} else {
 			//otherwise, include the default css file
 			Abp01_Includes::includeStyleFrontendMain();
+			Abp01_Includes::includeStyleFrontendMainThemeSpecificIfPresent();
 		}
 	}
 }
