@@ -92,4 +92,4 @@ Thus, I developed a module to do just that: upload a GPX track, parse it and dis
 15. [Leaflet.fullscreen](https://github.com/Leaflet/Leaflet.fullscreen) - Leaflet plug-in that allows the map to be displayed in full-screen mode
 
 ## Licence
-The source code is published under the terms of the [MIT](http://opensource.org/licenses/MIT) licence.
+The source code is published under the terms of the [BSD New License](https://opensource.org/licenses/BSD-3-Clause) licence.
