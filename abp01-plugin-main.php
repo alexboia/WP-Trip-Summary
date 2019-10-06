@@ -297,6 +297,15 @@ function abp01_get_http_method() {
 }
 
 /**
+ * Checkes whether an options saving operations is currently underway
+ * @return bool
+ * */
+function abp01_is_saving_options() {
+	$currentPage = Abp01_Env::getInstance()->getCurrentPage();
+	return $currentPage == 'options.php' && abp01_get_http_method() == 'post';
+}
+
+/**
  * Check whether the currently displayed screen is either the post editing or the post creation screen
  * @return bool
  */
@@ -1834,6 +1843,29 @@ function abp01_remove_track() {
 	abp01_send_json($response);
 }
 
+function abp01_on_language_updated($oldValue, $value, $optName) {
+	//When the WPLANG updated hook is triggered, 
+	//	the text domain is not yet loaded.
+	//Thus, it's no point in resetting the teasers at this point, 
+	//	since the values corresponding to the previous locale will be pulled.
+	//The solution is to queue a flag that says it needs to be updated at a later point in time,
+	//	which currently is when the footer is being generated, for lack of a better time and place.
+	if ($optName == 'WPLANG' && abp01_is_saving_options()) {
+		set_transient('abp01_reset_teaser_text_required', 'true', MINUTE_IN_SECONDS);
+	}
+}
+
+function abp01_on_footer_loaded() {
+	$resetTeaserTextRequired = get_transient('abp01_reset_teaser_text_required');
+	delete_transient('abp01_reset_teaser_text_required');
+	if ($resetTeaserTextRequired === 'true') {
+		$settings = Abp01_Settings::getInstance();
+		$settings->resetTopTeaserText();
+		$settings->resetBottomTeaserText();
+		$settings->saveSettings();
+	}
+}
+
 //the autoloaders are ready, general!
 abp01_init_autoloaders();
 
@@ -1874,6 +1906,8 @@ if (function_exists('add_action')) {
 
 	add_action('init', 'abp01_init_plugin');
 	add_action('admin_menu', 'abp01_create_admin_menu');
+	add_action('update_option_WPLANG', 'abp01_on_language_updated', 10, 3);
+	add_action('in_admin_footer', 'abp01_on_footer_loaded', 1);
 }
 
 if (function_exists('add_filter') && function_exists('remove_filter')) {

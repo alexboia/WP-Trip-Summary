@@ -108,6 +108,9 @@ class Abp01_Settings {
 		throw new Exception('Cloning a singleton of type ' . __CLASS__ . ' is not allowed');
 	}
 
+	/**
+	 * @return Abp01_Settings
+	 * */
 	public static function getInstance() {
 		if (self::$_instance == null) {
 			self::$_instance = new self();
@@ -174,6 +177,14 @@ class Abp01_Settings {
 		return $tileLayer;
 	}
 
+	private function _getDefaultTopTeaserText() {
+		return __('For the pragmatic sort, there is also a trip summary at the bottom of this page. Click here to consult it', 'abp01-trip-summary');
+	}
+
+	private function _getDefaultBottomTeaserText() {
+		return __('It looks like you skipped the story. You should check it out. Click here to go back to beginning', 'abp01-trip-summary');
+	}
+
 	public function getShowTeaser() {
 		return $this->_getOption(self::OPT_TEASER_SHOW, 'boolean', true);
 	}
@@ -184,7 +195,7 @@ class Abp01_Settings {
 	}
 
 	public function getTopTeaserText() {
-		return $this->_getOption(self::OPT_TEASER_TOP, 'string', __('For the pragmatic sort, there is also a trip summary at the bottom of this page. Click here to consult it', 'abp01-trip-summary'));
+		return $this->_getOption(self::OPT_TEASER_TOP, 'string', $this->_getDefaultTopTeaserText());
 	}
 
 	public function setTopTeaserText($topTeaserText) {
@@ -193,7 +204,7 @@ class Abp01_Settings {
 	}
 
 	public function getBottomTeaserText() {
-		return $this->_getOption(self::OPT_TEASER_BOTTOM, 'string', __('It looks like you skipped the story. You should check it out. Click here to go back to beginning', 'abp01-trip-summary'));
+		return $this->_getOption(self::OPT_TEASER_BOTTOM, 'string', $this->_getDefaultBottomTeaserText());
 	}
 
 	public function setBottomTeaserText($bottomTeaserText) {
@@ -270,6 +281,14 @@ class Abp01_Settings {
 		}
 		$this->_setOption(self::OPT_UNIT_SYSTEM, 'string', $unitSystem);
 		return $this;
+	}
+
+	public function resetTopTeaserText() {
+		$this->setTopTeaserText($this->_getDefaultTopTeaserText());
+	}
+
+	public function resetBottomTeaserText() {
+		$this->setBottomTeaserText($this->_getDefaultBottomTeaserText());
 	}
 
 	public function saveSettings() {
