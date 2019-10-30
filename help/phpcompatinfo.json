@@ -1,0 +1,12 @@
+{
+    "source-providers": [
+        {
+            "in": ". as chelp",
+            "name": "*.php",
+            "exclude": ["src"]
+        }
+    ],
+    "plugins": [],
+    "analysers": [],
+    "services": []
+}

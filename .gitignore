@@ -3,3 +3,7 @@
 build
 .vscode/launch.json
 .vscode/settings.json
+.travis.yml
+.phpcs.xml.dist
+test-sample.php
+bin/install-wp-tests.sh

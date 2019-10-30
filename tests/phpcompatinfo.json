@@ -1,0 +1,11 @@
+{
+    "source-providers": [
+        {
+            "in": ". as ctests",
+            "name": "*.php"
+        }
+    ],
+    "plugins": [],
+    "analysers": [],
+    "services": []
+}

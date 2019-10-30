@@ -1,0 +1,12 @@
+{
+    "source-providers": [
+        {
+            "in": ". as cmain",
+            "name": "*.php",
+            "exclude": ["tests", "help"]
+        }
+    ],
+    "plugins": [],
+    "analysers": [],
+    "services": []
+}

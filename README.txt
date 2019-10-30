@@ -63,10 +63,14 @@ Thus, I developed a module to do just that: upload a GPX track, parse it and dis
 
 Requirements
 ------------
-1. MySQL spatial support;
-2. Wordpress 4.0 (maybe lower, but I haven't checked it up yet so I'd rather err on the safe side for now);
-3. libxml extension;
-4. mysqli extension.
+1. PHP version 5.2.0 or greater;
+2. MySQL version 5.7 or greater (with spatial support);
+4. Wordpress 4.0 (maybe lower, but I haven't checked it up yet so I'd rather err on the safe side for now) or greater;
+5. libxml extension;
+6. SimpleXml extension;
+7. mysqli extension;
+8. mbstring - not strictly required, but recommended;
+9. zlib - not strictly required, but recommended.
 
 Credits
 -------

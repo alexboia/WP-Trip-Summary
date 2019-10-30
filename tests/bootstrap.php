@@ -47,10 +47,8 @@ function _get_plugin_base_dir() {
 }
 
 function _manually_install_plugin() {
-	$installer = new Abp01_Installer(false);
-	if (!$installer->activate()) {
-		echo $installer->getLastError();
-	}
+	//TODO: install DB tables over here
+	return;
 }
 
 function _manually_load_plugin() {
