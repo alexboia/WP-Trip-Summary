@@ -6,4 +6,5 @@ build
 .travis.yml
 .phpcs.xml.dist
 test-sample.php
-install-wp-tests.sh
+bin/install-wp-tests.sh
+phpunit.xml.dist
