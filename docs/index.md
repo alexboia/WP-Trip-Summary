@@ -84,16 +84,16 @@ All of the above, with the following amendments:
 
 ## Screenshots
 ##### Editor - Info
-![Editor - Info](../screenshots/E1.png?raw=true)
+![Editor - Info](./screenshots/E1.png?raw=true)
 
 ##### Editor - Map
-![Editor - Map](../screenshots/E2.png?raw=true)
+![Editor - Map](./screenshots/E2.png?raw=true)
 
 ##### Viewer - Info
-![Viewer - Info](../screenshots/V1.png?raw=true)
+![Viewer - Info](./screenshots/V1.png?raw=true)
 
 ##### Viewer - Map
-![Viewer - Map](../screenshots/V2.png?raw=true)
+![Viewer - Map](./screenshots/V2.png?raw=true)
 
 ## Credits
 1. [PHP-MySQLi-Database-Class](https://github.com/joshcam/PHP-MySQLi-Database-Class) - small mysqli wrapper for PHP. I used it instead of the builtin wpdb class
