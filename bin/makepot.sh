@@ -26,11 +26,12 @@ else
 fi
 
 WPTS_PLUGIN_BASE=$(basename "$WPTS_PLUGIN_DIR")
-if [[ ! $WPTS_TEXT_DOMAIN ]]; then
-    $WPTS_TEXT_DOMAIN="$WPTS_PLUGIN_BASE"
+if [[ ! $WPTS_TEXT_DOMAIN ]]
+then
+	WPTS_TEXT_DOMAIN="$WPTS_PLUGIN_BASE"
 fi
 
-php "$WP_I18N_LIB/makepot.php" wp-plugin $WPTS_PLUGIN_DIR "WPTS_PLUGIN_DIR/lang/$WPTS_TEXT_DOMAIN.pot"
+php "$WP_I18N_LIB/makepot.php" wp-plugin $WPTS_PLUGIN_DIR "$WPTS_PLUGIN_DIR/lang/$WPTS_TEXT_DOMAIN.pot"
 
 if [ "$WPTS_RESTORE_DIR" = true ]
 then
