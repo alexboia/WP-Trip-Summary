@@ -67,10 +67,14 @@ Depending on the various functions performed by various plug-in components, we c
 
 To run this module, the following technical requirements must be met:
 
-- Wordpress (obvious!) - at least v4.0 (maybe lower, I don't know, I did not try, nor am I going to lose sleep over it);
-- MySql database engine with GIS support;
-- libxml PHP extension;
-- mysqli PHP extension.
+- PHP version 5.2.0 or greater;
+- MySQL version 5.7 or greater (with spatial support);
+- Wordpress 4.0 (maybe lower, but I haven't checked it up yet so I'd rather err on the safe side for now) or greater;
+- libxml extension;
+- SimpleXml extension;
+- mysqli extension;
+- mbstring - not strictly required, but recommended;
+- zlib - not strictly required, but recommended.
 
 Basically all these requirements are checked upon installation and the process stops if they are not met.
 
@@ -78,7 +82,7 @@ Basically all these requirements are checked upon installation and the process s
 
 ## Licensing Terms {#dg-licensing-terms}
 
-This plug-in is distribute under the terms of the MIT license. ([more details here](https://opensource.org/licenses/MIT)). What this means:
+This plug-in is distribute under the terms of the [BSD New License](https://opensource.org/licenses/BSD-3-Clause). What this means:
 
 - that you may use it free of charge and without any kind of royalty;
 - that you may distribute free of charge;

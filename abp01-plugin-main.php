@@ -6,7 +6,7 @@
  * Version: 0.1.1
  * Description: Aids a travel blogger to add structured information about his tours (biking, hiking, train travels etc.)
  * License: New BSD License
- * Plugin URI: http://alexboia.net/abp01-trip-summary
+ * Plugin URI: https://github.com/alexboia/WP-Trip-Summary
  * Text Domain: abp01-trip-summary
  */
 

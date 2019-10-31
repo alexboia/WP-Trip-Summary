@@ -67,10 +67,14 @@ Cu alte cuvinte, vă puteți documenta (doar) aceste trei tipuri de plimbări.
 
 Pentru a rula acest modul, aveți nevoie de următoarele:
 
-- un WordPress (evident!) - minim versiunea 4.0 (poate și mai jos - nu știu, nu am încercat și prefer să nu îmi bat capul);
-- o bază de date MySQL cu suport pentru date GIS;
-- extensia libxml trebuie să fie instalată;
-- extensia mysqli trebuie să fie instalată.
+- PHP versiunea 5.2.0 sau mai recenta;
+- MySQL versiunea 5.7 sau mai recenta (cu suport pentru date GIS);
+- Wordpress 4.0 sau mai recenta;
+- extensia PHP libxml;
+- extensia PHP SimpleXml;
+- extensia PHP mysqli;
+- extensia PHP mbstring - nu e strict oblgiatorie, dar e recomandata;
+- extensia PHP zlib - nu e strict oblgiatorie, dar e recomandata.
 
 În principiu toate aceste cerințe sunt verificate la instalare, iar procesul se oprește dacă nu sunt îndeplinite.
 
@@ -78,7 +82,7 @@ Pentru a rula acest modul, aveți nevoie de următoarele:
 
 ## Licența {#dg-licenta}
 
-Acest modul este distribuit sub licența MIT ([detalii aici](https://opensource.org/licenses/MIT)). Ce înseamnă asta:
+Acest modul este distribuit sub licența [BSD New License](https://opensource.org/licenses/BSD-3-Clause). Ce înseamnă asta:
 
 - că îl puteți folosi absolut gratuit și fără vreun alt fel de obligație materială sau financiară;
 - că îl puteți redistribui gratuit și fără vreun alt fel de obligație materială sau financiară;
