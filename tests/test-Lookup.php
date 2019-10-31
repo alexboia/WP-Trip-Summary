@@ -143,8 +143,10 @@ class LookupTests extends WP_UnitTestCase {
 		$db = $this->_getDb();
 		$table = $this->_getEnv()->getLookupTableName();
 		$langTable = $this->_getEnv()->getLookupLangTableName();
+		$lookupDetailsTableName = $this->_getEnv()->getRouteDetailsLookupTableName();
 		$db->rawQuery('TRUNCATE TABLE `' . $table . '`', null, false);
 		$db->rawQuery('TRUNCATE TABLE `' . $langTable . '`', null, false);
+		$db->rawQuery('TRUNCATE TABLE `' . $lookupDetailsTableName . '`', null, false);
 		$this->_sampleLookupData = array();
 	}
 

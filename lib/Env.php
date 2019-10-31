@@ -137,12 +137,6 @@ class Abp01_Env {
     private $_dataDir;
 
 	/**
-	 * The WP theme currently in use
-	 * @var WP_Theme
-	 */
-    private $_theme;
-
-	/**
 	 * The current plug-in version
 	 * @var string
 	 */
@@ -164,7 +158,6 @@ class Abp01_Env {
         $this->_initTableNames();
         $this->_initVersions();
         $this->_initDataDir();
-        $this->_initTheme();
     }
 
     public function __clone() {
@@ -218,10 +211,6 @@ class Abp01_Env {
 		$this->_dataDir = $dataDir;
 	}
 
-    private function _initTheme() {
-        $this->_theme = wp_get_theme();
-    }
-
     public function getLang() {
         return $this->_lang;
     }
@@ -268,11 +257,11 @@ class Abp01_Env {
 	}
 
     public function getCurrentThemeDir() {
-        return $this->_theme != null ? $this->_theme->get_stylesheet_directory() : null;
+        return  wp_get_theme()->get_stylesheet_directory();
     }
 
     public function getCurrentThemeUrl() {
-        return $this->_theme != null ? $this->_theme->get_stylesheet_directory_uri() : null;
+        return  wp_get_theme()->get_stylesheet_directory_uri();
     }
 
     public function getCurrentPage() {
