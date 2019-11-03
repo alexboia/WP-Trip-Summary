@@ -47,7 +47,7 @@ if (!function_exists('abp01_render_difficulty_level_options')) {
     function abp01_render_difficulty_level_options(array $difficultyLevels, $selected) {
         $content = '';
         foreach ($difficultyLevels as $option) {
-            $content .= '<option value="' . $option->id . '" '. ($selected == $option->id ? 'selected="selected"' : '') . '>' . $option->label . '</option>';
+            $content .= '<option value="' . esc_attr($option->id) . '" '. ($selected == $option->id ? 'selected="selected"' : '') . '>' . esc_html($option->label) . '</option>';
         }
         echo $content;
     }
@@ -61,8 +61,8 @@ if (!function_exists('abp01_render_checkbox_option')) {
         $name = 'ctrl_abp01_' . $fieldName;
 
         $content .= '<span class="abp01-optionContainer">';
-        $content .= '<input type="checkbox" name="' . $name . '[]" id="' . $id . '" ' . ($checked ? 'checked="checked"' : '') . ' value="' . $option->id . '" />';
-        $content .= '<label for="' . $id . '" class="abp01-option-label">' . $option->label . '</label>';
+        $content .= '<input type="checkbox" name="' . $name . '[]" id="' . $id . '" ' . ($checked ? 'checked="checked"' : '') . ' value="' . esc_attr($option->id) . '" />';
+        $content .= '<label for="' . $id . '" class="abp01-option-label">' . esc_html($option->label) . '</label>';
         $content .= '</span>';
 
         echo $content;
@@ -72,7 +72,7 @@ if (!function_exists('abp01_render_checkbox_option')) {
 if (!function_exists('abp01_render_select_option')) {
 	function abp01_render_select_option($option, $selectedValue) {
 		$selected = ($selectedValue == $option->id || (is_array($selectedValue) && in_array($option->id, $selectedValue)));
-		echo '<option value="' . $option->id . '" '. ($selected ? 'selected="selected"' : '') . '>' . $option->label . '</option>';
+		echo '<option value="' . esc_attr($option->id) . '" '. ($selected ? 'selected="selected"' : '') . '>' . esc_html($option->label) . '</option>';
 	}
 }
 

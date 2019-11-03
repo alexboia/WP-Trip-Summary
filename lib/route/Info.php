@@ -152,6 +152,10 @@ class Abp01_Route_Info {
         )
     );
 
+    public static function isTypeSupported($type) {
+        return in_array($type, self::getSupportedTypes());
+    }
+
 	public static function getSupportedTypes() {
 		return array(
 			self::BIKE,
@@ -179,14 +183,10 @@ class Abp01_Route_Info {
     }
 
     public function __construct($type) {
-        if (empty($type) || !$this->_isTypeSupported($type)) {
+        if (empty($type) || !self::isTypeSupported($type)) {
             throw new InvalidArgumentException();
         }
         $this->_type = $type;
-    }
-
-    private function _isTypeSupported($type) {
-        return in_array($type, self::getSupportedTypes());
     }
 
     private function _filterFieldValue($field, $value) {

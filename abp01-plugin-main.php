@@ -3,7 +3,7 @@
  * Plugin Name: WP Trip Summary
  * Author: Alexandru Boia
  * Author URI: http://alexboia.net
- * Version: 0.2
+ * Version: 0.2b
  * Description: Aids a travel blogger to add structured information about his tours (biking, hiking, train travels etc.)
  * License: New BSD License
  * Plugin URI: https://github.com/alexboia/WP-Trip-Summary
@@ -48,7 +48,7 @@ define('ABP01_LOADED', true);
 /**
  * Current version
  */
-define('ABP01_VERSION', '0.2');
+define('ABP01_VERSION', '0.2b');
 
 define('ABP01_DISABLE_MINIFIED', false);
 
@@ -767,6 +767,7 @@ function abp01_uninstall() {
 function abp01_init_plugin() {
 	//configure script&styles includes and load the text domain
 	Abp01_Includes::setRefPluginsPath(__FILE__);
+	Abp01_Includes::setScriptsInFooter(true);
 	load_plugin_textdomain('abp01-trip-summary', false, dirname(plugin_basename(__FILE__)) . '/lang/');
 
 	//check if update is needed
@@ -846,16 +847,7 @@ function abp01_add_admin_editor($post) {
 	//the already existing values
 	$info = $manager->getRouteInfo($data->postId);
 	if ($info instanceof Abp01_Route_Info) {
-		$tripData = $info->getData();
-		foreach ($tripData as $key => $value) {
-			if (is_array($value)) {
-				$value = array_map('abp01_escape_value', $value);
-			} else {
-				$value = abp01_escape_value($value);
-			}
-			$tripData[$key] = $value;
-		}
-		$data->tourInfo = $tripData;
+		$data->tourInfo = $info->getData();
 		$data->tourType = $info->getType();
 	} else {
 		$data->tourType = null;
@@ -1036,17 +1028,11 @@ function abp01_admin_settings_page() {
 	$settings = Abp01_Settings::getInstance();	
 	$tileLayers = $settings->getTileLayers();
 
-	foreach ($tileLayers as $tileLayer) {
-		$tileLayer->url = abp01_escape_value($tileLayer->url);
-		$tileLayer->attributionUrl = abp01_escape_value($tileLayer->attributionUrl);
-		$tileLayer->attributionTxt = abp01_escape_value($tileLayer->attributionTxt);
-	}
-
 	//fetch the bulk of the settings
 	$data->settings = new stdClass();
 	$data->settings->showTeaser = $settings->getShowTeaser();
-	$data->settings->topTeaserText = abp01_escape_value($settings->getTopTeaserText());
-	$data->settings->bottomTeaserText = abp01_escape_value($settings->getBottomTeaserText());
+	$data->settings->topTeaserText = $settings->getTopTeaserText();
+	$data->settings->bottomTeaserText = $settings->getBottomTeaserText();
 	$data->settings->tileLayer = $tileLayers[0];
 	$data->settings->showFullScreen = $settings->getShowFullScreen();
 	$data->settings->showMagnifyingGlass = $settings->getShowMagnifyingGlass();
@@ -1090,7 +1076,7 @@ function abp01_save_admin_settings_page_save() {
 	$response->message = null;
 
 	//check that given unit system is supported
-	$unitSystem = isset($_POST['unitSystem']) ? $_POST['unitSystem'] : null;
+	$unitSystem = Abp01_InputFiltering::getFilteredPOSTValue('unitSystem');
 	if (!Abp01_UnitSystem::isSupported($unitSystem)) {
 		$response->message = __('Unsupported unit system', 'abp01-trip-summary');
 		abp01_send_json($response);
@@ -1098,9 +1084,9 @@ function abp01_save_admin_settings_page_save() {
 
 	//collect and fill in layer parameters
 	$tileLayer = new stdClass();
-	$tileLayer->url = isset($_POST['tileLayerUrl']) ? $_POST['tileLayerUrl'] : null;
-	$tileLayer->attributionUrl = isset($_POST['tileLayerAttributionUrl']) ? $_POST['tileLayerAttributionUrl'] : null;
-	$tileLayer->attributionTxt = isset($_POST['tileLayerAttributionTxt']) ? $_POST['tileLayerAttributionTxt'] : null;
+	$tileLayer->url = Abp01_InputFiltering::getFilteredPOSTValue('tileLayerUrl');
+	$tileLayer->attributionUrl = Abp01_InputFiltering::getFilteredPOSTValue('tileLayerAttributionUrl');
+	$tileLayer->attributionTxt = Abp01_InputFiltering::getFilteredPOSTValue('tileLayerAttributionTxt');
 
 	//tile layer URL must not be empty
 	if (empty($tileLayer->url)) {
@@ -1124,13 +1110,15 @@ function abp01_save_admin_settings_page_save() {
 
 	//fill in and save settings
 	$settings = Abp01_Settings::getInstance();
-	$settings->setShowTeaser(isset($_POST['showTeaser']) ? $_POST['showTeaser'] == 'true' : false);
-	$settings->setTopTeaserText(isset($_POST['topTeaserText']) ? $_POST['topTeaserText'] : null);
-	$settings->setBottomTeaserText(isset($_POST['bottomTeaserText']) ? $_POST['bottomTeaserText'] : null);
-	$settings->setShowFullScreen(isset($_POST['showFullScreen']) ? $_POST['showFullScreen'] == 'true' : false);
-	$settings->setShowMagnifyingGlass(isset($_POST['showMagnifyingGlass']) ? $_POST['showMagnifyingGlass'] == 'true' : false);
-	$settings->setShowMapScale(isset($_POST['showMapScale']) ? $_POST['showMapScale'] == 'true' : false);
-	$settings->setAllowTrackDownload(isset($_POST['allowTrackDownload']) ? $_POST['allowTrackDownload'] == 'true' : false);
+	$settings->setShowTeaser(Abp01_InputFiltering::getPOSTValueAsBoolean('showTeaser'));
+	$settings->setTopTeaserText(Abp01_InputFiltering::getFilteredPOSTValue('topTeaserText'));
+	$settings->setBottomTeaserText(Abp01_InputFiltering::getFilteredPOSTValue('bottomTeaserText'));
+
+	$settings->setShowFullScreen(Abp01_InputFiltering::getPOSTValueAsBoolean('showFullScreen'));
+	$settings->setShowMagnifyingGlass(Abp01_InputFiltering::getPOSTValueAsBoolean('showMagnifyingGlass'));
+	$settings->setShowMapScale(Abp01_InputFiltering::getPOSTValueAsBoolean('showMapScale'));
+	$settings->setAllowTrackDownload(Abp01_InputFiltering::getPOSTValueAsBoolean('allowTrackDownload'));
+
 	$settings->setTileLayers($tileLayer);
 	$settings->setUnitSystem($unitSystem);
 
@@ -1287,8 +1275,8 @@ function abp01_add_lookup_item() {
 	$response->item = null;
 
 	//fetch labels from POSTed data
-	$defaultLabel = isset($_POST['defaultLabel']) ? $_POST['defaultLabel'] : null;
-	$translatedLabel = isset($_POST['translatedLabel']) ? $_POST['translatedLabel'] : null;
+	$defaultLabel = Abp01_InputFiltering::getFilteredPOSTValue('defaultLabel');
+	$translatedLabel = Abp01_InputFiltering::getFilteredPOSTValue('translatedLabel');
 
 	//the default label must not be empty
 	if (empty($defaultLabel)) {
@@ -1350,8 +1338,8 @@ function abp01_edit_lookup_item() {
 	$response->message = null;
 	
 	//fetch labels from POSTed data
-	$defaultLabel = isset($_POST['defaultLabel']) ? $_POST['defaultLabel'] : null;
-	$translatedLabel = isset($_POST['translatedLabel']) ? $_POST['translatedLabel'] : null;
+	$defaultLabel = Abp01_InputFiltering::getFilteredPOSTValue('defaultLabel');
+	$translatedLabel = Abp01_InputFiltering::getFilteredPOSTValue('translatedLabel');
 
 	//the default label must not be empty
 	if (empty($defaultLabel)) {
@@ -1462,8 +1450,8 @@ function abp01_save_info() {
 		die;
 	}
 
-	$type = isset($_POST['type']) ? $_POST['type'] : null;
-	if (!$type) {
+	$type = Abp01_InputFiltering::getPOSTValueOrDie('type');
+	if (!Abp01_Route_Info::isTypeSupported($type)) {
 		die;
 	}
 
@@ -1476,6 +1464,9 @@ function abp01_save_info() {
 
 	foreach ($info->getValidFieldNames() as $field) {
 		if (isset($_POST[$field])) {
+			//Value is filtered on assignment.
+			// @see Abp01_Route_Info::__set
+			// @see Abp01_Route_Info::_filterFieldValue
 			$info->$field = $_POST[$field];
 		}
 	}
@@ -1553,8 +1544,8 @@ function abp01_get_info($content) {
 	$settings = Abp01_Settings::getInstance();
 	$data->settings = new stdClass();
 	$data->settings->showTeaser = $settings->getShowTeaser();
-	$data->settings->topTeaserText =  abp01_escape_value($settings->getTopTeaserText());
-	$data->settings->bottomTeaserText = abp01_escape_value($settings->getBottomTeaserText());
+	$data->settings->topTeaserText =  $settings->getTopTeaserText();
+	$data->settings->bottomTeaserText = $settings->getBottomTeaserText();
 	
 	//get measurement units from the configured unit system
 	$unitSystem = Abp01_UnitSystem::create($settings->getUnitSystem());

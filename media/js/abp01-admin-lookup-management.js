@@ -65,6 +65,10 @@
     var currentItems = {};
     var editingItem = null;
 
+    function escapeHtml(value) {
+        return (window.lodash || window._)['escape'](value);
+    }
+
     /**
      * Compiles and caches the template used for rendering lookup items data rows
      * @return Function The compiled template
@@ -620,10 +624,17 @@
         context = getContext();
     }
 
+    function setupKiteFormatters() {
+        kite.formatters['esc-html'] = function(v, obj) {
+            return escapeHtml(v);
+        };
+    }
+
     /**
      * Bootstrap everything together
      * */
     $(document).ready(function() {
+        setupKiteFormatters();
         initContext();
         initControls();
         initBlockUIDefaultStyles();

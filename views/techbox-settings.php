@@ -39,26 +39,26 @@
 <div id="abp01-settings-page">
 	<form id="abp01-settings-form" method="post">
 		<div id="abp01-settings-form-beacon"></div>
-		<h2><?php echo __('Trip Summary Settings', 'abp01-trip-summary'); ?></h2>
+		<h2><?php echo esc_html__('Trip Summary Settings', 'abp01-trip-summary'); ?></h2>
 		<div id="abp01-settings-save-result" class="updated settings-error abp01-settings-save-result" style="display:none"></div>
 		<div id="abp01-settings-container">
-			<h3><?php echo __('General Settings', 'abp01-trip-summary'); ?></h3>
+			<h3><?php echo esc_html__('General Settings', 'abp01-trip-summary'); ?></h3>
 			<div class="abp01-settings-info description">
-				<?php echo __('These settings control various aspects that do not belong to any one topic', 'abp01-trip-summary'); ?>
+				<?php echo esc_html__('These settings control various aspects that do not belong to any one topic', 'abp01-trip-summary'); ?>
 			</div>
 			<div class="abp01-settings-container">
 				<table class="form-table">
 					<tr>
 						<th scope="row">
-							<label for="abp01-unitSystem"><?php echo __('Unit system', 'abp01-trip-summary'); ?>:</label>
+							<label for="abp01-unitSystem"><?php echo esc_html__('Unit system', 'abp01-trip-summary'); ?>:</label>
 						</th>
 						<td>
 							<select name="unitSystem" id="abp01-unitSystem" class="abp01-select">
 								<?php foreach ($data->settings->allowedUnitSystems as $s => $lbl): ?>
 									<?php if ($data->settings->unitSystem == $s): ?>
-									<option value="<?php echo $s ?>" selected="selected"><?php echo $lbl ?></option>
+									<option value="<?php echo esc_attr($s) ?>" selected="selected"><?php echo esc_html($lbl) ?></option>
 									<?php else: ?>
-										<option value="<?php echo $s ?>"><?php echo $lbl ?></option>
+										<option value="<?php echo esc_attr($s) ?>"><?php echo esc_html($lbl) ?></option>
 									<?php endif; ?>
 								<?php endforeach; ?>
 							</select>
@@ -67,15 +67,15 @@
 				</table>
 			</div>
 
-			<h3><?php echo __('Viewer settings', 'abp01-trip-summary'); ?></h3>
+			<h3><?php echo esc_html__('Viewer settings', 'abp01-trip-summary'); ?></h3>
 			<div class="abp01-settings-info description">
-				<?php echo __('These settings configure the trip summary viewer', 'abp01-trip-summary'); ?>
+				<?php echo esc_html__('These settings configure the trip summary viewer', 'abp01-trip-summary'); ?>
 			</div>
 			<div class="abp01-settings-container">
 				<table class="form-table">
 					<tr>
 						<th scope="row">
-							<label for="abp01-showTeaser"><?php echo __('Show teaser?', 'abp01-trip-summary'); ?></label>
+							<label for="abp01-showTeaser"><?php echo esc_html__('Show teaser?', 'abp01-trip-summary'); ?></label>
 						</th>
 						<td>
 							<input name="showTeaser" id="abp01-showTeaser" type="checkbox" class="abp01-checkbox" value="true" <?php echo $data->settings->showTeaser ? 'checked="checked"' : ''; ?>/>
@@ -83,56 +83,56 @@
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="abp01-topTeaserText"><?php echo __('Top teaser text', 'abp01-trip-summary'); ?>:</label>
+							<label for="abp01-topTeaserText"><?php echo esc_html__('Top teaser text', 'abp01-trip-summary'); ?>:</label>
 						</th>
 						<td>
-							<textarea name="topTeaserText" id="abp01-topTeaserText" class="regular-text abp01-textarea-input"><?php echo $data->settings->topTeaserText; ?></textarea>
+							<textarea name="topTeaserText" id="abp01-topTeaserText" class="regular-text abp01-textarea-input"><?php echo esc_html($data->settings->topTeaserText); ?></textarea>
 						</td>
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="abp01-bottomTeaserText"><?php echo __('Bottom teaser text', 'abp01-trip-summary'); ?>:</label>
+							<label for="abp01-bottomTeaserText"><?php echo esc_html__('Bottom teaser text', 'abp01-trip-summary'); ?>:</label>
 						</th>
 						<td>
-							<textarea name="bottomTeaserText" id="abp01-bottomTeaserText" class="regular-text abp01-textarea-input"><?php echo $data->settings->bottomTeaserText; ?></textarea>
+							<textarea name="bottomTeaserText" id="abp01-bottomTeaserText" class="regular-text abp01-textarea-input"><?php echo esc_html($data->settings->bottomTeaserText); ?></textarea>
 						</td>
 					</tr>
 				</table>
 			</div>
 
-			<h3><?php echo __('Map Settings', 'abp01-trip-summary'); ?></h3>
+			<h3><?php echo esc_html__('Map Settings', 'abp01-trip-summary'); ?></h3>
 			<div class="abp01-settings-info description">
-				<?php echo __('These settings configure the map component', 'abp01-trip-summary'); ?>
+				<?php echo esc_html__('These settings configure the map component', 'abp01-trip-summary'); ?>
 			</div>
 			<div class="abp01-settings-container">
 				<table class="form-table">
 					<tr>
 						<th scope="row">
-							<label for="abp01-tileLayerUrl"><?php echo __('Tile layer URL template', 'abp01-trip-summary'); ?>:</label>
+							<label for="abp01-tileLayerUrl"><?php echo esc_html__('Tile layer URL template', 'abp01-trip-summary'); ?>:</label>
 						</th>
 						<td>
-							<input type="text" id="abp01-tileLayerUrl" name="tileLayerUrl" class="regular-text abp01-text-input" value="<?php echo $data->settings->tileLayer->url; ?>" />
+							<input type="text" id="abp01-tileLayerUrl" name="tileLayerUrl" class="regular-text abp01-text-input" value="<?php echo esc_attr($data->settings->tileLayer->url); ?>" />
 						</td>
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="abp01-tileLayerAttributionUrl"><?php echo __('Tile layer attribution URL', 'abp01-trip-summary'); ?></label>
+							<label for="abp01-tileLayerAttributionUrl"><?php echo esc_html__('Tile layer attribution URL', 'abp01-trip-summary'); ?></label>
 						</th>
 						<td>
-							<input type="text" id="abp01-tileLayerAttributionUrl" name="tileLayerAttributionUrl" class="regular-text abp01-text-input" value="<?php echo $data->settings->tileLayer->attributionUrl; ?>" />
+							<input type="text" id="abp01-tileLayerAttributionUrl" name="tileLayerAttributionUrl" class="regular-text abp01-text-input" value="<?php echo esc_attr($data->settings->tileLayer->attributionUrl); ?>" />
 						</td>
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="abp01-tileLayerAttributionTxt"><?php echo __('Tile layer attribution text', 'abp01-trip-summary'); ?></label>
+							<label for="abp01-tileLayerAttributionTxt"><?php echo esc_html__('Tile layer attribution text', 'abp01-trip-summary'); ?></label>
 						</th>
 						<td>
-							<input type="text" id="abp01-tileLayerAttributionTxt" name="tileLayerAttributionTxt" class="regular-text abp01-text-input" value="<?php echo $data->settings->tileLayer->attributionTxt; ?>" />
+							<input type="text" id="abp01-tileLayerAttributionTxt" name="tileLayerAttributionTxt" class="regular-text abp01-text-input" value="<?php echo esc_attr($data->settings->tileLayer->attributionTxt); ?>" />
 						</td>
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="abp01-showFullScreen"><?php echo __('Enable map fullscreen mode?', 'abp01-trip-summary'); ?></label>
+							<label for="abp01-showFullScreen"><?php echo esc_html__('Enable map fullscreen mode?', 'abp01-trip-summary'); ?></label>
 						</th>
 						<td>
 							<input type="checkbox" id="abp01-showFullScreen" name="showFullScreen" class="abp01-checkbox" value="true" <?php echo $data->settings->showFullScreen ? 'checked="checked"' : ''; ?>/>
@@ -140,7 +140,7 @@
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="abp01-showMagnifyingGlass"><?php echo __('Show magnifying glass?', 'abp01-trip-summary'); ?></label>
+							<label for="abp01-showMagnifyingGlass"><?php echo esc_html__('Show magnifying glass?', 'abp01-trip-summary'); ?></label>
 						</th>
 						<td>
 							<input type="checkbox" id="abp01-showMagnifyingGlass" name="showMagnifyingGlass" class="abp01-checkbox" value="true" <?php echo $data->settings->showMagnifyingGlass ? 'checked="checked"' : ''; ?>/>
@@ -148,7 +148,7 @@
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="abp01-showMapScale"><?php echo __('Show map scale?', 'abp01-trip-summary'); ?></label>
+							<label for="abp01-showMapScale"><?php echo esc_html__('Show map scale?', 'abp01-trip-summary'); ?></label>
 						</th>
 						<td>
 							<input type="checkbox" id="abp01-showMapScale" name="showMapScale" class="abp01-checkbox" value="true" <?php echo $data->settings->showMapScale ? 'checked="checked"' : ''; ?>/>
@@ -156,7 +156,7 @@
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="abp01-allowTrackDownload"><?php echo __('Allow track download?', 'abp01-trip-summary'); ?></label>
+							<label for="abp01-allowTrackDownload"><?php echo esc_html__('Allow track download?', 'abp01-trip-summary'); ?></label>
 						</th>
 						<td>
 							<input type="checkbox" id="abp01-allowTrackDownload" name="allowTrackDownload" class="abp01-checkbox" value="true" <?php echo $data->settings->allowTrackDownload ? 'checked="checked"' : '' ?>/>
@@ -166,7 +166,7 @@
 			</div>
 
 			<div class="apb01-settings-save">
-				<input type="button" id="abp01-submit-settings" name="abp01-submit-settings" class="button button-primary abp01-form-submit-btn" value="<?php echo __('Save settings', 'abp01-trip-summary'); ?>" />
+				<input type="button" id="abp01-submit-settings" name="abp01-submit-settings" class="button button-primary abp01-form-submit-btn" value="<?php echo esc_html__('Save settings', 'abp01-trip-summary'); ?>" />
 			</div>
 		</div>
 

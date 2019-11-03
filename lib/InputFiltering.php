@@ -34,10 +34,27 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_InputFiltering {
+	const TRUE_VALUE = 'true';
+
+	const FALSE_VALUE = 'false';
+
+	private static function _extractPOSTValue($key) {
+		return isset($_POST[$key]) 
+			? $_POST[$key] 
+			: null;
+	}
+
+	private static function _extractGETValue($key) {
+		return isset($_GET[$key]) 
+			? $_GET[$key] 
+			: null;
+	}
+
 	public static function filterSingleValue($input, $asType) {
-		if (get_magic_quotes_gpc()) {
-			$input = stripslashes($input);
-		}
+		//https://codex.wordpress.org/Function_Reference/stripslashes_deep
+		//	via
+		//https://wpartisan.me/tutorials/wordpress-auto-adds-slashes-post-get-request-cookie
+		$input = stripslashes($input);
 
 		if (!is_numeric($input)) {
 			$input = sanitize_text_field($input);
@@ -105,25 +122,95 @@ class Abp01_InputFiltering {
 		if (empty($value)) {
 			die;
 		}
-		if (!empty($additionalValidator) && is_callable($additionalValidator) && !$additionalValidator($value)) {
+		if (!empty($additionalValidator) && !$additionalValidator($value)) {
 			die;
 		}
-		return $value;
+		return self::filterSingleValue($value, 'string');
 	}
 
 	public static function getPOSTValueOrDie($key, $additionalValidator = null) {
 		if (empty($key)) {
-			throw new InvalidArgumentException();
+			throw new InvalidArgumentException('The $key parameter may not be null or empty.');
 		}
-		$value = isset($_POST[$key]) ? $_POST[$key] : null;
+
+		if (!empty($additionalValidator) && !is_callable($additionalValidator)) {
+			throw new InvalidArgumentException('The $additionalValidator is provided but is not a valid callback.');
+		}
+
+		$value = self::_extractPOSTValue($key);
 		return self::assertValueNotEmptyOrDie($value, $additionalValidator);
 	}
 
 	public static function getGETvalueOrDie($key, $additionalValidator = null) {
 		if (empty($key)) {
-			throw new InvalidArgumentException();
+			throw new InvalidArgumentException('The $key parameter may not be null or empty.');
 		}
-		$value = isset($_GET[$key]) ? $_GET[$key] : null;
+
+		if (!empty($additionalValidator) && !is_callable($additionalValidator)) {
+			throw new InvalidArgumentException('The $additionalValidator is provided but is not a valid callback.');
+		}
+
+		$value = self::_extractGETValue($key);
 		return self::assertValueNotEmptyOrDie($value, $additionalValidator);
+	}
+
+	public static function getFilteredPOSTValue($key, $additionalFilter = null) {
+		if (empty($key)) {
+			throw new InvalidArgumentException('The $key parameter may not be null or empty.');
+		}
+
+		if (!empty($additionalFilter) && !is_callable($additionalFilter)) {
+			throw new InvalidArgumentException('The $additionalFilter is provided but is not a valid callback.');
+		}
+
+		$value = self::_extractPOSTValue($key);
+		$value = self::filterSingleValue($value, 'string');
+
+		if (!empty($additionalFilter)) {
+			$value = $additionalFilter($value);
+		}
+
+		return $value;
+	}
+
+	public static function getFilteredGETValue($key, $additionalFilter = null) {
+		if (empty($key)) {
+			throw new InvalidArgumentException('The $key parameter may not be null or empty.');
+		}
+
+		if (!empty($additionalFilter) && !is_callable($additionalFilter)) {
+			throw new InvalidArgumentException('The $additionalFilter is provided but is not a valid callback.');
+		}
+
+		$value = self::_extractGETValue($key);
+		$value = self::filterSingleValue($value, 'string');
+
+		if (!empty($additionalFilter)) {
+			$value = $additionalFilter($value);
+		}
+
+		return $value;
+	}
+
+	public static function getPOSTValueAsBoolean($key) {
+		if (empty($key)) {
+			throw new InvalidArgumentException('The $key parameter may not be null or empty.');
+		}
+
+		$value = self::_extractPOSTValue($key);
+		return !empty($value)
+			? $value === self::TRUE_VALUE
+			: false;
+	}
+
+	public static function getGETValueAsBoolean($key) {
+		if (empty($key)) {
+			throw new InvalidArgumentException('The $key parameter may not be null or empty.');
+		}
+
+		$value = self::_extractGETValue($key);
+		return !empty($value)
+			? $value === self::TRUE_VALUE
+			: false;
 	}
 }

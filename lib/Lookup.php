@@ -357,16 +357,16 @@ class Abp01_Lookup {
 	 * @return stdClass The descriptor for the newly created item or null if some problem occurs
 	 */
 	public function createLookupItem($type, $defaultLabel) {
-		if (empty($defaultLabel)) {
+		if (!self::isTypeSupported($type)) {
 			throw new InvalidArgumentException();
 		}
-		if (!self::isTypeSupported($type)) {
+
+		if (empty($defaultLabel)) {
 			throw new InvalidArgumentException();
 		}
 
 		$db = $this->_env->getDb();
 		$lookupTableName = $this->_env->getLookupTableName();
-		$defaultLabel = Abp01_InputFiltering::filterSingleValue($defaultLabel, 'string');
 
 		if (!$db) {
 			return null;
@@ -406,7 +406,6 @@ class Abp01_Lookup {
 
 		$db = $this->_env->getDb();
 		$lookupTranslationTableName = $this->_env->getLookupLangTableName();
-		$label = Abp01_InputFiltering::filterSingleValue($label, 'string');
 
 		if (!$db) {
 			return false;

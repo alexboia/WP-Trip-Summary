@@ -20,7 +20,7 @@
         });
     } else {
         // Browser globals
-        root.machina = factory(root._, root);
+        root.machina = factory(root._ || root.lodash, root);
     }
 }(this, function (_, global, undefined) {
     var slice = [].slice;

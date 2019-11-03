@@ -175,11 +175,15 @@ class Abp01_Includes {
 		),
 		self::JS_LODASH => array(
 			'path' => 'media/js/3rdParty/lodash/lodash.js', 
+			'inline-setup' => 'window.lodash = _.noConflict();',
 			'version' => '0.3.1'
 		), 
 		self::JS_MACHINA => array(
 			'path' => 'media/js/3rdParty/machina/machina.js', 
-			'version' => '0.3.1'
+			'version' => '0.3.1',
+			'deps' => array(
+				self::JS_LODASH
+			)
 		), 
 		self::JS_KITE_JS => array(
 			'path' => 'media/js/3rdParty/kite.js', 
@@ -187,27 +191,27 @@ class Abp01_Includes {
 		), 
 		self::JS_ABP01_MAP => array(
 			'path' => 'media/js/abp01-map.js', 
-			'version' => '0.2'
+			'version' => '0.3'
 		), 
 		self::JS_ABP01_PROGRESS_OVERLAY => array(
 			'path' => 'media/js/abp01-progress-overlay.js', 
-			'version' => '0.2'
+			'version' => '0.3'
 		), 
 		self::JS_ADMIN_MAIN => array(
 			'path' => 'media/js/abp01-admin-main.js', 
-			'version' => '0.2'
+			'version' => '0.3'
 		), 
 		self::JS_FRONTEND_MAIN => array(
 			'path' => 'media/js/abp01-frontend-main.js', 
-			'version' => '0.2'
+			'version' => '0.3'
 		), 
 		self::JS_ADMIN_SETTINGS => array(
 			'path' => 'media/js/abp01-admin-settings.js', 
-			'version' => '0.1'
+			'version' => '0.3'
 		),
 		self::JS_ADMIN_LOOKUP_MGMT => array(
 			'path' => 'media/js/abp01-admin-lookup-management.js',
-			'version' => '0.1'
+			'version' => '0.3'
 		)
 	);
 
@@ -310,8 +314,19 @@ class Abp01_Includes {
 			return;
 		}
 		if (isset(self::$_scripts[$handle])) {
-			$script = self::$_scripts[$handle];
-			wp_enqueue_script($handle, plugins_url($script['path'], self::$_refPluginsPath), array(), $script['version'], self::$_scriptsInFooter);
+			if (!wp_script_is($handle, 'registered')) {
+				$script = self::$_scripts[$handle];
+				$deps = isset($script['deps']) && is_array($script['deps']) 
+					? $script['deps'] 
+					: array();
+
+				wp_enqueue_script($handle, plugins_url($script['path'], self::$_refPluginsPath), $deps, $script['version'], self::$_scriptsInFooter);
+				if (isset($script['inline-setup'])) {
+					wp_add_inline_script($handle, $script['inline-setup']);
+				}
+			} else {
+				wp_enqueue_script($handle);
+			}
 		} else {
 			wp_enqueue_script($handle);
 		}
@@ -335,6 +350,7 @@ class Abp01_Includes {
 	public static function injectSettings($scriptHandle) {
 		$settings = Abp01_Settings::getInstance();
 		$tileLayers = $settings->getTileLayers();
+		$mainTileLayer = $tileLayers[0];
 
 		wp_localize_script($scriptHandle, 'abp01Settings', array(
 			'showTeaser' => $settings->getShowTeaser() ? 'true' : 'false', 
@@ -342,7 +358,11 @@ class Abp01_Includes {
 			'mapShowMagnifyingGlass' => $settings->getShowMagnifyingGlass() ? 'true' : 'false', 
 			'mapAllowTrackDownloadUrl' => $settings->getAllowTrackDownload() ? 'true' : 'false',
 			'mapShowScale' => $settings->getShowMapScale() ? 'true' : 'false',
-			'mapTileLayer' => $tileLayers[0]
+			'mapTileLayer' => array(
+				'url' => esc_js($mainTileLayer->url),
+				'attributionTxt' => esc_js($mainTileLayer->attributionTxt),
+				'attributionUrl' => esc_js($mainTileLayer->attributionUrl)
+			)
 		));
 	}
 

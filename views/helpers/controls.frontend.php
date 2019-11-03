@@ -43,35 +43,48 @@ if (!function_exists('abp01_extract_value_from_frontend_data')) {
     }
 }
 
+if (!function_exists('abp01_format_info_item_value')) {
+    function abp01_format_info_item_value($value, $suffix) {
+        $fieldValue = '';
+
+        if (!empty($value)) {
+            if (is_array($value)) {
+                $i = 0;
+                $k = count($value);
+                foreach ($value as $v) {
+                    $fieldValue .= esc_html(is_object($v) ? $v->label : $v);
+                    if ($i ++ < $k - 1) {
+                        $fieldValue .= ', ';
+                    }
+                }
+            } else {
+                $fieldValue .= esc_html(is_object($value) ? $value->label : $value);
+            }
+            if (!empty($suffix)) {
+                $fieldValue .= ' ' . $suffix;
+            }
+        }
+
+        return $fieldValue;
+    }
+}
+
 if (!function_exists('abp01_display_info_item')) {
     function abp01_display_info_item($data, $field, $fieldLabel, $suffix = '') {
         static $itemIndex = 0;
         $value = abp01_extract_value_from_frontend_data($data, $field);
         if (!empty($value)) {
-            $output = '<li class="abp01-info-item ' . $field . ' ' . ($itemIndex % 2 == 0 ? 'abp01-item-even' : 'abp01-item-odd') . '">';
-            $output .= '<span class="abp01-info-label">' . $fieldLabel . ':</span>';
-            $output .= '<span class="abp01-info-value">';
-            if (is_array($value)) {
-                $i = 0;
-                $k = count($value);
-                foreach ($value as $v) {
-                    $output .= (is_object($v) ? $v->label : $v);
-                    if ($i ++ < $k - 1) {
-                        $output .= ', ';
-                    }
-                }
-            } else {
-                $output .= (is_object($value) ? $value->label : $value);
-            }
-            if (!empty($suffix)) {
-                $output .= ' ' . $suffix;
-            }
-            $output .= '</span>';
-            $output .= '</li>';
+            $fieldValue = abp01_format_info_item_value($value, $suffix);
+            $itemOutput = ('<li class="abp01-info-item ' . $field . ' ' . ($itemIndex % 2 == 0 ? 'abp01-item-even' : 'abp01-item-odd') . '">')
+                . ('<span class="abp01-info-label">' . esc_html($fieldLabel) . ':</span>')
+                . ('<span class="abp01-info-value">' . esc_html($fieldValue) . '</span>')
+                . '</li>';
+
             $itemIndex ++;
         } else {
-            $output = '';
+            $itemOutput = '';
         }
-        echo $output;
+
+        echo $itemOutput;
     }
 }

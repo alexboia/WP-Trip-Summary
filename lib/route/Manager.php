@@ -34,14 +34,27 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Route_Manager {
+	/**
+	 * @var Abp01_Route_Manager The route manager singleton instance
+	 * */
 	private static $_instance = null;
 
 	private $_lastError = null;
 
+	/**
+	 * @var Abp01_Env The environment
+	 * */
 	private $_env = null;
 
+	/**
+	 * @var Abp01_Route_SphericalMercator The projection used
+	 * */
 	private  $_proj = null;
 
+	/**
+	 * Retrieves the route manager singleton instance
+	 * @return Abp01_Route_Manager
+	 * */
 	public static function getInstance() {
 		if (self::$_instance == null) {
 			self::$_instance = new self();

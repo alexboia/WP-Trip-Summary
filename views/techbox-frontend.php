@@ -32,31 +32,31 @@
 ?>
 
 <script type="text/javascript">
-    var abp01_imgBase = '<?php echo $data->imgBaseUrl; ?>';
-    var abp01_ajaxUrl = '<?php echo $data->ajaxUrl; ?>';
-    var abp01_ajaxGetTrackAction = '<?php echo $data->ajaxGetTrackAction; ?>';
-	var abp01_downloadTrackAction = '<?php echo $data->downloadTrackAction ?>';
+    var abp01_imgBase = '<?php echo esc_js($data->imgBaseUrl); ?>';
+    var abp01_ajaxUrl = '<?php echo esc_js($data->ajaxUrl); ?>';
+    var abp01_ajaxGetTrackAction = '<?php echo esc_js($data->ajaxGetTrackAction); ?>';
+	var abp01_downloadTrackAction = '<?php echo esc_js($data->downloadTrackAction); ?>';
 
     var abp01_hasInfo = <?php echo $data->info->exists ? 'true' : 'false' ?>;
     var abp01_hasTrack = <?php echo $data->track->exists ? 'true' : 'false' ?>;
     var abp01_postId = <?php echo $data->postId; ?>;
-    var abp01_nonceGet = '<?php echo $data->nonceGet; ?>';
-	var abp01_nonceDownload = '<?php echo $data->nonceDownload ?>';
+    var abp01_nonceGet = '<?php echo esc_js($data->nonceGet); ?>';
+	var abp01_nonceDownload = '<?php echo esc_js($data->nonceDownload); ?>';
 </script>
 
 <?php if ($data && ($data->info->exists || $data->track->exists)): ?>
     <div id="abp01-techbox-frontend" class="abp01-techbox-frontend">
         <div id="abp01-techbox-title" class="abp01-techbox-title">
-            <span class="abp01-techbox-icon"></span><?php echo __('Trip summary', 'abp01-trip-summary'); ?>
+            <span class="abp01-techbox-icon"></span><?php echo esc_html__('Trip summary', 'abp01-trip-summary'); ?>
         </div>
         <div id="abp01-techbox-wrapper" class="abp01-techbox-wrapper">
             <?php if ($data->info->exists && $data->track->exists): ?>
                 <ul id="abp01-techbox-tabs" class="abp01-techbox-tabs">
                     <li id="abp01-tab-info" class="abp01-tab abp01-tab-info <?php echo !$data->track->exists ? 'abp01-full-tab' : ''; ?>">
-                        <a href="#abp01-techbox-info"><span class="dashicons dashicons-index-card"></span><?php echo __('Prosaic details', 'abp01-trip-summary'); ?></a>
+                        <a href="#abp01-techbox-info"><span class="dashicons dashicons-index-card"></span><?php echo esc_html__('Prosaic details', 'abp01-trip-summary'); ?></a>
                     </li>
                     <li id="abp01-tab-map" class="abp01-tab abp01-tab-map <?php echo !$data->info->exists ? 'abp01-full-tab' : ''; ?>">
-                        <a href="#abp01-techbox-map"><span class="dashicons dashicons-chart-line"></span><?php echo __('Map', 'abp01-trip-summary'); ?></a>
+                        <a href="#abp01-techbox-map"><span class="dashicons dashicons-chart-line"></span><?php echo esc_html__('Map', 'abp01-trip-summary'); ?></a>
                     </li>
                 </ul>
             <?php endif; ?>
@@ -98,8 +98,8 @@
                         <div id="abp01-map-container" class="abp01-map-container" data-role="map-container">
                             <div id="abp01-map" class="abp01-map" data-role="map-holder"></div>
                             <div id="abp01-map-retry-container" class="abp01-map-retry-container" style="display: none;">
-                                <div id="abp01-map-retry-message" class="abp01-map-retry-message"><?php echo __('The map could not be loaded due to either a network error or a possible server issue.', 'abp01-trip-summary'); ?></div>
-                                <a id="abp01-map-retry" class="abp01-map-retry" data-role="map-retry" href="javascript:void(0)"><?php echo __('Retry', 'abp01-trip-summary'); ?></a>
+                                <div id="abp01-map-retry-message" class="abp01-map-retry-message"><?php echo esc_html__('The map could not be loaded due to either a network error or a possible server issue.', 'abp01-trip-summary'); ?></div>
+                                <a id="abp01-map-retry" class="abp01-map-retry" data-role="map-retry" href="javascript:void(0)"><?php echo esc_html__('Retry', 'abp01-trip-summary'); ?></a>
                             </div>
                         </div>
                     </div>
@@ -107,7 +107,7 @@
             </div>
             <?php if ($data->settings->showTeaser): ?>
 	            <div id="abp01-techbox-content-skip-teaser" class="abp01-techbox-content-skip-teaser" style="display: none;">
-	                <a id="abp01-techbox-content-skip-teaser-action" href="javascript:void(0)"><?php echo $data->settings->bottomTeaserText; ?></a>
+	                <a id="abp01-techbox-content-skip-teaser-action" href="javascript:void(0)"><?php echo esc_html($data->settings->bottomTeaserText); ?></a>
 	            </div>
             <?php endif; ?>
         </div>
