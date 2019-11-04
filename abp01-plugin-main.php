@@ -443,14 +443,14 @@ function abp01_get_frontend_template_locations() {
  */
 function abp01_get_lookup_type_label($type) {
 	$translations = array(
-		Abp01_Lookup::BIKE_TYPE => __('Bike type', 'abp01-trip-summary'),
-		Abp01_Lookup::DIFFICULTY_LEVEL => __('Difficulty level', 'abp01-trip-summary'),
-		Abp01_Lookup::PATH_SURFACE_TYPE => __('Path surface type', 'abp01-trip-summary'),
-		Abp01_Lookup::RAILROAD_ELECTRIFICATION => __('Railroad electrification status', 'abp01-trip-summary'),
-		Abp01_Lookup::RAILROAD_LINE_STATUS => __('Railroad line status', 'abp01-trip-summary'),
-		Abp01_Lookup::RAILROAD_LINE_TYPE => __('Railroad line type', 'abp01-trip-summary'),
-		Abp01_Lookup::RAILROAD_OPERATOR => __('Railroad operators', 'abp01-trip-summary'),
-		Abp01_Lookup::RECOMMEND_SEASONS => __('Recommended seasons', 'abp01-trip-summary')
+		Abp01_Lookup::BIKE_TYPE => esc_html__('Bike type', 'abp01-trip-summary'),
+		Abp01_Lookup::DIFFICULTY_LEVEL => esc_html__('Difficulty level', 'abp01-trip-summary'),
+		Abp01_Lookup::PATH_SURFACE_TYPE => esc_html__('Path surface type', 'abp01-trip-summary'),
+		Abp01_Lookup::RAILROAD_ELECTRIFICATION => esc_html__('Railroad electrification status', 'abp01-trip-summary'),
+		Abp01_Lookup::RAILROAD_LINE_STATUS => esc_html__('Railroad line status', 'abp01-trip-summary'),
+		Abp01_Lookup::RAILROAD_LINE_TYPE => esc_html__('Railroad line type', 'abp01-trip-summary'),
+		Abp01_Lookup::RAILROAD_OPERATOR => esc_html__('Railroad operators', 'abp01-trip-summary'),
+		Abp01_Lookup::RECOMMEND_SEASONS => esc_html__('Recommended seasons', 'abp01-trip-summary')
 	);
 	return isset($translations[$type]) ? $translations[$type] : null;
 }
@@ -461,40 +461,41 @@ function abp01_get_lookup_type_label($type) {
  */
 function abp01_get_main_admin_script_translations() {
 	return array(
-		'btnClearInfo' => __('Clear info', 'abp01-trip-summary'), 
-		'btnClearTrack' => __('Clear track', 'abp01-trip-summary'), 
-		'lblPluploadFileTypeSelector' => __('GPX files', 'abp01-trip-summary'), 
-		'lblGeneratingPreview' => __('Generating preview. Please wait...', 'abp01-trip-summary'), 
-		'lblTrackUploadingWait' => __('Uploading track', 'abp01-trip-summary'), 
-		'lblTrackUploaded' => __('The track has been uploaded and saved successfully', 'abp01-trip-summary'), 
-		'lblTypeBiking' => __('Biking', 'abp01-trip-summary'), 'lblTypeHiking' => __('Hiking', 'abp01-trip-summary'), 
-		'lblTypeTrainRide' => __('Train ride', 'abp01-trip-summary'), 
-		'lblClearingTrackWait' => __('Clearing track. Please wait...', 'abp01-trip-summary'), 
-		'lblTrackClearOk' => __('The track has been successfully cleared', 'abp01-trip-summary'), 
-		'lblTrackClearFail' => __('The data could not be updated', 'abp01-trip-summary'), 
-		'lblTrackClearFailNetwork' => __('The data could not be updated due to a possible network error or an internal server issue', 'abp01-trip-summary'), 
-		'lblSavingDataWait' => __('Saving data. Please wait...', 'abp01-trip-summary'), 
-		'lblDataSaveOk' => __('The data has been saved', 'abp01-trip-summary'), 
-		'lblDataSaveFail' => __('The data could not be saved', 'abp01-trip-summary'), 
-		'lblDataSaveFailNetwork' => __('The data could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'), 
-		'lblClearingInfoWait' => __('Clearing trip info. Please wait...', 'abp01-trip-summary'), 
-		'lblClearInfoOk' => __('The trip info has been cleared', 'abp01-trip-summary'), 
-		'lblClearInfoFail' => __('The trip info could not be cleared', 'abp01-trip-summary'), 
-		'lblClearInfoFailNetwork' => __('The trip info could not be cleared due to a possible network error or an internal server issue', 'abp01-trip-summary'), 
-		'errPluploadTooLarge' => __('The selected file is too large. Maximum allowed size is 10MB', 'abp01-trip-summary'), 
-		'errPluploadFileType' => __('The selected file type is not valid. Only GPX files are allowed', 'abp01-trip-summary'), 
-		'errPluploadIoError' => __('The file could not be read', 'abp01-trip-summary'), 
-		'errPluploadSecurityError' => __('The file could not be read', 'abp01-trip-summary'), 
-		'errPluploadInitError' => __('The uploader could not be initialized', 'abp01-trip-summary'), 
-		'errPluploadHttp' => __('The file could not be uploaded', 'abp01-trip-summary'), 
-		'errServerUploadFileType' => __('The selected file type is not valid. Only GPX files are allowed', 'abp01-trip-summary'), 
-		'errServerUploadTooLarge' => __('The selected file is too large. Maximum allowed size is 10MB', 'abp01-trip-summary'), 
-		'errServerUploadNoFile' => __('No file was uploaded', 'abp01-trip-summary'), 
-		'errServerUploadInternal' => __('The file could not be uploaded due to a possible internal server issue', 'abp01-trip-summary'), 
-		'errServerUploadFail' => __('The file could not be uploaded', 'abp01-trip-summary'),
-		'selectBoxPlaceholder' => __('Choose options', 'abp01-trip-summary'),
-		'selectBoxCaptionFormat' => __('{0} selected', 'abp01-trip-summary'),
-		'selectBoxSelectAllText' => __('Select all', 'abp01-trip-summary')
+		'btnClearInfo' => esc_html__('Clear info', 'abp01-trip-summary'), 
+		'btnClearTrack' => esc_html__('Clear track', 'abp01-trip-summary'), 
+		'lblPluploadFileTypeSelector' => esc_html__('GPX files', 'abp01-trip-summary'), 
+		'lblGeneratingPreview' => esc_html__('Generating preview. Please wait...', 'abp01-trip-summary'), 
+		'lblTrackUploadingWait' => esc_html__('Uploading track', 'abp01-trip-summary'), 
+		'lblTrackUploaded' => esc_html__('The track has been uploaded and saved successfully', 'abp01-trip-summary'), 
+		'lblTypeBiking' => esc_html__('Biking', 'abp01-trip-summary'), 
+		'lblTypeHiking' => esc_html__('Hiking', 'abp01-trip-summary'), 
+		'lblTypeTrainRide' => esc_html__('Train ride', 'abp01-trip-summary'), 
+		'lblClearingTrackWait' => esc_html__('Clearing track. Please wait...', 'abp01-trip-summary'), 
+		'lblTrackClearOk' => esc_html__('The track has been successfully cleared', 'abp01-trip-summary'), 
+		'lblTrackClearFail' => esc_html__('The data could not be updated', 'abp01-trip-summary'), 
+		'lblTrackClearFailNetwork' => esc_html__('The data could not be updated due to a possible network error or an internal server issue', 'abp01-trip-summary'), 
+		'lblSavingDataWait' => esc_html__('Saving data. Please wait...', 'abp01-trip-summary'), 
+		'lblDataSaveOk' => esc_html__('The data has been saved', 'abp01-trip-summary'), 
+		'lblDataSaveFail' => esc_html__('The data could not be saved', 'abp01-trip-summary'), 
+		'lblDataSaveFailNetwork' => esc_html__('The data could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'), 
+		'lblClearingInfoWait' => esc_html__('Clearing trip info. Please wait...', 'abp01-trip-summary'), 
+		'lblClearInfoOk' => esc_html__('The trip info has been cleared', 'abp01-trip-summary'), 
+		'lblClearInfoFail' => esc_html__('The trip info could not be cleared', 'abp01-trip-summary'), 
+		'lblClearInfoFailNetwork' => esc_html__('The trip info could not be cleared due to a possible network error or an internal server issue', 'abp01-trip-summary'), 
+		'errPluploadTooLarge' => esc_html__('The selected file is too large. Maximum allowed size is 10MB', 'abp01-trip-summary'), 
+		'errPluploadFileType' => esc_html__('The selected file type is not valid. Only GPX files are allowed', 'abp01-trip-summary'), 
+		'errPluploadIoError' => esc_html__('The file could not be read', 'abp01-trip-summary'), 
+		'errPluploadSecurityError' => esc_html__('The file could not be read', 'abp01-trip-summary'), 
+		'errPluploadInitError' => esc_html__('The uploader could not be initialized', 'abp01-trip-summary'), 
+		'errPluploadHttp' =>  esc_html__('The file could not be uploaded', 'abp01-trip-summary'), 
+		'errServerUploadFileType' =>  esc_html__('The selected file type is not valid. Only GPX files are allowed', 'abp01-trip-summary'), 
+		'errServerUploadTooLarge' =>  esc_html__('The selected file is too large. Maximum allowed size is 10MB', 'abp01-trip-summary'), 
+		'errServerUploadNoFile' =>  esc_html__('No file was uploaded', 'abp01-trip-summary'), 
+		'errServerUploadInternal' =>  esc_html__('The file could not be uploaded due to a possible internal server issue', 'abp01-trip-summary'), 
+		'errServerUploadFail' =>  esc_html__('The file could not be uploaded', 'abp01-trip-summary'),
+		'selectBoxPlaceholder' => esc_html__('Choose options', 'abp01-trip-summary'),
+		'selectBoxCaptionFormat' => esc_html__('{0} selected', 'abp01-trip-summary'),
+		'selectBoxSelectAllText' => esc_html__('Select all', 'abp01-trip-summary')
 	);
 }
 
@@ -504,10 +505,10 @@ function abp01_get_main_admin_script_translations() {
  */
 function abp01_get_settings_admin_script_translations() {
 	return array(
-		'errSaveFailNetwork' => __('The settings could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'), 
-		'errSaveFailGeneric' => __('The settings could not be saved due to a possible internal server issue', 'abp01-trip-summary'), 
-		'msgSaveOk' => __('Settings successfully saved', 'abp01-trip-summary'), 
-		'msgSaveWorking' => __('Saving settings. Please wait...', 'abp01-trip-summary')
+		'errSaveFailNetwork' => esc_html__('The settings could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'), 
+		'errSaveFailGeneric' => esc_html__('The settings could not be saved due to a possible internal server issue', 'abp01-trip-summary'), 
+		'msgSaveOk' => esc_html__('Settings successfully saved', 'abp01-trip-summary'), 
+		'msgSaveWorking' => esc_html__('Saving settings. Please wait...', 'abp01-trip-summary')
 	);
 }
 
@@ -517,18 +518,18 @@ function abp01_get_settings_admin_script_translations() {
  */
 function abp01_get_lookup_admin_script_translations() {
 	return array(
-		'msgWorking' => __('Working. Please wait...', 'abp01-trip-summary'),
-		'msgSaveOk' => __('Item successfully saved', 'abp01-trip-summary'),
-		'addItemTitle' => __('Add new item', 'abp01-trip-summary'),
-		'editItemTitle' => __('Modify item', 'abp01-trip-summary'),
-		'errFailNetwork' => __('The item could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'),
-		'errFailGeneric' => __('The item could not be saved due to a possible internal server issue', 'abp01-trip-summary'),
-		'ttlConfirmDelete' => __('Confirm item removal', 'abp01-trip-summary'),
-		'errDeleteFailedNetwork' => __('The item could not be deleted due to a possible network error or an internal server issue', 'abp01-trip-summary'),
-		'errDeleteFailedGeneric' => __('The item could not be deleted due to a possible internal server issue', 'abp01-trip-summary'),
-		'msgDeleteOk' => __('The item has been successfully deleted', 'abp01-trip-summary'),
-		'errListingFailNetwork' => __('The lookup items could not be loaded due to a possible network error or an internal server issue', 'abp01-trip-summary'),
-		'errListingFailGeneric' => __('The lookup items could not be loaded', 'abp01-trip-summary')
+		'msgWorking' => esc_html__('Working. Please wait...', 'abp01-trip-summary'),
+		'msgSaveOk' => esc_html__('Item successfully saved', 'abp01-trip-summary'),
+		'addItemTitle' => esc_html__('Add new item', 'abp01-trip-summary'),
+		'editItemTitle' => esc_html__('Modify item', 'abp01-trip-summary'),
+		'errFailNetwork' => esc_html__('The item could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'),
+		'errFailGeneric' => esc_html__('The item could not be saved due to a possible internal server issue', 'abp01-trip-summary'),
+		'ttlConfirmDelete' => esc_html__('Confirm item removal', 'abp01-trip-summary'),
+		'errDeleteFailedNetwork' => esc_html__('The item could not be deleted due to a possible network error or an internal server issue', 'abp01-trip-summary'),
+		'errDeleteFailedGeneric' => esc_html__('The item could not be deleted due to a possible internal server issue', 'abp01-trip-summary'),
+		'msgDeleteOk' => esc_html__('The item has been successfully deleted', 'abp01-trip-summary'),
+		'errListingFailNetwork' => esc_html__('The lookup items could not be loaded due to a possible network error or an internal server issue', 'abp01-trip-summary'),
+		'errListingFailGeneric' => esc_html__('The lookup items could not be loaded', 'abp01-trip-summary')
 	);
 }
 
@@ -540,11 +541,11 @@ function abp01_get_installation_error_translations() {
 	$env = Abp01_Env::getInstance();
 	load_plugin_textdomain('abp01-trip-summary', false, dirname(plugin_basename(__FILE__)) . '/lang/');
 	return array(
-		Abp01_Installer::INCOMPATIBLE_PHP_VERSION => sprintf(__('Minimum required PHP version is %s', 'abp01-trip-summary'), $env->getRequiredPhpVersion()), 
-		Abp01_Installer::INCOMPATIBLE_WP_VERSION => sprintf(__('Minimum required WP version is %s', 'abp01-trip-summary'), $env->getRequiredWpVersion()), 
-		Abp01_Installer::SUPPORT_LIBXML_NOT_FOUND => __('LIBXML support was not found on your system', 'abp01-trip-summary'), 
-		Abp01_Installer::SUPPORT_MYSQLI_NOT_FOUND => __('Mysqli extension was not found on your system or is not fully compatible', 'abp01-trip-summary'), 
-		Abp01_Installer::SUPPORT_MYSQL_SPATIAL_NOT_FOUND => __('MySQL spatial support was not found on your system', 'abp01-trip-summary')
+		Abp01_Installer::INCOMPATIBLE_PHP_VERSION => sprintf(esc_html__('Minimum required PHP version is %s', 'abp01-trip-summary'), $env->getRequiredPhpVersion()), 
+		Abp01_Installer::INCOMPATIBLE_WP_VERSION => sprintf(esc_html__('Minimum required WP version is %s', 'abp01-trip-summary'), $env->getRequiredWpVersion()), 
+		Abp01_Installer::SUPPORT_LIBXML_NOT_FOUND => esc_html__('LIBXML support was not found on your system', 'abp01-trip-summary'), 
+		Abp01_Installer::SUPPORT_MYSQLI_NOT_FOUND => esc_html__('Mysqli extension was not found on your system or is not fully compatible', 'abp01-trip-summary'), 
+		Abp01_Installer::SUPPORT_MYSQL_SPATIAL_NOT_FOUND => esc_html__('MySQL spatial support was not found on your system', 'abp01-trip-summary')
 	);
 }
 
@@ -622,8 +623,8 @@ function abp01_get_admin_lookup_url($lookupType) {
 function abp01_create_admin_menu() {
 	//add main menu entry
 	add_menu_page(
-		__('Trip Summary Settings', 'abp01-trip-summary'),  //page title
-		__('Trip Summary', 'abp01-trip-summary'), //menu title
+		esc_html__('Trip Summary Settings', 'abp01-trip-summary'),  //page title
+		esc_html__('Trip Summary', 'abp01-trip-summary'), //menu title
 			Abp01_Auth::CAP_MANAGE_TOUR_SUMMARY, //required page capability
 			ABP01_MAIN_MENU_SLUG, //menu slug - unique handle for this menu
 				'abp01_admin_settings_page', //callback for rendering the page
@@ -633,8 +634,8 @@ function abp01_create_admin_menu() {
 	//add submenu entries - the submenu settings page
 	add_submenu_page(
 		ABP01_MAIN_MENU_SLUG, 
-			__('Trip Summary Settings', 'abp01-trip-summary'), 
-			__('Settings', 'abp01-trip-summary'), 
+			esc_html__('Trip Summary Settings', 'abp01-trip-summary'), 
+			esc_html__('Settings', 'abp01-trip-summary'), 
 				Abp01_Auth::CAP_MANAGE_TOUR_SUMMARY, 
 				ABP01_MAIN_MENU_SLUG,
 					'abp01_admin_settings_page');
@@ -642,15 +643,15 @@ function abp01_create_admin_menu() {
 	//add submenu entries - loookup data management apge
 	add_submenu_page(
 		ABP01_MAIN_MENU_SLUG, 
-			__('Lookup data management', 'abp01-trip-summary'), 
-			__('Lookup data management', 'abp01-trip-summary'), 
+			esc_html__('Lookup data management', 'abp01-trip-summary'), 
+			esc_html__('Lookup data management', 'abp01-trip-summary'), 
 				Abp01_Auth::CAP_MANAGE_TOUR_SUMMARY, 
 				ABP01_LOOKUP_SUBMENU_SLUG, 
 					'abp01_admin_lookup_page');
 	
 	add_submenu_page(ABP01_MAIN_MENU_SLUG, 
-		__('Help', 'abp01-trip-summary'), 
-		__('Help', 'abp01-trip-summary'), 
+		esc_html__('Help', 'abp01-trip-summary'), 
+		esc_html__('Help', 'abp01-trip-summary'), 
 			Abp01_Auth::CAP_MANAGE_TOUR_SUMMARY, 
 			ABP01_HELP_SUBMENU_SLUG, 
 				'abp01_admin_help_page');
@@ -721,7 +722,7 @@ function abp01_activate() {
 	$test = $installer->canBeInstalled();
 	if ($test !== 0) {
 		$errors = abp01_get_installation_error_translations();
-		$message = isset($errors[$test]) ? $errors[$test] : __('The plugin cannot be installed on your system', 'abp01-trip-summary');
+		$message = isset($errors[$test]) ? $errors[$test] : esc_html__('The plugin cannot be installed on your system', 'abp01-trip-summary');
 		deactivate_plugins(plugin_basename(__FIILE__));
 		wp_die($message);
 	} else if ($test === false) {
@@ -1078,7 +1079,7 @@ function abp01_save_admin_settings_page_save() {
 	//check that given unit system is supported
 	$unitSystem = Abp01_InputFiltering::getFilteredPOSTValue('unitSystem');
 	if (!Abp01_UnitSystem::isSupported($unitSystem)) {
-		$response->message = __('Unsupported unit system', 'abp01-trip-summary');
+		$response->message = esc_html__('Unsupported unit system', 'abp01-trip-summary');
 		abp01_send_json($response);
 	}
 
@@ -1090,21 +1091,21 @@ function abp01_save_admin_settings_page_save() {
 
 	//tile layer URL must not be empty
 	if (empty($tileLayer->url)) {
-		$response->message = __('Tile layer URL is required', 'abp01-trip-summary');
+		$response->message = esc_html__('Tile layer URL is required', 'abp01-trip-summary');
 		abp01_send_json($response);
 	}
 
 	//check tile layer URL format
 	$tileLayerUrlValidator = new Abp01_Validate_TileLayerUrl();
 	if (!$tileLayerUrlValidator->validate($tileLayer->url)) {
-		$response->message = __('Tile layer URL does not have a valid format', 'abp01-trip-summary');
+		$response->message = esc_html__('Tile layer URL does not have a valid format', 'abp01-trip-summary');
 		abp01_send_json($response);
 	}
 
 	//check tile layer attribution URL; empty values are allowed
 	$urlValidator = new Abp01_Validate_Url(true);
 	if (!$urlValidator->validate($tileLayer->attributionUrl)) {
-		$response->message = __('Tile layer attribution URL does not have a valid format', 'abp01-trip-summary');
+		$response->message = esc_html__('Tile layer attribution URL does not have a valid format', 'abp01-trip-summary');
 		abp01_send_json($response);
 	}
 
@@ -1125,7 +1126,7 @@ function abp01_save_admin_settings_page_save() {
 	if ($settings->saveSettings()) {
 		$response->success = true;
 	} else {
-		$response->message = __('The settings could not be saved. Please try again.', 'abp01-trip-summary');
+		$response->message = esc_html__('The settings could not be saved. Please try again.', 'abp01-trip-summary');
 	}
 
 	abp01_send_json($response);
@@ -1280,7 +1281,7 @@ function abp01_add_lookup_item() {
 
 	//the default label must not be empty
 	if (empty($defaultLabel)) {
-		$response->message = __('The default label is mandatory', 'abp01-trip-summary');
+		$response->message = esc_html__('The default label is mandatory', 'abp01-trip-summary');
 		abp01_send_json($response);
 	}
 	
@@ -1290,7 +1291,7 @@ function abp01_add_lookup_item() {
 
 	//check if the item has been successfully created
 	if ($item == null) {
-		$response->message = __('The lookup item could not be created', 'abp01-trip-summary');
+		$response->message = esc_html__('The lookup item could not be created', 'abp01-trip-summary');
 		abp01_send_json($response);
 	}
 
@@ -1301,7 +1302,7 @@ function abp01_add_lookup_item() {
 			$item->label = $translatedLabel;
 			$item->hasTranslation = true;
 		} else {
-			$response->message = __('The lookup item has been created, but the translation could not be saved', 'abp01-trip-summary');
+			$response->message = esc_html__('The lookup item has been created, but the translation could not be saved', 'abp01-trip-summary');
 		}
 	} else {
 		$response->success = true;
@@ -1343,7 +1344,7 @@ function abp01_edit_lookup_item() {
 
 	//the default label must not be empty
 	if (empty($defaultLabel)) {
-		$response->message = __('The default label is mandatory', 'abp01-trip-summary');
+		$response->message = esc_html__('The default label is mandatory', 'abp01-trip-summary');
 		abp01_send_json($response);
 	}
 
@@ -1365,7 +1366,7 @@ function abp01_edit_lookup_item() {
 
 	//check overall result
 	if (!$modifyItemOk || !$modifyItemTranslationOk) {
-		$response->message = __('The lookup item could not be modified', 'abp01-trip-summary');
+		$response->message = esc_html__('The lookup item could not be modified', 'abp01-trip-summary');
 	} else {
 		$response->success = true;
 	}
@@ -1410,20 +1411,20 @@ function abp01_delete_lookup_item() {
 		if ($lookup->deleteLookupItemTranslation($id)) {
 			$response->success = true;
 		} else {
-			$response->message = __('The item translation could not be deleted.', 'abp01-trip-summary');
+			$response->message = esc_html__('The item translation could not be deleted.', 'abp01-trip-summary');
 		}
 	} else {
 		//otherwise, delete the entire item, all translations included
 		//however, check first whether or not the item is still in use
 		if ($lookup->isLookupInUse($id)) {
-			$response->message = __('The item could not be deleted because it is still in use', 'abp01-trip-summary');
+			$response->message = esc_html__('The item could not be deleted because it is still in use', 'abp01-trip-summary');
 			abp01_send_json($response);
 		}
 	
 		if ($lookup->deleteLookup($id)) {
 			$response->success = true;
 		} else {
-			$response->message = __('The item could not be deleted', 'abp01-trip-summary');
+			$response->message = esc_html__('The item could not be deleted', 'abp01-trip-summary');
 		}
 	}
 
@@ -1474,7 +1475,7 @@ function abp01_save_info() {
 	if ($manager->saveRouteInfo($postId, get_current_user_id(), $info)) {
 		$response->success = true;
 	} else {
-		$response->message = __('The data could not be saved due to a possible database error', 'abp01-trip-summary');
+		$response->message = esc_html__('The data could not be saved due to a possible database error', 'abp01-trip-summary');
 	}
 
 	abp01_send_json($response);
@@ -1594,7 +1595,7 @@ function abp01_remove_info() {
 
 	$manager = Abp01_Route_Manager::getInstance();
 	if (!$manager->deleteRouteInfo($postId)) {
-		$response->message = __('The data could not be saved due to a possible database error', 'abp01-trip-summary');
+		$response->message = esc_html__('The data could not be saved due to a possible database error', 'abp01-trip-summary');
 	} else {
 		$response->success = true;
 	}
@@ -1722,10 +1723,10 @@ function abp01_get_track() {
 					$response->success = true;
 					abp01_save_cached_track($postId, $route);
 				} else {
-					$response->message = __('Track file could not be parsed', 'abp01-trip-summary');
+					$response->message = esc_html__('Track file could not be parsed', 'abp01-trip-summary');
 				}
 			} else {
-				$response->message = __('Track file not found or is not readable', 'abp01-trip-summary');
+				$response->message = esc_html__('Track file not found or is not readable', 'abp01-trip-summary');
 			}
 		}
 	} else {
@@ -1828,7 +1829,7 @@ function abp01_remove_track() {
 
 		$response->success = true;
 	} else {
-		$response->message = __('The data could not be updated due to a possible database error', 'abp01-trip-summary');
+		$response->message = esc_html__('The data could not be updated due to a possible database error', 'abp01-trip-summary');
 	}
 
 	abp01_send_json($response);
