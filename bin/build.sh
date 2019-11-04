@@ -73,6 +73,7 @@ copy_source_files() {
 	cp ./abp01-plugin-main.php $WPTS_BUILD_TMPDIR
 	cp ./.htaccess $WPTS_BUILD_TMPDIR
 
+	mkdir "$WPTS_BUILD_TMPDIR/assets" && cp -r ./assets/en_US/* "$WPTS_BUILD_TMPDIR/assets"
 	mkdir "$WPTS_BUILD_TMPDIR/media" && cp -r ./media/* "$WPTS_BUILD_TMPDIR/media"
 	mkdir "$WPTS_BUILD_TMPDIR/views" && cp -r ./views/* "$WPTS_BUILD_TMPDIR/views"
 	mkdir "$WPTS_BUILD_TMPDIR/lib" && cp -r ./lib/* "$WPTS_BUILD_TMPDIR/lib"

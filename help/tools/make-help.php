@@ -34,6 +34,13 @@ require_once dirname(__FILE__)
 require_once dirname(__FILE__) 
 	. '/parsedown-extra/ParsedownExtra.php';
 
+function abp01_get_assets_source_directory() {
+	return realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR 
+		. '..' . DIRECTORY_SEPARATOR 
+		. '..' . DIRECTORY_SEPARATOR
+		. 'assets');
+}
+
 /**
  * Retrieves the base directory where all of the help files are stored, grouped per language subdirectory
  * @return String The base directory
@@ -57,6 +64,10 @@ function abp01_get_markdown_parser() {
 	return $parser;
 }
 
+function abp01_scan_assets_lang_directory($langDirPath) {
+	return glob($langDirPath . DIRECTORY_SEPARATOR . '*.png');
+}
+
 /**
  * Scans a sub-directory that contains language-specific .md help source files.
  * Each file is expressed as an absolute path
@@ -71,6 +82,35 @@ function abp01_scan_lang_directory($langDirPath) {
 	} else {
 		return null;
 	}
+}
+
+function abp01_scan_assets_source_directory() {
+	$copyFiles = array();
+	$scanDir = abp01_get_assets_source_directory();
+	
+	$sourceRootDirectory = dir($scanDir);	
+	if (!$sourceRootDirectory) {
+		return null;
+	}
+	
+	while (($entry = $sourceRootDirectory->read()) !== false) {
+		if ($entry === '.' || $entry === '..') {
+			continue;
+		}
+		
+		$langDir = $scanDir . DIRECTORY_SEPARATOR . $entry;
+		if (!is_dir($langDir)) {
+			continue;			
+		}
+		
+		$convertLangFiles = abp01_scan_assets_lang_directory($langDir);		
+		if (!empty($convertLangFiles) && is_array($convertLangFiles)) {
+			$copyFiles[$entry] = $convertLangFiles;
+		}
+	}
+
+	$sourceRootDirectory->close();	
+	return $copyFiles;
 }
 
 /**
@@ -122,6 +162,31 @@ function abp01_convert_source_file($file) {
 		$fileContents = mb_convert_encoding($fileContents, 'UTF-8');
 	}
 	return $fileContents;
+}
+
+function abp01_copy_screenshots($destinationBase, $lang, $files) {
+	$destination = $destinationBase 
+		. DIRECTORY_SEPARATOR . $lang 
+		. DIRECTORY_SEPARATOR . 'screenshots';
+
+	if (!is_dir($destination)) {
+		@mkdir($destination);
+		if (!is_dir($destination)) {
+			return false;
+		}
+	} else {
+		$rmFiles = glob($destination . DIRECTORY_SEPARATOR . '*');
+		foreach($rmFiles as $rmFile) {
+			if (is_file($rmFile)) {
+				@unlink($rmFile);
+			}
+		}
+	}
+
+	foreach ($files as $file) {
+		$destinationFile = $destination . DIRECTORY_SEPARATOR . basename($file);
+		@copy($file, $destinationFile);
+	}
 }
 
 /**
@@ -199,10 +264,40 @@ function abp01_run_conversion($wrapInHtmlBody) {
 	return '';
 }
 
+function abp01_sync_screenshots() {
+	$screenshots = abp01_scan_assets_source_directory();
+	$destinationBase = abp01_get_help_files_destination();
+
+	if (!is_array($screenshots)) {
+		return 'Screenshots source directory could not be read';
+	}
+	
+	if (empty($screenshots)) {
+		return 'No source screenshots found';
+	}
+
+	foreach ($screenshots as $lang => $langScrenshots) {
+		abp01_copy_screenshots($destinationBase, $lang, $langScrenshots);
+	}
+
+	return '';
+}
+
 if ($argc > 1) {
 	$wrapInHtmlBody = $argv[1] === '--wrap';
 } else {
 	$wrapInHtmlBody = false;
 }
 
-abp01_run_conversion($wrapInHtmlBody);
+$conversionResult = abp01_run_conversion($wrapInHtmlBody);
+if (empty($conversionResult)) {
+	echo 'Conversion successful. Syncing screenshots...' . PHP_EOL;
+	$copyResult = abp01_sync_screenshots();
+	if (empty($copyResult)) {
+		echo 'Screnshots synced successfully.' . PHP_EOL;
+	} else {
+		echo 'Failed to sync screenshots.' . PHP_EOL;
+	}
+} else {
+	echo $conversionResult . PHP_EOL;
+}
