@@ -1,4 +1,4 @@
-![Wp Trip Summary](logo.jpg?raw=true "Wp Trip Summary")
+![Wp Trip Summary](/logo.jpg?raw=true "Wp Trip Summary")
 
 WP-Trip-Summary
 ===============
