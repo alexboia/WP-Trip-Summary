@@ -1,3 +1,5 @@
+![Wp Trip Summary](logo.jpg?raw=true "Wp Trip Summary")
+
 WP-Trip-Summary
 ===============
 A WordPress trip summary plugin. I initially wrote this for my own personal use, as I needed something to help me keep structured information about my trips.

@@ -1,7 +1,7 @@
 === WP Trip Summary ===
 Contributors: alexandruboia
 Donate link: https://github.com/alexboia/WP-Trip-Summary
-Tags: trip-summary,bike-trips,hiking-trips,train-trips,map
+Tags: trip-summary,bike-trips,hiking-trips,train-trips,map,travel-plugin,travel-documentation
 Requires at least: 4.0
 Tested up to: 5.2.4
 Stable tag: 0.2b
