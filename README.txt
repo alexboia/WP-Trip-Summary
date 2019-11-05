@@ -2,7 +2,7 @@
 Contributors: alexandruboia
 Donate link: https://github.com/alexboia/WP-Trip-Summary
 Tags: trip-summary,bike-trips,hiking-trips,train-trips,map,travel-plugin,travel-documentation
-Requires at least: 4.0
+Requires at least: 5.0
 Tested up to: 5.2.4
 Stable tag: 0.2b
 Requires PHP: 5.2.0
@@ -50,9 +50,9 @@ For train rides the following fields are available:
 - Line type.
 
 Requirements:
-- PHP version 5.2.0 or greater;
+- PHP version 5.6.2 or greater;
 - MySQL version 5.7 or greater (with spatial support);
-- Wordpress 4.0 (maybe lower, but I haven't checked it up yet so I'd rather err on the safe side for now) or greater;
+- Wordpress 5.0;
 - libxml extension;
 - SimpleXml extension;
 - mysqli extension;

@@ -67,9 +67,9 @@ Cu alte cuvinte, vă puteți documenta (doar) aceste trei tipuri de plimbări.
 
 Pentru a rula acest modul, aveți nevoie de următoarele:
 
-- PHP versiunea 5.2.0 sau mai recenta;
+- PHP versiunea 5.6.2 sau mai recenta;
 - MySQL versiunea 5.7 sau mai recenta (cu suport pentru date GIS);
-- Wordpress 4.0 sau mai recenta;
+- Wordpress 5.0 sau mai recenta;
 - extensia PHP libxml;
 - extensia PHP SimpleXml;
 - extensia PHP mysqli;
@@ -100,16 +100,15 @@ Modulul WP-Trip-Summary folosește următoarele librării:
 3. [jQuery EasyTabs](https://github.com/JangoSteve/jQuery-EasyTabs) - plug-in jQuery pentru organizarea conținutului pe file/tab-uri
 4. [jQuery.SumoSelect](https://github.com/HemantNegi/jquery.sumoselect) - plug-in de jQuery folosit pentru selecția multiplă pe elementele
 5. [Leaflet](https://github.com/Leaflet/Leaflet) - componenta de hartă
-6. [Lodash](https://github.com/lodash/lodash) - librărie de funcții utile pentru JavaScript
-7. [Machina](https://github.com/ifandelse/machina.js/tree/master) - o mașină de stare implementată în JavaScript
-8. [NProgress](https://github.com/rstacruz/nprogress) - o librărie pentru prezentarea vizuală a progresului diverselor operațiuni
-9. [Toastr](https://github.com/CodeSeven/toastr) - o librărie JavaScript pentru prezentarea vizuală a notificărilor
-10. [URI.js](https://github.com/medialize/URI.js) - o librărie JavaScript pentru construirea și interpretarea URI-urilor
-11. [Visible](https://github.com/teamdf/jquery-visible) - plug-in the jQuery care determină dacă un element se află sau nu în zona vizuală a ferestrei browser-ului
-12. [blockUI](https://github.com/malsup/blockui/) - plug-in de jQuery care permite afișarea ferestrelor modale
-13. [kite](http://code.google.com/p/kite/) - engine de template-uri scris in JavaScript, mic și simplu
-14. [Leaflet.MagnifyingGlass](https://github.com/bbecquet/Leaflet.MagnifyingGlass) - plug-in de Leaflet care adaugă hărții funcționalitatea de lupă: mărirea unei zone individuale de pe hartă
-15. [Leaflet.fullscreen](https://github.com/Leaflet/Leaflet.fullscreen) - plug-in de Leaflet care permite afișarea hărții pe întreg ecranul
+6. [Machina](https://github.com/ifandelse/machina.js/tree/master) - o mașină de stare implementată în JavaScript
+7. [NProgress](https://github.com/rstacruz/nprogress) - o librărie pentru prezentarea vizuală a progresului diverselor operațiuni
+8. [Toastr](https://github.com/CodeSeven/toastr) - o librărie JavaScript pentru prezentarea vizuală a notificărilor
+9. [URI.js](https://github.com/medialize/URI.js) - o librărie JavaScript pentru construirea și interpretarea URI-urilor
+10. [Visible](https://github.com/teamdf/jquery-visible) - plug-in the jQuery care determină dacă un element se află sau nu în zona vizuală a ferestrei browser-ului
+11. [blockUI](https://github.com/malsup/blockui/) - plug-in de jQuery care permite afișarea ferestrelor modale
+12. [kite](http://code.google.com/p/kite/) - engine de template-uri scris in JavaScript, mic și simplu
+13. [Leaflet.MagnifyingGlass](https://github.com/bbecquet/Leaflet.MagnifyingGlass) - plug-in de Leaflet care adaugă hărții funcționalitatea de lupă: mărirea unei zone individuale de pe hartă
+14. [Leaflet.fullscreen](https://github.com/Leaflet/Leaflet.fullscreen) - plug-in de Leaflet care permite afișarea hărții pe întreg ecranul
 
 [Înapoi la Cuprins](#help-root)
 

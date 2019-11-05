@@ -59,9 +59,9 @@ Thus, I developed a module to do just that: upload a GPX track, parse it and dis
 
 ## Requirements
 ### For running the plug-in itself
-1. PHP version 5.2.0 or greater;
+1. PHP version 5.6.2 or greater;
 2. MySQL version 5.7 or greater (with spatial support);
-4. Wordpress 4.0 (maybe lower, but I haven't checked it up yet so I'd rather err on the safe side for now) or greater;
+4. Wordpress 5.0 or greater;
 5. libxml extension;
 6. SimpleXml extension;
 7. mysqli extension;
@@ -105,16 +105,15 @@ All of the above, with the following amendments:
 3. [jQuery EasyTabs](https://github.com/JangoSteve/jQuery-EasyTabs)
 4. [jQuery.SumoSelect](https://github.com/HemantNegi/jquery.sumoselect) - A jQuery Single/Multi Select plugin
 5. [Leaflet](https://github.com/Leaflet/Leaflet) - open source JavaScript library for interactive maps
-6. [Lodash](https://github.com/lodash/lodash) - utility library for JavaScript
-7. [Machina](https://github.com/ifandelse/machina.js/tree/master) - JavaScript state machine
-8. [NProgress](https://github.com/rstacruz/nprogress) - slim JavaScript progress bars
-9. [Toastr](https://github.com/CodeSeven/toastr) - Javascript library for non-blocking notifications
-10. [URI.js](https://github.com/medialize/URI.js) - JavaScript URI builder and parser.
-11. [Visible](https://github.com/teamdf/jquery-visible) - jQuery plugin which allows us to quickly check if an element is within the browsers visual viewport regardless of the window scroll position
-12. [blockUI](https://github.com/malsup/blockui/) - jQuery modal view plug-in
-13. [kite](http://code.google.com/p/kite/) - super small and simple JavaScript template engine
-14. [Leaflet.MagnifyingGlass](https://github.com/bbecquet/Leaflet.MagnifyingGlass) - Leaflet plug-in that adds the magnifying glass feature: enlarging a discrete area on the map
-15. [Leaflet.fullscreen](https://github.com/Leaflet/Leaflet.fullscreen) - Leaflet plug-in that allows the map to be displayed in full-screen mode
+6. [Machina](https://github.com/ifandelse/machina.js/tree/master) - JavaScript state machine
+7. [NProgress](https://github.com/rstacruz/nprogress) - slim JavaScript progress bars
+8. [Toastr](https://github.com/CodeSeven/toastr) - Javascript library for non-blocking notifications
+9. [URI.js](https://github.com/medialize/URI.js) - JavaScript URI builder and parser.
+10. [Visible](https://github.com/teamdf/jquery-visible) - jQuery plugin which allows us to quickly check if an element is within the browsers visual viewport regardless of the window scroll position
+11. [blockUI](https://github.com/malsup/blockui/) - jQuery modal view plug-in
+12. [kite](http://code.google.com/p/kite/) - super small and simple JavaScript template engine
+13. [Leaflet.MagnifyingGlass](https://github.com/bbecquet/Leaflet.MagnifyingGlass) - Leaflet plug-in that adds the magnifying glass feature: enlarging a discrete area on the map
+14. [Leaflet.fullscreen](https://github.com/Leaflet/Leaflet.fullscreen) - Leaflet plug-in that allows the map to be displayed in full-screen mode
 
 ## Licence
 The source code is published under the terms of the [BSD New License](https://opensource.org/licenses/BSD-3-Clause) licence.

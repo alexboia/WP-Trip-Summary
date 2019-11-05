@@ -67,9 +67,9 @@ Depending on the various functions performed by various plug-in components, we c
 
 To run this module, the following technical requirements must be met:
 
-- PHP version 5.2.0 or greater;
+- PHP version 5.6.2 or greater;
 - MySQL version 5.7 or greater (with spatial support);
-- Wordpress 4.0 (maybe lower, but I haven't checked it up yet so I'd rather err on the safe side for now) or greater;
+- Wordpress 5.0;
 - libxml extension;
 - SimpleXml extension;
 - mysqli extension;
@@ -100,16 +100,15 @@ This plug-in would have required much more work on my said without the following
 3. [jQuery EasyTabs](https://github.com/JangoSteve/jQuery-EasyTabs) - jQuery plug-in used to organize content into tabs;
 4. [jQuery.SumoSelect](https://github.com/HemantNegi/jquery.sumoselect) - jQuery plug-in for multiple-selection-enabled dropdown elements;
 5. [Leaflet](https://github.com/Leaflet/Leaflet) - map component;
-6. [Lodash](https://github.com/lodash/lodash) - JavaScript utility library;
-7. [Machina](https://github.com/ifandelse/machina.js/tree/master) - JavaScript state machine;
-8. [NProgress](https://github.com/rstacruz/nprogress) - visual progressbar component;
-9. [Toastr](https://github.com/CodeSeven/toastr) - toast notifications library for JavaScript;
-10. [URI.js](https://github.com/medialize/URI.js) - JavaScript URI manipulation library;
-11. [Visible](https://github.com/teamdf/jquery-visible) - jQuery plug-in for checking if an element is visible within the browser window;
-12. [blockUI](https://github.com/malsup/blockui/) - jQuery plug-in for displaying modal content;
-13. [kite](http://code.google.com/p/kite/) - small JavaScript template engine;
-14. [Leaflet.MagnifyingGlass](https://github.com/bbecquet/Leaflet.MagnifyingGlass) - magnifying glass plug-in for the LeafletJS map component;
-15. [Leaflet.fullscreen](https://github.com/Leaflet/Leaflet.fullscreen) - full-screen plug-in for the LeafletJS map component.
+6. [Machina](https://github.com/ifandelse/machina.js/tree/master) - JavaScript state machine;
+7. [NProgress](https://github.com/rstacruz/nprogress) - visual progressbar component;
+8. [Toastr](https://github.com/CodeSeven/toastr) - toast notifications library for JavaScript;
+9. [URI.js](https://github.com/medialize/URI.js) - JavaScript URI manipulation library;
+10. [Visible](https://github.com/teamdf/jquery-visible) - jQuery plug-in for checking if an element is visible within the browser window;
+11. [blockUI](https://github.com/malsup/blockui/) - jQuery plug-in for displaying modal content;
+12. [kite](http://code.google.com/p/kite/) - small JavaScript template engine;
+13. [Leaflet.MagnifyingGlass](https://github.com/bbecquet/Leaflet.MagnifyingGlass) - magnifying glass plug-in for the LeafletJS map component;
+14. [Leaflet.fullscreen](https://github.com/Leaflet/Leaflet.fullscreen) - full-screen plug-in for the LeafletJS map component.
 
 [Back to the Table of Contents](#help-root)
 

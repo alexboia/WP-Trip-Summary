@@ -173,11 +173,6 @@ class Abp01_Includes {
 			'path' => 'media/js/abp01-icon-button.js',
 			'version' => '0.1'
 		),
-		self::JS_LODASH => array(
-			'path' => 'media/js/3rdParty/lodash/lodash.js', 
-			'inline-setup' => 'window.lodash = _.noConflict();',
-			'version' => '0.3.1'
-		), 
 		self::JS_MACHINA => array(
 			'path' => 'media/js/3rdParty/machina/machina.js', 
 			'version' => '0.3.1',

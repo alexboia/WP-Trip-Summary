@@ -297,7 +297,7 @@ class Abp01_Env {
     }
 
     public function getRequiredPhpVersion() {
-        return '5.2.4';
+        return '5.6.2';
     }
 
     public function getWpVersion() {
@@ -305,7 +305,7 @@ class Abp01_Env {
     }
 
     public function getRequiredWpVersion() {
-        return '4.0';
+        return '5.0';
     }
 
     public function getVersion() {
