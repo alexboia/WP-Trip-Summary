@@ -1,4 +1,4 @@
-![Wp Trip Summary](/logo.png?raw=true "Wp Trip Summary")
+<img align="left" width="210" height="200" src="https://raw.githubusercontent.com/alexboia/WP-Trip-Summary/master/logo.png" />
 
 WP-Trip-Summary
 ===============
