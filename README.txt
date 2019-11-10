@@ -68,13 +68,13 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 
 == Screenshots ==
 
-1. viewer-summary.png
-2. viewer-map.png
-3. viewer-teaser-top.png
-4. admin-edit-map.png
-5. admin-edit-summary-bike.png
-6. admin-edit-summary-empty.png
-7. admin-edit-settings.png
+1. Frontend Viewer - Trip information
+2. Frontend Viewer - Trip Map
+3. Frontend Viewer - Top Teaser
+4. Admin - Trip Editor - Map
+5. Admin - Trip Editor - Trip information
+6. Admin - Trip Editor - No trip type selected yet
+7. Admin - Plug-in settings editor
 
 == Installation ==
 
