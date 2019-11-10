@@ -66,8 +66,8 @@ class EnvTests extends WP_UnitTestCase {
 
 		$this->assertEquals(PHP_VERSION, $env->getPhpVersion());
 		$this->assertEquals(get_bloginfo('version', 'raw'), $env->getWpVersion());
-		$this->assertEquals('5.2.4', $env->getRequiredPhpVersion());
-		$this->assertEquals('4.0', $env->getRequiredWpVersion());
+		$this->assertEquals('5.6.2', $env->getRequiredPhpVersion());
+		$this->assertEquals('5.0', $env->getRequiredWpVersion());
 		$this->assertEquals('0.2b', $env->getVersion());
 	}
 
