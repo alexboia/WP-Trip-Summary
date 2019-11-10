@@ -38,7 +38,7 @@ ensure_out_dirs() {
 	fi
 }
 
-#Regenerate compatibility info
+# Regenerate compatibility info
 make_compat_info() {
 	echo "Building compatibility information files..."
 	./bin/detect-compat-info.sh
@@ -67,13 +67,12 @@ clean_out_dirs() {
 # Copy over all files
 copy_source_files() {
 	echo "Copying all files..."
-	cp ./LICENSE.md $WPTS_BUILD_TMPDIR/LICENSE.txt
-	cp ./README.txt $WPTS_BUILD_TMPDIR/README.txt
-	cp ./index.php $WPTS_BUILD_TMPDIR
-	cp ./abp01-plugin-main.php $WPTS_BUILD_TMPDIR
-	cp ./.htaccess $WPTS_BUILD_TMPDIR
+	cp ./LICENSE.md "$WPTS_BUILD_TMPDIR/license.txt"
+	cp ./README.txt "$WPTS_BUILD_TMPDIR/readme.txt"
+	cp ./index.php "$WPTS_BUILD_TMPDIR"
+	cp ./abp01-plugin-main.php "$WPTS_BUILD_TMPDIR"
+	cp ./.htaccess "$WPTS_BUILD_TMPDIR"
 
-	mkdir "$WPTS_BUILD_TMPDIR/assets" && cp -r ./assets/en_US/* "$WPTS_BUILD_TMPDIR/assets"
 	mkdir "$WPTS_BUILD_TMPDIR/media" && cp -r ./media/* "$WPTS_BUILD_TMPDIR/media"
 	mkdir "$WPTS_BUILD_TMPDIR/views" && cp -r ./views/* "$WPTS_BUILD_TMPDIR/views"
 	mkdir "$WPTS_BUILD_TMPDIR/lib" && cp -r ./lib/* "$WPTS_BUILD_TMPDIR/lib"
@@ -90,7 +89,7 @@ copy_source_files() {
 generate_package() {
 	echo "Generating archive..."
 	pushd $WPTS_BUILD_TMPDIR > /dev/null
-	zip -rT $WPTS_BUILD_OUTDIR/$WPTS_BUILD_NAME ./* > /dev/null
+	zip -rT $WPTS_BUILD_OUTDIR/$WPTS_BUILD_NAME ./ > /dev/null
 	popd > /dev/null
 }
 
