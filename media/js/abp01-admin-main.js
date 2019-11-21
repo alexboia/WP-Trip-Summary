@@ -838,8 +838,8 @@
         $.blockUI({
             message: $ctrlEditor,
             css: {
-                top: ($window.height() - blockUICss.height) / 2,
-                left: ($window.width() - blockUICss.width) / 2,
+                top: 'calc(50% - ' + blockUICss.height/2 + 'px)',
+                left: 'calc(50% - ' + blockUICss.width/2 + 'px)',
                 boxShadow: '0 5px 15px rgba(0, 0, 0, 0.7)'
             },
             onBlock: function() {
