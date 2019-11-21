@@ -61,6 +61,10 @@
         };
     }
 
+    function scrollToTop() {
+        $('body,html').scrollTop(0);
+    }
+
     /**
      * Show or hide the progress indicator
      * @param show boolean Whether to show or hide the progress indicator
@@ -112,9 +116,6 @@
             .addClass(success ? 'notice' : 'error')
             .html('<p>' + message + '</p>')
             .show();
-
-    	//scroll back to the top of the page
-        $('body,html').scrollTop(0);
     }
     
     /**
@@ -132,8 +133,9 @@
      * @return void
      *  */
     function saveSettings() {
+        hideSaveResult();
+        scrollToTop();
     	toggleBusy(true);
-    	hideSaveResult();
     	$.ajax(getFormSaveUrl(), {
             type: 'POST',
             dataType: 'json',
