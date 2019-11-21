@@ -48,7 +48,10 @@ function _get_plugin_base_dir() {
 
 function _manually_install_plugin() {
 	$installer = new Abp01_Installer();
-	$installer->activate();
+	$activated = $installer->activate();
+	if (!$activated) {
+		die('Failed to activate plugin. Cannot continue testing.');
+	}
 }
 
 function _manually_load_plugin() {

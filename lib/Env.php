@@ -140,7 +140,7 @@ class Abp01_Env {
 	 * The current plug-in version
 	 * @var string
 	 */
-    private  $_version = '0.2b';
+    private  $_version = '0.2.0';
 
 	/**
 	 * Gets or creates the singleton instance

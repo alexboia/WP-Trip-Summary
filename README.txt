@@ -4,8 +4,8 @@ Donate link: https://github.com/alexboia/WP-Trip-Summary
 Tags: trip-summary,bike-trips,hiking-trips,train-trips,map,travel-plugin,travel-documentation
 Requires at least: 5.0
 Tested up to: 5.2.4
-Stable tag: 0.2b
-Requires PHP: 5.2.0
+Stable tag: 0.2.0
+Requires PHP: 5.6.2
 License: BSD New License
 License URI: https://opensource.org/licenses/BSD-3-Clause
 
@@ -85,10 +85,18 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 
 == Changelog ==
 
+= 0.2.0 =
+* Fixed An activation issue which occured under certain conditions.
+* Fixed the trip summary editor not being re-centered upon window resize;
+* Fixed the settings page not displaying the progress bar when saving, if the page has been scrolled.
+
 = 0.2b =
 First officially distributed version.
 
 == Upgrade Notice ==
+
+= 0.2.0 =
+This version fixes a plug-in activation issue under certain conditions and other minor bugs.
 
 = 0.2b =
 Use this version as the first officially distributed version.
