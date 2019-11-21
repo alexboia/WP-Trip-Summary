@@ -391,8 +391,19 @@ class Abp01_Installer {
     }
 
     private function _getLookupDefsFile() {
-        $dataDir = $this->_env->getDataDir();
-        $dirName = $this->_env->isDebugMode() ? 'dev/setup' : 'setup';
+        $env = $this->_env;
+        $dataDir = $env->getDataDir();
+
+        if ($env->isDebugMode()) {
+            $dirName = 'dev/setup';
+            $testDir = sprintf('%s/%s', $dataDir, $dirName);
+            if (!is_dir($testDir)) {
+                $dirName = 'setup';
+            }
+        } else {
+            $dirName = 'setup';
+        }
+
         $filePath = sprintf('%s/%s/lookup-definitions.xml', $dataDir, $dirName);
         return $filePath;
     }
