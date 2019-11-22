@@ -131,16 +131,34 @@ class Abp01_Env {
     private $_phpVersion;
 
 	/**
-	 * The path to the data directory. This is where all the tracks are stored.
+	 * The path to the data directory. 
 	 * @var string 
 	 */
     private $_dataDir;
+
+    /**
+     * The path to the root storage directory of the plug-in. This directory hosts all the other storage sub-directories.
+     * @var string
+     */
+    private $_rootStorageDir;
+
+    /**
+     * The path to the tracks storage directory. This is where the original track data files are stored, as uploaded by the users.
+     * @var string
+     */
+    private $_tracksStorageDir;
+
+    /**
+     * The path to the cache storage direcory. This is where all the cached track files are stored.
+     * @var string
+     */
+    private $_cacheStorageDir;
 
 	/**
 	 * The current plug-in version
 	 * @var string
 	 */
-    private  $_version = '0.2.0';
+    private  $_version = '0.2.1';
 
 	/**
 	 * Gets or creates the singleton instance
@@ -158,6 +176,7 @@ class Abp01_Env {
         $this->_initTableNames();
         $this->_initVersions();
         $this->_initDataDir();
+        $this->_initStorageDirs();
     }
 
     public function __clone() {
@@ -189,6 +208,16 @@ class Abp01_Env {
     private function _initDataDir() {
         $pluginRoot = dirname(dirname(__FILE__));
 		$this->_dataDir = wp_normalize_path(sprintf('%s/data', $pluginRoot));
+    }
+
+    private function _initStorageDirs() {
+        $uploadRootDirInfo = wp_upload_dir();
+        $this->_rootStorageDir = wp_normalize_path(sprintf('%s/wp-trip-summary', 
+            $uploadRootDirInfo['basedir']));
+        $this->_tracksStorageDir = wp_normalize_path(sprintf('%s/tracks', 
+            $this->_rootStorageDir));
+        $this->_cacheStorageDir = wp_normalize_path(sprintf('%s/cache', 
+            $this->_rootStorageDir));
     }
 
     private function _initTableNames() {
@@ -290,6 +319,18 @@ class Abp01_Env {
 
     public function getDataDir() {
         return $this->_dataDir;
+    }
+
+    public function getRootStorageDir() {
+        return  $this->_rootStorageDir;
+    }
+
+    public function getTracksStorageDir() {
+        return $this->_tracksStorageDir;
+    }
+
+    public function getCacheStorageDir() {
+        return $this->_cacheStorageDir;
     }
 
     public function getPhpVersion() {

@@ -3,7 +3,7 @@
  * Plugin Name: WP Trip Summary
  * Author: Alexandru Boia
  * Author URI: http://alexboia.net
- * Version: 0.2.0
+ * Version: 0.2.1
  * Description: Aids a travel blogger to add structured information about his tours (biking, hiking, train travels etc.)
  * License: New BSD License
  * Plugin URI: https://github.com/alexboia/WP-Trip-Summary
@@ -271,15 +271,36 @@ function abp01_get_absolute_track_file_path(Abp01_Route_Track $track) {
 }
 
 /**
+ * Ensures that the root storage directory of the plug-in exists and creates if it does not.
+ * @return void
+ */
+function abp01_ensure_root_storage_dir() {
+	$rootStorageDir = Abp01_Env::getInstance()->getRootStorageDir();
+	if (!is_dir($rootStorageDir)) {
+		@mkdir($rootStorageDir);
+	}
+}
+
+/**
  * Compute the full GPX file upload destination file path for the given post ID
  * @param int $postId
+ * @param bool $ensureExists
  * @return string The computed path
  */
-function abp01_get_track_upload_destination($postId) {
-	$env = Abp01_Env::getInstance();
+function abp01_get_track_upload_destination($postId, $ensureExists) {
 	$fileName = sprintf('track-%d.gpx', $postId);
-	$directory = wp_normalize_path($env->getDataDir() . '/storage');
-	return wp_normalize_path($directory . '/' . $fileName);
+	$tracksStorageDir = Abp01_Env::getInstance()->getTracksStorageDir();
+
+	if ($ensureExists) {
+		abp01_ensure_root_storage_dir();
+		if (!is_dir($tracksStorageDir)) {
+			@mkdir($tracksStorageDir);
+		}
+	}
+
+	return is_dir($tracksStorageDir) 
+		? wp_normalize_path($tracksStorageDir . '/' . $fileName) 
+		: null;
 }
 
 /**
@@ -385,11 +406,23 @@ function abp01_can_manage_plugin_settings() {
 /**
  * Computes the GPX track cache file path for the given post ID
  * @param int $postId
+ * @param bool $ensureExists
  * @return string
  */
-function abp01_get_track_cache_file_path($postId) {
-	$path = sprintf('%s/data/cache/track-%d.cache', ABP01_PLUGIN_ROOT, $postId);
-	return wp_normalize_path($path);
+function abp01_get_track_cache_file_path($postId, $ensureExists) {
+	$fileName = sprintf('track-%d.cache', $postId);
+	$cacheStorageDir = Abp01_Env::getInstance()->getCacheStorageDir();
+
+	if ($ensureExists) {
+		abp01_ensure_root_storage_dir();
+		if (!is_dir($cacheStorageDir)) {
+			@mkdir($cacheStorageDir);
+		}
+	}
+
+	return is_dir($cacheStorageDir) 
+		? wp_normalize_path($cacheStorageDir . '/' . $fileName) 
+		: null;
 }
 
 /**
@@ -399,8 +432,10 @@ function abp01_get_track_cache_file_path($postId) {
  * @return void
  */
 function abp01_save_cached_track($postId, Abp01_Route_Track_Document $route) {
-	$path = abp01_get_track_cache_file_path($postId);
-	file_put_contents($path, $route->serializeDocument(), LOCK_EX);
+	$path = abp01_get_track_cache_file_path($postId, true);
+	if (!emtpy($path)) {
+		file_put_contents($path, $route->serializeDocument(), LOCK_EX);
+	}
 }
 
 /**
@@ -409,8 +444,8 @@ function abp01_save_cached_track($postId, Abp01_Route_Track_Document $route) {
  * @return Abp01_Route_Track_Document The deserialized document
  */
 function abp01_get_cached_track($postId) {
-	$path = abp01_get_track_cache_file_path($postId);
-	if (!is_readable($path)) {
+	$path = abp01_get_track_cache_file_path($postId, false);
+	if (empty($path) || !is_readable($path)) {
 		return null;
 	}
 	$contents = file_get_contents($path);
@@ -1626,7 +1661,10 @@ function abp01_upload_track() {
 	abp01_increase_limits();
 
 	$currentUserId = get_current_user_id();
-	$destination = abp01_get_track_upload_destination($postId);
+	$destination = abp01_get_track_upload_destination($postId, true);
+	if (empty($destination)) {
+		die;
+	}
 
 	//detect chunking
 	if (ABP01_TRACK_UPLOAD_CHUNK_SIZE > 0) {
@@ -1663,8 +1701,11 @@ function abp01_upload_track() {
 			$route = $parser->parse($route);
 			if ($route && !$parser->hasErrors()) {
 				$manager = Abp01_Route_Manager::getInstance();
-				$destination = plugin_basename($destination);
-				$track = new Abp01_Route_Track($destination, $route->getBounds(), $route->minAlt, $route->maxAlt);
+				$destination = basename($destination);
+				$track = new Abp01_Route_Track($destination, 
+					$route->getBounds(), 
+					$route->minAlt, 
+					$route->maxAlt);
 				
 				if (!$manager->saveRouteTrack($postId, $currentUserId, $track)) {
 					$result->status = Abp01_Uploader::UPLOAD_INTERNAL_ERROR;
@@ -1769,8 +1810,8 @@ function abp01_download_track() {
     abp01_increase_limits();
 
     //get the file path and check if it's readable
-    $trackFile = abp01_get_track_upload_destination($postId);
-    if (!is_readable($trackFile)) {
+    $trackFile = abp01_get_track_upload_destination($postId, false);
+    if (empty($trackFile) || !is_readable($trackFile)) {
         die;
     }
 
@@ -1812,14 +1853,14 @@ function abp01_remove_track() {
 	$manager = Abp01_Route_Manager::getInstance();
 	if ($manager->deleteRouteTrack($postId)) {
 		//delete track file
-		$trackFile = abp01_get_track_upload_destination($postId);
-		if (file_exists($trackFile)) {
+		$trackFile = abp01_get_track_upload_destination($postId, false);
+		if (!empty($trackFile) && file_exists($trackFile)) {
 			@unlink($trackFile);
 		}
 
 		//delete cached track file
-		$cacheFile = abp01_get_track_cache_file_path($postId);
-		if (file_exists($cacheFile)) {
+		$cacheFile = abp01_get_track_cache_file_path($postId, false);
+		if (!empty($cacheFile) && file_exists($cacheFile)) {
 			@unlink($cacheFile);
 		}
 

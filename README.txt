@@ -4,7 +4,7 @@ Donate link: https://github.com/alexboia/WP-Trip-Summary
 Tags: trip-summary,bike-trips,hiking-trips,train-trips,map,travel-plugin,travel-documentation
 Requires at least: 5.0
 Tested up to: 5.2.4
-Stable tag: 0.2.0
+Stable tag: 0.2.1
 Requires PHP: 5.6.2
 License: BSD New License
 License URI: https://opensource.org/licenses/BSD-3-Clause

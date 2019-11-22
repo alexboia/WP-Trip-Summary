@@ -128,9 +128,22 @@ class Abp01_Installer {
     private function _update($version, $installedVersion) {
 		$this->_reset();
 		$result = true;
-		if ($version == '0.2b' && empty($installedVersion)) {
-			$result = $this->_updateTo02Beta();
-		}
+        
+        if ($version == '0.2b') {
+            if (empty($installedVersion)) {
+                $result = $this->_updateTo02Beta();
+            }
+        }
+
+        if ($version == '0.2.1') {
+            if (empty($installedVersion)) {
+                $result = $this->_updateTo02Beta();
+            }
+            if ($result) {
+                $result = $this->_updateTo021();
+            }
+        }
+
 		if ($result) {
 			update_option(self::OPT_VERSION, $version);
 		}
@@ -152,7 +165,138 @@ class Abp01_Installer {
 			$this->_lastError = $exc;
 		}
 		return false;
-	}
+    }
+    
+    private function _updateTo021() {
+        $result = true;
+
+        //1. Ensure storage directories
+        if ($this->_ensureStorageDirectories()) {
+            //2. Copy files if needed
+            if ($this->_moveTrackDataFiles()) {
+                //3. Update track file paths in db
+                return $this->_fixRoutePathsInDb();
+            } else {
+                $result = false;
+            }
+        } else {
+            $result = false;
+        }
+    }
+
+    private function _ensureStorageDirectories() {
+        $result = true;
+        $env = Abp01_Env::getInstance();
+        $rootStorageDir = $env->getRootStorageDir();
+        
+        if (!is_dir($rootStorageDir)) {
+            @mkdir($rootStorageDir);
+        }
+
+        if (is_dir($rootStorageDir)) {
+            $tracksStorageDir = $env->getTracksStorageDir();
+            if (!is_dir($tracksStorageDir)) {
+                @mkdir($tracksStorageDir);
+            }
+
+            if (is_dir($tracksStorageDir)) {
+                $cacheStorageDir = $env->getCacheStorageDir();
+                if (!is_dir($cacheStorageDir)) {
+                    @mkdir($cacheStorageDir);
+                }
+
+                $result = is_dir($cacheStorageDir);
+            } else {
+                $result = false;
+            }
+        } else {
+            $result = false;
+        }
+
+        return $result;
+    }
+
+    private function _moveTrackDataFiles() {
+        $result = true;
+        $env = Abp01_Env::getInstance();
+        $legacyTracksStorageDir = wp_normalize_path(sprintf('%s/storage', 
+            $env->getDataDir()));
+        $legacyCacheStorageDir = wp_normalize_path(sprintf('%s/cache', 
+            $env->getDataDir()));
+
+        if (is_dir($legacyTracksStorageDir)) {
+            $result = $this->_cleanLegacyDirectory($legacyTracksStorageDir, 
+                $env->getTracksStorageDir(), 
+                'gpx');
+        }
+
+        if (is_dir($legacyCacheStorageDir)) {
+            $result = $this->_cleanLegacyDirectory($legacyCacheStorageDir, 
+                $env->getCacheStorageDir(), 
+                'cache');
+        }
+
+        return $result;
+    }
+
+    private function _cleanLegacyDirectory($legacyDirectoryPath, $newDirectoryPath, $searchExtension) {
+        $failedCount = 0;
+        $moveFiles = glob($legacyDirectoryPath . DIRECTORY_SEPARATOR . '*.' . $searchExtension);
+
+        if ($moveFiles !== false && !empty($moveFiles)) {
+            foreach ($moveFiles as $sourceFilePath) {
+                $destinationFilePath = wp_normalize_path(sprintf('%s/%s', 
+                    $newDirectoryPath,
+                    basename($sourceFilePath)));
+                    
+                if (!@rename($sourceFilePath, $destinationFilePath)) {
+                    $failedCount++;
+                }
+            }
+        }
+
+        if ($failedCount == 0) {
+            return $this->_removeLegacyDirectory($legacyDirectoryPath);
+        } else {
+            return false;
+        }
+    }
+
+    private function _removeLegacyDirectory($legacyDirectoryPath) {
+        $failedCount = 0;
+        $entries = @scandir($legacyDirectoryPath, SCANDIR_SORT_ASCENDING);
+
+        if (is_array($entries)) {
+            foreach ($entries as $entry) {
+                if ($entry != '.' && $entry != '..') {
+                    $toRemoveFilePath = wp_normalize_path(sprintf('%s/%s', 
+                        $legacyDirectoryPath, 
+                        $entry));
+
+                    if (!@unlink($toRemoveFilePath)) {
+                        $failedCount++;
+                    }
+                }
+            }
+        }
+
+        if ($failedCount == 0) {
+            return @rmdir($legacyDirectoryPath);
+        } else {
+            return false;
+        }
+    }
+
+    private function _fixRoutePathsInDb() {
+        $db = Abp01_Env::getInstance()->getDb();
+        $routesTable = $this->_getRouteTrackTableName();
+
+        $db->update($routesTable, array(
+            'route_track_file' => $db->func("SUBSTRING_INDEX(route_track_file, '/', -1)")
+        ));
+
+        return empty(trim($db->getLastError()));
+    }
 
 	private function _syncExistingLookupAssociations() {
 		$db = $this->_env->getDb();
