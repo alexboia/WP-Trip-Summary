@@ -173,34 +173,42 @@ class Abp01_Installer {
         //1. Ensure storage directories
         if ($this->_ensureStorageDirectories()) {
             //2. Copy files if needed
-            if ($this->_moveTrackDataFiles()) {
-                //3. Update track file paths in db
-                return $this->_fixRoutePathsInDb();
-            } else {
+            if (!$this->_moveTrackDataFiles()) {
+                $result = false;
+            }
+
+            //3. Update track file paths in db.
+            //  Since the plug-in update can be performed either via manual upload 
+            //  or through WP's interface, the files can be moved 
+            //  either by the plug-in or by the user.
+            // Thus, fixing the routes path in the database is actually 
+            //  independent of the process of moving the data files.
+            if (!$this->_fixRoutePathsInDb()) {
                 $result = false;
             }
         } else {
             $result = false;
         }
+
+        return $result;
     }
 
     private function _ensureStorageDirectories() {
         $result = true;
-        $env = Abp01_Env::getInstance();
-        $rootStorageDir = $env->getRootStorageDir();
+        $rootStorageDir = $this->_env->getRootStorageDir();
         
         if (!is_dir($rootStorageDir)) {
             @mkdir($rootStorageDir);
         }
 
         if (is_dir($rootStorageDir)) {
-            $tracksStorageDir = $env->getTracksStorageDir();
+            $tracksStorageDir = $this->_env->getTracksStorageDir();
             if (!is_dir($tracksStorageDir)) {
                 @mkdir($tracksStorageDir);
             }
 
             if (is_dir($tracksStorageDir)) {
-                $cacheStorageDir = $env->getCacheStorageDir();
+                $cacheStorageDir = $this->_env->getCacheStorageDir();
                 if (!is_dir($cacheStorageDir)) {
                     @mkdir($cacheStorageDir);
                 }
@@ -218,31 +226,33 @@ class Abp01_Installer {
 
     private function _moveTrackDataFiles() {
         $result = true;
-        $env = Abp01_Env::getInstance();
         $legacyTracksStorageDir = wp_normalize_path(sprintf('%s/storage', 
-            $env->getDataDir()));
+            $this->_env->getDataDir()));
         $legacyCacheStorageDir = wp_normalize_path(sprintf('%s/cache', 
-            $env->getDataDir()));
+            $this->_env->getDataDir()));
 
+        //1. Move GPX files
         if (is_dir($legacyTracksStorageDir)) {
-            $result = $this->_cleanLegacyDirectory($legacyTracksStorageDir, 
-                $env->getTracksStorageDir(), 
+            $result = $this->_cleanLegacyStorageDirectory($legacyTracksStorageDir, 
+                $this->_env->getTracksStorageDir(), 
                 'gpx');
         }
 
+        //2. Move cache files
         if (is_dir($legacyCacheStorageDir)) {
-            $result = $this->_cleanLegacyDirectory($legacyCacheStorageDir, 
-                $env->getCacheStorageDir(), 
+            $result = $this->_cleanLegacyStorageDirectory($legacyCacheStorageDir, 
+                $this->_env->getCacheStorageDir(), 
                 'cache');
         }
 
         return $result;
     }
 
-    private function _cleanLegacyDirectory($legacyDirectoryPath, $newDirectoryPath, $searchExtension) {
+    private function _cleanLegacyStorageDirectory($legacyDirectoryPath, $newDirectoryPath, $searchExtension) {
         $failedCount = 0;
         $moveFiles = glob($legacyDirectoryPath . DIRECTORY_SEPARATOR . '*.' . $searchExtension);
 
+        //Move all files that match the given extension
         if ($moveFiles !== false && !empty($moveFiles)) {
             foreach ($moveFiles as $sourceFilePath) {
                 $destinationFilePath = wp_normalize_path(sprintf('%s/%s', 
@@ -255,17 +265,20 @@ class Abp01_Installer {
             }
         }
 
+        //If no failures were registered whilst moving the files, 
+        //  remove the legacy directory
         if ($failedCount == 0) {
-            return $this->_removeLegacyDirectory($legacyDirectoryPath);
+            return $this->_removeLegacyStorageDirectory($legacyDirectoryPath);
         } else {
             return false;
         }
     }
 
-    private function _removeLegacyDirectory($legacyDirectoryPath) {
+    private function _removeLegacyStorageDirectory($legacyDirectoryPath) {
         $failedCount = 0;
         $entries = @scandir($legacyDirectoryPath, SCANDIR_SORT_ASCENDING);
 
+        //Remove the files
         if (is_array($entries)) {
             foreach ($entries as $entry) {
                 if ($entry != '.' && $entry != '..') {
@@ -280,6 +293,8 @@ class Abp01_Installer {
             }
         }
 
+        //And if no file removal failed,
+        //  remove the directory
         if ($failedCount == 0) {
             return @rmdir($legacyDirectoryPath);
         } else {
@@ -288,9 +303,11 @@ class Abp01_Installer {
     }
 
     private function _fixRoutePathsInDb() {
-        $db = Abp01_Env::getInstance()->getDb();
+        $db = $this->_env->getDb();
         $routesTable = $this->_getRouteTrackTableName();
 
+        //The route_track_file will only contain the file name
+        //  so discard the everything before the last "/"
         $db->update($routesTable, array(
             'route_track_file' => $db->func("SUBSTRING_INDEX(route_track_file, '/', -1)")
         ));

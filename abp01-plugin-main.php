@@ -103,8 +103,8 @@ function abp01_get_help_file_for_locale($locale) {
  * @return void
  */
 function abp01_dump($var) {
-	if (function_exists('xdebug_var_dump')) {
-		xdebug_var_dump($var);
+	if (extension_loaded('xdebug')) {
+		var_dump($var);
 	} else {
 		print '<pre>';
 		var_dump($var);
@@ -433,7 +433,7 @@ function abp01_get_track_cache_file_path($postId, $ensureExists) {
  */
 function abp01_save_cached_track($postId, Abp01_Route_Track_Document $route) {
 	$path = abp01_get_track_cache_file_path($postId, true);
-	if (!emtpy($path)) {
+	if (!empty($path)) {
 		file_put_contents($path, $route->serializeDocument(), LOCK_EX);
 	}
 }
@@ -754,7 +754,7 @@ function abp01_activate() {
 		$message = isset($errors[$test]) 
 			? $errors[$test] 
 			: esc_html__('The plugin cannot be installed on your system', 'abp01-trip-summary');
-		deactivate_plugins(plugin_basename(__FIILE__));
+		deactivate_plugins(plugin_basename(__FILE__));
 		wp_die($message);
 	} else if ($test === false) {
 		wp_die(abp01_append_error('Failed plug-in compatibility check', $installer->getLastError()), 'Activation error');
