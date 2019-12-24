@@ -57,6 +57,10 @@ I really wanted to host the GPX tracks myself for various reasons:
 
 Thus, I developed a module to do just that: upload a GPX track, parse it and display it.
 
+## Updating to 0.2.1
+
+__[Please see here notes on updating to plug-in version 0.2.1](https://github.com/alexboia/WP-Trip-Summary/blob/master/README-UPDATE-021.md)__
+
 ## Requirements
 ### For running the plug-in itself
 1. PHP version 5.6.2 or greater;
