@@ -3,7 +3,7 @@
 DB_NAME=$1
 DB_USER=$2
 DB_PASS=$3
-DB_HOST=${4-localhost}
+DB_HOST=${4-"127.0.0.1"}
 WP_VERSION=${5-latest}
 SKIP_DB_CREATE=${6-false}
 
@@ -70,8 +70,8 @@ check_and_install_tooling() {
 }
 
 setup_unit_testing() {
-    wp scaffold plugin-tests abp01-travel-tech-box
-    if [ -f "./bin/install-wp-tests.sh" ] 
+    wp scaffold plugin-tests wp-trip-summary
+    if [[ -f "./bin/install-wp-tests.sh" ]] 
     then
         ./bin/install-wp-tests.sh "$DB_NAME" "$DB_USER" "$DB_PASS" "$DB_HOST" "$WP_VERSION" "$SKIP_DB_CREATE"
     fi
