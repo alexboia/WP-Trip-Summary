@@ -61,6 +61,9 @@ Requirements:
 
 Available in English and Romanian.
 
+Important note:
+For those with plug-in versions older than 0.2.1, please see here notes on updating to plug-in version 0.2.1: https://github.com/alexboia/WP-Trip-Summary/blob/master/README-UPDATE-021.md
+
 == Frequently Asked Questions ==
 
 = How can I contribute? =
@@ -82,8 +85,13 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 2. Activate the plugin through the 'Plugins' screen in WordPress.
 3. Use the `Trip Summary -> Settings` sidebar menu item to access the plug-in configuration page.
 4. Use the `Trip Summary -> Help` sidebar menu item to access the plug-in help page.
+5. For those with plug-in versions older than 0.2.1, please see here notes on updating to plug-in version 0.2.1: https://github.com/alexboia/WP-Trip-Summary/blob/master/README-UPDATE-021.md
 
 == Changelog ==
+
+= 0.2.1 = 
+* Moved plug-in track & cache storage to a sub-directory of wp-content/uploads, as, previously, the plug-in stored its track & cache files to its own directory, which caused this data to be lost upon upgrade, since WordPress, when upgrading a plug-in, removes all the files that belong to the previous plug-in version.
+* Minor refactoring
 
 = 0.2.0 =
 * Fixed An activation issue which occured under certain conditions.
@@ -94,6 +102,9 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 First officially distributed version.
 
 == Upgrade Notice ==
+
+= 0.2.1 =
+Please see here notes on updating to plug-in version 0.2.1: https://github.com/alexboia/WP-Trip-Summary/blob/master/README-UPDATE-021.md
 
 = 0.2.0 =
 This version fixes a plug-in activation issue under certain conditions and other minor bugs.

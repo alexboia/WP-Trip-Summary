@@ -1,7 +1,7 @@
 <img align="left" width="210" height="200" src="https://raw.githubusercontent.com/alexboia/WP-Trip-Summary/master/logo.png" />
 
-WP-Trip-Summary
-===============
+# WP-Trip-Summary
+
 A WordPress trip summary plugin. I initially wrote this for my own personal use, as I needed something to help me keep structured information about my trips.
 However, as I was getting ready to push this to production I realised it would be a good idea to publish the source code.
 
@@ -9,18 +9,24 @@ There are, of course, some things to be done before this would be of any real us
 Please see the [issues](https://github.com/alexboia/WP-Trip-Summary/issues) area for the progress on those things.
 
 ## What it does
+
 This plug-in provides two basic features:
+
 - allow some structured information to be filled in, according to a selected trip type;
 - allow some GPX track to be uploaded and then rendered on a map.
 
 ### Structured information
+
 Structured information is supported for the following types of trips:
+
 - Bike trips;
 - Hiking trips;
 - Train rides.
 
 #### For bike trips
+
 The following fields are available:
+
 - Total distance;
 - Total climb;
 - Difficulty level;
@@ -30,7 +36,9 @@ The following fields are available:
 - Recommended bike type (eg: MTB, road bike etc.).
 
 #### For hiking trips
+
 The following fields are available:
+
 - Total distance;
 - Total climb;
 - Difficulty level;
@@ -40,7 +48,9 @@ The following fields are available:
 - Route markers.
 
 #### For train rides
+
 The following fields are available:
+
 - Total distance;
 - How many trains were exchanged;
 - Line gauge (mm);
@@ -50,7 +60,9 @@ The following fields are available:
 - Line type.
 
 ### The track
+
 I really wanted to host the GPX tracks myself for various reasons:
+
 - Didn't want to depend on any third party provider;
 - It was good fun writing this feature;
 - I want to use the resulting data in the near future to do some other stuff on my website.
@@ -62,18 +74,22 @@ Thus, I developed a module to do just that: upload a GPX track, parse it and dis
 __[Please see here notes on updating to plug-in version 0.2.1](https://github.com/alexboia/WP-Trip-Summary/blob/master/README-UPDATE-021.md)__
 
 ## Requirements
+
 ### For running the plug-in itself
+
 1. PHP version 5.6.2 or greater;
 2. MySQL version 5.7 or greater (with spatial support);
-4. Wordpress 5.0 or greater;
-5. libxml extension;
-6. SimpleXml extension;
-7. mysqli extension;
-8. mbstring - not strictly required, but recommended;
-9. zlib - not strictly required, but recommended.
+3. Wordpress 5.0 or greater;
+4. libxml extension;
+5. SimpleXml extension;
+6. mysqli extension;
+7. mbstring - not strictly required, but recommended;
+8. zlib - not strictly required, but recommended.
 
 ### For development
+
 All of the above, with the following amendments:
+
 1. PHP version 5.4.0 or greater is required;
 2. xdebug extension is recommended;
 3. phpunit version 5.x installed and available in your $PATH, for running the tests;
@@ -87,23 +103,30 @@ All of the above, with the following amendments:
    - zip command.
 
 ## Limitations
+
 1. Currently it only works with the classic WordPress Editor. An update is planned for 0.3.
 2. Not designed for (and not tested with) multi-site installations. No update is currently planned.
 
 ## Screenshots
+
 ##### Editor - Info
+
 ![Editor - Info](/screenshots/E1.png?raw=true)
 
 ##### Editor - Map
+
 ![Editor - Map](/screenshots/E2.png?raw=true)
 
 ##### Viewer - Info
+
 ![Viewer - Info](/screenshots/V1.png?raw=true)
 
 ##### Viewer - Map
+
 ![Viewer - Map](/screenshots/V2.png?raw=true)
 
 ## Credits
+
 1. [PHP-MySQLi-Database-Class](https://github.com/joshcam/PHP-MySQLi-Database-Class) - small mysqli wrapper for PHP. I used it instead of the builtin wpdb class
 2. [MimeReader](http://social-library.org/) - PHP mime sniffer written by Shane Thompson
 3. [jQuery EasyTabs](https://github.com/JangoSteve/jQuery-EasyTabs)
@@ -120,4 +143,5 @@ All of the above, with the following amendments:
 14. [Leaflet.fullscreen](https://github.com/Leaflet/Leaflet.fullscreen) - Leaflet plug-in that allows the map to be displayed in full-screen mode
 
 ## Licence
+
 The source code is published under the terms of the [BSD New License](https://opensource.org/licenses/BSD-3-Clause) licence.

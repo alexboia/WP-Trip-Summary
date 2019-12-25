@@ -47,7 +47,7 @@ class Abp01_Route_Track {
             throw new InvalidArgumentException();
         }
         if ($bounds == null) {
-            $this->_bounds = $bounds;
+            throw new InvalidArgumentException();
         }
 
         $this->_file = $file;

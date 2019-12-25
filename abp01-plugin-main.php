@@ -260,17 +260,6 @@ function abp01_escape_value($value) {
 }
 
 /**
- * Compute the path to the GPX file for the given track
- * @param Abp01_Route_Track $track
- * @return string The computed path
- */
-function abp01_get_absolute_track_file_path(Abp01_Route_Track $track) {
-	$file = $track->getFile();
-	$parent = wp_normalize_path(realpath(dirname(__FILE__) . '/../'));
-	return wp_normalize_path($parent . '/' . $file);
-}
-
-/**
  * Ensures that the root storage directory of the plug-in exists and creates if it does not.
  * @return void
  */
@@ -1751,7 +1740,7 @@ function abp01_get_track() {
 		$manager = Abp01_Route_Manager::getInstance();
 		$track = $manager->getRouteTrack($postId);
 		if ($track) {
-			$file = abp01_get_absolute_track_file_path($track);
+			$file = abp01_get_track_upload_destination($postId, false);
 			if (is_readable($file)) {
 				$parser = new Abp01_Route_Track_GpxDocumentParser();
 				$route = $parser->parse(file_get_contents($file));

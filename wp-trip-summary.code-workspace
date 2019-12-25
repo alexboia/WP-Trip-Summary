@@ -1,7 +1,11 @@
 {
 	"folders": [
 		{
-			"path": "F:\\Proiecte\\Alexboia.NET"
+			"path": "..\\..\\.."
+		},
+		{
+			"name": "wp-trip-summary",
+			"path": "."
 		}
 	],
 	"settings": {
