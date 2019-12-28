@@ -19,6 +19,15 @@ WPTS_EXPORT_ASSETS_DIR="$WPTS_EXPORT_ROOT/assets"
 WPTS_EXPORT_TAGS_DIR="$WPTS_EXPORT_ROOT/tags"
 WPTS_EXPORT_CURRENT_TAG_DIR="$WPTS_EXPORT_TAGS_DIR/$WPTS_VERSION"
 
+ensure_root_dir() {
+	echo "Ensuring root directory structure and checking out if needed..."
+	if [ ! -d $WPTS_EXPORT_ROOT ]
+	then
+		mkdir $WPTS_EXPORT_ROOT
+		svn co https://plugins.svn.wordpress.org/wp-trip-summary/ $WPTS_EXPORT_ROOT
+	fi
+}
+
 ensure_tag_dir() {
     echo "Ensuring tag directory structure..."
 	if [ ! -d $WPTS_EXPORT_CURRENT_TAG_DIR ] 
@@ -78,6 +87,7 @@ copy_asset_files() {
 
 echo "Using version: $WPTS_VERSION"
 
+ensure_root_dir
 clean_trunk_dir
 regenerate_help
 copy_source_files "$WPTS_EXPORT_TRUNK_DIR"
