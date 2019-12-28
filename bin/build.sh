@@ -12,16 +12,23 @@ fi
 # Store some stuff for later use
 WPTS_CDIR=$(pwd)
 
-WPTS_BUILD_OUTDIR="$WPTS_CDIR/build/output"
-WPTS_BUILD_COMPATDIR="$WPTS_CDIR/build/compat-info"
-WPTS_BUILD_TMPDIR="$WPTS_CDIR/build/tmp"
+WPTS_BUILD_ROOTDIR="$WPTS_CDIR/build"
+WPTS_BUILD_OUTDIR="$WPTS_BUILD_ROOTDIR/output"
+WPTS_BUILD_COMPATDIR="$WPTS_BUILD_ROOTDIR/compat-info"
+WPTS_BUILD_TMPDIR="$WPTS_BUILD_ROOTDIR/tmp"
 
-WPTS_VERSION=$(awk '{IGNORECASE=1}/Version:/{print $NF}' ./abp01-plugin-main.php)
+WPTS_VERSION=$(awk '{IGNORECASE=1}/Version:/{print $NF}' ./abp01-plugin-main.php | awk '{gsub(/\s+/,""); print $0}')
 WPTS_BUILD_NAME="wp-trip-summary.$WPTS_VERSION.zip"
 
 # Ensure all output directories exist
 ensure_out_dirs() {
 	echo "Ensuring output directory structure..."
+
+	if [ ! -d $WPTS_BUILD_ROOTDIR ]
+	then
+		mkdir $WPTS_BUILD_ROOTDIR
+	fi
+
 	if [ ! -d $WPTS_BUILD_OUTDIR ] 
 	then
 		mkdir $WPTS_BUILD_OUTDIR
@@ -93,7 +100,7 @@ generate_package() {
 	popd > /dev/null
 }
 
-echo "Using version: $WPTS_VERSION"
+echo "Using version: ${WPTS_VERSION}"
 
 ensure_out_dirs
 clean_out_dirs
