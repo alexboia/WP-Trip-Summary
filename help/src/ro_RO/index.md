@@ -69,7 +69,7 @@ Pentru a rula acest modul, aveți nevoie de următoarele:
 
 - PHP versiunea 5.6.2 sau mai recenta;
 - MySQL versiunea 5.7 sau mai recenta (cu suport pentru date GIS);
-- Wordpress 5.0 sau mai recenta;
+- WordPress 5.0 sau mai recenta;
 - extensia PHP libxml;
 - extensia PHP SimpleXml;
 - extensia PHP mysqli;

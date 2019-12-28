@@ -69,7 +69,7 @@ To run this module, the following technical requirements must be met:
 
 - PHP version 5.6.2 or greater;
 - MySQL version 5.7 or greater (with spatial support);
-- Wordpress 5.0;
+- WordPress 5.0;
 - libxml extension;
 - SimpleXml extension;
 - mysqli extension;
