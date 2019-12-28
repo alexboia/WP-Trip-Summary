@@ -79,7 +79,7 @@ __[Please see here notes on updating to plug-in version 0.2.1](https://github.co
 
 1. PHP version 5.6.2 or greater;
 2. MySQL version 5.7 or greater (with spatial support);
-3. Wordpress 5.0 or greater;
+3. WordPress 5.0 or greater;
 4. libxml extension;
 5. SimpleXml extension;
 6. mysqli extension;
