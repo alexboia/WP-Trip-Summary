@@ -145,3 +145,10 @@ All of the above, with the following amendments:
 ## Licence
 
 The source code is published under the terms of the [BSD New License](https://opensource.org/licenses/BSD-3-Clause) licence.
+
+## Donate
+## Donate
+I put some of my free time into developing and maintaining this plugin.
+If helped you in your projects and you are happy with it, you can buy me a coffee.
+
+[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=KF943RX59TYDE&currency_code=EUR&source=url)
