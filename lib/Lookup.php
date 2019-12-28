@@ -79,7 +79,7 @@ class Abp01_Lookup {
 		} else {
 			$this->_lang = $lang;
 		}
-    }
+	}
 
 	/**
 	 * Resets the internal lookup item cache to null
