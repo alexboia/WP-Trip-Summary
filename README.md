@@ -100,6 +100,8 @@ All of the above, with the following amendments:
    - curl command;
    - gettext libraries;
    - php core engine and the above-mentioned php extensions;
+   - mysql command line client;
+   - subversion command line client;
    - zip command.
 
 ## Limitations
@@ -147,6 +149,7 @@ All of the above, with the following amendments:
 The source code is published under the terms of the [BSD New License](https://opensource.org/licenses/BSD-3-Clause) licence.
 
 ## Donate
+
 I put some of my free time into developing and maintaining this plugin.
 If helped you in your projects and you are happy with it, you can buy me a coffee.
 
