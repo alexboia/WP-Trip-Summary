@@ -44,12 +44,12 @@
 
     var abp01_flashUploaderUrl = '<?php echo esc_js($data->flashUploaderUrl); ?>';
     var abp01_xapUploaderUrl = '<?php echo esc_js($data->xapUploaderUrl); ?>';
-    var abp01_uploadMaxFileSize = <?php echo esc_js($data->uploadMaxFileSize); ?>;
-    var abp01_uploadChunkSize = <?php echo esc_js($data->uploadChunkSize); ?>;
+    var abp01_uploadMaxFileSize = '<?php echo esc_js($data->uploadMaxFileSize); ?>';
+    var abp01_uploadChunkSize = '<?php echo esc_js($data->uploadChunkSize); ?>';
     var abp01_uploadKey = '<?php echo $data->uploadKey; ?>';
 
-    var abp01_postId = <?php echo $data->postId; ?>;
-    var abp01_hasTrack = <?php echo $data->hasTrack ? 'true' : 'false'; ?>;
+    var abp01_postId = '<?php echo $data->postId; ?>';
+    var abp01_hasTrack = '<?php echo $data->hasTrack ? 'true' : 'false'; ?>';
 
     var abp01_baseTitle = '<?php echo esc_html__('Edit trip summary', 'abp01-trip-summary') ?>';
 </script>
