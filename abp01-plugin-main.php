@@ -133,7 +133,7 @@ function abp01_append_error($message, $error) {
  * Increase script execution limit and maximum memory limit
  * @return void
  */
-function abp01_increase_limits() {
+function abp01_increase_limits($executionTimeMinutes = 5) {
 	if (function_exists('set_time_limit')) {
 		@set_time_limit(5 * 60);
 	}
@@ -1304,7 +1304,6 @@ function abp01_add_lookup_item() {
 		$response->message = esc_html__('The default label is mandatory', 'abp01-trip-summary');
 		abp01_send_json($response);
 	}
-	
 
 	$lookup = new Abp01_Lookup($lang);
 	$item = $lookup->createLookupItem($type, $defaultLabel);
