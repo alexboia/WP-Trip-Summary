@@ -649,7 +649,7 @@ class MimeReader {
         }
 
         // Mask matched. This pattern matches if the last character is tag-terminating.
-        return strpos( self::$tag_terminating_character, $sequence{$s} );
+        return strpos( self::$tag_terminating_characters, $sequence{$s} );
     }
 
     protected function detect_type() {
