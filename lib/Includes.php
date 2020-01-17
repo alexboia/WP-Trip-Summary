@@ -34,6 +34,10 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Includes {
+	const JS_MOXIE = 'moxiejs';
+
+	const JS_PLUPLOAD = 'plupload';
+	
 	const JS_JQUERY = 'jquery';
 
 	const JS_URI_JS = 'uri-js';
@@ -99,6 +103,10 @@ class Abp01_Includes {
 	const STYLE_JQUERY_TOASTR = 'jquery-toastr-css';
 
 	const STYLE_ADMIN_MAIN = 'abp01-main-css';
+
+	const STYLE_ADMIN_SETTINGS = 'abp01-settings-css';
+
+	const STYLE_ADMIN_LOOKUP_MANAGEMENT = 'abp01-lookup-management-css';
 	
 	const STYLE_ADMIN_HELP = 'abp01-help-css';
 
@@ -131,15 +139,24 @@ class Abp01_Includes {
 		), 
 		self::JS_JQUERY_VISIBLE => array(
 			'path' => 'media/js/3rdParty/visible/jquery.visible.js', 
-			'version' => '1.1.0'
+			'version' => '1.1.0',
+			'deps' => array(
+				self::JS_JQUERY
+			)
 		), 
 		self::JS_JQUERY_BLOCKUI => array(
 			'path' => 'media/js/3rdParty/jquery.blockUI.js', 
-			'version' => '2.66'
+			'version' => '2.66',
+			'deps' => array(
+				self::JS_JQUERY
+			)
 		), 
 		self::JS_JQUERY_TOASTR => array(
 			'path' => 'media/js/3rdParty/toastr/toastr.js', 
-			'version' => '2.0.3'
+			'version' => '2.0.3',
+			'deps' => array(
+				self::JS_JQUERY
+			)
 		), 
 		self::JS_NPROGRESS => array(
 			'path' => 'media/js/3rdParty/nprogress/nprogress.js', 
@@ -147,11 +164,17 @@ class Abp01_Includes {
 		), 
 		self::JS_JQUERY_EASYTABS => array(
 			'path' => 'media/js/3rdParty/easytabs/jquery.easytabs.js', 
-			'version' => '3.2.0'
+			'version' => '3.2.0',
+			'deps' => array(
+				self::JS_JQUERY
+			)
 		), 
 		self::JS_SUMO_SELECT => array(
 			'path' => 'media/js/3rdParty/summoSelect/jquery.sumoselect.js',
-			'version' => '2.0.2'
+			'version' => '2.0.2',
+			'deps' => array(
+				self::JS_JQUERY
+			)
 		),
 		self::JS_LEAFLET => array(
 			'path' => 'media/js/3rdParty/leaflet/leaflet-src.js', 
@@ -159,19 +182,31 @@ class Abp01_Includes {
 		), 
 		self::JS_LEAFLET_MAGNIFYING_GLASS => array(
 			'path' => 'media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.js', 
-			'version' => '0.1'
+			'version' => '0.1',
+			'deps' => array(
+				self::JS_LEAFLET
+			)
 		), 
 		self::JS_LEAFLET_MAGNIFYING_GLASS_BUTTON => array(
 			'path' => 'media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.button.js', 
-			'version' => '0.1'
+			'version' => '0.1',
+			'deps' => array(
+				self::JS_LEAFLET
+			)
 		), 
 		self::JS_LEAFLET_FULLSCREEN => array(
 			'path' => 'media/js/3rdParty/leaflet-plugins/leaflet-fullscreen/leaflet.fullscreen.js', 
-			'version' => '0.1'
+			'version' => '0.1',
+			'deps' => array(
+				self::JS_LEAFLET
+			)
 		), 
 		self::JS_LEAFLET_ICON_BUTTON => array(
 			'path' => 'media/js/abp01-icon-button.js',
-			'version' => '0.1'
+			'version' => '0.1',
+			'deps' => array(
+				self::JS_LEAFLET
+			)
 		),
 		self::JS_MACHINA => array(
 			'path' => 'media/js/3rdParty/machina/machina.js', 
@@ -184,29 +219,81 @@ class Abp01_Includes {
 			'path' => 'media/js/3rdParty/kite.js', 
 			'version' => '1.0'
 		), 
+
 		self::JS_ABP01_MAP => array(
 			'path' => 'media/js/abp01-map.js', 
-			'version' => '0.4'
+			'version' => '0.4',
+			'deps' => array(
+				self::JS_LEAFLET,
+				self::JS_JQUERY
+			)
 		), 
 		self::JS_ABP01_PROGRESS_OVERLAY => array(
 			'path' => 'media/js/abp01-progress-overlay.js', 
-			'version' => '0.4'
+			'version' => '0.4',
+			'deps' => array(
+				self::JS_JQUERY,
+				self::JS_JQUERY_BLOCKUI,
+				self::JS_MACHINA,
+				self::JS_NPROGRESS,
+				self::JS_KITE_JS
+			)
 		), 
+
 		self::JS_ADMIN_MAIN => array(
 			'path' => 'media/js/abp01-admin-main.js', 
-			'version' => '0.4'
+			'version' => '0.4',
+			'deps' => array(
+				self::JS_JQUERY,
+				self::JS_JQUERY_EASYTABS,
+				self::JS_JQUERY_BLOCKUI,
+				self::JS_JQUERY_TOASTR,
+				self::JS_MOXIE,
+				self::JS_PLUPLOAD,
+				self::JS_SUMO_SELECT,
+				self::JS_KITE_JS,
+				self::JS_URI_JS,
+				self::JS_LEAFLET,
+				self::JS_ABP01_PROGRESS_OVERLAY,
+				self::JS_ABP01_MAP
+			)
 		), 
 		self::JS_FRONTEND_MAIN => array(
 			'path' => 'media/js/abp01-frontend-main.js', 
-			'version' => '0.4'
+			'version' => '0.4',
+			'deps' => array(
+				self::JS_JQUERY,
+				self::JS_JQUERY_EASYTABS,
+				self::JS_JQUERY_VISIBLE,
+				self::JS_URI_JS,
+				self::JS_LEAFLET_FULLSCREEN,
+				self::JS_LEAFLET_MAGNIFYING_GLASS,
+				self::JS_LEAFLET_MAGNIFYING_GLASS_BUTTON,
+				self::JS_LEAFLET_ICON_BUTTON,
+				self::JS_ABP01_MAP
+			)
 		), 
 		self::JS_ADMIN_SETTINGS => array(
 			'path' => 'media/js/abp01-admin-settings.js', 
-			'version' => '0.4'
+			'version' => '0.4',
+			'deps' => array(
+				self::JS_JQUERY,
+				self::JS_JQUERY_BLOCKUI,
+				self::JS_URI_JS,
+				self::JS_ABP01_PROGRESS_OVERLAY
+			)
 		),
 		self::JS_ADMIN_LOOKUP_MGMT => array(
 			'path' => 'media/js/abp01-admin-lookup-management.js',
-			'version' => '0.4'
+			'version' => '0.4',
+			'deps' => array(
+				self::JS_SYSTEM_THICKBOX,
+				self::JS_JQUERY,
+				self::JS_JQUERY_BLOCKUI,
+				self::JS_KITE_JS,
+				self::JS_URI_JS,
+				self::JS_ABP01_PROGRESS_OVERLAY
+			)
 		)
 	);
 
@@ -237,39 +324,71 @@ class Abp01_Includes {
 		), 
 		self::STYLE_FRONTEND_MAIN => array(
 			'path' => 'media/css/abp01-frontend-main.css', 
-			'version' => '0.3'
+			'version' => '0.3',
+			'deps' => array(
+				self::STYLE_DASHICONS,
+				self::STYLE_NPROGRESS,
+				self::STYLE_LEAFLET,
+				self::STYLE_LEAFLET_FULLSCREEN,
+				self::STYLE_LEAFLET_MAGNIFYING_GLASS,
+				self::STYLE_LEAFLET_MAGNIFYING_GLASS_BUTTON
+			)
 		), 
 		self::STYLE_FRONTEND_MAIN_TWENTY_TEN => array(
 			'path' => 'media/css/twentyten/theme.css', 
-			'version' => '0.3'
+			'version' => '0.3',
+			'deps' => array(
+				self::STYLE_FRONTEND_MAIN
+			)
 		),
 		self::STYLE_FRONTEND_MAIN_TWENTY_ELEVEN => array(
 			'path' => 'media/css/twentyeleven/theme.css', 
-			'version' => '0.3'
+			'version' => '0.3',
+			'deps' => array(
+				self::STYLE_FRONTEND_MAIN
+			)
 		), 
 		self::STYLE_FRONTEND_MAIN_TWENTY_THIRTEEN => array(
 			'path' => 'media/css/twentythirteen/theme.css', 
-			'version' => '0.3'
+			'version' => '0.3',
+			'deps' => array(
+				self::STYLE_FRONTEND_MAIN
+			)
 		),
 		self::STYLE_FRONTEND_MAIN_TWENTY_FIFTEEN => array(
 			'path' => 'media/css/twentyfifteen/theme.css', 
-			'version' => '0.3'
+			'version' => '0.3',
+			'deps' => array(
+				self::STYLE_FRONTEND_MAIN
+			)
 		), 
 		self::STYLE_FRONTEND_MAIN_TWENTY_FOURTEEN => array(
 			'path' => 'media/css/twentyfourteen/theme.css', 
-			'version' => '0.3'
+			'version' => '0.3',
+			'deps' => array(
+				self::STYLE_FRONTEND_MAIN
+			)
 		),
 		self::STYLE_FRONTEND_MAIN_TWENTY_SIXTEEN => array(
 			'path' => 'media/css/twentysixteen/theme.css', 
-			'version' => '0.3'
+			'version' => '0.3',
+			'deps' => array(
+				self::STYLE_FRONTEND_MAIN
+			)
 		),
 		self::STYLE_FRONTEND_MAIN_TWENTY_SEVENTEEN => array(
 			'path' => 'media/css/twentyseventeen/theme.css', 
-			'version' => '0.3'
+			'version' => '0.3',
+			'deps' => array(
+				self::STYLE_FRONTEND_MAIN
+			)
 		),
 		self::STYLE_FRONTEND_MAIN_TWENTY_NINETEEN => array(
 			'path' => 'media/css/twentynineteen/theme.css', 
-			'version' => '0.3'
+			'version' => '0.3',
+			'deps' => array(
+				self::STYLE_FRONTEND_MAIN
+			)
 		),
 		self::STYLE_JQUERY_TOASTR => array(
 			'path' => 'media/js/3rdParty/toastr/toastr.css', 
@@ -277,7 +396,27 @@ class Abp01_Includes {
 		), 
 		self::STYLE_ADMIN_MAIN => array(
 			'path' => 'media/css/abp01-main.css', 
-			'version' => '0.3'
+			'version' => '0.3',
+			'deps' => array(
+				self::STYLE_NPROGRESS,
+				self::STYLE_LEAFLET,
+				self::STYLE_SUMO_SELECT,
+				self::STYLE_JQUERY_TOASTR
+			)
+		),
+		self::STYLE_ADMIN_SETTINGS => array(
+			'alias' => self::STYLE_ADMIN_MAIN,
+			'deps' => array(
+				self::STYLE_NPROGRESS
+			)
+		),
+		self::STYLE_ADMIN_LOOKUP_MANAGEMENT => array(
+			'alias' => self::STYLE_ADMIN_MAIN,
+			'deps' => array(
+				self::STYLE_SYSTEM_THICKBOX,
+				self::STYLE_NPROGRESS,
+				self::STYLE_JQUERY_TOASTR
+			)
 		),
 		self::STYLE_ADMIN_HELP => array(
 			'path' => 'media/css/abp01-help.css', 
@@ -304,18 +443,89 @@ class Abp01_Includes {
 		self::$_scriptsInFooter = $scriptsInFooter;
 	}
 
+	private static function _hasScript($handle) {
+		return !empty(self::$_scripts[$handle]);
+	}
+
+	private static function _hasStyle($handle) {
+		return !empty(self::$_styles[$handle]);
+	}
+
+	private static function _getActualElement($handle, array &$collection) {
+		$script = null;
+		$actual = null;
+
+		if (isset($collection[$handle])) {
+			$script = $collection[$handle];
+			if (!empty($script['alias'])) {
+				$handle = $script['alias'];
+				$actual = isset($collection[$handle]) 
+					? $collection[$handle]
+					: null;
+			}
+
+			if (!empty($actual)) {
+				$deps = isset($script['deps']) 
+					? $script['deps'] 
+					: null;
+				if (!empty($deps)) {
+					$actual['deps'] = $deps;
+				}
+			} else {
+				$actual = $script;
+			}
+		}
+
+		return $actual;
+	}
+
+	private static function _getActualScriptToInclude($handle) {
+		return self::_getActualElement($handle, self::$_scripts);
+	}
+
+	private static function _getActualStyleToInclude($handle) {
+		return self::_getActualElement($handle, self::$_styles);
+	}
+
+	private static function _ensureScriptDependencies(array $deps) {
+		foreach ($deps as $depHandle) {
+			if (self::_hasScript($depHandle)) {
+				self::_enqueueScript($depHandle);
+			}
+		}
+	}
+
+	private static function _ensureStyleDependencies(array $deps) {
+		foreach ($deps as $depHandle) {
+			if (self::_hasStyle($depHandle)) {
+				self::_enqueueStyle($depHandle);
+			}
+		}
+	}
+
 	private static function _enqueueScript($handle) {
 		if (empty($handle)) {
 			return;
 		}
-		if (isset(self::$_scripts[$handle])) {
+
+		if (self::_hasScript($handle)) {
 			if (!wp_script_is($handle, 'registered')) {
-				$script = self::$_scripts[$handle];
+				$script = self::_getActualScriptToInclude($handle);
+
 				$deps = isset($script['deps']) && is_array($script['deps']) 
 					? $script['deps'] 
 					: array();
 
-				wp_enqueue_script($handle, plugins_url($script['path'], self::$_refPluginsPath), $deps, $script['version'], self::$_scriptsInFooter);
+				if (!empty($deps)) {
+					self::_ensureScriptDependencies($deps);
+				}
+
+				wp_enqueue_script($handle, 
+					plugins_url($script['path'], self::$_refPluginsPath), 
+					$deps, 
+					$script['version'], 
+					self::$_scriptsInFooter);
+				
 				if (isset($script['inline-setup'])) {
 					wp_add_inline_script($handle, $script['inline-setup']);
 				}
@@ -331,12 +541,26 @@ class Abp01_Includes {
 		if (empty($handle)) {
 			return;
 		}
-		if (isset(self::$_styles[$handle])) {
-			$style = self::$_styles[$handle];
+
+		if (self::_hasStyle($handle)) {
+			$style = self::_getActualStyleToInclude($handle);
 			if (!isset($style['media']) || !$style['media']) {
 				$style['media'] = 'all';
 			}
-			wp_enqueue_style($handle, plugins_url($style['path'], self::$_refPluginsPath), array(), $style['version'], $style['media']);
+
+			$deps = isset($style['deps']) && is_array($style['deps']) 
+				? $style['deps'] 
+				: array();
+
+			if (!empty($deps)) {
+				self::_ensureStyleDependencies($deps);
+			}
+
+			wp_enqueue_style($handle, 
+				plugins_url($style['path'], self::$_refPluginsPath), 
+				$deps, 
+				$style['version'], 
+				$style['media']);
 		} else {
 			wp_enqueue_style($handle);
 		}
@@ -361,122 +585,80 @@ class Abp01_Includes {
 		));
 	}
 
-	public static function includeScriptJQuery() {
-		self::_enqueueScript(self::JS_JQUERY);
-	}
-
-	public static function includeScriptURIJs() {
-		self::_enqueueScript(self::JS_URI_JS);
-	}
-
-	public static function includeScriptJQueryVisible() {
-		self::_enqueueScript(self::JS_JQUERY_VISIBLE);
-	}
-
-	public static function includeScriptJQueryBlockUI() {
-		self::_enqueueScript(self::JS_JQUERY_BLOCKUI);
-	}
-
-	public static function includeScriptJQueryToastr() {
-		self::_enqueueScript(self::JS_JQUERY_TOASTR);
-	}
-
-	public static function includeScriptNProgress() {
-		self::_enqueueScript(self::JS_NPROGRESS);
-	}
-
-	public static function includeScriptJQueryEasyTabs() {
-		self::_enqueueScript(self::JS_JQUERY_EASYTABS);
-	}
-
-	public static function includeScriptSumoSelect() {
-		self::_enqueueScript(self::JS_SUMO_SELECT);
-	}
-
-	public static function includeScriptLeaflet() {
-		self::_enqueueScript(self::JS_LEAFLET);
-	}
-
-	public static function includeScriptLeafletMagnifyingGlass() {
-		self::_enqueueScript(self::JS_LEAFLET_MAGNIFYING_GLASS);
-		self::_enqueueScript(self::JS_LEAFLET_MAGNIFYING_GLASS_BUTTON);
-	}
-
-	public static function includeScriptLeafletFullscreen() {
-		self::_enqueueScript(self::JS_LEAFLET_FULLSCREEN);
-	}
-	
-	public static function includeScriptLeafletIconButton() {
-		self::_enqueueScript(self::JS_LEAFLET_ICON_BUTTON);
-	}
-
-	public static function includeScriptLodash() {
-		self::_enqueueScript(self::JS_LODASH);
-	}
-
-	public static function includeScriptMachina() {
-		self::_enqueueScript(self::JS_MACHINA);
-	}
-
-	public static function includeScriptKiteJs() {
-		self::_enqueueScript(self::JS_KITE_JS);
-	}
-
-	public static function includeScriptMap() {
-		self::_enqueueScript(self::JS_ABP01_MAP);
-	}
-
-	public static function includeScriptProgressOverlay() {
-		self::_enqueueScript(self::JS_ABP01_PROGRESS_OVERLAY);
-	}
-
-	public static function includeScriptAdminEditorMain() {
+	public static function includeScriptAdminEditorMain($addScriptSettings, $localization) {
 		self::_enqueueScript(self::JS_ADMIN_MAIN);
+
+		if ($addScriptSettings) {
+			self::injectSettings(Abp01_Includes::JS_ADMIN_MAIN);
+		}
+
+		if (!empty($localization)) {
+			wp_localize_script(Abp01_Includes::JS_ADMIN_MAIN, 
+				'abp01MainL10n', 
+				$localization);
+		}
 	}
 
-	public static function includeScriptFrontendMain() {
+	public static function includeScriptFrontendMain($addScriptSettings, $localization) {
 		self::_enqueueScript(self::JS_FRONTEND_MAIN);
+
+		if ($addScriptSettings) {
+			self::injectSettings(Abp01_Includes::JS_FRONTEND_MAIN);
+		}
+
+		if (!empty($localization)) {
+			wp_localize_script(Abp01_Includes::JS_FRONTEND_MAIN, 
+				'abp01FrontendL10n', 
+				$localization);
+		}
 	}
 
-	public static function includeScriptAdminSettings() {
+	public static function includeScriptAdminSettings($localization) {
 		self::_enqueueScript(self::JS_ADMIN_SETTINGS);
+		if (!empty($localization)) {
+			wp_localize_script(Abp01_Includes::JS_ADMIN_SETTINGS, 
+				'abp01SettingsL10n', 
+				$localization);
+		}
 	}
 
-	public static function includeScriptAdminLookupMgmt() {
+	public static function includeScriptAdminLookupMgmt($localization) {
 		self::_enqueueScript(self::JS_ADMIN_LOOKUP_MGMT);
-	}
-
-	public static function includeScriptSystemThickbox() {
-		self::_enqueueScript(self::JS_SYSTEM_THICKBOX);
-	}
-
-	public static function includeStyleDashIcons() {
-		self::_enqueueStyle(self::STYLE_DASHICONS);
-	}
-
-	public static function includeStyleNProgress() {
-		self::_enqueueStyle(self::STYLE_NPROGRESS);
-	}
-	
-	public static function includeStyleSumoSelect() {
-		self::_enqueueStyle(self::STYLE_SUMO_SELECT);
-	}
-
-	public static function includeStyleLeaflet() {
-		self::_enqueueStyle(self::STYLE_LEAFLET);
-	}
-
-	public static function includeStyleLeafletMagnifyingGlass() {
-		self::_enqueueStyle(self::STYLE_LEAFLET_MAGNIFYING_GLASS);
-		self::_enqueueStyle(self::STYLE_LEAFLET_MAGNIFYING_GLASS_BUTTON);
-	}
-
-	public static function includeStyleLeafletFullScreen() {
-		self::_enqueueStyle(self::STYLE_LEAFLET_FULLSCREEN);
+		if (!empty($localization)) {
+			wp_localize_script(Abp01_Includes::JS_ADMIN_LOOKUP_MGMT, 
+				'abp01LookupMgmtL10n', 
+				$localization);
+		}
 	}
 
 	public static function includeStyleFrontendMain() {
-		self::_enqueueStyle(self::STYLE_FRONTEND_MAIN);
+		$style = self::_getActualStyleToInclude(self::STYLE_FRONTEND_MAIN);
+		$alternateLocations = Abp01_Env::getInstance()->getFrontendTemplateLocations();
+
+		$themeCssFilePath = $alternateLocations->theme . '/' . $style['path'];
+		if (is_readable($themeCssFilePath)) {
+			$cssPathUrl = $alternateLocations->themeUrl . '/' . $style['path'];
+			if (!isset($style['media']) || !$style['media']) {
+				$style['media'] = 'all';
+			}
+	
+			$deps = isset($style['deps']) && is_array($style['deps']) 
+				? $style['deps'] 
+				: array();
+			
+			if (!empty($deps)) {
+				self::_ensureStyleDependencies($deps);
+			}
+	
+			wp_enqueue_style(self::STYLE_FRONTEND_MAIN, 
+				$cssPathUrl, 
+				$deps, 
+				$style['version'], 
+				$style['media']);
+		} else {
+			self::_enqueueStyle(self::STYLE_FRONTEND_MAIN);
+			self::includeStyleFrontendMainThemeSpecificIfPresent();
+		}
 	}
 
 	public static function includeStyleFrontendMainThemeSpecificIfPresent() {
@@ -487,18 +669,18 @@ class Abp01_Includes {
 		}
 	}
 
-	public static function includeStyleJQueryToastr() {
-		self::_enqueueStyle(self::STYLE_JQUERY_TOASTR);
-	}
-
 	public static function includeStyleAdminMain() {
 		self::_enqueueStyle(self::STYLE_ADMIN_MAIN);
 	}
 
-	public static function includeStyleSystemThickBox() {
-		self::_enqueueStyle(self::STYLE_SYSTEM_THICKBOX);
+	public static function includeStyleAdminLookupManagement() {
+		self::_enqueueStyle(self::STYLE_ADMIN_LOOKUP_MANAGEMENT);
 	}
-	
+
+	public static function includeStyleAdminSettings() {
+		self::_enqueueStyle(self::STYLE_ADMIN_SETTINGS);
+	}
+
 	public static function includeStyleAdminHelp() {
 		self::_enqueueStyle(self::STYLE_ADMIN_HELP);
 	}

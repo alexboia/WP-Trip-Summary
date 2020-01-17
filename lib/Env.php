@@ -130,6 +130,12 @@ class Abp01_Env {
 	 */
     private $_phpVersion;
 
+    /**
+     * The path to the root plug-in directory
+     * @var string
+     */
+    private $_pluginRootDir;
+
 	/**
 	 * The path to the data directory. 
 	 * @var string 
@@ -154,6 +160,12 @@ class Abp01_Env {
      */
     private $_cacheStorageDir;
 
+    /**
+     * The path to the views directory
+     * @var string
+     */
+    private $_viewsDir;
+
 	/**
 	 * The current plug-in version
 	 * @var string
@@ -176,7 +188,7 @@ class Abp01_Env {
         $this->_initTableNames();
         $this->_initVersions();
         $this->_initDataDir();
-        $this->_initStorageDirs();
+        $this->_initDirs();
     }
 
     public function __clone() {
@@ -207,10 +219,22 @@ class Abp01_Env {
 
     private function _initDataDir() {
         $pluginRoot = dirname(dirname(__FILE__));
-		$this->_dataDir = wp_normalize_path(sprintf('%s/data', $pluginRoot));
+		
     }
 
-    private function _initStorageDirs() {
+    private function _initDirs() {
+        if (defined('ABP01_PLUGIN_ROOT')) {
+            $this->_pluginRootDir = ABP01_PLUGIN_ROOT;
+        } else {
+            $this->_pluginRootDir = dirname(dirname(__FILE__));
+        }
+
+        $this->_dataDir = wp_normalize_path(sprintf('%s/data', 
+            $this->_pluginRootDir));
+
+        $this->_viewsDir = wp_normalize_path(sprintf('%s/views', 
+            $this->_pluginRootDir));
+
         $uploadRootDirInfo = wp_upload_dir();
         $this->_rootStorageDir = wp_normalize_path(sprintf('%s/wp-trip-summary', 
             $uploadRootDirInfo['basedir']));
@@ -238,7 +262,15 @@ class Abp01_Env {
 			throw new InvalidArgumentException();
 		}
 		$this->_dataDir = $dataDir;
-	}
+    }
+    
+    public function getFrontendTemplateLocations() {
+        $dirs = new stdClass();
+        $dirs->default = $this->_viewsDir;
+        $dirs->theme = $this->getCurrentThemeDir() . '/abp01-viewer';
+        $dirs->themeUrl = $this->getCurrentThemeUrl() . '/abp01-viewer';
+        return $dirs;
+    }
 
     public function getLang() {
         return $this->_lang;
@@ -319,6 +351,10 @@ class Abp01_Env {
 
     public function getDataDir() {
         return $this->_dataDir;
+    }
+
+    public function getViewsDir() {
+        return $this->_viewsDir;
     }
 
     public function getRootStorageDir() {

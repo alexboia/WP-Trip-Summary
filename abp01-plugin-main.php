@@ -446,12 +446,7 @@ function abp01_get_cached_track($postId) {
  * @return stdClass
  */
 function abp01_get_frontend_template_locations() {
-	$env = Abp01_Env::getInstance();
-	$dirs = new stdClass();
-	$dirs->default = ABP01_PLUGIN_ROOT . '/views';
-	$dirs->theme = $env->getCurrentThemeDir() . '/abp01-viewer';
-	$dirs->themeUrl = $env->getCurrentThemeUrl() . '/abp01-viewer';
-	return $dirs;
+	return Abp01_Env::getInstance()->getFrontendTemplateLocations();
 }
 
 /**
@@ -887,25 +882,17 @@ function abp01_add_admin_styles() {
 	//if in post editing page and IF the user is allowed to edit a post's trip summary
 	//include the the styles required by the trip summary editor
 	if (abp01_is_editing_post() && abp01_can_edit_trip_summary(null)) {
-		Abp01_Includes::includeStyleNProgress();
-		Abp01_Includes::includeStyleLeaflet();
-		Abp01_Includes::includeStyleSumoSelect();
-		Abp01_Includes::includeStyleJQueryToastr();
 		Abp01_Includes::includeStyleAdminMain();
 	}
 
 	//if in plug-in editing page and IF the user is allowed to edit the plug-in's settings
 	//include the styles required by the settings editor
 	if (abp01_is_editing_settings() && abp01_can_manage_plugin_settings()) {
-		Abp01_Includes::includeStyleNProgress();
-		Abp01_Includes::includeStyleAdminMain();
+		Abp01_Includes::includeStyleAdminSettings();
 	}
 
 	if (abp01_is_managing_lookup() && abp01_can_manage_plugin_settings()) {
-		Abp01_Includes::includeStyleSystemThickBox();
-		Abp01_Includes::includeStyleNProgress();
-		Abp01_Includes::includeStyleJQueryToastr();
-		Abp01_Includes::includeStyleAdminMain();
+		Abp01_Includes::includeStyleAdminLookupManagement();
 	}
 	
 	if (abp01_is_browsing_help() && abp01_can_manage_plugin_settings()) {
@@ -919,26 +906,7 @@ function abp01_add_admin_styles() {
  */
 function abp01_add_frontend_styles() {
 	if (is_single()) {
-		Abp01_Includes::includeStyleDashIcons();
-		Abp01_Includes::includeStyleNProgress();
-
-		Abp01_Includes::includeStyleLeaflet();
-		Abp01_Includes::includeStyleLeafletMagnifyingGlass();
-		Abp01_Includes::includeStyleLeafletFullScreen();
-		
-		$locations = abp01_get_frontend_template_locations();
-		$cssRelativePath = 'media/css/abp01-frontend-main.css';
-		$themeCssFile = $locations->theme . '/' . $cssRelativePath;
-
-		//if the the theme has overridden the css file, include the override
-		if (is_readable($themeCssFile)) {
-			$cssPath = $locations->themeUrl . '/' . $cssRelativePath;
-			wp_enqueue_style('abp01-frontend-main-css', $cssPath, array(), '0.2', 'all');
-		} else {
-			//otherwise, include the default css file
-			Abp01_Includes::includeStyleFrontendMain();
-			Abp01_Includes::includeStyleFrontendMainThemeSpecificIfPresent();
-		}
+		Abp01_Includes::includeStyleFrontendMain();
 	}
 }
 
@@ -948,57 +916,15 @@ function abp01_add_frontend_styles() {
  */
 function abp01_add_admin_scripts() {
 	if (abp01_is_editing_post() && abp01_can_edit_trip_summary(null)) {
-		Abp01_Includes::includeScriptURIJs();
-		Abp01_Includes::includeScriptJQueryBlockUI();
-		Abp01_Includes::includeScriptJQueryToastr();
-		Abp01_Includes::includeScriptNProgress();
-		Abp01_Includes::includeScriptJQueryEasyTabs();
-		Abp01_Includes::includeScriptSumoSelect();
-
-		Abp01_Includes::includeScriptLeaflet();
-		Abp01_Includes::includeScriptLodash();
-		Abp01_Includes::includeScriptMachina();
-		Abp01_Includes::includeScriptKiteJs();
-
-		Abp01_Includes::includeScriptMap();
-		Abp01_Includes::includeScriptProgressOverlay();
-		Abp01_Includes::includeScriptAdminEditorMain();
-
-		Abp01_Includes::injectSettings(Abp01_Includes::JS_ADMIN_MAIN);
-		
-		wp_localize_script(Abp01_Includes::JS_ADMIN_MAIN, 'abp01MainL10n', 
-			abp01_get_main_admin_script_translations());
+		Abp01_Includes::includeScriptAdminEditorMain(true, abp01_get_main_admin_script_translations());
 	}
 
 	if (abp01_is_editing_settings() && abp01_can_manage_plugin_settings()) {
-		Abp01_Includes::includeScriptURIJs();
-		Abp01_Includes::includeScriptJQueryBlockUI();
-		Abp01_Includes::includeScriptKiteJs();
-		Abp01_Includes::includeScriptLodash();
-		Abp01_Includes::includeScriptMachina();
-		Abp01_Includes::includeScriptNProgress();
-		Abp01_Includes::includeScriptProgressOverlay();
-		Abp01_Includes::includeScriptAdminSettings();
-
-		wp_localize_script(Abp01_Includes::JS_ADMIN_SETTINGS, 'abp01SettingsL10n', 
-			abp01_get_settings_admin_script_translations());
+		Abp01_Includes::includeScriptAdminSettings(abp01_get_settings_admin_script_translations());
 	}
 
 	if (abp01_is_managing_lookup() && abp01_can_manage_plugin_settings()) {
-		Abp01_Includes::includeScriptSystemThickbox();
-		Abp01_Includes::includeScriptURIJs();
-		Abp01_Includes::includeScriptKiteJs();
-		Abp01_Includes::includeScriptJQueryBlockUI();
-		Abp01_Includes::includeScriptJQueryToastr();
-		Abp01_Includes::includeScriptLodash();
-		Abp01_Includes::includeScriptMachina();
-		Abp01_Includes::includeScriptNProgress();
-
-		Abp01_Includes::includeScriptProgressOverlay();
-		Abp01_Includes::includeScriptAdminLookupMgmt();
-
-		wp_localize_script(Abp01_Includes::JS_ADMIN_LOOKUP_MGMT, 'abp01LookupMgmtL10n', 
-			abp01_get_lookup_admin_script_translations());
+		Abp01_Includes::includeScriptAdminLookupMgmt(abp01_get_lookup_admin_script_translations());
 	}
 }
 
@@ -1008,23 +934,7 @@ function abp01_add_admin_scripts() {
  */
 function abp01_add_frontend_scripts() {
 	if (is_single()) {
-		Abp01_Includes::includeScriptJQuery();
-		Abp01_Includes::includeScriptJQueryVisible();
-		Abp01_Includes::includeScriptURIJs();
-		Abp01_Includes::includeScriptJQueryEasyTabs();
-
-		Abp01_Includes::includeScriptLeaflet();
-		Abp01_Includes::includeScriptLeafletMagnifyingGlass();
-		Abp01_Includes::includeScriptLeafletFullscreen();
-		Abp01_Includes::includeScriptLeafletIconButton();
-
-		Abp01_Includes::includeScriptMap();
-		Abp01_Includes::includeScriptFrontendMain();
-
-		Abp01_Includes::injectSettings(Abp01_Includes::JS_FRONTEND_MAIN);
-
-		wp_localize_script(Abp01_Includes::JS_FRONTEND_MAIN, 'abp01FrontendL10n', 
-			abp01_get_main_frontend_translations());
+		Abp01_Includes::includeScriptFrontendMain(true, abp01_get_main_frontend_translations());
 	}
 }
 

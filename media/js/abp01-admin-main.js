@@ -595,8 +595,6 @@
                 ]
             },
             runtimes: 'html5,html4',
-            //flash_swf_url: window.abp01_flashUploaderUrl || '',
-            //silverlight_xap_url: window.abp01_xapUploaderUrl || '',
             multipart: true,
             multipart_params: {},
             chunk_size: window.abp01_uploadChunkSize || 102400,
