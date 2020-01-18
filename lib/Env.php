@@ -170,7 +170,7 @@ class Abp01_Env {
 	 * The current plug-in version
 	 * @var string
 	 */
-    private  $_version = '0.2.1';
+    private  $_version = ABP01_VERSION;
 
 	/**
 	 * Gets or creates the singleton instance
@@ -257,6 +257,12 @@ class Abp01_Env {
 			. 'abp01_techbox_route_details_lookup';
     }
 
+    private function _getCurrentAdminPageSlug() {
+        return isset($_GET['page']) 
+            ? strtolower($_GET['page']) 
+            : null;
+    }
+
 	public function overrideDataDir($dataDir) {
 		if (empty($dataDir) || !is_dir($dataDir)) {
 			throw new InvalidArgumentException();
@@ -325,8 +331,40 @@ class Abp01_Env {
         return  wp_get_theme()->get_stylesheet_directory_uri();
     }
 
+    public function isAdminPage($slug) {
+        return $this->getCurrentPage() == 'admin.php' 
+            && $this->_getCurrentAdminPageSlug() == strtolower($slug);
+    }
+
+    public function isSavingWpOptions() {
+        return $this->getCurrentPage() == 'options.php' && $this->isHttpPost();
+    }
+
+    public function isEditingWpPost() {
+	    return in_array($this->getCurrentPage(), array(
+            'post-new.php', 
+            'post.php'
+        ));
+    }
+
     public function getCurrentPage() {
-        return isset($GLOBALS['pagenow']) ? strtolower($GLOBALS['pagenow']) : null;
+        return isset($GLOBALS['pagenow']) 
+            ? strtolower($GLOBALS['pagenow']) 
+            : null;
+    }
+
+    public function getHttpMethod() {
+        return isset($_SERVER['REQUEST_METHOD']) 
+            ? strtolower($_SERVER['REQUEST_METHOD']) 
+            : null;
+    }
+
+    public function isHttpGet() {
+        return $this->getHttpMethod() === 'get';
+    }
+
+    public function isHttpPost() {
+        return $this->getHttpMethod() === 'post';
     }
 
     public function getRouteTrackTableName() {

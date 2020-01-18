@@ -130,17 +130,42 @@ class Abp01_Installer {
 		$result = true;
         
         if ($version == '0.2b') {
+            //If no installed version is set, this is the very first version, 
+            //  so we need to run the update to 0.2b
             if (empty($installedVersion)) {
                 $result = $this->_updateTo02Beta();
             }
         }
 
         if ($version == '0.2.1') {
+            //If no installed version is set, this is the very first version, 
+            //  so we need to run the update to 0.2b
             if (empty($installedVersion)) {
                 $result = $this->_updateTo02Beta();
             }
+
+            //Then, run the update to 0.2.1, if the pervious update (if there was one), 
+            //  was successful
             if ($result) {
                 $result = $this->_updateTo021();
+            }
+        }
+
+        if ($version == '0.2.2') {
+            //If no installed version is set, this is the very first version, 
+            //  so we need to run the update to 0.2b and then to 0.2.1
+            if (empty($installedVersion)) {
+                $result = $this->_updateTo02Beta() && $this->_updateTo021();
+            } else if ($installedVersion == '0.2b') {
+                //If the installed version is 0.2b, 
+                //  then run the update to 0.2.1
+                $result = $this->_updateTo021();
+            }
+
+            //Then, run the update to 0.2.2, if the pervious updates (if there were any), 
+            //  were successful
+            if ($result) {
+                $result = $this->_updateTo022();
             }
         }
 
@@ -167,6 +192,84 @@ class Abp01_Installer {
 		return false;
     }
     
+    private function _syncExistingLookupAssociations() {
+		$db = $this->_env->getDb();
+		if (!$db) {
+			return false;
+		}
+		
+		$tableName = $this->_getRouteDetailsLookupTableName();
+		$detailsTableName = $this->_getRouteDetailsTableName();
+
+		//remove all existing entries
+		if ($db->rawQuery('TRUNCATE TABLE `' . $tableName . '`', null, false) === false) {
+			return false;
+		}
+
+		//extract the current values
+		$data = $db->rawQuery('SELECT post_ID, route_data_serialized FROM `' . $detailsTableName . '`');
+		if (!is_array($data)) {
+			return false;
+		}
+
+		foreach ($data as $row) {
+			$postId = intval($row['post_ID']);
+			if (empty($row['route_data_serialized'])) {
+				continue;
+			}
+
+			$routeDetails = json_decode($row['route_data_serialized'], false);
+			if (!empty($routeDetails->bikeRecommendedSeasons)) {
+				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->bikeRecommendedSeasons);
+			}
+			if (!empty($routeDetails->bikePathSurfaceType)) {
+				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->bikePathSurfaceType);
+			}
+			if (!empty($routeDetails->bikeBikeType)) {
+				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->bikeBikeType);
+			}
+			if (!empty($routeDetails->bikeDifficultyLevel)) {
+				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->bikeDifficultyLevel);
+			}
+			if (!empty($routeDetails->hikingDifficultyLevel)) {
+				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->hikingDifficultyLevel);
+			}
+			if (!empty($routeDetails->hikingRecommendedSeasons)) {
+				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->hikingRecommendedSeasons);
+			}
+			if (!empty($routeDetails->hikingSurfaceType)) {
+				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->hikingSurfaceType);
+			}
+			if (!empty($routeDetails->trainRideOperator)) {
+				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->trainRideOperator);
+			}
+			if (!empty($routeDetails->trainRideLineStatus)) {
+				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->trainRideLineStatus);
+			}
+			if (!empty($routeDetails->trainRideElectrificationStatus)) {
+				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->trainRideElectrificationStatus);
+			}
+			if (!empty($routeDetails->trainRideLineType)) {
+				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->trainRideLineType);
+			}
+		}
+
+		return true;
+	}
+
+	private function _addLookupAssociation($db, $tableName, $postId, $lookupId) {
+		if (is_array($lookupId)) {
+			foreach ($lookupId as $id) {
+				$this->_addLookupAssociation($db, $tableName, $postId, $id);
+			}
+		} else {
+			$db->insert($tableName, array(
+				'lookup_ID' => $lookupId,
+				'post_ID' => $postId
+			));
+		}
+	}
+
     private function _updateTo021() {
         $result = true;
 
@@ -268,22 +371,38 @@ class Abp01_Installer {
         //If no failures were registered whilst moving the files, 
         //  remove the legacy directory
         if ($failedCount == 0) {
-            return $this->_removeLegacyStorageDirectory($legacyDirectoryPath);
+            return $this->_removeDirectoryAndContents($legacyDirectoryPath);
         } else {
             return false;
         }
     }
 
-    private function _removeLegacyStorageDirectory($legacyDirectoryPath) {
+    private function _removeStorageDirectory() {
+        $rootStorageDir = $this->_env->getRootStorageDir();
+        $tracksStorageDir = $this->_env->getTracksStorageDir();
+        $cacheStorageDir = $this->_env->getCacheStorageDir();
+
+        if ($this->_removeDirectoryAndContents($tracksStorageDir) && $this->_removeDirectoryAndContents($cacheStorageDir)) {
+            return $this->_removeDirectoryAndContents($rootStorageDir);
+        } else {
+            return false;
+        }
+    }
+
+    private function _removeDirectoryAndContents($directoryPath) {
+        if (!is_dir($directoryPath)) {
+            return true;
+        }
+
         $failedCount = 0;
-        $entries = @scandir($legacyDirectoryPath, SCANDIR_SORT_ASCENDING);
+        $entries = @scandir($directoryPath, SCANDIR_SORT_ASCENDING);
 
         //Remove the files
         if (is_array($entries)) {
             foreach ($entries as $entry) {
                 if ($entry != '.' && $entry != '..') {
                     $toRemoveFilePath = wp_normalize_path(sprintf('%s/%s', 
-                        $legacyDirectoryPath, 
+                        $directoryPath, 
                         $entry));
 
                     if (!@unlink($toRemoveFilePath)) {
@@ -296,7 +415,7 @@ class Abp01_Installer {
         //And if no file removal failed,
         //  remove the directory
         if ($failedCount == 0) {
-            return @rmdir($legacyDirectoryPath);
+            return @rmdir($directoryPath);
         } else {
             return false;
         }
@@ -315,83 +434,93 @@ class Abp01_Installer {
         return empty(trim($db->getLastError()));
     }
 
-	private function _syncExistingLookupAssociations() {
-		$db = $this->_env->getDb();
-		if (!$db) {
-			return false;
-		}
-		
-		$tableName = $this->_getRouteDetailsLookupTableName();
-		$detailsTableName = $this->_getRouteDetailsTableName();
+    private function _updateTo022() {
+        return $this->_ensureStorageDirectories() 
+            && $this->_installStorageDirsSecurityAssets();
+    }
 
-		//remove all existing entries
-		if ($db->rawQuery('TRUNCATE TABLE `' . $tableName . '`', null, false) === false) {
-			return false;
-		}
+    private function _installStorageDirsSecurityAssets() {
+        $rootStorageDir = $this->_env->getRootStorageDir();
+        $tracksStorageDir = $this->_env->getTracksStorageDir();
+        $cacheStorageDir = $this->_env->getCacheStorageDir();
 
-		//extract the current values
-		$data = $db->rawQuery('SELECT post_ID, route_data_serialized FROM `' . $detailsTableName . '`');
-		if (!is_array($data)) {
-			return false;
-		}
+        $rootAssets = array(
+            array(
+                'name' => 'index.php',
+                'contents' => $this->_getGuardIndexPhpFileContents(3),
+                'type' => 'file'
+            )
+        );
 
-		foreach ($data as $row) {
-			$postId = intval($row['post_ID']);
-			if (empty($row['route_data_serialized'])) {
-				continue;
-			}
+        $tracksAssets = array(
+            array(
+                'name' => 'index.php',
+                'contents' => $this->_getGuardIndexPhpFileContents(4),
+                'type' => 'file'
+            ),
+            array(
+                'name' => '.htaccess',
+                'contents' => $this->_getTrackAssetsGuardHtaccessFileContents(),
+                'type' => 'file'
+            )
+        );
 
-			$routeDetails = json_decode($row['route_data_serialized'], false);
-			if (!empty($routeDetails->bikeRecommendedSeasons)) {
-				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->bikeRecommendedSeasons);
-			}
-			if (!empty($routeDetails->bikePathSurfaceType)) {
-				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->bikePathSurfaceType);
-			}
-			if (!empty($routeDetails->bikeBikeType)) {
-				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->bikeBikeType);
-			}
-			if (!empty($routeDetails->bikeDifficultyLevel)) {
-				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->bikeDifficultyLevel);
-			}
-			if (!empty($routeDetails->hikingDifficultyLevel)) {
-				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->hikingDifficultyLevel);
-			}
-			if (!empty($routeDetails->hikingRecommendedSeasons)) {
-				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->hikingRecommendedSeasons);
-			}
-			if (!empty($routeDetails->hikingSurfaceType)) {
-				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->hikingSurfaceType);
-			}
-			if (!empty($routeDetails->trainRideOperator)) {
-				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->trainRideOperator);
-			}
-			if (!empty($routeDetails->trainRideLineStatus)) {
-				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->trainRideLineStatus);
-			}
-			if (!empty($routeDetails->trainRideElectrificationStatus)) {
-				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->trainRideElectrificationStatus);
-			}
-			if (!empty($routeDetails->trainRideLineType)) {
-				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->trainRideLineType);
-			}
-		}
+        $this->_installAssetsForDirectory($rootStorageDir, 
+            $rootAssets);
+        $this->_installAssetsForDirectory($tracksStorageDir, 
+            $tracksAssets);
+        $this->_installAssetsForDirectory($cacheStorageDir, 
+            $tracksAssets);
 
-		return true;
-	}
+        return true;
+    }
 
-	private function _addLookupAssociation($db, $tableName, $postId, $lookupId) {
-		if (is_array($lookupId)) {
-			foreach ($lookupId as $id) {
-				$this->_addLookupAssociation($db, $tableName, $postId, $id);
-			}
-		} else {
-			$db->insert($tableName, array(
-				'lookup_ID' => $lookupId,
-				'post_ID' => $postId
-			));
-		}
-	}
+    private function _installAssetsForDirectory($targetDir, $assetsDesc) {
+        if (!is_dir($targetDir)) {
+            return false;
+        }
+
+        foreach ($assetsDesc as $asset) {
+            $result = false;
+            $assetPath = wp_normalize_path(sprintf('%s/%s', 
+                $targetDir, 
+                $asset['name']));
+
+            if ($asset['type'] == 'file') {
+                $assetHandle = @fopen($assetPath, 'w+');
+                if ($assetHandle) {
+                    fwrite($assetHandle, $asset['contents']);
+                    fclose($assetHandle);
+                    $result = true;
+                }
+            } else if ($asset['type'] == 'directory') {
+                @mkdir($assetPath);
+                $result = is_dir($assetPath);
+            }
+
+            if (!$result) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private function _getTrackAssetsGuardHtaccessFileContents() {
+        return join("\n", array(
+            '<FilesMatch "\.cache">',
+                "\t" . 'order allow,deny',
+                "\t" . 'deny from all',
+            '</FilesMatch>',
+            '<FilesMatch "\.gpx">',
+                "\t" . 'order allow,deny',
+                "\t" . 'deny from all',
+            '</FilesMatch>'
+        ));
+    }
+
+    private function _getGuardIndexPhpFileContents($redirectCount) {
+        return '<?php header("Location: ' . str_repeat('../', $redirectCount) . 'index.php"); exit;';
+    }
 
     public function updateIfNeeded() {
         $version = $this->_getVersion();
@@ -431,10 +560,22 @@ class Abp01_Installer {
     public function activate() {
         $this->_reset();
         try {
-            if (!$this->_installSchema()) {
+            if (!$this->_installStorageDirectory()) {
+                //Ensure no partial directory and file structure remains
+                $this->_removeStorageDirectory();
                 return false;
             }
+
+            if (!$this->_installSchema()) {
+                //Ensure no partial directory and file structure remains
+                $this->_removeStorageDirectory();
+                return false;
+            }
+
             if (!$this->_installData()) {
+                //Ensure no partial directory and file structure remains
+                $this->_removeStorageDirectory();
+                //Remove schema as well
                 $this->_uninstallSchema();
                 return false;
             } else {
@@ -462,11 +603,18 @@ class Abp01_Installer {
             return $this->deactivate()
                 && $this->_uninstallSchema()
                 && $this->_uninstallSettings()
+                && $this->_removeStorageDirectory()
                 && $this->_uninstallVersion();
         } catch (Exception $e) {
             $this->_lastError = $e;
         }
         return false;
+    }
+
+    public function ensureStorageDirectories() {
+        if ($this->_ensureStorageDirectories()) {
+            $this->_installStorageDirsSecurityAssets();
+        }
     }
 
     public function getRequiredPhpVersion() {
@@ -479,6 +627,16 @@ class Abp01_Installer {
 
     public function getLastError() {
         return $this->_lastError;
+    }
+
+    private function _installStorageDirectory() {
+        $result = false;
+
+        if ($this->_ensureStorageDirectories()) {
+            $result = $this->_installStorageDirsSecurityAssets();
+        }
+
+        return $result;
     }
 
     private function _readLookupDefinitions() {

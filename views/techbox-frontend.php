@@ -39,7 +39,7 @@
 
     var abp01_hasInfo = <?php echo $data->info->exists ? 'true' : 'false' ?>;
     var abp01_hasTrack = <?php echo $data->track->exists ? 'true' : 'false' ?>;
-    var abp01_postId = <?php echo $data->postId; ?>;
+    var abp01_postId = '<?php echo $data->postId; ?>';
     var abp01_nonceGet = '<?php echo esc_js($data->nonceGet); ?>';
 	var abp01_nonceDownload = '<?php echo esc_js($data->nonceDownload); ?>';
 </script>
@@ -63,7 +63,7 @@
             <div class="abp01-clear"></div>
             <div id="abp01-techbox-content" class="abp01-techbox-content">
                 <?php if ($data->info->exists): ?>
-                    <div id="abp01-techbox-info" class="abp01-techbox-info" style="<?php echo $data->track->exists ? 'display: none;' : ''; ?>">
+                    <div id="abp01-techbox-info" class="abp01-techbox-info" <?php echo $data->track->exists ? 'style="display: none;"' : ''; ?>>
                         <ul>
                             <?php if ($data->info->isBikingTour): ?>
                                 <?php abp01_display_info_item($data, 'bikeDistance', __('Total distance', 'abp01-trip-summary'), $data->unitSystem->distanceUnit); ?>
@@ -94,7 +94,7 @@
                     </div>
                 <?php endif; ?>
                 <?php if ($data->track->exists): ?>
-                    <div id="abp01-techbox-map" class="abp01-techbox-map" style="<?php echo $data->info->exists ? 'display: none;' : ''; ?>">
+                    <div id="abp01-techbox-map" class="abp01-techbox-map" <?php echo $data->info->exists ? 'style="display: none;"' : ''; ?>>
                         <div id="abp01-map-container" class="abp01-map-container" data-role="map-container">
                             <div id="abp01-map" class="abp01-map" data-role="map-holder"></div>
                             <div id="abp01-map-retry-container" class="abp01-map-retry-container" style="display: none;">

@@ -3,7 +3,7 @@
  * Plugin Name: WP Trip Summary
  * Author: Alexandru Boia
  * Author URI: http://alexboia.net
- * Version: 0.2.1
+ * Version: 0.2.2
  * Description: Aids a travel blogger to add structured information about his tours (biking, hiking, train travels etc.)
  * License: New BSD License
  * Plugin URI: https://github.com/alexboia/WP-Trip-Summary
@@ -46,6 +46,7 @@
 define('ABP01_LOADED', true);
 define('ABP01_PLUGIN_ROOT', dirname(__FILE__));
 define('ABP01_LIB_DIR', ABP01_PLUGIN_ROOT . '/lib');
+define('ABP01_VERSION', '0.2.2');
 
 define('ABP01_DISABLE_MINIFIED', false);
 
@@ -75,6 +76,18 @@ define('ABP01_MAIN_MENU_SLUG', 'abp01-trip-summary-settings');
 define('ABP01_LOOKUP_SUBMENU_SLUG', 'abp01-trip-summary-lookup');
 define('ABP01_HELP_SUBMENU_SLUG', 'abp01-trip-summary-help');
 
+function abp01_get_env() {
+	return Abp01_Env::getInstance();
+}
+
+function abp01_get_installer() {
+	return new Abp01_Installer();
+}
+
+function abp01_get_settings() {
+	return Abp01_Settings::getInstance();
+}
+
 /**
  * Initializes the autoloading process
  * @return void
@@ -93,7 +106,10 @@ function abp01_get_help_file_for_locale($locale) {
 	if (empty($locale)) {
 		return '';
 	}
-	return sprintf('%s/help/%s/index.html', Abp01_Env::getInstance()->getDataDir(), $locale);
+
+	return sprintf('%s/help/%s/index.html', 
+		abp01_get_env()->getDataDir(), 
+		$locale);
 }
 
 /**
@@ -121,7 +137,11 @@ function abp01_dump($var) {
 function abp01_append_error($message, $error) {
 	if (WP_DEBUG) {
 		if ($error instanceof Exception) {
-			$message .= sprintf(': %s (%s) in file %s line %d', $error->getMessage(), $error->getCode(), $error->getFile(), $error->getLine());
+			$message .= sprintf(': %s (%s) in file %s line %d', 
+				$error->getMessage(), 
+				$error->getCode(), 
+				$error->getFile(), 
+				$error->getLine());
 		} else if (!empty($error)) {
 			$message .= ': ' . $error;
 		}
@@ -135,7 +155,7 @@ function abp01_append_error($message, $error) {
  */
 function abp01_increase_limits($executionTimeMinutes = 5) {
 	if (function_exists('set_time_limit')) {
-		@set_time_limit(5 * 60);
+		@set_time_limit($executionTimeMinutes * 60);
 	}
 	if (function_exists('ini_set')) {
 		@ini_set('memory_limit', WP_MAX_MEMORY_LIMIT);
@@ -263,29 +283,18 @@ function abp01_escape_value($value) {
  * Ensures that the root storage directory of the plug-in exists and creates if it does not.
  * @return void
  */
-function abp01_ensure_root_storage_dir() {
-	$rootStorageDir = Abp01_Env::getInstance()->getRootStorageDir();
-	if (!is_dir($rootStorageDir)) {
-		@mkdir($rootStorageDir);
-	}
+function abp01_ensure_storage_directory() {
+	abp01_get_installer()->ensureStorageDirectories();
 }
 
 /**
  * Compute the full GPX file upload destination file path for the given post ID
  * @param int $postId
- * @param bool $ensureExists
  * @return string The computed path
  */
-function abp01_get_track_upload_destination($postId, $ensureExists) {
+function abp01_get_track_upload_destination($postId) {
 	$fileName = sprintf('track-%d.gpx', $postId);
-	$tracksStorageDir = Abp01_Env::getInstance()->getTracksStorageDir();
-
-	if ($ensureExists) {
-		abp01_ensure_root_storage_dir();
-		if (!is_dir($tracksStorageDir)) {
-			@mkdir($tracksStorageDir);
-		}
-	}
+	$tracksStorageDir = abp01_get_env()->getTracksStorageDir();
 
 	return is_dir($tracksStorageDir) 
 		? wp_normalize_path($tracksStorageDir . '/' . $fileName) 
@@ -297,7 +306,7 @@ function abp01_get_track_upload_destination($postId, $ensureExists) {
  * @return string The current HTTP method or null if it cannot be determined
  */
 function abp01_get_http_method() {
-	return isset($_SERVER['REQUEST_METHOD']) ? strtolower($_SERVER['REQUEST_METHOD']) : null;
+	return abp01_get_env()->getHttpMethod();
 }
 
 /**
@@ -305,8 +314,7 @@ function abp01_get_http_method() {
  * @return bool
  * */
 function abp01_is_saving_options() {
-	$currentPage = Abp01_Env::getInstance()->getCurrentPage();
-	return $currentPage == 'options.php' && abp01_get_http_method() == 'post';
+	return abp01_get_env()->isSavingWpOptions();
 }
 
 /**
@@ -314,8 +322,7 @@ function abp01_is_saving_options() {
  * @return bool
  */
 function abp01_is_editing_post() {
-	$currentPage = Abp01_Env::getInstance()->getCurrentPage();
-	return in_array($currentPage, array('post-new.php', 'post.php'));
+	return abp01_get_env()->isEditingWpPost();
 }
 
 /**
@@ -323,9 +330,7 @@ function abp01_is_editing_post() {
  * @return boolean True if on plugin settings page, false otherwise
  */
 function abp01_is_editing_settings() {
-	$currentPage = Abp01_Env::getInstance()->getCurrentPage();
-	$isOnSettingsPage = isset($_GET['page']) ? $_GET['page'] == ABP01_MAIN_MENU_SLUG : false;
-	return $currentPage == 'admin.php' && $isOnSettingsPage;
+	return abp01_get_env()->isAdminPage(ABP01_MAIN_MENU_SLUG);
 }
 
 /**
@@ -333,9 +338,7 @@ function abp01_is_editing_settings() {
  * @return booelan True if on plugin lookup data management page, false otherwise
  */
 function abp01_is_managing_lookup() {
-	$currentPage = Abp01_Env::getInstance()->getCurrentPage();
-	$isOnlookupPagePage = isset($_GET['page']) ? $_GET['page'] == ABP01_LOOKUP_SUBMENU_SLUG : false;
-	return $currentPage == 'admin.php' && $isOnlookupPagePage;
+	return abp01_get_env()->isAdminPage(ABP01_LOOKUP_SUBMENU_SLUG);
 }
 
 /**
@@ -343,9 +346,7 @@ function abp01_is_managing_lookup() {
  * @return booelan True if on plugin lookup help page, false otherwise
  */
 function abp01_is_browsing_help() {
-	$currentPage = Abp01_Env::getInstance()->getCurrentPage();
-	$isOnHelpPage = isset($_GET['page']) ? $_GET['page'] == ABP01_HELP_SUBMENU_SLUG : false;
-	return $currentPage == 'admin.php' && $isOnHelpPage;
+	return abp01_get_env()->isAdminPage(ABP01_HELP_SUBMENU_SLUG);
 }
 
 /**
@@ -398,16 +399,9 @@ function abp01_can_manage_plugin_settings() {
  * @param bool $ensureExists
  * @return string
  */
-function abp01_get_track_cache_file_path($postId, $ensureExists) {
+function abp01_get_track_cache_file_path($postId) {
 	$fileName = sprintf('track-%d.cache', $postId);
-	$cacheStorageDir = Abp01_Env::getInstance()->getCacheStorageDir();
-
-	if ($ensureExists) {
-		abp01_ensure_root_storage_dir();
-		if (!is_dir($cacheStorageDir)) {
-			@mkdir($cacheStorageDir);
-		}
-	}
+	$cacheStorageDir = abp01_get_env()->getCacheStorageDir();
 
 	return is_dir($cacheStorageDir) 
 		? wp_normalize_path($cacheStorageDir . '/' . $fileName) 
@@ -421,7 +415,12 @@ function abp01_get_track_cache_file_path($postId, $ensureExists) {
  * @return void
  */
 function abp01_save_cached_track($postId, Abp01_Route_Track_Document $route) {
-	$path = abp01_get_track_cache_file_path($postId, true);
+	//Ensure the storage directory structure exists
+	abp01_ensure_storage_directory();
+
+	//Compute the path at which to store the cached file 
+	//	and store the serialized track data
+	$path = abp01_get_track_cache_file_path($postId);
 	if (!empty($path)) {
 		file_put_contents($path, $route->serializeDocument(), LOCK_EX);
 	}
@@ -433,10 +432,12 @@ function abp01_save_cached_track($postId, Abp01_Route_Track_Document $route) {
  * @return Abp01_Route_Track_Document The deserialized document
  */
 function abp01_get_cached_track($postId) {
-	$path = abp01_get_track_cache_file_path($postId, false);
+	$path = abp01_get_track_cache_file_path($postId);
+
 	if (empty($path) || !is_readable($path)) {
 		return null;
 	}
+
 	$contents = file_get_contents($path);
 	return Abp01_Route_Track_Document::fromSerializedDocument($contents);
 }
@@ -446,7 +447,7 @@ function abp01_get_cached_track($postId) {
  * @return stdClass
  */
 function abp01_get_frontend_template_locations() {
-	return Abp01_Env::getInstance()->getFrontendTemplateLocations();
+	return abp01_get_env()->getFrontendTemplateLocations();
 }
 
 /**
@@ -551,14 +552,23 @@ function abp01_get_lookup_admin_script_translations() {
  * @return array key-value pairs where keys are installation error codes and values are the translated strings
  */
 function abp01_get_installation_error_translations() {
-	$env = Abp01_Env::getInstance();
-	load_plugin_textdomain('abp01-trip-summary', false, dirname(plugin_basename(__FILE__)) . '/lang/');
+	$env = abp01_get_env();
+
+	load_plugin_textdomain('abp01-trip-summary', 
+		false, 
+		dirname(plugin_basename(__FILE__)) . '/lang/');
+
 	return array(
-		Abp01_Installer::INCOMPATIBLE_PHP_VERSION => sprintf(esc_html__('Minimum required PHP version is %s', 'abp01-trip-summary'), $env->getRequiredPhpVersion()), 
-		Abp01_Installer::INCOMPATIBLE_WP_VERSION => sprintf(esc_html__('Minimum required WP version is %s', 'abp01-trip-summary'), $env->getRequiredWpVersion()), 
-		Abp01_Installer::SUPPORT_LIBXML_NOT_FOUND => esc_html__('LIBXML support was not found on your system', 'abp01-trip-summary'), 
-		Abp01_Installer::SUPPORT_MYSQLI_NOT_FOUND => esc_html__('Mysqli extension was not found on your system or is not fully compatible', 'abp01-trip-summary'), 
-		Abp01_Installer::SUPPORT_MYSQL_SPATIAL_NOT_FOUND => esc_html__('MySQL spatial support was not found on your system', 'abp01-trip-summary')
+		Abp01_Installer::INCOMPATIBLE_PHP_VERSION 
+			=> sprintf(esc_html__('Minimum required PHP version is %s', 'abp01-trip-summary'), $env->getRequiredPhpVersion()), 
+		Abp01_Installer::INCOMPATIBLE_WP_VERSION 
+			=> sprintf(esc_html__('Minimum required WP version is %s', 'abp01-trip-summary'), $env->getRequiredWpVersion()), 
+		Abp01_Installer::SUPPORT_LIBXML_NOT_FOUND 
+			=> esc_html__('LIBXML support was not found on your system', 'abp01-trip-summary'), 
+		Abp01_Installer::SUPPORT_MYSQLI_NOT_FOUND 
+			=> esc_html__('Mysqli extension was not found on your system or is not fully compatible', 'abp01-trip-summary'), 
+		Abp01_Installer::SUPPORT_MYSQL_SPATIAL_NOT_FOUND 
+			=> esc_html__('MySQL spatial support was not found on your system', 'abp01-trip-summary')
 	);
 }
 
@@ -731,7 +741,7 @@ function abp01_activate() {
 	if (!current_user_can('activate_plugins')) {
 		return;
 	}
-	$installer = new Abp01_Installer();
+	$installer = abp01_get_installer();
 	$test = $installer->canBeInstalled();
 	if ($test !== 0) {
 		$errors = abp01_get_installation_error_translations();
@@ -757,7 +767,7 @@ function abp01_deactivate() {
 	if (!current_user_can('activate_plugins')) {
 		return;
 	}
-	$installer = new Abp01_Installer();
+	$installer = abp01_get_installer();
 	if (!$installer->deactivate()) {
 		wp_die(abp01_append_error('Could not deactivate plug-in', $installer->getLastError()), 'Deactivation error');
 	}
@@ -771,7 +781,7 @@ function abp01_uninstall() {
 	if (!current_user_can('activate_plugins')) {
 		return;
 	}
-	$installer = new Abp01_Installer();
+	$installer = abp01_get_installer();
 	if (!$installer->uninstall()) {
 		wp_die(abp01_append_error('Could not uninstall plug-in', $installer->getLastError()), 'Uninstall error');
 	}
@@ -787,7 +797,7 @@ function abp01_init_plugin() {
 	load_plugin_textdomain('abp01-trip-summary', false, dirname(plugin_basename(__FILE__)) . '/lang/');
 
 	//check if update is needed
-	$installer = new Abp01_Installer();
+	$installer = abp01_get_installer();
 	$installer->updateIfNeeded();
 }
 
@@ -956,7 +966,7 @@ function abp01_admin_settings_page() {
 	$data->ajaxUrl = get_admin_url(null, 'admin-ajax.php', 'admin');
 
 	//fetch and process tile layer information
-	$settings = Abp01_Settings::getInstance();	
+	$settings = abp01_get_settings();
 	$tileLayers = $settings->getTileLayers();
 
 	//fetch the bulk of the settings
@@ -1040,7 +1050,7 @@ function abp01_save_admin_settings_page_save() {
 	}
 
 	//fill in and save settings
-	$settings = Abp01_Settings::getInstance();
+	$settings = abp01_get_settings();
 	$settings->setShowTeaser(Abp01_InputFiltering::getPOSTValueAsBoolean('showTeaser'));
 	$settings->setTopTeaserText(Abp01_InputFiltering::getFilteredPOSTValue('topTeaserText'));
 	$settings->setBottomTeaserText(Abp01_InputFiltering::getFilteredPOSTValue('bottomTeaserText'));
@@ -1471,7 +1481,7 @@ function abp01_get_info($content) {
 	$data->imgBaseUrl = plugins_url('media/img', __FILE__);
 	
 	//get relevant plug-in settings
-	$settings = Abp01_Settings::getInstance();
+	$settings = abp01_get_settings();
 	$data->settings = new stdClass();
 	$data->settings->showTeaser = $settings->getShowTeaser();
 	$data->settings->topTeaserText =  $settings->getTopTeaserText();
@@ -1557,9 +1567,11 @@ function abp01_upload_track() {
 
 	//increase script execution limits: memory & cpu time
 	abp01_increase_limits();
+	//ensure the storage directory structure exists
+	abp01_ensure_storage_directory();
 
 	$currentUserId = get_current_user_id();
-	$destination = abp01_get_track_upload_destination($postId, true);
+	$destination = abp01_get_track_upload_destination($postId);
 	if (empty($destination)) {
 		die;
 	}
@@ -1649,7 +1661,7 @@ function abp01_get_track() {
 		$manager = Abp01_Route_Manager::getInstance();
 		$track = $manager->getRouteTrack($postId);
 		if ($track) {
-			$file = abp01_get_track_upload_destination($postId, false);
+			$file = abp01_get_track_upload_destination($postId);
 			if (is_readable($file)) {
 				$parser = new Abp01_Route_Track_GpxDocumentParser();
 				$route = $parser->parse(file_get_contents($file));
@@ -1700,7 +1712,7 @@ function abp01_download_track() {
     }
 
     //check if track downloads are enabled
-    if (!Abp01_Settings::getInstance()->getAllowTrackDownload()) {
+    if (!abp01_get_settings()->getAllowTrackDownload()) {
         die;
     }
 
@@ -1708,7 +1720,7 @@ function abp01_download_track() {
     abp01_increase_limits();
 
     //get the file path and check if it's readable
-    $trackFile = abp01_get_track_upload_destination($postId, false);
+    $trackFile = abp01_get_track_upload_destination($postId);
     if (empty($trackFile) || !is_readable($trackFile)) {
         die;
     }
@@ -1751,13 +1763,13 @@ function abp01_remove_track() {
 	$manager = Abp01_Route_Manager::getInstance();
 	if ($manager->deleteRouteTrack($postId)) {
 		//delete track file
-		$trackFile = abp01_get_track_upload_destination($postId, false);
+		$trackFile = abp01_get_track_upload_destination($postId);
 		if (!empty($trackFile) && file_exists($trackFile)) {
 			@unlink($trackFile);
 		}
 
 		//delete cached track file
-		$cacheFile = abp01_get_track_cache_file_path($postId, false);
+		$cacheFile = abp01_get_track_cache_file_path($postId);
 		if (!empty($cacheFile) && file_exists($cacheFile)) {
 			@unlink($cacheFile);
 		}
@@ -1786,7 +1798,7 @@ function abp01_on_footer_loaded() {
 	$resetTeaserTextRequired = get_transient('abp01_reset_teaser_text_required');
 	delete_transient('abp01_reset_teaser_text_required');
 	if ($resetTeaserTextRequired === 'true') {
-		$settings = Abp01_Settings::getInstance();
+		$settings = abp01_get_settings();
 		$settings->resetTopTeaserText();
 		$settings->resetBottomTeaserText();
 		$settings->saveSettings();

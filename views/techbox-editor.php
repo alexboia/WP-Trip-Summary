@@ -49,7 +49,7 @@
     var abp01_uploadKey = '<?php echo $data->uploadKey; ?>';
 
     var abp01_postId = '<?php echo $data->postId; ?>';
-    var abp01_hasTrack = '<?php echo $data->hasTrack ? 'true' : 'false'; ?>';
+    var abp01_hasTrack = <?php echo $data->hasTrack ? 'true' : 'false'; ?>;
 
     var abp01_baseTitle = '<?php echo esc_html__('Edit trip summary', 'abp01-trip-summary') ?>';
 </script>

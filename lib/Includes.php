@@ -434,13 +434,13 @@ class Abp01_Includes {
 		'twentyseventeen' => self::STYLE_FRONTEND_MAIN_TWENTY_SEVENTEEN,
 		'twentynineteen' => self::STYLE_FRONTEND_MAIN_TWENTY_NINETEEN
 	);
-	
-	public static function setRefPluginsPath($refPluginsPath) {
-		self::$_refPluginsPath = $refPluginsPath;
+
+	private static function _getEnv() {
+		return Abp01_Env::getInstance();
 	}
 
-	public static function setScriptsInFooter($scriptsInFooter) {
-		self::$_scriptsInFooter = $scriptsInFooter;
+	private static function _getSettings() {
+		return Abp01_Settings::getInstance();
 	}
 
 	private static function _hasScript($handle) {
@@ -566,8 +566,16 @@ class Abp01_Includes {
 		}
 	}
 
+	public static function setRefPluginsPath($refPluginsPath) {
+		self::$_refPluginsPath = $refPluginsPath;
+	}
+
+	public static function setScriptsInFooter($scriptsInFooter) {
+		self::$_scriptsInFooter = $scriptsInFooter;
+	}
+
 	public static function injectSettings($scriptHandle) {
-		$settings = Abp01_Settings::getInstance();
+		$settings = self::_getSettings();
 		$tileLayers = $settings->getTileLayers();
 		$mainTileLayer = $tileLayers[0];
 
@@ -589,11 +597,11 @@ class Abp01_Includes {
 		self::_enqueueScript(self::JS_ADMIN_MAIN);
 
 		if ($addScriptSettings) {
-			self::injectSettings(Abp01_Includes::JS_ADMIN_MAIN);
+			self::injectSettings(self::JS_ADMIN_MAIN);
 		}
 
 		if (!empty($localization)) {
-			wp_localize_script(Abp01_Includes::JS_ADMIN_MAIN, 
+			wp_localize_script(self::JS_ADMIN_MAIN, 
 				'abp01MainL10n', 
 				$localization);
 		}
@@ -603,11 +611,11 @@ class Abp01_Includes {
 		self::_enqueueScript(self::JS_FRONTEND_MAIN);
 
 		if ($addScriptSettings) {
-			self::injectSettings(Abp01_Includes::JS_FRONTEND_MAIN);
+			self::injectSettings(self::JS_FRONTEND_MAIN);
 		}
 
 		if (!empty($localization)) {
-			wp_localize_script(Abp01_Includes::JS_FRONTEND_MAIN, 
+			wp_localize_script(self::JS_FRONTEND_MAIN, 
 				'abp01FrontendL10n', 
 				$localization);
 		}
@@ -616,7 +624,7 @@ class Abp01_Includes {
 	public static function includeScriptAdminSettings($localization) {
 		self::_enqueueScript(self::JS_ADMIN_SETTINGS);
 		if (!empty($localization)) {
-			wp_localize_script(Abp01_Includes::JS_ADMIN_SETTINGS, 
+			wp_localize_script(self::JS_ADMIN_SETTINGS, 
 				'abp01SettingsL10n', 
 				$localization);
 		}
@@ -625,7 +633,7 @@ class Abp01_Includes {
 	public static function includeScriptAdminLookupMgmt($localization) {
 		self::_enqueueScript(self::JS_ADMIN_LOOKUP_MGMT);
 		if (!empty($localization)) {
-			wp_localize_script(Abp01_Includes::JS_ADMIN_LOOKUP_MGMT, 
+			wp_localize_script(self::JS_ADMIN_LOOKUP_MGMT, 
 				'abp01LookupMgmtL10n', 
 				$localization);
 		}
@@ -633,7 +641,7 @@ class Abp01_Includes {
 
 	public static function includeStyleFrontendMain() {
 		$style = self::_getActualStyleToInclude(self::STYLE_FRONTEND_MAIN);
-		$alternateLocations = Abp01_Env::getInstance()->getFrontendTemplateLocations();
+		$alternateLocations = self::_getEnv()->getFrontendTemplateLocations();
 
 		$themeCssFilePath = $alternateLocations->theme . '/' . $style['path'];
 		if (is_readable($themeCssFilePath)) {
@@ -649,7 +657,7 @@ class Abp01_Includes {
 			if (!empty($deps)) {
 				self::_ensureStyleDependencies($deps);
 			}
-	
+
 			wp_enqueue_style(self::STYLE_FRONTEND_MAIN, 
 				$cssPathUrl, 
 				$deps, 
@@ -662,7 +670,7 @@ class Abp01_Includes {
 	}
 
 	public static function includeStyleFrontendMainThemeSpecificIfPresent() {
-		$themeId = Abp01_Env::getInstance()->getCurrentThemeId();
+		$themeId = self::_getEnv()->getCurrentThemeId();
 		if (isset(self::$_styleSlugsForThemeIds[$themeId])) {
 			$styleSlug = self::$_styleSlugsForThemeIds[$themeId];
 			self::_enqueueStyle($styleSlug);
