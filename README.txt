@@ -89,6 +89,12 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 
 == Changelog ==
 
+= 0.2.2 =
+* The storage directories have received index.php and .htaccess guard access files to prevent direct access of stored files. These are copied on install and on upgrade, but also created upon storing files, if they do not exist.
+* Refactoring of view file names: replaced "techbox-" prefix with "wpts-" prefix.
+* Removed deprecated uploader runtimes (flash and silverlight) from track uploader.
+* Minor refactoring.
+
 = 0.2.1 = 
 * Moved plug-in track & cache storage to a sub-directory of wp-content/uploads, as, previously, the plug-in stored its track & cache files to its own directory, which caused this data to be lost upon upgrade, since WordPress, when upgrading a plug-in, removes all the files that belong to the previous plug-in version.
 * Minor refactoring
@@ -102,6 +108,9 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 First officially distributed version.
 
 == Upgrade Notice ==
+
+= 0.2.2 =
+Upgrade to this version for improved security of the track and cache file storage directory
 
 = 0.2.1 =
 Please see here notes on updating to plug-in version 0.2.1: https://github.com/alexboia/WP-Trip-Summary/blob/master/README-UPDATE-021.md

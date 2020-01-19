@@ -1048,11 +1048,11 @@ class Abp01_Installer {
     }
 
     private function _getDefaultCharset() {
-        return defined('DB_CHARSET') ? DB_CHARSET : null;
+        return $this->_env->getDbCharset();
     }
 
     private function _getCollate() {
-        return defined('DB_COLLATE') ? DB_COLLATE : null;
+        return $this->_env->getDbCollate();
     }
 
     private function _getRouteTrackTableName() {

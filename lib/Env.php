@@ -82,6 +82,18 @@ class Abp01_Env {
 	 */
     private $_dbName;
 
+    /**
+     * The database collation
+     * @var string
+     */
+    private $_dbCollate;
+
+    /**
+     * The database charset
+     * @var string
+     */
+    private $_dbCharset;
+
 	/**
 	 * The name of the table that holds the route details. Prefix included.
 	 * @var string
@@ -170,7 +182,7 @@ class Abp01_Env {
 	 * The current plug-in version
 	 * @var string
 	 */
-    private  $_version = ABP01_VERSION;
+    private $_version = ABP01_VERSION;
 
 	/**
 	 * Gets or creates the singleton instance
@@ -199,13 +211,23 @@ class Abp01_Env {
         $this->_lang = get_locale();
         $this->_isDebugMode = defined('WP_DEBUG') && WP_DEBUG == true;
 
-        $this->_dbHost = defined('DB_HOST') ? DB_HOST
+        $this->_dbHost = defined('DB_HOST') 
+            ? DB_HOST
             : null;
-        $this->_dbUserName = defined('DB_USER') ? DB_USER
+        $this->_dbUserName = defined('DB_USER') 
+            ? DB_USER
             : null;
-        $this->_dbPassword = defined('DB_PASSWORD') ? DB_PASSWORD
+        $this->_dbPassword = defined('DB_PASSWORD') 
+            ? DB_PASSWORD
             : null;
-        $this->_dbName = defined('DB_NAME') ? DB_NAME
+        $this->_dbName = defined('DB_NAME') 
+            ? DB_NAME
+            : null;
+        $this->_dbCharset = defined('DB_CHARSET') 
+            ? DB_CHARSET 
+            : null;
+        $this->_dbCollate = defined('DB_COLLATE') 
+            ? DB_COLLATE 
             : null;
 
         $this->_dbTablePrefix = isset($GLOBALS['table_prefix']) ? $GLOBALS['table_prefix']
@@ -304,6 +326,14 @@ class Abp01_Env {
 
     public function getDbName() {
         return $this->_dbName;
+    }
+
+    public function getDbCollate() {
+        return $this->_dbCollate;
+    }
+
+    public function getDbCharset() {
+        return $this->_dbCharset;
     }
 
     public function getDb() {
