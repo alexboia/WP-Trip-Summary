@@ -586,7 +586,7 @@ function abp01_get_main_frontend_translations() {
  * @return void
  */
 function abp01_render_techbox_button(stdClass $data) {
-	require_once ABP01_PLUGIN_ROOT . '/views/techbox-button.php';
+	require_once abp01_get_env()->getViewFilePath('wpts-button.php');
 }
 
 /**
@@ -595,8 +595,8 @@ function abp01_render_techbox_button(stdClass $data) {
  * @return void
  */
 function abp01_render_techbox_editor(stdClass $data) {
-	require_once ABP01_PLUGIN_ROOT . '/views/helpers/controls.php';
-	require_once ABP01_PLUGIN_ROOT . '/views/techbox-editor.php';
+	require_once abp01_get_env()->getViewHelpersFilePath('controls.php');
+	require_once abp01_get_env()->getViewFilePath('wpts-editor.php');
 }
 
 /**
@@ -605,7 +605,7 @@ function abp01_render_techbox_editor(stdClass $data) {
  * @return void
  */
 function abp01_admin_settings_page_render(stdClass $data) {
-	require_once ABP01_PLUGIN_ROOT . '/views/techbox-settings.php';
+	require_once abp01_get_env()->getViewFilePath('wpts-settings.php');
 }
 
 /**
@@ -614,7 +614,7 @@ function abp01_admin_settings_page_render(stdClass $data) {
  * @return void
  */
 function abp01_admin_help_page_render(stdClass $data) {
-	require_once ABP01_PLUGIN_ROOT . '/views/techbox-help.php';
+	require_once abp01_get_env()->getViewFilePath('wpts-help.php');
 }
 
 /**
@@ -623,7 +623,7 @@ function abp01_admin_help_page_render(stdClass $data) {
  * @return void
  */
 function abp01_admin_lookup_page_render(stdClass $data) {
-	require_once ABP01_PLUGIN_ROOT . '/views/techbox-lookup-data-management.php';
+	require_once abp01_get_env()->getViewFilePath('wpts-lookup-data-management.php');
 }
 
 /**
@@ -698,10 +698,10 @@ function abp01_render_techbox_frontend(stdClass $data) {
 	require_once $locations->default . '/helpers/controls.frontend.php';
 
 	//if the custom viewer theme has overridden the main view, include the override
-	$themeViewer = $locations->theme . '/techbox-frontend.php';
+	$themeViewer = $locations->theme . '/wpts-frontend.php';
 	if (!is_readable($themeViewer)) {
 		//otherwise, include the default main view
-		require_once $locations->default . '/techbox-frontend.php';
+		require_once $locations->default . '/wpts-frontend.php';
 	} else {
 		require_once $themeViewer;
 	}
@@ -724,10 +724,10 @@ function abp01_render_techbox_frontend_teaser(stdClass $data) {
 	require_once $locations->default . '/helpers/controls.frontend.php';
 
 	//if the custom viewer theme has overridden the teaser view, include the override
-	$themeTeaser = $locations->theme . '/techbox-frontend-teaser.php';
+	$themeTeaser = $locations->theme . '/wpts-frontend-teaser.php';
 	if (!is_readable($themeTeaser)) {
 		//otherwise, include the default teaser view
-		require_once $locations->default . '/techbox-frontend-teaser.php';
+		require_once $locations->default . '/wpts-frontend-teaser.php';
 	} else {
 		require_once $themeTeaser;
 	}

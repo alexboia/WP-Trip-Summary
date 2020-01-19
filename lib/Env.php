@@ -425,6 +425,18 @@ class Abp01_Env {
         return $this->_viewsDir;
     }
 
+    public function getViewFilePath($viewFile) {
+        return wp_normalize_path(sprintf('%s/%s', 
+            $this->_viewsDir, 
+            $viewFile));
+    }
+
+    public function getViewHelpersFilePath($helperFile) {
+        return wp_normalize_path(sprintf('%s/helpers/%s', 
+            $this->_viewsDir, 
+            $helperFile));
+    }
+
     public function getRootStorageDir() {
         return  $this->_rootStorageDir;
     }
