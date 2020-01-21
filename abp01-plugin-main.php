@@ -807,7 +807,9 @@ function abp01_init_plugin() {
  * @return void
  */
 function abp01_add_editor_media_buttons() {
-	abp01_render_techbox_button(new stdClass());
+	if (abp01_can_edit_trip_summary(null)) {
+		abp01_render_techbox_button(new stdClass());
+	}
 }
 
 /**
