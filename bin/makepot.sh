@@ -25,13 +25,12 @@ else
 	WPTS_TEXT_DOMAIN=$2
 fi
 
-WPTS_PLUGIN_BASE=$(basename "$WPTS_PLUGIN_DIR")
 if [[ ! $WPTS_TEXT_DOMAIN ]]
 then
-	WPTS_TEXT_DOMAIN="$WPTS_PLUGIN_BASE"
+	WPTS_TEXT_DOMAIN="abp01-trip-summary"
 fi
 
-php "$WP_I18N_LIB/makepot.php" wp-plugin $WPTS_PLUGIN_DIR "$WPTS_PLUGIN_DIR/lang/$WPTS_TEXT_DOMAIN.pot"
+wp i18n make-pot "$WPTS_PLUGIN_DIR" "$WPTS_PLUGIN_DIR/lang/$WPTS_TEXT_DOMAIN.pot" --slug="wp-trip-summary" --domain=$WPTS_TEXT_DOMAIN --exclude="build,bin,assets,data,.github,.vscode,help"
 
 if [ "$WPTS_RESTORE_DIR" = true ]
 then
