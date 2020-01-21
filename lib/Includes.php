@@ -203,7 +203,7 @@ class Abp01_Includes {
 		), 
 		self::JS_LEAFLET_ICON_BUTTON => array(
 			'path' => 'media/js/abp01-icon-button.js',
-			'version' => '0.1',
+			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::JS_LEAFLET
 			)
@@ -222,7 +222,7 @@ class Abp01_Includes {
 
 		self::JS_ABP01_MAP => array(
 			'path' => 'media/js/abp01-map.js', 
-			'version' => '0.4',
+			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::JS_LEAFLET,
 				self::JS_JQUERY
@@ -230,7 +230,7 @@ class Abp01_Includes {
 		), 
 		self::JS_ABP01_PROGRESS_OVERLAY => array(
 			'path' => 'media/js/abp01-progress-overlay.js', 
-			'version' => '0.4',
+			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::JS_JQUERY,
 				self::JS_JQUERY_BLOCKUI,
@@ -242,7 +242,7 @@ class Abp01_Includes {
 
 		self::JS_ADMIN_MAIN => array(
 			'path' => 'media/js/abp01-admin-main.js', 
-			'version' => '0.4',
+			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::JS_JQUERY,
 				self::JS_JQUERY_EASYTABS,
@@ -260,7 +260,7 @@ class Abp01_Includes {
 		), 
 		self::JS_FRONTEND_MAIN => array(
 			'path' => 'media/js/abp01-frontend-main.js', 
-			'version' => '0.4',
+			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::JS_JQUERY,
 				self::JS_JQUERY_EASYTABS,
@@ -275,7 +275,7 @@ class Abp01_Includes {
 		), 
 		self::JS_ADMIN_SETTINGS => array(
 			'path' => 'media/js/abp01-admin-settings.js', 
-			'version' => '0.4',
+			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::JS_JQUERY,
 				self::JS_JQUERY_BLOCKUI,
@@ -285,7 +285,7 @@ class Abp01_Includes {
 		),
 		self::JS_ADMIN_LOOKUP_MGMT => array(
 			'path' => 'media/js/abp01-admin-lookup-management.js',
-			'version' => '0.4',
+			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::JS_SYSTEM_THICKBOX,
 				self::JS_JQUERY,
@@ -324,7 +324,7 @@ class Abp01_Includes {
 		), 
 		self::STYLE_FRONTEND_MAIN => array(
 			'path' => 'media/css/abp01-frontend-main.css', 
-			'version' => '0.3',
+			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::STYLE_DASHICONS,
 				self::STYLE_NPROGRESS,
@@ -336,56 +336,56 @@ class Abp01_Includes {
 		), 
 		self::STYLE_FRONTEND_MAIN_TWENTY_TEN => array(
 			'path' => 'media/css/twentyten/theme.css', 
-			'version' => '0.3',
+			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::STYLE_FRONTEND_MAIN
 			)
 		),
 		self::STYLE_FRONTEND_MAIN_TWENTY_ELEVEN => array(
 			'path' => 'media/css/twentyeleven/theme.css', 
-			'version' => '0.3',
+			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::STYLE_FRONTEND_MAIN
 			)
 		), 
 		self::STYLE_FRONTEND_MAIN_TWENTY_THIRTEEN => array(
 			'path' => 'media/css/twentythirteen/theme.css', 
-			'version' => '0.3',
+			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::STYLE_FRONTEND_MAIN
 			)
 		),
 		self::STYLE_FRONTEND_MAIN_TWENTY_FIFTEEN => array(
 			'path' => 'media/css/twentyfifteen/theme.css', 
-			'version' => '0.3',
+			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::STYLE_FRONTEND_MAIN
 			)
 		), 
 		self::STYLE_FRONTEND_MAIN_TWENTY_FOURTEEN => array(
 			'path' => 'media/css/twentyfourteen/theme.css', 
-			'version' => '0.3',
+			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::STYLE_FRONTEND_MAIN
 			)
 		),
 		self::STYLE_FRONTEND_MAIN_TWENTY_SIXTEEN => array(
 			'path' => 'media/css/twentysixteen/theme.css', 
-			'version' => '0.3',
+			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::STYLE_FRONTEND_MAIN
 			)
 		),
 		self::STYLE_FRONTEND_MAIN_TWENTY_SEVENTEEN => array(
 			'path' => 'media/css/twentyseventeen/theme.css', 
-			'version' => '0.3',
+			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::STYLE_FRONTEND_MAIN
 			)
 		),
 		self::STYLE_FRONTEND_MAIN_TWENTY_NINETEEN => array(
 			'path' => 'media/css/twentynineteen/theme.css', 
-			'version' => '0.3',
+			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::STYLE_FRONTEND_MAIN
 			)
@@ -396,7 +396,7 @@ class Abp01_Includes {
 		), 
 		self::STYLE_ADMIN_MAIN => array(
 			'path' => 'media/css/abp01-main.css', 
-			'version' => '0.3',
+			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::STYLE_NPROGRESS,
 				self::STYLE_LEAFLET,
@@ -420,7 +420,7 @@ class Abp01_Includes {
 		),
 		self::STYLE_ADMIN_HELP => array(
 			'path' => 'media/css/abp01-help.css', 
-			'version' => '0.3'
+			'version' => ABP01_VERSION
 		)
 	);
 
