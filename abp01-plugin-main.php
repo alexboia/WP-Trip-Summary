@@ -1839,6 +1839,7 @@ if (function_exists('add_action')) {
 
 	add_action('wp_ajax_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
 	add_action('wp_ajax_nopriv_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
+	add_action('wp_ajax_nopriv_' . ABP01_ACTION_DOWNLOAD_TRACK, 'abp01_download_track');
 
 	add_action('wp_enqueue_scripts', 'abp01_add_frontend_styles');
 	add_action('wp_enqueue_scripts', 'abp01_add_frontend_scripts');
