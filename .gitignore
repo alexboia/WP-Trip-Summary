@@ -11,3 +11,4 @@ phpunit.xml.dist
 data/help/default
 data/help/en_US
 data/help/ro_RO
+wp-trip-summary.code-workspace
