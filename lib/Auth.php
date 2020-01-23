@@ -30,9 +30,11 @@
  */
 
 class Abp01_Auth {
-    const CAP_MANAGE_TOUR_SUMMARY = 'abp01.cap.manageTourSummary';
+    const CAP_WP_UPLOAD_FILES = 'upload_files';
 
-    const CAP_EDIT_TOUR_SUMMARY = 'abp01.cap.editTourSummary';
+    const CAP_MANAGE_TRIP_SUMMARY = 'abp01.cap.manageTourSummary';
+
+    const CAP_EDIT_TRIP_SUMMARY = 'abp01.cap.editTourSummary';
 
     private $_capabilities = array();
 
@@ -48,11 +50,17 @@ class Abp01_Auth {
     private function __construct() {
         $this->_capabilities = array(
             'administrator' => array(
-                self::CAP_MANAGE_TOUR_SUMMARY,
-                self::CAP_EDIT_TOUR_SUMMARY
+                self::CAP_MANAGE_TRIP_SUMMARY,
+                self::CAP_EDIT_TRIP_SUMMARY
             ),
             'editor' => array(
-                self::CAP_EDIT_TOUR_SUMMARY
+                self::CAP_EDIT_TRIP_SUMMARY
+            ),
+            'author' => array(
+                self::CAP_EDIT_TRIP_SUMMARY
+            ),
+            'contributor' => array(
+                self::CAP_EDIT_TRIP_SUMMARY
             )
         );
     }
@@ -62,8 +70,21 @@ class Abp01_Auth {
             $role = get_role($roleName);
             if ($role) {
                 foreach ($caps as $cap) {
+                    //If the role does not have the capability $cap
                     if (!$role->has_cap($cap)) {
-                        $role->add_cap($cap);
+                        //It is being assigned that capability only 
+                        //  if it can upload files as well (has the capability 'upload_files'), since
+                        //      a) the media buttons are not being added 
+                        //      if the role does not have 'upload_files' (hence no 'media_buttons' hook)
+                        //      b) we cannot forcibly add the 'upload_files' capability to the role, 
+                        //      since it might break the way the site is expected to work
+                        if ($role->has_cap(self::CAP_WP_UPLOAD_FILES)) {
+                            $role->add_cap($cap);
+                        }
+                    } else if (!$role->has_cap(self::CAP_WP_UPLOAD_FILES)) {
+                        //If the role does not have 'upload_files' but it DOES have the capability $cap
+                        //  remove it, since it's pointless to have it assigned
+                        $role->remove_cap($cap);
                     }
                 }
             }
@@ -83,15 +104,15 @@ class Abp01_Auth {
         }
     }
 
-    public function canEditTourSummary($postId) {
-        return current_user_can(self::CAP_EDIT_TOUR_SUMMARY) && current_user_can('edit_post', $postId);
+    public function canEditTripSummary($postId) {
+        return current_user_can(self::CAP_EDIT_TRIP_SUMMARY) && current_user_can('edit_post', $postId);
     }
 
-    public function canManageTourSummary() {
-        return current_user_can(self::CAP_MANAGE_TOUR_SUMMARY);
+    public function canManageTripSummary() {
+        return current_user_can(self::CAP_MANAGE_TRIP_SUMMARY);
     }
 
     public function canManagePluginSettings() {
-        return current_user_can(self::CAP_MANAGE_TOUR_SUMMARY);
+        return current_user_can(self::CAP_MANAGE_TRIP_SUMMARY);
     }
 }

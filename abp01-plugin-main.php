@@ -382,7 +382,7 @@ function abp01_can_edit_trip_summary($post = null) {
 	} else {
 		$postId = abp01_get_current_post_id();
 	}
-	return Abp01_Auth::getInstance()->canEditTourSummary($postId);
+	return Abp01_Auth::getInstance()->canEditTripSummary($postId);
 }
 
 /**
@@ -648,7 +648,7 @@ function abp01_create_admin_menu() {
 	add_menu_page(
 		esc_html__('Trip Summary Settings', 'abp01-trip-summary'),  //page title
 		esc_html__('Trip Summary', 'abp01-trip-summary'), //menu title
-			Abp01_Auth::CAP_MANAGE_TOUR_SUMMARY, //required page capability
+			Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY, //required page capability
 			ABP01_MAIN_MENU_SLUG, //menu slug - unique handle for this menu
 				'abp01_admin_settings_page', //callback for rendering the page
 				'dashicons-chart-area', //icon css class
@@ -659,7 +659,7 @@ function abp01_create_admin_menu() {
 		ABP01_MAIN_MENU_SLUG, 
 			esc_html__('Trip Summary Settings', 'abp01-trip-summary'), 
 			esc_html__('Settings', 'abp01-trip-summary'), 
-				Abp01_Auth::CAP_MANAGE_TOUR_SUMMARY, 
+				Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY, 
 				ABP01_MAIN_MENU_SLUG,
 					'abp01_admin_settings_page');
 
@@ -668,14 +668,14 @@ function abp01_create_admin_menu() {
 		ABP01_MAIN_MENU_SLUG, 
 			esc_html__('Lookup data management', 'abp01-trip-summary'), 
 			esc_html__('Lookup data management', 'abp01-trip-summary'), 
-				Abp01_Auth::CAP_MANAGE_TOUR_SUMMARY, 
+				Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY, 
 				ABP01_LOOKUP_SUBMENU_SLUG, 
 					'abp01_admin_lookup_page');
 	
 	add_submenu_page(ABP01_MAIN_MENU_SLUG, 
 		esc_html__('Help', 'abp01-trip-summary'), 
 		esc_html__('Help', 'abp01-trip-summary'), 
-			Abp01_Auth::CAP_MANAGE_TOUR_SUMMARY, 
+			Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY, 
 			ABP01_HELP_SUBMENU_SLUG, 
 				'abp01_admin_help_page');
 }

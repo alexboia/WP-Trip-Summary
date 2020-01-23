@@ -436,7 +436,8 @@ class Abp01_Installer {
 
     private function _updateTo022() {
         return $this->_ensureStorageDirectories() 
-            && $this->_installStorageDirsSecurityAssets();
+            && $this->_installStorageDirsSecurityAssets()
+            && $this->_createCapabilities();
     }
 
     private function _installStorageDirsSecurityAssets() {
