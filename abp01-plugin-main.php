@@ -48,6 +48,7 @@ define('ABP01_PLUGIN_ROOT', dirname(__FILE__));
 define('ABP01_LIB_DIR', ABP01_PLUGIN_ROOT . '/lib');
 define('ABP01_VERSION', '0.2.2');
 
+define('ABP01_MAX_EXECUTION_TIME_MINUTES', 10);
 define('ABP01_DISABLE_MINIFIED', false);
 
 define('ABP01_ACTION_EDIT', 'abp01_edit_info');
@@ -159,6 +160,29 @@ function abp01_increase_limits($executionTimeMinutes = 5) {
 	}
 	if (function_exists('ini_set')) {
 		@ini_set('memory_limit', WP_MAX_MEMORY_LIMIT);
+		//If the xdebubg extension is loaded, 
+		//	attempt to increase the max_nesting_level setting, 
+		//	since (as is the case with large GPX files) 
+		//	the simplify algorithm will fail due to its recursive nature 
+		//	reaching that limit quickly if it's set too low
+		if (extension_loaded('xdebug')) {
+			@ini_set('xdebug.max_nesting_level', 1000000);
+		}
+	}
+}
+
+/**
+ * Enable script error reporting
+ * @return void
+ */
+function abp01_enable_error_reporting() {
+	if (function_exists('ini_set')) {
+		ini_set('display_errors', 1);
+		ini_set('display_startup_errors', 1);
+	}
+
+	if (function_exists('error_reporting')) {
+		error_reporting(E_ALL);
 	}
 }
 
@@ -1567,8 +1591,10 @@ function abp01_upload_track() {
 		die;
 	}
 
-	//increase script execution limits: memory & cpu time
-	abp01_increase_limits();
+	//increase script execution limits: 
+	//memory & cpu time (& xdebug.max_nesting_level)
+	abp01_increase_limits(ABP01_MAX_EXECUTION_TIME_MINUTES);
+
 	//ensure the storage directory structure exists
 	abp01_ensure_storage_directory();
 
@@ -1650,8 +1676,9 @@ function abp01_get_track() {
 		die;
 	}
 
-	//increase script execution limits: memory & cpu time
-	abp01_increase_limits();
+	//increase script execution limits: 
+	//memory & cpu time (& xdebug.max_nesting_level)
+	abp01_increase_limits(ABP01_MAX_EXECUTION_TIME_MINUTES);
 
 	$response = new stdClass();
 	$response->success = false;
@@ -1718,8 +1745,9 @@ function abp01_download_track() {
         die;
     }
 
-    //increase script execution limits: memory & cpu time
-    abp01_increase_limits();
+	//increase script execution limits:
+	//memory & cpu time (& xdebug.max_nesting_level)
+    abp01_increase_limits(ABP01_MAX_EXECUTION_TIME_MINUTES);
 
     //get the file path and check if it's readable
     $trackFile = abp01_get_track_upload_destination($postId);
