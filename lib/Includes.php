@@ -153,7 +153,7 @@ class Abp01_Includes {
 		), 
 		self::JS_JQUERY_TOASTR => array(
 			'path' => 'media/js/3rdParty/toastr/toastr.js', 
-			'version' => '2.0.3',
+			'version' => '2.1.4',
 			'deps' => array(
 				self::JS_JQUERY
 			)
@@ -392,7 +392,7 @@ class Abp01_Includes {
 		),
 		self::STYLE_JQUERY_TOASTR => array(
 			'path' => 'media/js/3rdParty/toastr/toastr.css', 
-			'version' => '2.0.3'
+			'version' => '2.1.4'
 		), 
 		self::STYLE_ADMIN_MAIN => array(
 			'path' => 'media/css/abp01-main.css', 
