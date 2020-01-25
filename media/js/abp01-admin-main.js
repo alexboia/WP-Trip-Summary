@@ -579,7 +579,57 @@
         });
     }
 
-    
+    function fileEndsWithExtension(file, extension) {
+        var testFileName = file.name.toLowerCase();
+        var testExtension = '.' + extension.toLowerCase();
+        
+        if ($.isFunction(testFileName.endsWith)) {
+            return testFileName.endsWith(testExtension);
+        } else {
+            var indexOfDot = testFileName.indexOf('.');
+            return indexOfDot >= 0 
+                ? testFileName.substr(indexOfDot) == extension 
+                : false;
+        }
+    }
+
+    function fileMatchesAllowedTypes(allowedMimeTypes, file) {
+        var isAllowed = false;
+        if (allowedMimeTypes.length > 0) {
+            for (var iAllowed = 0; iAllowed < allowedMimeTypes.length; iAllowed ++) {
+                var extensions = allowedMimeTypes[iAllowed]
+                    .extensions
+                    .split(',');
+
+                for (var iExt = 0; iExt < extensions.length; iExt ++) {
+                    if (fileEndsWithExtension(file, extensions[iExt])) {
+                        isAllowed = true;
+                        break;
+                    }
+                }
+            }
+        } else {
+            isAllowed = true;
+        }
+        return isAllowed;
+    }
+
+    function configureUploaderFilters() {
+        plupload.addFileFilter('mime_types', function(allowedMimeTypes, file, readyFn) {
+            var isAllowed = fileMatchesAllowedTypes(allowedMimeTypes, file);
+
+            if (!isAllowed) {
+                this.trigger('Error', {
+                    code : plupload.FILE_EXTENSION_ERROR,
+                    message : abp01MainL10n.errPluploadFileType,
+                    file : file
+                });
+            }
+
+            readyFn(isAllowed);
+        });
+    }
+
     function createTrackUploader() {
         if (!!uploader) {
             return;
@@ -934,6 +984,7 @@
             height: 545
         };
 
+        configureUploaderFilters();
         initEditor();
         initFormInfo();
         initFormMap();
