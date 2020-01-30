@@ -38,6 +38,8 @@ class Abp01_Auth {
 
     private $_capabilities = array();
 
+    private $_requiredCapabilities = array();
+
     private static $_instance = null;
 
     public static function getInstance() {
@@ -63,28 +65,36 @@ class Abp01_Auth {
                 self::CAP_EDIT_TRIP_SUMMARY
             )
         );
+
+        //A role it is being assigned the edit trip summary capability 
+        //  if it can upload files as well (has the capability 'upload_files'), since
+        //      a) the media buttons are not being added 
+        //      if the role does not have 'upload_files' (hence no 'media_buttons' hook)
+        //      b) we cannot forcibly add the 'upload_files' capability to the role, 
+        //      since it might break the way the site is expected to work
+        $this->_requiredCapabilities = array(
+            self::CAP_MANAGE_TRIP_SUMMARY => array(
+                self::CAP_WP_UPLOAD_FILES
+            )
+        );
     }
 
     public function installCapabilities() {
         foreach ($this->_capabilities as $roleName => $caps) {
             $role = get_role($roleName);
             if ($role) {
-                foreach ($caps as $cap) {
-                    //If the role does not have the capability $cap
-                    if (!$role->has_cap($cap)) {
-                        //It is being assigned that capability only 
-                        //  if it can upload files as well (has the capability 'upload_files'), since
-                        //      a) the media buttons are not being added 
-                        //      if the role does not have 'upload_files' (hence no 'media_buttons' hook)
-                        //      b) we cannot forcibly add the 'upload_files' capability to the role, 
-                        //      since it might break the way the site is expected to work
-                        if ($role->has_cap(self::CAP_WP_UPLOAD_FILES)) {
-                            $role->add_cap($cap);
+                foreach ($caps as $capCode) {
+                    //Check if the capability can be installed for the role...
+                    $capCanBeInstalled = $this->capCanBeInstalledForRole($capCode, $roleName);
+                    if (!$role->has_cap($capCode)) {
+                        //...if so, add the capability
+                        if ($capCanBeInstalled) {
+                            $role->add_cap($capCode);
                         }
-                    } else if (!$role->has_cap(self::CAP_WP_UPLOAD_FILES)) {
-                        //If the role does not have 'upload_files' but it DOES have the capability $cap
-                        //  remove it, since it's pointless to have it assigned
-                        $role->remove_cap($cap);
+                    } else if (!$capCanBeInstalled) {
+                        //...if not, but the role does have the capability, remove it, 
+                        //  since it's pointless to have it assigned
+                        $role->remove_cap($capCode);
                     }
                 }
             }
@@ -104,15 +114,38 @@ class Abp01_Auth {
         }
     }
 
+    public function capCanBeInstalledForRole($capCode, $roleName) {
+        $allowed = true;
+        $requiredCaps = $this->getRequiredCapabilities($capCode);
+
+        if (!empty($requiredCaps)) {
+            $role = get_role($roleName);
+            foreach ($requiredCaps as $requiredCapCode) {
+                if (!$role->has_cap($requiredCapCode)) {
+                    $allowed = false;
+                    break;
+                }
+            }
+        }
+
+        return $allowed;
+    }
+
     public function canEditTripSummary($postId) {
         return current_user_can(self::CAP_EDIT_TRIP_SUMMARY) && current_user_can('edit_post', $postId);
     }
 
-    public function canManageTripSummary() {
+    public function canManagePluginSettings() {
         return current_user_can(self::CAP_MANAGE_TRIP_SUMMARY);
     }
 
-    public function canManagePluginSettings() {
-        return current_user_can(self::CAP_MANAGE_TRIP_SUMMARY);
+    public function getRequiredCapabilities($capCode) {
+        return isset($this->_requiredCapabilities[$capCode])
+            ? $this->_requiredCapabilities[$capCode]
+            : array();
+    }
+
+    public function getCapabilities() {
+        return $this->_capabilities;
     }
 }
