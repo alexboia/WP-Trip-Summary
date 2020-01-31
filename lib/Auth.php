@@ -73,7 +73,7 @@ class Abp01_Auth {
         //      b) we cannot forcibly add the 'upload_files' capability to the role, 
         //      since it might break the way the site is expected to work
         $this->_requiredCapabilities = array(
-            self::CAP_MANAGE_TRIP_SUMMARY => array(
+            self::CAP_EDIT_TRIP_SUMMARY => array(
                 self::CAP_WP_UPLOAD_FILES
             )
         );
@@ -116,16 +116,20 @@ class Abp01_Auth {
 
     public function capCanBeInstalledForRole($capCode, $roleName) {
         $allowed = true;
-        $requiredCaps = $this->getRequiredCapabilities($capCode);
 
-        if (!empty($requiredCaps)) {
-            $role = get_role($roleName);
-            foreach ($requiredCaps as $requiredCapCode) {
-                if (!$role->has_cap($requiredCapCode)) {
-                    $allowed = false;
-                    break;
+        if (in_array($capCode, array(self::CAP_EDIT_TRIP_SUMMARY, self::CAP_MANAGE_TRIP_SUMMARY), true)) {
+            $requiredCaps = $this->getRequiredCapabilities($capCode);
+            if (!empty($requiredCaps)) {
+                $role = get_role($roleName);
+                foreach ($requiredCaps as $requiredCapCode) {
+                    if (!$role->has_cap($requiredCapCode)) {
+                        $allowed = false;
+                        break;
+                    }
                 }
             }
+        } else {
+            $allowed = false;
         }
 
         return $allowed;

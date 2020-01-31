@@ -124,5 +124,5 @@ class WP_UnitTestCase extends PHPUnit_Framework_TestCase {
      * 
      * @return int|boolean The number of rows updated, or false on error.
 	 */
-	protected function update_post_modified($post_id, $date) {}
+    protected function update_post_modified($post_id, $date) {}
 }
