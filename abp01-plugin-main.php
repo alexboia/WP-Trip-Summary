@@ -77,14 +77,26 @@ define('ABP01_MAIN_MENU_SLUG', 'abp01-trip-summary-settings');
 define('ABP01_LOOKUP_SUBMENU_SLUG', 'abp01-trip-summary-lookup');
 define('ABP01_HELP_SUBMENU_SLUG', 'abp01-trip-summary-help');
 
+/**
+ * Returns the current environment accessor instance
+ * @return Abp01_Env The current environment accessor instance
+ */
 function abp01_get_env() {
 	return Abp01_Env::getInstance();
 }
 
+/**
+ * Returns the current installer instance
+ * @return Abp01_Installer The current installer instance
+ */
 function abp01_get_installer() {
 	return new Abp01_Installer();
 }
 
+/**
+ * Returns the current settings manager instance
+ * @return Abp01_Settings The current settings manager instance
+ */
 function abp01_get_settings() {
 	return Abp01_Settings::getInstance();
 }
@@ -184,6 +196,21 @@ function abp01_enable_error_reporting() {
 	if (function_exists('error_reporting')) {
 		error_reporting(E_ALL);
 	}
+}
+
+/**
+ * @return stdClass A new standard response instance
+ */
+function abp01_get_ajax_response($additionalProps = array()) {
+	$response = new stdClass();
+	$response->success = false;
+	$response->message = null;
+
+	foreach ($additionalProps as $key => $value) {
+		$response->$key = $value;
+	}
+
+	return $response;
 }
 
 /**
@@ -292,18 +319,6 @@ function abp01_send_json($data) {
 }
 
 /**
- * Conditionally escapes the given value for safe usage within an HTML document
- * @param mixed $value
- * @return mixed The encoded value
- */
-function abp01_escape_value($value) {
-	if (gettype($value) == 'string') {
-		$value = esc_html($value);
-	}
-	return $value;
-}
-
-/**
  * Ensures that the root storage directory of the plug-in exists and creates if it does not.
  * @return void
  */
@@ -381,15 +396,7 @@ function abp01_is_browsing_help() {
  * @return mixed Int if a post ID is found, null otherwise
  */
 function abp01_get_current_post_id() {
-	$post = isset($GLOBALS['post']) ? $GLOBALS['post'] : null;
-	if ($post && isset($post->ID)) {
-		return intval($post->ID);
-	} else if (isset($_GET['post'])) {
-		return intval($_GET['post']);
-	} else if (isset($_GET['abp01_postId'])) {
-		return intval($_GET['abp01_postId']);
-	}
-	return null;
+	return abp01_get_env()->getCurrentPostId('abp01_postId');
 }
 
 /**
@@ -1038,9 +1045,8 @@ function abp01_save_admin_settings_page_save() {
 		die;
 	}
 
-	$response = new stdClass();
-	$response->success = false;
-	$response->message = null;
+	//initialize response data
+	$response = abp01_get_ajax_response();
 
 	//check that given unit system is supported
 	$unitSystem = Abp01_InputFiltering::getFilteredPOSTValue('unitSystem');
@@ -1194,20 +1200,18 @@ function abp01_get_lookup_items() {
 		die;
 	}
 
-	$response = new stdClass();
-	$response->success = false;
-	$response->message = null;
-
 	$type = Abp01_InputFiltering::getGETvalueOrDie('type', array('Abp01_Lookup', 'isTypeSupported'));
 	$lang = Abp01_InputFiltering::getGETvalueOrDie('lang', array('Abp01_Lookup', 'isLanguageSupported'));
 
 	$lookup = new Abp01_Lookup($lang);
 	$items = $lookup->getLookupOptions($type);
 
-	$response->lang = $lang;
-	$response->type = $type;
-	$response->items = $items;
-	$response->success = true;
+	$response = abp01_get_ajax_response(array(
+		'lang' => $lang,
+		'type' => $type,
+		'items' => $items,
+		'success' => true
+	));
 
 	abp01_send_json($response);
 }
@@ -1236,10 +1240,9 @@ function abp01_add_lookup_item() {
 	$lang = Abp01_InputFiltering::getPOSTValueOrDie('lang', array('Abp01_Lookup', 'isLanguageSupported'));
 
 	//initialize response
-	$response = new stdClass();
-	$response->success = false;
-	$response->message = null;
-	$response->item = null;
+	$response = abp01_get_ajax_response(array(
+		'item' => null
+	));
 
 	//fetch labels from POSTed data
 	$defaultLabel = Abp01_InputFiltering::getFilteredPOSTValue('defaultLabel');
@@ -1299,10 +1302,8 @@ function abp01_edit_lookup_item() {
 	$lang = Abp01_InputFiltering::getPOSTValueOrDie('lang', array('Abp01_Lookup', 'isLanguageSupported'));
 
 	//initialize response
-	$response = new stdClass();
-	$response->success = false;
-	$response->message = null;
-	
+	$response = abp01_get_ajax_response();
+
 	//fetch labels from POSTed data
 	$defaultLabel = Abp01_InputFiltering::getFilteredPOSTValue('defaultLabel');
 	$translatedLabel = Abp01_InputFiltering::getFilteredPOSTValue('translatedLabel');
@@ -1365,9 +1366,7 @@ function abp01_delete_lookup_item() {
 	$deleteOnlyLang = Abp01_InputFiltering::getPOSTValueOrDie('deleteOnlyLang') === 'true';
 
 	//initialize response
-	$response = new stdClass();
-	$response->success = false;
-	$response->message = null;
+	$response = abp01_get_ajax_response();
 
 	$lookup = new Abp01_Lookup($lang);
 	//if a translation-only deletion was requested and the language is not the default one,
@@ -1421,12 +1420,9 @@ function abp01_save_info() {
 		die;
 	}
 
-	$response = new stdClass();
-	$manager = Abp01_Route_Manager::getInstance();
 	$info = new Abp01_Route_Info($type);
-
-	$response->success = false;
-	$response->message = null;
+	$manager = Abp01_Route_Manager::getInstance();
+	$response = abp01_get_ajax_response();
 
 	foreach ($info->getValidFieldNames() as $field) {
 		if (isset($_POST[$field])) {
@@ -1554,11 +1550,9 @@ function abp01_remove_info() {
 		die;
 	}
 
-	$response = new stdClass();
-	$response->success = false;
-	$response->message = null;
-
+	$response = abp01_get_ajax_response();
 	$manager = Abp01_Route_Manager::getInstance();
+
 	if (!$manager->deleteRouteInfo($postId)) {
 		$response->message = esc_html__('The data could not be saved due to a possible database error', 'abp01-trip-summary');
 	} else {
@@ -1680,10 +1674,10 @@ function abp01_get_track() {
 	//memory & cpu time (& xdebug.max_nesting_level)
 	abp01_increase_limits(ABP01_MAX_EXECUTION_TIME_MINUTES);
 
-	$response = new stdClass();
-	$response->success = false;
-	$response->message = null;
-	$response->track = null;
+	//initialize response data
+	$response = abp01_get_ajax_response(array(
+		'track' => null
+	));
 
 	$route = abp01_get_cached_track($postId);
 	if (!($route instanceof Abp01_Route_Track_Document)) {
@@ -1786,11 +1780,9 @@ function abp01_remove_track() {
 		die;
 	}
 
-	$response = new stdClass();
-	$response->success = false;
-	$response->message = null;
-
+	$response = abp01_get_ajax_response();
 	$manager = Abp01_Route_Manager::getInstance();
+
 	if ($manager->deleteRouteTrack($postId)) {
 		//delete track file
 		$trackFile = abp01_get_track_upload_destination($postId);

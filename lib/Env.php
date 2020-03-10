@@ -33,6 +33,9 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
+/**
+ * A class that serves as an accessor for the current WordPress environment
+ */
 class Abp01_Env {
 	/**
 	 * The singleton instance
@@ -359,6 +362,18 @@ class Abp01_Env {
 
     public function getCurrentThemeUrl() {
         return  wp_get_theme()->get_stylesheet_directory_uri();
+    }
+
+    public function getCurrentPostId($fallbackGetVarName) {
+        $post = isset($GLOBALS['post']) ? $GLOBALS['post'] : null;
+        if ($post && isset($post->ID)) {
+            return intval($post->ID);
+        } else if (isset($_GET['post'])) {
+            return intval($_GET['post']);
+        } else if (isset($_GET[$fallbackGetVarName])) {
+            return intval($_GET[$fallbackGetVarName]);
+        }
+        return null;
     }
 
     public function isAdminPage($slug) {
