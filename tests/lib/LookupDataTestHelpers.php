@@ -1,4 +1,4 @@
-<?php
+<?php 
 /**
  * Copyright (c) 2014-2020 Alexandru Boia
  *
@@ -29,36 +29,53 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once 'faker/autoload.php';
-require_once 'lib/LookupDataTestHelpers.php';
+ trait LookupDataTestHelpers {
+    /**
+     * @return Abp01_Env
+     */
+    abstract protected function _getEnv();
 
-$_tests_dir = getenv( 'WP_TESTS_DIR' );
-if ( ! $_tests_dir ) {
-	$_tests_dir = '/tmp/wordpress-tests-lib';
-}
+    protected function _clearAllLookupData() {
+		$env = $this->_getEnv();
+		$db = $env->getDb();
 
-if (is_dir($_tests_dir)) {
-	require_once $_tests_dir . '/includes/functions.php';
-} else {
-	die('Test directory not found');
-}
+		$table = $env->getLookupTableName();
+		$langTable = $env->getLookupLangTableName();
+		$lookupDetailsTableName = $env->getRouteDetailsLookupTableName();
 
-function _get_plugin_base_dir() {
-	return dirname(dirname(__FILE__));
-}
+		$db->rawQuery('TRUNCATE TABLE `' . $table . '`', null, 
+			false);
 
-function _manually_install_plugin() {
-	$installer = new Abp01_Installer();
-	$activated = $installer->activate();
-	if (!$activated) {
-		die('Failed to activate plugin. Cannot continue testing.');
+		$db->rawQuery('TRUNCATE TABLE `' . $langTable . '`', null, 
+			false);
+
+		$db->rawQuery('TRUNCATE TABLE `' . $lookupDetailsTableName . '`', null, 
+			false);
 	}
-}
 
-function _manually_load_plugin() {
-	require_once _get_plugin_base_dir() . '/abp01-plugin-main.php';
-	_manually_install_plugin();
-}
+	protected function _readAllLookupData() {
+		$env = $this->_getEnv();
 
-tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
-require $_tests_dir . '/includes/bootstrap.php';
+		$db = $env->getDb();
+		$lookup = $db->get($env->getLookupTableName());
+		$lookupLang = $db->get($env->getLookupLangTableName());
+
+		return array(
+			'lookup' => $lookup,
+			'lookupLang' => $lookupLang
+		);
+	}
+
+	protected function _restoreAllLookupData($data) {
+		$env = $this->_getEnv();
+
+		$db = $env->getDb();
+		foreach ($data['lookup'] as $insertRow) {
+			$db->insert($env->getLookupTableName(), $insertRow);
+		}
+		
+		foreach ($data['lookupLang'] as $insertRow) {
+			$db->insert($env->getLookupLangTableName(), $insertRow);
+		}
+	}
+ }

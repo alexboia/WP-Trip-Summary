@@ -133,6 +133,18 @@ class Abp01_Env {
 	 */
     private $_db = null;
 
+    /**
+     * The current information schema database object instance
+     * @var MysqliDb
+     */
+    private $_metaDb = null;
+
+    /**
+     * Whether or not the mysqli driver has been initialized
+     * @var boolean
+     */
+    private $_driverInitialized = false;
+
 	/**
 	 * The current WordPress version
 	 * @var string
@@ -346,10 +358,31 @@ class Abp01_Env {
                 $this->getDbPassword(),
                 $this->getDbName());
 
+            $this->_initDriverIfNeeded();
+        }
+
+        return $this->_db;
+    }
+
+    public function getMetaDb() {
+        if ($this->_metaDb == null) {
+            $this->_metaDb = new MysqliDb($this->getDbHost(),
+                $this->getDbUserName(),
+                $this->getDbPassword(),
+                'information_schema');
+
+            $this->_initDriverIfNeeded();
+        }
+
+        return $this->_metaDb;
+    }
+
+    private function _initDriverIfNeeded() {
+        if (!$this->_driverInitialized) {
             $driver = new mysqli_driver();
             $driver->report_mode =  MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT;
+            $this->_driverInitialized = true;
         }
-        return $this->_db;
     }
 	
 	public function getCurrentThemeId() {
