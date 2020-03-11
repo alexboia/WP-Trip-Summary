@@ -77,6 +77,10 @@ define('ABP01_MAIN_MENU_SLUG', 'abp01-trip-summary-settings');
 define('ABP01_LOOKUP_SUBMENU_SLUG', 'abp01-trip-summary-lookup');
 define('ABP01_HELP_SUBMENU_SLUG', 'abp01-trip-summary-help');
 
+define('ABP01_STATUS_OK', 0);
+define('ABP01_STATUS_ERR', 1);
+define('ABP01_STATUS_WARN', 2);
+
 /**
  * Returns the current environment accessor instance
  * @return Abp01_Env The current environment accessor instance
@@ -99,6 +103,13 @@ function abp01_get_installer() {
  */
 function abp01_get_settings() {
 	return Abp01_Settings::getInstance();
+}
+
+/**
+ * @return Abp01_Route_Manager
+ */
+function abp01_get_route_manager() {
+	return Abp01_Route_Manager::getInstance();
 }
 
 /**
@@ -211,6 +222,23 @@ function abp01_get_ajax_response($additionalProps = array()) {
 	}
 
 	return $response;
+}
+
+function abp01_get_status_text($text, $status) {
+	$cssClass = 'abp01-status-neutral';
+	switch ($status) {
+		case ABP01_STATUS_OK:
+			$cssClass = 'abp01-status-ok';
+		break;
+		case ABP01_STATUS_ERR:
+			$cssClass = 'abp01-status-err';
+		break;
+		case ABP01_STATUS_WARN:
+			$cssClass = 'abp01-status-warn';
+		break;
+	}
+
+	return '<span class="abp01-status-text ' . $cssClass . '">' . $text . '</span>';
 }
 
 /**
@@ -855,7 +883,7 @@ function abp01_add_admin_editor($post) {
 
 	$data = new stdClass();
 	$lookup = new Abp01_Lookup();
-	$manager = Abp01_Route_Manager::getInstance();
+	$manager = abp01_get_route_manager();
 
 	//get the lookup data
 	$data->difficultyLevels = $lookup->getDifficultyLevelOptions();
@@ -1421,7 +1449,7 @@ function abp01_save_info() {
 	}
 
 	$info = new Abp01_Route_Info($type);
-	$manager = Abp01_Route_Manager::getInstance();
+	$manager = abp01_get_route_manager();
 	$response = abp01_get_ajax_response();
 
 	foreach ($info->getValidFieldNames() as $field) {
@@ -1462,7 +1490,7 @@ function abp01_get_info($content) {
 
 	$data = new stdClass();
 	$lookup = new Abp01_Lookup();
-	$manager = Abp01_Route_Manager::getInstance();
+	$manager = abp01_get_route_manager();
 	$info = $manager->getRouteInfo($postId);
 
 	$data->info = new stdClass();
@@ -1551,7 +1579,7 @@ function abp01_remove_info() {
 	}
 
 	$response = abp01_get_ajax_response();
-	$manager = Abp01_Route_Manager::getInstance();
+	$manager = abp01_get_route_manager();
 
 	if (!$manager->deleteRouteInfo($postId)) {
 		$response->message = esc_html__('The data could not be saved due to a possible database error', 'abp01-trip-summary');
@@ -1632,7 +1660,7 @@ function abp01_upload_track() {
 			$parser = new Abp01_Route_Track_GpxDocumentParser();
 			$route = $parser->parse($route);
 			if ($route && !$parser->hasErrors()) {
-				$manager = Abp01_Route_Manager::getInstance();
+				$manager = abp01_get_route_manager();
 				$destination = basename($destination);
 				$track = new Abp01_Route_Track($destination, 
 					$route->getBounds(), 
@@ -1681,7 +1709,7 @@ function abp01_get_track() {
 
 	$route = abp01_get_cached_track($postId);
 	if (!($route instanceof Abp01_Route_Track_Document)) {
-		$manager = Abp01_Route_Manager::getInstance();
+		$manager = abp01_get_route_manager();
 		$track = $manager->getRouteTrack($postId);
 		if ($track) {
 			$file = abp01_get_track_upload_destination($postId);
@@ -1781,7 +1809,7 @@ function abp01_remove_track() {
 	}
 
 	$response = abp01_get_ajax_response();
-	$manager = Abp01_Route_Manager::getInstance();
+	$manager = abp01_get_route_manager();
 
 	if ($manager->deleteRouteTrack($postId)) {
 		//delete track file
@@ -1802,6 +1830,89 @@ function abp01_remove_track() {
 	}
 
 	abp01_send_json($response);
+}
+
+function abp01_get_posts_trip_summary_info($posts) {
+	$postIds = array();
+	$statusInfo = array();
+
+	if (!empty($posts) && is_array($posts)) {
+		foreach ($posts as $post) {
+			if (isset($post->ID)) {
+				$postIds[] = intval($post->ID);
+			}
+		}
+	}
+
+	if (!empty($postIds)) {
+		$statusInfo = abp01_get_route_manager()->getTripSummaryStatusInfo($postIds);
+	}
+
+	return $statusInfo;
+}
+
+function abpp01_add_custom_columns($columns) {
+	$columns['abp01_trip_summary_info_status'] 
+		= esc_html__('Trip summary info', 'abp01-trip-summary');
+	$columns['abp01_trip_summary_track_status'] 
+		= esc_html__('Trip summary track', 'abp01-trip-summary');
+	return $columns;
+}
+
+function abp01_register_post_listing_columns($columns, $postType) {
+	if ($postType == 'post' || $postType == 'page') {
+		 $columns = abpp01_add_custom_columns($columns);
+	}
+	return $columns;
+}
+
+function abp01_register_page_listing_columns($columns) {
+	$columns = abpp01_add_custom_columns($columns);
+	return $columns;
+}
+
+function abp01_get_post_listing_custom_column_value($columnName, $postId) {
+	static $tripSummaryInfo = null;
+
+	$postTripSummaryInfo = null;
+	if ($columnName == 'abp01_trip_summary_info_status' 
+		|| $columnName == 'abp01_trip_summary_track_status') {
+		
+		//Fetch and locally cache the trip summary info
+		if ($tripSummaryInfo === null) {
+			$query = isset($GLOBALS['wp_query'])
+				? $GLOBALS['wp_query'] 
+				: null;
+
+			$tripSummaryInfo = $query != null 
+				? abp01_get_posts_trip_summary_info($query->posts) 
+				: null;
+		}
+
+		$postTripSummaryInfo = !empty($tripSummaryInfo) && isset($tripSummaryInfo[$postId]) 
+			? $tripSummaryInfo[$postId]
+			: null;
+	}
+
+	if ($columnName == 'abp01_trip_summary_info_status') {
+		if (!empty($postTripSummaryInfo)) {
+			echo $postTripSummaryInfo['has_route_details'] 
+				? abp01_get_status_text(esc_html__('Yes', 'abp01-trip-summary'), ABP01_STATUS_OK) 
+				: abp01_get_status_text(esc_html__('No', 'abp01-trip-summary'), ABP01_STATUS_ERR);
+		} else {
+			echo abp01_get_status_text(esc_html__('Not available', 'abp01-trip-summary'), ABP01_STATUS_WARN);
+		}
+	}
+
+	if ($columnName == 'abp01_trip_summary_track_status') {
+		if (!empty($postTripSummaryInfo)) {
+			echo $postTripSummaryInfo['has_route_track'] 
+				? abp01_get_status_text(esc_html__('Yes', 'abp01-trip-summary'), ABP01_STATUS_OK)
+				: abp01_get_status_text(esc_html__('No', 'abp01-trip-summary'), ABP01_STATUS_ERR);
+		} else {
+			echo abp01_get_status_text(esc_html__('Not available', 'abp01-trip-summary'), ABP01_STATUS_WARN);
+		}
+	}
 }
 
 function abp01_on_language_updated($oldValue, $value, $optName) {
@@ -1870,9 +1981,15 @@ if (function_exists('add_action')) {
 	add_action('admin_menu', 'abp01_create_admin_menu');
 	add_action('update_option_WPLANG', 'abp01_on_language_updated', 10, 3);
 	add_action('in_admin_footer', 'abp01_on_footer_loaded', 1);
+
+	add_action('manage_posts_custom_column', 'abp01_get_post_listing_custom_column_value', 10, 2);
+	add_action('manage_pages_custom_column', 'abp01_get_post_listing_custom_column_value', 10, 2);
 }
 
 if (function_exists('add_filter') && function_exists('remove_filter')) {
 	remove_filter('the_content', 'wpautop');
 	add_filter('the_content', 'abp01_get_info', 0);
+
+	add_filter('manage_posts_columns',  'abp01_register_post_listing_columns', 10, 2);
+	add_filter('manage_pages_columns',  'abp01_register_page_listing_columns', 10, 1);
 }

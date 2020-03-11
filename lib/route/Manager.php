@@ -360,6 +360,41 @@ class Abp01_Route_Manager {
 		return false;
 	}
 
+	public function getTripSummaryStatusInfo($postIds) {
+		$db = $this->_env->getDb();
+
+		$postsTable = $this->_env->getWpPostsTableName();
+		$trackTable = $this->_env->getRouteTrackTableName();
+		$infoTable = $this->_env->getRouteDetailsTableName();
+
+		$db->join($infoTable . ' rd', 'rd.post_ID = p.ID', 
+			'LEFT');
+
+		$db->join($trackTable . ' rt', 'rt.post_ID = p.ID', 
+			'LEFT');
+
+		$db->where('p.ID', $postIds, 'IN');
+		$data = $db->get($postsTable  . ' p', null, array(
+			'p.ID', 
+			'IF(rd.post_ID IS NOT NULL, true, false) has_route_details', 
+			'IF(rt.post_ID IS NOT NULL, true, false) has_route_track'
+		));
+
+		$statusInfo = array();
+		if (!empty($data)) {
+			foreach ($data as $row) {
+				$statusInfo[intval($row['ID'])] = array(
+					'has_route_details' 
+						=> intval($row['has_route_details']) === 1,
+					'has_route_track'
+						 => intval($row['has_route_track']) === 1
+				);
+			}
+		}
+
+		return $statusInfo;
+	}
+
 	public function getLastError() {
 		return $this->_lastError;
 	}

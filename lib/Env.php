@@ -418,6 +418,19 @@ class Abp01_Env {
         return $this->getCurrentPage() == 'options.php' && $this->isHttpPost();
     }
 
+    public function isListingWpPosts() {
+        $requiredPostTypes = func_get_args();
+
+        $postType = isset($_GET['post_type']) 
+            ? $_GET['post_type'] 
+            : 'post';
+
+        var_dump($postType);
+
+        return $this->getCurrentPage() == 'edit.php' 
+            && (empty($requiredPostTypes) || in_array($postType, $requiredPostTypes));
+    }
+
     public function isEditingWpPost() {
 	    return in_array($this->getCurrentPage(), array(
             'post-new.php', 
@@ -443,6 +456,12 @@ class Abp01_Env {
 
     public function isHttpPost() {
         return $this->getHttpMethod() === 'post';
+    }
+
+    public function getWpPostsTableName() {
+        return isset($GLOBALS['wpdb']) 
+            ? $GLOBALS['wpdb']->posts 
+            : $this->_dbTablePrefix . 'posts';
     }
 
     public function getRouteTrackTableName() {
