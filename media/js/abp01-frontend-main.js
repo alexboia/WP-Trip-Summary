@@ -76,6 +76,7 @@
             showMagnifyingGlass : settings.mapShowMagnifyingGlass,
             showFullScreen : settings.mapShowFullScreen,
             trackDownloadUrl: settings.mapAllowTrackDownloadUrl ? getDownloadTrackUrl() : null,
+            trackLineColour: settings.trackLineColour,
 
             //map and data options
             trackDataUrl : getAjaxLoadTrackUrl(),
@@ -126,7 +127,8 @@
             mapShowMagnifyingGlass: abp01Settings.mapShowMagnifyingGlass === 'true',
             mapShowScale: abp01Settings.mapShowScale === 'true',
             mapAllowTrackDownloadUrl: abp01Settings.mapAllowTrackDownloadUrl === 'true',
-            mapTileLayer: abp01Settings.mapTileLayer || {}
+            mapTileLayer: abp01Settings.mapTileLayer || {},
+            trackLineColour: abp01Settings.trackLineColour || '#0033ff'
         };
     }
 

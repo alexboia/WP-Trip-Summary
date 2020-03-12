@@ -47,7 +47,8 @@
             showMagnifyingGlass: false,
             trackDownloadUrl: null,
             showScale: true,
-            tileLayer: null
+            tileLayer: null,
+            trackLineColour: '#0033ff'
         }, opts);
         
         //tile layer is mandatory, so we will exit with error if not provided
@@ -213,7 +214,9 @@
                         var coord = pointVal.coordinate;
                         path.push(L.latLng(coord.lat, coord.lng));
                     });
-                    path = L.polyline(path);
+                    path = L.polyline(path, {
+                        color: opts.trackLineColour
+                    });
                     path.addTo(map);
                 });
             });

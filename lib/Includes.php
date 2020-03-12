@@ -42,6 +42,8 @@ class Abp01_Includes {
 
 	const JS_URI_JS = 'uri-js';
 
+	const JS_WP_COLOR_PICKER = 'wp-color-picker';
+
 	const JS_JQUERY_VISIBLE = 'jquery-visible';
 
 	const JS_JQUERY_BLOCKUI = 'jquery-blockui';
@@ -83,6 +85,8 @@ class Abp01_Includes {
 	const JS_SYSTEM_THICKBOX = 'thickbox';
 	
 	const JS_SUMO_SELECT = 'sumoSelect';
+
+	const STYLE_WP_COLOR_PICKER = 'wp-color-picker';
 
 	const STYLE_DASHICONS = 'dashicons';
 
@@ -282,6 +286,7 @@ class Abp01_Includes {
 			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::JS_JQUERY,
+				self::JS_WP_COLOR_PICKER,
 				self::JS_JQUERY_BLOCKUI,
 				self::JS_URI_JS,
 				self::JS_ABP01_PROGRESS_OVERLAY
@@ -415,6 +420,7 @@ class Abp01_Includes {
 		self::STYLE_ADMIN_SETTINGS => array(
 			'alias' => self::STYLE_ADMIN_MAIN,
 			'deps' => array(
+				self::STYLE_WP_COLOR_PICKER,
 				self::STYLE_NPROGRESS
 			)
 		),
@@ -604,7 +610,8 @@ class Abp01_Includes {
 				'url' => esc_js($mainTileLayer->url),
 				'attributionTxt' => esc_js($mainTileLayer->attributionTxt),
 				'attributionUrl' => esc_js($mainTileLayer->attributionUrl)
-			)
+			),
+			'trackLineColour' => $settings->getTrackLineColour()
 		));
 	}
 

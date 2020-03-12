@@ -191,10 +191,15 @@
     	context = getContext();
     }
 
+    function initColoPickers() {
+        $('#abp01-trackLineColour').wpColorPicker();
+    }
+
     $(document).ready(function() {
         initFormState();
         initControls();
         initBlockUIDefaultStyles();
+        initColoPickers();
         initListeners();
     });
 })(jQuery);

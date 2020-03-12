@@ -778,6 +778,7 @@
             	tileLayer: settings.mapTileLayer,
                 iconBaseUrl: context.imgBase,
                 trackDataUrl: getAjaxLoadTrackUrl(),
+                trackLineColour: settings.trackLineColour,
                 handlePreLoad: function() {
                     showProgress(false, abp01MainL10n.lblGeneratingPreview);
                     $ctrlMapRetryContainer.hide();
@@ -817,7 +818,8 @@
     function getSettings() {
     	return {
     		mapShowScale: abp01Settings.mapShowScale == 'true',
-    		mapTileLayer: abp01Settings.mapTileLayer || {}
+            mapTileLayer: abp01Settings.mapTileLayer || {},
+            trackLineColour: abp01Settings.trackLineColour || '#0033ff'
     	};
     }
 

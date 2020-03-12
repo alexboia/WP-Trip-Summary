@@ -1082,6 +1082,7 @@ function abp01_admin_settings_page() {
 	$data->settings->unitSystem = $settings->getUnitSystem();
 	$data->settings->showMapScale = $settings->getShowMapScale();
 	$data->settings->allowTrackDownload = $settings->getAllowTrackDownload();
+	$data->settings->trackLineColour = $settings->getTrackLineColour();
 
 	//fetch all the allowed unit systems
 	$data->settings->allowedUnitSystems = array();
@@ -1150,6 +1151,17 @@ function abp01_save_admin_settings_page_save() {
 		abp01_send_json($response);
 	}
 
+	//collect the track line colour
+	$trackLineColour = Abp01_InputFiltering::getFilteredPOSTValue('trackLineColour');
+
+	//check whether the track line colour is a valid hex value
+	$hexColourValidator = new Abp01_Validate_HexColourCode(true);
+	if (!$hexColourValidator->validate($trackLineColour)) {
+		$response->message = esc_html__('The track line colour is not a valid HEX colour code', 'abp01-trip-summary');
+		abp01_send_json($response);
+	}
+	
+
 	//fill in and save settings
 	$settings = abp01_get_settings();
 	$settings->setShowTeaser(Abp01_InputFiltering::getPOSTValueAsBoolean('showTeaser'));
@@ -1160,6 +1172,7 @@ function abp01_save_admin_settings_page_save() {
 	$settings->setShowMagnifyingGlass(Abp01_InputFiltering::getPOSTValueAsBoolean('showMagnifyingGlass'));
 	$settings->setShowMapScale(Abp01_InputFiltering::getPOSTValueAsBoolean('showMapScale'));
 	$settings->setAllowTrackDownload(Abp01_InputFiltering::getPOSTValueAsBoolean('allowTrackDownload'));
+	$settings->setTrackLineColour($trackLineColour);
 
 	$settings->setTileLayers($tileLayer);
 	$settings->setUnitSystem($unitSystem);

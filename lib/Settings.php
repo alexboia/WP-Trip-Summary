@@ -89,6 +89,11 @@ class Abp01_Settings {
 	const OPT_ALLOW_TRACK_DOWNLOAD = 'allowTrackDownload';
 
 	/**
+	 * Key for the "track line colour" setting
+	 * */
+	const OPT_TRACK_LINE_COLOUR = 'trackLineColour';
+
+	/**
 	 * The key used to store the serialized settings, using the WP options API
 	 * */
 	const OPT_SETTINGS_KEY = 'abp01.settings';
@@ -280,6 +285,15 @@ class Abp01_Settings {
 			$unitSystem = $this->getUnitSystem();
 		}
 		$this->_setOption(self::OPT_UNIT_SYSTEM, 'string', $unitSystem);
+		return $this;
+	}
+
+	public function getTrackLineColour() {
+		return $this->_getOption(self::OPT_TRACK_LINE_COLOUR, 'string', '#0033ff');
+	}
+
+	public function setTrackLineColour($colourHex) {
+		$this->_setOption(self::OPT_TRACK_LINE_COLOUR, 'string', $colourHex);
 		return $this;
 	}
 

@@ -162,6 +162,18 @@
 							<input type="checkbox" id="abp01-allowTrackDownload" name="allowTrackDownload" class="abp01-checkbox" value="true" <?php echo $data->settings->allowTrackDownload ? 'checked="checked"' : '' ?>/>
 						</td>
 					</tr>
+					<tr>
+						<th scope="row">
+							<label for="abp01-trackLineColour"><?php echo esc_html__('Track line colour', 'abp01-trip-summary'); ?></label>
+						</th>
+						<td>
+							<input id="abp01-trackLineColour" 
+								name="trackLineColour" 
+								type="text" 
+								value="<?php echo esc_attr($data->settings->trackLineColour); ?>" 
+								data-default-color="#0033ff"  />
+						</td>
+					</tr>
 				</table>
 			</div>
 
