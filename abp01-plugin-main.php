@@ -224,6 +224,15 @@ function abp01_get_ajax_response($additionalProps = array()) {
 	return $response;
 }
 
+/**
+ * Renders the given text formatted according to the given status information.
+ * The text is wrapped in an HTML span element, with the appropriate CSS class:
+ * 
+ * @param string $text The text to format
+ * @param int $status The status information
+ * 
+ * @return string The formatted HTML text.
+ */
 function abp01_get_status_text($text, $status) {
 	$cssClass = 'abp01-status-neutral';
 	switch ($status) {
@@ -239,6 +248,26 @@ function abp01_get_status_text($text, $status) {
 	}
 
 	return '<span class="abp01-status-text ' . $cssClass . '">' . $text . '</span>';
+}
+
+/**
+ * Extracts the IDs of the posts from the given array
+ * 
+ * @param array $posts The posts array from which to extract the IDs
+ * @return array The corresponding array of post IDs
+ */
+function abp01_extract_post_ids($posts) {
+	$postIds = array();
+
+	if (!empty($posts) && is_array($posts)) {
+		foreach ($posts as $post) {
+			if (isset($post->ID)) {
+				$postIds[] = intval($post->ID);
+			}
+		}
+	}
+
+	return $postIds;
 }
 
 /**
@@ -377,11 +406,19 @@ function abp01_get_http_method() {
 }
 
 /**
- * Checkes whether an options saving operations is currently underway
+ * Checks whether an options saving operations is currently underway
  * @return bool
  * */
 function abp01_is_saving_options() {
 	return abp01_get_env()->isSavingWpOptions();
+}
+
+/**
+ * Checks whether the admin posts listing is currently being browsed (regardless of post ype)
+ * @return bool
+ */
+function abp01_is_browsing_posts_listing() {
+	return abp01_get_env()->isListingWpPosts();
 }
 
 /**
@@ -950,6 +987,10 @@ function abp01_add_admin_editor($post) {
  * @return void
  */
 function abp01_add_admin_styles() {
+	if (abp01_is_browsing_posts_listing()) {
+		Abp01_Includes::includeStyleAdminPostsListing();
+	}
+
 	//if in post editing page and IF the user is allowed to edit a post's trip summary
 	//include the the styles required by the trip summary editor
 	if (abp01_is_editing_post() && abp01_can_edit_trip_summary(null)) {
@@ -1832,20 +1873,26 @@ function abp01_remove_track() {
 	abp01_send_json($response);
 }
 
+function abp01_get_posts_trip_summary_info_cache_key($postIds) {
+	return sprintf('abp01_posts_tsinfo_%s', sha1(join('_', $postIds)));
+}
+
 function abp01_get_posts_trip_summary_info($posts) {
 	$postIds = array();
 	$statusInfo = array();
 
-	if (!empty($posts) && is_array($posts)) {
-		foreach ($posts as $post) {
-			if (isset($post->ID)) {
-				$postIds[] = intval($post->ID);
-			}
-		}
-	}
-
+	//extract post IDs
+	$postIds = abp01_extract_post_ids($posts);
 	if (!empty($postIds)) {
-		$statusInfo = abp01_get_route_manager()->getTripSummaryStatusInfo($postIds);
+		//Attempt to extract any cached data
+		$key = abp01_get_posts_trip_summary_info_cache_key($postIds);
+		$statusInfo = get_transient($key);
+
+		//If there is no status information cached, fetch it
+		if (!is_array($statusInfo)) {
+			$statusInfo = abp01_get_route_manager()->getTripSummaryStatusInfo($postIds);
+			set_transient($key, $statusInfo, MINUTE_IN_SECONDS * 5);
+		}
 	}
 
 	return $statusInfo;

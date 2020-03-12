@@ -102,6 +102,8 @@ class Abp01_Includes {
 
 	const STYLE_JQUERY_TOASTR = 'jquery-toastr-css';
 
+	const STYLE_ADMIN_COMMON = 'abp01-admin-common-css';
+
 	const STYLE_ADMIN_MAIN = 'abp01-main-css';
 
 	const STYLE_ADMIN_SETTINGS = 'abp01-settings-css';
@@ -109,6 +111,8 @@ class Abp01_Includes {
 	const STYLE_ADMIN_LOOKUP_MANAGEMENT = 'abp01-lookup-management-css';
 	
 	const STYLE_ADMIN_HELP = 'abp01-help-css';
+
+	const STYLE_ADMIN_POSTS_LISTING = 'abp01-admin-posts-listing-css';
 
 	const STYLE_SYSTEM_THICKBOX = 'thickbox';
 
@@ -394,6 +398,10 @@ class Abp01_Includes {
 			'path' => 'media/js/3rdParty/toastr/toastr.css', 
 			'version' => '2.1.4'
 		), 
+		self::STYLE_ADMIN_COMMON => array(
+			'path' => 'media/css/abp01-admin-common.css', 
+			'version' => ABP01_VERSION
+		),
 		self::STYLE_ADMIN_MAIN => array(
 			'path' => 'media/css/abp01-main.css', 
 			'version' => ABP01_VERSION,
@@ -421,6 +429,13 @@ class Abp01_Includes {
 		self::STYLE_ADMIN_HELP => array(
 			'path' => 'media/css/abp01-help.css', 
 			'version' => ABP01_VERSION
+		),
+		self::STYLE_ADMIN_POSTS_LISTING => array(
+			'path' => 'media/css/abp01-admin-posts-listing.css', 
+			'version' => ABP01_VERSION,
+			'deps' => array(
+				self::STYLE_ADMIN_COMMON
+			)
 		)
 	);
 
@@ -691,5 +706,9 @@ class Abp01_Includes {
 
 	public static function includeStyleAdminHelp() {
 		self::_enqueueStyle(self::STYLE_ADMIN_HELP);
+	}
+
+	public static function includeStyleAdminPostsListing() {
+		self::_enqueueStyle(self::STYLE_ADMIN_POSTS_LISTING);
 	}
 }

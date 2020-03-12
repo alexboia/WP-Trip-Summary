@@ -425,8 +425,6 @@ class Abp01_Env {
             ? $_GET['post_type'] 
             : 'post';
 
-        var_dump($postType);
-
         return $this->getCurrentPage() == 'edit.php' 
             && (empty($requiredPostTypes) || in_array($postType, $requiredPostTypes));
     }
