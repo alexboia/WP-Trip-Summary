@@ -843,7 +843,9 @@ function abp01_activate() {
 		$errors = abp01_get_installation_error_translations();
 		$message = isset($errors[$test]) 
 			? $errors[$test] 
-			: esc_html__('The plugin cannot be installed on your system', 'abp01-trip-summary');
+			: sprintf('%s (error code: %s)', 
+				esc_html__('The plugin cannot be installed on your system', 'abp01-trip-summary'), 
+				$test);
 		deactivate_plugins(plugin_basename(__FILE__));
 		wp_die($message);
 	} else if ($test === false) {

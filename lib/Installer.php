@@ -59,6 +59,11 @@ class Abp01_Installer {
 	 */
     const SUPPORT_MYSQLI_NOT_FOUND = 5;
 
+    /**
+     * @var Integer Error code returned when the installation capabilities cannot be detected
+     */
+    const COULD_NOT_DETECT_INSTALLATION_CAPABILITIES = 255;
+
 	/**
 	 * @var String WP options key for current plug-in version
 	 */
@@ -534,6 +539,7 @@ class Abp01_Installer {
 
     public function canBeInstalled() {
         $this->_reset();
+
         try {
             if (!$this->_isCompatPhpVersion()) {
                 return self::INCOMPATIBLE_PHP_VERSION;
@@ -555,7 +561,8 @@ class Abp01_Installer {
         } catch (Exception $e) {
             $this->_lastError = $e;
         }
-        return empty($this->_lastError) ? 0 : false;
+
+        return empty($this->_lastError) ? 0 : self::COULD_NOT_DETECT_INSTALLATION_CAPABILITIES;
     }
 
     public function activate() {
@@ -778,9 +785,9 @@ class Abp01_Installer {
             return false;
         }
 
-        $spatialTest = $db->rawQuery('SELECT AsText(Envelope(LineString(
-            GeometryFromText(AsText(Point(1, 2)), 3857),
-            GeometryFromText(AsText(Point(3, 4)), 3857)
+        $spatialTest = $db->rawQuery('SELECT ST_AsText(ST_Envelope(LINESTRING(
+            ST_GeomFromText(ST_AsText(POINT(1, 2)), 3857),
+            ST_GeomFromText(ST_AsText(POINT(3, 4)), 3857)
         ))) AS SPATIAL_TEST');
 
         if (!empty($spatialTest) && is_array($spatialTest)) {

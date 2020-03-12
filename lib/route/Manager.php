@@ -207,9 +207,9 @@ class Abp01_Route_Manager {
 		$data = array(
 			'post_ID' => $postId,
 			'route_track_file' => $track->getFile(),
-			'route_bbox' => $db->func("Envelope(LineString(GeometryFromText(AsText(Point(?, ?)), 3857), GeometryFromText(AsText(Point(?, ?)), 3857)))", $lineBetween),
-			'route_min_coord' => $db->func("GeometryFromText(AsText(Point(?, ?)), 3857)", $minCoord),
-			'route_max_coord' => $db->func("GeometryFromText(AsText(Point(?, ?)), 3857)", $maxCoord),
+			'route_bbox' => $db->func("ST_Envelope(LINESTRING(ST_GeomFromText(ST_AsText(POINT(?, ?)), 3857), ST_GeomFromText(ST_AsText(POINT(?, ?)), 3857)))", $lineBetween),
+			'route_min_coord' => $db->func("ST_GeomFromText(ST_AsText(POINT(?, ?)), 3857)", $minCoord),
+			'route_max_coord' => $db->func("ST_GeomFromText(ST_AsText(POINT(?, ?)), 3857)", $maxCoord),
 			'route_min_alt' => $track->minAlt,
 			'route_max_alt' => $track->maxAlt,
 			'route_track_modified_at' => $db->now(),
@@ -291,10 +291,10 @@ class Abp01_Route_Manager {
 			'route_min_alt',
 			'route_max_alt',
 			'route_track_file',
-			'X(route_min_coord) AS route_min_lng',
-			'Y(route_min_coord) AS route_min_lat',
-			'X(route_max_coord) AS route_max_lng',
-			'Y(route_max_coord) AS route_max_lat'
+			'ST_X(route_min_coord) AS route_min_lng',
+			'ST_Y(route_min_coord) AS route_min_lat',
+			'ST_X(route_max_coord) AS route_max_lng',
+			'ST_Y(route_max_coord) AS route_max_lat'
 		));
 		if (!$row) {
 			return null;
