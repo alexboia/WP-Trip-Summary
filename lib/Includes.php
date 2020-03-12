@@ -304,7 +304,7 @@ class Abp01_Includes {
 	private static $_styles = array(
 		self::STYLE_NPROGRESS => array(
 			'path' => 'media/js/3rdParty/nprogress/nprogress.css', 
-			'version' => '2.0.3'
+			'version' => '0.2.0'
 		), 
 		self::STYLE_SUMO_SELECT => array(
 			'path' => 'media/js/3rdParty/summoSelect/sumoselect.css',

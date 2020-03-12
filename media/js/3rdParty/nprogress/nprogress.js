@@ -14,7 +14,7 @@
 })(this, function() {
   var NProgress = {};
 
-  NProgress.version = '0.1.6';
+  NProgress.version = '0.2.0';
 
   var Settings = NProgress.settings = {
     minimum: 0.08,
@@ -178,37 +178,37 @@
   /**
    * Waits for all supplied jQuery promises and
    * increases the progress as the promises resolve.
-   * 
+   *
    * @param $promise jQUery Promise
    */
   (function() {
     var initial = 0, current = 0;
-    
+
     NProgress.promise = function($promise) {
-      if (!$promise || $promise.state() == "resolved") {
+      if (!$promise || $promise.state() === "resolved") {
         return this;
       }
-      
-      if (current == 0) {
+
+      if (current === 0) {
         NProgress.start();
       }
-      
+
       initial++;
       current++;
-      
+
       $promise.always(function() {
         current--;
-        if (current == 0) {
+        if (current === 0) {
             initial = 0;
             NProgress.done();
         } else {
             NProgress.set((initial - current) / initial);
         }
       });
-      
+
       return this;
     };
-    
+
   })();
 
   /**
@@ -229,7 +229,7 @@
         perc     = fromStart ? '-100' : toBarPerc(NProgress.status || 0),
         parent   = document.querySelector(Settings.parent),
         spinner;
-
+    
     css(bar, {
       transition: 'all 0 linear',
       transform: 'translate3d(' + perc + '%,0,0)'
@@ -254,7 +254,7 @@
 
   NProgress.remove = function() {
     removeClass(document.documentElement, 'nprogress-busy');
-    removeClass(document.querySelector(Settings.parent), 'nprogress-custom-parent')
+    removeClass(document.querySelector(Settings.parent), 'nprogress-custom-parent');
     var progress = document.getElementById('nprogress');
     progress && removeElement(progress);
   };
@@ -418,9 +418,6 @@
    */
 
   function hasClass(element, name) {
-      if (!element) {
-          return false;
-      }
     var list = typeof element == 'string' ? element : classList(element);
     return list.indexOf(' ' + name + ' ') >= 0;
   }
@@ -430,10 +427,6 @@
    */
 
   function addClass(element, name) {
-      if (!element) {
-          return;
-      }
-
     var oldList = classList(element),
         newList = oldList + name;
 
@@ -448,10 +441,6 @@
    */
 
   function removeClass(element, name) {
-      if (!element) {
-          return;
-      }
-
     var oldList = classList(element),
         newList;
 
@@ -471,9 +460,6 @@
    */
 
   function classList(element) {
-      if (!element) {
-          return '';
-      }
     return (' ' + (element.className || '') + ' ').replace(/\s+/gi, ' ');
   }
 
