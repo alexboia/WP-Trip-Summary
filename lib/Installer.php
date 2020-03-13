@@ -587,7 +587,12 @@ class Abp01_Installer {
                 $this->_uninstallSchema();
                 return false;
             } else {
-                return $this->_createCapabilities();
+                if ($this->_createCapabilities()) {
+                    update_option(self::OPT_VERSION, $this->_getVersion());
+                    return true;
+                } else {
+                    return false;
+                }
             }
         } catch (Exception $e) {
             $this->_lastError = $e;

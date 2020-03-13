@@ -387,7 +387,7 @@ class Abp01_Route_Manager {
 					'has_route_details' 
 						=> intval($row['has_route_details']) === 1,
 					'has_route_track'
-						 => intval($row['has_route_track']) === 1
+						=> intval($row['has_route_track']) === 1
 				);
 			}
 		}

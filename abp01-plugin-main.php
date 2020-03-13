@@ -1906,7 +1906,7 @@ function abp01_get_posts_trip_summary_info($posts) {
 		//If there is no status information cached, fetch it
 		if (!is_array($statusInfo)) {
 			$statusInfo = abp01_get_route_manager()->getTripSummaryStatusInfo($postIds);
-			set_transient($key, $statusInfo, MINUTE_IN_SECONDS * 5);
+			set_transient($key, $statusInfo, MINUTE_IN_SECONDS);
 		}
 	}
 
