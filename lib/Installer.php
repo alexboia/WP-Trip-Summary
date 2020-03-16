@@ -771,7 +771,13 @@ class Abp01_Installer {
             return false;
         }
 
-        $haveGeometry = $db->rawQuery("SHOW VARIABLES WHERE Variable_name = 'have_geometry'");
+        try {
+            $haveGeometry = $db->rawQuery("SHOW VARIABLES WHERE Variable_name = 'have_geometry'");
+        } catch (Exception $exc) {
+            $this->_lastError = $exc;
+            $haveGeometry = null;
+        }
+
         if (!empty($haveGeometry) && is_array($haveGeometry)) {
             $haveGeometry = $haveGeometry[0];
             $result = !empty($haveGeometry['Value']) &&
@@ -790,10 +796,15 @@ class Abp01_Installer {
             return false;
         }
 
-        $spatialTest = $db->rawQuery('SELECT ST_AsText(ST_Envelope(LINESTRING(
-            ST_GeomFromText(ST_AsText(POINT(1, 2)), 3857),
-            ST_GeomFromText(ST_AsText(POINT(3, 4)), 3857)
-        ))) AS SPATIAL_TEST');
+        try {
+            $spatialTest = $db->rawQuery('SELECT ST_AsText(ST_Envelope(LINESTRING(
+                ST_GeomFromText(ST_AsText(POINT(1, 2)), 3857),
+                ST_GeomFromText(ST_AsText(POINT(3, 4)), 3857)
+            ))) AS SPATIAL_TEST');
+        } catch (Exception $exc) {
+            $this->_lastError = $exc;
+            $spatialTest = null;
+        }
 
         if (!empty($spatialTest) && is_array($spatialTest)) {
             $result = strcasecmp($spatialTest[0]['SPATIAL_TEST'], $expected) === 0;
