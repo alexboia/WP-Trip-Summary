@@ -186,7 +186,7 @@ class Abp01_Includes {
 		),
 		self::JS_LEAFLET => array(
 			'path' => 'media/js/3rdParty/leaflet/leaflet-src.js', 
-			'version' => '0.7.3'
+			'version' => '1.6.0'
 		), 
 		self::JS_LEAFLET_MAGNIFYING_GLASS => array(
 			'path' => 'media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.js', 
@@ -197,7 +197,7 @@ class Abp01_Includes {
 		), 
 		self::JS_LEAFLET_MAGNIFYING_GLASS_BUTTON => array(
 			'path' => 'media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.button.js', 
-			'version' => '0.1',
+			'version' => '0.2',
 			'deps' => array(
 				self::JS_LEAFLET
 			)
@@ -317,15 +317,15 @@ class Abp01_Includes {
 		),
 		self::STYLE_LEAFLET => array(
 			'path' => 'media/js/3rdParty/leaflet/leaflet.css', 
-			'version' => '0.7.3'
+			'version' => '1.6.0'
 		), 
 		self::STYLE_LEAFLET_MAGNIFYING_GLASS => array(
 			'path' => 'media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.css', 
-			'version' => '0.1'
+			'version' => '0.2'
 		), 
 		self::STYLE_LEAFLET_MAGNIFYING_GLASS_BUTTON => array(
 			'path' => 'media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.button.css', 
-			'version' => '0.1'
+			'version' => '0.2'
 		), 
 		self::STYLE_LEAFLET_FULLSCREEN => array(
 			'path' => 'media/js/3rdParty/leaflet-plugins/leaflet-fullscreen/leaflet.fullscreen.css', 
