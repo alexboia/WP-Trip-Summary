@@ -3,7 +3,7 @@
  * Plugin Name: WP Trip Summary
  * Author: Alexandru Boia
  * Author URI: http://alexboia.net
- * Version: 0.2.2
+ * Version: 0.2.3
  * Description: Aids a travel blogger to add structured information about his tours (biking, hiking, train travels etc.)
  * License: New BSD License
  * Plugin URI: https://github.com/alexboia/WP-Trip-Summary
@@ -46,7 +46,7 @@
 define('ABP01_LOADED', true);
 define('ABP01_PLUGIN_ROOT', dirname(__FILE__));
 define('ABP01_LIB_DIR', ABP01_PLUGIN_ROOT . '/lib');
-define('ABP01_VERSION', '0.2.2');
+define('ABP01_VERSION', '0.2.3');
 
 define('ABP01_MAX_EXECUTION_TIME_MINUTES', 10);
 define('ABP01_DISABLE_MINIFIED', false);
@@ -80,6 +80,8 @@ define('ABP01_HELP_SUBMENU_SLUG', 'abp01-trip-summary-help');
 define('ABP01_STATUS_OK', 0);
 define('ABP01_STATUS_ERR', 1);
 define('ABP01_STATUS_WARN', 2);
+
+define('ABP01_GET_INFO_DATA_TRANSIENT_DURATION', 10);
 
 /**
  * Returns the current environment accessor instance
@@ -797,9 +799,9 @@ function abp01_render_techbox_frontend(stdClass $data) {
 	$themeViewer = $locations->theme . '/wpts-frontend.php';
 	if (!is_readable($themeViewer)) {
 		//otherwise, include the default main view
-		require_once $locations->default . '/wpts-frontend.php';
+		require $locations->default . '/wpts-frontend.php';
 	} else {
-		require_once $themeViewer;
+		require $themeViewer;
 	}
 }
 
@@ -823,9 +825,9 @@ function abp01_render_techbox_frontend_teaser(stdClass $data) {
 	$themeTeaser = $locations->theme . '/wpts-frontend-teaser.php';
 	if (!is_readable($themeTeaser)) {
 		//otherwise, include the default teaser view
-		require_once $locations->default . '/wpts-frontend-teaser.php';
+		require $locations->default . '/wpts-frontend-teaser.php';
 	} else {
-		require_once $themeTeaser;
+		require $themeTeaser;
 	}
 }
 
@@ -1019,7 +1021,7 @@ function abp01_add_admin_styles() {
  * @return void
  */
 function abp01_add_frontend_styles() {
-	if (is_single()) {
+	if (is_single() || is_page()) {
 		Abp01_Includes::includeStyleFrontendMain();
 	}
 }
@@ -1047,7 +1049,7 @@ function abp01_add_admin_scripts() {
  * @return void
  */
 function abp01_add_frontend_scripts() {
-	if (is_single()) {
+	if (is_single() || is_page()) {
 		Abp01_Includes::includeScriptFrontendMain(true, abp01_get_main_frontend_translations());
 	}
 }
@@ -1526,6 +1528,80 @@ function abp01_save_info() {
 	abp01_send_json($response);
 }
 
+function abp01_get_info_data_cache_key($postId) {
+	return sprintf('_abp01_info_data_%s', $postId);
+}
+
+function abp01_get_info_data($postId) {
+	//the_content may be called multiple times
+	//	so we need to cache the data to allow 
+	//	for correct handling of this situation
+	//see: https://wordpress.stackexchange.com/questions/225721/hook-added-to-the-content-seems-to-be-called-multiple-times
+
+	$cacheKey = abp01_get_info_data_cache_key($postId);
+	$data = get_transient($cacheKey);
+
+	if (empty($data) || !($data instanceof stdClass)) {
+		$lookup = new Abp01_Lookup();
+		$routeManager = abp01_get_route_manager();
+
+		$data = new stdClass();
+		$routeInfo = $routeManager->getRouteInfo($postId);
+
+		$data->info = new stdClass();
+		$data->info->exists = false;
+
+		$data->track = new stdClass();
+		$data->track->exists = $routeManager->hasRouteTrack($postId);
+
+		//set the current trip summary information
+		if ($routeInfo) {
+			$data->info->exists = true;
+			$data->info->isBikingTour = $routeInfo->isBikingTour();
+			$data->info->isHikingTour = $routeInfo->isHikingTour();
+			$data->info->isTrainRideTour = $routeInfo->isTrainRideTour();
+
+			foreach ($routeInfo->getData() as $field => $value) {
+				$lookupKey = $routeInfo->getLookupKey($field);
+				if ($lookupKey) {
+					if (is_array($value)) {
+						foreach ($value as $k => $v) {
+							$value[$k] = $lookup->lookup($lookupKey, $v);
+						}
+					} else {
+						$value = $lookup->lookup($lookupKey, $value);
+					}
+				}
+				$data->info->$field = $value;
+			}
+		}
+
+		//current context information
+		$data->postId = $postId;
+		$data->nonceGet = abp01_create_get_track_nonce($postId);
+		$data->nonceDownload = abp01_create_download_track_nonce($data->postId);	
+		$data->ajaxUrl = get_admin_url(null, 'admin-ajax.php', 'admin');
+		$data->ajaxGetTrackAction = ABP01_ACTION_GET_TRACK;
+		$data->downloadTrackAction = ABP01_ACTION_DOWNLOAD_TRACK;
+		$data->imgBaseUrl = plugins_url('media/img', __FILE__);
+		
+		//get relevant plug-in settings
+		$settings = abp01_get_settings();
+		$data->settings = new stdClass();
+		$data->settings->showTeaser = $settings->getShowTeaser();
+		$data->settings->topTeaserText =  $settings->getTopTeaserText();
+		$data->settings->bottomTeaserText = $settings->getBottomTeaserText();
+		
+		//get measurement units from the configured unit system
+		$unitSystem = Abp01_UnitSystem::create($settings->getUnitSystem());
+		$data->unitSystem = $unitSystem->asPlainObject();
+
+		set_transient($cacheKey, $data, ABP01_GET_INFO_DATA_TRANSIENT_DURATION);
+	}
+
+	return $data;
+}
+
 /**
  * Filter function attached to the 'the_content' filter.
  * Its purpose is to render the trip summary viewer at the end of the post's content, but only within the post's page
@@ -1535,7 +1611,7 @@ function abp01_save_info() {
  */
 function abp01_get_info($content) {
 	$content = wpautop($content);
-	if (!is_single()) {
+	if (!is_single() && !is_page()) {
 		return $content;
 	}
 
@@ -1544,61 +1620,8 @@ function abp01_get_info($content) {
 		return $content;
 	}
 
-	$data = new stdClass();
-	$lookup = new Abp01_Lookup();
-	$manager = abp01_get_route_manager();
-	$info = $manager->getRouteInfo($postId);
-
-	$data->info = new stdClass();
-	$data->info->exists = false;
-
-	$data->track = new stdClass();
-	$data->track->exists = $manager->hasRouteTrack($postId);
-
-	//set the current trip summary information
-	if ($info) {
-		$data->info->exists = true;
-		$data->info->isBikingTour = $info->isBikingTour();
-		$data->info->isHikingTour = $info->isHikingTour();
-		$data->info->isTrainRideTour = $info->isTrainRideTour();
-
-		foreach ($info->getData() as $field => $value) {
-			$lookupKey = $info->getLookupKey($field);
-			if ($lookupKey) {
-				if (is_array($value)) {
-					foreach ($value as $k => $v) {
-						$value[$k] = $lookup->lookup($lookupKey, $v);
-					}
-				} else {
-					$value = $lookup->lookup($lookupKey, $value);
-				}
-			}
-			$data->info->$field = $value;
-		}
-	}
-
-	//current context information
-	$data->postId = $postId;
-	$data->nonceGet = abp01_create_get_track_nonce($postId);
-	$data->nonceDownload = abp01_create_download_track_nonce($data->postId);	
-	$data->ajaxUrl = get_admin_url(null, 'admin-ajax.php', 'admin');
-	$data->ajaxGetTrackAction = ABP01_ACTION_GET_TRACK;
-	$data->downloadTrackAction = ABP01_ACTION_DOWNLOAD_TRACK;
-	$data->imgBaseUrl = plugins_url('media/img', __FILE__);
-	
-	//get relevant plug-in settings
-	$settings = abp01_get_settings();
-	$data->settings = new stdClass();
-	$data->settings->showTeaser = $settings->getShowTeaser();
-	$data->settings->topTeaserText =  $settings->getTopTeaserText();
-	$data->settings->bottomTeaserText = $settings->getBottomTeaserText();
-	
-	//get measurement units from the configured unit system
-	$unitSystem = Abp01_UnitSystem::create($settings->getUnitSystem());
-	$data->unitSystem = new stdClass();
-	$data->unitSystem->distanceUnit = $unitSystem->getDistanceUnit();
-	$data->unitSystem->lengthUnit = $unitSystem->getLengthUnit();
-	$data->unitSystem->heightUnit = $unitSystem->getHeightUnit();
+	//fetch data
+	$data = abp01_get_info_data($postId);
 
 	//render the teaser and the viewer and attach the results to the post content
 	if ($data->info->exists || $data->track->exists) {
@@ -1889,7 +1912,7 @@ function abp01_remove_track() {
 }
 
 function abp01_get_posts_trip_summary_info_cache_key($postIds) {
-	return sprintf('abp01_posts_tsinfo_%s', sha1(join('_', $postIds)));
+	return sprintf('_abp01_posts_listing_info_%s', sha1(join('_', $postIds)));
 }
 
 function abp01_get_posts_trip_summary_info($posts) {

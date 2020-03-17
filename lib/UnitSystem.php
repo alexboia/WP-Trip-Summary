@@ -80,6 +80,14 @@ abstract class Abp01_UnitSystem {
         return $system == self::METRIC || $system == self::IMPERIAL;
     }
 
+    public function asPlainObject() {
+        $data = new stdClass();
+		$data->distanceUnit = $this->getDistanceUnit();
+		$data->lengthUnit = $this->getLengthUnit();
+        $data->heightUnit = $this->getHeightUnit();
+        return $data;
+    }
+
     /**
      * Returns the unit, as a symbol, used to measure distances
      * @return string The distance measurement unit symbol
