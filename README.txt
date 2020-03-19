@@ -4,7 +4,7 @@ Donate link: https://github.com/alexboia/WP-Trip-Summary
 Tags: trip-summary, map, gpx, travel-plugin
 Requires at least: 5.0
 Tested up to: 5.3.2
-Stable tag: 0.2.2
+Stable tag: 0.2.3
 Requires PHP: 5.6.2
 License: BSD New License
 License URI: https://opensource.org/licenses/BSD-3-Clause
@@ -89,6 +89,15 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 
 == Changelog ==
 
+= 0.2.3 =
+* In the plug-in settings editor a user can now specify the color used to plot the GPX track on the map
+* The post and page listing now have two columns that describe whether or not an article has route information and, respectively, whether or not it has an uploaded GPX track
+* The plug-in now correctly works for WP pages as well (previously, it would not correctly render on the frontend)
+* Added automated tests
+* Added compatibility with Mysql 8.0+
+* Fixed an activation issue that occured with certain PHP versions
+* Updated dependencies: Leaftlet Js, Leaflet Js Magnifying Glass component, NProgress js, MysqliDb
+
 = 0.2.2 =
 * The storage directories have received index.php and .htaccess guard access files to prevent direct access of stored files. These are copied on install and on upgrade, but also created upon storing files, if they do not exist.
 * Refactoring of view file names: replaced "techbox-" prefix with "wpts-" prefix.
@@ -108,6 +117,9 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 First officially distributed version.
 
 == Upgrade Notice ==
+
+= 0.2.3 = 
+Upgrade to this version for additional features and improved plug-in stability
 
 = 0.2.2 =
 Upgrade to this version for improved security of the track and cache file storage directory
