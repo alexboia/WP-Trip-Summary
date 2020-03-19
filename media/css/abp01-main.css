@@ -243,7 +243,9 @@ a.abp01-close-editor:hover {
 }
 
 .abp01-track-selector {
-    margin-left: 264px !important;
+    width: 190px;
+    margin-left: 234px !important;
+    text-align: center;
 }
 
 .abp01-map-retry-container {
