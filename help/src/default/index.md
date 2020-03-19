@@ -61,6 +61,9 @@ Depending on the various functions performed by various plug-in components, we c
 #### Post view - Map
 ![Post view - Map]($helpDataDirUrl$/screenshots/viewer-map.png "Post view - Map")
 
+#### Post listing - Additional info columns
+![Post listing - Additional info columns]($helpDataDirUrl$/screenshots/post-listing-columns.png "Post listing - Additional info columns")
+
 [Back to the Table of Contents](#help-root)
 
 ## Technical Requirements {#dg-technical-requirements}
@@ -276,6 +279,12 @@ By default, this field is checked, so the map scale is displayed.
 
 Once the field is unchecked and the changes are saved, the GPX track download button will no longer be displayed.
 By default, this field is checked, so the button is displayed.
+
+#### Track line colour
+
+This field allows setting the colour used to plot the GPX track on the map. 
+Applies to both front-end viewer and back-end trip summary editor.
+The default value is the previously used colour: #0033ff.
 
 [Back to the Table of Contents](#help-root)
 

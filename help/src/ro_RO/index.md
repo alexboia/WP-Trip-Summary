@@ -293,6 +293,12 @@ Implicit, câmpul este bifat, deci scara hărții este afișată.
 Dacă debifați acest câmp, în caseta tehnică din pagina articolului nu va mai fi afișat butonul care permite descărcarea track-ului GPX.
 Implicit, câmpul este bifat, deci butonul este afișat.
 
+#### Culoarea liniei track-ului de pe harta
+
+Acest camp permite setarea culorii cu care este desenat pe harta track-ul GPX.
+Se aplica atat la viewer-ul din front-end cat si la editorul din back-end.
+Valoarea implicita este: #0033ff.
+
 [Înapoi la Cuprins](#help-root)
 
 ## Gestiunea Nomenclatoarelor {#configurare-si-gestiune-gst-nomenclatoare}
