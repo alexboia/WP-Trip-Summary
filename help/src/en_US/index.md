@@ -61,6 +61,9 @@ Depending on the various functions performed by various plug-in components, we c
 #### Post view - Map
 ![Post view - Map]($helpDataDirUrl$/screenshots/viewer-map.png "Post view - Map")
 
+#### Post listing - Additional info columns
+![Post listing - Additional info columns]($helpDataDirUrl$/screenshots/post-listing-columns.png "Post listing - Additional info columns")
+
 [Back to the Table of Contents](#help-root)
 
 ## Technical Requirements {#dg-technical-requirements}

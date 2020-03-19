@@ -40,26 +40,29 @@ Cu alte cuvinte, vă puteți documenta (doar) aceste trei tipuri de plimbări.
 
 ## Capturi de Ecran {#dg-capturi-ecran}
 
-####Pagina de configurare
+#### Pagina de configurare
 ![Pagina de configurare]($helpDataDirUrl$/screenshots/admin-settings.png "Pagina de configurare")
 
-####Editare articol - Sumar tehnic - Selectare tip traseu
+#### Editare articol - Sumar tehnic - Selectare tip traseu
 ![Editare articol - Sumar tehnic - Selectare tip traseu]($helpDataDirUrl$/screenshots/admin-edit-summary-empty.png "Editare articol - Sumar tehnic - Selectare tip traseu")
 
-####Editare articol - Sumar tehnic - Informații traseu bicicletă
+#### Editare articol - Sumar tehnic - Informații traseu bicicletă
 ![Editare articol - Sumar tehnic - Informații traseu bicicletă]($helpDataDirUrl$/screenshots/admin-edit-summary-bike.png "Editare articol - Sumar tehnic - Informații traseu bicicletă")
 
-####Editare articol - Sumar tehnic - Harta
+#### Editare articol - Sumar tehnic - Harta
 ![Editare articol - Sumar tehnic - Harta]($helpDataDirUrl$/screenshots/admin-edit-map.png "Editare articol - Sumar tehnic - Harta")
 
-####Articol - Teaser-ul din partea de sus
+#### Articol - Teaser-ul din partea de sus
 ![Articol - Teaser-ul din partea de sus]($helpDataDirUrl$/screenshots/viewer-teaser-top.png "Articol - Teaser-ul din partea de sus")
 
-####Articol - Sumar tehnic
+#### Articol - Sumar tehnic
 ![Articol - Sumar tehnic]($helpDataDirUrl$/screenshots/viewer-summary.png "Articol - Sumar tehnic")
 
-####Articol - Harta
+#### Articol - Harta
 ![Articol - Harta]($helpDataDirUrl$/screenshots/viewer-map.png "Articol - Harta")
+
+#### Listare articole - Coloane informationale
+![Listare articole - Coloane informationale]($helpDataDirUrl$/screenshots/post-listing-columns.png "Listare articole - Coloane informationale")
 
 [Înapoi la Cuprins](#help-root)
 
