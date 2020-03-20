@@ -30,13 +30,13 @@
  */
 
  class HexColourCodeValidatorTests extends WP_UnitTestCase {
-    public function testTryValidateEmptyColourCode_allowEmpty() {
+    public function test_tryValidateEmptyColourCode_allowEmpty() {
         $validator = new Abp01_Validate_HexColourCode(true);
         $this->assertTrue($validator->validate(''));
         $this->assertTrue($validator->validate(null));
     }
 
-    public function testTryValidateEmptyColourCode_disallowEmpty() {
+    public function test_tryValidateEmptyColourCode_disallowEmpty() {
         $validator = new Abp01_Validate_HexColourCode(false);
         $this->assertFalse($validator->validate(''));
         $this->assertFalse($validator->validate(null));
@@ -45,7 +45,7 @@
     /**
      * @dataProvider __booleanValuesProvider
      */
-    public function testTryValidate_randomInvalidString($allowEmpty) {
+    public function test_tryValidate_randomInvalidString($allowEmpty) {
         $numTests = 100;
         $faker = Faker\Factory::create();
 
@@ -60,7 +60,7 @@
     /**
      * @dataProvider __booleanValuesProvider
      */
-    public function testCanValidate_validHexColourCode($allowEmpty) {
+    public function test_canValidate_validHexColourCode($allowEmpty) {
         $colours = array(
             '#0184dc', '#2d04ac',
             '#8a925e', '#f3ad40',
