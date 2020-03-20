@@ -96,7 +96,7 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 * Added automated tests
 * Added compatibility with Mysql 8.0+
 * Fixed an activation issue that occured with certain PHP versions
-* Updated dependencies: Leaftlet Js, Leaflet Js Magnifying Glass component, NProgress js, MysqliDb
+* Updated dependencies: Leaftlet Js, Leaflet Js Magnifying Glass component, NProgress js, MysqliDb.
 
 = 0.2.2 =
 * The storage directories have received index.php and .htaccess guard access files to prevent direct access of stored files. These are copied on install and on upgrade, but also created upon storing files, if they do not exist.
