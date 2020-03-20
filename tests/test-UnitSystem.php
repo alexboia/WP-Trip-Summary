@@ -74,6 +74,28 @@ class UnitSystemTest extends WP_UnitTestCase {
 		$this->assertEquals('in', $imperial->getLengthUnit());
 		$this->assertEquals('ft', $imperial->getHeightUnit());
 	}
+
+	public function test_metricSystem_canConvertToPlainObject() {
+		$metric = new Abp01_UnitSystem_Metric();
+		$plainObject = $metric->asPlainObject();
+
+		$this->assertNotNull($plainObject);
+		
+		$this->assertEquals('km', $plainObject->distanceUnit);
+		$this->assertEquals('mm', $plainObject->lengthUnit);
+		$this->assertEquals('m', $plainObject->heightUnit);
+	}
+
+	public function test_imperialSystem_canConvertToPlainObject() {
+		$imperial = new Abp01_UnitSystem_Imperial();
+		$plainObject = $imperial->asPlainObject();
+
+		$this->assertNotNull($plainObject);
+		
+		$this->assertEquals('mi', $plainObject->distanceUnit);
+		$this->assertEquals('in', $plainObject->lengthUnit);
+		$this->assertEquals('ft', $plainObject->heightUnit);
+	}
 	
 	private function _assertUnitSystemCorrect($unitSystem, $expectedClass) {
 		$this->assertNotNull($unitSystem);
