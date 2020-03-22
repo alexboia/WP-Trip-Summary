@@ -87,7 +87,7 @@ class Abp01_Route_Manager {
 		$data = $info->getData();
 		foreach ($data as $field => $value) {
 			//filter info fields that are not lookup data items
-			if (!$info->getLookupKey($field)) {
+			if (!$info->isLookupKey($field)) {
 				continue;
 			}
 

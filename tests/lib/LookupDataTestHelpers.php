@@ -43,13 +43,13 @@
 		$langTable = $env->getLookupLangTableName();
 		$lookupDetailsTableName = $env->getRouteDetailsLookupTableName();
 
-		$db->rawQuery('TRUNCATE TABLE `' . $table . '`', null, 
+		$db->rawQuery('TRUNCATE TABLE `' . $lookupDetailsTableName . '`', null, 
 			false);
 
 		$db->rawQuery('TRUNCATE TABLE `' . $langTable . '`', null, 
 			false);
 
-		$db->rawQuery('TRUNCATE TABLE `' . $lookupDetailsTableName . '`', null, 
+		$db->rawQuery('TRUNCATE TABLE `' . $table . '`', null, 
 			false);
 	}
 

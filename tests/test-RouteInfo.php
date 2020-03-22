@@ -30,6 +30,8 @@
  */
 
 class RouteInfoTests extends WP_UnitTestCase {
+	use RouteInfoTestDataSets;
+
 	/**
 	 * @dataProvider _getValidTypes
 	 */
@@ -170,119 +172,6 @@ class RouteInfoTests extends WP_UnitTestCase {
 
 		$info->bikeAccess =  '<p class="article">Sample paragraph</p>';
 		$this->assertEquals('Sample paragraph', $info->bikeAccess);
-	}
-
-	public function _getPerTypeFields() {
-		$data = array();
-		foreach (Abp01_Route_Info::getSupportedTypes() as $type) {
-			$info = new Abp01_Route_Info($type);
-			foreach ($info->getValidFields() as $field => $descriptor) {
-				$data[] = array($type, $field, $descriptor);
-			}
-		}
-		return $data;
-	}
-
-	public function _getPerTypeDataSets() {
-		$data = array();
-		foreach (Abp01_Route_Info::getSupportedTypes() as $type) {
-			$values = array();
-			$info = new Abp01_Route_Info($type);
-			foreach ($info->getValidFields() as $name => $descriptor) {
-				$values[$name] = $this->_generateValue($descriptor);
-			}
-			$data[] = array(
-				$type,
-				$values
-			);
-		}
-		return $data;
-	}
-
-	public function _getValidKeysDataSet() {
-		$data = array();
-		foreach (Abp01_Route_Info::getSupportedTypes() as $type) {
-			$route = new Abp01_Route_Info($type);
-			$fields = $route->getValidFields();
-			foreach ($fields as $name => $descriptor) {
-				$data[] = array(
-					$type,
-					$name,
-					$this->_generateValue($descriptor)
-				);
-			}
-		}
-		return $data;
-	}
-
-	public function _getInvalidKeysDataSet() {
-		$data = array();
-		foreach (Abp01_Route_Info::getSupportedTypes() as $type) {
-			$info = new Abp01_Route_Info($type);
-			$data[] = array(
-				$type, 
-				$this->_generateWord($info->getValidFieldNames()),
-				$this->_generateValue(null)
-			);
-		}
-		return $data;
-	}
-
-	public function _getInvalidTypes() {
-		$count = 5;
-		$data = array();
-		$types = Abp01_Route_Info::getSupportedTypes();
-		while ($count > 0) {
-			$data[] = array($this->_generateWord($types));
-			$count --;
-		}
-		return $data;
-	}
-
-	public function _getValidTypes() {
-		$data = array();
-		$types = Abp01_Route_Info::getSupportedTypes();
-		foreach ($types as $type) {
-			$data[] = array($type);
-		}
-		return $data;
-	}
-
-	private function _generateWord($excluded) {
-		$faker = Faker\Factory::create();
-		$word = $faker->word;
-		while (in_array($word, $excluded)) {
-			$word = $faker->word;
-		}
-		return $word;
-	}
-
-	private function _generateValue($fieldDescriptor) {
-		$faker = Faker\Factory::create();
-		if (!$fieldDescriptor) {
-			$fieldDescriptor = array(
-				'type' => $faker->randomElement(array('int', 'float', 'string')),
-				'multiple' => $faker->randomElement(array(true, false))
-			);
-		}
-		
-		$type = $fieldDescriptor['type'];
-		$multiple = isset($fieldDescriptor['multiple']) ? $fieldDescriptor['multiple'] : false;
-		$value = null;
-
-		switch ($type) {
-			case 'int':
-				$value = $faker->numberBetween(0, PHP_INT_MAX);
-				break;
-			case 'float':
-				$value = $faker->randomFloat(2, 0, null);
-				break;
-			case 'string':
-				$value = $faker->word;
-				break;
-		}
-
-		return $multiple ? array($value) : $value;
 	}
 
 	private function _assertInfoHasData(Abp01_Route_Info $info, $data) {

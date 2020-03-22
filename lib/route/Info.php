@@ -231,7 +231,13 @@ class Abp01_Route_Info {
 
     private function _assertKeyValid($k) {
         if (empty($k) || !$this->isFieldValid($k)) {
-            throw new InvalidArgumentException();
+            throw new InvalidArgumentException('Invalid field key: "' . $k . '"');
+        }
+    }
+
+    public function setData(array $data) {
+        foreach ($data as $key => $value) {
+            $this->$key = $value;
         }
     }
 
@@ -248,6 +254,22 @@ class Abp01_Route_Info {
     public function __get($k) {
         $this->_assertKeyValid($k);
         return isset($this->_data[$k]) ? $this->_data[$k] : null;
+    }
+
+    public function isLookupKey($field) {
+        return !empty($this->getLookupKey($field));
+    }
+
+    public function getAllLookupFields() {
+        $lookupKeys = array();
+
+        foreach ($this->_fields[$this->_type] as $field => $def) {
+            if (isset($def['lookup'])) {
+                $lookupKeys[] = $field;
+            }
+        }
+
+        return $lookupKeys;
     }
 
     public function getLookupKey($field) {

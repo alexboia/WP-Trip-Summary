@@ -43,7 +43,7 @@
     }
 
     /**
-     * @dataProvider __booleanValuesProvider
+     * @dataProvider _booleanValuesProvider
      */
     public function test_tryValidate_randomInvalidString($allowEmpty) {
         $numTests = 100;
@@ -58,7 +58,7 @@
     }
 
     /**
-     * @dataProvider __booleanValuesProvider
+     * @dataProvider _booleanValuesProvider
      */
     public function test_canValidate_validHexColourCode($allowEmpty) {
         $colours = array(
@@ -83,7 +83,7 @@
         }
     }
 
-    public function __booleanValuesProvider() {
+    public function _booleanValuesProvider() {
         return array(
             array(true),
             array(false)
