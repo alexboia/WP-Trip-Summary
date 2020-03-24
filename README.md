@@ -1,6 +1,3 @@
-[![WP compatibility](https://plugintests.com/plugins/wp-trip-summary/wp-badge.svg)](https://plugintests.com/plugins/wp-trip-summary/latest)
-[![PHP compatibility](https://plugintests.com/plugins/wp-trip-summary/php-badge.svg)](https://plugintests.com/plugins/wp-trip-summary/latest)
-
 <img align="left" width="210" height="200" src="https://raw.githubusercontent.com/alexboia/WP-Trip-Summary/master/logo.png" />
 
 # WP-Trip-Summary
@@ -11,6 +8,11 @@ However, as I was getting ready to push this to production I realised it would b
 ## Progress
 
 Please see the [issues](https://github.com/alexboia/WP-Trip-Summary/issues) area for the progress on any on-going issues.
+
+## Status
+
+[![WP compatibility](https://plugintests.com/plugins/wp-trip-summary/wp-badge.svg)](https://plugintests.com/plugins/wp-trip-summary/latest)
+[![PHP compatibility](https://plugintests.com/plugins/wp-trip-summary/php-badge.svg)](https://plugintests.com/plugins/wp-trip-summary/latest)
 
 ## What it does
 
