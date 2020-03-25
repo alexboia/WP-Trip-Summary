@@ -30,14 +30,14 @@
  */
 
 class TileLayerUrlValidatorTests extends WP_UnitTestCase {
-	public function testTryValidateEmptyUrl() {
+	public function test_tryValidateEmptyUrl() {
 		$validator = new Abp01_Validate_TileLayerUrl();
 		$this->assertFalse($validator->validate(''));
 		$this->assertFalse($validator->validate(null));
 		$this->assertFalse($validator->validate(false));
 	}
 
-	public function testCanValidateUrl_validTileLayerUrl() {
+	public function test_canValidateUrl_validTileLayerUrl() {
 		$validator = new Abp01_Validate_TileLayerUrl();
 		$this->assertTrue($validator->validate('http://example.com/{z}/{x}/{y}'));
 		$this->assertTrue($validator->validate('http://{s}.example.com/{z}/{x}/{y}'));
@@ -53,7 +53,7 @@ class TileLayerUrlValidatorTests extends WP_UnitTestCase {
 		$this->assertTrue($validator->validate('https://{s}.tiles.example.com/{id}/server/{z}/{x}/{y}'));
 	}
 
-	public function testCanValidateUrl_invalidTileLayerUrl() {
+	public function test_canValidateUrl_invalidTileLayerUrl() {
 		$validator = new Abp01_Validate_TileLayerUrl();
 		$this->assertFalse($validator->validate('http://example.com/tiles/server'));
 		$this->assertFalse($validator->validate('http://example.com/tiles/server/{x}/{y}'));

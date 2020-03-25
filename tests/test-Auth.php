@@ -263,7 +263,7 @@ class AuthTests extends WP_UnitTestCase {
         self::$_initialRoleData = array();
     }
 
-    public function testCanCheckIfCapCanBeInstalledForRole_ourCapabilities() {
+    public function test_canCheckIfCapCanBeInstalledForRole_ourCapabilities() {
         $auth = $this->_getAuth();
 
         foreach ($auth->getCapabilities() as $roleName => $capCodes) {
@@ -284,7 +284,7 @@ class AuthTests extends WP_UnitTestCase {
         }
     }
 
-    public function testTryCheckIfCapCanBeInstalledForRole_otherCapabilities() {
+    public function test_tryCheckIfCapCanBeInstalledForRole_otherCapabilities() {
         $auth = $this->_getAuth();
 
         foreach (self::$_testRoleData as $roleName => $roleData) {
@@ -295,7 +295,7 @@ class AuthTests extends WP_UnitTestCase {
         }
     }
 
-    public function testCanInstallCapabilities() {
+    public function test_canInstallCapabilities() {
         $auth = $this->_getAuth();
         $auth->installCapabilities();
 
@@ -311,7 +311,7 @@ class AuthTests extends WP_UnitTestCase {
         }
     }
 
-    public function testCanRemoveCapabilities() {
+    public function test_canRemoveCapabilities() {
         $auth = $this->_getAuth();
         
         $auth->installCapabilities();
@@ -325,7 +325,7 @@ class AuthTests extends WP_UnitTestCase {
         }
     }
 
-    public function testCanCheckIfCanManagePluginSettings_whenCapabilitiesInstalled() {
+    public function test_canCheckIfCanManagePluginSettings_whenCapabilitiesInstalled() {
         $auth = $this->_getAuth();
         $auth->installCapabilities();
 
@@ -342,7 +342,7 @@ class AuthTests extends WP_UnitTestCase {
         }
     }
 
-    public function testTryCheckIfCanManagePluginSettings_whenCapabilitiesNotInstalled() {
+    public function test_tryCheckIfCanManagePluginSettings_whenCapabilitiesNotInstalled() {
         $auth = $this->_getAuth();
 
         foreach ($auth->getCapabilities() as $roleName => $capCodes) {
@@ -353,7 +353,7 @@ class AuthTests extends WP_UnitTestCase {
         }
     }
 
-    public function testCanCheckIfCanEditTripSummary_whenCapabilitiesInstalled_ownPosts() {
+    public function test_canCheckIfCanEditTripSummary_whenCapabilitiesInstalled_ownPosts() {
         $auth = $this->_getAuth();
         $auth->installCapabilities();
 
@@ -372,7 +372,7 @@ class AuthTests extends WP_UnitTestCase {
         }
     }
 
-    public function testCanCheckIfCanEditTripSummary_whenCapabilitiesInstalled_othersPosts() {
+    public function test_canCheckIfCanEditTripSummary_whenCapabilitiesInstalled_othersPosts() {
         $auth = $this->_getAuth();
         $auth->installCapabilities();
 
@@ -396,7 +396,7 @@ class AuthTests extends WP_UnitTestCase {
         }
     }
 
-    public function testTryCheckIfCanEditTripSummary_whenCapabilitiesNotInstalled_ownPosts() {
+    public function test_tryCheckIfCanEditTripSummary_whenCapabilitiesNotInstalled_ownPosts() {
         $auth = $this->_getAuth();
 
         foreach (self::$_testUsers as $roleName => $userId) {
@@ -410,7 +410,7 @@ class AuthTests extends WP_UnitTestCase {
         }
     }
 
-    public function testTryCheckIfCanEditTripSummary_whenCapabilitiesNotInstalled_othersPosts() {
+    public function test_tryCheckIfCanEditTripSummary_whenCapabilitiesNotInstalled_othersPosts() {
         $auth = $this->_getAuth();
 
         foreach (self::$_testUsers as $roleName => $userId) {

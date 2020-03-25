@@ -30,19 +30,19 @@
  */
 
 class UrlValidatorTests extends WP_UnitTestCase {
-	public function testTryValidateEmptyUrl_allowEmpty() {
+	public function test_tryValidateEmptyUrl_allowEmpty() {
 		$validator = new Abp01_Validate_Url(true);
 		$this->assertTrue($validator->validate(''));
 		$this->assertTrue($validator->validate(null));
 	}
 	
-	public function testTryValidateEmptyUrl_disallowEmpty() {
+	public function test_tryValidateEmptyUrl_disallowEmpty() {
 		$validator = new Abp01_Validate_Url(false);
 		$this->assertFalse($validator->validate(''));
 		$this->assertFalse($validator->validate(null));
 	}
 	
-	public function testCanValidateUrl_validUrls_defaultProtocols() {
+	public function test_canValidateUrl_validUrls_defaultProtocols() {
 		$validator = new Abp01_Validate_Url();
 		
 		$this->assertTrue($validator->validate('http://example.com'));
@@ -52,14 +52,14 @@ class UrlValidatorTests extends WP_UnitTestCase {
 		$this->assertTrue($validator->validate('ftps://example.com/path/to/other/test.html'));
 	}
 	
-	public function testCanValidateUrls_validUrlsWithUnsupportedProtocol_defaultProtocols() {
+	public function test_canValidateUrls_validUrlsWithUnsupportedProtocol_defaultProtocols() {
 		$validator = new Abp01_Validate_Url();
 		
 		$this->assertFalse($validator->validate('svn://example.com/trunk'));
 		$this->assertFalse($validator->validate('file:///usr/bin/templ'));
 	}
 	
-	public function testCanValidateUrls_validUrls_anyProtocols() {
+	public function test_canValidateUrls_validUrls_anyProtocols() {
 		$validator = new Abp01_Validate_Url(true, array());
 		
 		$this->assertTrue($validator->validate('http://example.com'));
@@ -73,7 +73,7 @@ class UrlValidatorTests extends WP_UnitTestCase {
 		$this->assertTrue($validator->validate('stuf://www.example.com'));
 	}
 	
-	public function testCanValidateUrls_validUrls_specifiedProtocols() {
+	public function test_canValidateUrls_validUrls_specifiedProtocols() {
 		$validator = new Abp01_Validate_Url(true, array('http://', 'https://', 'svn://'));
 		
 		$this->assertTrue($validator->validate('http://example.com'));
@@ -87,12 +87,12 @@ class UrlValidatorTests extends WP_UnitTestCase {
 		$this->assertFalse($validator->validate('ftps://example.com/path/to/other/test.html'));
 	}
 
-	public function testCanValidateUrls_invalidUrls_defaultProtocols() {
+	public function test_canValidateUrls_invalidUrls_defaultProtocols() {
 		$validator = new Abp01_Validate_Url();
 		$this->_assertInvalidUrls($validator);
 	}
 	
-	public function testCanValidateUrls_invalidUrls_anyProtocols() {
+	public function test_canValidateUrls_invalidUrls_anyProtocols() {
 		$validator = new Abp01_Validate_Url(true, array());
 		$this->_assertInvalidUrls($validator);
 	}

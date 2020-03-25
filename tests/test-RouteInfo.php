@@ -30,42 +30,43 @@
  */
 
 class RouteInfoTests extends WP_UnitTestCase {
+	use GenericTestHelpers;
 	use RouteInfoTestDataSets;
 
 	/**
 	 * @dataProvider _getValidTypes
 	 */
-	public function testCanCreate_validType($type) {
+	public function test_canCreate_validType($type) {
 		new Abp01_Route_Info($type);
 	}
 
 	/**
-	 * @dataProvider _getInvalidTypes
+	 * @dataProvider _generateInvalidTypes
 	 * @expectedException InvalidArgumentException
 	 */
-	public function testTryCreate_invalidType($type) {
+	public function test_tryCreate_invalidType($type) {
 		new Abp01_Route_Info($type);
 	}
 
 	/**
 	 * @dataProvider _getValidKeysDataSet
 	 */
-	public function testCanSet_validKey($type, $key, $value) {
+	public function test_canSet_validKey($type, $key, $value) {
 		$info = new Abp01_Route_Info($type);
 		$info->$key = $value;
 		$this->_assertHasValue($info, $key, $value);
 	}
 
 	/**
-	 * @dataProvider _getInvalidKeysDataSet
+	 * @dataProvider _generateInvalidFieldKeysDataSet
 	 * @expectedException InvalidArgumentException
 	 */
-	public function testCanSet_invalidKey($type, $key, $value) {
+	public function test_canSet_invalidKey($type, $key, $value) {
 		$info = new Abp01_Route_Info($type);
 		$info->$key = $value;
 	}
 
-	public function testCanCheckType() {
+	public function test_canCheckType() {
 		$info = new Abp01_Route_Info(Abp01_Route_Info::BIKE);
 		$this->assertTrue($info->isBikingTour());
 		$this->assertFalse($info->isHikingTour());
@@ -85,7 +86,7 @@ class RouteInfoTests extends WP_UnitTestCase {
 	/**
 	 * @dataProvider _getValidTypes
 	 */
-	public function testCanGetType($type) {
+	public function test_canGetType($type) {
 		$info = new Abp01_Route_Info($type);
 		$this->assertEquals($type, $info->getType());
 	}
@@ -93,15 +94,15 @@ class RouteInfoTests extends WP_UnitTestCase {
 	/**
 	 * @dataProvider _getValidTypes
 	 */
-	public function testCanSerializeToJson_empty($type) {
+	public function test_canSerializeToJson_empty($type) {
 		$info = new Abp01_Route_Info($type);
 		$this->assertEquals('[]', $info->toJson());
 	}
 
 	/**
-	 * @dataProvider _getPerTypeDataSets
+	 * @dataProvider _getPerTypeRouteInfoDataSets
 	 */
-	public function testCanSerializeToJson($type, $data){
+	public function test_canSerializeToJson($type, $data){
 		$info = new Abp01_Route_Info($type);
 		foreach ($data as $key => $value) {
 			$info->$key = $value;
@@ -112,7 +113,7 @@ class RouteInfoTests extends WP_UnitTestCase {
 	/**
 	 * @dataProvider _getValidTypes
 	 */
-	public function testCanCreateFromJson_emptyJsonObject($type) {
+	public function test_canCreateFromJson_emptyJsonObject($type) {
 		$info = Abp01_Route_Info::fromJson($type, '{}');
 		$this->assertNotNull($info);
 
@@ -121,9 +122,9 @@ class RouteInfoTests extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @dataProvider _getPerTypeDataSets
+	 * @dataProvider _getPerTypeRouteInfoDataSets
 	 */
-	public function testCanCreateFromJson($type, $data) {
+	public function test_canCreateFromJson($type, $data) {
 		$json = json_encode($data);
 		$info = Abp01_Route_Info::fromJson($type, $json);
 
@@ -135,14 +136,14 @@ class RouteInfoTests extends WP_UnitTestCase {
 	 * @dataProvider _getValidTypes
 	 * @expectedException InvalidArgumentException
 	 */
-	public function testTryCreateFromJson_emptyJsonInput($type) {
+	public function test_tryCreateFromJson_emptyJsonInput($type) {
 		Abp01_Route_Info::fromJson($type, '');
 	}
 
 	/**
 	 * @dataProvider _getPerTypeFields
 	 */
-	public function testCanGetLookupKey($type, $field, $descriptor) {
+	public function test_canGetLookupKey($type, $field, $descriptor) {
 		$info = new Abp01_Route_Info($type);
 		$expectedLookup = isset($descriptor['lookup']) ? $descriptor['lookup'] : null;
 
@@ -151,9 +152,9 @@ class RouteInfoTests extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @dataProvider _getPerTypeDataSets
+	 * @dataProvider _getPerTypeRouteInfoDataSets
 	 */
-	public function testCanGetData($type, $data) {
+	public function test_canGetData($type, $data) {
 		$info = new Abp01_Route_Info($type);
 		foreach ($data as $field => $value) {
 			$info->$field = $value;
@@ -162,7 +163,7 @@ class RouteInfoTests extends WP_UnitTestCase {
 		$this->_assertInfoHasData($info, $data);
 	}
 
-	public function testCanStripTagsWhenSetting() {
+	public function test_canStripTagsWhenSetting() {
 		$info = new Abp01_Route_Info(Abp01_Route_Info::BIKE);
 		$info->bikeAccess = '<script type="text/javascript">alert("Test")</script>';
 		$this->assertEquals('', $info->bikeAccess);

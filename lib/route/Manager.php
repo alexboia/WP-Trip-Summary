@@ -187,7 +187,7 @@ class Abp01_Route_Manager {
 	public function saveRouteTrack($postId, $currentUserId, Abp01_Route_Track $track) {
 		$postId = intval($postId);
 		if ($postId <= 0) {
-			throw new InvalidArgumentException();
+			throw new InvalidArgumentException('Invalid post ID: "' . $postId . '"');
 		}
 
 		$proj = $this->_proj;
@@ -304,10 +304,10 @@ class Abp01_Route_Manager {
 			$proj = $this->_proj;
 			$file = $row['route_track_file'];
 
-			$minCoord = $proj->inverse(floatval($row['route_min_lat']),
-				floatval($row['route_min_lng']));
-			$maxCoord = $proj->inverse(floatval($row['route_max_lat']),
-				floatval($row['route_max_lng']));
+			$minCoord = $proj->inverse(floatval($row['route_min_lng']), 
+				floatval($row['route_min_lat']));
+			$maxCoord = $proj->inverse(floatval($row['route_max_lng']), 
+				floatval($row['route_max_lat']));
 
 			$bounds = new Abp01_Route_Track_Bbox($minCoord['lat'],
 				$minCoord['lng'],
@@ -316,7 +316,7 @@ class Abp01_Route_Manager {
 
 			$track = new Abp01_Route_Track($file, $bounds,
 				floatval($row['route_min_alt']),
-				floatval($row['route_min_alt']));
+				floatval($row['route_max_alt']));
 
 			return $track;
 		} else {
@@ -397,5 +397,9 @@ class Abp01_Route_Manager {
 
 	public function getLastError() {
 		return $this->_lastError;
+	}
+
+	public function getProj() {
+		return $this->_proj;
 	}
 }

@@ -40,6 +40,25 @@ trait GenericTestHelpers {
         return $this->_faker;
     }
 
+    protected function _createWpPosts($postIds) {
+        $db = $this->_getDb();
+        $postsTableName = $this->_getEnv()->getWpPostsTableName();
+
+        foreach ($postIds as $postId) {
+            $db->insert($postsTableName, $this->_generateWpPostData($postId));
+        }
+    }
+
+    protected function _generateWpPostData($postId) {
+        $faker = $this->_getFaker();
+        return array(
+            'ID' => $postId,
+            'post_title' => $faker->words(3, true),
+            'post_content' => $faker->words(10, true),
+            'guid' => $faker->uuid
+        );
+    }
+
     protected function _getRouteManager() {
         return Abp01_Route_Manager::getInstance();
     }
@@ -50,5 +69,9 @@ trait GenericTestHelpers {
 
     protected function _getDb() {
         return $this->_getEnv()->getDb();
+    }
+
+    protected function _getInstaller() {
+        return new Abp01_Installer();
     }
 }

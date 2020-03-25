@@ -30,7 +30,7 @@
  */
 
 class InputFilteringTests extends WP_UnitTestCase {
-    public function testCanFilterSingleValue_cleanAndCorrectTypeInput() {
+    public function test_canFilterSingleValue_cleanAndCorrectTypeInput() {
         $result = Abp01_InputFiltering::filterSingleValue(100, 'integer');
         $this->assertTrue(is_int($result));
         $this->assertEquals(100, $result);
@@ -52,7 +52,7 @@ class InputFilteringTests extends WP_UnitTestCase {
         $this->assertEquals('test', $result);
     }
 
-    public function testCanFilterSingleValue_convertMildlyBogusValues() {
+    public function test_canFilterSingleValue_convertMildlyBogusValues() {
         $result = Abp01_InputFiltering::filterSingleValue('200a', 'integer');
         $this->assertTrue(is_int($result));
         $this->assertEquals(200, $result);
@@ -78,7 +78,7 @@ class InputFilteringTests extends WP_UnitTestCase {
         $this->assertEquals(0, $result);
     }
 
-    public function testCanFilterSingleValue_canStripTags() {
+    public function test_canFilterSingleValue_canStripTags() {
         $result = Abp01_InputFiltering::filterSingleValue('<a href="test.html">Test</a>', 'string');
         $this->assertTrue(is_string($result));
         $this->assertEquals('Test', $result);
@@ -100,7 +100,7 @@ class InputFilteringTests extends WP_UnitTestCase {
         $this->assertEquals('Sample paragraph', $result);
     }
 
-    public function testCanFilterSingleValue_canApplyMinLimit() {
+    public function test_canFilterSingleValue_canApplyMinLimit() {
         $result = Abp01_InputFiltering::filterSingleValue('100', 'integer', 101);
         $this->assertTrue(is_int($result));
         $this->assertEquals(101, $result);
@@ -110,7 +110,7 @@ class InputFilteringTests extends WP_UnitTestCase {
         $this->assertEquals(255.55, $result);
     }
 
-    public function testCanFilterSingleValue_canApplyMaxLimit() {
+    public function test_canFilterSingleValue_canApplyMaxLimit() {
         $result = Abp01_InputFiltering::filterSingleValue('9500', 'integer', -INF, 9000);
         $this->assertTrue(is_int($result));
         $this->assertEquals(9000, $result);
@@ -120,7 +120,7 @@ class InputFilteringTests extends WP_UnitTestCase {
         $this->assertEquals(9000.45, $result);
     }
 
-    public function testCanFilterSingleValue_canApplyMinAndMaxLimits() {
+    public function test_canFilterSingleValue_canApplyMinAndMaxLimits() {
         $result = Abp01_InputFiltering::filterSingleValue('150', 'integer', 200, 9000);
         $this->assertTrue(is_int($result));
         $this->assertEquals(200, $result);
@@ -130,7 +130,7 @@ class InputFilteringTests extends WP_UnitTestCase {
         $this->assertEquals(9000, $result);
     }
 
-    public function testCanFilterArrayOfScalars() {
+    public function test_canFilterArrayOfScalars() {
         $intValues = array('1', '2', '3', '4', '1a', '100a', '45abc', 'test');
         $result = Abp01_InputFiltering::filterValue($intValues, 'integer');
         $this->assertEquals(array(1, 2, 3, 4, 1, 100, 45, 0), $result);
@@ -151,7 +151,7 @@ class InputFilteringTests extends WP_UnitTestCase {
         $this->_assertArrayElementType($result, 'is_string');
     }
 
-    public function testCanFilterObjectOfScalars_asInt() {
+    public function test_canFilterObjectOfScalars_asInt() {
         $intValues = new stdClass();
         $intValues->prop1 = '1';
         $intValues->prop2 = '10bca';
@@ -169,7 +169,7 @@ class InputFilteringTests extends WP_UnitTestCase {
         $this->_assertObjectPropertyTypes($result, 'is_int');
     }
 
-    public function testCanFilterObjectOfScalars_asFloat() {
+    public function test_canFilterObjectOfScalars_asFloat() {
         $floatValues = new stdClass();
         $floatValues->prop1 = '1.5';
         $floatValues->prop2 = '10.45bca';
@@ -189,7 +189,7 @@ class InputFilteringTests extends WP_UnitTestCase {
         $this->_assertObjectPropertyTypes($result, 'is_float');
     }
 
-    public function testCanFilterObjectOfScalars_asString() {
+    public function test_canFilterObjectOfScalars_asString() {
         $strValues = new stdClass();
         $strValues->prop1 = 'clean';
         $strValues->prop2 = '<script>alert("dirty")</script>';
@@ -207,7 +207,7 @@ class InputFilteringTests extends WP_UnitTestCase {
         $this->_assertObjectPropertyTypes($result, 'is_string');
     }
 
-    public function testCanFilterArrayOfObjects_asInt() {
+    public function test_canFilterArrayOfObjects_asInt() {
         $intValues1 = new stdClass();
         $intValues1->prop1 = '1';
         $intValues1->prop2 = '10bca';

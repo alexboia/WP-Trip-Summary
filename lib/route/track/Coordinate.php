@@ -45,4 +45,10 @@ class Abp01_Route_Track_Coordinate {
         $this->lng = $lng;
         $this->alt = $alt;
     }
+
+    public function equals(Abp01_Route_Track_Coordinate $other) {
+        return abs($this->lat - $other->lat) < 0.00005
+            && abs($this->lng - $other->lng) < 0.00005
+            && abs($this->alt - $other->alt) < 0.1;
+    }
 }

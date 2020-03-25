@@ -57,6 +57,13 @@ class Abp01_Route_Track {
         $this->maxAlt = $maxAlt;
     }
 
+    public function equals(Abp01_Route_Track $other) {
+        return $other->_bounds->equals($this->_bounds)
+            && $other->_file === $this->_file
+            && abs($other->minAlt - $this->minAlt) < 0.1
+            && abs($other->maxAlt - $this->maxAlt) < 0.1;
+    }
+
     public function getBounds() {
         return $this->_bounds;
     }

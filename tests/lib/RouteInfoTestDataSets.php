@@ -59,7 +59,7 @@
 		return $data;
 	}
 
-    public function _getInvalidKeysDataSet() {
+    public function _generateInvalidFieldKeysDataSet() {
 		$data = array();
 		foreach (Abp01_Route_Info::getSupportedTypes() as $type) {
 			$info = new Abp01_Route_Info($type);
@@ -72,16 +72,16 @@
 		return $data;
 	}
 
-    public function _getPerTypeDataSets() {
+    public function _getPerTypeRouteInfoDataSets() {
 		$data = array();
 		foreach (Abp01_Route_Info::getSupportedTypes() as $type) {
-			$data[] = $this->_getRandomDataSetWithType($type);
+			$data[] = $this->_generateRandomRouteInfoWithType($type);
 		}
 		return $data;
     }
 
-    public function _getRandomDataSetWithType($type = null) {
-        $faker = Faker\Factory::create();
+    public function _generateRandomRouteInfoWithType($type = null) {
+        $faker = $this->_getFaker();
         
         $type = empty($type) 
             ? $faker->randomElement(Abp01_Route_Info::getSupportedTypes()) 
@@ -89,11 +89,11 @@
 
         return array(
             $type,
-            $this->_getRandomDataSetForType($type)
+            $this->_generateRandomRouteInfoForType($type)
         );
     }
 
-    public function _getRandomDataSetForType($type) {
+    public function _generateRandomRouteInfoForType($type) {
         $values = array();
         $info = new Abp01_Route_Info($type);
 
@@ -104,7 +104,7 @@
         return $values;
     }
     
-    public function _getInvalidTypes() {
+    public function _generateInvalidTypes() {
 		$count = 5;
 		$data = array();
 		$types = Abp01_Route_Info::getSupportedTypes();
@@ -124,8 +124,57 @@
 		return $data;
     }
 
+    public function _generateRandomRouteTracks() {
+        $routeTracks = array();
+        $faker = $this->_getFaker();
+
+        $deltaLat = $faker->numberBetween(2, 10);
+        $deltaLng = $faker->numberBetween(2, 10);
+
+        for ($i = 0; $i < 10; $i++) {
+            $routeTracks[] = array(
+                $this->_generateRandomRouteTrack($deltaLat, $deltaLng)
+            );
+        }
+
+        return $routeTracks;
+    }
+
+    protected function _generateRandomRouteTrack() {
+        $faker = $this->_getFaker();
+        
+        if (func_get_args() == 2) {
+            $deltaLat = func_get_arg(0);
+            $deltaLng = func_get_arg(1);
+        } else {
+            $deltaLat = $faker->numberBetween(2, 10);
+            $deltaLng = $faker->numberBetween(2, 10);
+        }
+
+        $minLat = $faker->randomFloat(5, -85, 85 - $deltaLat * 2);
+        $minLng = $faker->randomFloat(5, -180, 180 - $deltaLng * 2);
+
+        $maxLat = $minLat + $deltaLat;
+        $maxLng = $minLng + $deltaLng;
+        
+        $fileName = $faker->uuid . '.gpx';
+
+        $minAltitude = $faker->randomFloat(3, 0, 4000);
+        $maxAltitude = $minAltitude + $faker->randomFloat(3, 0, 4000);
+
+        $bbox = new Abp01_Route_Track_Bbox($minLat, 
+            $minLng, 
+            $maxLat, 
+            $maxLng);
+
+        return new Abp01_Route_Track($fileName, 
+            $bbox, 
+            $minAltitude, 
+            $maxAltitude);
+    }
+
     protected function _generateValue($fieldDescriptor) {
-		$faker = Faker\Factory::create();
+		$faker = $this->_getFaker();
 		if (!$fieldDescriptor) {
 			$fieldDescriptor = array(
 				'type' => $faker->randomElement(array('int', 'float', 'string')),
@@ -157,11 +206,20 @@
     }
     
     protected function _generateWord($excluded) {
-		$faker = Faker\Factory::create();
+		$faker = $this->_getFaker();
 		$word = $faker->word;
 		while (in_array($word, $excluded)) {
 			$word = $faker->word;
 		}
 		return $word;
-	}
+    }
+
+    protected function _getProjSphericalMercator() {
+        return new Abp01_Route_SphericalMercator();
+    }
+
+    /**
+     * @return \Faker\Generator
+     */
+    abstract protected function _getFaker();
  }

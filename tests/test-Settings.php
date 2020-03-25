@@ -35,12 +35,12 @@ class SettingsTests extends WP_UnitTestCase {
         delete_option(Abp01_Settings::OPT_SETTINGS_KEY);
     }
 
-    public function testCanGetSettings_whenDefault() {
+    public function test_canGetSettings_whenDefault() {
         $settings = $this->_getSettings();
         $this->assertEquals($this->_getDefaults(), $this->_collectSettings($settings));
     }
 
-    public function testTrySetInvalidUnitSystem() {
+    public function test_trySetInvalidUnitSystem() {
         $settings = $this->_getSettings();
 
         $settings->setUnitSystem(Abp01_UnitSystem::IMPERIAL);
@@ -52,7 +52,7 @@ class SettingsTests extends WP_UnitTestCase {
         $this->assertEquals(Abp01_UnitSystem::METRIC, $settings->getUnitSystem());
     }
 
-    public function testCanSaveSettings() {
+    public function test_canSaveSettings() {
         $tileLayer = new stdClass();
         $tileLayer->url = 'http://{s}.tile.example.com/{z}/{x}/{y}.png';
         $tileLayer->attributionTxt = 'Example.com & Contributors';
@@ -89,13 +89,13 @@ class SettingsTests extends WP_UnitTestCase {
         $this->assertEquals($expected, $this->_collectSettings($settings));
     }
 
-    public function testCanPurgeAllSettings_whenDefault() {
+    public function test_canPurgeAllSettings_whenDefault() {
         $settings = $this->_getSettings();
         $settings->purgeAllSettings();
         $this->assertEquals($this->_getDefaults(), $this->_collectSettings($settings));
     }
 
-    public function testCanPurgeAllSettings_whenModifiedAndSaved() {
+    public function test_canPurgeAllSettings_whenModifiedAndSaved() {
         $settings = $this->_getSettings();
         $settings->setTopTeaserText('Test top teaser text');
 		$settings->setBottomTeaserText('Test bottom teaser text');

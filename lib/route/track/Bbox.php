@@ -49,4 +49,11 @@ class Abp01_Route_Track_Bbox {
         $this->southWest = new Abp01_Route_Track_Coordinate($minLat, $minLng);
         $this->northEast = new Abp01_Route_Track_Coordinate($maxLat, $maxLng);
     }
+
+    public function equals(Abp01_Route_Track_Bbox $other) {
+        return $other->northWest->equals($this->northWest)
+            && $other->southWest->equals($this->southWest)
+            && $other->northEast->equals($this->northEast)
+            && $other->southEast->equals($this->southEast);
+    }
 }

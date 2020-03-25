@@ -30,7 +30,7 @@
  */
 
 class EnvTests extends WP_UnitTestCase {
-	public function testCanGetInstance() {
+	public function test_canGetInstance() {
 		$instance = Abp01_Env::getInstance();
 		$otherInstance = Abp01_Env::getInstance();
 		
@@ -40,7 +40,7 @@ class EnvTests extends WP_UnitTestCase {
 		$this->assertSame($instance, $otherInstance);
 	}
 
-	public function testCanReadDbParams() {
+	public function test_canReadDbParams() {
 		$env = Abp01_Env::getInstance();
 
 		$this->assertEquals(DB_HOST, $env->getDbHost());
@@ -49,7 +49,7 @@ class EnvTests extends WP_UnitTestCase {
 		$this->assertEquals(DB_NAME,$env->getDbName());
 	}
 
-	public function testCanReadDbTableParams() {
+	public function test_canReadDbTableParams() {
 		$env = Abp01_Env::getInstance();
 		$dbTablePrefix = $env->getDbTablePrefix();
 
@@ -61,7 +61,7 @@ class EnvTests extends WP_UnitTestCase {
 		$this->assertEquals($dbTablePrefix . 'abp01_techbox_route_details_lookup', $env->getRouteDetailsLookupTableName());
 	}
 
-	public function testCanGetVersions() {
+	public function test_canGetVersions() {
 		$env = Abp01_Env::getInstance();
 
 		$this->assertEquals(PHP_VERSION, $env->getPhpVersion());
@@ -71,7 +71,7 @@ class EnvTests extends WP_UnitTestCase {
 		$this->assertEquals('0.2.3', $env->getVersion());
 	}
 
-	public function testCanGetDirectories() {
+	public function test_canGetDirectories() {
 		$env = Abp01_Env::getInstance();
 		$pluginRoot = realpath(dirname(__FILE__) . '/../');
 
@@ -80,7 +80,7 @@ class EnvTests extends WP_UnitTestCase {
 		$this->assertEquals(wp_normalize_path(sprintf('%s/data', $pluginRoot)), $env->getDataDir());
 	}
 
-	public function testCanGetDbObject() {
+	public function test_canGetDbObject() {
 		$db = Abp01_Env::getInstance()->getDb();
 		$otherDb = Abp01_Env::getInstance()->getDb();
 
@@ -91,11 +91,11 @@ class EnvTests extends WP_UnitTestCase {
 		$this->assertInstanceOf('MysqliDb', $db);
 	}
 
-	public function testCanCheckDebugMode() {
+	public function test_canCheckDebugMode() {
 		$this->assertEquals(WP_DEBUG, Abp01_Env::getInstance()->isDebugMode());
 	}
 
-	public function testCanGetLang() {
+	public function test_canGetLang() {
 		$this->assertEquals(get_locale(), Abp01_Env::getInstance()->getLang());
 	}
 }

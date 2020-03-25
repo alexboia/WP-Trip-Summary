@@ -30,6 +30,7 @@
  */
 
 class CheckCorrectInstallation extends WP_UnitTestCase {
+    use GenericTestHelpers;
     use LookupDataTestHelpers;
 
     private static $_checkLookupData = array(
@@ -219,7 +220,7 @@ class CheckCorrectInstallation extends WP_UnitTestCase {
         )
     );
 
-    public function testDBTablesArePresent() {
+    public function test_dbTablesArePresent() {
         $env = $this->_getEnv();
 
         $checkTables = array(
@@ -245,7 +246,7 @@ class CheckCorrectInstallation extends WP_UnitTestCase {
         }
     }
 
-    public function testStorageDirectoriesArePresent() {
+    public function test_storageDirectoriesArePresent() {
         $env = $this->_getEnv();
 
         $checkDirs = array(
@@ -267,7 +268,7 @@ class CheckCorrectInstallation extends WP_UnitTestCase {
         }
     }
 
-    public function testCorrectVersionNumber() {
+    public function test_correctVersionNumber() {
         $expectedVersion = $this->_getEnv()->getVersion();
         $actualVersion = get_option(Abp01_Installer::OPT_VERSION);
 
@@ -278,7 +279,7 @@ class CheckCorrectInstallation extends WP_UnitTestCase {
             $actualVersion);
     }
 
-    public function testInitialLookupDataItemsArePresent() {
+    public function test_initialLookupDataItemsArePresent() {
         $env = $this->_getEnv();
         $db = $env->getDb();
 
@@ -339,13 +340,5 @@ class CheckCorrectInstallation extends WP_UnitTestCase {
         }
 
         return $translations;
-    }
-
-    protected function _getEnv() {
-        return Abp01_Env::getInstance();
-    }
-
-    protected function _getInstaller() {
-        return new Abp01_Installer();
     }
  }

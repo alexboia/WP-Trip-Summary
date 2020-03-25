@@ -30,8 +30,8 @@
  */
 
 class RouteSphericalMercator extends WP_UnitTestCase {
-    public function testForwardProjection_specificCoords() {
-        $merc = $this->_getSphericalMercator();
+    public function test_forwardProjection_specificCoords() {
+        $merc = $this->_getProjSphericalMercator();
 
         $merc_45_45 = $merc->forward(45, 45);
         $this->assertEquals(5009377.09, $merc_45_45['mercX'], '', 0.05);
@@ -58,8 +58,8 @@ class RouteSphericalMercator extends WP_UnitTestCase {
         $this->assertEquals(6707103.99, $merc_gw['mercY'], '', 0.05);
     }
 
-    public function testReverseProjection_specificCoords() {
-        $merc = $this->_getSphericalMercator();
+    public function test_reverseProjection_specificCoords() {
+        $merc = $this->_getProjSphericalMercator();
 
         $inv_45_45 = $merc->inverse(5009377.09, 5621521.49);
         $this->assertEquals(45, $inv_45_45['lat'], '', 0.01);
@@ -86,8 +86,8 @@ class RouteSphericalMercator extends WP_UnitTestCase {
         $this->assertEquals(-0.0076589, $inv_gw['lng'], '', 0.05);
     }
 
-    public function testInverseMatchesForward() {
-        $merc = $this->_getSphericalMercator();
+    public function test_inverseMatchesForward() {
+        $merc = $this->_getProjSphericalMercator();
         
         for ($lng = -180; $lng <= 180; $lng++) {
             for ($lat = -85; $lat <= 85; $lat ++) {
@@ -99,7 +99,7 @@ class RouteSphericalMercator extends WP_UnitTestCase {
         }
     }
 
-    private function _getSphericalMercator() {
+    private function _getProjSphericalMercator() {
         return new Abp01_Route_SphericalMercator();
     }
 }

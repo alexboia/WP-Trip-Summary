@@ -51,7 +51,7 @@ class LookupTests extends WP_UnitTestCase {
 		$this->_restoreAllLookupData($this->_initialLookupData);
 	}
 
-	public function testCanReadExistingLookup_genericRead_defaultLang() {
+	public function test_canReadExistingLookup_genericRead_defaultLang() {
 		$lookup = new Abp01_Lookup();
 		foreach ($this->_sampleLookupData as $category => $data) {
 			$result = $lookup->lookup($category, $data['data_id']);
@@ -59,7 +59,7 @@ class LookupTests extends WP_UnitTestCase {
 		}
 	}
 
-	public function testCanReadExistingLookup_genericRead_sampleLang() {
+	public function test_canReadExistingLookup_genericRead_sampleLang() {
 		$lookup = new Abp01_Lookup(self::SAMPLE_LOOKUP_LANG);
 		foreach ($this->_sampleLookupData as $category => $data) {
 			$result = $lookup->lookup($category, $data['data_id']);
@@ -67,7 +67,7 @@ class LookupTests extends WP_UnitTestCase {
 		}
 	}
 
-	public function testCanCreateLookupItem() {
+	public function test_canCreateLookupItem() {
 		$label = $this->_newFakeLabel();
 		$type = $this->_getRandomLookupType();
 		
@@ -80,7 +80,7 @@ class LookupTests extends WP_UnitTestCase {
 		$this->assertGreaterThan(0, $item->id);
 	}
 
-	public function testCanModifyLookupItem() {
+	public function test_canModifyLookupItem() {
 		$lookup = new Abp01_Lookup();
 		$type = $this->_getRandomLookupType();
 		$existingItemId = $this->_sampleLookupData[$type]['data_id'];
@@ -95,7 +95,7 @@ class LookupTests extends WP_UnitTestCase {
 		$this->assertEquals($existingItemId, $item->id);
 	}
 
-	public function testCanDeleteLookupItem() {
+	public function test_canDeleteLookupItem() {
 		$lookup = new Abp01_Lookup();
 		$type = $this->_getLookupTypeWithoutPostAssociation();
 		$existingItemId = $this->_sampleLookupData[$type]['data_id'];
@@ -108,7 +108,7 @@ class LookupTests extends WP_UnitTestCase {
 		$this->assertEmpty($itemLangs);
 	}
 
-	public function testCanCreateLookupItemTranslation() {
+	public function test_canCreateLookupItemTranslation() {
 		$lang = 'fr';
 		$newLabel = $this->_newFakeLabel();
 		$type = $this->_getRandomLookupType();
@@ -121,7 +121,7 @@ class LookupTests extends WP_UnitTestCase {
 		$this->_assertLookupTranslationMatchesLabel($existingItemId, $lang, $newLabel);
 	}
 
-	public function testCanModifyLookupItemTranslation() {
+	public function test_canModifyLookupItemTranslation() {
 		$newLabel = $this->_newFakeLabel();
 		$type = $this->_getRandomLookupType();
 		$existingItemId = $this->_sampleLookupData[$type]['data_id'];
@@ -136,7 +136,7 @@ class LookupTests extends WP_UnitTestCase {
 		$this->_assertLookupTranslationMatchesLabel($existingItemId, $existingItemLang, $newLabel);
 	}
 
-	public function testCanDeleteLookupItemTranslation() {
+	public function test_canDeleteLookupItemTranslation() {
 		$type = $this->_getRandomLookupType();
 		$existingItemId = $this->_sampleLookupData[$type]['data_id'];
 		$existingItemLang = self::SAMPLE_LOOKUP_LANG;
@@ -148,7 +148,7 @@ class LookupTests extends WP_UnitTestCase {
 		$this->_assertLookupItemTranslationMissing($existingItemId, $existingItemLang);
 	}
 
-	public function testCanCheckIfLookupItemInUse_itemInUse() {
+	public function test_canCheckIfLookupItemInUse_itemInUse() {
 		$item = $this->_getLookupItemWithPostAssociation();
 		$lookup = new Abp01_Lookup();
 		$this->assertTrue($lookup->isLookupInUse($item['data_id']));
