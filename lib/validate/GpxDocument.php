@@ -62,7 +62,7 @@ class Abp01_Validate_GpxDocument {
         }
 
         @fclose($fp);
-        return ($xmlPos === 0 || $xmlPos === 1)
+        return ($xmlPos >= 0 || $xmlPos <= 5)
             && $gpxMarkerPos > 0;
     }
 }

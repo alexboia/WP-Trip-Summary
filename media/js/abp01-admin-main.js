@@ -678,6 +678,7 @@
             return;
         }
 
+        uploader.splice();
         uploader.unbindAll();
         uploader.destroy();
         uploader = null;
@@ -691,6 +692,7 @@
      * */
     function handleUploaderError(upl, error) {
         uploader.disableBrowse(false);
+        uploader.splice();
         uploader.refresh();
         hideProgress();
         toastMessage(false, getTrackUploaderErrorMessage(error));
@@ -740,6 +742,8 @@
             hideProgress();
             uploader.stop();
             uploader.disableBrowse(false);
+            uploader.splice();
+            uploader.refresh();
             toastMessage(false, getTrackUploaderErrorMessage({
                 server: true,
                 code: status

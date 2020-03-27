@@ -1724,7 +1724,8 @@ function abp01_upload_track() {
 			'application/x-gpx+xml', 
 			'application/xml-gpx', 
 			'application/xml', 
-			'text/xml'
+			'text/xml',
+			'application/octet-stream'
 	)));
 	$uploader->setCustomValidator(array(new Abp01_Validate_GpxDocument(), 'validate'));
 

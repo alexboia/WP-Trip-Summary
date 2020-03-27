@@ -44,6 +44,7 @@ class MimeReader {
         $ms_office = null,
         $archive = null,
         $text = null,
+        $xml = null,
         $others = null,
         $unknown = null,
         $html = null;
@@ -260,6 +261,39 @@ class MimeReader {
                 'ignore'    => ''
             );
         }
+        if ( is_null( self::$xml ) ) {
+            $xml    = &self::$xml;
+            $xml    = array();
+
+            // UTF-16 Big Endian BOM XML
+            $xml[] = array (
+                'mime'      => 'text/xml',
+                'pattern'   => "\xFF\xFE\x3C\x3F\x78\x6D\x6C",
+                'mask'      => "\xFF\xFF\xFF\xFF\xFF\xFF\xFF",
+                'ignore'    => self::$whitespace_characters
+            );
+            // UTF-16 Little Endian BOM XML
+            $xml[] = array (
+                'mime'      => 'text/xml',
+                'pattern'   => "\xFE\xFF\x3C\x3F\x78\x6D\x6C",
+                'mask'      => "\xFF\xFF\xFF\xFF\xFF\xFF\xFF",
+                'ignore'    => self::$whitespace_characters
+            );
+            // UTF-8 BOM XML
+            $xml[] = array (
+                'mime'      => 'text/xml',
+                'pattern'   => "\xEF\xBB\xBF\x3C\x3F\x78\x6D\x6C",
+                'mask'      => "\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF",
+                'ignore'    => self::$whitespace_characters
+            );
+            // No BOM XML
+            $xml[] = array (
+                'mime'      => 'text/xml',
+                'pattern'   => "\x3C\x3F\x78\x6D\x6C",
+                'mask'      => "\xFF\xFF\xFF\xFF\xFF",
+                'ignore'    => self::$whitespace_characters
+            );
+        }
         if ( is_null( self::$text ) ) {
             $text    = &self::$text;
             $text    = array();
@@ -296,20 +330,6 @@ class MimeReader {
         if ( is_null( self::$others ) ) {
             $others        = &self::$others;
             $others        = array();
-
-            /*                $others[] = array (
-                                'mime'        => 'WINDOWS EXECUTABLE',
-                                'pattern'    => "\x4D\x5A",
-                                'mask'        => "\xFF\xFF",
-                                'ignore'    => ''
-                            );
-                            $others[] = array (
-                                'mime'        => 'EXEC_LINKABLE',
-                                'pattern'    => "\x7F\x45\x4C\x46",
-                                'mask'        => "\xFF\xFF\xFF\xFF",
-                                'ignore'    => ''
-                            );
-            */
         }
         if ( is_null( self::$ms_office ) ) {
             $office    = &self::$ms_office;
@@ -451,12 +471,6 @@ class MimeReader {
                 'mime'        => 'text/html',
                 'pattern'    => "\x3C\x21\x2D\x2D",
                 'mask'        => "\xFF\xFF\xFF\xFF",
-                'ignore'    => self::$whitespace_characters
-            );
-            $unknown[] = array (
-                'mime'        => 'text/xml',
-                'pattern'    => "\x3C\x3F\x78\x6D\x6C",
-                'mask'        => "\xFF\xFF\xFF\xFF\xFF",
                 'ignore'    => self::$whitespace_characters
             );
             // "%PDF" - PDF signature
@@ -658,6 +672,7 @@ class MimeReader {
         if ( $this->sniff_fonts() )   return;
         if ( $this->sniff_msoffice() ) return;
         if ( $this->sniff_archive() ) return;
+        if ( $this->sniff_xml() ) return;
         if ( $this->sniff_text() )    return;
         if ( $this->sniff_unknown() ) return;
         if ( $this->sniff_others() )  return;
@@ -849,6 +864,19 @@ class MimeReader {
                     $this->detected_type    = $t['mime'];
                     return true;
                 }
+            }
+        }
+
+        return false;
+    }
+
+    protected function sniff_xml() {
+        $num_xmls = count( self::$xml );
+        for ( $i = 0; $i < $num_xmls; $i++ ) {
+            $x = &self::$xml[$i];
+            if ( $this->match_pattern( $x['pattern'], $x['mask'], $x['ignore'] ) ) {
+                $this->detected_type = $x['mime'];
+                return true;
             }
         }
 
