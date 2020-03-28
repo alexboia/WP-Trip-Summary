@@ -110,6 +110,32 @@ Thus, I developed a module to do just that: upload a GPX track, parse it and dis
 
 __[Please see here notes on updating to plug-in version 0.2.1](https://github.com/alexboia/WP-Trip-Summary/blob/master/README-UPDATE-021.md)__
 
+## Roadmap
+
+### Road to Version 0.3
+
+The 0.2.0 version was the first deemed fit to actually be published as a plug-in. 
+From there on the main purpose of 0.2.* version was to:
+
+   - [ ] improve stability of the plug-in by:
+      - [ ] actual bug-fixing (of either reported or found as result of manual testing);
+      - [ ] expand the set of available automated tests;
+   - [ ] improve the overall usability of the plug-in (meaning the minimum amount of features to render it usable enough for most of the users):
+      - [ ] allow users to see at a glance, when listing posts, which post has trip summary information and track data and which has not;
+      - [ ] improve trip summary editing experience;
+   - [ ] add some options to allow for quick customization:
+      - [ ] customize the colour of the line used to plot the track on the map;
+      - [ ] customize the weight of the line used to plot the track on the map.
+   - [ ] improve localization by adding at least one more language:
+      - [ ] currently, French is in the progress.
+   - [ ] publish a guide for customizing the front-end trip summary viewer;
+   - [ ] publish a list of things with which anyone can help, if he or she desires to do so.
+
+### Version 0.3 and onwards
+
+There are a lot of features I would like to see implemented in this plug-in and [I would also be curious about your input on this matter](https://github.com/alexboia/WP-Trip-Summary/issues/new/choose).
+However, there is no definitive plan for it, but, as a general rule, I would like to see a maintenance realease every other release, to keep things stable enough.
+
 ## Requirements
 
 ### For running the plug-in itself
