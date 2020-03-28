@@ -119,17 +119,24 @@ From there on the main purpose of 0.2.* version was to:
 
    - [ ] improve stability of the plug-in by:
       - [ ] actual bug-fixing (of either reported or found as result of manual testing);
-      - [ ] expand the set of available automated tests;
+      - [ ] expand the set of available automated tests (in-progress);
+      - [ ] gradually update the set of third party components (in-progress).
    - [ ] improve the overall usability of the plug-in (meaning the minimum amount of features to render it usable enough for most of the users):
-      - [ ] allow users to see at a glance, when listing posts, which post has trip summary information and track data and which has not;
+      - [x] allow users to see at a glance, when listing posts, which post has trip summary information and track data and which has not;
       - [ ] improve trip summary editing experience;
    - [ ] add some options to allow for quick customization:
-      - [ ] customize the colour of the line used to plot the track on the map;
+      - [x] customize the colour of the line used to plot the track on the map;
       - [ ] customize the weight of the line used to plot the track on the map.
    - [ ] improve localization by adding at least one more language:
       - [ ] currently, French is in the progress.
    - [ ] publish a guide for customizing the front-end trip summary viewer;
-   - [ ] publish a list of things with which anyone can help, if he or she desires to do so.
+   - [ ] add some nice to have features, which can be quickly implemented and provide some value, such as:
+      - [ ] display minimum and maximum altitude;
+      - [ ] compute and display an altitude profile;
+      - [ ] display GPX waypoints;
+      - [ ] allow the trip summary viewer to be added as a shortcode anywhere in the text.
+   - [ ] publish a list of things with which anyone can help, if he or she desires to do so;
+   - [ ] refactoring.
 
 ### Version 0.3 and onwards
 
