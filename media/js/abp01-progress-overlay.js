@@ -36,6 +36,7 @@
         var $content = null;
         var $progressParent = null;
         var $progressLabel = null;
+        var isClosingProgressDialog = false;
 
         if (!this.size()) {
             return;
@@ -162,20 +163,45 @@
 
             _openProgressDialog: function() {
                 var me = this;
-                getTarget().block({
-                    centerY: getCenterY(),
-                    message: $content,
-                    css: getStyle(),
-                    onBlock: function() {
-                        me._displayProgressBar();
-                    }
-                });
+                window.setTimeout(function() {
+                    isClosingProgressDialog = false;
+                    getTarget().block({
+                        centerY: getCenterY(),
+                        message: $content,
+                        css: getStyle(),
+                        onBlock: function() {
+                            me._displayProgressBar();
+                        }
+                    });
+                }, 0);
             },
 
             _closeProgressDialog: function() {
-                NProgress.done().remove();
-                getProgressLabel().text('');
-                getTarget().unblock();
+                var me = this;
+                
+                NProgress.done();
+                isClosingProgressDialog = true;
+
+                window.setTimeout(function() {
+                    me._cleanupProgressDialog();
+                }, 0);
+            },
+
+            _cleanupProgressDialog: function() {
+                var me = this;
+
+                if (isClosingProgressDialog) {
+                    if (!NProgress.isStarted()) {
+                        NProgress.remove();
+                        getProgressLabel().text('');
+                        getTarget().unblock();
+                        isClosingProgressDialog = false;
+                    } else {
+                        window.setTimeout(function() {
+                            me._cleanupProgressDialog();
+                        }, 0);
+                    }
+                }
             },
 
             _displayProgressBar: function() {
