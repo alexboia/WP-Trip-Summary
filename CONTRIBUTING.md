@@ -12,8 +12,8 @@ If it is an already existing feature, go ahead anyway and propose a way to enhan
 
 There two main types of assets that need translation:
 
-   - the user interface strings (labels, system messages etc.), which are provided and stored in classic .mo files, with a source .pot template file that can be used as base for translation (in this case, the lib/abp01-trip-summary.pot file);
-   - the help content, which is provided as HTML files, one per each language, each with a source markdown (.md) file.
+   - the user interface strings (labels, system messages etc.), which are provided and stored in classic `.mo` files, with a source `.pot` template file that can be used as base for translation (in this case, the `lib/abp01-trip-summary.pot` file);
+   - the help content, which is provided as HTML files, one per each language, each with a source markdown (`.md`) file.
 
 ### Translating user interface strings
 
@@ -38,7 +38,7 @@ When done, [open a new issue and request](https://github.com/alexboia/WP-Trip-Su
 
 ### Translating help files
 
-The help content is written, for each language, in a markdown (.md) file called index.md, located, for each language, in the help/src/{language_code} folder (ex. help/src/ro_RO/index.md). 
+The help content is written, for each language, in a markdown (`.md`) file called index.md, located, for each language, in the `help/src/{language_code}` folder (ex. `help/src/ro_RO/index.md`). 
 This content is then be built as HTML files when the plug-in installation kit is created, but it can also be built on demand.  
 Anyway, in order to help out with translating help content you do not need to necessarily write it down directly in that format (but you can do so, of course): as is the case with translating the user interface strings, one may use GDrive documents to write the translated content.  
 Here are the currently open documents:
