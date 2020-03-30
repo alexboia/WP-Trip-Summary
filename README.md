@@ -5,6 +5,12 @@
 A WordPress trip summary plugin. I initially wrote this for my own personal use, as I needed something to help me keep structured information about my trips.
 However, as I was getting ready to push this to production I realised it would be a good idea to publish the source code.
 
+## Contents
+
+   1. [Progress](#wpts-progress)
+   2. [What it does](#wpts-what-does)
+
+<a name="wpts-progress" />
 ## Progress
 
 Please see the [issues](https://github.com/alexboia/WP-Trip-Summary/issues) area for the progress on any on-going issues.
@@ -14,6 +20,7 @@ Please see the [issues](https://github.com/alexboia/WP-Trip-Summary/issues) area
 [![WP compatibility](https://plugintests.com/plugins/wp-trip-summary/wp-badge.svg)](https://plugintests.com/plugins/wp-trip-summary/latest)
 [![PHP compatibility](https://plugintests.com/plugins/wp-trip-summary/php-badge.svg)](https://plugintests.com/plugins/wp-trip-summary/latest)
 
+<a name="wpts-what-does" />
 ## What it does
 
 This plug-in provides two basic features:
@@ -196,6 +203,10 @@ All of the above, with the following amendments:
 ##### Viewer - Map
 
 ![Viewer - Map](/screenshots/V2.png?raw=true)
+
+## How can you help
+
+[Help is always wanted and here's how you can help too](https://github.com/alexboia/WP-Trip-Summary/blob/master/CONTRIBUTING.md).
 
 ## Credits
 
