@@ -130,8 +130,8 @@ __[Please see here notes on updating to plug-in version 0.2.1](https://github.co
 
 ### Road to Version 0.3
 
-The 0.2.0 version was the first deemed fit to actually be published as a plug-in. 
-From there on the main purpose of 0.2.* version was to:
+Version 0.2.0 was the first I deemed fit to actually be published as a plug-in. 
+From there on the main purpose of all 0.2.* versions is to:
 
    - [ ] improve stability of the plug-in by:
       - [ ] actual bug-fixing (of either reported or found as result of manual testing);
