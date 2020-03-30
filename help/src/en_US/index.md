@@ -85,7 +85,7 @@ Basically all these requirements are checked upon installation and the process s
 
 ## Licensing Terms {#dg-licensing-terms}
 
-This plug-in is distribute under the terms of the [BSD New License](https://opensource.org/licenses/BSD-3-Clause). What this means:
+This plug-in is distributed under the terms of the [BSD New License](https://opensource.org/licenses/BSD-3-Clause). What this means:
 
 - that you may use it free of charge and without any kind of royalty;
 - that you may distribute free of charge;
@@ -229,7 +229,7 @@ The discussion here is a bit longer.
 
 First of all, one has to keep in mind that the map is not displayed as only one physical image, but using multiple images. These images - called tiles - when put together in a specific order, form the image of the map itself.
 
-Also, there are multiple set of tiles, one for each zoom level and, within each set, each tile is located using two coordinates - let us name them x & y - sort of like squares on a chess board.
+Also, there are multiple sets of tiles, one for each zoom level and, within each set, each tile is located using two coordinates - let us name them x & y - sort of like squares on a chess board.
 
 Therefore, in order to access & load a tile from whatever server provides them, we need to request it using the following pieces of information:
 
@@ -429,6 +429,6 @@ The following operations are supported, each in the context of a chosen language
 The following should also be noted:
 
 - when adding a new option/item for the default language, the system only requires the label for that language.
-- when adding a new option/item for a specific language, the systems asks requires the label for both that language and the default language.
+- when adding a new option/item for a specific language, the system requires the label for both that language and the default language.
 
 [Back to the Table of Contents](#help-root)

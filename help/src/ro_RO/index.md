@@ -147,7 +147,7 @@ Reprezintă, desigur, zona propriu-zisă unde sunt afișate, pe câte un tab dis
 - informațiile tehnice (distanță, diferența de nivel etc.).
 
 Fiecare din aceste tab-uri este afișat doar dacă există informațiile corespunzătoare. 
-Dacă nu există informații pentru nici-unul din tab-uri, atunci întreaga componentă este ascunsă, inclusiv teaser-ele.
+Dacă nu există informații pentru niciunul din tab-uri, atunci întreaga componentă este ascunsă, inclusiv teaser-ele.
 
 Harta în sine, oferă următoarele unelte:
 
@@ -273,7 +273,7 @@ Plasarea este în colțul din dreapta jos al hărții, iar câmpul aflat acum î
 În funcție de unde alegeți să folosiți harta, zona de copyright poate fi sau nu obligatorie. Este, în orice caz, o chestie de bun simț, așa că vă încurajez să o aveți la vedere.
 Plasarea este în colțul din dreapta jos al hărții, iar câmpul aflat acum în discuție permite introducerea notei propriu-zise de copyright.
 
-#### Se permite comutărea hărții pe întreg ecranul?
+#### Se permite comutarea hărții pe întreg ecranul?
 
 Dacă debifați acest câmp, în caseta tehnică din pagina articolului nu va mai fi afișat butonul care comută harta pe întreg ecranul (full-screen).
 Implicit, câmpul este bifat, deci butonul este afișat.

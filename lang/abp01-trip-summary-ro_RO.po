@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WP Trip Summary 0.1.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-trip-summary\n"
 "POT-Creation-Date: 2020-03-12 23:13+0200\n"
-"PO-Revision-Date: 2020-03-12 23:14+0200\n"
+"PO-Revision-Date: 2020-03-28 19:29+0200\n"
 "Last-Translator: \n"
 "Language-Team: alexandru.boia [at] outlook [dot] com\n"
 "Language: ro_RO\n"
@@ -179,7 +179,7 @@ msgstr "Tipul selectat de fișier nu este valid. Sunt permise doar fișierele GP
 
 #: abp01-plugin-main.php:597 abp01-plugin-main.php:598
 msgid "The file could not be read"
-msgstr "Fișierul nu a putu fi citit"
+msgstr "Fișierul nu a putut fi citit"
 
 #: abp01-plugin-main.php:599
 msgid "The uploader could not be initialized"
@@ -292,7 +292,7 @@ msgstr "Versiunea necesară minimă de PHP este %s"
 
 #: abp01-plugin-main.php:661
 msgid "Minimum required WP version is %s"
-msgstr "Versiunea necesară minimă de Wordpress este %s"
+msgstr "Versiunea necesară minimă de WordPress este %s"
 
 #: abp01-plugin-main.php:663
 msgid "LIBXML support was not found on your system"
@@ -300,7 +300,7 @@ msgstr "Extensia LIBXML nu a fost găsită pe sistemul tău"
 
 #: abp01-plugin-main.php:665
 msgid "Mysqli extension was not found on your system or is not fully compatible"
-msgstr "Extensia Mysqli nu a fost găsită pe sistemul tău"
+msgstr "Extensia MySQLi nu a fost găsită pe sistemul tău"
 
 #: abp01-plugin-main.php:667
 msgid "MySQL spatial support was not found on your system"
@@ -308,11 +308,11 @@ msgstr "Server-ul MySQL nu are suport pentru date spațiale"
 
 #: abp01-plugin-main.php:745 abp01-plugin-main.php:756 views/wpts-settings.php:42
 msgid "Trip Summary Settings"
-msgstr "Setări WP-Trip-Summary"
+msgstr "Setări WP Trip Summary"
 
 #: abp01-plugin-main.php:746
 msgid "Trip Summary"
-msgstr "Trip Summary"
+msgstr "WP Trip Summary"
 
 #: abp01-plugin-main.php:757
 msgid "Settings"
@@ -379,7 +379,7 @@ msgstr "Varianta tradusă a itemului nu a putut fi ștearsă"
 
 #: abp01-plugin-main.php:1466
 msgid "The item could not be deleted because it is still in use"
-msgstr "Itemul nu a fost șters deoarece este încă folosit"
+msgstr "Itemul nu a putut fi șters deoarece este încă folosit"
 
 #: abp01-plugin-main.php:1473
 msgid "The item could not be deleted"
@@ -502,7 +502,7 @@ msgstr "Informații de acces"
 #: views/wpts-editor.php:147 views/wpts-editor.php:213 views/wpts-frontend.php:73
 #: views/wpts-frontend.php:81
 msgid "Open during seasons"
-msgstr "Practicabil în sezoanele"
+msgstr "Practicabil în anotimpurile"
 
 #: views/wpts-editor.php:237
 msgid "Route markers"
@@ -541,7 +541,7 @@ msgid ""
 "The map could not be loaded due to either a network error or a possible server "
 "issue."
 msgstr ""
-"Harta nu a putut fi înărcată din cauza unei erori de comunicație sau a unei "
+"Harta nu a putut fi încărcată din cauza unei erori de comunicație sau a unei "
 "posibile erori interne"
 
 #: views/wpts-editor.php:332 views/wpts-frontend.php:102
@@ -562,7 +562,7 @@ msgstr "Tip recomandat de bicicletă"
 
 #: views/wpts-frontend.php:83
 msgid "Path markers"
-msgstr "Marcaj turistic"
+msgstr "Marcaje turistice"
 
 #: views/wpts-help.php:35
 msgid "WP Trip Summary Help"
@@ -570,7 +570,7 @@ msgstr "WP Trip Summary - Ajutor"
 
 #: views/wpts-lookup-data-management.php:49
 msgid "Lookup type:"
-msgstr "Tip item:"
+msgstr "Tip item nomenclator:"
 
 #: views/wpts-lookup-data-management.php:57
 msgid "Language:"
@@ -685,7 +685,7 @@ msgstr "Nota de copyright a sursei de tile-uri de hartă"
 
 #: views/wpts-settings.php:135
 msgid "Enable map fullscreen mode?"
-msgstr "Se permite comutărea hărții pe întreg ecranul?"
+msgstr "Se permite comutarea hărții pe întreg ecranul?"
 
 #: views/wpts-settings.php:143
 msgid "Show magnifying glass?"
