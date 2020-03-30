@@ -9,9 +9,18 @@ However, as I was getting ready to push this to production I realised it would b
 
    1. [Progress](#wpts-progress)
    2. [What it does](#wpts-what-does)
+   3. [Changelog](#wpts-changelog)
+   4. [Upgrade notices](#wpts-upgrade-notices)
+   5. [Roadmap](#wpts-roadmap)
+   6. [Requirements](#wpts-requirements)
+   7. [Limitations](#wpts-limitations)
+   8. [Screenshots](#wpts-screenshots)
+   9. [Contributing](#wpts-contributing)
+   10. [Credits](#wpts-credits)
+   11. [License](#wpts-license)
 
-<a name="wpts-progress" />
-## Progress
+## Progress  
+<a name="wpts-progress"></a>  
 
 Please see the [issues](https://github.com/alexboia/WP-Trip-Summary/issues) area for the progress on any on-going issues.
 
@@ -20,8 +29,8 @@ Please see the [issues](https://github.com/alexboia/WP-Trip-Summary/issues) area
 [![WP compatibility](https://plugintests.com/plugins/wp-trip-summary/wp-badge.svg)](https://plugintests.com/plugins/wp-trip-summary/latest)
 [![PHP compatibility](https://plugintests.com/plugins/wp-trip-summary/php-badge.svg)](https://plugintests.com/plugins/wp-trip-summary/latest)
 
-<a name="wpts-what-does" />
-## What it does
+## What it does  
+<a name="wpts-what-does"></a>  
 
 This plug-in provides two basic features:
 
@@ -83,6 +92,7 @@ I really wanted to host the GPX tracks myself for various reasons:
 Thus, I developed a module to do just that: upload a GPX track, parse it and display it.
 
 ## Changelog
+<a name="wpts-changelog"></a>  
 
 ### Version 0.2.3
 - In the plug-in settings editor a user can now specify the color used to plot the GPX track on the map
@@ -112,12 +122,14 @@ Thus, I developed a module to do just that: upload a GPX track, parse it and dis
 - First officially distributed version.
 
 ## Upgrade notices
+<a name="wpts-upgrade-notices"></a>  
 
 ### Updating to 0.2.1
 
 __[Please see here notes on updating to plug-in version 0.2.1](https://github.com/alexboia/WP-Trip-Summary/blob/master/README-UPDATE-021.md)__
 
 ## Roadmap
+<a name="wpts-roadmap"></a>  
 
 ### Road to Version 0.3
 
@@ -151,6 +163,7 @@ There are a lot of features I would like to see implemented in this plug-in and 
 However, there is no definitive plan for it, but, as a general rule, I would like to see a maintenance realease every other release, to keep things stable enough.
 
 ## Requirements
+<a name="wpts-requirements"></a>  
 
 ### For running the plug-in itself
 
@@ -182,11 +195,13 @@ All of the above, with the following amendments:
    - zip command.
 
 ## Limitations
+<a name="wpts-limitations"></a>  
 
 1. Currently it only works with the classic WordPress Editor. An update is planned for 0.3.
 2. Not designed for (and not tested with) multi-site installations. No update is currently planned.
 
 ## Screenshots
+<a name="wpts-screenshots"></a>  
 
 ##### Editor - Info
 
@@ -205,10 +220,12 @@ All of the above, with the following amendments:
 ![Viewer - Map](/screenshots/V2.png?raw=true)
 
 ## How can you help
+<a name="wpts-contributing"></a>  
 
 [Help is always wanted and here's how you can help too](https://github.com/alexboia/WP-Trip-Summary/blob/master/CONTRIBUTING.md).
 
 ## Credits
+<a name="wpts-credits"></a>  
 
 1. [PHP-MySQLi-Database-Class](https://github.com/joshcam/PHP-MySQLi-Database-Class) - small mysqli wrapper for PHP. I used it instead of the builtin wpdb class
 2. [MimeReader](http://social-library.org/) - PHP mime sniffer written by Shane Thompson
@@ -225,7 +242,8 @@ All of the above, with the following amendments:
 13. [Leaflet.MagnifyingGlass](https://github.com/bbecquet/Leaflet.MagnifyingGlass) - Leaflet plug-in that adds the magnifying glass feature: enlarging a discrete area on the map
 14. [Leaflet.fullscreen](https://github.com/Leaflet/Leaflet.fullscreen) - Leaflet plug-in that allows the map to be displayed in full-screen mode
 
-## Licence
+## License
+<a name="wpts-license"></a> 
 
 The source code is published under the terms of the [BSD New License](https://opensource.org/licenses/BSD-3-Clause) licence.
 
