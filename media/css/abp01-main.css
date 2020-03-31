@@ -167,20 +167,20 @@ a.abp01-close-editor:hover {
 
 .abp01-editor-footer .button-save-summary {
     float: right;
-    width: 100px;
+    width: 140px;
     text-align: center;
     margin-left: 10px;
 }
 
 .abp01-editor-footer .button-cancel {
     float: right;
-    width: 100px;
+    width: 190px;
     text-align: center;
 }
 
 .abp01-editor-footer .button-reset {
     float: left;
-    width: 100px;
+    width: 190px;
     text-align: center;
     display: none;
 }
