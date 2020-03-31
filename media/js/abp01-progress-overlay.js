@@ -182,6 +182,9 @@
                 NProgress.done();
                 isClosingProgressDialog = true;
 
+                //Since NProgress.done() is asynchronous, 
+                //  we need to wait for it to finish so we queue a cleanup delegate
+                //  that will also check whether or not NProgress has actually completed
                 window.setTimeout(function() {
                     me._cleanupProgressDialog();
                 }, 0);
@@ -191,6 +194,9 @@
                 var me = this;
 
                 if (isClosingProgressDialog) {
+                    //If NProgress has indeed completed, 
+                    //  go ahead and clean-up
+                    //Otherwise, queue the cleanup delegate again
                     if (!NProgress.isStarted()) {
                         NProgress.remove();
                         getProgressLabel().text('');
