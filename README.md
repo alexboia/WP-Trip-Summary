@@ -2,7 +2,7 @@
 
 # WP-Trip-Summary
 
-A WordPress trip summary plugin to help travel bloggers manage and display structured information about their train rides and biking or hiking trips.
+An opinionated, multi-language, WordPress trip summary plugin to help travel bloggers manage and display structured information about their train rides and biking or hiking trips.
 
 [![WP compatibility](https://plugintests.com/plugins/wp-trip-summary/wp-badge.svg)](https://plugintests.com/plugins/wp-trip-summary/latest)
 [![PHP compatibility](https://plugintests.com/plugins/wp-trip-summary/php-badge.svg)](https://plugintests.com/plugins/wp-trip-summary/latest) 
@@ -11,15 +11,16 @@ A WordPress trip summary plugin to help travel bloggers manage and display struc
 
    1. [Progress](#wpts-progress)
    2. [What it does](#wpts-what-does)
-   3. [Changelog](#wpts-changelog)
-   4. [Upgrade notices](#wpts-upgrade-notices)
-   5. [Roadmap](#wpts-roadmap)
-   6. [Requirements](#wpts-requirements)
-   7. [Limitations](#wpts-limitations)
-   8. [Screenshots](#wpts-screenshots)
-   9. [Contributing](#wpts-contributing)
-   10. [Credits](#wpts-credits)
-   11. [License](#wpts-license)
+   3. [Supported languages](#wpts-langs)
+   4. [Changelog](#wpts-changelog)
+   5. [Upgrade notices](#wpts-upgrade-notices)
+   6. [Roadmap](#wpts-roadmap)
+   7. [Requirements](#wpts-requirements)
+   8. [Limitations](#wpts-limitations)
+   9. [Screenshots](#wpts-screenshots)
+   10. [Contributing](#wpts-contributing)
+   11. [Credits](#wpts-credits)
+   12. [License](#wpts-license)
 
 ## Progress  
 <a name="wpts-progress"></a>  
@@ -87,6 +88,17 @@ I really wanted to host the GPX tracks myself for various reasons:
 - I want to use the resulting data in the near future to do some other stuff on my website.
 
 Thus, I developed a module to do just that: upload a GPX track, parse it and display it.
+
+## Supported languages
+<a name="wpts-langs"></a>  
+
+The following languages are supported:
+
+| Language | Code | Notes |
+| --- | --- | --- |
+| English | en_US | Also serves as default language |
+| French | fr_FR | - |
+| Romanian | ro_RO | - |
 
 ## Changelog
 <a name="wpts-changelog"></a>  
