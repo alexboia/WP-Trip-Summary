@@ -3,60 +3,76 @@
     <difficultyLevel>
         <lookup default="Easy">
             <lang code="ro_RO">Ușor</lang>
+            <lang code="fr_FR">Facile</lang>
         </lookup>
         <lookup default="Medium">
             <lang code="ro_RO">Mediu</lang>
+            <lang code="fr_FR">Moyen</lang>
         </lookup>
         <lookup default="Hard">
             <lang code="ro_RO">Dificil</lang>
+            <lang code="fr_FR">Difficile</lang>
         </lookup>
         <lookup default="Medieval torture">
             <lang code="ro_RO">Tortură medievală</lang>
+            <lang code="fr_FR">Torture médiévale</lang>
         </lookup>
     </difficultyLevel>
 
     <pathSurfaceType>
         <lookup default="Asphalt">
             <lang code="ro_RO">Asfalt</lang>
+            <lang code="fr_FR">Asphalte</lang>
         </lookup>
         <lookup default="Concrete">
             <lang code="ro_RO">Plăci de beton</lang>
+            <lang code="fr_FR">Béton</lang>
         </lookup>
         <lookup default="Dust or dirt">
             <lang code="ro_RO">Pământ</lang>
+            <lang code="fr_FR">Terre</lang>
         </lookup>
         <lookup default="Grass">
             <lang code="ro_RO">Iarbă</lang>
+            <lang code="fr_FR">Végétation</lang>
         </lookup>
         <lookup default="Stone pavement/Gravel">
             <lang code="ro_RO">Macadam</lang>
+            <lang code="fr_FR">Macadam/gravier</lang>
         </lookup>
         <lookup default="Loose rocks">
             <lang code="ro_RO">Piatră neașezată</lang>
+            <lang code="fr_FR">Pierrailles</lang>
         </lookup>
     </pathSurfaceType>
 
     <bikeType>
         <lookup default="MTB">
             <lang code="ro_RO">MTB</lang>
+            <lang code="fr_FR">MTB</lang>
         </lookup>
         <lookup default="Road bike">
             <lang code="ro_RO">Cursieră</lang>
+            <lang code="fr_FR">Vélo de route</lang>
         </lookup>
         <lookup default="Trekking">
             <lang code="ro_RO">Trekking</lang>
+            <lang code="fr_FR">Vélo de trekking</lang>
         </lookup>
         <lookup default="City bike">
             <lang code="ro_RO">Bicicletă de oraș</lang>
+            <lang code="fr_FR">Vélo de ville</lang>
         </lookup>
     </bikeType>
 
     <railroadLineType>
         <lookup default="Simple line">
             <lang code="ro_RO">Linie simplă</lang>
+            <lang code="fr_FR">Ligne de chemin de fer simple</lang>
         </lookup>
         <lookup default="Double line">
             <lang code="ro_RO">Linie dublă</lang>
+            <lang code="fr_FR">Ligne de chemin de fer double</lang>
         </lookup>
     </railroadLineType>
 
@@ -65,42 +81,53 @@
     <railroadLineStatus>
         <lookup default="In production">
             <lang code="ro_RO">În exploatare</lang>
+            <lang code="fr_FR">En fonctionnement</lang>
         </lookup>
         <lookup default="Closed">
             <lang code="ro_RO">Închisă</lang>
+            <lang code="fr_FR">Hors service</lang>
         </lookup>
         <lookup default="Disbanded">
             <lang code="ro_RO">Desființată</lang>
+            <lang code="fr_FR">Chemin de fer démantelé</lang>
         </lookup>
         <lookup default="In rehabilitation">
             <lang code="ro_RO">În reabilitare</lang>
+            <lang code="fr_FR">En réhabilitation</lang>
         </lookup>
     </railroadLineStatus>
 
     <recommendSeasons>
         <lookup default="Spring">
             <lang code="ro_RO">Primăvara</lang>
+            <lang code="fr_FR">Printemps</lang>
         </lookup>
         <lookup default="Summer">
             <lang code="ro_RO">Vara</lang>
+            <lang code="fr_FR">Été</lang>
         </lookup>
         <lookup default="Autumn">
             <lang code="ro_RO">Toamna</lang>
+            <lang code="fr_FR">L'automne</lang>
         </lookup>
         <lookup default="Winter">
             <lang code="ro_RO">Iarna</lang>
+            <lang code="fr_FR">L'hiver</lang>
         </lookup>
     </recommendSeasons>
 
     <railroadElectrificationStatus>
         <lookup default="Electrified">
             <lang code="ro_RO">Electrificată</lang>
+            <lang code="fr_FR">Électrifié</lang>
         </lookup>
         <lookup default="Not electrified">
             <lang code="ro_RO">Neelectrificată</lang>
+            <lang code="fr_FR">Non électrifié</lang>
         </lookup>
         <lookup default="Partially electrified">
             <lang code="ro_RO">Partial electrificată</lang>
+            <lang code="fr_FR">Partiellement électrifié</lang>
         </lookup>
     </railroadElectrificationStatus>
 </lookup>
