@@ -3,8 +3,8 @@ Contributors: alexandruboia
 Donate link: https://github.com/alexboia/WP-Trip-Summary
 Tags: trip-summary, map, gpx, travel-plugin
 Requires at least: 5.0
-Tested up to: 5.3.2
-Stable tag: 0.2.3
+Tested up to: 5.4.0
+Stable tag: 0.2.4
 Requires PHP: 5.6.2
 License: BSD New License
 License URI: https://opensource.org/licenses/BSD-3-Clause

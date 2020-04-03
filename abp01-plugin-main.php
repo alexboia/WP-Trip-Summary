@@ -3,7 +3,7 @@
  * Plugin Name: WP Trip Summary
  * Author: Alexandru Boia
  * Author URI: http://alexboia.net
- * Version: 0.2.3
+ * Version: 0.2.4
  * Description: Aids a travel blogger to add structured information about his tours (biking, hiking, train travels etc.)
  * License: New BSD License
  * Plugin URI: https://github.com/alexboia/WP-Trip-Summary
@@ -46,7 +46,7 @@
 define('ABP01_LOADED', true);
 define('ABP01_PLUGIN_ROOT', dirname(__FILE__));
 define('ABP01_LIB_DIR', ABP01_PLUGIN_ROOT . '/lib');
-define('ABP01_VERSION', '0.2.3');
+define('ABP01_VERSION', '0.2.4');
 
 define('ABP01_MAX_EXECUTION_TIME_MINUTES', 10);
 define('ABP01_DISABLE_MINIFIED', false);

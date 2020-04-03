@@ -397,6 +397,16 @@ class Abp01_Env {
         return  wp_get_theme()->get_stylesheet_directory_uri();
     }
 
+    /**
+     * Retrieves the current post ID, searching 
+     * for the following data sources, in this order:
+     *  - the $GLOBALS['post'] - if this is set, then it returns $GLOBALS['post']->ID;
+     *  - $_GET['post'] - if this is set, then it returns intval($_GET['post'])
+     *  - $_GET[$fallbackGetVarName] - if this is set, then it returns intval($_GET[$fallbackGetVarName])
+     * 
+     * @param string $fallbackGetVarName The key to search for in the $_GET superglobal array if the previous sources did not yield any post ID
+     * @return int|null The post ID or null if not found
+     */
     public function getCurrentPostId($fallbackGetVarName) {
         $post = isset($GLOBALS['post']) ? $GLOBALS['post'] : null;
         if ($post && isset($post->ID)) {
