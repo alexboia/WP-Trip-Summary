@@ -82,7 +82,9 @@ class Abp01_Installer {
 	/**
 	 * @var Boolean Whether or not to install lookup data
 	 */
-	private $_installLookupData;
+    private $_installLookupData;
+    
+    private $_cachedDefinitions = null;
 
 	/**
 	 * Creates a new installer instance
@@ -133,45 +135,37 @@ class Abp01_Installer {
     private function _update($version, $installedVersion) {
 		$this->_reset();
 		$result = true;
-        
-        if ($version == '0.2b') {
+
+        if (empty($installedVersion)) {
             //If no installed version is set, this is the very first version, 
-            //  so we need to run the update to 0.2b
-            if (empty($installedVersion)) {
-                $result = $this->_updateTo02Beta();
+            //  so we need to run the update to 0.2b, to 0.2.1, then to 0.2.2
+            //NOTE: 0.2.3 did not have any specific update procedure
+            $result = $this->_updateTo02Beta() 
+                && $this->_updateTo021() 
+                && $this->_updateTo022();
+        } else {
+            //...otherwise, we need to see 
+            //  which installed version this is
+            switch ($installedVersion) {
+                case '0.2b':
+                    //If the installed version is 0.2b, 
+                    //  then run the update to 0.2.1, then to 0.2.2
+                    $result = $this->_updateTo021() 
+                        && $this->_updateTo022();
+                break;
+                case '0.2.1':
+                    //If the installed version is 0.2.1, 
+                    //  then run the update to 0.2.2
+                    $result = $this->_updateTo022();
+                break;
             }
         }
 
-        if ($version == '0.2.1') {
-            //If no installed version is set, this is the very first version, 
-            //  so we need to run the update to 0.2b
-            if (empty($installedVersion)) {
-                $result = $this->_updateTo02Beta();
-            }
-
-            //Then, run the update to 0.2.1, if the pervious update (if there was one), 
-            //  was successful
-            if ($result) {
-                $result = $this->_updateTo021();
-            }
-        }
-
-        if ($version == '0.2.2') {
-            //If no installed version is set, this is the very first version, 
-            //  so we need to run the update to 0.2b and then to 0.2.1
-            if (empty($installedVersion)) {
-                $result = $this->_updateTo02Beta() && $this->_updateTo021();
-            } else if ($installedVersion == '0.2b') {
-                //If the installed version is 0.2b, 
-                //  then run the update to 0.2.1
-                $result = $this->_updateTo021();
-            }
-
-            //Then, run the update to 0.2.2, if the pervious updates (if there were any), 
-            //  were successful
-            if ($result) {
-                $result = $this->_updateTo022();
-            }
+        //Finally, run the update to 0.2.4, 
+        //  if the pervious updates (if there were any), 
+        //  were successful
+        if ($result) {
+            $result = $this->_updateTo024();
         }
 
 		if ($result) {
@@ -445,6 +439,12 @@ class Abp01_Installer {
             && $this->_createCapabilities();
     }
 
+    private function _updateTo024() {
+        $this->_addLookupCategoryIndexToLookupTable();
+        $this->_installDataTranslationsForLanguage('fr_FR');
+        return true;
+    }
+
     private function _installStorageDirsSecurityAssets() {
         $rootStorageDir = $this->_env->getRootStorageDir();
         $tracksStorageDir = $this->_env->getTracksStorageDir();
@@ -653,36 +653,39 @@ class Abp01_Installer {
     }
 
     private function _readLookupDefinitions() {
-        $definitions = array();
-        $filePath = $this->_getLookupDefsFile();
-        $categories = array(
-            Abp01_Lookup::BIKE_TYPE,
-            Abp01_Lookup::DIFFICULTY_LEVEL,
-            Abp01_Lookup::PATH_SURFACE_TYPE,
-            Abp01_Lookup::RAILROAD_ELECTRIFICATION,
-            Abp01_Lookup::RAILROAD_LINE_STATUS,
-            Abp01_Lookup::RAILROAD_OPERATOR,
-            Abp01_Lookup::RAILROAD_LINE_TYPE,
-            Abp01_Lookup::RECOMMEND_SEASONS
-        );
+        if ($this->_cachedDefinitions === null) {
+            $definitions = array();
+            $filePath = $this->_getLookupDefsFile();
+            $categories = array(
+                Abp01_Lookup::BIKE_TYPE,
+                Abp01_Lookup::DIFFICULTY_LEVEL,
+                Abp01_Lookup::PATH_SURFACE_TYPE,
+                Abp01_Lookup::RAILROAD_ELECTRIFICATION,
+                Abp01_Lookup::RAILROAD_LINE_STATUS,
+                Abp01_Lookup::RAILROAD_OPERATOR,
+                Abp01_Lookup::RAILROAD_LINE_TYPE,
+                Abp01_Lookup::RECOMMEND_SEASONS
+            );
 
-        if (!is_readable($filePath)) {
-            return null;
-        }
-
-        $prevUseErrors = libxml_use_internal_errors(true);
-        $xml = simplexml_load_file($filePath, 'SimpleXMLElement');
-
-        if ($xml) {
-            foreach ($categories as $c) {
-                $definitions[$c] = $this->_parseDefinitions($xml, $c);
+            if (!is_readable($filePath)) {
+                return null;
             }
-        } else {
-            $this->_lastError = libxml_get_last_error();
-            libxml_clear_errors();
-        }
 
-        libxml_use_internal_errors($prevUseErrors);
+            $prevUseErrors = libxml_use_internal_errors(true);
+            $xml = simplexml_load_file($filePath, 'SimpleXMLElement');
+
+            if ($xml) {
+                foreach ($categories as $c) {
+                    $definitions[$c] = $this->_parseDefinitions($xml, $c);
+                }
+            } else {
+                $this->_lastError = libxml_get_last_error();
+                libxml_clear_errors();
+            }
+
+            libxml_use_internal_errors($prevUseErrors);
+            $this->_cachedDefinitions = $definitions;
+        }
         return $definitions;
     }
 
@@ -886,6 +889,43 @@ class Abp01_Installer {
         return $ok;
     }
 
+    private function _installDataTranslationsForLanguage($langCode) {
+        $db = $this->_env->getDb();
+        $table = $this->_getLookupTableName();
+        $langTable = $this->_getLookupLangTableName();
+        $definitions = $this->_readLookupDefinitions();
+
+        foreach ($definitions as $category => $data) {
+            if (empty($data)) {
+                continue;
+            }
+
+            foreach ($data as $lookup) {
+                $defaultLabel = $lookup['default'];
+
+                $db->where('LOWER(lookup_label)', strtolower($defaultLabel));
+                $db->where('lookup_category', $category);
+                $id = intval($db->getValue($table, 'ID'));
+
+                if (!is_nan($id) && $id > 0) {
+                    $db->where('ID', $id);
+                    $db->where('lookup_lang', $langCode);
+                    $test = $db->getOne($langTable, 'COUNT(*) as cnt');
+
+                    if ($test && is_array($test) && $test['cnt'] == 0) {
+                        $db->insert($langTable, array(
+                            'ID' => $id,
+                            'lookup_lang' => $langCode,
+                            'lookup_label' => $lookup['translations'][$langCode]
+                        ));
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
     private function _installSchema() {
         $ok = true;
         $tables = array(
@@ -940,6 +980,20 @@ class Abp01_Installer {
         $lastError = trim($db->getLastError());
 
         return empty($lastError);
+    }
+
+    private function _addLookupCategoryIndexToLookupTable() {
+        $result = false;
+
+        try {
+            $db = $this->_env->getDb();
+            $db->rawQuery('ALTER TABLE `' . $this->_getLookupTableName() .  '` ADD INDEX `lookup_category` (`lookup_category`)');
+            $result = empty(trim($db->getLastError()));
+        } catch (Exception $exc) {
+            $result = false;
+        }
+
+        return $result;
     }
 
 	/**
