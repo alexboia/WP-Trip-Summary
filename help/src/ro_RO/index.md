@@ -295,9 +295,16 @@ Implicit, câmpul este bifat, deci butonul este afișat.
 
 #### Culoarea liniei track-ului de pe harta
 
-Acest camp permite setarea culorii cu care este desenat pe harta track-ul GPX.
+Acest camp permite setarea culorii liniei cu care este reprezentat pe harta track-ul GPS.
 Se aplica atat la viewer-ul din front-end cat si la editorul din back-end.
-Valoarea implicita este: #0033ff.
+Valoarea implicita este: #0033ff (un soi de albastru).
+
+#### Grosimea liniei track-ului de pe harta
+
+Acest camp permite setarea grosimii liniei (in pixeli) cu care este reprezentat pe harta track-ul GPS.
+Se aplica atat la viewer-ul din front-end cat si la editorul din back-end.
+Valoarea implicita este: 3 pixeli.
+
 
 [Înapoi la Cuprins](#help-root)
 

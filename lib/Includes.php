@@ -74,6 +74,8 @@ class Abp01_Includes {
 
 	const JS_ABP01_PROGRESS_OVERLAY = 'abp01-progress-overlay';
 
+	const JS_ABP01_NUMERIC_STEPPER = 'abp01-numeric-stepper';
+
 	const JS_ADMIN_MAIN = 'abp01-main-admin';
 
 	const JS_FRONTEND_MAIN = 'abp01-main-frontend';
@@ -105,6 +107,8 @@ class Abp01_Includes {
 	const STYLE_FRONTEND_MAIN = 'abp01-frontend-main-css';
 
 	const STYLE_JQUERY_TOASTR = 'jquery-toastr-css';
+
+	const STYLE_ABP01_NUMERIC_STEPPER = 'abp01-numeric-stepper-css';
 
 	const STYLE_ADMIN_COMMON = 'abp01-admin-common-css';
 
@@ -228,6 +232,13 @@ class Abp01_Includes {
 			'version' => '1.0'
 		), 
 
+		self::JS_ABP01_NUMERIC_STEPPER => array(
+			'path' => 'media/js/abp01-numeric-stepper.js', 
+			'version' => ABP01_VERSION,
+			'deps' => array(
+				self::JS_JQUERY
+			)
+		),
 		self::JS_ABP01_MAP => array(
 			'path' => 'media/js/abp01-map.js', 
 			'version' => ABP01_VERSION,
@@ -289,7 +300,8 @@ class Abp01_Includes {
 				self::JS_WP_COLOR_PICKER,
 				self::JS_JQUERY_BLOCKUI,
 				self::JS_URI_JS,
-				self::JS_ABP01_PROGRESS_OVERLAY
+				self::JS_ABP01_PROGRESS_OVERLAY,
+				self::JS_ABP01_NUMERIC_STEPPER
 			)
 		),
 		self::JS_ADMIN_LOOKUP_MGMT => array(
@@ -330,6 +342,13 @@ class Abp01_Includes {
 		self::STYLE_LEAFLET_FULLSCREEN => array(
 			'path' => 'media/js/3rdParty/leaflet-plugins/leaflet-fullscreen/leaflet.fullscreen.css', 
 			'version' => '0.0.4'
+		), 
+		self::STYLE_ABP01_NUMERIC_STEPPER => array(
+			'path' => 'media/css/abp01-numeric-stepper.css', 
+			'version' => ABP01_VERSION,
+			'deps' => array(
+				self::STYLE_DASHICONS
+			)
 		), 
 		self::STYLE_FRONTEND_MAIN => array(
 			'path' => 'media/css/abp01-frontend-main.css', 
@@ -421,7 +440,8 @@ class Abp01_Includes {
 			'alias' => self::STYLE_ADMIN_MAIN,
 			'deps' => array(
 				self::STYLE_WP_COLOR_PICKER,
-				self::STYLE_NPROGRESS
+				self::STYLE_NPROGRESS,
+				self::STYLE_ABP01_NUMERIC_STEPPER
 			)
 		),
 		self::STYLE_ADMIN_LOOKUP_MANAGEMENT => array(
@@ -611,7 +631,8 @@ class Abp01_Includes {
 				'attributionTxt' => esc_js($mainTileLayer->attributionTxt),
 				'attributionUrl' => esc_js($mainTileLayer->attributionUrl)
 			),
-			'trackLineColour' => $settings->getTrackLineColour()
+			'trackLineColour' => $settings->getTrackLineColour(),
+			'trackLineWeight' => $settings->getTrackLineWeight()
 		));
 	}
 

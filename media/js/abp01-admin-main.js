@@ -774,7 +774,9 @@
         $ctrlFormMapContainer.empty()
             .html(renderFormMapUploaded());
 
-        //due to the way the map is rendered, this needs to be initialized each time map rendering is attempted
+        //due to the way the map is rendered, 
+        //  this needs to be initialized each time 
+        //  map rendering is attempted
         initMapRetry();
         map = $('#abp01-map')
             .mapTrack({
@@ -783,6 +785,7 @@
                 iconBaseUrl: context.imgBase,
                 trackDataUrl: getAjaxLoadTrackUrl(),
                 trackLineColour: settings.trackLineColour,
+                trackLineWeight: settings.trackLineWeight,
                 handlePreLoad: function() {
                     showProgress(false, abp01MainL10n.lblGeneratingPreview);
                     $ctrlMapRetryContainer.hide();
@@ -823,7 +826,8 @@
     	return {
     		mapShowScale: abp01Settings.mapShowScale == 'true',
             mapTileLayer: abp01Settings.mapTileLayer || {},
-            trackLineColour: abp01Settings.trackLineColour || '#0033ff'
+            trackLineColour: abp01Settings.trackLineColour || '#0033ff',
+            trackLineWeight: abp01Settings.trackLineWeight || 3
     	};
     }
 

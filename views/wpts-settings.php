@@ -78,7 +78,11 @@
 							<label for="abp01-showTeaser"><?php echo esc_html__('Show teaser?', 'abp01-trip-summary'); ?></label>
 						</th>
 						<td>
-							<input name="showTeaser" id="abp01-showTeaser" type="checkbox" class="abp01-checkbox" value="true" <?php echo $data->settings->showTeaser ? 'checked="checked"' : ''; ?>/>
+							<input name="showTeaser" 
+								id="abp01-showTeaser" 
+								type="checkbox" 
+								class="abp01-checkbox" 
+								value="true" <?php echo $data->settings->showTeaser ? 'checked="checked"' : ''; ?>/>
 						</td>
 					</tr>
 					<tr>
@@ -86,7 +90,9 @@
 							<label for="abp01-topTeaserText"><?php echo esc_html__('Top teaser text', 'abp01-trip-summary'); ?>:</label>
 						</th>
 						<td>
-							<textarea name="topTeaserText" id="abp01-topTeaserText" class="regular-text abp01-textarea-input"><?php echo esc_html($data->settings->topTeaserText); ?></textarea>
+							<textarea name="topTeaserText" 
+								id="abp01-topTeaserText" 
+								class="regular-text abp01-textarea-input"><?php echo esc_html($data->settings->topTeaserText); ?></textarea>
 						</td>
 					</tr>
 					<tr>
@@ -94,7 +100,9 @@
 							<label for="abp01-bottomTeaserText"><?php echo esc_html__('Bottom teaser text', 'abp01-trip-summary'); ?>:</label>
 						</th>
 						<td>
-							<textarea name="bottomTeaserText" id="abp01-bottomTeaserText" class="regular-text abp01-textarea-input"><?php echo esc_html($data->settings->bottomTeaserText); ?></textarea>
+							<textarea name="bottomTeaserText" 
+								id="abp01-bottomTeaserText" 
+								class="regular-text abp01-textarea-input"><?php echo esc_html($data->settings->bottomTeaserText); ?></textarea>
 						</td>
 					</tr>
 				</table>
@@ -111,7 +119,11 @@
 							<label for="abp01-tileLayerUrl"><?php echo esc_html__('Tile layer URL template', 'abp01-trip-summary'); ?>:</label>
 						</th>
 						<td>
-							<input type="text" id="abp01-tileLayerUrl" name="tileLayerUrl" class="regular-text abp01-text-input" value="<?php echo esc_attr($data->settings->tileLayer->url); ?>" />
+							<input type="text" 
+								id="abp01-tileLayerUrl" 
+								name="tileLayerUrl" 
+								class="regular-text abp01-text-input" 
+								value="<?php echo esc_attr($data->settings->tileLayer->url); ?>" />
 						</td>
 					</tr>
 					<tr>
@@ -119,7 +131,11 @@
 							<label for="abp01-tileLayerAttributionUrl"><?php echo esc_html__('Tile layer attribution URL', 'abp01-trip-summary'); ?></label>
 						</th>
 						<td>
-							<input type="text" id="abp01-tileLayerAttributionUrl" name="tileLayerAttributionUrl" class="regular-text abp01-text-input" value="<?php echo esc_attr($data->settings->tileLayer->attributionUrl); ?>" />
+							<input type="text" 
+								id="abp01-tileLayerAttributionUrl" 
+								name="tileLayerAttributionUrl" 
+								class="regular-text abp01-text-input" 
+								value="<?php echo esc_attr($data->settings->tileLayer->attributionUrl); ?>" />
 						</td>
 					</tr>
 					<tr>
@@ -127,7 +143,11 @@
 							<label for="abp01-tileLayerAttributionTxt"><?php echo esc_html__('Tile layer attribution text', 'abp01-trip-summary'); ?></label>
 						</th>
 						<td>
-							<input type="text" id="abp01-tileLayerAttributionTxt" name="tileLayerAttributionTxt" class="regular-text abp01-text-input" value="<?php echo esc_attr($data->settings->tileLayer->attributionTxt); ?>" />
+							<input type="text" 
+								id="abp01-tileLayerAttributionTxt" 
+								name="tileLayerAttributionTxt" 
+								class="regular-text abp01-text-input" 
+								value="<?php echo esc_attr($data->settings->tileLayer->attributionTxt); ?>" />
 						</td>
 					</tr>
 					<tr>
@@ -135,7 +155,11 @@
 							<label for="abp01-showFullScreen"><?php echo esc_html__('Enable map fullscreen mode?', 'abp01-trip-summary'); ?></label>
 						</th>
 						<td>
-							<input type="checkbox" id="abp01-showFullScreen" name="showFullScreen" class="abp01-checkbox" value="true" <?php echo $data->settings->showFullScreen ? 'checked="checked"' : ''; ?>/>
+							<input type="checkbox" 
+								id="abp01-showFullScreen" 
+								name="showFullScreen" 
+								class="abp01-checkbox" 
+								value="true" <?php echo $data->settings->showFullScreen ? 'checked="checked"' : ''; ?>/>
 						</td>
 					</tr>
 					<tr>
@@ -143,7 +167,11 @@
 							<label for="abp01-showMagnifyingGlass"><?php echo esc_html__('Show magnifying glass?', 'abp01-trip-summary'); ?></label>
 						</th>
 						<td>
-							<input type="checkbox" id="abp01-showMagnifyingGlass" name="showMagnifyingGlass" class="abp01-checkbox" value="true" <?php echo $data->settings->showMagnifyingGlass ? 'checked="checked"' : ''; ?>/>
+							<input type="checkbox" 
+								id="abp01-showMagnifyingGlass" 
+								name="showMagnifyingGlass" 
+								class="abp01-checkbox" 
+								value="true" <?php echo $data->settings->showMagnifyingGlass ? 'checked="checked"' : ''; ?>/>
 						</td>
 					</tr>
 					<tr>
@@ -151,7 +179,11 @@
 							<label for="abp01-showMapScale"><?php echo esc_html__('Show map scale?', 'abp01-trip-summary'); ?></label>
 						</th>
 						<td>
-							<input type="checkbox" id="abp01-showMapScale" name="showMapScale" class="abp01-checkbox" value="true" <?php echo $data->settings->showMapScale ? 'checked="checked"' : ''; ?>/>
+							<input type="checkbox" 
+								id="abp01-showMapScale" 
+								name="showMapScale" 
+								class="abp01-checkbox" 
+								value="true" <?php echo $data->settings->showMapScale ? 'checked="checked"' : ''; ?>/>
 						</td>
 					</tr>
 					<tr>
@@ -159,7 +191,11 @@
 							<label for="abp01-allowTrackDownload"><?php echo esc_html__('Allow track download?', 'abp01-trip-summary'); ?></label>
 						</th>
 						<td>
-							<input type="checkbox" id="abp01-allowTrackDownload" name="allowTrackDownload" class="abp01-checkbox" value="true" <?php echo $data->settings->allowTrackDownload ? 'checked="checked"' : '' ?>/>
+							<input type="checkbox" 
+								id="abp01-allowTrackDownload" 
+								name="allowTrackDownload" 
+								class="abp01-checkbox" 
+								value="true" <?php echo $data->settings->allowTrackDownload ? 'checked="checked"' : '' ?>/>
 						</td>
 					</tr>
 					<tr>
@@ -174,11 +210,26 @@
 								data-default-color="#0033ff"  />
 						</td>
 					</tr>
+					<tr>
+						<th scope="row">
+							<label for="abp01-trackLineWeight"><?php echo esc_html__('Track line weight', 'abp01-trip-summary'); ?></label>
+						</th>
+						<td>
+							<input id="abp01-trackLineWeight" 
+								name="trackLineWeight" 
+								type="text" 
+								value="<?php echo esc_attr($data->settings->trackLineWeight); ?>" />
+						</td>
+					</tr>
 				</table>
 			</div>
 
 			<div class="apb01-settings-save">
-				<input type="button" id="abp01-submit-settings" name="abp01-submit-settings" class="button button-primary abp01-form-submit-btn" value="<?php echo esc_html__('Save settings', 'abp01-trip-summary'); ?>" />
+				<input type="button" 
+					id="abp01-submit-settings" 
+					name="abp01-submit-settings" 
+					class="button button-primary abp01-form-submit-btn" 
+					value="<?php echo esc_html__('Save settings', 'abp01-trip-summary'); ?>" />
 			</div>
 		</div>
 

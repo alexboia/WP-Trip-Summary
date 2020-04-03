@@ -16,7 +16,7 @@ Along the way, though, I thought there might be a chance of it being of use to s
 By and large, this plug-in manages the following sections:
 
 - a technical summary - details such as: total distance, total climb, surface/terrain type etc.;
-- the GPX track for the trip, displayed on a map with no additional ceremony besides two marker that pinpoint the start (green marker) and the end (red marker).
+- the GPS track for the trip, displayed on a map with no additional ceremony besides two marker that pinpoint the start (green marker) and the end (red marker).
 
 ### Supported Trip Types {#dg-trip-types}
 
@@ -277,14 +277,20 @@ By default, this field is checked, so the map scale is displayed.
 
 #### Allow Track Download?
 
-Once the field is unchecked and the changes are saved, the GPX track download button will no longer be displayed.
+Once the field is unchecked and the changes are saved, the GPS track download button will no longer be displayed.
 By default, this field is checked, so the button is displayed.
 
 #### Track line colour
 
-This field allows setting the colour used to plot the GPX track on the map. 
+This field allows setting the colour of the line used to plot the GPS track on the map. 
 Applies to both front-end viewer and back-end trip summary editor.
 The default value is the previously used colour: #0033ff.
+
+#### Track line weight
+
+This field allows setting the thickness, in pixels, of the line used to plot the GPS track on the map.
+Applies to both front-end viewer and back-end trip summary editor.
+The default value is the previously used thickness: 3 pixels.
 
 [Back to the Table of Contents](#help-root)
 

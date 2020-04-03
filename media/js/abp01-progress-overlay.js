@@ -31,6 +31,10 @@
 (function($) {
     "use strict";
 
+    //A small progress bar controller which 
+    //  displays a progress bar + progress message over a target element
+    //  using jQuery blockUI and NProgress
+
     $.fn.progressOverlay = function(spec) {
         var fsm = null;
         var $content = null;
@@ -197,8 +201,7 @@
                     //If NProgress has indeed completed, 
                     //  go ahead and clean-up
                     //Otherwise, queue the cleanup delegate again
-                    if (!NProgress.isStarted()) {
-                        NProgress.remove();
+                    if (!NProgress.isRendered()) {
                         getProgressLabel().text('');
                         getTarget().unblock();
                         isClosingProgressDialog = false;

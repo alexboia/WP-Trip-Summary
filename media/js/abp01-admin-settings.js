@@ -195,11 +195,19 @@
         $('#abp01-trackLineColour').wpColorPicker();
     }
 
+    function initTrackLineWeightStepper() {
+        $('#abp01-trackLineWeight').abp01NumericStepper({
+            maxValue: 10,
+            defaultValue: 3
+        });
+    }
+
     $(document).ready(function() {
         initFormState();
         initControls();
         initBlockUIDefaultStyles();
         initColoPickers();
+        initTrackLineWeightStepper();
         initListeners();
     });
 })(jQuery);

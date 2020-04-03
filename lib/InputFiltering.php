@@ -213,4 +213,30 @@ class Abp01_InputFiltering {
 			? $value === self::TRUE_VALUE
 			: false;
 	}
+
+	public static function getPOSTValueAsInteger($key, $default = 0) {
+		if (empty($key)) {
+			throw new InvalidArgumentException('The $key parameter may not be null or empty.');
+		}
+
+		$value = self::_extractPOSTValue($key);
+		if (!empty($value) && is_numeric($value)) {
+			return intval($value);
+		} else {
+			return $default;
+		}
+	}
+
+	public static function getGETValueAsInteger($key, $default = 0) {
+		if (empty($key)) {
+			throw new InvalidArgumentException('The $key parameter may not be null or empty.');
+		}
+
+		$value = self::_extractGETValue($key);
+		if (!empty($value) && is_numeric($value)) {
+			return intval($value);
+		} else {
+			return $default;
+		}
+	}
 }

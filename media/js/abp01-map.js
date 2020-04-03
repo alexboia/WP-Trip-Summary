@@ -48,7 +48,8 @@
             trackDownloadUrl: null,
             showScale: true,
             tileLayer: null,
-            trackLineColour: '#0033ff'
+            trackLineColour: '#0033ff',
+            trackLineWeight: 3
         }, opts);
         
         //tile layer is mandatory, so we will exit with error if not provided
@@ -215,7 +216,8 @@
                         path.push(L.latLng(coord.lat, coord.lng));
                     });
                     path = L.polyline(path, {
-                        color: opts.trackLineColour
+                        color: opts.trackLineColour,
+                        weight: opts.trackLineWeight
                     });
                     path.addTo(map);
                 });

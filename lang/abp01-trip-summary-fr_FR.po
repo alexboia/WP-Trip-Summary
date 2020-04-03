@@ -4,17 +4,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Trip Summary 0.2.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-trip-summary\n"
+"POT-Creation-Date: 2020-04-03 09:49+0300\n"
+"PO-Revision-Date: 2020-04-03 09:53+0300\n"
+"Last-Translator: \n"
 "Language-Team: \n"
+"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-03-31 09:37+0300\n"
-"PO-Revision-Date: 2020-03-31 10:55+0300\n"
 "X-Generator: Poedit 1.8.5\n"
 "X-Domain: abp01-trip-summary\n"
-"Last-Translator: \n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"Language: fr_FR\n"
 
 #. Plugin Name of the plugin
 msgid "WP Trip Summary"
@@ -29,8 +29,8 @@ msgid ""
 "Aids a travel blogger to add structured information about his tours (biking, "
 "hiking, train travels etc.)"
 msgstr ""
-"Ce module aide le blogueur de voyage à conserver des informations "
-"structurées sur ses circuits (vélo, randonnée, voyages en train, etc.)"
+"Ce module aide le blogueur de voyage à conserver des informations structurées "
+"sur ses circuits (vélo, randonnée, voyages en train, etc.)"
 
 #. Author of the plugin
 msgid "Alexandru Boia"
@@ -40,92 +40,90 @@ msgstr "Alexandru Boia"
 msgid "http://alexboia.net"
 msgstr "http://alexboia.net"
 
-#: abp01-plugin-main.php:556 views/wpts-editor.php:171
+#: abp01-plugin-main.php:558 views/wpts-editor.php:171
 msgid "Bike type"
 msgstr "Vélo recommandé"
 
-#: abp01-plugin-main.php:557 views/wpts-editor.php:130
-#: views/wpts-editor.php:196 views/wpts-frontend.php:71
-#: views/wpts-frontend.php:79
+#: abp01-plugin-main.php:559 views/wpts-editor.php:130 views/wpts-editor.php:196
+#: views/wpts-frontend.php:71 views/wpts-frontend.php:79
 msgid "Difficulty level"
 msgstr "Niveau de difficulté"
 
-#: abp01-plugin-main.php:558 views/wpts-editor.php:159
-#: views/wpts-editor.php:225 views/wpts-frontend.php:74
-#: views/wpts-frontend.php:82
+#: abp01-plugin-main.php:560 views/wpts-editor.php:159 views/wpts-editor.php:225
+#: views/wpts-frontend.php:74 views/wpts-frontend.php:82
 msgid "Path surface type"
 msgstr "Type de surface de piste"
 
-#: abp01-plugin-main.php:559
+#: abp01-plugin-main.php:561
 msgid "Railroad electrification status"
 msgstr "État d'électrification ferroviaire"
 
-#: abp01-plugin-main.php:560
+#: abp01-plugin-main.php:562
 msgid "Railroad line status"
 msgstr "Condition de la ligne de chemin de fer"
 
-#: abp01-plugin-main.php:561
+#: abp01-plugin-main.php:563
 msgid "Railroad line type"
 msgstr "Type de ligne de chemin de fer"
 
-#: abp01-plugin-main.php:562 views/wpts-editor.php:258
+#: abp01-plugin-main.php:564 views/wpts-editor.php:258
 #: views/wpts-frontend.php:88
 msgid "Railroad operators"
 msgstr "Compagnies ferroviaires"
 
-#: abp01-plugin-main.php:563
+#: abp01-plugin-main.php:565
 msgid "Recommended seasons"
 msgstr "Saisons recommandées"
 
-#: abp01-plugin-main.php:574
+#: abp01-plugin-main.php:576
 msgid "Clear info"
 msgstr "Supprimer les informations"
 
-#: abp01-plugin-main.php:575
+#: abp01-plugin-main.php:577
 msgid "Clear track"
 msgstr "Supprimer la trace GPS"
 
-#: abp01-plugin-main.php:576
+#: abp01-plugin-main.php:578
 msgid "GPX files"
 msgstr "Fichiers GPX"
 
-#: abp01-plugin-main.php:577
+#: abp01-plugin-main.php:579
 msgid "Generating preview. Please wait..."
 msgstr "Génération de l'aperçu. Attendez s'il vous plaît..."
 
-#: abp01-plugin-main.php:578
+#: abp01-plugin-main.php:580
 msgid "Uploading track"
 msgstr "Téléchargement de la trace GPS"
 
-#: abp01-plugin-main.php:579
+#: abp01-plugin-main.php:581
 msgid "The track has been uploaded and saved successfully"
 msgstr "La trace GPS a été téléchargée et enregistrée avec succès"
 
-#: abp01-plugin-main.php:580 views/wpts-editor.php:107
+#: abp01-plugin-main.php:582 views/wpts-editor.php:107
 msgid "Biking"
 msgstr "Aller à vélo"
 
-#: abp01-plugin-main.php:581 views/wpts-editor.php:110
+#: abp01-plugin-main.php:583 views/wpts-editor.php:110
 msgid "Hiking"
 msgstr "Randonnée"
 
-#: abp01-plugin-main.php:582
+#: abp01-plugin-main.php:584
 msgid "Train ride"
 msgstr "Voyage en train"
 
-#: abp01-plugin-main.php:583
+#: abp01-plugin-main.php:585
 msgid "Clearing track. Please wait..."
 msgstr "Je supprime la piste GPS. S'il vous plaît, attendez..."
 
-#: abp01-plugin-main.php:584
+#: abp01-plugin-main.php:586
 msgid "The track has been successfully cleared"
 msgstr "La piste GPS a été supprimée avec succès"
 
-#: abp01-plugin-main.php:585
+#: abp01-plugin-main.php:587
 msgid "The data could not be updated"
 msgstr "Les données n'ont pas été enregistrées"
 
-#: abp01-plugin-main.php:586
+#: abp01-plugin-main.php:588
 msgid ""
 "The data could not be updated due to a possible network error or an internal "
 "server issue"
@@ -133,19 +131,19 @@ msgstr ""
 "Les données n'ont pas été enregistrées en raison d'une éventuelle erreur "
 "réseau ou d'un problème interne du serveur"
 
-#: abp01-plugin-main.php:587
+#: abp01-plugin-main.php:589
 msgid "Saving data. Please wait..."
 msgstr "J'enregistre les données. S'il vous plaît, attendez..."
 
-#: abp01-plugin-main.php:588
+#: abp01-plugin-main.php:590
 msgid "The data has been saved"
 msgstr "Les données ont été enregistrées"
 
-#: abp01-plugin-main.php:589
+#: abp01-plugin-main.php:591
 msgid "The data could not be saved"
 msgstr "Les données n'ont pas été enregistrées"
 
-#: abp01-plugin-main.php:590
+#: abp01-plugin-main.php:592
 msgid ""
 "The data could not be saved due to a possible network error or an internal "
 "server issue"
@@ -153,19 +151,19 @@ msgstr ""
 "Les données n'ont pas été enregistrées en raison d'une éventuelle erreur "
 "réseau ou d'un problème interne du serveur"
 
-#: abp01-plugin-main.php:591
+#: abp01-plugin-main.php:593
 msgid "Clearing trip info. Please wait..."
 msgstr "Je supprime les données de voyage. S'il vous plaît, attendez..."
 
-#: abp01-plugin-main.php:592
+#: abp01-plugin-main.php:594
 msgid "The trip info has been cleared"
 msgstr "Les données de voyage ont été supprimées"
 
-#: abp01-plugin-main.php:593
+#: abp01-plugin-main.php:595
 msgid "The trip info could not be cleared"
 msgstr "Les données de voyage n'ont pas été supprimées"
 
-#: abp01-plugin-main.php:594
+#: abp01-plugin-main.php:596
 msgid ""
 "The trip info could not be cleared due to a possible network error or an "
 "internal server issue"
@@ -173,53 +171,53 @@ msgstr ""
 "Les données de voyage n'ont pas été supprimées en raison d'une éventuelle "
 "erreur réseau ou d'un problème interne du serveur"
 
-#: abp01-plugin-main.php:595 abp01-plugin-main.php:602
+#: abp01-plugin-main.php:597 abp01-plugin-main.php:604
 msgid "The selected file is too large. Maximum allowed size is 10MB"
 msgstr ""
 "Le fichier téléchargé est trop volumineux. La taille maximale autorisée est "
 "de 10 MB"
 
-#: abp01-plugin-main.php:596 abp01-plugin-main.php:601
+#: abp01-plugin-main.php:598 abp01-plugin-main.php:603
 msgid "The selected file type is not valid. Only GPX files are allowed"
 msgstr ""
 "Le type de fichier téléchargé n'est pas valide. Seuls les fichiers GPX sont "
 "autorisés"
 
-#: abp01-plugin-main.php:597 abp01-plugin-main.php:598
+#: abp01-plugin-main.php:599 abp01-plugin-main.php:600
 msgid "The file could not be read"
 msgstr "Le fichier n'a pas été lu"
 
-#: abp01-plugin-main.php:599
+#: abp01-plugin-main.php:601
 msgid "The uploader could not be initialized"
 msgstr "L'uploader n'a pas été initialisé"
 
-#: abp01-plugin-main.php:600 abp01-plugin-main.php:605
+#: abp01-plugin-main.php:602 abp01-plugin-main.php:607
 msgid "The file could not be uploaded"
 msgstr "Le fichier n'a pas été téléchargé"
 
-#: abp01-plugin-main.php:603
+#: abp01-plugin-main.php:605
 msgid "No file was uploaded"
 msgstr "Aucun fichier n'a été téléchargé"
 
-#: abp01-plugin-main.php:604
+#: abp01-plugin-main.php:606
 msgid "The file could not be uploaded due to a possible internal server issue"
 msgstr ""
 "Le fichier n'a pas pu être téléchargé en raison d'un éventuel problème "
 "interne du serveur"
 
-#: abp01-plugin-main.php:606
+#: abp01-plugin-main.php:608
 msgid "Choose options"
 msgstr "Choisissez vos options"
 
-#: abp01-plugin-main.php:607
+#: abp01-plugin-main.php:609
 msgid "{0} selected"
 msgstr "{0} options sélectionnées"
 
-#: abp01-plugin-main.php:608
+#: abp01-plugin-main.php:610
 msgid "Select all"
 msgstr "Sélectionnez toutes les options"
 
-#: abp01-plugin-main.php:618
+#: abp01-plugin-main.php:620
 msgid ""
 "The settings could not be saved due to a possible network error or an "
 "internal server issue"
@@ -227,38 +225,38 @@ msgstr ""
 "Les paramètres n'ont pas été enregistrés en raison d'une éventuelle erreur "
 "réseau ou d'un problème interne du serveur"
 
-#: abp01-plugin-main.php:619
+#: abp01-plugin-main.php:621
 msgid "The settings could not be saved due to a possible internal server issue"
 msgstr ""
 "Les paramètres n'ont pas été enregistrés en raison d'un éventuel problème "
 "interne du serveur"
 
-#: abp01-plugin-main.php:620
+#: abp01-plugin-main.php:622
 msgid "Settings successfully saved"
 msgstr "Les paramètres ont été enregistrés avec succès"
 
-#: abp01-plugin-main.php:621
+#: abp01-plugin-main.php:623
 msgid "Saving settings. Please wait..."
 msgstr "Enregistrement des paramètres. S'il vous plaît, attendez..."
 
-#: abp01-plugin-main.php:631
+#: abp01-plugin-main.php:633
 msgid "Working. Please wait..."
 msgstr "Manipulation en cours. S'il vous plaît, attendez..."
 
-#: abp01-plugin-main.php:632
+#: abp01-plugin-main.php:634
 msgid "Item successfully saved"
 msgstr "Élément enregistré avec succès"
 
-#: abp01-plugin-main.php:633 views/wpts-lookup-data-management.php:69
+#: abp01-plugin-main.php:635 views/wpts-lookup-data-management.php:69
 #: views/wpts-lookup-data-management.php:83
 msgid "Add new item"
 msgstr "Ajouter un nouvel élément"
 
-#: abp01-plugin-main.php:634
+#: abp01-plugin-main.php:636
 msgid "Modify item"
 msgstr "Modifier l'élément"
 
-#: abp01-plugin-main.php:635
+#: abp01-plugin-main.php:637
 msgid ""
 "The item could not be saved due to a possible network error or an internal "
 "server issue"
@@ -266,17 +264,17 @@ msgstr ""
 "L'élément n'a pas été enregistré en raison d'une éventuelle erreur réseau ou "
 "d'un problème interne du serveur"
 
-#: abp01-plugin-main.php:636
+#: abp01-plugin-main.php:638
 msgid "The item could not be saved due to a possible internal server issue"
 msgstr ""
 "L'élément n'a pas été enregistré en raison d'un éventuel problème interne du "
 "serveur"
 
-#: abp01-plugin-main.php:637
+#: abp01-plugin-main.php:639
 msgid "Confirm item removal"
 msgstr "Confirmer la suppression de l'élément"
 
-#: abp01-plugin-main.php:638
+#: abp01-plugin-main.php:640
 msgid ""
 "The item could not be deleted due to a possible network error or an internal "
 "server issue"
@@ -284,17 +282,17 @@ msgstr ""
 "L'élément n'a pas été supprimé en raison d'une éventuelle erreur réseau ou "
 "d'un problème interne du serveur"
 
-#: abp01-plugin-main.php:639
+#: abp01-plugin-main.php:641
 msgid "The item could not be deleted due to a possible internal server issue"
 msgstr ""
 "L'élément n'a pas été supprimé en raison d'un éventuel problème de serveur "
 "interne"
 
-#: abp01-plugin-main.php:640
+#: abp01-plugin-main.php:642
 msgid "The item has been successfully deleted"
 msgstr "L'élément a été supprimé avec succès"
 
-#: abp01-plugin-main.php:641
+#: abp01-plugin-main.php:643
 msgid ""
 "The lookup items could not be loaded due to a possible network error or an "
 "internal server issue"
@@ -302,154 +300,152 @@ msgstr ""
 "Les éléments n'ont pas été chargés en raison d'une éventuelle erreur réseau "
 "ou d'un problème interne du serveur"
 
-#: abp01-plugin-main.php:642
+#: abp01-plugin-main.php:644
 msgid "The lookup items could not be loaded"
 msgstr "Les éléments n'ont pas été chargés"
 
-#: abp01-plugin-main.php:659
+#: abp01-plugin-main.php:661
 msgid "Minimum required PHP version is %s"
 msgstr "La version PHP minimale requise est %s"
 
-#: abp01-plugin-main.php:661
+#: abp01-plugin-main.php:663
 msgid "Minimum required WP version is %s"
 msgstr "La version WP minimale requise est %s"
 
-#: abp01-plugin-main.php:663
+#: abp01-plugin-main.php:665
 msgid "LIBXML support was not found on your system"
 msgstr "L'extension LIBXML est introuvable sur votre système"
 
-#: abp01-plugin-main.php:665
-msgid ""
-"Mysqli extension was not found on your system or is not fully compatible"
-msgstr ""
-"L'extension MySQLi est introuvable sur votre système ou n'est pas "
-"entièrement compatible"
-
 #: abp01-plugin-main.php:667
+msgid "Mysqli extension was not found on your system or is not fully compatible"
+msgstr ""
+"L'extension MySQLi est introuvable sur votre système ou n'est pas entièrement "
+"compatible"
+
+#: abp01-plugin-main.php:669
 msgid "MySQL spatial support was not found on your system"
 msgstr ""
 "Les fonctionnalités spatiales de MySQL sont introuvables sur votre système"
 
-#: abp01-plugin-main.php:745 abp01-plugin-main.php:756
+#: abp01-plugin-main.php:747 abp01-plugin-main.php:758
 #: views/wpts-settings.php:42
 msgid "Trip Summary Settings"
 msgstr "Paramètres de WP Trip Summary"
 
-#: abp01-plugin-main.php:746
+#: abp01-plugin-main.php:748
 msgid "Trip Summary"
 msgstr "WP Trip Summary"
 
-#: abp01-plugin-main.php:757
+#: abp01-plugin-main.php:759
 msgid "Settings"
 msgstr "Paramètres"
 
-#: abp01-plugin-main.php:765 abp01-plugin-main.php:766
+#: abp01-plugin-main.php:767 abp01-plugin-main.php:768
 #: views/wpts-lookup-data-management.php:43
 msgid "Lookup data management"
 msgstr "Gestion des éléments de la nomenclature"
 
-#: abp01-plugin-main.php:772 abp01-plugin-main.php:773
+#: abp01-plugin-main.php:774 abp01-plugin-main.php:775
 msgid "Help"
 msgstr "Aide"
 
-#: abp01-plugin-main.php:846
+#: abp01-plugin-main.php:849
 msgid "The plugin cannot be installed on your system"
 msgstr "Ce plugin n'est pas compatible avec votre système"
 
-#: abp01-plugin-main.php:1124
+#: abp01-plugin-main.php:1129
 msgid "Unsupported unit system"
 msgstr "Le système d'unités n'est pas valide"
 
-#: abp01-plugin-main.php:1136
+#: abp01-plugin-main.php:1141
 msgid "Tile layer URL is required"
 msgstr "L'URL de la couche de tuiles de carte est obligatoire"
 
-#: abp01-plugin-main.php:1143
+#: abp01-plugin-main.php:1148
 msgid "Tile layer URL does not have a valid format"
 msgstr "L'URL de la couche de tuiles de carte n'a pas un format valide"
 
-#: abp01-plugin-main.php:1150
+#: abp01-plugin-main.php:1155
 msgid "Tile layer attribution URL does not have a valid format"
 msgstr ""
 "L'URL d'attribution de la couche de tuiles de carte n'a pas un format valide"
 
-#: abp01-plugin-main.php:1160
+#: abp01-plugin-main.php:1165
 msgid "The track line colour is not a valid HEX colour code"
 msgstr ""
 "La couleur de la ligne de trace GPS n'est pas un code de couleur HEX valide"
 
-#: abp01-plugin-main.php:1183
+#: abp01-plugin-main.php:1191
 msgid "The settings could not be saved. Please try again."
 msgstr "Les paramètres n'ont pas été enregistrés. Réessayer, s'il vous plaît."
 
-#: abp01-plugin-main.php:1335 abp01-plugin-main.php:1395
+#: abp01-plugin-main.php:1343 abp01-plugin-main.php:1403
 msgid "The default label is mandatory"
 msgstr "L'étiquette par défaut est obligatoire"
 
-#: abp01-plugin-main.php:1344
+#: abp01-plugin-main.php:1352
 msgid "The lookup item could not be created"
 msgstr "L'élément n'a pas été enregistré"
 
-#: abp01-plugin-main.php:1355
-msgid ""
-"The lookup item has been created, but the translation could not be saved"
+#: abp01-plugin-main.php:1363
+msgid "The lookup item has been created, but the translation could not be saved"
 msgstr ""
 "L'élément de recherche a été enregistré, mais la traduction n'a pas été "
 "enregistrée"
 
-#: abp01-plugin-main.php:1417
+#: abp01-plugin-main.php:1425
 msgid "The lookup item could not be modified"
 msgstr "L'élément n'a pas été enregistré"
 
-#: abp01-plugin-main.php:1460
+#: abp01-plugin-main.php:1468
 msgid "The item translation could not be deleted."
 msgstr "La traduction de l'élément n'a pas été supprimée."
 
-#: abp01-plugin-main.php:1466
+#: abp01-plugin-main.php:1474
 msgid "The item could not be deleted because it is still in use"
 msgstr "L'élément n'a pas été supprimé car il est en cours d'utilisation"
 
-#: abp01-plugin-main.php:1473
+#: abp01-plugin-main.php:1481
 msgid "The item could not be deleted"
 msgstr "L'élément n'a pas été supprimé"
 
-#: abp01-plugin-main.php:1521 abp01-plugin-main.php:1639
+#: abp01-plugin-main.php:1529 abp01-plugin-main.php:1668
 msgid "The data could not be saved due to a possible database error"
 msgstr ""
 "Les données n'ont pas été enregistrées en raison d'une possible erreur de "
 "base de données"
 
-#: abp01-plugin-main.php:1778
+#: abp01-plugin-main.php:1808
 msgid "Track file could not be parsed"
 msgstr "Le fichier de la piste GPS n'a pas été analysé"
 
-#: abp01-plugin-main.php:1781
+#: abp01-plugin-main.php:1811
 msgid "Track file not found or is not readable"
 msgstr "Le fichier de la piste GPS est introuvable ou n'est pas lisible"
 
-#: abp01-plugin-main.php:1883
+#: abp01-plugin-main.php:1913
 msgid "The data could not be updated due to a possible database error"
 msgstr ""
 "Les données n'ont pas été enregistrées en raison d'une possible erreur de "
 "base de données"
 
-#: abp01-plugin-main.php:1916
+#: abp01-plugin-main.php:1946
 msgid "Trip summary info"
 msgstr "Informations sur le voyage"
 
-#: abp01-plugin-main.php:1918
+#: abp01-plugin-main.php:1948
 msgid "Trip summary track"
 msgstr "Piste GPS"
 
-#: abp01-plugin-main.php:1960 abp01-plugin-main.php:1970
+#: abp01-plugin-main.php:1990 abp01-plugin-main.php:2000
 msgid "Yes"
 msgstr "Oui"
 
-#: abp01-plugin-main.php:1961 abp01-plugin-main.php:1971
+#: abp01-plugin-main.php:1991 abp01-plugin-main.php:2001
 msgid "No"
 msgstr "Non"
 
-#: abp01-plugin-main.php:1963 abp01-plugin-main.php:1973
+#: abp01-plugin-main.php:1993 abp01-plugin-main.php:2003
 msgid "Not available"
 msgstr "Indisponible"
 
@@ -457,7 +453,7 @@ msgstr "Indisponible"
 msgid "Default"
 msgstr "Défaut"
 
-#: lib/Settings.php:186 tests/test-Settings.php:152
+#: lib/Settings.php:191 tests/test-Settings.php:156
 msgid ""
 "For the pragmatic sort, there is also a trip summary at the bottom of this "
 "page. Click here to consult it"
@@ -465,7 +461,7 @@ msgstr ""
 "Pour la personne pragmatique, il y a aussi un résumé du voyage au bas de "
 "cette page. Cliquez ici pour le consulter"
 
-#: lib/Settings.php:190 tests/test-Settings.php:148
+#: lib/Settings.php:195 tests/test-Settings.php:152
 msgid ""
 "It looks like you skipped the story. You should check it out. Click here to "
 "go back to beginning"
@@ -501,9 +497,9 @@ msgstr "Choisissez le type de votre voyage"
 msgid "Train Ride"
 msgstr "Voyage en train"
 
-#: views/wpts-editor.php:122 views/wpts-editor.php:188
-#: views/wpts-editor.php:246 views/wpts-frontend.php:69
-#: views/wpts-frontend.php:77 views/wpts-frontend.php:85
+#: views/wpts-editor.php:122 views/wpts-editor.php:188 views/wpts-editor.php:246
+#: views/wpts-frontend.php:69 views/wpts-frontend.php:77
+#: views/wpts-frontend.php:85
 msgid "Total distance"
 msgstr "Distance totale"
 
@@ -516,17 +512,15 @@ msgstr "Ascension totale"
 msgid "-- Choose an option --"
 msgstr "-- Choisis une option --"
 
-#: views/wpts-editor.php:138 views/wpts-editor.php:154
-#: views/wpts-editor.php:166 views/wpts-editor.php:178
-#: views/wpts-editor.php:204 views/wpts-editor.php:220
-#: views/wpts-editor.php:232 views/wpts-editor.php:265
-#: views/wpts-editor.php:277 views/wpts-editor.php:289
-#: views/wpts-editor.php:301
+#: views/wpts-editor.php:138 views/wpts-editor.php:154 views/wpts-editor.php:166
+#: views/wpts-editor.php:178 views/wpts-editor.php:204 views/wpts-editor.php:220
+#: views/wpts-editor.php:232 views/wpts-editor.php:265 views/wpts-editor.php:277
+#: views/wpts-editor.php:289 views/wpts-editor.php:301
 msgid ""
 "No items to select from. Visit the lookup data management page to add some."
 msgstr ""
-"Il n'y a aucun élément à sélectionner. Vous pouvez créer de nouveaux "
-"éléments dans la page de gestion de la nomenclature"
+"Il n'y a aucun élément à sélectionner. Vous pouvez créer de nouveaux éléments "
+"dans la page de gestion de la nomenclature"
 
 #: views/wpts-editor.php:143 views/wpts-editor.php:209
 #: views/wpts-frontend.php:72 views/wpts-frontend.php:80
@@ -644,8 +638,8 @@ msgstr "Annuler"
 #: views/wpts-lookup-data-management.php:113
 msgid "Are you sure you want to delete this item? This action cannot be undone"
 msgstr ""
-"Êtes-vous sûr de bien vouloir supprimer cet élément? Cette action ne peut "
-"pas être annulée"
+"Êtes-vous sûr de bien vouloir supprimer cet élément? Cette action ne peut pas "
+"être annulée"
 
 #: views/wpts-lookup-data-management.php:116
 msgid "Only delete item translation"
@@ -690,54 +684,58 @@ msgstr "Ces paramètres configurent le lecteur de résumé de voyage"
 msgid "Show teaser?"
 msgstr "Afficher le texte d'accroche?"
 
-#: views/wpts-settings.php:86
+#: views/wpts-settings.php:90
 msgid "Top teaser text"
 msgstr "Texte d'accroche supérieur"
 
-#: views/wpts-settings.php:94
+#: views/wpts-settings.php:100
 msgid "Bottom teaser text"
 msgstr "Texte d'accroche inférieur"
 
-#: views/wpts-settings.php:103
+#: views/wpts-settings.php:111
 msgid "Map Settings"
 msgstr "Paramètres de la carte"
 
-#: views/wpts-settings.php:105
+#: views/wpts-settings.php:113
 msgid "These settings configure the map component"
 msgstr "Ces paramètres configurent la façon dont la carte est affichée"
 
-#: views/wpts-settings.php:111
+#: views/wpts-settings.php:119
 msgid "Tile layer URL template"
 msgstr "Modèle d'URL source de la couche de tuiles de carte"
 
-#: views/wpts-settings.php:119
+#: views/wpts-settings.php:131
 msgid "Tile layer attribution URL"
 msgstr "URL d'attribution de la source de la couche de tuiles de carte"
 
-#: views/wpts-settings.php:127
+#: views/wpts-settings.php:143
 msgid "Tile layer attribution text"
 msgstr "Texte d'attribution de source de la couche de tuiles"
 
-#: views/wpts-settings.php:135
+#: views/wpts-settings.php:155
 msgid "Enable map fullscreen mode?"
 msgstr "Autoriser le mode plein écran de la carte?"
 
-#: views/wpts-settings.php:143
+#: views/wpts-settings.php:167
 msgid "Show magnifying glass?"
 msgstr "Autoriser l'utilisation de la loupe?"
 
-#: views/wpts-settings.php:151
+#: views/wpts-settings.php:179
 msgid "Show map scale?"
 msgstr "Afficher l'échelle de la carte?"
 
-#: views/wpts-settings.php:159
+#: views/wpts-settings.php:191
 msgid "Allow track download?"
 msgstr "Autoriser le téléchargement de la trace GPS?"
 
-#: views/wpts-settings.php:167
+#: views/wpts-settings.php:203
 msgid "Track line colour"
-msgstr "Couleur de la ligne de piste"
+msgstr "Couleur de la ligne de trace GPS"
 
-#: views/wpts-settings.php:181
+#: views/wpts-settings.php:215
+msgid "Track line weight"
+msgstr "Largeur de la ligne de trace GPS"
+
+#: views/wpts-settings.php:232
 msgid "Save settings"
 msgstr "Enregistrer les paramètres"

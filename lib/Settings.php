@@ -94,6 +94,11 @@ class Abp01_Settings {
 	const OPT_TRACK_LINE_COLOUR = 'trackLineColour';
 
 	/**
+	 * Key for the "track line weight" setting
+	 */
+	const OPT_TRACK_LINE_WEIGHT = 'trackLineWeight';
+
+	/**
 	 * The key used to store the serialized settings, using the WP options API
 	 * */
 	const OPT_SETTINGS_KEY = 'abp01.settings';
@@ -294,6 +299,15 @@ class Abp01_Settings {
 
 	public function setTrackLineColour($colourHex) {
 		$this->_setOption(self::OPT_TRACK_LINE_COLOUR, 'string', $colourHex);
+		return $this;
+	}
+
+	public function getTrackLineWeight() {
+		return $this->_getOption(self::OPT_TRACK_LINE_WEIGHT, 'integer', 3);
+	}
+
+	public function setTrackLineWeight($weight) {
+		$this->_setOption(self::OPT_TRACK_LINE_WEIGHT, 'integer', $weight);
 		return $this;
 	}
 

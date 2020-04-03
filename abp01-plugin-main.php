@@ -263,7 +263,7 @@ function abp01_extract_post_ids($posts) {
 
 	if (!empty($posts) && is_array($posts)) {
 		foreach ($posts as $post) {
-			if (isset($post->ID)) {
+			if (is_object($post) && isset($post->ID)) {
 				$postIds[] = intval($post->ID);
 			}
 		}
@@ -1087,6 +1087,7 @@ function abp01_admin_settings_page() {
 	$data->settings->showMapScale = $settings->getShowMapScale();
 	$data->settings->allowTrackDownload = $settings->getAllowTrackDownload();
 	$data->settings->trackLineColour = $settings->getTrackLineColour();
+	$data->settings->trackLineWeight = $settings->getTrackLineWeight();
 
 	//fetch all the allowed unit systems
 	$data->settings->allowedUnitSystems = array();
@@ -1164,7 +1165,9 @@ function abp01_save_admin_settings_page_save() {
 		$response->message = esc_html__('The track line colour is not a valid HEX colour code', 'abp01-trip-summary');
 		abp01_send_json($response);
 	}
-	
+
+	//collect track line weight
+	$trackLineWeight = max(1, Abp01_InputFiltering::getPOSTValueAsInteger('trackLineWeight', 3));
 
 	//fill in and save settings
 	$settings = abp01_get_settings();
@@ -1177,6 +1180,7 @@ function abp01_save_admin_settings_page_save() {
 	$settings->setShowMapScale(Abp01_InputFiltering::getPOSTValueAsBoolean('showMapScale'));
 	$settings->setAllowTrackDownload(Abp01_InputFiltering::getPOSTValueAsBoolean('allowTrackDownload'));
 	$settings->setTrackLineColour($trackLineColour);
+	$settings->setTrackLineWeight($trackLineWeight);
 
 	$settings->setTileLayers($tileLayer);
 	$settings->setUnitSystem($unitSystem);
