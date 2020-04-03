@@ -147,7 +147,7 @@ class Abp01_Includes {
 	private static $_scripts = array(
 		self::JS_URI_JS => array(
 			'path' => 'media/js/3rdParty/uri/URI.js', 
-			'version' => '1.14.1'
+			'version' => '1.19.2'
 		), 
 		self::JS_JQUERY_VISIBLE => array(
 			'path' => 'media/js/3rdParty/visible/jquery.visible.js', 
