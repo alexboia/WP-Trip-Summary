@@ -607,7 +607,11 @@ function abp01_get_main_admin_script_translations() {
 		'errServerUploadFail' =>  esc_html__('The file could not be uploaded', 'abp01-trip-summary'),
 		'selectBoxPlaceholder' => esc_html__('Choose options', 'abp01-trip-summary'),
 		'selectBoxCaptionFormat' => esc_html__('{0} selected', 'abp01-trip-summary'),
-		'selectBoxSelectAllText' => esc_html__('Select all', 'abp01-trip-summary')
+		'selectBoxSelectAllText' => esc_html__('Select all', 'abp01-trip-summary'),
+		'lblStatusTextTripSummaryInfoPresent' => esc_html__('Trip summary information is present for this post', 'abp01-trip-summary'),
+		'lblStatusTextTripSummaryInfoNotPresent' => esc_html__('Trip summary information is not present for this post', 'abp01-trip-summary'),
+		'lblStatusTextTripSummaryTrackPresent' => esc_html__('Trip summary track is present for this post', 'abp01-trip-summary'),
+		'lblStatusTextTripSummaryTrackNotPresent' => esc_html__('Trip summary track is not present for this post', 'abp01-trip-summary')
 	);
 }
 
@@ -910,6 +914,33 @@ function abp01_add_editor_media_buttons() {
 	if (abp01_can_edit_trip_summary(null)) {
 		abp01_render_techbox_button(new stdClass());
 	}
+}
+
+function abp01_register_metaboxes($postType, $post) {
+	if ($postType == 'post' || $postType == 'page') {
+		add_meta_box('abp01-enhanced-editor-launcher-metabox', 
+			__('Trip summary', 'abp01-trip-summary'),
+			'abp01_add_enhanced_editor_launcher', 
+			$postType, 
+			'side', 
+			'high', 
+			array(
+				'postType' => $postType,
+				'post' => $post
+			));
+	}
+}
+
+function abp01_add_enhanced_editor_launcher($post, $args) {
+	$postId = intval($post->ID);
+	$routeManager = abp01_get_route_manager();
+
+	$data = new stdClass();
+	$data->postId = $postId;
+	$data->hasRouteTrack = $routeManager->hasRouteTrack($postId);
+	$data->hasRouteInfo = $routeManager->hasRouteInfo($postId);
+
+	require abp01_get_env()->getViewFilePath('wpts-editor-launcher-metabox.php');
 }
 
 /**
@@ -2045,6 +2076,7 @@ if (function_exists('register_uninstall_hook')) {
 
 if (function_exists('add_action')) {
 	add_action('media_buttons', 'abp01_add_editor_media_buttons', 20);
+	add_action('add_meta_boxes', 'abp01_register_metaboxes', 10, 2);
 	add_action('admin_enqueue_scripts', 'abp01_add_admin_styles');
 	add_action('admin_enqueue_scripts', 'abp01_add_admin_scripts');
 	add_action('edit_form_after_editor', 'abp01_add_admin_editor');

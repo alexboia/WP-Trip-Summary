@@ -58,14 +58,18 @@
 
     var baseTitle = null;
     var progressBar = null;
-    var currentTourType = null;
-    var formInfoRendered = false;
-    var formMapRendered = false;
-    var firstTime = true;
+    var currentRouteInfoType = null;
     var uploader = null;
     var settings = null;
     var context = null;
     var map = null;
+
+    var editorWindowState = {
+        isOpen: false,
+        firstTime: true,
+        formInfoRendered: false,
+        routeTrackFormRendered: false
+    };
 
     /**
      * Configuration objects - they are initialized at startup
@@ -92,6 +96,7 @@
     var $ctrlSave = null;
     var $ctrlMapRetry = null;
     var $ctrlMapRetryContainer = null;
+    var $tplQuickActionsTooltip = null;
 
     /**
      * Cache rendered content
@@ -104,6 +109,30 @@
 
     var contentFormMapUnselected = null;
     var contentFormMapUploaded = null;
+
+    function hasRouteInfo() {
+        return context.hasRouteInfo;
+    }
+
+    function setHasRouteInfo(flag) {
+        context.hasRouteInfo = flag;
+    }
+
+    function hasRouteTrack() {
+        return context.hasRouteTrack;
+    }
+
+    function setHasRouteTrack(flag) {
+        context.hasRouteTrack = flag;
+    }
+
+    function maybeTrace(text) {
+        if (settings._env.WP_DEBUG 
+            && window.console 
+            && $.isFunction(console.log)) {
+            console.log(text);
+        }
+    }
 
     /**
      * Templates and rendering functions
@@ -144,11 +173,24 @@
         return contentFormMapUploaded;
     }
 
-    function renderFormInfoUnselected() {
+    function renderRouteInfoTypeSelector() {
         if (contentFormInfoUnselected == null) {
             contentFormInfoUnselected = kite('#tpl-abp01-formInfo-unselected')();
         }
         return contentFormInfoUnselected;
+    }
+    
+    function getQuickActionsTooltipTemplate() {
+        if ($tplQuickActionsTooltip == null) {
+            $tplQuickActionsTooltip = kite('#tpl-abp01-quick-actions-tooltip');
+        }
+        return $tplQuickActionsTooltip;
+    }
+
+    function renderQuickActionsTooltip() {
+        return getQuickActionsTooltipTemplate()({
+            context: context
+        });
     }
 
     function updateTitle(title) {
@@ -164,17 +206,27 @@
      * */
 
     function toastMessage(success, message) {
+        var toastrTarget = editorWindowState.isOpen 
+            ? '#abp01-editor-content' 
+            : 'body';
+
+        maybeTrace('Showing toast message with target: <' + toastrTarget + '>');
+
         if (success) {
-            toastr.success(message);
+            toastr.success(message, null, {
+                target: toastrTarget
+            });
         } else {
-            toastr.error(message);
+            toastr.error(message, null, {
+                target: toastrTarget
+            });
         }
     }
 
     function showProgress(progress, text) {
-        if ($ctrlEditor.data('isBlocked')) {
-            return;
-        }
+        var $target = editorWindowState.isOpen 
+            ? $ctrlEditor 
+            : $('#wpwrap');
 
         var isDeterminate = progress !== false;
         if (progressBar != null) {
@@ -184,7 +236,7 @@
             });
         } else {
             progressBar = $('#tpl-abp01-progress-container').progressOverlay({
-                $target: $ctrlEditor,
+                $target: $target,
                 determinate: isDeterminate,
                 progress: progress,
                 message: text
@@ -213,7 +265,7 @@
         }
     }
 
-    function toggleFormInfoReset(enable) {
+    function toggleFormInfoResetBtn(enable) {
         if (enable) {
             var resetHandler = arguments.length == 2 ? arguments[1] : null;
             $ctrlResetTechBox.text(abp01MainL10n.btnClearInfo).show();
@@ -224,7 +276,7 @@
         }
     }
 
-    function toggleFormMapReset(enable) {
+    function toggleRouteTrackMapResetBtn(enable) {
         if (enable) {
             var resetHandler = arguments.length == 2 ? arguments[1] : null;
             $ctrlResetTechBox.text(abp01MainL10n.btnClearTrack).show();
@@ -286,14 +338,14 @@
         });
     }
 
-    function selectFormInfoTourType(type, clearForm) {
-        currentTourType = type;
+    function selectRouteInfoType(type, clearForm) {
+        currentRouteInfoType = type;
         $ctrlFormInfoContainer.empty();
 
         if (typeof typeSelectRenderers[type] === 'function') {
             $ctrlFormInfoContainer.html(typeSelectRenderers[type]());
             prepareSelectBoxes($ctrlFormInfoContainer);
-            toggleFormInfoReset(true, resetFormInfo);
+            toggleFormInfoResetBtn(true, resetRouteInfoForm);
             updateTitle(typeTitles[type]);
 
             if (clearForm) {
@@ -303,8 +355,8 @@
             $ctrlSave.show();
         } else {
             updateTitle(null);
-            toggleFormInfoReset(false);
-            currentTourType = null;
+            toggleFormInfoResetBtn(false);
+            currentRouteInfoType = null;
             $ctrlSave.hide();
         }
     }
@@ -313,11 +365,7 @@
      * Tour info editor management functions
      * */
 
-    function isFormInfoSaved() {
-        return context.isFormInfoSaved;
-    }
-
-    function initFormInfo() {
+    function initRouteInfoForm() {
         typeSelectRenderers[TOUR_TYPE_BIKE] = renderFormInfoBikeTour;
         typeSelectRenderers[TOUR_TYPE_HIKING] = renderFormInfoHikingTour;
         typeSelectRenderers[TOUR_TYPE_TRAIN_RIDE] = renderFormInfoTrainRideTour;
@@ -327,50 +375,64 @@
         typeTitles[TOUR_TYPE_TRAIN_RIDE] = abp01MainL10n.lblTypeTrainRide;
     }
 
-    function resetFormInfo() {
+    function resetRouteInfoForm() {
         $ctrlSave.hide();
         clearInputValues($ctrlFormInfoContainer);
-        if (isFormInfoSaved()) {
-            clearInfo();
+        if (hasRouteInfo()) {
+            maybeTrace('Route info present and persisted. Need to clear that first...');
+            clearRouteInfo();
         } else {
-            switchToFormInfoSelection();
+            maybeTrace('Route info not present or not persisted. Switching to info  type selection...');
+            switchToRouteInfoTypeSelection();
         }
     }
 
-    function switchToFormInfoSelection() {
-        currentTourType = null;
+    function switchToRouteInfoTypeSelection() {
+        if (editorWindowState.formInfoRendered) {
+            maybeTrace('Route info form rendered. Clearing form and rendering route info type selector...');
 
-        toggleFormInfoReset(false);
-        destroySelectBoxes($ctrlFormInfoContainer);
-        updateTitle(null);
+            currentRouteInfoType = null;
 
-        $ctrlFormInfoContainer.empty()
-            .html(renderFormInfoUnselected());
+            toggleFormInfoResetBtn(false);
+            destroySelectBoxes($ctrlFormInfoContainer);
+
+            $ctrlFormInfoContainer.empty().html(renderRouteInfoTypeSelector());
+            updateTitle(null);
+        } else {
+            maybeTrace('Route info form not rendered. Resetting initial route info typ...');
+            context.initialRouteInfoType = null;
+        }
     }
 
-    function showFormInfo($container) {
-        if (!formInfoRendered) {
-            var crType = window.abp01_tourType || null;
-            if (!crType) {
-                $container.html(renderFormInfoUnselected());
+    function showRouteInfoForm($container) {
+        if (!editorWindowState.formInfoRendered) {
+            maybeTrace('Route info form not renedered. Rendering form...');
+
+            var initialRouteInfoType = context.initialRouteInfoType;
+            if (!initialRouteInfoType) {
+                maybeTrace('No selected route info type found. Rendering route info type selector...');
+                $container.html(renderRouteInfoTypeSelector());
             } else {
-                selectFormInfoTourType(crType, false);
+                maybeTrace('Route info type found: <' + initialRouteInfoType + '>. Rendering route info form...');
+                selectRouteInfoType(initialRouteInfoType, false);
             }
-            formInfoRendered = true;
+
+            //Route info form now rendered; mark it as such.
+            editorWindowState.formInfoRendered = true;
         }
 
-        toggleFormMapReset(false);
-        if (!currentTourType) {
-            toggleFormInfoReset(false);
+        toggleRouteTrackMapResetBtn(false);
+        if (!currentRouteInfoType) {
+            toggleFormInfoResetBtn(false);
         } else {
-            toggleFormInfoReset(true, resetFormInfo);
+            toggleFormInfoResetBtn(true, resetRouteInfoForm);
         }
     }
 
-    function getFormInfoValues($container) {
+    function getRouteInfoFormValues($container) {
         var $input = $container.find('input,select,textarea');
         var values = {
-            type: currentTourType
+            type: currentRouteInfoType
         };
 
         function isMultiCheckbox(inputName) {
@@ -432,18 +494,19 @@
         return values;
     }
 
-    function saveInfo() {
+    function saveRouteInfo() {
         showProgress(false, abp01MainL10n.lblSavingDataWait);
         $.ajax(getAjaxEditInfoUrl(), {
             type: 'POST',
             dataType: 'json',
-            data: getFormInfoValues($ctrlFormInfoContainer)
+            data: getRouteInfoFormValues($ctrlFormInfoContainer)
         }).done(function(data, status, xhr) {
             hideProgress();
             if (data) {
                 if (data.success) {
                     toastMessage(true, abp01MainL10n.lblDataSaveOk);
-                    context.isFormInfoSaved = true;
+                    setHasRouteInfo(true);
+                    refreshEnhancedEditor();
                 } else {
                     toastMessage(false, data.message || abp01MainL10n.lblDataSaveFail);
                 }
@@ -456,7 +519,7 @@
         });
     }
 
-    function clearInfo() {
+    function clearRouteInfo() {
         showProgress(false, abp01MainL10n.lblClearingInfoWait);
         $.ajax(getAjaxClearInfoUrl(), {
             type: 'POST',
@@ -466,9 +529,10 @@
             hideProgress();
             if (data) {
                 if (data.success) {
-                    switchToFormInfoSelection();
+                    switchToRouteInfoTypeSelection();
                     toastMessage(true, abp01MainL10n.lblClearInfoOk);
-                    context.isFormInfoSaved = false;
+                    setHasRouteInfo(false);
+                    refreshEnhancedEditor();
                 } else {
                     toastMessage(false, data.message || abp01MainL10n.lblClearInfoFail);
                 }
@@ -501,7 +565,7 @@
         });
     }
 
-    function initFormMap() {
+    function initRouteTrackForm() {
         uploaderErrors.client[plupload.FILE_SIZE_ERROR] = abp01MainL10n.errPluploadTooLarge;
         uploaderErrors.client[plupload.FILE_EXTENSION_ERROR] = abp01MainL10n.errPluploadFileType;
         uploaderErrors.client[plupload.IO_ERROR] = abp01MainL10n.errPluploadIoError;
@@ -524,22 +588,23 @@
      * 4. updates the context so that we know that we don't have a map and a track anymore
      * @return void
      * */
-    function resetFormMap() {
-        map.destroyMap();
-        map = null;
+    function resetRouteTrackForm() {
+        if (editorWindowState.routeTrackFormRendered) {
+            map.destroyMap();
+            map = null;
 
-        context.hasTrack = false;
-        $ctrlFormMapContainer.empty().html(renderFormMapUnselected());
-        $ctrlMapRetryContainer.hide();
+            $ctrlFormMapContainer.empty().html(renderFormMapUnselected());
+            $ctrlMapRetryContainer.hide();
 
-        toggleFormMapReset(false);
-        createTrackUploader();
+            toggleRouteTrackMapResetBtn(false);
+            createTrackUploader();
+        }
     }
 
-    function showFormMap($container) {
-        if (!formMapRendered) {
-            formMapRendered = true;
-            if (!context.hasTrack) {
+    function showRouteTrackForm($container) {
+        if (!editorWindowState.routeTrackFormRendered) {
+            editorWindowState.routeTrackFormRendered = true;
+            if (!hasRouteTrack()) {
                 $container.html(renderFormMapUnselected());
                 createTrackUploader();
             } else {
@@ -551,15 +616,15 @@
             }
         }
 
-        toggleFormInfoReset(false);
-        if (!context.hasTrack) {
-            toggleFormMapReset(false);
+        toggleFormInfoResetBtn(false);
+        if (!hasRouteTrack()) {
+            toggleRouteTrackMapResetBtn(false);
         } else {
-            toggleFormMapReset(true, clearTrack);
+            toggleRouteTrackMapResetBtn(true, clearRouteTrack);
         }
     }
 
-    function clearTrack() {
+    function clearRouteTrack() {
         showProgress(false, abp01MainL10n.lblClearingTrackWait);
         $.ajax(getAjaxClearTrackUrl(), {
             type: 'POST',
@@ -568,8 +633,10 @@
         }).done(function(data, status, xhr) {
             hideProgress();
             if (data && data.success) {
-                resetFormMap();
+                resetRouteTrackForm();
                 toastMessage(true, abp01MainL10n.lblTrackClearOk);
+                setHasRouteTrack(false);
+                refreshEnhancedEditor();
             } else {
                 toastMessage(false, data.message || abp01MainL10n.lblTrackClearFail);
             }
@@ -715,13 +782,14 @@
     }
 
     function handleUploaderCompleted(upl) {
-        context.hasTrack = true;
+        setHasRouteTrack(true);
         uploader.disableBrowse(false);
 
         destroyTrackUploader();
-        toggleFormMapReset(true, clearTrack);
+        toggleRouteTrackMapResetBtn(true, clearRouteTrack);
         toastMessage(true, abp01MainL10n.lblTrackUploaded);
         showMap();
+        refreshEnhancedEditor();
     }
 
     function handleChunkCompleted(upl, file, info) {
@@ -811,19 +879,24 @@
             imgBase: window['abp01_imgBase'] || null,
             nonceGet: $('#abp01-nonce-get').val(),
             postId: window['abp01_postId'] || 0,
-            hasTrack: window['abp01_hasTrack'] || 0,
+            hasRouteTrack: window['abp01_hasTrack'] || 0,
+            initialRouteInfoType: window['abp01_tourType'] || null,
+            hasRouteInfo: !!window['abp01_tourType'],
             ajaxBaseUrl: window['abp01_ajaxUrl'] || null,
             ajaxLoadTrackAction: window['abp01_ajaxGetTrackAction'] || null,
             ajaxUploadTrackAction: window['abp01_ajaxUploadTrackAction'] || null,
             ajaxEditInfoAction: window['abp01_ajaxEditInfoAction'] || null,
             ajaxClearTrackAction: window['abp01_ajaxClearTrackAction'] || null,
-            ajaxClearInfoAction: window['abp01_ajaxClearInfoAction'] || null,
-            isFormInfoSaved: !!window['abp01_tourType']
+            ajaxClearInfoAction: window['abp01_ajaxClearInfoAction'] || null
         };
     }
     
     function getSettings() {
     	return {
+            _env: $.extend({
+                WP_DEBUG: false
+            }, abp01Settings._env || {}),
+
     		mapShowScale: abp01Settings.mapShowScale == 'true',
             mapTileLayer: abp01Settings.mapTileLayer || {},
             trackLineColour: abp01Settings.trackLineColour || '#0033ff',
@@ -861,12 +934,12 @@
     }
 
     function initEventHandlers() {
-        $ctrlResetTechBox .click(function() {
+        $ctrlResetTechBox.click(function() {
             executeResetAction();
         });
 
         $ctrlSave.click(function() {
-            saveInfo();
+            saveRouteInfo();
         });
 
         $(document)
@@ -877,9 +950,126 @@
                 $.unblockUI();
             })
 
+            .on('click', '#abp01-quick-remove-info', {}, function() {
+                Tipped.hideAll();
+                clearRouteInfo();
+            })
+            .on('click', '#abp01-quick-remove-track', {}, function() {
+                Tipped.hideAll();
+                clearRouteTrack();
+            })
+
             .on('click', 'a[data-action=abp01-typeSelect]', {}, function() {
-                selectFormInfoTourType($(this).attr('data-type'), true);
+                selectRouteInfoType($(this).attr('data-type'), true);
             });
+    }
+
+    function toggleEnhancedEditorStatusItemIcon($item, hasAsset) {
+        $item.find('.launcher-icon')
+            .removeClass('dashicons-yes-alt')
+            .removeClass('dashicons-dismiss')
+            .addClass(hasAsset ? 'dashicons-yes-alt' : 'dashicons-dismiss');
+    }   
+
+    function toggleEnhancedEditorStatusItemText($item, hasAsset, hasAssetText, doesntHaveAssetText) {
+        $item.find('.launch-editor-trigger').attr('data-status-text', hasAsset 
+            ? hasAssetText 
+            : doesntHaveAssetText);
+    }   
+
+    function refreshEnhancedEditor() {
+        refreshEnhancedEditorStatusItems();
+        refreshEnhancedEditorTooltips();
+        refreshEnhancedEditorQuickActions();
+    }
+
+    function refreshEnhancedEditorQuickActions() {
+        if (context.hasRouteInfo || context.hasRouteTrack) {
+            $('#abp01-quick-actions-trigger').show();
+            $('#abp01-quick-actions-tooltip').html(renderQuickActionsTooltip());
+        } else {
+            $('#abp01-quick-actions-trigger').hide();
+        }
+        
+        $('#abp01-quick-actions-tooltip').hide();
+    }
+
+    function refreshEnhancedEditorStatusItems() {
+        var $infoItem = $('#abp01-editor-launcher-status-trip-summary-info');
+        var $trackItem = $('#abp01-editor-launcher-status-trip-summary-track');
+        
+        toggleEnhancedEditorStatusItemIcon($infoItem, context.hasRouteInfo);
+        toggleEnhancedEditorStatusItemText($infoItem, context.hasRouteInfo, 
+            abp01MainL10n.lblStatusTextTripSummaryInfoPresent, 
+            abp01MainL10n.lblStatusTextTripSummaryInfoNotPresent);
+
+        toggleEnhancedEditorStatusItemIcon($trackItem, context.hasRouteTrack);
+        toggleEnhancedEditorStatusItemText($trackItem, context.hasRouteTrack, 
+            abp01MainL10n.lblStatusTextTripSummaryTrackPresent, 
+            abp01MainL10n.lblStatusTextTripSummaryTrackNotPresent);
+    }
+
+    function addSimpleTooltip(elementId) {
+        var selector = '#' + elementId;
+        var position = arguments.length == 2 && !!arguments[1]
+            ? arguments[1] 
+            : 'left';
+
+        Tipped.create(selector, $(selector).attr('data-status-text'), {
+            position: position
+        });
+    }
+
+    function addControllerTooltip(elementId) {
+        var selector = '#' + elementId;
+        var $element = $(selector);
+
+        if ($element.size() > 0) {
+            var controllerSelector = $element.attr('data-controller-selector');
+            if (!!controllerSelector) {
+                Tipped.create(selector, {
+                    inline: controllerSelector,
+                    skin: 'light',
+                    hideOn: false,
+                    hideAfter: 1000
+                });
+            }
+        }
+    }
+
+    function initEnhancedEditorTooltips() {
+        $.each({
+            'abp01-editor-launcher-status-trip-summary-info a': 'simple', 
+            'abp01-editor-launcher-status-trip-summary-track a': 'simple', 
+            'abp01-edit-trigger': 'simple',
+            'abp01-quick-actions-trigger': 'controller'
+            }, function(selector, mode){
+                if (mode == 'simple') {
+                    addSimpleTooltip(selector);
+                } else {
+                    addControllerTooltip(selector);
+                }
+            });
+    }
+
+    function cleanupEhancedEditorTooltips() {
+        $.each([
+            'abp01-editor-launcher-status-trip-summary-info a', 
+            'abp01-editor-launcher-status-trip-summary-track a', 
+            'abp01-edit-trigger', 
+            'abp01-quick-actions-trigger'
+            ], function(idx, selector){
+                Tipped.remove('#' + selector)
+            });
+    }
+
+    function refreshEnhancedEditorTooltips() {
+        cleanupEhancedEditorTooltips();
+        initEnhancedEditorTooltips();
+    }
+
+    function initEnhancedEditorLauncher() {
+        initEnhancedEditorTooltips();
     }
 
     function initEditor() {
@@ -887,6 +1077,7 @@
         initToastMessages();
         initEditorControls();
         initEventHandlers();
+        initEnhancedEditorLauncher();
     }
 
     function openEditor() {
@@ -901,14 +1092,24 @@
                 boxShadow: '0 5px 15px rgba(0, 0, 0, 0.7)'
             },
             onBlock: function() {
-                if (firstTime) {
+                //First time we open the editor, set everything up
+                if (editorWindowState.firstTime) {
                     initTabs();
-                    firstTime = false;
+                    editorWindowState.firstTime = false;
                 } else {
+                    //Otherwise, if map is not null AND is visible,
+                    //  force a refresh
                     if (map != null && $ctrlFormMapContainer.is(':visible')) {
                         map.forceRedraw();
                     }
                 }
+
+                //Editor window is now open
+                editorWindowState.isOpen = true;
+            },
+            onUnblock: function() {
+                //Editor window is now closed
+                editorWindowState.isOpen = false;
             }
         });
     }
@@ -963,8 +1164,8 @@
      * */
 
     function initTabs() {
-        tabHandlers['abp01-form-info'] = showFormInfo;
-        tabHandlers['abp01-form-map'] = showFormMap;
+        tabHandlers['abp01-form-info'] = showRouteInfoForm;
+        tabHandlers['abp01-form-map'] = showRouteTrackForm;
 
         $ctrlEditorTabs = $('#abp01-editor-content').easytabs({
             animate: false,
@@ -996,7 +1197,7 @@
 
         configureUploaderFilters();
         initEditor();
-        initFormInfo();
-        initFormMap();
+        initRouteInfoForm();
+        initRouteTrackForm();
     });
 })(jQuery);

@@ -477,3 +477,111 @@ a.abp01-close-editor:hover {
     padding-top: 15px;
 }
 /* END Sumo Select overrides */
+
+#abp01-editor-launcher-actions {
+    padding: 10px;
+    clear: both;
+    border-top: 1px solid #ddd;
+    background: #f5f5f5;
+    display: block;
+    box-sizing: border-box;
+}
+
+#abp01-enhanced-editor-launcher-metabox .inside {
+    padding: 0;
+    margin: 0;
+}
+
+.abp01-editor-launcher-status-item {
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.abp01-editor-launcher-status-item a {
+    text-shadow: 0px 1px 1px #f5f5f5;
+}
+
+.abp01-editor-launcher-status-item .dashicons-yes-alt {
+    display: inline-block;
+    color: #46b450;
+    font-size: 30px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+    opacity: 0.5;
+}
+
+.abp01-editor-launcher-status-item .dashicons-dismiss {
+    display: inline-block;
+    color: #dc3232;
+    font-size: 30px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+    opacity: 0.5;
+}
+
+#abp01-editor-launcher-status-trip-summary-track {
+    border-top: 1px solid #ddd;
+}
+
+.abp01-editor-launcher-status-item .status-text,
+.abp01-editor-launcher-status-item .status-text:hover,
+.abp01-editor-launcher-status-item .status-text:active,
+.abp01-editor-launcher-status-item .status-text:visited {
+    color: #72777c;
+    font-size: 16px;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+    padding-left: 5px;
+    opacity: 0.8;
+    text-decoration: none;
+}
+
+#abp01-editor-launcher-actions .quick-actions {
+    float: left;
+}
+
+#abp01-editor-launcher-actions .quick-actions a {
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+}
+
+#abp01-editor-launcher-actions .launch-edit {
+    float: right;
+}
+
+.abp01-quick-actions-tooltip {
+    white-space: nowrap;
+}
+
+.abp01-quick-actions-tooltip a {
+    margin-right: 5px;
+    padding-right: 5px;
+    margin-left: 0px;
+    padding-left: 0px;
+    border-right: 1px solid #72777c;
+    display: block;
+    float: left;
+}
+
+.abp01-quick-actions-tooltip a,
+.abp01-quick-actions-tooltip a:active,
+.abp01-quick-actions-tooltip a:visited {
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.abp01-quick-actions-tooltip a:hover {
+    text-decoration: underline;
+}
+.abp01-quick-actions-tooltip a:last-of-type {
+    padding-right: 0px;
+    margin-right: 0px;
+    border-right: 0px none;
+}

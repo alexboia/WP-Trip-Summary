@@ -70,6 +70,8 @@ class Abp01_Includes {
 
 	const JS_KITE_JS = 'kite-js';
 
+	const JS_TIPPED_JS = 'tipped-js';
+
 	const JS_ABP01_MAP = 'abp01-map';
 
 	const JS_ABP01_PROGRESS_OVERLAY = 'abp01-progress-overlay';
@@ -107,6 +109,8 @@ class Abp01_Includes {
 	const STYLE_FRONTEND_MAIN = 'abp01-frontend-main-css';
 
 	const STYLE_JQUERY_TOASTR = 'jquery-toastr-css';
+
+	const STYLE_TIPPED_JS = 'tipped-js-css';
 
 	const STYLE_ABP01_NUMERIC_STEPPER = 'abp01-numeric-stepper-css';
 
@@ -231,6 +235,10 @@ class Abp01_Includes {
 			'path' => 'media/js/3rdParty/kite.js', 
 			'version' => '1.0'
 		), 
+		self::JS_TIPPED_JS => array(
+			'path' => 'media/js/3rdParty/tipped/js/tipped.js', 
+			'version' => '4.7.0'
+		),
 
 		self::JS_ABP01_NUMERIC_STEPPER => array(
 			'path' => 'media/js/abp01-numeric-stepper.js', 
@@ -273,6 +281,7 @@ class Abp01_Includes {
 				self::JS_KITE_JS,
 				self::JS_URI_JS,
 				self::JS_LEAFLET,
+				self::JS_TIPPED_JS,
 				self::JS_ABP01_PROGRESS_OVERLAY,
 				self::JS_ABP01_MAP
 			)
@@ -422,6 +431,10 @@ class Abp01_Includes {
 			'path' => 'media/js/3rdParty/toastr/toastr.css', 
 			'version' => '2.1.4'
 		), 
+		self::STYLE_TIPPED_JS => array(
+			'path' => 'media/js/3rdParty/tipped/css/tipped.css', 
+			'version' => '4.7.0'
+		),
 		self::STYLE_ADMIN_COMMON => array(
 			'path' => 'media/css/abp01-admin-common.css', 
 			'version' => ABP01_VERSION
@@ -433,7 +446,8 @@ class Abp01_Includes {
 				self::STYLE_NPROGRESS,
 				self::STYLE_LEAFLET,
 				self::STYLE_SUMO_SELECT,
-				self::STYLE_JQUERY_TOASTR
+				self::STYLE_JQUERY_TOASTR,
+				self::STYLE_TIPPED_JS
 			)
 		),
 		self::STYLE_ADMIN_SETTINGS => array(
@@ -621,6 +635,9 @@ class Abp01_Includes {
 		$mainTileLayer = $tileLayers[0];
 
 		wp_localize_script($scriptHandle, 'abp01Settings', array(
+			'_env' => array(
+				'WP_DEBUG' => defined('WP_DEBUG') && WP_DEBUG === true
+			),
 			'showTeaser' => $settings->getShowTeaser() ? 'true' : 'false', 
 			'mapShowFullScreen' => $settings->getShowFullScreen() ? 'true' : 'false', 
 			'mapShowMagnifyingGlass' => $settings->getShowMagnifyingGlass() ? 'true' : 'false', 
