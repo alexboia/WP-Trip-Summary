@@ -109,13 +109,13 @@ The following fields are available:
 
 ### The track
 
-I really wanted to host the GPX tracks myself for various reasons:
+I really wanted to host the GPS tracks myself for various reasons:
 
 - Didn't want to depend on any third party provider;
 - It was good fun writing this feature;
 - I want to use the resulting data in the near future to do some other stuff on my website.
 
-Thus, I developed a module to do just that: upload a GPX track, parse it and display it.
+Thus, I developed a module to do just that: upload a GPS track (currently only GPX files can be uploaded), parse it and display it.
 
 ## Supported languages
 <a name="wpts-langs"></a>  
