@@ -9,19 +9,32 @@ An opinionated, multi-language, WordPress trip summary plugin to help travel blo
 
 ## Contents
 
-   1. [Features](#wpts-features)
-   2. [Progress](#wpts-progress)
-   3. [What it does](#wpts-what-does)
-   4. [Supported languages](#wpts-langs)
-   5. [Changelog](#wpts-changelog)
-   6. [Upgrade notices](#wpts-upgrade-notices)
-   7. [Roadmap](#wpts-roadmap)
-   8. [Requirements](#wpts-requirements)
-   9. [Limitations](#wpts-limitations)
-   10. [Screenshots](#wpts-screenshots)
-   11. [Contributing](#wpts-contributing)
-   12. [Credits](#wpts-credits)
-   13. [License](#wpts-license)
+   1. [Is it good for you?](#wpts-isitgoodforyou)
+   2. [Features](#wpts-features)
+   3. [Progress](#wpts-progress)
+   4. [What it does](#wpts-what-does)
+   5. [Supported languages](#wpts-langs)
+   6. [Changelog](#wpts-changelog)
+   7. [Upgrade notices](#wpts-upgrade-notices)
+   8. [Roadmap](#wpts-roadmap)
+   9. [Requirements](#wpts-requirements)
+   10. [Limitations](#wpts-limitations)
+   11. [Screenshots](#wpts-screenshots)
+   12. [Contributing](#wpts-contributing)
+   13. [Credits](#wpts-credits)
+   14. [License](#wpts-license)
+
+## Is it good for you?
+<a name="wpts-isitgoodforyou"></a>  
+
+This plug-in is very good for you if:
+
+- you are a travel blogger and you're writing a lot about your tripsas, as this is a very good way of also providing a bit of extra information (actually, I'm the occasional travel blogger myself and I wrote it with this very purpose in mind).
+- you are a niche travel agency, as this would be a very helpful tool to have a highly professional approach to presenting your trips;
+- you are a hotel or an accomodation unit and want to present the options your guests would have for spending time around you;
+- you are government agency concerned with promoting turistic attractions, as you can have a website up and running in no time: just install WordPress, add this plug-in and you are ready to go.
+
+Do you think this would be right for you but there's that extra thing that's missing? [Let's chat!](https://github.com/alexboia/WP-Trip-Summary/issues/new/choose).
 
 ## Features
 <a name="wpts-features"></a>  
