@@ -205,6 +205,10 @@
      * Window state management
      * */
 
+    function scrollToTop() {
+        $('body,html').scrollTop(0);
+    }
+
     function toastMessage(success, message) {
         var toastrTarget = editorWindowState.isOpen 
             ? '#abp01-editor-content' 
@@ -878,6 +882,7 @@
             nonce: $('#abp01-nonce').val(),
             imgBase: window['abp01_imgBase'] || null,
             nonceGet: $('#abp01-nonce-get').val(),
+            nonceDownload: $('#abp01-nonce-download').val(),
             postId: window['abp01_postId'] || 0,
             hasRouteTrack: window['abp01_hasTrack'] || 0,
             initialRouteInfoType: window['abp01_tourType'] || null,
@@ -887,7 +892,8 @@
             ajaxUploadTrackAction: window['abp01_ajaxUploadTrackAction'] || null,
             ajaxEditInfoAction: window['abp01_ajaxEditInfoAction'] || null,
             ajaxClearTrackAction: window['abp01_ajaxClearTrackAction'] || null,
-            ajaxClearInfoAction: window['abp01_ajaxClearInfoAction'] || null
+            ajaxClearInfoAction: window['abp01_ajaxClearInfoAction'] || null,
+            downloadTrackAction: window['abp01_downloadTrackAction'] || null
         };
     }
     
@@ -944,23 +950,27 @@
 
         $(document)
             .on('click', 'a[data-action=abp01-openTechBox]', {}, function() {
-                openEditor();
+                var openWithTab = $(this).attr('data-select-tab');
+                openEditor(openWithTab);
             })
             .on('click', 'a[data-action=abp01-closeTechBox]', {}, function() {
                 $.unblockUI();
             })
 
             .on('click', '#abp01-quick-remove-info', {}, function() {
+                scrollToTop();
                 Tipped.hideAll();
-                clearRouteInfo();
+                resetRouteInfoForm();
             })
             .on('click', '#abp01-quick-remove-track', {}, function() {
+                scrollToTop();
                 Tipped.hideAll();
                 clearRouteTrack();
             })
 
             .on('click', 'a[data-action=abp01-typeSelect]', {}, function() {
-                selectRouteInfoType($(this).attr('data-type'), true);
+                var routeInfoType = $(this).attr('data-type');
+                selectRouteInfoType(routeInfoType, true);
             });
     }
 
@@ -984,14 +994,20 @@
     }
 
     function refreshEnhancedEditorQuickActions() {
+        var $quickActionsTrigger = $('#abp01-quick-actions-trigger');
+        var $quickActionsTooltip = $('#abp01-quick-actions-tooltip');
+
         if (context.hasRouteInfo || context.hasRouteTrack) {
-            $('#abp01-quick-actions-trigger').show();
-            $('#abp01-quick-actions-tooltip').html(renderQuickActionsTooltip());
+            maybeTrace('Has route info or route track. Showing actions trigger...');
+            $quickActionsTrigger.show();
         } else {
-            $('#abp01-quick-actions-trigger').hide();
+            $quickActionsTrigger.hide();
+            maybeTrace('Does not have route info nor route track. Hiding actions trigger...');
         }
-        
-        $('#abp01-quick-actions-tooltip').hide();
+
+        $quickActionsTooltip
+            .html(renderQuickActionsTooltip())
+            .hide();
     }
 
     function refreshEnhancedEditorStatusItems() {
@@ -1031,7 +1047,9 @@
                     inline: controllerSelector,
                     skin: 'light',
                     hideOn: false,
-                    hideAfter: 1000
+                    hideAfter: 1000,
+                    showDelay: 100,
+                    showOn: 'click'
                 });
             }
         }
@@ -1081,8 +1099,11 @@
     }
 
     function openEditor() {
-        var $window = $(window);
         var blockUICss = $.blockUI.defaults.css;
+
+        var openWithTab = arguments.length == 1 && typeof arguments[0] == 'string'
+            ? arguments[0]
+            : null;
 
         $.blockUI({
             message: $ctrlEditor,
@@ -1092,6 +1113,9 @@
                 boxShadow: '0 5px 15px rgba(0, 0, 0, 0.7)'
             },
             onBlock: function() {
+                //Editor window is now open
+                editorWindowState.isOpen = true;
+
                 //First time we open the editor, set everything up
                 if (editorWindowState.firstTime) {
                     initTabs();
@@ -1104,8 +1128,10 @@
                     }
                 }
 
-                //Editor window is now open
-                editorWindowState.isOpen = true;
+                //If requested, select a specific tab
+                if (!!openWithTab) {
+                    $ctrlEditorTabs.easytabs('select', openWithTab);
+                }
             },
             onUnblock: function() {
                 //Editor window is now closed
@@ -1159,6 +1185,14 @@
             .toString();
     }
 
+    function getDownloadTrackUrl() {
+        return URI(context.ajaxBaseUrl)
+            .addSearch('action', context.downloadTrackAction)
+            .addSearch('abp01_nonce_download', context.nonceDownload)
+            .addSearch('abp01_postId', context.postId)
+            .toString();
+    }
+
     /**
      * Editor tabs management functions
      * */
@@ -1176,13 +1210,13 @@
         });
 
         $ctrlEditorTabs.bind('easytabs:after', function(e, $clicked, $target, settings) {
-            selectTab($target);
+            processTabSelected($target);
         });
 
-        selectTab($('#abp01-form-info'));
+        processTabSelected($('#abp01-form-info'));
     }
 
-    function selectTab($target) {
+    function processTabSelected($target) {
         var target = $target.attr('id');
         if (typeof tabHandlers[target] == 'function') {
             tabHandlers[target]($target);

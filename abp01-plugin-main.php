@@ -138,6 +138,14 @@ function abp01_get_help_file_for_locale($locale) {
 		$locale);
 }
 
+function abp01_get_ajax_baseurl() {
+	return abp01_get_env()->getAjaxBaseUrl();
+}
+
+function abp01_get_cachebuster() {
+	return sha1(microtime() .  uniqid());
+}
+
 /**
  * Dumps information about the given variable.
  * It uses xdebug_var_dump if available, otherwise it falls back to the standard var_dump, wrapping it in <pre /> tags.
@@ -683,12 +691,12 @@ function abp01_get_main_frontend_translations() {
 }
 
 /**
- * Render the button that opens the editor, in the post creation or post edit screen
+ * Render the editour launcher metabox, in the post creation or post edit screen
  * @param stdClass $data Context data
  * @return void
  */
-function abp01_render_techbox_button(stdClass $data) {
-	require_once abp01_get_env()->getViewFilePath('wpts-button.php');
+function abp01_render_trip_summary_launcher_metabox(stdClass $data) {
+	require_once abp01_get_env()->getViewFilePath('wpts-editor-launcher-metabox.php');
 }
 
 /**
@@ -696,7 +704,7 @@ function abp01_render_techbox_button(stdClass $data) {
  * @param stdClass $data The existing trip summary and context data
  * @return void
  */
-function abp01_render_techbox_editor(stdClass $data) {
+function abp01_render_trip_summary_editor(stdClass $data) {
 	require_once abp01_get_env()->getViewHelpersFilePath('controls.php');
 	require_once abp01_get_env()->getViewFilePath('wpts-editor.php');
 }
@@ -787,7 +795,7 @@ function abp01_create_admin_menu() {
  * @param stdClass $data The trip summary and context data
  * @return void
  */
-function abp01_render_techbox_frontend(stdClass $data) {
+function abp01_render_trip_summary_frontend(stdClass $data) {
 	$locations = abp01_get_frontend_template_locations();
 	$themeHelpers = $locations->theme . '/helpers/controls.frontend.php';
 
@@ -813,7 +821,7 @@ function abp01_render_techbox_frontend(stdClass $data) {
  * Render the trip summary teaser
  * @param stdClass $data The trip summary and context data
  */
-function abp01_render_techbox_frontend_teaser(stdClass $data) {	
+function abp01_render_trip_summary_frontend_teaser(stdClass $data) {	
 	$locations = abp01_get_frontend_template_locations();
 	$themeHelpers = $locations->theme . '/helpers/controls.frontend.php';
 
@@ -905,17 +913,6 @@ function abp01_init_plugin() {
 	$installer->updateIfNeeded();
 }
 
-/**
- * Add the button that opens the editor, in the post creation or post edit screen.
- * For now, it simply requests the button be rendered, without any further actions being taken
- * @return void
- */
-function abp01_add_editor_media_buttons() {
-	if (abp01_can_edit_trip_summary(null)) {
-		abp01_render_techbox_button(new stdClass());
-	}
-}
-
 function abp01_register_metaboxes($postType, $post) {
 	if ($postType == 'post' || $postType == 'page') {
 		add_meta_box('abp01-enhanced-editor-launcher-metabox', 
@@ -939,6 +936,13 @@ function abp01_add_enhanced_editor_launcher($post, $args) {
 	$data->postId = $postId;
 	$data->hasRouteTrack = $routeManager->hasRouteTrack($postId);
 	$data->hasRouteInfo = $routeManager->hasRouteInfo($postId);
+
+	$data->trackDownloadUrl = add_query_arg(array(
+		'action' => ABP01_ACTION_DOWNLOAD_TRACK,
+		'abp01_nonce_download' => abp01_create_download_track_nonce($postId),
+		'abp01_postId' => $postId,
+		'_cb' => abp01_get_cachebuster()
+	), abp01_get_ajax_baseurl());
 
 	require abp01_get_env()->getViewFilePath('wpts-editor-launcher-metabox.php');
 }
@@ -991,14 +995,17 @@ function abp01_add_admin_editor($post) {
 	$data->ajaxGetTrackAction = ABP01_ACTION_GET_TRACK;	
 	$data->ajaxClearTrackAction = ABP01_ACTION_CLEAR_TRACK;
 	$data->ajaxClearInfoAction = ABP01_ACTION_CLEAR_INFO;
+	$data->downloadTrackAction = ABP01_ACTION_DOWNLOAD_TRACK;
 
-	$data->ajaxUrl = get_admin_url(null, 'admin-ajax.php', 'admin');
-	$data->imgBaseUrl = plugins_url('media/img', __FILE__);
 	$data->nonce = abp01_create_edit_nonce($data->postId);
 	$data->nonceGet = abp01_create_get_track_nonce($data->postId);	
+	$data->nonceDownload = abp01_create_download_track_nonce($data->postId);
 
+	$data->ajaxUrl = abp01_get_ajax_baseurl();
+	$data->imgBaseUrl = plugins_url('media/img', __FILE__);
 	$data->flashUploaderUrl = includes_url('js/plupload/plupload.flash.swf');
 	$data->xapUploaderUrl = includes_url('js/plupload/plupload.silverlight.xap');
+
 	$data->uploadMaxFileSize = ABP01_TRACK_UPLOAD_MAX_FILE_SIZE;
 	$data->uploadChunkSize = ABP01_TRACK_UPLOAD_CHUNK_SIZE;
 	$data->uploadKey = ABP01_TRACK_UPLOAD_KEY;
@@ -1014,7 +1021,7 @@ function abp01_add_admin_editor($post) {
 	}
 
 	//finally, render the editor	
-	abp01_render_techbox_editor($data);
+	abp01_render_trip_summary_editor($data);
 }
 
 /**
@@ -1100,7 +1107,7 @@ function abp01_admin_settings_page() {
 	$data = new stdClass();
 	$data->nonce = abp01_create_edit_settings_nonce();
 	$data->ajaxSaveAction = ABP01_ACTION_SAVE_SETTINGS;
-	$data->ajaxUrl = get_admin_url(null, 'admin-ajax.php', 'admin');
+	$data->ajaxUrl = abp01_get_ajax_baseurl();
 
 	//fetch and process tile layer information
 	$settings = abp01_get_settings();
@@ -1293,7 +1300,7 @@ function abp01_admin_lookup_page() {
 	$data->context->addLookupAction = ABP01_ACTION_ADD_LOOKUP;
 	$data->context->editLookupAction = ABP01_ACTION_EDIT_LOOKUP;
 	$data->context->deleteLookupAction = ABP01_ACTION_DELETE_LOOKUP;
-	$data->context->ajaxBaseUrl = get_admin_url(null, 'admin-ajax.php', 'admin');
+	$data->context->ajaxBaseUrl = abp01_get_ajax_baseurl();
 
 	//render the page
 	abp01_admin_lookup_page_render($data);
@@ -1614,8 +1621,8 @@ function abp01_get_info_data($postId) {
 		//current context information
 		$data->postId = $postId;
 		$data->nonceGet = abp01_create_get_track_nonce($postId);
-		$data->nonceDownload = abp01_create_download_track_nonce($data->postId);	
-		$data->ajaxUrl = get_admin_url(null, 'admin-ajax.php', 'admin');
+		$data->nonceDownload = abp01_create_download_track_nonce($data->postId);
+		$data->ajaxUrl = abp01_get_ajax_baseurl();
 		$data->ajaxGetTrackAction = ABP01_ACTION_GET_TRACK;
 		$data->downloadTrackAction = ABP01_ACTION_DOWNLOAD_TRACK;
 		$data->imgBaseUrl = plugins_url('media/img', __FILE__);
@@ -1661,11 +1668,11 @@ function abp01_get_info($content) {
 	//render the teaser and the viewer and attach the results to the post content
 	if ($data->info->exists || $data->track->exists) {
 		ob_start();
-		abp01_render_techbox_frontend_teaser($data);
+		abp01_render_trip_summary_frontend_teaser($data);
 		$content = ob_get_clean() . $content;
 
 		ob_start();
-		abp01_render_techbox_frontend($data);
+		abp01_render_trip_summary_frontend($data);
 		$content = $content . ob_get_clean();
 	}
 
@@ -2075,7 +2082,6 @@ if (function_exists('register_uninstall_hook')) {
 }
 
 if (function_exists('add_action')) {
-	add_action('media_buttons', 'abp01_add_editor_media_buttons', 20);
 	add_action('add_meta_boxes', 'abp01_register_metaboxes', 10, 2);
 	add_action('admin_enqueue_scripts', 'abp01_add_admin_styles');
 	add_action('admin_enqueue_scripts', 'abp01_add_admin_scripts');

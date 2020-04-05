@@ -452,6 +452,10 @@ class Abp01_Env {
             : null;
     }
 
+    public function getAjaxBaseUrl() {
+        return get_admin_url(null, 'admin-ajax.php', 'admin');
+    }
+
     public function getHttpMethod() {
         return isset($_SERVER['REQUEST_METHOD']) 
             ? strtolower($_SERVER['REQUEST_METHOD']) 

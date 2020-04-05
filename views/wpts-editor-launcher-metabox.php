@@ -42,6 +42,7 @@
                     : esc_html__('Trip summary information is not present for this post', 'abp01-trip-summary'); ?>"
                 href="javascript:void(0)" 
                 data-action="abp01-openTechBox"
+                data-select-tab="abp01-form-info"
                 class="status-text launch-editor-trigger"><?php echo esc_html__('Trip summary info', 'abp01-trip-summary'); ?></a>
         </div>
         <div id="abp01-editor-launcher-status-trip-summary-track" class="abp01-editor-launcher-status-item">
@@ -53,17 +54,17 @@
                     : esc_html__('Trip summary track is not present for this post', 'abp01-trip-summary'); ?>"
                 data-action="abp01-openTechBox"
                 href="javascript:void(0)"
+                data-select-tab="abp01-form-map"
                 class="status-text launch-editor-trigger"><?php echo esc_html__('Trip summary track', 'abp01-trip-summary'); ?></a>
         </div>
     </div>
     <div id="abp01-editor-launcher-actions">
-        <?php if ($data->hasRouteInfo || $data->hasRouteTrack): ?>
-            <div class="quick-actions">
-                <a id="abp01-quick-actions-trigger" 
-                    data-controller-selector="abp01-quick-actions-tooltip" 
-                    href="javascript:void(0)"><?php echo esc_html__('Quick actions', 'abp01-trip-summary'); ?></a>
-            </div>
-        <?php endif; ?>
+        <div class="quick-actions">
+            <a id="abp01-quick-actions-trigger" 
+                style="display: <?php echo ($data->hasRouteInfo || $data->hasRouteTrack) ? 'block' : 'none' ?>;"
+                data-controller-selector="abp01-quick-actions-tooltip" 
+                href="javascript:void(0)"><?php echo esc_html__('Quick actions', 'abp01-trip-summary'); ?></a>
+        </div>
         <div class="launch-edit">
             <a id="abp01-edit-trigger" 
                 data-status-text="<?php echo esc_html__('Click here to edit trip summary information and/or track', 'abp01-trip-summary'); ?>"
@@ -80,7 +81,8 @@
         <?php endif; ?>
         <?php if ($data->hasRouteTrack): ?>
             <a id="abp01-quick-download-track" 
-                href="javascript:void(0)"><?php echo esc_html__('Download track', 'abp01-trip-summary'); ?></a>
+                href="<?php echo esc_attr($data->trackDownloadUrl); ?>"
+                target="_blank"><?php echo esc_html__('Download track', 'abp01-trip-summary'); ?></a>
             <a id="abp01-quick-remove-track" 
                 href="javascript:void(0)"><?php echo esc_html__('Clear track', 'abp01-trip-summary'); ?></a>
         <?php endif; ?>
@@ -93,7 +95,7 @@
         {{/?}}
         {{? context.hasRouteTrack }}
             <a id="abp01-quick-download-track" 
-                href="javascript:void(0)"><?php echo esc_html__('Download track', 'abp01-trip-summary'); ?></a>
+                href="<?php echo esc_attr($data->trackDownloadUrl); ?>"><?php echo esc_html__('Download track', 'abp01-trip-summary'); ?></a>
             <a id="abp01-quick-remove-track" 
                 href="javascript:void(0)"><?php echo esc_html__('Clear track', 'abp01-trip-summary'); ?></a>
         {{/?}}

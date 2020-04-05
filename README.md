@@ -250,6 +250,10 @@ All of the above, with the following amendments:
 12. [kite](http://code.google.com/p/kite/) - super small and simple JavaScript template engine
 13. [Leaflet.MagnifyingGlass](https://github.com/bbecquet/Leaflet.MagnifyingGlass) - Leaflet plug-in that adds the magnifying glass feature: enlarging a discrete area on the map
 14. [Leaflet.fullscreen](https://github.com/Leaflet/Leaflet.fullscreen) - Leaflet plug-in that allows the map to be displayed in full-screen mode
+15. [Tipped JS](https://github.com/staaky/tipped) - A Complete Javascript Tooltip Solution
+16. [PHPUnit](https://github.com/sebastianbergmann/phpunit) - The PHP Unit Testing framework
+17. [Parsedown](https://github.com/erusev/parsedown) - Better Markdown Parser in PHP. [http://parsedown.org](http://parsedown.org)
+18. [Faker](https://github.com/fzaninotto/Faker) - Faker is a PHP library that generates fake data for you
 
 ## License
 <a name="wpts-license"></a> 

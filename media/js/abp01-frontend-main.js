@@ -237,9 +237,9 @@
         initDocument();
         initMapRetry();
         if (context.hasInfo && context.hasTrack) {
-                initTabs();
+            initTabs();
         } else if (context.hasTrack) {
-                showMap();
+            showMap();
         }
     });
 })(jQuery); 
