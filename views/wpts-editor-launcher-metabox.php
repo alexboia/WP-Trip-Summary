@@ -70,7 +70,7 @@
                 data-status-text="<?php echo esc_html__('Click here to edit trip summary information and/or track', 'abp01-trip-summary'); ?>"
                 href="javascript:void(0)" 
                 data-action="abp01-openTechBox"
-                class="button launch-editor-trigger"><?php echo esc_html__('Edit trip summary', 'abp01-trip-summary'); ?></a>
+                class="button launch-editor-trigger"><?php echo esc_html__('Edit', 'abp01-trip-summary'); ?></a>
         </div>
         <div class="clear"></div>
     </div>

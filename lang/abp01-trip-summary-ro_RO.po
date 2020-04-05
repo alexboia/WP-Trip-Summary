@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Trip Summary 0.1.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-trip-summary\n"
-"POT-Creation-Date: 2020-04-03 09:52+0300\n"
-"PO-Revision-Date: 2020-04-03 09:52+0300\n"
+"POT-Creation-Date: 2020-04-05 18:51+0300\n"
+"PO-Revision-Date: 2020-04-05 19:05+0300\n"
 "Last-Translator: \n"
 "Language-Team: alexandru.boia [at] outlook [dot] com\n"
 "Language: ro_RO\n"
@@ -39,89 +39,91 @@ msgstr "Alexandru Boia"
 msgid "http://alexboia.net"
 msgstr "http://alexboia.net"
 
-#: abp01-plugin-main.php:558 views/wpts-editor.php:171
+#: abp01-plugin-main.php:566 views/wpts-editor.php:179
 msgid "Bike type"
 msgstr "Tip recomandat de bicicletă"
 
-#: abp01-plugin-main.php:559 views/wpts-editor.php:130 views/wpts-editor.php:196
+#: abp01-plugin-main.php:567 views/wpts-editor.php:138 views/wpts-editor.php:204
 #: views/wpts-frontend.php:71 views/wpts-frontend.php:79
 msgid "Difficulty level"
 msgstr "Nivelul de dificultate"
 
-#: abp01-plugin-main.php:560 views/wpts-editor.php:159 views/wpts-editor.php:225
+#: abp01-plugin-main.php:568 views/wpts-editor.php:167 views/wpts-editor.php:233
 #: views/wpts-frontend.php:74 views/wpts-frontend.php:82
 msgid "Path surface type"
 msgstr "Suprafața drumului/potecii"
 
-#: abp01-plugin-main.php:561
+#: abp01-plugin-main.php:569
 msgid "Railroad electrification status"
 msgstr "Status electrificare linie de cale ferată"
 
-#: abp01-plugin-main.php:562
+#: abp01-plugin-main.php:570
 msgid "Railroad line status"
 msgstr "Starea liniei de cale ferată"
 
-#: abp01-plugin-main.php:563
+#: abp01-plugin-main.php:571
 msgid "Railroad line type"
 msgstr "Tipul liniei de cale ferată"
 
-#: abp01-plugin-main.php:564 views/wpts-editor.php:258 views/wpts-frontend.php:88
+#: abp01-plugin-main.php:572 views/wpts-editor.php:266 views/wpts-frontend.php:88
 msgid "Railroad operators"
 msgstr "Operatori feroviari"
 
-#: abp01-plugin-main.php:565
+#: abp01-plugin-main.php:573
 msgid "Recommended seasons"
 msgstr "Practicabil în anotimpurile"
 
-#: abp01-plugin-main.php:576
+#: abp01-plugin-main.php:584 views/wpts-editor-launcher-metabox.php:80
+#: views/wpts-editor-launcher-metabox.php:94
 msgid "Clear info"
 msgstr "Șterge info"
 
-#: abp01-plugin-main.php:577
+#: abp01-plugin-main.php:585 views/wpts-editor-launcher-metabox.php:87
+#: views/wpts-editor-launcher-metabox.php:100
 msgid "Clear track"
 msgstr "Șterge track"
 
-#: abp01-plugin-main.php:578
+#: abp01-plugin-main.php:586
 msgid "GPX files"
 msgstr "Fișiere GPX"
 
-#: abp01-plugin-main.php:579
+#: abp01-plugin-main.php:587
 msgid "Generating preview. Please wait..."
 msgstr "Se generează harta și traseul. Te rog să aștepți..."
 
-#: abp01-plugin-main.php:580
+#: abp01-plugin-main.php:588
 msgid "Uploading track"
 msgstr "Se încarcă track-ul"
 
-#: abp01-plugin-main.php:581
+#: abp01-plugin-main.php:589
 msgid "The track has been uploaded and saved successfully"
 msgstr "Fișierul a fost încărcat și procesat cu succes"
 
-#: abp01-plugin-main.php:582 views/wpts-editor.php:107
+#: abp01-plugin-main.php:590 views/wpts-editor.php:115
 msgid "Biking"
 msgstr "Cu bicicleta"
 
-#: abp01-plugin-main.php:583 views/wpts-editor.php:110
+#: abp01-plugin-main.php:591 views/wpts-editor.php:118
 msgid "Hiking"
 msgstr "Per-pedes"
 
-#: abp01-plugin-main.php:584
+#: abp01-plugin-main.php:592
 msgid "Train ride"
 msgstr "Cu trenul"
 
-#: abp01-plugin-main.php:585
+#: abp01-plugin-main.php:593
 msgid "Clearing track. Please wait..."
 msgstr "Se șterge track-ul. Te rog să aștepți..."
 
-#: abp01-plugin-main.php:586
+#: abp01-plugin-main.php:594
 msgid "The track has been successfully cleared"
 msgstr "Track-ul a fost șters cu succes"
 
-#: abp01-plugin-main.php:587
+#: abp01-plugin-main.php:595
 msgid "The data could not be updated"
 msgstr "Datele nu au putut fi salvate"
 
-#: abp01-plugin-main.php:588
+#: abp01-plugin-main.php:596
 msgid ""
 "The data could not be updated due to a possible network error or an internal "
 "server issue"
@@ -129,19 +131,19 @@ msgstr ""
 "Datele nu au putut fi salvade din cauza unei posibile erori de rețea sau a "
 "unei erori interne"
 
-#: abp01-plugin-main.php:589
+#: abp01-plugin-main.php:597
 msgid "Saving data. Please wait..."
 msgstr "Se salvează datele. Te rog să aștepți..."
 
-#: abp01-plugin-main.php:590
+#: abp01-plugin-main.php:598
 msgid "The data has been saved"
 msgstr "Datele au fost salvate"
 
-#: abp01-plugin-main.php:591
+#: abp01-plugin-main.php:599
 msgid "The data could not be saved"
 msgstr "Datele nu au putut fi salvate"
 
-#: abp01-plugin-main.php:592
+#: abp01-plugin-main.php:600
 msgid ""
 "The data could not be saved due to a possible network error or an internal "
 "server issue"
@@ -149,19 +151,19 @@ msgstr ""
 "Datele nu au putut fi salvate din cauza unei posibile erori de rețea sau a "
 "unei erori interne"
 
-#: abp01-plugin-main.php:593
+#: abp01-plugin-main.php:601
 msgid "Clearing trip info. Please wait..."
 msgstr "Șterg informațiile traseului. Te rog să aștepți..."
 
-#: abp01-plugin-main.php:594
+#: abp01-plugin-main.php:602
 msgid "The trip info has been cleared"
 msgstr "Informațiile traseului au fost șterse"
 
-#: abp01-plugin-main.php:595
+#: abp01-plugin-main.php:603
 msgid "The trip info could not be cleared"
 msgstr "Informațiile traseului nu au putut fi șterse"
 
-#: abp01-plugin-main.php:596
+#: abp01-plugin-main.php:604
 msgid ""
 "The trip info could not be cleared due to a possible network error or an "
 "internal server issue"
@@ -169,47 +171,63 @@ msgstr ""
 "Informațiile traseului nu au putut fi șterse din cauza unei posibile erori de "
 "rețea sau a unei erori interne"
 
-#: abp01-plugin-main.php:597 abp01-plugin-main.php:604
+#: abp01-plugin-main.php:605 abp01-plugin-main.php:612
 msgid "The selected file is too large. Maximum allowed size is 10MB"
 msgstr "Fișierul selectat e prea mare. Dimensiunea maximă admisă e 10MB"
 
-#: abp01-plugin-main.php:598 abp01-plugin-main.php:603
+#: abp01-plugin-main.php:606 abp01-plugin-main.php:611
 msgid "The selected file type is not valid. Only GPX files are allowed"
 msgstr "Tipul selectat de fișier nu este valid. Sunt permise doar fișierele GPX"
 
-#: abp01-plugin-main.php:599 abp01-plugin-main.php:600
+#: abp01-plugin-main.php:607 abp01-plugin-main.php:608
 msgid "The file could not be read"
 msgstr "Fișierul nu a putut fi citit"
 
-#: abp01-plugin-main.php:601
+#: abp01-plugin-main.php:609
 msgid "The uploader could not be initialized"
 msgstr "Una din componente nu a putut fi inițializată corect"
 
-#: abp01-plugin-main.php:602 abp01-plugin-main.php:607
+#: abp01-plugin-main.php:610 abp01-plugin-main.php:615
 msgid "The file could not be uploaded"
 msgstr "Fișierul nu a putut fi încărcat"
 
-#: abp01-plugin-main.php:605
+#: abp01-plugin-main.php:613
 msgid "No file was uploaded"
 msgstr "Nu a fost încărcat nici un fișier"
 
-#: abp01-plugin-main.php:606
+#: abp01-plugin-main.php:614
 msgid "The file could not be uploaded due to a possible internal server issue"
 msgstr "Fișierul nu a putut fi încărcat din cauza unei posibile erori interne"
 
-#: abp01-plugin-main.php:608
+#: abp01-plugin-main.php:616
 msgid "Choose options"
 msgstr "Alege opțiuni"
 
-#: abp01-plugin-main.php:609
+#: abp01-plugin-main.php:617
 msgid "{0} selected"
 msgstr "{0} opțiuni selectate"
 
-#: abp01-plugin-main.php:610
+#: abp01-plugin-main.php:618
 msgid "Select all"
 msgstr "Selectează tot"
 
-#: abp01-plugin-main.php:620
+#: abp01-plugin-main.php:619 views/wpts-editor-launcher-metabox.php:41
+msgid "Trip summary information is present for this post"
+msgstr "Informațiile despre traseu au fost furnizate pentru acest post"
+
+#: abp01-plugin-main.php:620 views/wpts-editor-launcher-metabox.php:42
+msgid "Trip summary information is not present for this post"
+msgstr "Informațiile despre traseu nu au fost furnizate pentru acest post"
+
+#: abp01-plugin-main.php:621 views/wpts-editor-launcher-metabox.php:53
+msgid "Trip summary track is present for this post"
+msgstr "Track-ul traseului a fost încărcat și procesat pentru acest post"
+
+#: abp01-plugin-main.php:622 views/wpts-editor-launcher-metabox.php:54
+msgid "Trip summary track is not present for this post"
+msgstr "Track-ul traseului nu a fost încărcat pentru acest post"
+
+#: abp01-plugin-main.php:632
 msgid ""
 "The settings could not be saved due to a possible network error or an internal "
 "server issue"
@@ -217,207 +235,211 @@ msgstr ""
 "Opțiunile nu au putut fi salvate din cauza unei posibile erori de rețea sau a "
 "unei erori interne"
 
-#: abp01-plugin-main.php:621
+#: abp01-plugin-main.php:633
 msgid "The settings could not be saved due to a possible internal server issue"
 msgstr "Opțiunile nu au putut fi salvate din cauza unei posibile erori interne"
 
-#: abp01-plugin-main.php:622
+#: abp01-plugin-main.php:634
 msgid "Settings successfully saved"
 msgstr "Opțiunile au fost salvate cu succes"
 
-#: abp01-plugin-main.php:623
+#: abp01-plugin-main.php:635
 msgid "Saving settings. Please wait..."
 msgstr "Se salvează opțiunile. Te rog să aștepți..."
 
-#: abp01-plugin-main.php:633
+#: abp01-plugin-main.php:645
 msgid "Working. Please wait..."
 msgstr "Lucrez. Așteaptă puțin..."
 
-#: abp01-plugin-main.php:634
+#: abp01-plugin-main.php:646
 msgid "Item successfully saved"
 msgstr "Itemul a fost salvat cu succes"
 
-#: abp01-plugin-main.php:635 views/wpts-lookup-data-management.php:69
+#: abp01-plugin-main.php:647 views/wpts-lookup-data-management.php:69
 #: views/wpts-lookup-data-management.php:83
 msgid "Add new item"
 msgstr "Adaugă item"
 
-#: abp01-plugin-main.php:636
+#: abp01-plugin-main.php:648
 msgid "Modify item"
 msgstr "Modifică"
 
-#: abp01-plugin-main.php:637
+#: abp01-plugin-main.php:649
 msgid ""
 "The item could not be saved due to a possible network error or an internal "
 "server issue"
 msgstr ""
 "Itemul nu a putut fi salvat din cauza unei posibile probleme de conexiune"
 
-#: abp01-plugin-main.php:638
+#: abp01-plugin-main.php:650
 msgid "The item could not be saved due to a possible internal server issue"
 msgstr "Itemul nu a putut fi salvat din cauza unei posibile probleme interne"
 
-#: abp01-plugin-main.php:639
+#: abp01-plugin-main.php:651
 msgid "Confirm item removal"
 msgstr "Confirmă ștergerea itemului"
 
-#: abp01-plugin-main.php:640
+#: abp01-plugin-main.php:652
 msgid ""
 "The item could not be deleted due to a possible network error or an internal "
 "server issue"
 msgstr "Itemul nu a putut fi șters in cauza unei posibile probleme de conexiune"
 
-#: abp01-plugin-main.php:641
+#: abp01-plugin-main.php:653
 msgid "The item could not be deleted due to a possible internal server issue"
 msgstr "Itemul nu a putut fi șters din cauza unei posibile probleme interne"
 
-#: abp01-plugin-main.php:642
+#: abp01-plugin-main.php:654
 msgid "The item has been successfully deleted"
 msgstr "Itemul a fost șters cu succes"
 
-#: abp01-plugin-main.php:643
+#: abp01-plugin-main.php:655
 msgid ""
 "The lookup items could not be loaded due to a possible network error or an "
 "internal server issue"
 msgstr ""
 "Itemii nu au putut fi încărcați din cauza unei posibile probleme de conexiune"
 
-#: abp01-plugin-main.php:644
+#: abp01-plugin-main.php:656
 msgid "The lookup items could not be loaded"
 msgstr "Itemii nu au putut fi încărcați"
 
-#: abp01-plugin-main.php:661
+#: abp01-plugin-main.php:673
 msgid "Minimum required PHP version is %s"
 msgstr "Versiunea necesară minimă de PHP este %s"
 
-#: abp01-plugin-main.php:663
+#: abp01-plugin-main.php:675
 msgid "Minimum required WP version is %s"
 msgstr "Versiunea necesară minimă de WordPress este %s"
 
-#: abp01-plugin-main.php:665
+#: abp01-plugin-main.php:677
 msgid "LIBXML support was not found on your system"
 msgstr "Extensia LIBXML nu a fost găsită pe sistemul tău"
 
-#: abp01-plugin-main.php:667
+#: abp01-plugin-main.php:679
 msgid "Mysqli extension was not found on your system or is not fully compatible"
 msgstr "Extensia MySQLi nu a fost găsită pe sistemul tău"
 
-#: abp01-plugin-main.php:669
+#: abp01-plugin-main.php:681
 msgid "MySQL spatial support was not found on your system"
 msgstr "Server-ul MySQL nu are suport pentru date spațiale"
 
-#: abp01-plugin-main.php:747 abp01-plugin-main.php:758 views/wpts-settings.php:42
+#: abp01-plugin-main.php:769 abp01-plugin-main.php:780 views/wpts-settings.php:42
 msgid "Trip Summary Settings"
 msgstr "Setări WP Trip Summary"
 
-#: abp01-plugin-main.php:748
+#: abp01-plugin-main.php:770
 msgid "Trip Summary"
 msgstr "WP Trip Summary"
 
-#: abp01-plugin-main.php:759
+#: abp01-plugin-main.php:781
 msgid "Settings"
 msgstr "Configurare"
 
-#: abp01-plugin-main.php:767 abp01-plugin-main.php:768
+#: abp01-plugin-main.php:789 abp01-plugin-main.php:790
 #: views/wpts-lookup-data-management.php:43
 msgid "Lookup data management"
 msgstr "Gestiune nomenclatoare"
 
-#: abp01-plugin-main.php:774 abp01-plugin-main.php:775
+#: abp01-plugin-main.php:796 abp01-plugin-main.php:797
 msgid "Help"
 msgstr "Ajutor"
 
-#: abp01-plugin-main.php:849
+#: abp01-plugin-main.php:871
 msgid "The plugin cannot be installed on your system"
 msgstr "Acest plug-in nu este compatibil cu sistemul tău"
 
-#: abp01-plugin-main.php:1129
+#: abp01-plugin-main.php:929 views/wpts-frontend.php:50
+msgid "Trip summary"
+msgstr "Tura pe scurt"
+
+#: abp01-plugin-main.php:1180
 msgid "Unsupported unit system"
 msgstr "Sistemul de unități de măsură ales nu este suportat"
 
-#: abp01-plugin-main.php:1141
+#: abp01-plugin-main.php:1192
 msgid "Tile layer URL is required"
 msgstr "Trebuie să completezi URL-ul sursei de tile-uri de hartă"
 
-#: abp01-plugin-main.php:1148
+#: abp01-plugin-main.php:1199
 msgid "Tile layer URL does not have a valid format"
 msgstr "URL-ul sursei de tile-uri de hartă nu are un format valid"
 
-#: abp01-plugin-main.php:1155
+#: abp01-plugin-main.php:1206
 msgid "Tile layer attribution URL does not have a valid format"
 msgstr ""
 "URL-ul către pagina de copyright a sursei de tile-uri de hartă nu are un "
 "format valid"
 
-#: abp01-plugin-main.php:1165
+#: abp01-plugin-main.php:1216
 msgid "The track line colour is not a valid HEX colour code"
 msgstr "Culoarea track-ului nu este un cod de culoare HEX valid"
 
-#: abp01-plugin-main.php:1191
+#: abp01-plugin-main.php:1242
 msgid "The settings could not be saved. Please try again."
 msgstr "Opțiunile nu au putut fi salvate. Te rog să reîncerci."
 
-#: abp01-plugin-main.php:1343 abp01-plugin-main.php:1403
+#: abp01-plugin-main.php:1394 abp01-plugin-main.php:1454
 msgid "The default label is mandatory"
 msgstr "Trebuie să completezi eticheta implicită"
 
-#: abp01-plugin-main.php:1352
+#: abp01-plugin-main.php:1403
 msgid "The lookup item could not be created"
 msgstr "Itemul nu a putut fi creat"
 
-#: abp01-plugin-main.php:1363
+#: abp01-plugin-main.php:1414
 msgid "The lookup item has been created, but the translation could not be saved"
 msgstr "Itemul a fost creat, dar varianta sa tradusă nu a putut fi salvată"
 
-#: abp01-plugin-main.php:1425
+#: abp01-plugin-main.php:1476
 msgid "The lookup item could not be modified"
 msgstr "Itemul nu a putut fi modificat"
 
-#: abp01-plugin-main.php:1468
+#: abp01-plugin-main.php:1519
 msgid "The item translation could not be deleted."
 msgstr "Varianta tradusă a itemului nu a putut fi ștearsă"
 
-#: abp01-plugin-main.php:1474
+#: abp01-plugin-main.php:1525
 msgid "The item could not be deleted because it is still in use"
 msgstr "Itemul nu a putut fi șters deoarece este încă folosit"
 
-#: abp01-plugin-main.php:1481
+#: abp01-plugin-main.php:1532
 msgid "The item could not be deleted"
 msgstr "Itemul nu a putut fi șters"
 
-#: abp01-plugin-main.php:1529 abp01-plugin-main.php:1668
+#: abp01-plugin-main.php:1580 abp01-plugin-main.php:1719
 msgid "The data could not be saved due to a possible database error"
 msgstr "Datele nu au putut fi salvate din cauza unei posibile erori interne"
 
-#: abp01-plugin-main.php:1808
+#: abp01-plugin-main.php:1859
 msgid "Track file could not be parsed"
 msgstr "Fișierul nu a putut fi procesat"
 
-#: abp01-plugin-main.php:1811
+#: abp01-plugin-main.php:1862
 msgid "Track file not found or is not readable"
 msgstr "Fișierul track-ului nu există sau nu a putut fi citit"
 
-#: abp01-plugin-main.php:1913
+#: abp01-plugin-main.php:1964
 msgid "The data could not be updated due to a possible database error"
 msgstr "Datele nu au putut fi actualizate din cauza unei posibile erori interne"
 
-#: abp01-plugin-main.php:1946
+#: abp01-plugin-main.php:1997 views/wpts-editor-launcher-metabox.php:46
 msgid "Trip summary info"
 msgstr "Info traseu"
 
-#: abp01-plugin-main.php:1948
+#: abp01-plugin-main.php:1999 views/wpts-editor-launcher-metabox.php:58
 msgid "Trip summary track"
 msgstr "Track traseu"
 
-#: abp01-plugin-main.php:1990 abp01-plugin-main.php:2000
+#: abp01-plugin-main.php:2041 abp01-plugin-main.php:2051
 msgid "Yes"
 msgstr "Da"
 
-#: abp01-plugin-main.php:1991 abp01-plugin-main.php:2001
+#: abp01-plugin-main.php:2042 abp01-plugin-main.php:2052
 msgid "No"
 msgstr "Nu"
 
-#: abp01-plugin-main.php:1993 abp01-plugin-main.php:2003
+#: abp01-plugin-main.php:2044 abp01-plugin-main.php:2054
 msgid "Not available"
 msgstr "Indisponibil"
 
@@ -441,102 +463,116 @@ msgstr ""
 "Se pare că ai sărit peste poveste. E păcat să o ratezi. Nu ai vrea să o "
 "citești? Click aici pentru început!"
 
-#: views/wpts-button.php:35 views/wpts-editor.php:54 views/wpts-editor.php:64
+#: views/wpts-button.php:35 views/wpts-editor-launcher-metabox.php:73
+#: views/wpts-editor.php:55 views/wpts-editor.php:72
 msgid "Edit trip summary"
 msgstr "Modifică sumarul turei"
 
-#: views/wpts-editor.php:77
+#: views/wpts-editor-launcher-metabox.php:66
+msgid "Quick actions"
+msgstr "Acțiuni rapide"
+
+#: views/wpts-editor-launcher-metabox.php:70
+msgid "Click here to edit trip summary information and/or track"
+msgstr "Click aici pentru a modifica sumarul turei și/sau track-ul GPS"
+
+#: views/wpts-editor-launcher-metabox.php:85
+#: views/wpts-editor-launcher-metabox.php:98
+msgid "Download track"
+msgstr "Descărcare track GPS"
+
+#: views/wpts-editor.php:85
 msgid "Info"
 msgstr "Informații"
 
-#: views/wpts-editor.php:82 views/wpts-frontend.php:59
+#: views/wpts-editor.php:90 views/wpts-frontend.php:59
 msgid "Map"
 msgstr "Hartă & Track GPS"
 
-#: views/wpts-editor.php:94
+#: views/wpts-editor.php:102
 msgid "Clear"
 msgstr "Șterge"
 
-#: views/wpts-editor.php:95
+#: views/wpts-editor.php:103
 msgid "Save"
 msgstr "Salvează"
 
-#: views/wpts-editor.php:104
+#: views/wpts-editor.php:112
 msgid "Chose the type of your tour"
 msgstr "Alege tipul turei"
 
-#: views/wpts-editor.php:113
+#: views/wpts-editor.php:121
 msgid "Train Ride"
 msgstr "Cu trenul"
 
-#: views/wpts-editor.php:122 views/wpts-editor.php:188 views/wpts-editor.php:246
+#: views/wpts-editor.php:130 views/wpts-editor.php:196 views/wpts-editor.php:254
 #: views/wpts-frontend.php:69 views/wpts-frontend.php:77
 #: views/wpts-frontend.php:85
 msgid "Total distance"
 msgstr "Distanța totală"
 
-#: views/wpts-editor.php:126 views/wpts-editor.php:192 views/wpts-frontend.php:70
+#: views/wpts-editor.php:134 views/wpts-editor.php:200 views/wpts-frontend.php:70
 #: views/wpts-frontend.php:78
 msgid "Total climb"
 msgstr "Diferența de nivel"
 
-#: views/wpts-editor.php:133 views/wpts-editor.php:199
+#: views/wpts-editor.php:141 views/wpts-editor.php:207
 msgid "-- Choose an option --"
 msgstr "-- Alege o opțiune --"
 
-#: views/wpts-editor.php:138 views/wpts-editor.php:154 views/wpts-editor.php:166
-#: views/wpts-editor.php:178 views/wpts-editor.php:204 views/wpts-editor.php:220
-#: views/wpts-editor.php:232 views/wpts-editor.php:265 views/wpts-editor.php:277
-#: views/wpts-editor.php:289 views/wpts-editor.php:301
+#: views/wpts-editor.php:146 views/wpts-editor.php:162 views/wpts-editor.php:174
+#: views/wpts-editor.php:186 views/wpts-editor.php:212 views/wpts-editor.php:228
+#: views/wpts-editor.php:240 views/wpts-editor.php:273 views/wpts-editor.php:285
+#: views/wpts-editor.php:297 views/wpts-editor.php:309
 msgid ""
 "No items to select from. Visit the lookup data management page to add some."
 msgstr ""
 "Nu există itemi de selectat. Poți crea noi itemi în pagina de gestiune a "
 "nomenclatoarelor"
 
-#: views/wpts-editor.php:143 views/wpts-editor.php:209 views/wpts-frontend.php:72
+#: views/wpts-editor.php:151 views/wpts-editor.php:217 views/wpts-frontend.php:72
 #: views/wpts-frontend.php:80
 msgid "Access information"
 msgstr "Informații de acces"
 
-#: views/wpts-editor.php:147 views/wpts-editor.php:213 views/wpts-frontend.php:73
+#: views/wpts-editor.php:155 views/wpts-editor.php:221 views/wpts-frontend.php:73
 #: views/wpts-frontend.php:81
 msgid "Open during seasons"
 msgstr "Practicabil în anotimpurile"
 
-#: views/wpts-editor.php:237
+#: views/wpts-editor.php:245
 msgid "Route markers"
 msgstr "Marcaje turistice"
 
-#: views/wpts-editor.php:250 views/wpts-frontend.php:86
+#: views/wpts-editor.php:258 views/wpts-frontend.php:86
 msgid "Exchanged trains"
 msgstr "Numărul de trenuri schimbate"
 
-#: views/wpts-editor.php:254 views/wpts-frontend.php:87
+#: views/wpts-editor.php:262 views/wpts-frontend.php:87
 msgid "Line gauge"
 msgstr "Ecartamentul liniei"
 
-#: views/wpts-editor.php:270 views/wpts-frontend.php:89
+#: views/wpts-editor.php:278 views/wpts-frontend.php:89
 msgid "Line status"
 msgstr "Statusul liniei"
 
-#: views/wpts-editor.php:282 views/wpts-frontend.php:90
+#: views/wpts-editor.php:290 views/wpts-frontend.php:90
 msgid "Electrification status"
 msgstr "Electrificare"
 
-#: views/wpts-editor.php:294 views/wpts-frontend.php:91
+#: views/wpts-editor.php:302 views/wpts-frontend.php:91
 msgid "Line type"
 msgstr "Tipul liniei"
 
-#: views/wpts-editor.php:311
+#: views/wpts-editor.php:319
 msgid "Upload a GPX track file"
 msgstr "Încarcă un fișier GPX"
 
-#: views/wpts-editor.php:314
+#: views/wpts-editor.php:322
 msgid "Chose file"
 msgstr "Alege un fișier"
 
-#: views/wpts-editor.php:331 views/wpts-frontend.php:101
+#: views/wpts-editor.php:339 views/wpts-frontend.php:101
 msgid ""
 "The map could not be loaded due to either a network error or a possible server "
 "issue."
@@ -544,13 +580,9 @@ msgstr ""
 "Harta nu a putut fi încărcată din cauza unei erori de comunicație sau a unei "
 "posibile erori interne"
 
-#: views/wpts-editor.php:332 views/wpts-frontend.php:102
+#: views/wpts-editor.php:340 views/wpts-frontend.php:102
 msgid "Retry"
 msgstr "Reîncearcă"
-
-#: views/wpts-frontend.php:50
-msgid "Trip summary"
-msgstr "Tura pe scurt"
 
 #: views/wpts-frontend.php:56
 msgid "Prosaic details"
