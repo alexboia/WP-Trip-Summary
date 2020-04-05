@@ -696,7 +696,9 @@ function abp01_get_main_frontend_translations() {
  * @return void
  */
 function abp01_render_trip_summary_launcher_metabox(stdClass $data) {
+	ob_start();
 	require_once abp01_get_env()->getViewFilePath('wpts-editor-launcher-metabox.php');
+	return ob_get_clean();
 }
 
 /**
@@ -706,7 +708,9 @@ function abp01_render_trip_summary_launcher_metabox(stdClass $data) {
  */
 function abp01_render_trip_summary_editor(stdClass $data) {
 	require_once abp01_get_env()->getViewHelpersFilePath('controls.php');
+	ob_start();
 	require_once abp01_get_env()->getViewFilePath('wpts-editor.php');
+	return ob_get_clean();
 }
 
 /**
@@ -715,7 +719,9 @@ function abp01_render_trip_summary_editor(stdClass $data) {
  * @return void
  */
 function abp01_admin_settings_page_render(stdClass $data) {
+	ob_start();
 	require_once abp01_get_env()->getViewFilePath('wpts-settings.php');
+	return ob_get_clean();
 }
 
 /**
@@ -724,7 +730,9 @@ function abp01_admin_settings_page_render(stdClass $data) {
  * @return void
  */
 function abp01_admin_help_page_render(stdClass $data) {
+	ob_start();
 	require_once abp01_get_env()->getViewFilePath('wpts-help.php');
+	return ob_get_clean();
 }
 
 /**
@@ -733,7 +741,9 @@ function abp01_admin_help_page_render(stdClass $data) {
  * @return void
  */
 function abp01_admin_lookup_page_render(stdClass $data) {
+	ob_start();
 	require_once abp01_get_env()->getViewFilePath('wpts-lookup-data-management.php');
+	return ob_get_clean();
 }
 
 /**
@@ -914,10 +924,10 @@ function abp01_init_plugin() {
 }
 
 function abp01_register_metaboxes($postType, $post) {
-	if ($postType == 'post' || $postType == 'page') {
+	if (($postType == 'post' || $postType == 'page') && abp01_can_edit_trip_summary($post)) {
 		add_meta_box('abp01-enhanced-editor-launcher-metabox', 
 			__('Trip summary', 'abp01-trip-summary'),
-			'abp01_add_enhanced_editor_launcher', 
+			'abp01_add_admin_editor', 
 			$postType, 
 			'side', 
 			'high', 
@@ -928,7 +938,14 @@ function abp01_register_metaboxes($postType, $post) {
 	}
 }
 
-function abp01_add_enhanced_editor_launcher($post, $args) {
+function abp01_add_admin_editor($post, $args) {
+	if (abp01_can_edit_trip_summary($post)) {
+		abp01_add_admin_editor_form($post, $args);
+		abp01_add_admin_editor_launcher($post, $args);
+	}
+}
+
+function abp01_add_admin_editor_launcher($post, $args) {
 	$postId = intval($post->ID);
 	$routeManager = abp01_get_route_manager();
 
@@ -944,7 +961,7 @@ function abp01_add_enhanced_editor_launcher($post, $args) {
 		'_cb' => abp01_get_cachebuster()
 	), abp01_get_ajax_baseurl());
 
-	require abp01_get_env()->getViewFilePath('wpts-editor-launcher-metabox.php');
+	echo abp01_render_trip_summary_launcher_metabox($data);
 }
 
 /**
@@ -952,11 +969,7 @@ function abp01_add_enhanced_editor_launcher($post, $args) {
  * @param object $post The current post being created or modified
  * @return void
  */
-function abp01_add_admin_editor($post) {
-	if (!abp01_can_edit_trip_summary($post)) {
-		return;
-	}
-
+function abp01_add_admin_editor_form($post, $args) {
 	$data = new stdClass();
 	$lookup = new Abp01_Lookup();
 	$manager = abp01_get_route_manager();
@@ -1021,7 +1034,7 @@ function abp01_add_admin_editor($post) {
 	}
 
 	//finally, render the editor	
-	abp01_render_trip_summary_editor($data);
+	echo abp01_render_trip_summary_editor($data);
 }
 
 /**
@@ -1135,7 +1148,7 @@ function abp01_admin_settings_page() {
 		$data->settings->allowedUnitSystems[$system] = ucfirst($system);
 	}
 
-	abp01_admin_settings_page_render($data);
+	echo abp01_admin_settings_page_render($data);
 }
 
 /**
@@ -1255,7 +1268,7 @@ function abp01_admin_help_page() {
 	$helpDataDirUrl = plugins_url('data/help/' . $locale, __FILE__);
 	$data->helpContents = str_ireplace('$helpDataDirUrl$', $helpDataDirUrl, $data->helpContents);
 	
-	abp01_admin_help_page_render($data);
+	echo abp01_admin_help_page_render($data);
 }
 
 /**
@@ -1303,7 +1316,7 @@ function abp01_admin_lookup_page() {
 	$data->context->ajaxBaseUrl = abp01_get_ajax_baseurl();
 
 	//render the page
-	abp01_admin_lookup_page_render($data);
+	echo abp01_admin_lookup_page_render($data);
 }
 
 /**
@@ -2085,7 +2098,6 @@ if (function_exists('add_action')) {
 	add_action('add_meta_boxes', 'abp01_register_metaboxes', 10, 2);
 	add_action('admin_enqueue_scripts', 'abp01_add_admin_styles');
 	add_action('admin_enqueue_scripts', 'abp01_add_admin_scripts');
-	add_action('edit_form_after_editor', 'abp01_add_admin_editor');
 
 	add_action('wp_ajax_' . ABP01_ACTION_EDIT, 'abp01_save_info');
 	add_action('wp_ajax_' . ABP01_ACTION_UPLOAD_TRACK, 'abp01_upload_track');
