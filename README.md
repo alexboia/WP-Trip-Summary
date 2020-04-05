@@ -9,23 +9,37 @@ An opinionated, multi-language, WordPress trip summary plugin to help travel blo
 
 ## Contents
 
-   1. [Progress](#wpts-progress)
-   2. [What it does](#wpts-what-does)
-   3. [Supported languages](#wpts-langs)
-   4. [Changelog](#wpts-changelog)
-   5. [Upgrade notices](#wpts-upgrade-notices)
-   6. [Roadmap](#wpts-roadmap)
-   7. [Requirements](#wpts-requirements)
-   8. [Limitations](#wpts-limitations)
-   9. [Screenshots](#wpts-screenshots)
-   10. [Contributing](#wpts-contributing)
-   11. [Credits](#wpts-credits)
-   12. [License](#wpts-license)
+   1. [Features](#wpts-features)
+   2. [Progress](#wpts-progress)
+   3. [What it does](#wpts-what-does)
+   4. [Supported languages](#wpts-langs)
+   5. [Changelog](#wpts-changelog)
+   6. [Upgrade notices](#wpts-upgrade-notices)
+   7. [Roadmap](#wpts-roadmap)
+   8. [Requirements](#wpts-requirements)
+   9. [Limitations](#wpts-limitations)
+   10. [Screenshots](#wpts-screenshots)
+   11. [Contributing](#wpts-contributing)
+   12. [Credits](#wpts-credits)
+   13. [License](#wpts-license)
+
+## Features
+<a name="wpts-features"></a>  
+
+- attach technical information to a post;
+- attach a GPS track to a post (GPX files are currently accepted) and display that track on a map;
+- allows management of the look-up data used to populate the fields presented as single or multi-selection options list (ex. `Difficulty Level`, `Open During Seasons` etc.);
+- allows customization of the map layer:
+   - map tile source; 
+   - enabling/disabling of available map controls; 
+   - customizing the visual representation of the track).
+- allows customization of the measurement unit system used to represent various values (ex. `Total distance`, `Total climb` etc.);
+- multi-language.
 
 ## Progress  
 <a name="wpts-progress"></a>  
 
-Please see the [issues](https://github.com/alexboia/WP-Trip-Summary/issues) area for the progress on any on-going issues.
+The [issues](https://github.com/alexboia/WP-Trip-Summary/issues) area usually paints a good outlook on the workload for the current release and, of course, the progress on that workload.
 
 ## What it does  
 <a name="wpts-what-does"></a>  
@@ -151,10 +165,10 @@ From there on the main purpose of all 0.2.* versions is to:
       - [ ] gradually update the set of third party components (in-progress).
    - [ ] improve the overall usability of the plug-in (meaning the minimum amount of features to render it usable enough for most of the users):
       - [x] allow users to see at a glance, when listing posts, which post has trip summary information and track data and which has not;
-      - [ ] improve trip summary editing experience;
+      - [x] improve trip summary editing experience;
    - [ ] add some options to allow for quick customization:
       - [x] customize the colour of the line used to plot the track on the map;
-      - [ ] customize the weight of the line used to plot the track on the map.
+      - [x] customize the weight of the line used to plot the track on the map.
    - [ ] improve localization by adding at least one more language:
       - [ ] currently, French is in the progress.
    - [ ] publish a guide for customizing the front-end trip summary viewer;
