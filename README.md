@@ -50,9 +50,9 @@ This plug-in provides two basic features:
 - allow some structured information to be filled in, according to a selected trip type;
 - allow some GPX track to be uploaded and then rendered on a map.
 
-### Structured information
+### Structured technical information
 
-Structured information is supported for the following types of trips:
+Structured technical information is supported for the following types of trips:
 
 - Bike trips;
 - Hiking trips;
