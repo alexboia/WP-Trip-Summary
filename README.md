@@ -259,7 +259,8 @@ All of the above, with the following amendments:
 ## How can you help
 <a name="wpts-contributing"></a>  
 
-[Help is always wanted and here's how you can help too](https://github.com/alexboia/WP-Trip-Summary/blob/master/CONTRIBUTING.md).
+Despite my best intentions, it would be really hard to come up with a stellar product without any help from those who would either be really interested in using it or would like to work on such a product.  
+[I welcome all, I thank you all.](https://github.com/alexboia/WP-Trip-Summary/blob/master/CONTRIBUTING.md).
 
 ## Credits
 <a name="wpts-credits"></a>  
