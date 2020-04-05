@@ -43,6 +43,12 @@ Depending on the various functions performed by various plug-in components, we c
 #### The configuration page
 ![The configuration page]($helpDataDirUrl$/screenshots/admin-settings.png "The configuration page")
 
+#### Edit post - Trip summary editor launcher
+![Edit post - Trip summary editor launcher]($helpDataDirUrl$/screenshots/admin-edit-launcher.png "Edit post - Trip summary editor launcher")
+
+#### Edit post - Trip summary editor launcher (block editor)
+![Edit post - Trip summary editor launcher (block editor)]($helpDataDirUrl$/screenshots/admin-edit-launcher-block.png "Edit post - Trip summary editor launcher (block editor)")
+
 #### Edit post - Trip data - Select trip type
 ![Edit post - Trip data - Select trip type]($helpDataDirUrl$/screenshots/admin-edit-summary-empty.png "Edit post - Trip data - Select trip type")
 
@@ -112,6 +118,10 @@ This plug-in would have required much more work on my said without the following
 12. [kite](http://code.google.com/p/kite/) - small JavaScript template engine;
 13. [Leaflet.MagnifyingGlass](https://github.com/bbecquet/Leaflet.MagnifyingGlass) - magnifying glass plug-in for the LeafletJS map component;
 14. [Leaflet.fullscreen](https://github.com/Leaflet/Leaflet.fullscreen) - full-screen plug-in for the LeafletJS map component.
+15. [Tipped JS](https://github.com/staaky/tipped) - A Complete Javascript Tooltip Solution
+16. [PHPUnit](https://github.com/sebastianbergmann/phpunit) - The PHP Unit Testing framework
+17. [Parsedown](https://github.com/erusev/parsedown) - Better Markdown Parser in PHP. [http://parsedown.org](http://parsedown.org)
+18. [Faker](https://github.com/fzaninotto/Faker) - Faker is a PHP library that generates fake data for you
 
 [Back to the Table of Contents](#help-root)
 
@@ -145,8 +155,8 @@ This is the area where, each on a distinct tab, the following sections are displ
 - the map that displays the route;
 - technical stuff (total distance, total climb etc.).
 
-Each tab is only displayed when the corresponding information has been provided by the post author.
-If there is not any kind of information for any of these tabs, then the entire component is hidden, including the teasers.
+Each tab is only displayed when the corresponding information has been provided by the post author.  
+If there is not any kind of information for any of these tabs, then the entire component is hidden, including the teasers.  
 
 [Back to the Table of Contents](#help-root)
 
@@ -157,6 +167,25 @@ Thus, it to is organized in two tabs, one for each category of information:
 
 - the technical summary details editing form;
 - the GPX track upload & preview area.
+
+## The Editor Launcher
+
+The editor launcher smoothly integrates the trip summary editing experience into WordPress post editing workflow.  
+It is presented as a metabox, rendered in the sidebar of the post editing screen, titled: `Trip summary`. 
+At a glance, it allows access to the following information and actions:
+
+- whether or not the current post has trip summary information:
+    - marked with a white check mark on a green round background if so;
+    - marked with a white X mark on a red round background if not.
+- whether or the the current post has a trip summary GPS track attached to it:
+    - marked with a white check mark on a green round background if so;
+    - marked with a white X mark on a red round background if not.
+- quickly remove the current post's trip summary information (via the `Quick actions` link button);
+- quickly remove the current post's trip summary GPS track (via the `Quick actions` link button);
+- download the current post's trip summary GPS track (via the `Quick actions` link button);
+- open the trip summary editor form for the current post (via the `Edit` button).
+
+[Înapoi la Cuprins](#help-root)
 
 ## The Technical Summary Details Editing Form
 

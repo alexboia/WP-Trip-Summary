@@ -169,6 +169,23 @@ Astfel, asemeni componentei de vizualizare, este organizată în două tab-uri, 
 - formularul de modificare a informațiilor tehnice;
 - zona de încărcare și previzualizare a track-ului GPS.
 
+## Caseta introductivă
+
+Caseta introductivă servește la integrarea componentei de editare în fluxul de lucru cu post-uri al WordPress.
+Este prezentată ca un metabox, plasată in bara laterală a ecranului de editare a post-urilor, intitulată: `Tura pe scurt`. 
+Permite accesul rapid la următoarele informații și acțiuni relevante:
+
+- dacă post-ul curent are sau nu are informații tehnice despre traseu:
+    - marcat cu o bifă albă pe fundal verde rotund dacă da;
+    - marcat cu un X alb pe fundal roșu rotund, dacă nu.
+- dacă post-ul curent are sau nu atașat un track GPS:
+    - marcat cu o bifă albă pe fundal verde rotund dacă da;
+    - marcat cu un X alb pe fundal roșu rotund, dacă nu.
+- ștergerea rapidă a informațiilor tehnice despre traseu atașate post-ului curent (via butonul `Acțiuni rapide`);
+- ștergerea rapidă a track-ului GPS atașat post-ului curent (via butonul `Acțiuni rapide`);
+- descărcarea track-ului GPS atașat post-ului curent (via butonul `Acțiuni rapide`);
+- deschiderea componentei de editare propriu-zise pentru post-ul curent (via butonul `Modifică`).
+
 ## Formularul de Modificare a Informațiilor Tehnice
 
 Tab-ul corespunzător este denumit simplu, ”Informații”.
