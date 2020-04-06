@@ -52,7 +52,7 @@ Do you think this would be right for you but there's that extra thing that's mis
 ## Progress  
 <a name="wpts-progress"></a>  
 
-The [milestones](https://github.com/alexboia/WP-Trip-Summary/milestones) area usually paints area usually paints a good outlook on the workload for the current release, as well as the past and planned releases.  
+The [milestones](https://github.com/alexboia/WP-Trip-Summary/milestones) area usually paints a good outlook on the workload for the current release, as well as the past and planned releases.  
 You might also be interested in the [issues](https://github.com/alexboia/WP-Trip-Summary/issues) area, for the gruesome details about what's currently on the table.
 
 ## What it does  
@@ -260,7 +260,7 @@ All of the above, with the following amendments:
 <a name="wpts-contributing"></a>  
 
 Despite my best intentions, it would be really hard to come up with a stellar product without any help from those who would either be really interested in using it or would like to work on such a product.  
-[I welcome all, I thank you all.](https://github.com/alexboia/WP-Trip-Summary/blob/master/CONTRIBUTING.md).
+[I welcome all, I thank you all.](https://github.com/alexboia/WP-Trip-Summary/blob/master/CONTRIBUTING.md)
 
 ## Credits
 <a name="wpts-credits"></a>  
