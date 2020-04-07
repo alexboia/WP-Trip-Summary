@@ -92,15 +92,19 @@ class Abp01_Route_Track_GpxDocumentParser implements Abp01_Route_Track_DocumentP
 
     private function _readMetaData($gpx) {
         $node = $gpx->metadata;
+        $meta = new stdClass();
+
         if (!empty($node)) {
-            $meta = new stdClass();
             $meta->name = !empty($node->name) ? (string)$node->name : null;
             $meta->desc = !empty($node->desc) ? (string)$node->desc : null;
             $meta->keywords = !empty($node->keywords) ? (string)$node->keywords : null;
-            return $meta;
         } else {
-            return null;
+            $meta->name = null;
+            $meta->desc = null;
+            $meta->keywords = null;
         }
+
+        return $meta;
     }
 
     private function _readTracks(Abp01_Route_Track_Document $document, $gpx) {

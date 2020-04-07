@@ -34,8 +34,14 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Route_Track_Document {
+    /**
+     * @var Abp01_Route_Track_Part[] Array of track segments
+     */
     public $parts;
 
+    /**
+     * @var Abp01_Route_Track_Point[] Array of waypoints
+     */
     public $waypoints;
 
     public $metadata;

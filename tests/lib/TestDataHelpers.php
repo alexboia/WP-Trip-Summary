@@ -29,39 +29,18 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once 'faker/autoload.php';
-require_once 'lib/LookupDataTestHelpers.php';
-require_once 'lib/RouteInfoTestDataSets.php';
-require_once 'lib/GenericTestHelpers.php';
-require_once 'lib/TestDataHelpers.php';
+ trait TestDataHelpers {
+    protected function _getTestDataFileContents($fileName) {
+        return file_get_contents($this->_getDataFilePath($fileName));
+    }
 
-$_tests_dir = getenv( 'WP_TESTS_DIR' );
-if ( ! $_tests_dir ) {
-	$_tests_dir = '/tmp/wordpress-tests-lib';
-}
+    protected function _getDataFilePath($fileName) {
+        return $this->_getTestDataDir() . DIRECTORY_SEPARATOR . $fileName;
+    }
 
-if (is_dir($_tests_dir)) {
-	require_once $_tests_dir . '/includes/functions.php';
-} else {
-	die('Test directory not found');
-}
+    protected function _getTestDataDir() {
+        return $this->_getRootTestsDir() . DIRECTORY_SEPARATOR . 'data';
+    }
 
-function _get_plugin_base_dir() {
-	return dirname(dirname(__FILE__));
-}
-
-function _manually_install_plugin() {
-	$installer = new Abp01_Installer();
-	$activated = $installer->activate();
-	if (!$activated) {
-		die('Failed to activate plugin. Cannot continue testing.');
-	}
-}
-
-function _manually_load_plugin() {
-	require_once _get_plugin_base_dir() . '/abp01-plugin-main.php';
-	_manually_install_plugin();
-}
-
-tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
-require $_tests_dir . '/includes/bootstrap.php';
+    abstract protected function _getRootTestsDir();
+ }

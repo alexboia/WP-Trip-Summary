@@ -34,8 +34,14 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Route_Track_Part {
+    /**
+     * @var Abp01_Route_Track_Line[] Array of track lines for this track part.
+     */
     public $lines;
 
+    /**
+     * @var string The name of the track part
+     */
     public $name;
 
     public $maxLat;

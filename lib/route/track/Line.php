@@ -46,6 +46,9 @@ class Abp01_Route_Track_Line {
 
     public $minAlt;
 
+    /**
+     * @var Abp01_Route_Track_Point[] Array of track points for this line
+     */
     public $trackPoints;
 
     public function __construct() {
