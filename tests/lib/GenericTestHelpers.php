@@ -30,14 +30,15 @@
  */
 
 trait GenericTestHelpers {
-    private $_faker = null;
+    private static $_faker = null;
 
-    protected function _getFaker() {
-        if ($this->_faker == null) {
-            $this->_faker = Faker\Factory::create();
+    protected static function _getFaker() {
+        if (self::$_faker == null) {
+            self::$_faker = Faker\Factory::create();
+            self::$_faker->addProvider(new GpxDocumentFakerDataProvider(self::$_faker, 0.1));
         }
 
-        return $this->_faker;
+        return self::$_faker;
     }
 
     protected function _createWpPosts($postIds) {
@@ -50,7 +51,7 @@ trait GenericTestHelpers {
     }
 
     protected function _generateWpPostData($postId) {
-        $faker = $this->_getFaker();
+        $faker = self::_getFaker();
         return array(
             'ID' => $postId,
             'post_title' => $faker->words(3, true),

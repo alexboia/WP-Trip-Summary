@@ -29,18 +29,22 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
- trait TestDataHelpers {
-    protected function _getTestDataFileContents($fileName) {
-        return file_get_contents($this->_getDataFilePath($fileName));
+ trait TestDataFileHelpers {
+    protected static function _setTestDataFileContents($fileName, $contents) {
+        file_put_contents(self::_getDataFilePath($fileName), $contents);
+    }
+    
+    protected static function _getTestDataFileContents($fileName) {
+        return file_get_contents(self::_getDataFilePath($fileName));
     }
 
-    protected function _getDataFilePath($fileName) {
-        return $this->_getTestDataDir() . DIRECTORY_SEPARATOR . $fileName;
+    protected static function _getDataFilePath($fileName) {
+        return self::_getTestDataDir() . DIRECTORY_SEPARATOR . $fileName;
     }
 
-    protected function _getTestDataDir() {
-        return $this->_getRootTestsDir() . DIRECTORY_SEPARATOR . 'data';
+    protected static function _getTestDataDir() {
+        return self::_getRootTestsDir() . DIRECTORY_SEPARATOR . 'data';
     }
 
-    abstract protected function _getRootTestsDir();
+    protected abstract static function _getRootTestsDir();
  }

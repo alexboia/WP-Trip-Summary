@@ -30,10 +30,11 @@
  */
 
 require_once 'faker/autoload.php';
+require_once 'lib/GpxDocumentFakerDataProvider.php';
 require_once 'lib/LookupDataTestHelpers.php';
 require_once 'lib/RouteInfoTestDataSets.php';
 require_once 'lib/GenericTestHelpers.php';
-require_once 'lib/TestDataHelpers.php';
+require_once 'lib/TestDataFileHelpers.php';
 
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
 if ( ! $_tests_dir ) {
