@@ -30,7 +30,128 @@
  */
 
  class GpxDocumentParserTests extends WP_UnitTestCase {
-    use TestDataHelpers;
+    use GenericTestHelpers;
+    use TestDataFileHelpers;
+
+    private static $_randomGpxFilesTestInfo = array();
+
+    public static function setUpBeforeClass() {
+        parent::setUpBeforeClass();
+        self::_addRandomGpxFile('test6-2tracks-4segments-4000points-nometa.gpx', array(
+            'precision' => 4,
+            'tracks' => array(
+                'count' => 2
+            ),
+            'segments' => array(
+                'count' => 4,
+            ),
+            'points' => array(
+                'count' => 4000
+            ),
+            'metadata' => false
+        ));
+        self::_addRandomGpxFile('test7-1track-1segments-1000points-wpartialmeta.gpx', array(
+            'precision' => 4,
+            'tracks' => array(
+                'count' => 1
+            ),
+            'segments' => array(
+                'count' => 1,
+            ),
+            'points' => array(
+                'count' => 1000
+            ),
+            'metadata' => array(
+                'name' => true,
+                'desc' => true,
+                'keywords' => false,
+                'author' => false,
+                'copyright' => false,
+                'link' => false,
+                'time' => false,
+                'bounds' => false
+            )
+        ));
+    }
+
+    public static function tearDownAfterClass() {
+        parent::tearDownAfterClass();
+        self::_clearRandomGpxFiles();
+    }
+
+    private static function _addRandomGpxFilePair($fileName, $options) {
+        self::_addRandomGpxFile($fileName, $options);
+
+        $fileNameNoPretty = str_ireplace('.gpx', '-nopretty.gpx', $fileName);
+        self::_addRandomGpxFile($fileNameNoPretty, array_merge($options, array(
+            'prettify' => false
+        )));
+    }
+
+    private static function _addRandomGpxFile($fileName, $options) {
+        $faker = self::_getFaker();
+        $gpx = $faker->gpx($options);
+
+        $data = $gpx['data'];
+        $deltaPoint = 1 / pow(10, $options['precision']);
+
+        $expectMetadata = array(
+            'name' => !empty($data['metadata']['name']) 
+                ? $data['metadata']['name'] 
+                : null,
+            'desc' => !empty($data['metadata']['desc']) 
+                ? $data['metadata']['desc'] 
+                : null,
+            'keywords' => !empty($data['metadata']['keywords']) 
+                ? $data['metadata']['keywords'] 
+                : null
+        );
+
+        $expectTrackParts = array();
+        foreach ($data['content']['tracks'] as $track) {
+            $expectTrackLines = array();
+            foreach ($track['segments'] as $segment) {
+                $samplePoints = array();
+                foreach ($segment['points'] as $point) {
+                    $samplePoints[] = array_merge($point, array(
+                        'delta' => $deltaPoint
+                    ));
+                }
+                $expectTrackLines[] = array(
+                    'trackPointsCount' => count($segment['points']),
+                    'sampleTrackPoints' => $samplePoints
+                );
+            }
+
+            $expectTrackParts[] = array(
+                'name' => !empty($track['name']) ? $track['name'] : null,
+                'trackLines' => $expectTrackLines
+            );
+        }
+
+        self::$_randomGpxFilesTestInfo[$fileName] = array(
+            'expect' => array(
+                'document' => true,
+                'metadata' => $expectMetadata,
+                'trackParts' => $expectTrackParts
+            )
+        );
+
+        self::_setTestDataFileContents($fileName, $gpx['text']);
+    }
+
+    private static function _clearRandomGpxFiles() {
+        foreach (array_keys(self::$_randomGpxFilesTestInfo) as $fileName) {
+            unlink(self::_getDataFilePath($fileName));
+        }
+        self::$_randomGpxFilesTestInfo = array();
+    }
+
+    public function test_generateGPX_andSave() {
+        $faker = $this->_getFaker();
+        $gpx = $faker->gpx();
+        $this->_setTestDataFileContents('test.gpx', $gpx['text']);
+    }
 
     public function test_canCheckIfSupported() {
         $parser = new Abp01_Route_Track_GpxDocumentParser();
@@ -74,6 +195,22 @@
             $this->assertTrue($parser->hasErrors());
             $this->assertNotEmpty($parser->getLastErrors());
         }
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function test_tryParse_nullData() {
+        $parser = new Abp01_Route_Track_GpxDocumentParser();
+        $parser->parse(null);
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function test_tryParse_emptyData() {
+        $parser = new Abp01_Route_Track_GpxDocumentParser();
+        $parser->parse('');
     }
 
     private function _assertMetadataCorrect(Abp01_Route_Track_Document $actualDocument, $expectMeta) {
@@ -140,11 +277,15 @@
 
     private function _assertLineHasPoint(Abp01_Route_Track_Line $line, $pointSpec) {
         $found = false;
-        
+
+        $delta = isset($pointSpec['delta']) 
+            ? $pointSpec['delta'] 
+            : 0.00;
+
         foreach ($line->trackPoints as $trackPoint) {
-            if (abs($trackPoint->coordinate->lat - $pointSpec['lat']) <= $pointSpec['delta'] 
-                && abs($trackPoint->coordinate->lng - $pointSpec['lon']) <= $pointSpec['delta'] 
-                && abs($trackPoint->coordinate->alt - $pointSpec['ele']) <= $pointSpec['delta'] ) {
+            if (abs($trackPoint->coordinate->lat - $pointSpec['lat']) / $pointSpec['lat'] <= $delta 
+                && abs($trackPoint->coordinate->lng - $pointSpec['lon']) / $pointSpec['lon'] <= $delta 
+                && abs($trackPoint->coordinate->alt - $pointSpec['ele']) / $pointSpec['ele'] <= $delta) {
                 $found = true;
                 break;
             }
@@ -154,40 +295,7 @@
     }
 
     private function _getValidTestFilesSpec() {
-        return array(
-            'test4-empty-utf8-bom.gpx' => array(
-                'expect' => array(
-                    'document' => true,
-                    'metadata' => array(
-                        'name' => null,
-                        'desc' => null,
-                        'keywords' => null
-                    ),
-                    'trackParts' => array()
-                )
-            ),
-            'test4-empty-utf8-wo-bom.gpx' => array(
-                'expect' => 'test4-empty-utf8-bom.gpx'
-            ),
-            'test5-empty-wmeta-wtrkroot-utf8-bom.gpx' => array(
-                'expect' => array(
-                    'document' => true,
-                    'metadata' => array(
-                        'name' => 'PDM #4 - Meridionalii de Vest',
-                        'desc' => 'PDM #4 - Meridionalii de Vest DESC',
-                        'keywords' => 'kw1,kw2,kw3'
-                    ),
-                    'trackParts' => array(
-                        array(
-                            'name' => null,
-                            'trackLines' => array()
-                        )
-                    )
-                )
-            ),
-            'test5-empty-wmeta-wtrkroot-utf8-wo-bom.gpx' => array(
-                'expect' => 'test5-empty-wmeta-wtrkroot-utf8-bom.gpx'
-            ),
+        return array_merge(array(
             'test1-garmin-desktop-app-utf8-bom.gpx' => array(
                 'expect' => array(
                     'document' => true,
@@ -208,13 +316,13 @@
                                             'lat' => 43.915864191949368,
                                             'lon' => 11.864037103950977,
                                             'ele' => 380.33999999999997,
-                                            'delta' => 0.001
+                                            'delta' => 0.00
                                         ),
                                         array(
                                             'lat' => 43.915851535275578,
                                             'lon' => 11.864051101729274,
                                             'ele' => 380.81999999999999,
-                                            'delta' => 0.001
+                                            'delta' => 0.00
                                         ),
 
                                         //Pick some points somewhere in the middle of the line
@@ -222,13 +330,13 @@
                                             'lat' => 43.914778651669621,
                                             'lon' => 11.861909944564104,
                                             'ele' => 408.69999999999999,
-                                            'delta' => 0.001
+                                            'delta' => 0.00
                                         ),
                                         array(
                                             'lat' => 43.914694245904684,
                                             'lon' => 11.861764518544078,
                                             'ele' => 410.13999999999999,
-                                            'delta' => 0.001
+                                            'delta' => 0.00
                                         ),
 
                                         //Pick some points at the end of the line
@@ -236,13 +344,13 @@
                                             'lat' => 43.915900150313973,
                                             'lon' => 11.864040205255151,
                                             'ele' => 380.33999999999997,
-                                            'delta' => 0.001
+                                            'delta' => 0.00
                                         ),
                                         array(
                                             'lat' => 43.915909621864557,
                                             'lon' => 11.864063674584031,
                                             'ele' => 379.86000000000001,
-                                            'delta' => 0.001
+                                            'delta' => 0.00
                                         ),
                                     )
                                 )
@@ -385,8 +493,41 @@
             ),
             'test2-strava-utf8-wo-bom.gpx' => array(
                 'expect' => 'test2-strava-utf8-bom.gpx'
+            ),
+            'test4-empty-utf8-bom.gpx' => array(
+                'expect' => array(
+                    'document' => true,
+                    'metadata' => array(
+                        'name' => null,
+                        'desc' => null,
+                        'keywords' => null
+                    ),
+                    'trackParts' => array()
+                )
+            ),
+            'test4-empty-utf8-wo-bom.gpx' => array(
+                'expect' => 'test4-empty-utf8-bom.gpx'
+            ),
+            'test5-empty-wmeta-wtrkroot-utf8-bom.gpx' => array(
+                'expect' => array(
+                    'document' => true,
+                    'metadata' => array(
+                        'name' => 'PDM #4 - Meridionalii de Vest',
+                        'desc' => 'PDM #4 - Meridionalii de Vest DESC',
+                        'keywords' => 'kw1,kw2,kw3'
+                    ),
+                    'trackParts' => array(
+                        array(
+                            'name' => null,
+                            'trackLines' => array()
+                        )
+                    )
+                )
+            ),
+            'test5-empty-wmeta-wtrkroot-utf8-wo-bom.gpx' => array(
+                'expect' => 'test5-empty-wmeta-wtrkroot-utf8-bom.gpx'
             )
-        );
+        ), self::$_randomGpxFilesTestInfo);
     }
 
     private function _getInvalidTestFilesSpec() {
@@ -396,7 +537,7 @@
         );
     }   
 
-    protected function _getRootTestsDir() {
+    protected static function _getRootTestsDir() {
         return __DIR__;
     }
  }
