@@ -94,12 +94,7 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
         }
 
         if (!empty($metadataInfo['copyright'])) {
-            $content .= (
-                '<copyright author="' . $metadataInfo['copyright']['author'] . '">' .
-                    '<year>' . $metadataInfo['copyright']['year'] . '</year>' .
-                    '<license>' . $metadataInfo['copyright']['license'] . '</license>' .
-                '</copyright>'
-            );
+            $content .= $this->_renderCopyrightElement('copyright', $metadataInfo['copyright']);
         }
 
         if (!empty($metadataInfo['link'])) {
@@ -191,12 +186,21 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
         return ('<' . $tag . '><![CDATA[' . $str . ']]></' . $tag . '>');
     }
 
+    private function _renderCopyrightElement($tag, $copyright) {
+        return (
+            '<' . $tag .' author="' . $copyright['author'] . '">' .
+                '<year>' . $copyright['year'] . '</year>' .
+                '<license>' . $copyright['license'] . '</license>' .
+            '</' . $tag . '>'
+        );
+    }
+
     private function _generateDocument($options) {
         $from = $this->_generateStartLatLng($options['area'], 
             $options['span'], 
             $options['elevation']['generate'] 
                 ? $options['elevation']['base'] 
-                : null,
+                : 0,
             $options['precision']);
 
         $metaArgs = $options['metadata'];
@@ -208,7 +212,7 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
             'spanLng' => $options['span'],
             'spanAlt' => $options['elevation']['generate'] 
                 ? $options['elevation']['span'] 
-                : null,
+                : 0,
             'countTracks' => $options['tracks']['count'],
             'withTrackName' => $options['tracks']['name'],
 
@@ -305,9 +309,9 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
                 'withPointDesc' => $withPointDesc,
                 'spanLat' => round($trackSpanLat + $newDelta['newDeltaLat'], $precision),
                 'spanLng' => round($trackSpanLng + $newDelta['newDeltaLng'], $precision),
-                'spanAlt' => $trackSpanAlt != null 
+                'spanAlt' => $trackSpanAlt !== 0 
                     ? round($trackSpanAlt + $newDelta['newDeltaAlt'], $precision) 
-                    : null,
+                    : 0,
                 'precision' => $precision,
                 'countPoints' => $countPoints,
                 'countSegments' => $countSegments
@@ -351,7 +355,7 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
         $currentTo = $from;
         $name = $withTrackName 
             ? $this->generator->numerify('GPX Track ####')
-            : null;
+            : 0;
 
         for ($i = 0; $i < $countSegments; $i ++) {
             $newDelta = $this->_generateDeltaLatLngAlt($deltaGenerationArgs);
@@ -361,9 +365,9 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
                 'withPointDesc' => $withPointDesc,
                 'spanLat' => round($segmentSpanLat + $newDelta['newDeltaLat'], $precision),
                 'spanLng' => round($segmentSpanLng + $newDelta['newDeltaLng'], $precision),
-                'spanAlt' => $segmentSpanAlt != null 
+                'spanAlt' => $segmentSpanAlt !== 0 
                     ? round($segmentSpanAlt + $newDelta['newDeltaAlt'], $precision) 
-                    : null,
+                    : 0,
                 'precision' => $precision,
                 'countPoints' => $countPoints
             );
@@ -422,9 +426,9 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
             $currentTo = array(
                 'lat' => round($currentTo['lat'] + $pointSpanLat + $newDelta['newDeltaLat'], $precision),
                 'lon' => round($currentTo['lon'] + $pointSpanLng + $newDelta['newDeltaLng'], $precision),
-                'ele' => $pointSpanAlt != null && $newDelta['newDeltaAlt'] !== null 
+                'ele' => $pointSpanAlt !== 0 && $newDelta['newDeltaAlt'] !== 0 
                     ? round($currentTo['ele'] + $pointSpanAlt + $newDelta['newDeltaAlt'], $precision)
-                    : null,
+                    : 0,
                 'name' => $nameGenerator(),
                 'desc' => $descGenerator()
             );
@@ -447,21 +451,19 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
         $newDeltaLng = round($this->generator->numberBetween($minDeltaLng, $maxDeltaLng) / $factor, 
             $precision);
 
-        $newDeltaAlt = $minDeltaAlt !== null  && $maxDeltaAlt !== null
+        $newDeltaAlt = $minDeltaAlt !== 0  && $maxDeltaAlt !== 0
             ? round($this->generator->numberBetween($minDeltaAlt, $maxDeltaAlt) / $factor, 
                 $precision)
-            : null;
+            : 0;
 
         $signumLat = $allowNegative && $this->generator->boolean() ? -1 : 1;
         $signumLng = $allowNegative && $this->generator->boolean() ? -1 : 1;
-        $signumAlt = $allowNegative &&$this->generator->boolean() ? -1 : 1;
+        $signumAlt = $allowNegative && $this->generator->boolean() ? -1 : 1;
 
         return array(
             'newDeltaLat' => $signumLat * $newDeltaLat,
             'newDeltaLng' => $signumLng * $newDeltaLng,
-            'newDeltaAlt' => $newDeltaAlt != null 
-                ? $newDeltaAlt * $signumAlt 
-                : null
+            'newDeltaAlt' => $signumAlt * $newDeltaAlt
         );
     }
 
@@ -471,15 +473,15 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
 
         $unscaledDeltaLat = max($min, round(($spanLat / $count), $precision));
         $unscaledDeltaLng = max($min, round(($spanLng / $count), $precision));
-        $unscaledDeltaAlt = $spanAlt !== null 
+        $unscaledDeltaAlt = $spanAlt !== 0 
             ? max($min, round(($spanAlt / $count), $precision))
-            : null;
+            : 0;
 
         $maxDeltaLat = round($unscaledDeltaLat * $factor);
         $maxDeltaLng = round($unscaledDeltaLng * $factor);
-        $maxDeltaAlt = $unscaledDeltaAlt !== null 
+        $maxDeltaAlt = $unscaledDeltaAlt !== 0 
             ? round($unscaledDeltaAlt * $factor)
-            : null;
+            : 0;
 
         return array(
             'factor' => $factor,
@@ -495,9 +497,9 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
             'unscaledDeltaLng' => $unscaledDeltaLng,
             
             'maxDeltaAlt' => $maxDeltaAlt,
-            'minDeltaAlt' => $maxDeltaAlt != null
+            'minDeltaAlt' => $maxDeltaAlt !== 0
                 ? round($maxDeltaAlt * (1 - $this->_acceptableError), $precision)
-                : null,
+                : 0,
             'unscaledDeltaAlt' => $unscaledDeltaAlt
         );
     }
@@ -576,10 +578,10 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
                 'generate' => $generateElevation,
                 'base' => $generateElevation
                     ? $this->generator->numberBetween(50, 1500)
-                    : null,
+                    : 0,
                 'span' => $generateElevation 
                     ? $this->generator->numberBetween(50, 5000) 
-                    : null
+                    : 0
             ),
 
             'area' => $this->generator->randomElement($supportedAreas)

@@ -29,42 +29,13 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once 'lib/DbTestHelpers.php';
-require_once 'lib/LookupDataTestHelpers.php';
-require_once 'lib/RouteInfoTestDataSets.php';
-require_once 'lib/GenericTestHelpers.php';
-require_once 'lib/TestDataFileHelpers.php';
+ trait DbTestHelpers {
+    protected function _truncateTables(MysqliDb $db) {
+        $nArgs = func_num_args();
 
-require_once 'faker/autoload.php';
-require_once 'lib/GpxDocumentFakerDataProvider.php';
-
-$_tests_dir = getenv( 'WP_TESTS_DIR' );
-if ( ! $_tests_dir ) {
-	$_tests_dir = '/tmp/wordpress-tests-lib';
-}
-
-if (is_dir($_tests_dir)) {
-	require_once $_tests_dir . '/includes/functions.php';
-} else {
-	die('Test directory not found');
-}
-
-function _get_plugin_base_dir() {
-	return dirname(dirname(__FILE__));
-}
-
-function _manually_install_plugin() {
-	$installer = new Abp01_Installer();
-	$activated = $installer->activate();
-	if (!$activated) {
-		die('Failed to activate plugin. Cannot continue testing.');
-	}
-}
-
-function _manually_load_plugin() {
-	require_once _get_plugin_base_dir() . '/abp01-plugin-main.php';
-	_manually_install_plugin();
-}
-
-tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
-require $_tests_dir . '/includes/bootstrap.php';
+        for ($iArg = 1; $iArg < $nArgs; $iArg ++) {
+            $table = func_get_arg($iArg);
+            $db->rawQuery('TRUNCATE TABLE `' . $table . '`', null, false);
+        }
+    }
+ }

@@ -30,6 +30,8 @@
  */
 
  trait LookupDataTestHelpers {
+	use DbTestHelpers;
+
     /**
      * @return Abp01_Env
      */
@@ -39,18 +41,14 @@
 		$env = $this->_getEnv();
 		$db = $env->getDb();
 
-		$table = $env->getLookupTableName();
-		$langTable = $env->getLookupLangTableName();
+		$lookupTableName = $env->getLookupTableName();
+		$langTableName = $env->getLookupLangTableName();
 		$lookupDetailsTableName = $env->getRouteDetailsLookupTableName();
 
-		$db->rawQuery('TRUNCATE TABLE `' . $lookupDetailsTableName . '`', null, 
-			false);
-
-		$db->rawQuery('TRUNCATE TABLE `' . $langTable . '`', null, 
-			false);
-
-		$db->rawQuery('TRUNCATE TABLE `' . $table . '`', null, 
-			false);
+		$this->_truncateTables($db, 
+			$lookupDetailsTableName, 
+			$langTableName, 
+			$lookupTableName);
 	}
 
 	protected function _readAllLookupData() {

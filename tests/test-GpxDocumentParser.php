@@ -37,41 +37,9 @@
 
     public static function setUpBeforeClass() {
         parent::setUpBeforeClass();
-        self::_addRandomGpxFile('test6-2tracks-4segments-4000points-nometa.gpx', array(
-            'precision' => 4,
-            'tracks' => array(
-                'count' => 2
-            ),
-            'segments' => array(
-                'count' => 4,
-            ),
-            'points' => array(
-                'count' => 4000
-            ),
-            'metadata' => false
-        ));
-        self::_addRandomGpxFile('test7-1track-1segments-1000points-wpartialmeta.gpx', array(
-            'precision' => 4,
-            'tracks' => array(
-                'count' => 1
-            ),
-            'segments' => array(
-                'count' => 1,
-            ),
-            'points' => array(
-                'count' => 1000
-            ),
-            'metadata' => array(
-                'name' => true,
-                'desc' => true,
-                'keywords' => false,
-                'author' => false,
-                'copyright' => false,
-                'link' => false,
-                'time' => false,
-                'bounds' => false
-            )
-        ));
+        foreach (self::_getRandomFileGenerationSpec() as $fileName => $options) {
+            self::_generateAndAdRandomGpxFilePair($fileName, $options);
+        }
     }
 
     public static function tearDownAfterClass() {
@@ -79,16 +47,22 @@
         self::_clearRandomGpxFiles();
     }
 
-    private static function _addRandomGpxFilePair($fileName, $options) {
-        self::_addRandomGpxFile($fileName, $options);
+    private static function _generateAndAdRandomGpxFilePair($fileName, $options) {
+        $spec = array(
+            $fileName => $options
+        );
 
         $fileNameNoPretty = str_ireplace('.gpx', '-nopretty.gpx', $fileName);
-        self::_addRandomGpxFile($fileNameNoPretty, array_merge($options, array(
+        $spec[$fileNameNoPretty] = array_merge($options, array(
             'prettify' => false
-        )));
+        ));
+
+        foreach ($spec as $fileName => $options) {
+            self::_generateAndAddRandomGpxFile($fileName, $options);    
+        }
     }
 
-    private static function _addRandomGpxFile($fileName, $options) {
+    private static function _generateAndAddRandomGpxFile($fileName, $options) {
         $faker = self::_getFaker();
         $gpx = $faker->gpx($options);
 
@@ -292,6 +266,47 @@
         }
 
         $this->assertTrue($found);
+    }
+
+    private static function _getRandomFileGenerationSpec() {
+        return array(
+            'test6-2tracks-4segments-4000points-nometa.gpx' => array(
+                'precision' => 4,
+                'tracks' => array(
+                    'count' => 2
+                ),
+                'segments' => array(
+                    'count' => 4,
+                ),
+                'points' => array(
+                    'count' => 4000
+                ),
+                'metadata' => false
+            ),
+
+            'test7-1track-1segments-1000points-wpartialmeta.gpx' => array(
+                'precision' => 4,
+                'tracks' => array(
+                    'count' => 1
+                ),
+                'segments' => array(
+                    'count' => 1,
+                ),
+                'points' => array(
+                    'count' => 1000
+                ),
+                'metadata' => array(
+                    'name' => true,
+                    'desc' => true,
+                    'keywords' => false,
+                    'author' => false,
+                    'copyright' => false,
+                    'link' => false,
+                    'time' => false,
+                    'bounds' => false
+                )
+            )
+        );
     }
 
     private function _getValidTestFilesSpec() {

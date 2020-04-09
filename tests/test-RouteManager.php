@@ -32,6 +32,7 @@
  class RouteManagerTests extends WP_UnitTestCase {
     use RouteInfoTestDataSets;
     use GenericTestHelpers;
+    use DbTestHelpers;
 
     private $_testPostRouteData = array();
 
@@ -117,10 +118,13 @@
     }
 
     public function test_canCheckIfHasRouteInfo_postsWithoutRouteInfo() {
+        $postIds = array();
         $routeManager = $this->_getRouteManager();
 
         for ($i = 0; $i < 10; $i ++) {
-            $postId = $this->_generatePostId();
+            $postId = $this->_generatePostId($postIds);
+            $postIds[] = $postId;
+
             $this->assertFalse($routeManager->hasRouteInfo($postId));
         }
     }
@@ -138,10 +142,13 @@
     }
 
     public function test_canGetRouteInfo_postsWithoutRouteInfo() {
+        $postIds = array();
         $routeManager = $this->_getRouteManager();
 
         for ($i = 0; $i < 10; $i ++) {
-            $postId = $this->_generatePostId();
+            $postId = $this->_generatePostId($postIds);
+            $postIds[] = $postId;
+
             $this->assertNull($routeManager->getRouteInfo($postId));
         }
     }
@@ -191,10 +198,13 @@
     }
 
     public function test_canGetRouteTrack_postsWithoutRouteTrack() {
+        $postIds = array();
         $routeManager = $this->_getRouteManager();
 
         for ($i = 0; $i < 10; $i ++) {
-            $postId = $this->_generatePostId();
+            $postId = $this->_generatePostId($postIds);
+            $postIds[] = $postId;
+
             $this->assertNull($routeManager->getRouteTrack($postId));
         }
     }
@@ -224,10 +234,13 @@
     }
 
     public function test_canCheckIfHasRouteTrack_postsWithoutRouteTrack() {
+        $postIds = array();
         $routeManager = $this->_getRouteManager();
 
         for ($i = 0; $i < 10; $i ++) {
-            $postId = $this->_generatePostId();
+            $postId = $this->_generatePostId($postIds);
+            $postIds[] = $postId;
+
             $this->assertFalse($routeManager->hasRouteTrack($postId));
         }
     }
@@ -260,7 +273,7 @@
         $routeManager = $this->_getRouteManager();
 
         for ($i = 0; $i < 10; $i ++) {
-            $postIds[] = $this->_generatePostId();
+            $postIds[] = $this->_generatePostId($postIds);
         }
 
         $this->_createWpPosts($postIds);
@@ -396,10 +409,9 @@
     private function _initRouteInfo() {
         $env = $this->_getEnv();
         $db = $this->_getDb();
-
-        $faker = $this->_getFaker();
         $proj = $this->_getProjSphericalMercator();
 
+        $postIds = array();
         $testPostRouteData = array();
 
 		$table = $env->getRouteDetailsTableName();
@@ -410,7 +422,7 @@
         $db->startTransaction();
 
         for ($i = 0; $i < 3; $i ++) {
-            $postId = $this->_generatePostId($testPostRouteData);
+            $postId = $this->_generatePostId($postIds);
             $routeInfoData = $this->_generateRandomRouteInfoWithType();
             $currentUserId = $this->_generateCurrentUserId();
             $track = $this->_generateRandomRouteTrack();
@@ -419,6 +431,7 @@
             $routeInfo = new Abp01_Route_Info($type);
             $routeInfo->setData($routeInfoData[1]);
 
+            $postIds[] = $postId;
             $testPostRouteData[$postId] = array(
                 'type' => $type,
                 'routeInfo' => $routeInfo,
@@ -512,38 +525,35 @@
         $env = $this->_getEnv();
 		$db = $this->_getDb();
 
-		$table = $env->getRouteDetailsTableName();
+		$routeDetailsTableName = $env->getRouteDetailsTableName();
         $lookupDetailsTableName = $env->getRouteDetailsLookupTableName();
         $routeTrackTableName = $env->getRouteTrackTableName();
         $postsTableName = $env->getWpPostsTableName();
 
-		$db->rawQuery('TRUNCATE TABLE `' . $lookupDetailsTableName . '`', null, 
-            false);
-            
-        $db->rawQuery('TRUNCATE TABLE `' . $table . '`', null, 
-            false);
-
-        $db->rawQuery('TRUNCATE TABLE `' . $routeTrackTableName . '`', null, 
-            false);
-            
-        $db->rawQuery('TRUNCATE TABLE `' . $postsTableName . '`', null, 
-			false);
+        $this->_truncateTables($db, 
+            $lookupDetailsTableName, 
+            $routeDetailsTableName, 
+            $routeTrackTableName, 
+            $postsTableName);
     }
 
-    private function _generatePostId($exclude = null) {
-        if (empty($exclude) || !is_array($exclude)) {
-            $exclude = $this->_testPostRouteData;
+    private function _generatePostId($excludeAdditionalIds = null) {
+        $excludePostsIds = array_keys($this->_testPostRouteData);
+        if (!empty($excludeAdditionalIds) && is_array($excludeAdditionalIds)) {
+            $excludePostsIds = array_merge($excludePostsIds, $excludeAdditionalIds);
         }
 
-        $faker = $this->_getFaker();
+        $faker = self::_getFaker();
         
-        $max = !empty($exclude) ? max(array_keys($exclude)) : 0;
-        $postId = $faker->numberBetween($max + 1, $max + 1000);
+        $max = !empty($excludePostsIds) 
+            ? max($excludePostsIds) 
+            : 0;
 
+        $postId = $faker->numberBetween($max + 1, $max + 1000);
         return $postId;
     }
 
     private function _generateCurrentUserId() {
-        return $this->_getFaker()->numberBetween(1, PHP_INT_MAX);
+        return self::_getFaker()->numberBetween(1, PHP_INT_MAX);
     }
  }
