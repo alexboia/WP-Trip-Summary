@@ -38,7 +38,7 @@
     public static function setUpBeforeClass() {
         parent::setUpBeforeClass();
         foreach (self::_getRandomFileGenerationSpec() as $fileName => $options) {
-            self::_generateAndAdRandomGpxFilePair($fileName, $options);
+            self::_generateAndAddRandomGpxFile($fileName, $options);
         }
     }
 
@@ -47,24 +47,11 @@
         self::_clearRandomGpxFiles();
     }
 
-    private static function _generateAndAdRandomGpxFilePair($fileName, $options) {
-        $spec = array(
-            $fileName => $options
-        );
-
-        $fileNameNoPretty = str_ireplace('.gpx', '-nopretty.gpx', $fileName);
-        $spec[$fileNameNoPretty] = array_merge($options, array(
-            'prettify' => false
-        ));
-
-        foreach ($spec as $fileName => $options) {
-            self::_generateAndAddRandomGpxFile($fileName, $options);    
-        }
-    }
-
     private static function _generateAndAddRandomGpxFile($fileName, $options) {
         $faker = self::_getFaker();
-        $gpx = $faker->gpx($options);
+        $gpx = $faker->gpx(array_merge($options, array(
+            'addNoPretty' => true
+        )));
 
         $data = $gpx['data'];
         $deltaPoint = 1 / pow(10, $options['precision']);
@@ -119,7 +106,13 @@
             )
         );
 
-        self::_setTestDataFileContents($fileName, $gpx['text']);
+        $fileNameNoPretty = str_ireplace('.gpx', '-nopretty.gpx', 
+            $fileName);
+
+        self::_setTestDataFileContents($fileName, 
+            $gpx['content']['text']);
+        self::_setTestDataFileContents($fileNameNoPretty, 
+            $gpx['content']['textNoPretty']);
     }
 
     private static function _clearRandomGpxFiles() {
@@ -127,12 +120,6 @@
             unlink(self::_getDataFilePath($fileName));
         }
         self::$_randomGpxFilesTestInfo = array();
-    }
-
-    public function test_generateGPX_andSave() {
-        $faker = $this->_getFaker();
-        $gpx = $faker->gpx();
-        $this->_setTestDataFileContents('test.gpx', $gpx['text']);
     }
 
     public function test_canCheckIfSupported() {

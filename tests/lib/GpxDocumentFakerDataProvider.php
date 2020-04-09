@@ -33,20 +33,27 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
             }
         }
 
-        $documentData = $this->_generateDocument($opts);
-        $renderedDocument = $this->_renderDocument($documentData, $opts);
+        $documentInfo = $this->_generateDocument($opts);
+        $renderedDocument = $this->_renderDocument($documentInfo, $opts);
 
-        return array(
-            'text' => $renderedDocument,
-            'data' => $documentData
+        $retVal = array(
+            'content' => &$renderedDocument,
+            'data' => null
         );
+
+        if ($opts['addData']) {
+            $retVal['data'] = &$documentInfo;
+        }
+
+        return $retVal;
     }
 
-    public function randomizedGpx() {
-        return $this->gpx($this->_getRandomizedDefaults());
+    public function randomizedGpx($override = array()) {
+        $opts = array_merge($this->_getRandomizedDefaults(), $override);
+        return $this->gpx($opts);
     }
 
-    private function _renderDocument($documentInfo, $options) {
+    private function _renderDocument(&$documentInfo, $options) {
         $content = '';
         $content .= 
             '<?xml version="1.0" encoding="UTF-8"?>' .
@@ -60,19 +67,28 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
 
         $content .=  '</gpx>';
 
+        $contentNoPretty = null;
         if ($options['prettify']) {
+            if (isset($options['addNoPretty']) && $options['addNoPretty'])  {
+                $contentNoPretty = $content;
+            }
+
             $doc = new DomDocument('1.0');
             $doc->loadXML($content);
             $doc->preserveWhiteSpace = false;
             $doc->formatOutput = true;
+
             $content = $doc->saveXML();
             $doc = null;
         }
 
-        return $content;
+        return array(
+            'text' => &$content,
+            'textNoPretty' => &$contentNoPretty
+        );
     }
 
-    private function _renderMetadata($metadataInfo, $precision) {
+    private function _renderMetadata(&$metadataInfo, $precision) {
         $content = '';
         $content .= '<metadata>';
 
@@ -113,7 +129,7 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
         return $content;
     }
 
-    private function _renderDocumentContent($contentInfo, $precision) {
+    private function _renderDocumentContent(&$contentInfo, $precision) {
         $content = '';
 
         $content .= $this->_renderWaypoints($contentInfo['waypoints'], $precision);
@@ -124,7 +140,7 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
         return $content;
     }
 
-    private function _renderWaypoints($waypointInfo, $precision) {
+    private function _renderWaypoints(&$waypointInfo, $precision) {
         $content = '';
 
         foreach ($waypointInfo['waypoints'] as $wptInfo) {
@@ -134,7 +150,7 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
         return $content;
     }
 
-    private function _renderTrack($trackInfo, $precision) {
+    private function _renderTrack(&$trackInfo, $precision) {
         $content = '';
         $content .= '<trk>';
 
@@ -150,7 +166,7 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
         return $content;
     }
 
-    private function _renderSegment($segmentInfo, $precision) {
+    private function _renderSegment(&$segmentInfo, $precision) {
         $content = '';
         $content .= '<trkseg>';
 
@@ -162,7 +178,7 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
         return $content;
     }
 
-    private function _renderPoint($tag, $pointInfo, $precision) {
+    private function _renderPoint($tag, &$pointInfo, $precision) {
         $content = '';
         $content .= ('<' . $tag . ' lat="' . number_format($pointInfo['lat'], $precision, '.', '') . '" lon="' . number_format($pointInfo['lon'], $precision, '.', '') . '">');
         if (!empty($pointInfo['ele'])) {
@@ -616,7 +632,9 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
         return array(
             'span' => $this->generator->randomFloat($precision, 0.2, 1.5),
             'precision'=> $precision,
-            'prettify' => $this->generator->boolean(),
+            'prettify' => true,
+            'addNoPretty' => false,
+            'addData' => true,
             
             'tracks' => array(
                 'count' => $this->generator->numberBetween(1, 10),
@@ -664,6 +682,9 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
             'span' => 1,
             'precision'=> 4,
             'prettify' => true,
+
+            'addNoPretty' => false,
+            'addData' => true,
             
             'tracks' => array(
                 'count' => 1,
