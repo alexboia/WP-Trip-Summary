@@ -116,8 +116,19 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
     private function _renderDocumentContent($contentInfo, $precision) {
         $content = '';
 
+        $content .= $this->_renderWaypoints($contentInfo['waypoints'], $precision);
         foreach ($contentInfo['tracks'] as $trackInfo) {
             $content .= $this->_renderTrack($trackInfo, $precision);
+        }
+
+        return $content;
+    }
+
+    private function _renderWaypoints($waypointInfo, $precision) {
+        $content = '';
+
+        foreach ($waypointInfo['waypoints'] as $wptInfo) {
+            $content .= $this->_renderPoint('wpt', $wptInfo, $precision);
         }
 
         return $content;
@@ -144,16 +155,16 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
         $content .= '<trkseg>';
 
         foreach ($segmentInfo['points'] as $pointInfo) {
-            $content .= $this->_renderPoint($pointInfo, $precision);
+            $content .= $this->_renderPoint('trkpt', $pointInfo, $precision);
         }
 
         $content .= '</trkseg>';
         return $content;
     }
 
-    private function _renderPoint($pointInfo, $precision) {
+    private function _renderPoint($tag, $pointInfo, $precision) {
         $content = '';
-        $content .= ('<trkpt lat="' . number_format($pointInfo['lat'], $precision, '.', '') . '" lon="' . number_format($pointInfo['lon'], $precision, '.', '') . '">');
+        $content .= ('<' . $tag . ' lat="' . number_format($pointInfo['lat'], $precision, '.', '') . '" lon="' . number_format($pointInfo['lon'], $precision, '.', '') . '">');
         if (!empty($pointInfo['ele'])) {
             $content .= ('<ele>' . number_format($pointInfo['ele'], $precision, '.', '')  . '</ele>');
         }
@@ -164,7 +175,7 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
             $content .= $this->_renderStringElement('desc', $pointInfo['desc']);
         }
 
-        $content .= '</trkpt>';
+        $content .= '</' . $tag . '>';
         return $content;
     }
 
@@ -221,6 +232,10 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
             'countPoints' => $options['points']['count'],
             'withPointName' => $options['points']['name'],
             'withPointDesc' => $options['points']['desc'],
+
+            'countWaypointsRatio' => $options['waypoints'] 
+                ? 0.1 
+                : 0,
 
             'precision' => $options['precision']
         );
@@ -286,6 +301,7 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
         $countTracks = $args['countTracks']; 
         $countPoints = $args['countPoints'];
         $countSegments = $args['countSegments'];
+        $countWaypointsRatio = $args['countWaypointsRatio'];
         $precision = $args['precision'];
 
         $deltaGenerationArgs = $this->_getDeltaLatLngAltGenerationArgs($spanLat, 
@@ -322,10 +338,65 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
             $tracks[] = $newTrack;
         }
 
+        $waypoints = $this->_pickRandomWaypoints(array(
+            'tracks' => $tracks,
+            'countWaypointsRatio' => $countWaypointsRatio,
+            'withPointName' => $withPointName,
+            'withPointDesc' => $withPointDesc
+        ));
+
         return array(
+            'waypoints' => $waypoints,
             'tracks' => $tracks,
             'from' => $from,
             'to' => $currentTo
+        );
+    }
+
+    private function _pickRandomWaypoints($args) {
+        $waypoints = array();
+        $tracks = $args['tracks'];
+        $countWaypointsRatio = $args['countWaypointsRatio'];
+        $withPointName = $args['withPointName'];
+        $withPointDesc = $args['withPointDesc'];
+
+        $nameGenerator = $withPointName 
+            ? function() { return $this->generator->numerify('Waypoint ######'); }
+            : function() { return null; };
+
+        $descGenerator = $withPointDesc
+            ? function() { return $this->generator->sentence(3); }
+            : function() { return null; };
+
+        foreach ($tracks as $track) {
+            foreach ($track['segments'] as $segment) {
+                $countPoints = count($segment['points']);
+                $intervalSize = floor($countPoints * $countWaypointsRatio);
+
+                $interval = array(0, $intervalSize);
+                while ($interval[0] < $interval[1] &&  $interval[1] <= $countPoints - 1) {
+                    $selectedIndex = $this->generator->numberBetween($interval[0], $interval[1]);
+
+                    $waypoint = $segment['points'][$selectedIndex];
+                    $waypoints[] = array_merge($waypoint, array(
+                        'name' => $nameGenerator(),
+                        'desc' => $descGenerator()
+                    ));
+
+                    $interval[0] = min($interval[1] + 1, $countPoints - 1);
+                    $interval[1] = min($interval[1] + $intervalSize, $countPoints - 1);
+                }
+            }
+        }
+
+        return array(
+            'from' => !empty($waypoints) 
+                ? $waypoints[0] 
+                : null,
+            'to' => !empty($waypoints) 
+                ? $waypoints[count($waypoints) - 1] 
+                : null,
+            'waypoints' => $waypoints
         );
     }
 

@@ -103,11 +103,19 @@
             );
         }
 
+        $expectSampleWaypoints = array();
+        foreach ($data['content']['waypoints']['waypoints'] as $waypoint) {
+            $expectSampleWaypoints[] = array_merge($waypoint, array(
+                'delta' => $deltaPoint
+            ));
+        }
+
         self::$_randomGpxFilesTestInfo[$fileName] = array(
             'expect' => array(
                 'document' => true,
                 'metadata' => $expectMetadata,
-                'trackParts' => $expectTrackParts
+                'trackParts' => $expectTrackParts,
+                'waypoints' => $expectSampleWaypoints
             )
         );
 
@@ -150,11 +158,12 @@
 
                 $this->_assertMetadataCorrect($document, $expect['metadata']);
                 $this->_assertTrackPartsCorrect($document, $expect['trackParts']);
-                //TODO: test waypoint extraction as well
+                if (!empty($expect['waypoints'])) {
+                    $this->_assertWaypointsCorrect($document, $expect['waypoints']);
+                }
             } else {
                 $this->assertNull($document);
             }
-            
         }
     }
 
@@ -206,6 +215,12 @@
         }
     }
 
+    private function _assertWaypointsCorrect(Abp01_Route_Track_Document $actualDocument, $expectSampleWaypoints) {
+        foreach ($expectSampleWaypoints as $expectWaypoint) {
+            $this->_assertCollectionHasPoint($actualDocument->waypoints, $expectWaypoint);
+        }
+    }
+
     private function _assertTrackPartsCorrect(Abp01_Route_Track_Document $actualDocument, $expectTrackParts) {
         $countExpectTrackParts = count($expectTrackParts);
 
@@ -250,16 +265,21 @@
     }
 
     private function _assertLineHasPoint(Abp01_Route_Track_Line $line, $pointSpec) {
+        $this->_assertCollectionHasPoint($line->trackPoints, 
+            $pointSpec);
+    }
+
+    private function _assertCollectionHasPoint($points, $pointSpec) {
         $found = false;
 
         $delta = isset($pointSpec['delta']) 
             ? $pointSpec['delta'] 
             : 0.00;
 
-        foreach ($line->trackPoints as $trackPoint) {
-            if (abs($trackPoint->coordinate->lat - $pointSpec['lat']) / $pointSpec['lat'] <= $delta 
-                && abs($trackPoint->coordinate->lng - $pointSpec['lon']) / $pointSpec['lon'] <= $delta 
-                && abs($trackPoint->coordinate->alt - $pointSpec['ele']) / $pointSpec['ele'] <= $delta) {
+        foreach ($points as $maybePoint) {
+            if (abs($maybePoint->coordinate->lat - $pointSpec['lat']) / $pointSpec['lat'] <= $delta 
+                && abs($maybePoint->coordinate->lng - $pointSpec['lon']) / $pointSpec['lon'] <= $delta 
+                && abs($maybePoint->coordinate->alt - $pointSpec['ele']) / $pointSpec['ele'] <= $delta) {
                 $found = true;
                 break;
             }
@@ -284,6 +304,45 @@
                 'metadata' => false
             ),
 
+            'test6-2tracks-4segments-4000points-nowpt-nometa.gpx' => array(
+                'precision' => 4,
+                'tracks' => array(
+                    'count' => 2
+                ),
+                'segments' => array(
+                    'count' => 4,
+                ),
+                'points' => array(
+                    'count' => 4000
+                ),
+                'waypoints' => false,
+                'metadata' => false
+            ),
+
+            'test7-1track-1segments-1000points-nowpt-wpartialmeta.gpx' => array(
+                'precision' => 4,
+                'tracks' => array(
+                    'count' => 1
+                ),
+                'segments' => array(
+                    'count' => 1,
+                ),
+                'points' => array(
+                    'count' => 1000
+                ),
+                'waypoints' => false,
+                'metadata' => array(
+                    'name' => true,
+                    'desc' => true,
+                    'keywords' => false,
+                    'author' => false,
+                    'copyright' => false,
+                    'link' => false,
+                    'time' => false,
+                    'bounds' => false
+                )
+            ),
+
             'test7-1track-1segments-1000points-wpartialmeta.gpx' => array(
                 'precision' => 4,
                 'tracks' => array(
@@ -295,6 +354,7 @@
                 'points' => array(
                     'count' => 1000
                 ),
+                'waypoints' => true,
                 'metadata' => array(
                     'name' => true,
                     'desc' => true,
