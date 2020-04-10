@@ -11,7 +11,7 @@ An opinionated, multi-language, WordPress trip summary plugin to help travel blo
 
    1. [Is it good for you?](#wpts-isitgoodforyou)
    2. [Features](#wpts-features)
-   3. [Progress](#wpts-progress)
+   3. [Progress & Management](#wpts-progress)
    4. [What it does](#wpts-what-does)
    5. [Supported languages](#wpts-langs)
    6. [Changelog](#wpts-changelog)
@@ -49,11 +49,24 @@ Do you think this would be right for you but there's that extra thing that's mis
 - allows customization of the measurement unit system used to represent various values (ex. `Total distance`, `Total climb` etc.);
 - multi-language.
 
-## Progress  
+## Progress & Management
 <a name="wpts-progress"></a>  
 
 The [milestones](https://github.com/alexboia/WP-Trip-Summary/milestones) area usually paints a good outlook on the workload for the current release, as well as the past and planned releases.  
 You might also be interested in the [issues](https://github.com/alexboia/WP-Trip-Summary/issues) area, for the gruesome details about what's currently on the table.
+
+### Project board
+
+Another area that might interest you is [the project board](https://github.com/users/alexboia/projects/1).   
+Since, for some reason, the project does not appear in the `Projects` tab, I don't have any other option than to announce it here.  
+At any rate, that's where you shall find pretty much every idea I have for this project along the way in a - for now - semi-formal to informal aspect.  
+Project notes that I commit to as actual development work will be converted to github issues and shall [also appear here](https://github.com/alexboia/WP-Trip-Summary/issues).  
+
+Stucture of the project board:
+- `To do bucket` column: any idea enters the project management workflow using this column;
+- `To do for current version (x.y.z)` column: ideas that are good candidates for implementation in the current version are moved here; not all may remain and they can either fall back to the `To do bucket` or move to `Nice to have for current version (x.y.z)` (see below);
+- `Nice to have for current version (x.y.z)` column: ideas that may or may not be implemented in the current version, due to time constraints vs. usefulness ratio;
+- `In progress` & `Done` columns: pretty self-explanatory.
 
 ## What it does  
 <a name="wpts-what-does"></a>  
@@ -195,14 +208,14 @@ From there on the main purpose of all 0.2.* versions is to:
       - [x] customize the weight of the line used to plot the track on the map.
    - [ ] improve localization by adding at least one more language:
       - [ ] currently, French is in the progress.
-   - [ ] publish a guide for customizing the front-end trip summary viewer;
+   - [ ] publish a guide for customizing the front-end trip summary viewer (planned for 0.2.5);
    - [ ] add some nice to have features, which can be quickly implemented and provide some value, such as:
-      - [ ] display minimum and maximum altitude;
+      - [ ] display minimum and maximum altitude (planned for 0.2.5);
       - [ ] compute and display an altitude profile;
       - [ ] display GPX waypoints;
-      - [ ] allow the trip summary viewer to be added as a shortcode anywhere in the text.
+      - [ ] allow the trip summary viewer to be added as a shortcode anywhere in the text (planned for 0.2.5).
    - [ ] publish a list of things with which anyone can help, if he or she desires to do so;
-   - [ ] refactoring.
+   - [ ] refactoring (on-going).
 
 ### Version 0.3 and onwards
 
