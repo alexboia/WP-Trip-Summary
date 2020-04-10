@@ -1,6 +1,6 @@
 === WP Trip Summary ===
 Contributors: alexandruboia
-Donate link: https://github.com/alexboia/WP-Trip-Summary
+Donate link: https://ko-fi.com/alexandruboia
 Tags: trip-summary, map, gpx, travel-plugin
 Requires at least: 5.0
 Tested up to: 5.4.0
@@ -17,7 +17,7 @@ Is this plug-in a good fit for you?
 ------------------------------------
 This plug-in is very good for you if:
 
-- you are a travel blogger and you're writing a lot about your tripsas, as this is a very good way of also providing a bit of extra information (actually, I'm the occasional travel blogger myself and I wrote it with this very purpose in mind).
+- you are a travel blogger and you're writing a lot about your trips, as this is a very good way of also providing a bit of extra information (actually, I'm the occasional travel blogger myself and I wrote it with this very purpose in mind).
 - you are a niche travel agency, as this would be a very helpful tool to have a highly professional approach to presenting your trips;
 - you are a hotel or an accomodation unit and want to present the options your guests would have for spending time around you;
 - you are government agency concerned with promoting turistic attractions, as you can have a website up and running in no time: just install WordPress, add this plug-in and you are ready to go.
