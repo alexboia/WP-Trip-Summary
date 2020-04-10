@@ -58,7 +58,7 @@ You might also be interested in the [issues](https://github.com/alexboia/WP-Trip
 ### Project board
 
 Another area that might interest you is [the project board](https://github.com/users/alexboia/projects/1).   
-Since, for some reason, the project does not appear in the `Projects` tab, I don't have any other option than to announce it here.  
+Since, for some reason, the project does not appear in the `Projects` tab, I don't have any other option other than to announce it here.  
 At any rate, that's where you shall find pretty much every idea I have for this project along the way in a - for now - semi-formal to informal aspect.  
 Project notes that I commit to as actual development work will be converted to github issues and shall [also appear here](https://github.com/alexboia/WP-Trip-Summary/issues).  
 
