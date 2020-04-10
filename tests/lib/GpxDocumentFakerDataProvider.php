@@ -376,13 +376,8 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
         $withPointName = $args['withPointName'];
         $withPointDesc = $args['withPointDesc'];
 
-        $nameGenerator = $withPointName 
-            ? function() { return $this->generator->numerify('Waypoint ######'); }
-            : function() { return null; };
-
-        $descGenerator = $withPointDesc
-            ? function() { return $this->generator->sentence(3); }
-            : function() { return null; };
+        $nameGenerator = $this->_getNameGenerator($withPointName, 'Waypoint');
+        $descGenerator = $this->_getDescGenerator($withPointDesc, 3);
 
         foreach ($tracks as $track) {
             foreach ($track['segments'] as $segment) {
@@ -493,13 +488,8 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
         $pointSpanLng = $deltaGenerationArgs['unscaledDeltaLng'];
         $pointSpanAlt = $deltaGenerationArgs['unscaledDeltaAlt'];
 
-        $nameGenerator = $withPointName 
-            ? function() { return $this->generator->numerify('Point ######'); }
-            : function() { return null; };
-
-        $descGenerator = $withPointDesc
-            ? function() { return $this->generator->sentence(3); }
-            : function() { return null; };
+        $nameGenerator = $this->_getNameGenerator($withPointName, 'Point');
+        $descGenerator = $this->_getDescGenerator($withPointDesc, 3);
 
         $currentTo = array_merge($from, array(
             'name' => $nameGenerator(),
@@ -633,6 +623,7 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
             'span' => $this->generator->randomFloat($precision, 0.2, 1.5),
             'precision'=> $precision,
             'prettify' => true,
+            
             'addNoPretty' => false,
             'addData' => true,
             
@@ -679,46 +670,85 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
 
     private function _getDefaults() {
         return array(
+            //how many deggrees should the track span 
+            //  (latitude and longitude)
             'span' => 1,
+
+            //precision of the calculations: 
+            //  how many decimals
             'precision'=> 4,
+
+            //whether to format the XML in a clean an readable way 
+            //  (indendented and with new lines)
             'prettify' => true,
 
+            //if prettify, then set this to true to also include 
+            //  in the return result the not-prettified XML text
             'addNoPretty' => false,
+
+            //whether to include the data source used to generate the XML document
+            //  in the return result or not
             'addData' => true,
             
+            //controls track element generation
             'tracks' => array(
+                //how many track elements (<trk />)
                 'count' => 1,
+                //whether to generate track name or not (<name /> element)
                 'name' => true,
             ),
 
+            //controls track segment elements generation
             'segments' => array(
+                //how many track segments for each trach (<trkseg /> element)
                 'count' => 3
             ),
 
+            //controls points generation
             'points' => array(
+                //how many points for each track segment
                 'count' => 100,
+                //whether to generate name for the points or not (<name /> element)
                 'name' => true,
+                //whether to generate description for the points or not (<desc /> element)
                 'desc' => true
             ),
 
             'metadata' => array(
+                //whether to generate document meta name or not
                 'name' => true,
+                //whether to generate document meta description or not
                 'desc' => true,
+                //whether to generate document meta keywords or not
                 'keywords' => true,
+                //whether to generate document meta author or not
                 'author' => true,
+                //whether to generate document meta copyright or not
                 'copyright' => true,
+                //whether to generate document meta link or not
                 'link' => true,
+                //whether to generate document meta generation time or not
                 'time' => true,
+                //whether to generate document meta bounds or not
+                //  (ignored for now)
                 'bounds' => true
             ),
+
+            //whether to generate waypoints or not.
+            //  If set to true, 10% of points will be selected 
+            //  and added as waypoints from each generated segment
             'waypoints' => true,
             
             'elevation' => array(
+                //whether to generate elevation data or not
                 'generate' => true,
+                //base elevation to start with
                 'base' => 150,
+                //maximum of elevation to generate
                 'span' => 1500
             ),
 
+            //which area of the globe to use as a playground
             'area' => 'north-east'
         );
     }
@@ -752,23 +782,16 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
         );
     }
 
-    private function _getSupportedLicenseIds() {
-        return array(
-            "0BSD",
-            "AAL",
-            "ADSL",
-            "AFL-1.1",
-            "AFL-1.2",
-            "AFL-2.0",
-            "AFL-2.1",
-            "AFL-3.0",
-            "AGPL-1.0-only",
-            "AGPL-1.0-or-later",
-            "AGPL-3.0-only",
-            "AGPL-3.0-or-later",
-            "AMDPLPA",
-            "AML"
-        );
+    private function _getNameGenerator($withName, $prefix) {
+        return $withName 
+            ? function() use ($prefix) { return $this->generator->numerify(sprintf('%s ######', $prefix)); }
+            : function() { return null; };
+    }
+
+    private function _getDescGenerator($withDesc, $nSentences) {
+        return $withDesc
+            ? function() use ($nSentences) { return $this->generator->sentence($nSentences); }
+            : function() { return null; };
     }
 
     private function _getSupportedAreas() {

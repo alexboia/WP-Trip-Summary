@@ -43,7 +43,7 @@
     }
 
     protected static function _getTestDataDir() {
-        return self::_getRootTestsDir() . DIRECTORY_SEPARATOR . 'data';
+        return self::_getRootTestsDir() . DIRECTORY_SEPARATOR . 'assets';
     }
 
     protected abstract static function _getRootTestsDir();

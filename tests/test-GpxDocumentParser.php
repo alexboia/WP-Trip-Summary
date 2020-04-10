@@ -97,6 +97,9 @@
             ));
         }
 
+        $fileNameNoPretty = str_ireplace('.gpx', '-nopretty.gpx', 
+            $fileName);
+
         self::$_randomGpxFilesTestInfo[$fileName] = array(
             'expect' => array(
                 'document' => true,
@@ -106,8 +109,9 @@
             )
         );
 
-        $fileNameNoPretty = str_ireplace('.gpx', '-nopretty.gpx', 
-            $fileName);
+        self::$_randomGpxFilesTestInfo[$fileNameNoPretty] = array(
+            'expect' => $fileName
+        );
 
         self::_setTestDataFileContents($fileName, 
             $gpx['content']['text']);
