@@ -137,7 +137,7 @@ The following languages are supported:
 - The plug-in is now smoothly integrated with the block editor as well;
 - In the plug-in settings editor a user can now specify the weight used to plot the GPS track on the map;
 - Added automated tests;
-- Teste compatibility with WordPress 5.4;
+- Tested compatibility with WordPress 5.4;
 - Fixed a GPX file upload issue that occured with certain GPX files;
 - Updated dependencies: URI.js.
 
