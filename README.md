@@ -131,6 +131,16 @@ The following languages are supported:
 ## Changelog
 <a name="wpts-changelog"></a>  
 
+### Version 0.2.4
+- French translation now available!
+- The trip summary editor is now launched from a side metabox, which also displays relevant information and features some quick actions;
+- The plug-in is now smoothly integrated with the block editor as well;
+- In the plug-in settings editor a user can now specify the weight used to plot the GPS track on the map;
+- Added automated tests;
+- Teste compatibility with WordPress 5.4;
+- Fixed a GPX file upload issue that occured with certain GPX files;
+- Updated dependencies: URI.js.
+
 ### Version 0.2.3
 - In the plug-in settings editor a user can now specify the color used to plot the GPX track on the map
 - The post and page listing now have two columns that describe whether or not an article has route information and, respectively, whether or not it has an uploaded GPX track

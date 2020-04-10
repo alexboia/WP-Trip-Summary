@@ -80,6 +80,13 @@ abstract class Abp01_UnitSystem {
         return $system == self::METRIC || $system == self::IMPERIAL;
     }
 
+    /**
+     * Converts the unit system to a plain stdClass object with the following properties:
+     *      - distanceUnit;
+     *      - lengthUnit;
+     *      - heightUnit.
+     * @return stdClass The data object that contains the above-mentioned properties.
+     */
     public function asPlainObject() {
         $data = new stdClass();
 		$data->distanceUnit = $this->getDistanceUnit();

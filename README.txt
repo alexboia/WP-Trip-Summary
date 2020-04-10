@@ -13,6 +13,29 @@ A WordPress trip summary plugin to help travel bloggers manage and display struc
 
 == Description ==
 
+Is this plug-in a good fit for you?
+------------------------------------
+This plug-in is very good for you if:
+
+- you are a travel blogger and you're writing a lot about your tripsas, as this is a very good way of also providing a bit of extra information (actually, I'm the occasional travel blogger myself and I wrote it with this very purpose in mind).
+- you are a niche travel agency, as this would be a very helpful tool to have a highly professional approach to presenting your trips;
+- you are a hotel or an accomodation unit and want to present the options your guests would have for spending time around you;
+- you are government agency concerned with promoting turistic attractions, as you can have a website up and running in no time: just install WordPress, add this plug-in and you are ready to go.
+
+Features
+--------
+- attach technical information to a post (ex. how long was your trip, how much did you totally climb, where from and where to, how hard do you think it has been, what kind of roads or trails did you encounter etc.);
+- attach a GPS track to a post (GPX files are currently accepted) and display that track on a map;
+- allows management of the look-up data used to populate the fields presented as single or multi-selection options list (ex. `Difficulty Level`, `Open During Seasons` etc.);
+- allows customization of the map layer:
+   - map tile source (comes by default configured with [OpenStreetMap](https://www.openstreetmap.org/)); 
+   - enabling/disabling of available map controls; 
+   - customizing the visual representation of the track).
+- allows customization of the measurement unit system used to represent various values (ex. `Total distance`, `Total climb` etc.);
+- multi-language.
+
+More details
+------------
 This plug-in provides two basic features:
 - allow some structured information to be filled in, according to a selected trip type;
 - allow some GPX track to be uploaded and then rendered on a map.
@@ -89,8 +112,18 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 
 == Changelog ==
 
+= 0.2.4 =
+* French translation now available!
+* The trip summary editor is now launched from a side metabox, which also displays relevant information and features some quick actions;
+* The plug-in is now smoothly integrated with the block editor as well;
+* In the plug-in settings editor a user can now specify the weight used to plot the GPS track on the map;
+* Added automated tests;
+* Teste compatibility with WordPress 5.4;
+* Fixed a GPX file upload issue that occured with certain GPX files;
+* Updated dependencies: URI.js.
+
 = 0.2.3 =
-* In the plug-in settings editor a user can now specify the color used to plot the GPX track on the map
+* In the plug-in settings editor a user can now specify the color used to plot the GPS track on the map
 * The post and page listing now have two columns that describe whether or not an article has route information and, respectively, whether or not it has an uploaded GPX track
 * The plug-in now correctly works for WP pages as well (previously, it would not correctly render on the frontend)
 * Added automated tests
@@ -117,6 +150,9 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 First officially distributed version.
 
 == Upgrade Notice ==
+
+= 0.2.4 =
+Upgrade to this version for additional features (including block editor integration) and improved plug-in stability
 
 = 0.2.3 = 
 Upgrade to this version for additional features and improved plug-in stability
