@@ -118,10 +118,10 @@ This plug-in would have required much more work on my said without the following
 12. [kite](http://code.google.com/p/kite/) - small JavaScript template engine;
 13. [Leaflet.MagnifyingGlass](https://github.com/bbecquet/Leaflet.MagnifyingGlass) - magnifying glass plug-in for the LeafletJS map component;
 14. [Leaflet.fullscreen](https://github.com/Leaflet/Leaflet.fullscreen) - full-screen plug-in for the LeafletJS map component.
-15. [Tipped JS](https://github.com/staaky/tipped) - A Complete Javascript Tooltip Solution
-16. [PHPUnit](https://github.com/sebastianbergmann/phpunit) - The PHP Unit Testing framework
-17. [Parsedown](https://github.com/erusev/parsedown) - Better Markdown Parser in PHP. [http://parsedown.org](http://parsedown.org)
-18. [Faker](https://github.com/fzaninotto/Faker) - Faker is a PHP library that generates fake data for you
+15. [Tipped JS](https://github.com/staaky/tipped) - a Complete Javascript Tooltip Solution
+16. [PHPUnit](https://github.com/sebastianbergmann/phpunit) - the PHP Unit Testing framework
+17. [Parsedown](https://github.com/erusev/parsedown) - better Markdown Parser in PHP. [http://parsedown.org](http://parsedown.org)
+18. [Faker](https://github.com/fzaninotto/Faker) - faker is a PHP library that generates fake data for you
 
 [Back to the Table of Contents](#help-root)
 

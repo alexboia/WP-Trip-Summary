@@ -112,6 +112,10 @@ Modulul WP-Trip-Summary folosește următoarele librării:
 12. [kite](http://code.google.com/p/kite/) - engine de template-uri scris in JavaScript, mic și simplu
 13. [Leaflet.MagnifyingGlass](https://github.com/bbecquet/Leaflet.MagnifyingGlass) - plug-in de Leaflet care adaugă hărții funcționalitatea de lupă: mărirea unei zone individuale de pe hartă
 14. [Leaflet.fullscreen](https://github.com/Leaflet/Leaflet.fullscreen) - plug-in de Leaflet care permite afișarea hărții pe întreg ecranul
+15. [Tipped JS](https://github.com/staaky/tipped) - soluție completă de gestionare a tooltip-urilor folosind JavaAscript
+16. [PHPUnit](https://github.com/sebastianbergmann/phpunit) - framework de unit-testing pentru PHP
+17. [Parsedown](https://github.com/erusev/parsedown) - interpretor Markdown scris in PHP. [http://parsedown.org](http://parsedown.org)
+18. [Faker](https://github.com/fzaninotto/Faker) - o librărie PHP ce generează date aleatorii ce pot fi folosite la testare
 
 [Înapoi la Cuprins](#help-root)
 

@@ -26,7 +26,7 @@
         </lookup>
         <lookup default="Concrete">
             <lang code="ro_RO">Plăci de beton</lang>
-            <lang code="fr_FR">Béton</lang>
+            <lang code="fr_FR">Dalles de béton</lang>
         </lookup>
         <lookup default="Dust or dirt">
             <lang code="ro_RO">Pământ</lang>
@@ -42,13 +42,13 @@
         </lookup>
         <lookup default="Loose rocks">
             <lang code="ro_RO">Piatră neașezată</lang>
-            <lang code="fr_FR">Pierrailles</lang>
+            <lang code="fr_FR">Pierre déstabilisé</lang>
         </lookup>
     </pathSurfaceType>
 
     <bikeType>
         <lookup default="MTB">
-            <lang code="ro_RO">MTB</lang>
+            <lang code="ro_RO">VTT</lang>
             <lang code="fr_FR">MTB</lang>
         </lookup>
         <lookup default="Road bike">

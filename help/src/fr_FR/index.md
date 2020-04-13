@@ -32,9 +32,9 @@ En d'autres termes, vous pouvez documenter (uniquement) ces trois types de prome
 
 Selon les différentes fonctions exercées par les zones du module, nous pouvons discuter des composants suivants:
 
-- Le volet vue: c'est la case affichée juste en dessous de l'article et qui présente toutes les informations mentionnées ci-dessus ([Détails ici]);
-- Composant d'édition: il est joint au formulaire de création / édition d'article et permet la modification / suppression des données sur l'itinéraire parcouru ([Détails ici]);
-- Composant de configuration: il traite de la gestion des options générales, mais aussi de la gestion des nomenclatures (listes de valeurs prédéfinies qui peuvent être sélectionnées lorsque les données sur l'itinéraire sont terminées) ([Détails ici]).
+- Composant de visualisation: c'est la case affichée juste en dessous de l'article et qui présente toutes les informations mentionnées ci-dessus ([Détails ici](#viewer-component));
+- Composant d'édition: il est joint au formulaire de création / édition d'article et permet la modification / suppression des données sur l'itinéraire parcouru ([Détails ici](#editor-component));
+- Composant de configuration: il traite de la gestion des options générales, mais aussi de la gestion des nomenclatures (listes de valeurs prédéfinies qui peuvent être sélectionnées lorsque les données sur l'itinéraire sont terminées) ([Détails ici](#configuration-component)).
 
 [Retour au sommaire](#help-root)
 
@@ -104,20 +104,20 @@ Ce module est distribué sous la [Nouvelle licence BSD](https://opensource.org/l
 
 Le module WP-Trip-Summary utilise les bibliothèques suivantes:  
 
-1. [PHP-MySQLi-Database-Class] (https://github.com/joshcam/PHP-MySQLi-Database-Class) - une bibliothèque construite sur mysqli. Il est utilisé à la place de wpdb, le composant WordPress standard.
-2. [MimeReader] (http://social-library.org/) - où le détecteur de type MIME a été écrit par Shane Thompson.
-3. [jQuery EasyTabs] (https://github.com/JangoSteve/jQuery-EasyTabs) - plug-in jQuery pour organiser le contenu sur des onglets / onglets
-4. [jQuery.SumoSelect] (https://github.com/HemantNegi/jquery.sumoselect) - plug-in jQuery utilisé pour la sélection de plusieurs éléments
-5. [Dépliant] (https://github.com/Leaflet/Leaflet) - composant de carte
-6. [Machine] (https://github.com/ifandelse/machina.js/tree/master) - une machine d'état implémentée en JavaScript
-7. [NProgress] (https://github.com/rstacruz/nprogress) - une librairie pour une présentation visuelle de l'avancement de diverses opérations
-8. [Toastr] (https://github.com/CodeSeven/toastr) - une bibliothèque JavaScript pour la présentation visuelle des notifications
-9. [URI.js] (https://github.com/medialize/URI.js) - une bibliothèque JavaScript pour la construction et l'interprétation des URI
-10. [Visible] (https://github.com/teamdf/jquery-visible) - le plug-in jQuery qui détermine si un élément se trouve ou non dans la zone visuelle de la fenêtre du navigateur
-11. [blockUI] (https://github.com/malsup/blockui/) - plug-in jQuery qui permet d'afficher les fenêtres modales
-12. [kite] (http://code.google.com/p/kite/) - moteur de modèle écrit en JavaScript, petit et simple
-13. [Leaflet.MagnifyingGlass] (https://github.com/bbecquet/Leaflet.MagnifyingGlass) - Plug-in Leaflet qui ajoute une loupe à la carte: agrandissement d'une zone individuelle sur la carte
-14. [Leaflet.fullscreen] (https://github.com/Leaflet/Leaflet.fullscreen) - Plug-in Leaflet qui permet d'afficher la carte en plein écran
+1. [PHP-MySQLi-Database-Class](https://github.com/joshcam/PHP-MySQLi-Database-Class) - une bibliothèque construite sur mysqli. Il est utilisé à la place de wpdb, le composant WordPress standard.
+2. [MimeReader](http://social-library.org/) - où le détecteur de type MIME a été écrit par Shane Thompson.
+3. [jQuery EasyTabs](https://github.com/JangoSteve/jQuery-EasyTabs) - plug-in jQuery pour organiser le contenu sur des onglets / onglets
+4. [jQuery.SumoSelect](https://github.com/HemantNegi/jquery.sumoselect) - plug-in jQuery utilisé pour la sélection de plusieurs éléments
+5. [Leaflet](https://github.com/Leaflet/Leaflet) - composant de carte
+6. [Machina](https://github.com/ifandelse/machina.js/tree/master) - une machine d'état implémentée en JavaScript
+7. [NProgress](https://github.com/rstacruz/nprogress) - une librairie pour une présentation visuelle de l'avancement de diverses opérations
+8. [Toastr](https://github.com/CodeSeven/toastr) - une bibliothèque JavaScript pour la présentation visuelle des notifications
+9. [URI.js](https://github.com/medialize/URI.js) - une bibliothèque JavaScript pour la construction et l'interprétation des URI
+10. [Visible](https://github.com/teamdf/jquery-visible) - le plug-in jQuery qui détermine si un élément se trouve ou non dans la zone visuelle de la fenêtre du navigateur
+11. [blockUI](https://github.com/malsup/blockui/) - plug-in jQuery qui permet d'afficher les fenêtres modales
+12. [kite](http://code.google.com/p/kite/) - moteur de modèle écrit en JavaScript, petit et simple
+13. [Leaflet.MagnifyingGlass](https://github.com/bbecquet/Leaflet.MagnifyingGlass) - plug-in Leaflet qui ajoute une loupe à la carte: agrandissement d'une zone individuelle sur la carte
+14. [Leaflet.fullscreen](https://github.com/Leaflet/Leaflet.fullscreen) - plug-in Leaflet qui permet d'afficher la carte en plein écran
 
 [Retour au sommaire](#help-root)
 
