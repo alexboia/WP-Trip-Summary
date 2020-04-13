@@ -9,20 +9,20 @@ An opinionated, multi-language, WordPress trip summary plugin to help travel blo
 
 ## Contents
 
-   1. [Is it good for you?](#wpts-isitgoodforyou)
-   2. [Features](#wpts-features)
-   3. [Progress & Management](#wpts-progress)
-   4. [What it does](#wpts-what-does)
-   5. [Supported languages](#wpts-langs)
-   6. [Changelog](#wpts-changelog)
-   7. [Upgrade notices](#wpts-upgrade-notices)
-   8. [Roadmap](#wpts-roadmap)
-   9. [Requirements](#wpts-requirements)
-   10. [Limitations](#wpts-limitations)
-   11. [Screenshots](#wpts-screenshots)
-   12. [Contributing](#wpts-contributing)
-   13. [Credits](#wpts-credits)
-   14. [License](#wpts-license)
+1. [Is it good for you?](#wpts-isitgoodforyou)
+2. [Features](#wpts-features)
+3. [Progress & Management](#wpts-progress)
+4. [What it does](#wpts-what-does)
+5. [Supported languages](#wpts-langs)
+6. [Changelog](#wpts-changelog)
+7. [Upgrade notices](#wpts-upgrade-notices)
+8. [Roadmap](#wpts-roadmap)
+9. [Requirements](#wpts-requirements)
+10. [Limitations](#wpts-limitations)
+11. [Screenshots](#wpts-screenshots)
+12. [Contributing](#wpts-contributing)
+13. [Credits](#wpts-credits)
+14. [License](#wpts-license)
 
 ## Is it good for you?
 <a name="wpts-isitgoodforyou"></a>  

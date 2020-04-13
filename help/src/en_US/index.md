@@ -205,7 +205,7 @@ Besides the form, on the bottom side of the screen two additional control button
 
 [Back to the Table of Contents](#help-root)
 
-## The GPX Track Upload & Preview Area
+## The GPS Track Upload & Preview Area
 
 The corresponding tab is simply named "Map".
 If no track has been uploaded yet, then this screen only displays a button that allows browsing for a GPX track file on the local computer.
@@ -231,7 +231,7 @@ The configuration elements can be seen as forming two discrete sections:
 
 ## General Options {#configure-general-options}
 
-There is a dedicated page where these options may be modified to best suit your needs. One can get there by accessing Trip Summary -> Settings in the main menu.
+There is a dedicated page where these options may be modified to best suit your needs. One can get there by accessing `Trip Summary -> Settings` in the main menu.
 
 Once there, the following settings are made available.
 
@@ -351,7 +351,7 @@ This field is available for the following trip types:
 - trekking/hiking trips.
 
 It reflects one's subjective evaluation of how hard the trip was, in terms of effort.
-The plug-in provides the following pre-defined options (with English and Romanian translations):
+The plug-in provides the following pre-defined options (with English, French and Romanian translations):
 
 - Easy;
 - Medium;
@@ -366,7 +366,7 @@ This field is available for the following trip types:
 - trekking/hiking trips.
 
 It allows specifying the seasons during which the route can be traveled through in decent conditions (without extreme expense in terms of effort and without taking great risks).
-The plug-in provides the following pre-defined options (with English and Romanian translations):
+The plug-in provides the following pre-defined options (with English, French and Romanian translations):
 
 - Spring;
 - Summer;
@@ -381,7 +381,7 @@ This field is available for the following trip types:
 - trekking/hiking trips.
 
 It allows specifying the texture / composition of the roads & trails crossed by the route. Eg.: grass, rocky, tarmac, gravel etc.
-The plug-in provides the following pre-defined options (with English and Romanian translations):
+The plug-in provides the following pre-defined options (with English, French and Romanian translations):
 
 - Asphalt;
 - Concrete;
@@ -397,7 +397,7 @@ This field is available for the following trip types:
 - bike trips.
 
 It allows specifying the bike types that should be used for optimal safety and comfort.
-The plug-in provides the following pre-defined options (with English and Romanian translations):
+The plug-in provides the following pre-defined options (with English, French and Romanian translations):
 
 - MTB;
 - Road bike;
@@ -420,7 +420,7 @@ This field is available for the following trip types:
 - train rides.
 
 It allows specifying whether the line was electrified and to what extent.
-The plug-in provides the following pre-defined options (with English and Romanian translations):
+The plug-in provides the following pre-defined options (with English, French and Romanian translations):
 
 - Electrified;
 - Not electrified;
@@ -433,7 +433,7 @@ This field is available for the following trip types:
 - train rides.
 
 It allows specifying whether the line is simple or double (one set of tracks for each way).
-The plug-in provides the following pre-defined options (with English and Romanian translations):
+The plug-in provides the following pre-defined options (with English, French and Romanian translations):
 
 - Simple line;
 - Double line.
@@ -445,7 +445,7 @@ This field is available for the following trip types:
 - train rides.
 
 It allows specifying the line status (for instance whether the line is closed, operating normally, undergoing repairs etc.).
-The plug-in provides the following pre-defined options (with English and Romanian translations):
+The plug-in provides the following pre-defined options (with English, French and Romanian translations):
 
 - In production;
 - Closed;

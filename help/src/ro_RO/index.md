@@ -232,7 +232,7 @@ Elementele de configurare & gestiune sunt puse la punct pentru a oferi o oarecar
 
 ## Opțiunile Generice {#configurare-si-gestiune-opt-generice}
 
-Există o pagină dedicată din care opțiunile generice pot fi modificate. Acolo se ajunge din meniul principal, accesând: Trip Summary -> Configurare.
+Există o pagină dedicată din care opțiunile generice pot fi modificate. Acolo se ajunge din meniul principal, accesând: `Trip Summary -> Configurare`.
 
 Odată ajunși aici, există următoarele punct de configurare.
 
@@ -353,7 +353,7 @@ Este disponibil pentru tipurile de traseu:
 - Per-pedes.
 
 Reprezintă, evident, evaluarea subiectivă a fiecăruia despre cât de greu a fost traseul parcurs.
-Modulul de față oferă următoarele opțiuni predefinite (traduse în Română și Engleză):
+Modulul de față oferă următoarele opțiuni predefinite (traduse în Română, Franceză și Engleză):
 
 - Ușor;
 - Mediu;
@@ -368,7 +368,7 @@ Este disponibil pentru tipurile de traseu:
 - Per-pedes.
 
 Reprezintă, evident, anotimpurile în care este fizic posibilă parcurgerea traseului în condiții decente (adică fără un efort excesiv și fără a vă supune vreunui pericol iminent).
-Modulul oferă următoarele opțiuni predefinite (traduse in Română și Engleză):
+Modulul oferă următoarele opțiuni predefinite (traduse in Română, Franceză și Engleză):
 
 - Primăvara;
 - Vara;
@@ -383,7 +383,7 @@ Este disponibil pentru tipurile de traseu:
 - Per-pedes.
 
 Reprezintă texturile / compozițiile suprafețelor drumurilor întâlnite. Ex: iarbă, bolovani, asfalt, macadam etc.
-Modulul oferă următoarele opțiuni predefinite (traduse in Română și Engleză):
+Modulul oferă următoarele opțiuni predefinite (traduse in Română, Franceză și Engleză):
 
 - Asfalt;
 - Plăci de beton;
@@ -399,7 +399,7 @@ Este disponibil pentru tipurile de traseu:
 - Cu bicicleta.
 
 Reprezintă tipurile de biciclete care pot fi folosite pentru a parcurge în siguranță și confort (relativ) traseul descris.
-Modulul oferă următoarele opțiuni predefinite (traduse în Română și Engleză):
+Modulul oferă următoarele opțiuni predefinite (traduse în Română, Franceză și Engleză):
 
 - MTB;
 - Cursieră;
@@ -408,12 +408,24 @@ Modulul oferă următoarele opțiuni predefinite (traduse în Română și Engle
 
 #### Operatori Feroviari
 
-Este disponibil pentru tipurile de traseu (traduse in Română și Engleză):
+Este disponibil pentru tipurile de traseu (traduse in Română, Franceză și Engleză):
 
 - Cu trenul.
 
 Reprezintă companiile care operează curse pe traseul parcurs, fie pe toată lungimea sa, fie doar parțial.
 Modulul nu oferă opțiuni predefinite.
+
+#### Tipul Liniei
+
+Este disponibil pentru tipurile de traseu:
+
+- Cu trenul.
+
+Descrie daca linia este simplă sau dublă.
+Modulul oferă următoarele opțiuni predefinite (traduse in Română, Franceză și Engleză):
+
+- Linie simplă (un singur fir de circulație);
+- Linie dublă (două fie de circulație, câte unul pentru fiecare sens).
 
 #### Statusul Liniei
 
@@ -422,7 +434,7 @@ Este disponibil pentru tipurile de traseu:
 - Cu trenul.
 
 Reprezintă starea liniei pe traseul parcurs.
-Modulul oferă următoarele opțiuni predefinite (traduse in Română și Engleză):
+Modulul oferă următoarele opțiuni predefinite (traduse in Română, Franceză și Engleză):
 
 - În exploatare (se operează curse normale);
 - Închisă (nu se mai operează curse, dar linia este în conservare sau încă există);
@@ -436,23 +448,11 @@ Este disponibil pentru tipurile de traseu:
 - Cu trenul.
 
 Reprezintă starea lucrărilor de electrificare la linie.
-Modulul oferă următoarele opțiuni predefinite (traduse in Română și Engleză):
+Modulul oferă următoarele opțiuni predefinite (traduse in Română, Franceză și Engleză):
 
 - Electrificată;
 - Neelectrificată;
 - Partial electrificată.
-
-#### Tipul Liniei
-
-Este disponibil pentru tipurile de traseu:
-
-- Cu trenul.
-
-Descrie daca linia este simplă sau dublă.
-Modulul oferă următoarele opțiuni predefinite (traduse in Română și Engleză):
-
-- Linie simplă (un singur fir de circulație);
-- Linie dublă (două fie de circulație, câte unul pentru fiecare sens).
 
 ### Operațiunile Disponibile
 
