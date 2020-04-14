@@ -49,22 +49,68 @@ if (is_dir($_tests_dir)) {
 	die('Test directory not found');
 }
 
+function _get_tests_base_dir() {
+	return __DIR__;
+}
+
 function _get_plugin_base_dir() {
-	return dirname(dirname(__FILE__));
+	return dirname(__DIR__);
+}
+
+function _get_tests_file_path($file) {
+	return _get_tests_base_dir() . '/' . $file;
+}
+
+function _has_plugin_been_installed_before() {
+	return file_exists(_get_tests_file_path('.wpts-installed'));
+}
+
+function _set_plugin_installed() {
+	file_put_contents(_get_tests_file_path('.wpts-installed'), 'yes');
+}
+
+function _manually_load_plugin() {
+	require_once _get_plugin_base_dir() . '/abp01-plugin-main.php';
 }
 
 function _manually_install_plugin() {
+	$installer = new Abp01_Installer();
+
+	if (_has_plugin_been_installed_before()) {
+		if (!$installer->uninstall()) {
+			var_dump($installer->getLastError());
+			die;
+		}
+	}
+
 	$installer = new Abp01_Installer();
 	$activated = $installer->activate();
 	if (!$activated) {
 		die('Failed to activate plugin. Cannot continue testing.');
 	}
+
+	_set_plugin_installed();
 }
 
-function _manually_load_plugin() {
-	require_once _get_plugin_base_dir() . '/abp01-plugin-main.php';
-	_manually_install_plugin();
+function _sync_wp_tests_config($testsDir) {
+	$thisConfig = _get_tests_base_dir() . '/wp-tests-config.php';
+	$runtimeConfig = $testsDir . '/wp-tests-config.php';
+
+	if (is_readable($thisConfig)) {
+		echo sprintf('Local wp-tests-config.php found. Overriding %s.%s', 
+			$runtimeConfig, 
+			PHP_EOL);
+
+		file_put_contents($runtimeConfig, file_get_contents($thisConfig));
+	}
 }
 
-tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
+function _register_setup_actions() {
+	tests_add_filter('muplugins_loaded', '_manually_load_plugin');
+	tests_add_filter('setup_theme', '_manually_install_plugin');
+}
+
+_sync_wp_tests_config($_tests_dir);
+_register_setup_actions();
+
 require $_tests_dir . '/includes/bootstrap.php';

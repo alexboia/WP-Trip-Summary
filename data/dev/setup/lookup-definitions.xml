@@ -48,8 +48,8 @@
 
     <bikeType>
         <lookup default="MTB">
-            <lang code="ro_RO">VTT</lang>
-            <lang code="fr_FR">MTB</lang>
+            <lang code="ro_RO">MTB</lang>
+            <lang code="fr_FR">VTT</lang>
         </lookup>
         <lookup default="Road bike">
             <lang code="ro_RO">Cursieră</lang>

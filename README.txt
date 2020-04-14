@@ -89,6 +89,9 @@ For those with plug-in versions older than 0.2.1, please see here notes on updat
 
 == Frequently Asked Questions ==
 
+= Does it support KML files? =
+The plug-in currently only supports GPX files as a way to upload GPS tracks. KML will be supported round about 0.3, maybe earlier.
+
 = How can I contribute? =
 Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summary) and let's talk!
 

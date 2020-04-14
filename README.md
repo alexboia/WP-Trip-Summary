@@ -207,7 +207,7 @@ From there on the main purpose of all 0.2.* versions is to:
       - [x] customize the colour of the line used to plot the track on the map;
       - [x] customize the weight of the line used to plot the track on the map.
    - [ ] improve localization by adding at least one more language:
-      - [ ] currently, French is in the progress.
+      - [x] currently, French is in the progress.
    - [ ] publish a guide for customizing the front-end trip summary viewer (planned for 0.2.5);
    - [ ] add some nice to have features, which can be quickly implemented and provide some value, such as:
       - [ ] display minimum and maximum altitude (planned for 0.2.5);
@@ -257,8 +257,9 @@ All of the above, with the following amendments:
 ## Limitations
 <a name="wpts-limitations"></a>  
 
-1. Currently it only works with the classic WordPress Editor. An update is planned for 0.3.
+1. ~~Currently it only works with the classic WordPress Editor. An update is planned for 0.3.~~ (Now available since 0.2.4).
 2. Not designed for (and not tested with) multi-site installations. No update is currently planned.
+3. Currently only supports GPX files as a way to upload GPS tracks. KML will be supported round about 0.3, maybe earlier.
 
 ## Screenshots
 <a name="wpts-screenshots"></a>  

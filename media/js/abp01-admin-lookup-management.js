@@ -428,6 +428,9 @@
                 delete currentItems[editingItem.id];
                 editingItem = null;
 
+                //TODO: wait for progressbar to be
+                //  completely cleanup before 
+                //  closing it
                 closeDeleteDialog();
                 displayMessage($ctlListingResultContainer, true, abp01LookupMgmtL10n.msgDeleteOk);
             } else {
