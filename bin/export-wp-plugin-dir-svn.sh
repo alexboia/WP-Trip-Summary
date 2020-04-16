@@ -11,7 +11,7 @@ fi
 
 # Store some stuff for later use
 WPTS_CDIR=$(pwd)
-WPTS_VERSION=$(awk '{IGNORECASE=1}/Version:/{print $NF}' ./abp01-plugin-main.php)
+WPTS_VERSION=$(awk '{IGNORECASE=1}/Version:/{print $NF}' ./abp01-plugin-main.php | awk '{gsub(/\s+/,""); print $0}')
 
 WPTS_EXPORT_ROOT="$WPTS_CDIR/build/wp-plugin-dir-svn"
 WPTS_EXPORT_TRUNK_DIR="$WPTS_EXPORT_ROOT/trunk"

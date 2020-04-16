@@ -1,4 +1,6 @@
-<img align="left" width="210" height="200" src="https://raw.githubusercontent.com/alexboia/WP-Trip-Summary/master/logo.png" style="margin-bottom: 20px; margin-right: 20px;" />
+<p align="center">
+   <img align="center" width="210" height="200" src="https://raw.githubusercontent.com/alexboia/WP-Trip-Summary/master/logo.png" style="margin-bottom: 20px; margin-right: 20px;" />
+</p>
 
 # WP-Trip-Summary
 

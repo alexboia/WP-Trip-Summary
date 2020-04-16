@@ -1,7 +1,7 @@
 === WP Trip Summary ===
 Contributors: alexandruboia
 Donate link: https://ko-fi.com/alexandruboia
-Tags: trip-summary, map, gpx, travel-plugin
+Tags: trip, summary, map, gpx, travel
 Requires at least: 5.0
 Tested up to: 5.4.0
 Stable tag: 0.2.4
