@@ -133,3 +133,44 @@ function abp01_append_error($message, $error) {
 	}
 	return $message;
 }
+
+/**
+ * @return stdClass A new standard response instance
+ */
+function abp01_get_ajax_response($additionalProps = array()) {
+	$response = new stdClass();
+	$response->success = false;
+	$response->message = null;
+
+	foreach ($additionalProps as $key => $value) {
+		$response->$key = $value;
+	}
+
+	return $response;
+}
+
+/**
+ * Renders the given text formatted according to the given status information.
+ * The text is wrapped in an HTML span element, with the appropriate CSS class:
+ * 
+ * @param string $text The text to format
+ * @param int $status The status information
+ * 
+ * @return string The formatted HTML text.
+ */
+function abp01_get_status_text($text, $status) {
+	$cssClass = 'abp01-status-neutral';
+	switch ($status) {
+		case ABP01_STATUS_OK:
+			$cssClass = 'abp01-status-ok';
+		break;
+		case ABP01_STATUS_ERR:
+			$cssClass = 'abp01-status-err';
+		break;
+		case ABP01_STATUS_WARN:
+			$cssClass = 'abp01-status-warn';
+		break;
+	}
+
+	return '<span class="abp01-status-text ' . $cssClass . '">' . $text . '</span>';
+}
