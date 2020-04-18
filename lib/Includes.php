@@ -61,6 +61,8 @@ class Abp01_Includes {
 	const JS_LEAFLET_MAGNIFYING_GLASS_BUTTON = 'leaflet-magnifyingglass-button';
 
 	const JS_LEAFLET_FULLSCREEN = 'leaflet-fullscreen';
+
+	const JS_LEAFLET_NOCONFLICT = 'abp01-leaflet-noconflict';
 	
 	const JS_LEAFLET_ICON_BUTTON = 'abp01-leaflet-icon-button';
 
@@ -192,27 +194,43 @@ class Abp01_Includes {
 				self::JS_JQUERY
 			)
 		),
+		self::JS_LEAFLET_NOCONFLICT => array(
+			'path' => 'media/js/abp01-leaflet-noconflict.js', 
+			'version' => ABP01_VERSION
+		),
 		self::JS_LEAFLET => array(
 			'path' => 'media/js/3rdParty/leaflet/leaflet-src.js', 
-			'version' => '1.6.0'
+			'version' => '1.6.0',
+			//see https://leafletjs.com/reference-1.6.0.html#noconflict
+			//see https://github.com/Leaflet/Leaflet/issues/6703
+			'inline-setup' => 'window.' . ABP01_WRAPPED_LEAFLET_CONTEXT . ' = window.abp01NoConflictLeaflet();',
+			'deps' => array(
+				self::JS_LEAFLET_NOCONFLICT
+			)
 		), 
 		self::JS_LEAFLET_MAGNIFYING_GLASS => array(
 			'path' => 'media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.js', 
-			'version' => '0.1',
+			'version' => '1.0.6',
+			'is-leaflet-plugin' => true,
+			'needs-wrap' => true,
 			'deps' => array(
 				self::JS_LEAFLET
 			)
 		), 
 		self::JS_LEAFLET_MAGNIFYING_GLASS_BUTTON => array(
 			'path' => 'media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.button.js', 
-			'version' => '0.2',
+			'version' => '1.0.6',
+			'is-leaflet-plugin' => true,
+			'needs-wrap' => true,
 			'deps' => array(
 				self::JS_LEAFLET
 			)
 		), 
 		self::JS_LEAFLET_FULLSCREEN => array(
 			'path' => 'media/js/3rdParty/leaflet-plugins/leaflet-fullscreen/leaflet.fullscreen.js', 
-			'version' => '0.1',
+			'version' => '1.0.2',
+			'is-leaflet-plugin' => true,
+			'needs-wrap' => true,
 			'deps' => array(
 				self::JS_LEAFLET
 			)
@@ -220,6 +238,8 @@ class Abp01_Includes {
 		self::JS_LEAFLET_ICON_BUTTON => array(
 			'path' => 'media/js/abp01-icon-button.js',
 			'version' => ABP01_VERSION,
+			'is-leaflet-plugin' => true,
+			'needs-wrap' => false,
 			'deps' => array(
 				self::JS_LEAFLET
 			)
@@ -558,6 +578,26 @@ class Abp01_Includes {
 		}
 	}
 
+	private static function _scriptNeedsWrap($script) {
+		return isset($script['is-leaflet-plugin'])  
+			&& $script['is-leaflet-plugin'] === true
+			&& isset($script['needs-wrap']) 
+			&& $script['needs-wrap'] === true;
+	}
+
+	private static function _urlRewriteEnabled() {
+		static $enabled = null;
+
+		if ($enabled === null) {
+			if (!function_exists('got_url_rewrite')) {
+				require_once ABSPATH . 'wp-admin/includes/misc.php';
+			}
+			$enabled = got_url_rewrite();
+		}
+
+		return $enabled;
+	}
+
 	private static function _enqueueScript($handle) {
 		if (empty($handle)) {
 			return;
@@ -575,8 +615,16 @@ class Abp01_Includes {
 					self::_ensureScriptDependencies($deps);
 				}
 
+				if (self::_scriptNeedsWrap($script)) {
+						$scriptPath = self::_urlRewriteEnabled()
+							? $script['path']
+							: 'abp01-plugin-leaflet-plugins-wrapper.php?load=' . $script['path'];
+					} else {
+						$scriptPath = $script['path'];
+					}
+
 				wp_enqueue_script($handle, 
-					plugins_url($script['path'], self::$_refPluginsPath), 
+					plugins_url($scriptPath, self::$_refPluginsPath), 
 					$deps, 
 					$script['version'], 
 					self::$_scriptsInFooter);

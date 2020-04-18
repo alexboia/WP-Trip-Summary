@@ -40,48 +40,12 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- * Any file used by this plugin can be protected against direct browser access by checking this flag
- */
-define('ABP01_LOADED', true);
-define('ABP01_PLUGIN_ROOT', dirname(__FILE__));
-define('ABP01_LIB_DIR', ABP01_PLUGIN_ROOT . '/lib');
-define('ABP01_VERSION', '0.2.4');
+//Check that we're not being directly called
+defined('ABSPATH') or die;
 
-define('ABP01_MAX_EXECUTION_TIME_MINUTES', 10);
-define('ABP01_DISABLE_MINIFIED', false);
-
-define('ABP01_ACTION_EDIT', 'abp01_edit_info');
-define('ABP01_ACTION_CLEAR_INFO', 'abp01_clear_info');
-define('ABP01_ACTION_CLEAR_TRACK', 'abp01_clear_track');
-define('ABP01_ACTION_UPLOAD_TRACK', 'abp01_upload_track');
-define('ABP01_ACTION_GET_TRACK', 'abp01_get_track');
-define('ABP01_ACTION_SAVE_SETTINGS', 'abp01_save_settings');
-define('ABP01_ACTION_DOWNLOAD_TRACK', 'abp01_download_track');
-define('ABP01_ACTION_GET_LOOKUP', 'abp01_get_lookup');
-define('ABP01_ACTION_DELETE_LOOKUP', 'abp01_delete_lookup');
-define('ABP01_ACTION_ADD_LOOKUP', 'abp01_add_lookup');
-define('ABP01_ACTION_EDIT_LOOKUP', 'abp01_edit_lookup');
-
-define('ABP01_NONCE_TOUR_EDITOR', 'abp01.nonce.tourEditor');
-define('ABP01_NONCE_GET_TRACK', 'abp01.nonce.getTrack');
-define('ABP01_NONCE_EDIT_SETTINGS', 'abp01.nonce.editSettings');
-define('ABP01_NONCE_DOWNLOAD_TRACK', 'abp01.nonce.downloadTrack');
-define('ABP01_NONCE_MANAGE_LOOKUP', 'abp01.nonce.manageLookup');
-
-define('ABP01_TRACK_UPLOAD_KEY', 'abp01_track_file');
-define('ABP01_TRACK_UPLOAD_CHUNK_SIZE', 102400);
-define('ABP01_TRACK_UPLOAD_MAX_FILE_SIZE', max(wp_max_upload_size(), 10485760));
-
-define('ABP01_MAIN_MENU_SLUG', 'abp01-trip-summary-settings');
-define('ABP01_LOOKUP_SUBMENU_SLUG', 'abp01-trip-summary-lookup');
-define('ABP01_HELP_SUBMENU_SLUG', 'abp01-trip-summary-help');
-
-define('ABP01_STATUS_OK', 0);
-define('ABP01_STATUS_ERR', 1);
-define('ABP01_STATUS_WARN', 2);
-
-define('ABP01_GET_INFO_DATA_TRANSIENT_DURATION', 10);
+//Include plug-in header
+require_once __DIR__ . '/abp01-plugin-header.php';
+require_once __DIR__ . '/abp01-plugin-functions.php';
 
 /**
  * Returns the current environment accessor instance
@@ -138,85 +102,14 @@ function abp01_get_help_file_for_locale($locale) {
 		$locale);
 }
 
+/**
+ * Gets the path to be used as a basis when constructing AJAX calls.
+ * This is, in effect, the absolute path to WP's admin-ajax.php.
+ * 
+ * @return string The absolute path to admin-ajax.php
+ */
 function abp01_get_ajax_baseurl() {
 	return abp01_get_env()->getAjaxBaseUrl();
-}
-
-function abp01_get_cachebuster() {
-	return sha1(microtime() .  uniqid());
-}
-
-/**
- * Dumps information about the given variable.
- * It uses xdebug_var_dump if available, otherwise it falls back to the standard var_dump, wrapping it in <pre /> tags.
- * @param mixed $var The variable to dump
- * @return void
- */
-function abp01_dump($var) {
-	if (extension_loaded('xdebug')) {
-		var_dump($var);
-	} else {
-		print '<pre>';
-		var_dump($var);
-		print '</pre>';
-	}
-}
-
-/**
- * Appends the given error to the given message if WP_DEBUG is set to true; otherwise returns the original message
- * @param string $message
- * @param mixed $error
- * @return string The processed message
- */
-function abp01_append_error($message, $error) {
-	if (WP_DEBUG) {
-		if ($error instanceof Exception) {
-			$message .= sprintf(': %s (%s) in file %s line %d', 
-				$error->getMessage(), 
-				$error->getCode(), 
-				$error->getFile(), 
-				$error->getLine());
-		} else if (!empty($error)) {
-			$message .= ': ' . $error;
-		}
-	}
-	return $message;
-}
-
-/**
- * Increase script execution limit and maximum memory limit
- * @return void
- */
-function abp01_increase_limits($executionTimeMinutes = 5) {
-	if (function_exists('set_time_limit')) {
-		@set_time_limit($executionTimeMinutes * 60);
-	}
-	if (function_exists('ini_set')) {
-		@ini_set('memory_limit', WP_MAX_MEMORY_LIMIT);
-		//If the xdebubg extension is loaded, 
-		//	attempt to increase the max_nesting_level setting, 
-		//	since (as is the case with large GPX files) 
-		//	the simplify algorithm will fail due to its recursive nature 
-		//	reaching that limit quickly if it's set too low
-		if (extension_loaded('xdebug')) {
-			@ini_set('xdebug.max_nesting_level', 1000000);
-		}
-	}
-}
-
-/**
- * Enable script error reporting
- * @return void
- */
-function abp01_enable_error_reporting() {
-	if (function_exists('ini_set')) {
-		ini_set('display_errors', 1);
-		ini_set('display_startup_errors', 1);
-	}
-
-	if (function_exists('error_reporting')) {
-		error_reporting(E_ALL);
-	}
 }
 
 /**
@@ -367,25 +260,6 @@ function abp01_verify_manage_lookup_nonce() {
 }
 
 /**
- * Encodes and outputs the given data as JSON and sets the appropriate headers
- * @param mixed $data The data to be encoded and sent to client
- * @return void
- */
-function abp01_send_json($data) {
-	$data = json_encode($data);
-	header('Content-Type: application/json');
-	if (extension_loaded('zlib') && function_exists('ini_set')) {
-		@ini_set('zlib.output_compression', false);
-		@ini_set('zlib.output_compression_level', 0);
-		if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && stripos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false) {
-			header('Content-Encoding: gzip');
-			$data = gzencode($data, 8, FORCE_GZIP);
-		}
-	}
-	die($data);
-}
-
-/**
  * Ensures that the root storage directory of the plug-in exists and creates if it does not.
  * @return void
  */
@@ -436,7 +310,12 @@ function abp01_is_browsing_posts_listing() {
  * @return bool
  */
 function abp01_is_editing_post() {
-	return abp01_get_env()->isEditingWpPost();
+	$env = abp01_get_env();
+	if (func_num_args() > 0) {
+		return call_user_func_array(array($env, 'isEditingWpPost'), func_get_args());
+	} else {
+		return $env->isEditingWpPost();
+	}
 }
 
 /**
@@ -924,7 +803,7 @@ function abp01_init_plugin() {
 }
 
 function abp01_register_metaboxes($postType, $post) {
-	if (($postType == 'post' || $postType == 'page') && abp01_can_edit_trip_summary($post)) {
+	if (in_array($postType, array('post', 'page')) && abp01_can_edit_trip_summary($post)) {
 		add_meta_box('abp01-enhanced-editor-launcher-metabox', 
 			__('Trip summary', 'abp01-trip-summary'),
 			'abp01_add_admin_editor', 
@@ -1038,6 +917,52 @@ function abp01_add_admin_editor_form($post, $args) {
 }
 
 /**
+ * Checks whether the WPTS admin editor should be included, given the current context:
+ * 	- current page (must be post editing screen);
+ * 	- current type of post being edited (must be 'page' or 'post');
+ * 	- current user permissions (must have the permission to edit trip summary for current post).
+ * 
+ * @return boolean True if so, false otherwise
+ */
+function abp01_should_add_admin_editor() {
+	static $addEditor = null;
+
+	if ($addEditor === null) {
+		$addEditor = abp01_is_editing_post('post', 'page') 
+			&& abp01_can_edit_trip_summary(null);
+	}
+
+	return $addEditor;
+}
+
+/**
+ * Checks whether the WPTS viewer should be included, given the current context:
+ * 	- current page (must be a post viewing screen);
+ * 	- current type of post being viewed (must be 'page' or 'post');
+ * 	- current status of WPTS data for current post (must have route details, or route track, or both).
+ * 
+ * @return boolean True if so, false otherwise
+ */
+function abp01_should_add_frontend_viewer() {
+	static $addViewer = null;
+
+	if ($addViewer === null) {
+		$addViewer = false;
+		if (is_single() || is_page()) {
+			$postId = abp01_get_current_post_id();
+			$statusInfo = abp01_get_route_manager()->getTripSummaryStatusInfo($postId);
+
+			if (!empty($statusInfo[$postId])) {
+				$statusInfo = $statusInfo[$postId];
+				$addViewer = ($statusInfo['has_route_details'] || $statusInfo['has_route_track']);
+			}
+		}
+	}
+
+	return $addViewer;
+}
+
+/**
  * Queues the appropriate styles with respect to the current admin screen
  * @return void
  */
@@ -1048,7 +973,7 @@ function abp01_add_admin_styles() {
 
 	//if in post editing page and IF the user is allowed to edit a post's trip summary
 	//include the the styles required by the trip summary editor
-	if (abp01_is_editing_post() && abp01_can_edit_trip_summary(null)) {
+	if (abp01_should_add_admin_editor()) {
 		Abp01_Includes::includeStyleAdminMain();
 	}
 
@@ -1072,7 +997,7 @@ function abp01_add_admin_styles() {
  * @return void
  */
 function abp01_add_frontend_styles() {
-	if (is_single() || is_page()) {
+	if (abp01_should_add_frontend_viewer()) {
 		Abp01_Includes::includeStyleFrontendMain();
 	}
 }
@@ -1082,7 +1007,7 @@ function abp01_add_frontend_styles() {
  * @return void
  */
 function abp01_add_admin_scripts() {
-	if (abp01_is_editing_post() && abp01_can_edit_trip_summary(null)) {
+	if (abp01_should_add_admin_editor()) {
 		Abp01_Includes::includeScriptAdminEditorMain(true, abp01_get_main_admin_script_translations());
 	}
 
@@ -1100,7 +1025,7 @@ function abp01_add_admin_scripts() {
  * @return void
  */
 function abp01_add_frontend_scripts() {
-	if (is_single() || is_page()) {
+	if (abp01_should_add_frontend_viewer()) {
 		Abp01_Includes::includeScriptFrontendMain(true, abp01_get_main_frontend_translations());
 	}
 }
@@ -1985,7 +1910,7 @@ function abp01_get_posts_trip_summary_info($posts) {
 		//If there is no status information cached, fetch it
 		if (!is_array($statusInfo)) {
 			$statusInfo = abp01_get_route_manager()->getTripSummaryStatusInfo($postIds);
-			set_transient($key, $statusInfo, MINUTE_IN_SECONDS);
+			set_transient($key, $statusInfo, MINUTE_IN_SECONDS / 2);
 		}
 	}
 
@@ -2001,7 +1926,7 @@ function abpp01_add_custom_columns($columns) {
 }
 
 function abp01_register_post_listing_columns($columns, $postType) {
-	if ($postType == 'post' || $postType == 'page') {
+	if (in_array($postType, array('post', 'page'))) {
 		 $columns = abpp01_add_custom_columns($columns);
 	}
 	return $columns;
@@ -2079,57 +2004,60 @@ function abp01_on_footer_loaded() {
 	}
 }
 
+function abp01_run() {
+	if (function_exists('register_activation_hook')) {
+		register_activation_hook(__FILE__, 'abp01_activate');
+	}
+	
+	if (function_exists('register_deactivation_hook')) {
+		register_deactivation_hook(__FILE__, 'abp01_deactivate');
+	}
+	
+	if (function_exists('register_uninstall_hook')) {
+		register_uninstall_hook(__FILE__, 'abp01_uninstall');
+	}
+	
+	if (function_exists('add_action')) {
+		add_action('add_meta_boxes', 'abp01_register_metaboxes', 10, 2);
+		add_action('admin_enqueue_scripts', 'abp01_add_admin_styles');
+		add_action('admin_enqueue_scripts', 'abp01_add_admin_scripts');
+	
+		add_action('wp_ajax_' . ABP01_ACTION_EDIT, 'abp01_save_info');
+		add_action('wp_ajax_' . ABP01_ACTION_UPLOAD_TRACK, 'abp01_upload_track');
+		add_action('wp_ajax_' . ABP01_ACTION_CLEAR_TRACK, 'abp01_remove_track');
+		add_action('wp_ajax_' . ABP01_ACTION_CLEAR_INFO, 'abp01_remove_info');
+		add_action('wp_ajax_' . ABP01_ACTION_SAVE_SETTINGS, 'abp01_save_admin_settings_page_save');
+		add_action('wp_ajax_' . ABP01_ACTION_DOWNLOAD_TRACK, 'abp01_download_track');
+		add_action('wp_ajax_' . ABP01_ACTION_GET_LOOKUP, 'abp01_get_lookup_items');
+		add_action('wp_ajax_' . ABP01_ACTION_ADD_LOOKUP, 'abp01_add_lookup_item');
+		add_action('wp_ajax_' . ABP01_ACTION_EDIT_LOOKUP, 'abp01_edit_lookup_item');
+		add_action('wp_ajax_' . ABP01_ACTION_DELETE_LOOKUP, 'abp01_delete_lookup_item');
+	
+		add_action('wp_ajax_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
+		add_action('wp_ajax_nopriv_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
+		add_action('wp_ajax_nopriv_' . ABP01_ACTION_DOWNLOAD_TRACK, 'abp01_download_track');
+	
+		add_action('wp_enqueue_scripts', 'abp01_add_frontend_styles');
+		add_action('wp_enqueue_scripts', 'abp01_add_frontend_scripts');
+	
+		add_action('init', 'abp01_init_plugin');
+		add_action('admin_menu', 'abp01_create_admin_menu');
+		add_action('update_option_WPLANG', 'abp01_on_language_updated', 10, 3);
+		add_action('in_admin_footer', 'abp01_on_footer_loaded', 1);
+	
+		add_action('manage_posts_custom_column', 'abp01_get_post_listing_custom_column_value', 10, 2);
+		add_action('manage_pages_custom_column', 'abp01_get_post_listing_custom_column_value', 10, 2);
+	}
+	
+	if (function_exists('add_filter') && function_exists('remove_filter')) {
+		remove_filter('the_content', 'wpautop');
+		add_filter('the_content', 'abp01_get_info', 0);
+	
+		add_filter('manage_posts_columns',  'abp01_register_post_listing_columns', 10, 2);
+		add_filter('manage_pages_columns',  'abp01_register_page_listing_columns', 10, 1);
+	}
+}
+
 //the autoloaders are ready, general!
 abp01_init_autoloaders();
-
-if (function_exists('register_activation_hook')) {
-	register_activation_hook(__FILE__, 'abp01_activate');
-}
-
-if (function_exists('register_deactivation_hook')) {
-	register_deactivation_hook(__FILE__, 'abp01_deactivate');
-}
-
-if (function_exists('register_uninstall_hook')) {
-	register_uninstall_hook(__FILE__, 'abp01_uninstall');
-}
-
-if (function_exists('add_action')) {
-	add_action('add_meta_boxes', 'abp01_register_metaboxes', 10, 2);
-	add_action('admin_enqueue_scripts', 'abp01_add_admin_styles');
-	add_action('admin_enqueue_scripts', 'abp01_add_admin_scripts');
-
-	add_action('wp_ajax_' . ABP01_ACTION_EDIT, 'abp01_save_info');
-	add_action('wp_ajax_' . ABP01_ACTION_UPLOAD_TRACK, 'abp01_upload_track');
-	add_action('wp_ajax_' . ABP01_ACTION_CLEAR_TRACK, 'abp01_remove_track');
-	add_action('wp_ajax_' . ABP01_ACTION_CLEAR_INFO, 'abp01_remove_info');
-	add_action('wp_ajax_' . ABP01_ACTION_SAVE_SETTINGS, 'abp01_save_admin_settings_page_save');
-	add_action('wp_ajax_' . ABP01_ACTION_DOWNLOAD_TRACK, 'abp01_download_track');
-	add_action('wp_ajax_' . ABP01_ACTION_GET_LOOKUP, 'abp01_get_lookup_items');
-	add_action('wp_ajax_' . ABP01_ACTION_ADD_LOOKUP, 'abp01_add_lookup_item');
-	add_action('wp_ajax_' . ABP01_ACTION_EDIT_LOOKUP, 'abp01_edit_lookup_item');
-	add_action('wp_ajax_' . ABP01_ACTION_DELETE_LOOKUP, 'abp01_delete_lookup_item');
-
-	add_action('wp_ajax_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
-	add_action('wp_ajax_nopriv_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
-	add_action('wp_ajax_nopriv_' . ABP01_ACTION_DOWNLOAD_TRACK, 'abp01_download_track');
-
-	add_action('wp_enqueue_scripts', 'abp01_add_frontend_styles');
-	add_action('wp_enqueue_scripts', 'abp01_add_frontend_scripts');
-
-	add_action('init', 'abp01_init_plugin');
-	add_action('admin_menu', 'abp01_create_admin_menu');
-	add_action('update_option_WPLANG', 'abp01_on_language_updated', 10, 3);
-	add_action('in_admin_footer', 'abp01_on_footer_loaded', 1);
-
-	add_action('manage_posts_custom_column', 'abp01_get_post_listing_custom_column_value', 10, 2);
-	add_action('manage_pages_custom_column', 'abp01_get_post_listing_custom_column_value', 10, 2);
-}
-
-if (function_exists('add_filter') && function_exists('remove_filter')) {
-	remove_filter('the_content', 'wpautop');
-	add_filter('the_content', 'abp01_get_info', 0);
-
-	add_filter('manage_posts_columns',  'abp01_register_post_listing_columns', 10, 2);
-	add_filter('manage_pages_columns',  'abp01_register_page_listing_columns', 10, 1);
-}
+abp01_run();

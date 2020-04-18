@@ -77,7 +77,7 @@ copy_source_files() {
 	cp ./LICENSE.md "$WPTS_BUILD_TMPDIR/license.txt"
 	cp ./README.txt "$WPTS_BUILD_TMPDIR/readme.txt"
 	cp ./index.php "$WPTS_BUILD_TMPDIR"
-	cp ./abp01-plugin-main.php "$WPTS_BUILD_TMPDIR"
+	cp ./abp01-plugin-*.php "$WPTS_BUILD_TMPDIR"
 	cp ./.htaccess "$WPTS_BUILD_TMPDIR"
 
 	mkdir "$WPTS_BUILD_TMPDIR/media" && cp -r ./media/* "$WPTS_BUILD_TMPDIR/media"

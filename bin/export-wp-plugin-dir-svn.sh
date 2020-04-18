@@ -52,7 +52,7 @@ copy_source_files() {
 	cp ./LICENSE.md "$1/license.txt"
 	cp ./README.txt "$1/readme.txt"
 	cp ./index.php "$1"
-	cp ./abp01-plugin-main.php "$1"
+	cp ./abp01-plugin-*.php "$1"
 	cp ./.htaccess "$1"
 
 	mkdir "$1/media" && cp -r ./media/* "$1/media"

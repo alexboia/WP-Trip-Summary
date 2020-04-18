@@ -361,6 +361,10 @@ class Abp01_Route_Manager {
 	}
 
 	public function getTripSummaryStatusInfo($postIds) {
+		if (!is_array($postIds)) {
+			$postIds = array($postIds);
+		}
+
 		$db = $this->_env->getDb();
 
 		$postsTable = $this->_env->getWpPostsTableName();

@@ -1,0 +1,135 @@
+<?php
+/**
+ * Copyright (c) 2014-2020 Alexandru Boia
+ *
+ * Redistribution and use in source and binary forms, with or without modification, 
+ * are permitted provided that the following conditions are met:
+ * 
+ *	1. Redistributions of source code must retain the above copyright notice, 
+ *		this list of conditions and the following disclaimer.
+ *
+ * 	2. Redistributions in binary form must reproduce the above copyright notice, 
+ *		this list of conditions and the following disclaimer in the documentation 
+ *		and/or other materials provided with the distribution.
+ *
+ *	3. Neither the name of the copyright holder nor the names of its contributors 
+ *		may be used to endorse or promote products derived from this software without 
+ *		specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+ * IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY 
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) 
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
+ * OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+ //Check that we're not being directly called
+defined('ABP01_LOADED') or die;
+
+/**
+ * Dumps information about the given variable.
+ * It uses xdebug_var_dump if available, otherwise it falls back to the standard var_dump, wrapping it in <pre /> tags.
+ * @param mixed $var The variable to dump
+ * @return void
+ */
+function abp01_dump($var) {
+	if (extension_loaded('xdebug')) {
+		var_dump($var);
+	} else {
+		print '<pre>';
+		var_dump($var);
+		print '</pre>';
+	}
+}
+
+/**
+ * Increase script execution limit and maximum memory limit
+ * @return void
+ */
+function abp01_increase_limits($executionTimeMinutes = 5) {
+	if (function_exists('set_time_limit')) {
+		@set_time_limit($executionTimeMinutes * 60);
+	}
+	if (function_exists('ini_set')) {
+		@ini_set('memory_limit', WP_MAX_MEMORY_LIMIT);
+		//If the xdebubg extension is loaded, 
+		//	attempt to increase the max_nesting_level setting, 
+		//	since (as is the case with large GPX files) 
+		//	the simplify algorithm will fail due to its recursive nature 
+		//	reaching that limit quickly if it's set too low
+		if (extension_loaded('xdebug')) {
+			@ini_set('xdebug.max_nesting_level', 1000000);
+		}
+	}
+}
+
+/**
+ * Enable script error reporting
+ * @return void
+ */
+function abp01_enable_error_reporting() {
+	if (function_exists('ini_set')) {
+		ini_set('display_errors', 1);
+		ini_set('display_startup_errors', 1);
+	}
+
+	if (function_exists('error_reporting')) {
+		error_reporting(E_ALL);
+	}
+}
+
+/**
+ * Encodes and outputs the given data as JSON and sets the appropriate headers
+ * @param mixed $data The data to be encoded and sent to client
+ * @return void
+ */
+function abp01_send_json($data) {
+	$data = json_encode($data);
+	header('Content-Type: application/json');
+	if (extension_loaded('zlib') && function_exists('ini_set')) {
+		@ini_set('zlib.output_compression', false);
+		@ini_set('zlib.output_compression_level', 0);
+		if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && stripos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false) {
+			header('Content-Encoding: gzip');
+			$data = gzencode($data, 8, FORCE_GZIP);
+		}
+	}
+	die($data);
+}
+
+/**
+ * Creates a unique string that can be used as a cache buster in URLs
+ * @return string The generated string
+ */
+function abp01_get_cachebuster() {
+	return sha1(microtime() .  uniqid());
+}
+
+/**
+ * Appends the given error to the given message if WP_DEBUG is set to true; otherwise returns the original message
+ * @param string $message
+ * @param string|Exception|WP_Error $error
+ * @return string The processed message
+ */
+function abp01_append_error($message, $error) {
+	if (defined('WP_DEBUG') && WP_DEBUG) {
+		if ($error instanceof Exception) {
+			$message .= sprintf(': %s (%s) in file %s line %d', 
+				$error->getMessage(), 
+				$error->getCode(), 
+				$error->getFile(), 
+				$error->getLine());
+		} else if (function_exists('is_wp_error') && is_wp_error($error)) {
+			$message .= sprintf(': %s', join(', ', $error->get_error_messages()));
+		} else if (!empty($error)) {
+			$message .= ': ' . $error;
+		}
+	}
+	return $message;
+}

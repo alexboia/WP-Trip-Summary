@@ -408,7 +408,10 @@ class Abp01_Env {
      * @return int|null The post ID or null if not found
      */
     public function getCurrentPostId($fallbackGetVarName) {
-        $post = isset($GLOBALS['post']) ? $GLOBALS['post'] : null;
+        $post = isset($GLOBALS['post']) 
+            ? $GLOBALS['post'] 
+            : null;
+
         if ($post && isset($post->ID)) {
             return intval($post->ID);
         } else if (isset($_GET['post'])) {
@@ -439,11 +442,26 @@ class Abp01_Env {
             && (empty($requiredPostTypes) || in_array($postType, $requiredPostTypes));
     }
 
-    public function isEditingWpPost() {
-	    return in_array($this->getCurrentPage(), array(
+    public function isEditingWpPost() {      
+        $isEditingPost = in_array($this->getCurrentPage(), array(
             'post-new.php', 
             'post.php'
         ));
+
+        if ($isEditingPost) {
+            $args = func_num_args();
+            if ($args > 0) {
+                $post = isset($GLOBALS['post']) 
+                    ? $GLOBALS['post'] 
+                    : null;
+
+                return $post != null 
+                    && !empty($post->post_type) 
+                    && in_array($post->post_type, func_get_args());
+            }
+        } else {
+            return $isEditingPost;
+        }
     }
 
     public function getCurrentPage() {

@@ -232,10 +232,14 @@
 
     $(document).ready(function() {
         initState();
-        initControls();
-        initTeasers();
-        initDocument();
-        initMapRetry();
+
+        if (context.hasInfo || context.hasTrack) {
+            initControls();
+            initTeasers();
+            initDocument();
+            initMapRetry();
+        }
+
         if (context.hasInfo && context.hasTrack) {
             initTabs();
         } else if (context.hasTrack) {

@@ -8,3 +8,16 @@ Deny from all
 <FilesMatch "^(.+)\.(png|gif|jpg|jpeg)$">
 	Allow from all
 </FilesMatch>
+
+<FilesMatch "^abp01-plugin-leaflet-plugins-wrapper.php$">
+	Allow from all
+</FilesMatch>
+
+#BEGIN wrapped leaflet plugins rewrites
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteRule "media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.js" abp01-plugin-leaflet-plugins-wrapper.php [L]
+	RewriteRule "media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.button.js" abp01-plugin-leaflet-plugins-wrapper.php [L]
+	RewriteRule "media/js/3rdParty/leaflet-plugins/leaflet-fullscreen/leaflet.fullscreen.js" abp01-plugin-leaflet-plugins-wrapper.php [L]
+</IfModule>
+#END wrapped leaflet plugins rewrites

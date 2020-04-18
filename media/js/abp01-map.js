@@ -28,7 +28,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-(function($) {
+(function($, L) {
     "use strict";
 
     $.fn.mapTrack = function(opts) {
@@ -70,13 +70,13 @@
          * @return boolean True if they are, False otherwise
          * */
         function isFullScreenCapabilityLoaded() {
-            return !!L.control.fullScreen;
+            return !!L.control.fullscreen;
         }
 
         function destroyMap() {
             if (map) {
                 if (magnifyingGlassLayer) {
-                    magnifyingGlassLayer.removeFromMap(map);
+                    magnifyingGlassLayer.removeFrom(map);
                 }
 
                 map.remove();
@@ -169,7 +169,7 @@
 
             map.on('fullscreenchange', function() {
                 if (magnifyingGlassLayer) {
-                    magnifyingGlassLayer.removeFromMap(map);
+                    magnifyingGlassLayer.removeFrom(map);
                 }
             });
 
@@ -365,4 +365,4 @@
             }
         };
     };
-})(jQuery);
+})(jQuery, window.abp01Leaflet);
