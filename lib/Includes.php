@@ -54,13 +54,13 @@ class Abp01_Includes {
 
 	const JS_JQUERY_EASYTABS = 'jquery-easytabs';
 
-	const JS_LEAFLET = 'leaflet';
+	const JS_LEAFLET = 'abp01-leaflet';
 
-	const JS_LEAFLET_MAGNIFYING_GLASS = 'leaflet-magnifyingglass';
+	const JS_LEAFLET_MAGNIFYING_GLASS = 'abp01-leaflet-magnifyingglass';
 
-	const JS_LEAFLET_MAGNIFYING_GLASS_BUTTON = 'leaflet-magnifyingglass-button';
+	const JS_LEAFLET_MAGNIFYING_GLASS_BUTTON = 'abp01-leaflet-magnifyingglass-button';
 
-	const JS_LEAFLET_FULLSCREEN = 'leaflet-fullscreen';
+	const JS_LEAFLET_FULLSCREEN = 'abp01-leaflet-fullscreen';
 
 	const JS_LEAFLET_NOCONFLICT = 'abp01-leaflet-noconflict';
 	
