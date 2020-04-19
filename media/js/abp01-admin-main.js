@@ -701,6 +701,13 @@
         });
     }
 
+    function isMsEdge() {
+        var ua = window.navigator.userAgent
+            .toString()
+            .toLowerCase();
+        return ua.indexOf("edge/") > -1;
+    }
+
     function createTrackUploader() {
         if (!!uploader) {
             return;
@@ -734,6 +741,42 @@
         });
 
         uploader.init();
+
+        window.setTimeout(function() {
+            //see https://github.com/moxiecode/plupload/issues/1343
+            //The file browser simply doesn't open in Edge browsers
+            //  Calling refresh didn't work either and, besides,
+            //  we're initializing the uploader AFTER the elements 
+            //  are CONSTRUCTED and SHOWN
+            //However, simulating manual click DOES work, 
+            //  so we're stuck with this for now
+            bootstrapPluploadForEdgeIfNeeded();
+        });
+    }
+
+    function bootstrapPluploadForEdgeIfNeeded() {
+        if (isMsEdge()) {
+            maybeTrace('Microsoft Edge browser detected. Binding manual file browser open event.');
+            $('#abp01-track-selector').on('click', openFileBrowserManually);
+        }
+    }
+
+    function openFileBrowserManually(e) {
+        $('#abp01-form-map-trackSelection')
+            .find('input[type=file]')
+            .click();
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        return false;
+    }
+
+    function refreshUploadSelector() {
+        if (uploader != null) {
+            maybeTrace('Refreshing uploader...');
+            uploader.refresh();
+        }
     }
 
     /**
