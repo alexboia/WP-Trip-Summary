@@ -465,7 +465,7 @@ a.abp01-close-editor:hover {
 /* END Lookup data management section */
 
 /* START Sumo Select overrides */
-.SlectBox { 
+.SelectBox { 
     width: 622px;
     padding: 3px 8px;
     line-height: normal;

@@ -189,7 +189,7 @@ class Abp01_Includes {
 		), 
 		self::JS_SUMO_SELECT => array(
 			'path' => 'media/js/3rdParty/summoSelect/jquery.sumoselect.js',
-			'version' => '2.0.2',
+			'version' => '3.0.2',
 			'deps' => array(
 				self::JS_JQUERY
 			)
@@ -354,7 +354,7 @@ class Abp01_Includes {
 		), 
 		self::STYLE_SUMO_SELECT => array(
 			'path' => 'media/js/3rdParty/summoSelect/sumoselect.css',
-			'version' => '2.0.2'
+			'version' => '3.0.2'
 		),
 		self::STYLE_LEAFLET => array(
 			'path' => 'media/js/3rdParty/leaflet/leaflet.css', 
