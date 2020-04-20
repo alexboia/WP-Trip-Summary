@@ -380,23 +380,28 @@ a.abp01-close-editor:hover {
 
 .abp01-lookupControl-item label {
     display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
 }
 
 #abp01-admin-lookup-control-container {
-    margin-bottom: 10px;
-    margin-right: 10px;
+    margin: 0 10px 20px 0px;
 }
 
 #abp01-admin-lookup-listing-container {
     margin-right: 10px;
 }
 
+#abp01-admin-lookup-listing thead th {
+    font-weight: bold;
+}
+
 .abp01-lookup-general-buttons-bottom {
-    margin-top: 5px;
+    margin-top: 10px;
 }
 
 .abp01-lookup-general-buttons-top {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
 .abp01-lookup-item-form-container {
@@ -415,6 +420,10 @@ a.abp01-close-editor:hover {
 
 .abp01-lookup-item-form-fields .abp01-form-line {
     margin: 0;
+    padding: 5px 0 0 0;
+}
+
+.abp01-lookup-item-form-fields .abp01-form-line:first-of-type {
     padding: 3px 0 0 0;
 }
 
@@ -442,7 +451,7 @@ a.abp01-close-editor:hover {
 #abp01-lookup-operation-result {
     margin-top: 0px !important;
     position: relative;
-    top: 2px;
+    top: 5px;
 }
 
 .abp01-lookup-operation-result p {

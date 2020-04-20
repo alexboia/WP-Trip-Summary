@@ -63,6 +63,7 @@
 			</div>
 			<div class="abp01-clear"></div>
 		</div>
+		
 		<div id="abp01-admin-lookup-listing-container">
 			<div class="abp01-lookup-general-buttons-top">
 				<a id="abp01-reload-list-top" href="javascript:void(0)" class="button button-large"><?php echo esc_html__('Reload list', 'abp01-trip-summary'); ?></a>
