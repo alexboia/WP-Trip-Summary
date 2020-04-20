@@ -138,7 +138,7 @@ function abp01_extract_post_ids($posts) {
  * @return string The created nonce
  */
 function abp01_create_edit_nonce($postId) {
-	return wp_create_nonce(ABP01_NONCE_TOUR_EDITOR . ':' . $postId);
+	return wp_create_nonce(ABP01_NONCE_TRIP_SUMMARY_EDITOR . ':' . $postId);
 }
 
 /**
@@ -181,7 +181,7 @@ function abp01_create_manage_lookup_nonce() {
  * @return bool True if valid, False otherwise
  */
 function abp01_verify_edit_nonce($postId) {
-	return check_ajax_referer(ABP01_NONCE_TOUR_EDITOR . ':' . $postId, 'abp01_nonce', false);
+	return check_ajax_referer(ABP01_NONCE_TRIP_SUMMARY_EDITOR . ':' . $postId, 'abp01_nonce', false);
 }
 
 /**
@@ -1535,7 +1535,7 @@ function abp01_get_info_data($postId) {
 		$unitSystem = Abp01_UnitSystem::create($settings->getUnitSystem());
 		$data->unitSystem = $unitSystem->asPlainObject();
 
-		set_transient($cacheKey, $data, ABP01_GET_INFO_DATA_TRANSIENT_DURATION);
+		set_transient($cacheKey, $data, ABP01_POST_TRIP_SUMMARY_DATA_CACHE_EXPIRATION_SECONDS);
 	}
 
 	return $data;

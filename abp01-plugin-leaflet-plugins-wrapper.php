@@ -29,6 +29,24 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/**
+ * This script serves as a handler used to wrap leafleft plug-ins 
+ *  with a self-executing function
+ *  that provides the correct value for the L global javascript variable.
+ * The value is taken from the global variable populated by the plug-in
+ *  with its own leaflet instance,
+ *  whose provided by the ABP01_WRAPPED_LEAFLET_CONTEXT constant.
+ * 
+ * Thus, the content served by this handler would look something like:
+ *      (function(L) { 
+ *          ...plug-in script content... 
+ *      })(window.abp01Leaflet);
+ * 
+ * @see ABP01_WRAPPED_LEAFLET_CONTEXT
+ * 
+ * @package WP-Trip-Summary
+ */
+
 error_reporting(0);
 
 if (!defined('ABSPATH')) {
@@ -42,9 +60,19 @@ if (!defined('WP_DEBUG')) {
 require_once __DIR__ . '/abp01-plugin-wpshim.php';
 require_once __DIR__ . '/abp01-plugin-header.php';
 
+/**
+ * Attempts to increase execution limits: time and memory.
+ * Additionally, if the xdebug extension is installed, 
+ *  the xdebug.max_nesting_level option is also increased
+ * 
+ * @see ABP01_WRAPPED_SCRIPT_MAX_EXECUTION_TIME_MINUTES
+ * @see ABP01_WRAPPED_SCRIPT_MAX_MEMORY
+ * 
+ * @return void
+ */
 function abp01_wrapper_increase_limits() {
     if (function_exists('set_time_limit')) {
-		@set_time_limit(ABP01_WRAPPED_SCRIPT_MAX_EXECUTION_TIME * 60);
+		@set_time_limit(ABP01_WRAPPED_SCRIPT_MAX_EXECUTION_TIME_MINUTES * 60);
 	}
 	if (function_exists('ini_set')) {
 		@ini_set('memory_limit', ABP01_WRAPPED_SCRIPT_MAX_MEMORY);
@@ -155,7 +183,7 @@ function abp01_wrapper_serve_script() {
     $contentLength = 0;
     $protocol = $_SERVER['SERVER_PROTOCOL'];
 
-    if (!in_array($protocol, array( 'HTTP/1.1', 'HTTP/2', 'HTTP/2.0'))) {
+    if (!in_array($protocol, array('HTTP/1.1', 'HTTP/2', 'HTTP/2.0'))) {
         $protocol = 'HTTP/1.0';
     }
 
@@ -166,7 +194,8 @@ function abp01_wrapper_serve_script() {
         $wrapFilePath = abp01_wrapper_locate_file_from_uri($requestUri);
         if (!empty($wrapFilePath) && is_readable($wrapFilePath)) {
             $etag = abp01_wrapper_get_script_etag();
-            if (isset($_SERVER['HTTP_IF_NONE_MATCH'] ) && stripslashes( $_SERVER['HTTP_IF_NONE_MATCH'] ) === $etag) {
+
+            if (isset($_SERVER['HTTP_IF_NONE_MATCH'] ) && stripslashes($_SERVER['HTTP_IF_NONE_MATCH']) === $etag) {
                 header($protocol . ' 304 Not Modified');
                 die;
             }
