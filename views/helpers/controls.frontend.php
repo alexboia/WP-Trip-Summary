@@ -76,8 +76,9 @@ if (!function_exists('abp01_display_info_item')) {
         if (!empty($value)) {
             $fieldValue = abp01_format_info_item_value($value, $suffix);
             $itemOutput = ('<li class="abp01-info-item ' . $field . ' ' . ($itemIndex % 2 == 0 ? 'abp01-item-even' : 'abp01-item-odd') . '">')
-                . ('<span class="abp01-info-label">' . esc_html($fieldLabel) . ':</span>')
-                . ('<span class="abp01-info-value">' . esc_html($fieldValue) . '</span>')
+                . ('<div class="abp01-info-label">' . esc_html($fieldLabel) . ':</div>')
+                . ('<div class="abp01-info-value">' . esc_html($fieldValue) . '</div>')
+                . ('<div class="abp01-clear"></div>')
                 . '</li>';
 
             $itemIndex ++;

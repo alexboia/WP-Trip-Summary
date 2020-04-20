@@ -218,8 +218,15 @@ ul.abp01-techbox-tabs {
     margin-right: 5px;
     font-weight: 600;
     width: 200px;
-    display: inline-block;
+    display: block;
     text-align: right;
+    float: left;
+}
+
+.abp01-info-value {
+    display: block;
+    float: left;
+    width: calc(100% - 210px);
 }
 
 .abp01-techbox-map,
