@@ -102,31 +102,36 @@
     }
 
     /**
-     * Shows or hides the progress indicator, optionally blocking only the given target.
-     * If no target is given and the action is to show the indicator, then the entire screen is blocked.
-     * @param {Boolean} show Whether to show the progress indicator or to hide it
-     * @param {jQuery} $target The target element that should be blocked. Valid only when the indicator is shown (show == true)
+     * Shows the progress indicator, optionally blocking the given target.
+     * 
+     * @param {jQuery} $target The target element that should be blocked.
      * @return void
-     * */
-    function toggleBusy(show, $target) {
-        if (show) {
-            if (!progressBar) {
-                progressBar = $('#tpl-abp01-progress-container').progressOverlay({
-                    $target: $target || $('#wpwrap'),
-                    message: abp01LookupMgmtL10n.msgWorking,
-                    centerY: !!$target
-                });
-            }
-        } else {
-            if (progressBar) {
-                progressBar.destroy();
-                progressBar = null;
-            }
+     */
+    function showBusy($target) {
+        if (progressBar == null) {
+            progressBar = $('#tpl-abp01-progress-container').progressOverlay({
+                $target: $target || $('#wpwrap'),
+                message: abp01LookupMgmtL10n.msgWorking,
+                centerY: !!$target
+            });
+        }
+    }
+
+    /**
+     * Hides the progress indicator, calling the provided handler, if any, when done
+     *  
+     * @param {Function} onRemove The on remove handler. Optional
+     */
+    function hideBusy(onRemove) {
+        if (progressBar != null) {
+            progressBar.destroy(onRemove);
+            progressBar = null;
         }
     }
 
     /**
      * Displays the given message of the given type (success/failure) in the given container
+     * 
      * @param {jQuery} $container The container in which the message will be displayed
      * @param {Boolean} success Whether the message is a success message or a failure message
      * @param {String} message The message to be displayed
@@ -149,6 +154,7 @@
      * - all the message-specific classes are removed;
      * - container content is cleared;
      * - container is hidden
+     * 
      * @param {jQuery} $container The container for which the message is to be cleared
      * @return void
      * */
@@ -281,7 +287,7 @@
         var lookupType = $ctlTypeSelector.val();
         var lookupLang = $ctlLangSelector.val();
 
-        toggleBusy(true);
+        showBusy(null);
         clearMessage($ctlListingResultContainer);
 
         $.ajax(getLoadLookupDataUrl(), {
@@ -293,7 +299,7 @@
                 lang: lookupLang
             }
         }).done(function(data) {
-            toggleBusy(false);
+            hideBusy(null);
             if (data && data.success && data.items) {
                 cleanupLookupItems();
                 renderLookupItems(data.items, false);
@@ -304,7 +310,7 @@
                 displayMessage($ctlListingResultContainer, false, abp01LookupMgmtL10n.errListingFailGeneric);
             }
         }).fail(function() {
-            toggleBusy(false);
+            hideBusy(false);
             displayMessage($ctlListingResultContainer, false, abp01LookupMgmtL10n.errListingFailNetwork);
         });
     }
@@ -319,7 +325,7 @@
      * @return void
      * */
     function createLookupItem() {        
-        toggleBusy(true, $('#TB_window'));
+        showBusy($('#TB_window'));
         clearMessage($ctlOperationResultContainer);
 
         $.ajax(getAddLookupUrl(), {
@@ -333,7 +339,7 @@
                 translatedLabel: $ctlLookupItemTranslatedLabel.val()
             }
         }).done(function(data) {
-            toggleBusy(false);
+            hideBusy(null);
             if (data && data.success) {
                 currentItems[data.item.id] = data.item;
                 renderLookupItems([data.item], true);
@@ -343,7 +349,7 @@
                 displayMessage($ctlOperationResultContainer, false, data.message || abp01LookupMgmtL10n.errFailGeneric);
             }
         }).fail(function() {
-            toggleBusy(false);
+            hideBusy(null);
             displayMessage($ctlOperationResultContainer, false, abp01LookupMgmtL10n.errFailNetwork);
         });
     }
@@ -361,7 +367,7 @@
         var defaultLabel = $ctlLookupItemDefaultLabel.val();
         var translatedLabel = $ctlLookupItemTranslatedLabel.val();
 
-        toggleBusy(true, $('#TB_window'));
+        showBusy($('#TB_window'));
         clearMessage($ctlOperationResultContainer);
 
         $.ajax(getEditLookupUrl(), {
@@ -375,7 +381,7 @@
                 translatedLabel: translatedLabel
             }
         }).done(function(data) {
-            toggleBusy(false);
+            hideBusy(null);
             if (data && data.success) {
                 editingItem.defaultLabel = defaultLabel;
                 editingItem.hasTranslation = !!translatedLabel;
@@ -389,7 +395,7 @@
                 displayMessage($ctlOperationResultContainer, false, data.message || abp01LookupMgmtL10n.errFailGeneric);
             }
         }).fail(function() {
-            toggleBusy(false);
+            hideBusy(null);
             displayMessage($ctlOperationResultContainer, false, abp01LookupMgmtL10n.errFailNetwork);
         });
     }
@@ -407,7 +413,7 @@
         var lang = $ctlLangSelector.val();
         var deleteOnlyLang = $ctlDeleteOnlyLangTranslation.is(':checked');
 
-        toggleBusy(true, $('#TB_window'));
+        showBusy($('#TB_window'));
         clearMessage($ctlDeleteOperationResultContainer);
         clearMessage($ctlListingResultContainer);
 
@@ -421,23 +427,22 @@
                 deleteOnlyLang: deleteOnlyLang.toString()
             }
         }).done(function(data) {
-            toggleBusy(false);
             if (data && data.success) {
                 deleteLookupItemRow(editingItem, deleteOnlyLang && lang !== DEFAULT_LANG);
 
                 delete currentItems[editingItem.id];
                 editingItem = null;
 
-                //TODO: wait for progressbar to be
-                //  completely cleanup before 
-                //  closing it
-                closeDeleteDialog();
-                displayMessage($ctlListingResultContainer, true, abp01LookupMgmtL10n.msgDeleteOk);
+                hideBusy(function() {
+                    closeDeleteDialog();
+                    displayMessage($ctlListingResultContainer, true, abp01LookupMgmtL10n.msgDeleteOk);
+                });
             } else {
+                hideBusy(null);
                 displayMessage($ctlDeleteOperationResultContainer, false, data.message || abp01LookupMgmtL10n.errDeleteFailedGeneric);
             }
         }).fail(function() {
-            toggleBusy(false);
+            hideBusy(null);
             displayMessage($ctlDeleteOperationResultContainer, false, abp01LookupMgmtL10n.errDeleteFailedNetwork);
         });
     }

@@ -39,162 +39,189 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 class Abp01_Env {
 	/**
 	 * The singleton instance
+     * 
 	 * @var Abp01_Env
 	 */
     private static $_instance = null;
 
 	/**
 	 * Current language
+     * 
 	 * @var string
 	 */
     private $_lang;
 
 	/**
 	 * Whether we're running in debug mode or not
+     * 
 	 * @var boolean
 	 */
     private $_isDebugMode;
 
 	/**
 	 * The current database host server
+     * 
 	 * @var string
 	 */
     private $_dbHost;
 
 	/**
 	 * Database credentials - username
+     * 
 	 * @var string
 	 */
     private $_dbUserName;
 
 	/**
 	 * Database credentials - password
+     * 
 	 * @var string
 	 */
     private $_dbPassword;
 
 	/**
 	 * Database table prefix
+     * 
 	 * @var string
 	 */
     private $_dbTablePrefix;
 
 	/**
 	 * The name of the database to which we're connecting
+     * 
 	 * @var string
 	 */
     private $_dbName;
 
     /**
      * The database collation
+     * 
      * @var string
      */
     private $_dbCollate;
 
     /**
      * The database charset
+     * 
      * @var string
      */
     private $_dbCharset;
 
 	/**
 	 * The name of the table that holds the route details. Prefix included.
+     * 
 	 * @var string
 	 */
     private $_routeDetailsTableName;
 
 	/**
 	 * The name of the table that holds the serialized route tracks. Prefix included.
+     * 
 	 * @var string
 	 */
     private $_routeTrackTableName;
 
 	/**
 	 * The name of the table that holds the look-up data items. Prefix included.
+     * 
 	 * @var string
 	 */
     private $_lookupTableName;
 
 	/**
 	 * The name of the table that holds the look-up data items translations. Prefix included.
+     * 
 	 * @var string
 	 */
     private $_lookupLangTableName;
 
 	/**
 	 * The name of the table that holds the relationships between routes (posts) and look-up data items. Prefix included
+     * 
 	 * @var string
 	 */
 	private $_routeDetailsLookupTableName;
 
 	/**
 	 * The current database object instance
+     * 
 	 * @var MysqliDb
 	 */
     private $_db = null;
 
     /**
      * The current information schema database object instance
+     * 
      * @var MysqliDb
      */
     private $_metaDb = null;
 
     /**
      * Whether or not the mysqli driver has been initialized
+     * 
      * @var boolean
      */
     private $_driverInitialized = false;
 
 	/**
 	 * The current WordPress version
+     * 
 	 * @var string
 	 */
     private $_wpVersion;
 
 	/**
 	 * The current PHP version
+     * 
 	 * @var string
 	 */
     private $_phpVersion;
 
     /**
      * The path to the root plug-in directory
+     * 
      * @var string
      */
     private $_pluginRootDir;
 
 	/**
 	 * The path to the data directory. 
+     * 
 	 * @var string 
 	 */
     private $_dataDir;
 
     /**
      * The path to the root storage directory of the plug-in. This directory hosts all the other storage sub-directories.
+     * 
      * @var string
      */
     private $_rootStorageDir;
 
     /**
      * The path to the tracks storage directory. This is where the original track data files are stored, as uploaded by the users.
+     * 
      * @var string
      */
     private $_tracksStorageDir;
 
     /**
      * The path to the cache storage direcory. This is where all the cached track files are stored.
+     * 
      * @var string
      */
     private $_cacheStorageDir;
 
     /**
      * The path to the views directory
+     * 
      * @var string
      */
     private $_viewsDir;
 
 	/**
 	 * The current plug-in version
+     * 
 	 * @var string
 	 */
     private $_version = ABP01_VERSION;

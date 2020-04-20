@@ -40,7 +40,6 @@
         var $content = null;
         var $progressParent = null;
         var $progressLabel = null;
-        var isClosingProgressDialog = false;
 
         if (!this.size()) {
             return;
@@ -55,11 +54,20 @@
             $target: $('body'),
             determinate: false,
             progress: false,
-            message: null
+            message: null,
+            onRemove: null
         }, spec || {});
 
         function getTarget() {
             return spec.$target;
+        }
+
+        function getOnRemoveHandler() {
+            return spec.onRemove;
+        }
+
+        function setOnRemoveHandler(handler) {
+            spec.onRemove = handler;
         }
 
         function isDeterminate() {
@@ -168,7 +176,6 @@
             _openProgressDialog: function() {
                 var me = this;
                 window.setTimeout(function() {
-                    isClosingProgressDialog = false;
                     getTarget().block({
                         centerY: getCenterY(),
                         message: $content,
@@ -182,35 +189,21 @@
 
             _closeProgressDialog: function() {
                 var me = this;
-                
-                NProgress.done();
-                isClosingProgressDialog = true;
-
-                //Since NProgress.done() is asynchronous, 
-                //  we need to wait for it to finish so we queue a cleanup delegate
-                //  that will also check whether or not NProgress has actually completed
-                window.setTimeout(function() {
+                NProgress.done(function() {
                     me._cleanupProgressDialog();
-                }, 0);
+                    var onRemoveHandler = getOnRemoveHandler();
+                    if (onRemoveHandler != null && $.isFunction(onRemoveHandler)) {
+                        onRemoveHandler();
+                    }
+                });
             },
 
             _cleanupProgressDialog: function() {
-                var me = this;
-
-                if (isClosingProgressDialog) {
-                    //If NProgress has indeed completed, 
-                    //  go ahead and clean-up
-                    //Otherwise, queue the cleanup delegate again
-                    if (!NProgress.isRendered()) {
-                        getProgressLabel().text('');
-                        getTarget().unblock();
-                        isClosingProgressDialog = false;
-                    } else {
-                        window.setTimeout(function() {
-                            me._cleanupProgressDialog();
-                        }, 0);
-                    }
-                }
+                //If NProgress has indeed completed, 
+                //  go ahead and clean-up
+                //Otherwise, queue the cleanup delegate again
+                getProgressLabel().text('');
+                getTarget().unblock();
             },
 
             _displayProgressBar: function() {
@@ -268,6 +261,15 @@
             },
 
             destroy: function() {
+                if (arguments.length == 1 && $.isFunction(arguments[0])) {
+                    var onRemove = arguments[0];
+                    var oldOnRemove = getOnRemoveHandler();
+                    setOnRemoveHandler(function() {
+                        onRemove();
+                        setOnRemoveHandler(oldOnRemove);
+                    });
+                }
+
                 fsm.transition('closed');
                 $progressParent = null;
                 $progressLabel = null;
