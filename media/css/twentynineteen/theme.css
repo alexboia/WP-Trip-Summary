@@ -70,6 +70,8 @@
 
 .abp01-info-value {
     font-size: 15px;
+    width: calc(60% - 10px) !important;
+    max-width: calc(100% - 260px) !important;
 }
 
 .abp01-map-retry-message {

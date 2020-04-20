@@ -55,6 +55,7 @@
 
 .abp01-info-value {
     font-size: 14px;
+    width: calc(100% - 240px) !important;
 }
 
 .abp01-map-retry-message {
