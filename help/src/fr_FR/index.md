@@ -107,7 +107,7 @@ Le module WP-Trip-Summary utilise les bibliothèques suivantes:
 1. [PHP-MySQLi-Database-Class](https://github.com/joshcam/PHP-MySQLi-Database-Class) - une bibliothèque construite sur mysqli. Il est utilisé à la place de wpdb, le composant WordPress standard.
 2. [MimeReader](http://social-library.org/) - où le détecteur de type MIME a été écrit par Shane Thompson.
 3. [jQuery EasyTabs](https://github.com/JangoSteve/jQuery-EasyTabs) - plug-in jQuery pour organiser le contenu sur des onglets / onglets
-4. [jQuery.SumoSelect](https://github.com/HemantNegi/jquery.sumoselect) - plug-in jQuery utilisé pour la sélection de plusieurs éléments
+4. [Select2](https://select2.org/) - plug-in jQuery utilisé pour la sélection de plusieurs éléments
 5. [Leaflet](https://github.com/Leaflet/Leaflet) - composant de carte
 6. [Machina](https://github.com/ifandelse/machina.js/tree/master) - une machine d'état implémentée en JavaScript
 7. [NProgress](https://github.com/rstacruz/nprogress) - une librairie pour une présentation visuelle de l'avancement de diverses opérations

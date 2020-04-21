@@ -294,7 +294,7 @@ Despite my best intentions, it would be really hard to come up with a stellar pr
 1. [PHP-MySQLi-Database-Class](https://github.com/joshcam/PHP-MySQLi-Database-Class) - small mysqli wrapper for PHP. I used it instead of the builtin wpdb class
 2. [MimeReader](http://social-library.org/) - PHP mime sniffer written by Shane Thompson
 3. [jQuery EasyTabs](https://github.com/JangoSteve/jQuery-EasyTabs)
-4. [jQuery.SumoSelect](https://github.com/HemantNegi/jquery.sumoselect) - A jQuery Single/Multi Select plugin
+4. [Select2](https://select2.org/) - A jQuery Single/Multi Select plugin
 5. [Leaflet](https://github.com/Leaflet/Leaflet) - open source JavaScript library for interactive maps
 6. [Machina](https://github.com/ifandelse/machina.js/tree/master) - JavaScript state machine
 7. [NProgress](https://github.com/rstacruz/nprogress) - slim JavaScript progress bars

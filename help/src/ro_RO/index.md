@@ -101,7 +101,7 @@ Modulul WP-Trip-Summary folosește următoarele librării:
 1. [PHP-MySQLi-Database-Class](https://github.com/joshcam/PHP-MySQLi-Database-Class) - o librărie construită peste mysqli. Este folosită în locul wpdb, componenta standard din WordPress.
 2. [MimeReader](http://social-library.org/) - unde detector de MIME-Type scris de Shane Thompson.
 3. [jQuery EasyTabs](https://github.com/JangoSteve/jQuery-EasyTabs) - plug-in jQuery pentru organizarea conținutului pe file/tab-uri
-4. [jQuery.SumoSelect](https://github.com/HemantNegi/jquery.sumoselect) - plug-in de jQuery folosit pentru selecția multiplă pe elementele
+4. [Select2](https://select2.org/) - plug-in de jQuery folosit pentru selecția multiplă pe elementele
 5. [Leaflet](https://github.com/Leaflet/Leaflet) - componenta de hartă
 6. [Machina](https://github.com/ifandelse/machina.js/tree/master) - o mașină de stare implementată în JavaScript
 7. [NProgress](https://github.com/rstacruz/nprogress) - o librărie pentru prezentarea vizuală a progresului diverselor operațiuni

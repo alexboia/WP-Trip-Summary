@@ -101,7 +101,7 @@ This plug-in would have required much more work on my said without the following
 1. [PHP-MySQLi-Database-Class](https://github.com/joshcam/PHP-MySQLi-Database-Class) - small and practical mysqli wrapper; I use it instead of the awful wpdb;
 2. [MimeReader](http://social-library.org/) - MIME-Type detector written by Shane Thompson.
 3. [jQuery EasyTabs](https://github.com/JangoSteve/jQuery-EasyTabs) - jQuery plug-in used to organize content into tabs;
-4. [jQuery.SumoSelect](https://github.com/HemantNegi/jquery.sumoselect) - jQuery plug-in for multiple-selection-enabled dropdown elements;
+4. [Select2](https://select2.org/) - jQuery plug-in for multiple-selection-enabled dropdown elements;
 5. [Leaflet](https://github.com/Leaflet/Leaflet) - map component;
 6. [Machina](https://github.com/ifandelse/machina.js/tree/master) - JavaScript state machine;
 7. [NProgress](https://github.com/rstacruz/nprogress) - visual progressbar component;
