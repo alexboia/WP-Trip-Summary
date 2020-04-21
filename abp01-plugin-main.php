@@ -1459,8 +1459,7 @@ function abp01_save_info() {
 	}
 
 	if ($manager->saveRouteInfo($postId, get_current_user_id(), $info)) {
-		$cacheKey = abp01_get_info_data_cache_key($postId);
-		delete_transient($cacheKey);
+		abp01_clear_post_viewer_data_cache($postId);
 		$response->success = true;
 	} else {
 		$response->message = esc_html__('The data could not be saved due to a possible database error', 'abp01-trip-summary');
@@ -1469,8 +1468,18 @@ function abp01_save_info() {
 	abp01_send_json($response);
 }
 
-function abp01_get_info_data_cache_key($postId) {
+function abp01_get_post_viewer_data_cache_key($postId) {
 	return sprintf('_abp01_info_data_%s', $postId);
+}
+
+function abp01_clear_post_viewer_data_cache($postId) {
+	$cacheKey = abp01_get_post_viewer_data_cache_key($postId);
+	delete_transient($cacheKey);
+}
+
+function abp01_store_post_viewer_data_cache($postId, $data) {
+	$cacheKey = abp01_get_post_viewer_data_cache_key($postId);
+	set_transient($cacheKey, $data, ABP01_POST_TRIP_SUMMARY_DATA_CACHE_EXPIRATION_SECONDS);
 }
 
 function abp01_get_info_data($postId) {
@@ -1479,7 +1488,7 @@ function abp01_get_info_data($postId) {
 	//	for correct handling of this situation
 	//see: https://wordpress.stackexchange.com/questions/225721/hook-added-to-the-content-seems-to-be-called-multiple-times
 
-	$cacheKey = abp01_get_info_data_cache_key($postId);
+	$cacheKey = abp01_get_post_viewer_data_cache_key($postId);
 	$data = get_transient($cacheKey);
 
 	if (empty($data) || !($data instanceof stdClass)) {
@@ -1537,7 +1546,8 @@ function abp01_get_info_data($postId) {
 		$unitSystem = Abp01_UnitSystem::create($settings->getUnitSystem());
 		$data->unitSystem = $unitSystem->asPlainObject();
 
-		set_transient($cacheKey, $data, ABP01_POST_TRIP_SUMMARY_DATA_CACHE_EXPIRATION_SECONDS);
+		//cache data
+		abp01_store_post_viewer_data_cache($postId, $data);
 	}
 
 	return $data;
@@ -1602,8 +1612,7 @@ function abp01_remove_info() {
 	$manager = abp01_get_route_manager();
 
 	if ($manager->deleteRouteInfo($postId)) {
-		$cacheKey = abp01_get_info_data_cache_key($postId);
-		delete_transient($cacheKey);
+		abp01_clear_post_viewer_data_cache($postId);
 		$response->success = true;
 	} else {
 		$response->message = esc_html__('The data could not be saved due to a possible database error', 'abp01-trip-summary');
@@ -1692,6 +1701,8 @@ function abp01_upload_track() {
 				
 				if (!$manager->saveRouteTrack($postId, $currentUserId, $track)) {
 					$result->status = Abp01_Uploader::UPLOAD_INTERNAL_ERROR;
+				} else {
+					abp01_clear_post_viewer_data_cache($postId);
 				}
 			} else {
 				$result->status = Abp01_Uploader::UPLOAD_NOT_VALID;
@@ -1847,6 +1858,7 @@ function abp01_remove_track() {
 			@unlink($cacheFile);
 		}
 
+		abp01_clear_post_viewer_data_cache($postId);
 		$response->success = true;
 	} else {
 		$response->message = esc_html__('The data could not be updated due to a possible database error', 'abp01-trip-summary');
