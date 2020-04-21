@@ -403,7 +403,7 @@
             var basicOptions = {
                 width: '638px',
                 closeOnSelect: !isMultiple,
-                scrollAfterSelect: true,
+                scrollAfterSelect: false,
                 minimumResultsForSearch: Infinity,
                 placeholder: abp01MainL10n.selectBoxPlaceholder,
                 allowClear: isMultiple
@@ -1199,7 +1199,7 @@
                     inline: controllerSelector,
                     skin: 'light',
                     hideOn: false,
-                    hideAfter: 1000,
+                    hideAfter: 500,
                     showDelay: 100,
                     showOn: 'click'
                 });
