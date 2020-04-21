@@ -311,10 +311,7 @@
                     $field.prop('checked', false);
                 }
             } else if (tagName == 'select') {
-                if ($field[0].sumo) {
-                    $field[0].sumo.unSelectAll();
-                }
-                $field.val('');
+                $field.val(null).trigger('change');
             }
         });
     }
@@ -323,23 +320,106 @@
      * Select boxes management functions
      * */
 
-    function prepareSelectBoxes($container) {
+    function initSelect2Adapters() {
+        //Coutersy of https://bojanv91.github.io/posts/2017/10/extending-select2-with-adapters-and-decorators
+        $.fn.select2.amd.define('abp01/selection/adapter', [
+            'select2/utils',
+            'select2/selection/multiple',
+            'select2/selection/placeholder',
+            'select2/selection/eventRelay',
+            'select2/selection/single',
+        ],
+        function(Utils, MultipleSelection, Placeholder, EventRelay, SingleSelection) {
+            var adapter = Utils.Decorate(MultipleSelection, 
+                Placeholder);
+
+            adapter = Utils.Decorate(adapter, 
+                EventRelay);
+
+            adapter.prototype.render = function() {
+                //Use selection-box from SingleSelection adapter
+                //This implementation overrides the default implementation
+                var $selection = SingleSelection.prototype.render.call(this);
+                return $selection;
+            };
+
+            adapter.prototype.update = function(data) {
+                //Copy and modify SingleSelection adapter
+                this.clear();
+                data = data || [];
+          
+                var $rendered = this.$selection.find('.select2-selection__rendered');
+                var noItemsSelected = data.length === 0;
+                var formatted = '';
+          
+                if (noItemsSelected) {
+                  formatted = this.options.get('placeholder') || '';
+                } else {
+                    var $allOptions = this.$element.find("option") 
+                        || [];
+
+                    var itemsData = {
+                        selected: data || [],
+                        selectedCount: data.length,
+                        all: $allOptions,
+                        allCount: $allOptions.length
+                    };
+
+                    //Pass selected and all items to display method
+                    //  which calls templateSelection
+                    formatted = this.display(itemsData, $rendered);
+                }
+          
+                $rendered.empty().append(formatted);
+                $rendered.prop('title', formatted);
+            };
+          
+            return adapter;
+        });
+    }
+
+    function renderSelect2Selection(data) {
+        var format = abp01MainL10n
+            .selectBoxCaptionFormat;
+            
+        return format
+            .replace('{0}', data.selectedCount)
+            .replace('{1}', data.allCount);
+    }
+
+    function prepareSelectBoxesSelect2($container) {
         $container.find('select').each(function() {
-            $(this).SumoSelect({
-                csvDispCount: 4,
+            var $me = $(this);
+            var isMultiple = $me.attr('multiple');
+
+            var basicOptions = {
+                width: '638px',
+                closeOnSelect: !isMultiple,
+                scrollAfterSelect: true,
+                minimumResultsForSearch: Infinity,
                 placeholder: abp01MainL10n.selectBoxPlaceholder,
-                captionFormat: abp01MainL10n.selectBoxCaptionFormat,
-                okCancelInMulti: false,
-                selectAll: !!$(this).attr('multiple'),
-                selectAlltext: abp01MainL10n.selectBoxSelectAllText
-            });
+                allowClear: isMultiple
+            };
+
+            if (isMultiple) {
+                $me.select2($.extend(basicOptions, {
+                    selectionAdapter: $.fn.select2.amd.require('abp01/selection/adapter'),
+                    templateSelection: renderSelect2Selection
+                }));
+            } else {
+                $me.select2(basicOptions);
+            }
+        });
+    }
+
+    function destroySelectBoxesSelect2($container) {
+        $container.find('select').each(function() {
+            $(this).select2('destroy');
         });
     }
 
     function destroySelectBoxes($container) {
-        $container.find('select').each(function() {
-            this.sumo.unload();
-        });
+        destroySelectBoxesSelect2($container);
     }
 
     function selectRouteInfoType(type, clearForm) {
@@ -348,7 +428,7 @@
 
         if (typeof typeSelectRenderers[type] === 'function') {
             $ctrlFormInfoContainer.html(typeSelectRenderers[type]());
-            prepareSelectBoxes($ctrlFormInfoContainer);
+            prepareSelectBoxesSelect2($ctrlFormInfoContainer);
             toggleFormInfoResetBtn(true, resetRouteInfoForm);
             updateTitle(typeTitles[type]);
 
@@ -447,6 +527,22 @@
             return inputName.substring(0, inputName.length - 2);
         }
 
+        function getSelect2Value($field, isMultiple) {
+            var values = [];
+            var rawData = $field.select2('data');
+
+            if (!!rawData && !!rawData.length) {
+                for (var i = 0; i < rawData.length; i ++) {
+                    var opt = rawData[i];
+                    if (!!opt.selected) {
+                        values.push(opt.id);
+                    }
+                }
+            }
+
+            return isMultiple ? values : values[0];
+        }
+
         function addFormValue(name, value, isMultiple) {
             if (isMultiple) {
                 if (typeof values[name] == 'undefined') {
@@ -489,9 +585,14 @@
                     addFormValue(inputName, (checked ? $field.val() : null), isMultiple);
                 }
             } else if (tagName == 'select') {
-                addFormValue(inputName, $field.val(), !!$field.attr('multiple'));
+                var isMultiSelect = !!$field.attr('multiple');
+                addFormValue(inputName, 
+                    getSelect2Value($field, isMultiSelect), 
+                    isMultiSelect);
             } else if (tagName == 'textarea') {
-                addFormValue(inputName, $field.val(), false);
+                addFormValue(inputName, 
+                    $field.val(), 
+                    false);
             }
         });
 
@@ -1272,6 +1373,7 @@
             height: 545
         };
 
+        initSelect2Adapters();
         configureUploaderFilters();
         initEditor();
         initRouteInfoForm();

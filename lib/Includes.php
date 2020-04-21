@@ -89,16 +89,16 @@ class Abp01_Includes {
 	const JS_ADMIN_LOOKUP_MGMT = 'abp01-admin-lookup-management';
 	
 	const JS_SYSTEM_THICKBOX = 'thickbox';
-	
-	const JS_SUMO_SELECT = 'sumoSelect';
+
+	const JS_SELECT2 = 'select2-js';
 
 	const STYLE_WP_COLOR_PICKER = 'wp-color-picker';
 
 	const STYLE_DASHICONS = 'dashicons';
 
 	const STYLE_NPROGRESS = 'nprogress-css';
-	
-	const STYLE_SUMO_SELECT = 'sumoSelect-css';
+
+	const STYLE_SELECT2 = 'select2-css';
 
 	const STYLE_LEAFLET = 'leaflet-css';
 
@@ -187,9 +187,9 @@ class Abp01_Includes {
 				self::JS_JQUERY
 			)
 		), 
-		self::JS_SUMO_SELECT => array(
-			'path' => 'media/js/3rdParty/summoSelect/jquery.sumoselect.js',
-			'version' => '3.0.2',
+		self::JS_SELECT2 => array(
+			'path' => 'media/js/3rdParty/select2/js/select2.js',
+			'version' => '4.0.13',
 			'deps' => array(
 				self::JS_JQUERY
 			)
@@ -297,7 +297,7 @@ class Abp01_Includes {
 				self::JS_JQUERY_TOASTR,
 				self::JS_MOXIE,
 				self::JS_PLUPLOAD,
-				self::JS_SUMO_SELECT,
+				self::JS_SELECT2,
 				self::JS_KITE_JS,
 				self::JS_URI_JS,
 				self::JS_LEAFLET,
@@ -352,9 +352,9 @@ class Abp01_Includes {
 			'path' => 'media/js/3rdParty/nprogress/nprogress.css', 
 			'version' => '0.2.0'
 		), 
-		self::STYLE_SUMO_SELECT => array(
-			'path' => 'media/js/3rdParty/summoSelect/sumoselect.css',
-			'version' => '3.0.2'
+		self::STYLE_SELECT2  => array(
+			'path' => 'media/js/3rdParty/select2/css/select2.css',
+			'version' => '4.0.13'
 		),
 		self::STYLE_LEAFLET => array(
 			'path' => 'media/js/3rdParty/leaflet/leaflet.css', 
@@ -465,7 +465,7 @@ class Abp01_Includes {
 			'deps' => array(
 				self::STYLE_NPROGRESS,
 				self::STYLE_LEAFLET,
-				self::STYLE_SUMO_SELECT,
+				self::STYLE_SELECT2,
 				self::STYLE_JQUERY_TOASTR,
 				self::STYLE_TIPPED_JS
 			)

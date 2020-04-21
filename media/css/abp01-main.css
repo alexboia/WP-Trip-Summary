@@ -467,7 +467,7 @@ a.abp01-close-editor:hover {
 /* START Sumo Select overrides */
 .SelectBox { 
     width: 622px;
-    padding: 3px 8px;
+    padding: 4px 8px;
     line-height: normal;
     margin-bottom: 0px;
     margin-top: 0px;
@@ -486,6 +486,48 @@ a.abp01-close-editor:hover {
     padding-top: 15px;
 }
 /* END Sumo Select overrides */
+
+/* START Select2 overrides */
+.select2-container {
+    z-index: 200022;
+}
+
+.select2-container .select2-selection {
+    height: 29px;
+    max-height: 29px;
+    min-height: 29px !important;
+    overflow: hidden;
+} 
+
+.select2-selection__rendered {
+    height: 27px;
+    max-height: 27px;
+    min-height: 27px !important;
+    overflow: hidden;
+}
+
+.select2-container .select2-selection .select2-selection__choice {
+    margin-top: 3px;
+    margin-bottom: 3px;
+    height: 19px;
+    line-height: 19px;
+    vertical-align: middle;
+}
+
+.select2-search.select2-search--inline {
+    margin-bottom: 3px;
+}
+
+.select2-search.select2-search--inline .select2-search__field {
+    margin-top: 3px;
+    margin-bottom: 0px;
+    min-height: 21px !important;
+    height: 21px !important;
+    line-height: 21px;
+    vertical-align: middle;
+}
+
+/* END Select2 overrides */
 
 #abp01-editor-launcher-actions {
     padding: 10px;

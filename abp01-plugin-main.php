@@ -1459,6 +1459,8 @@ function abp01_save_info() {
 	}
 
 	if ($manager->saveRouteInfo($postId, get_current_user_id(), $info)) {
+		$cacheKey = abp01_get_info_data_cache_key($postId);
+		delete_transient($cacheKey);
 		$response->success = true;
 	} else {
 		$response->message = esc_html__('The data could not be saved due to a possible database error', 'abp01-trip-summary');
@@ -1599,10 +1601,12 @@ function abp01_remove_info() {
 	$response = abp01_get_ajax_response();
 	$manager = abp01_get_route_manager();
 
-	if (!$manager->deleteRouteInfo($postId)) {
-		$response->message = esc_html__('The data could not be saved due to a possible database error', 'abp01-trip-summary');
-	} else {
+	if ($manager->deleteRouteInfo($postId)) {
+		$cacheKey = abp01_get_info_data_cache_key($postId);
+		delete_transient($cacheKey);
 		$response->success = true;
+	} else {
+		$response->message = esc_html__('The data could not be saved due to a possible database error', 'abp01-trip-summary');
 	}
 
 	abp01_send_json($response);

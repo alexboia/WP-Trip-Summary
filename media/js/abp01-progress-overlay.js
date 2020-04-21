@@ -180,6 +180,7 @@
                         centerY: getCenterY(),
                         message: $content,
                         css: getStyle(),
+                        baseZ: 9999999,
                         onBlock: function() {
                             me._displayProgressBar();
                         }
