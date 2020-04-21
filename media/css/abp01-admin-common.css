@@ -49,3 +49,8 @@
     background-color: #d8e1c8;
     color: #ffba00;
 }
+
+.abp01-stop-scrolling {
+    height: 100%;
+    overflow: hidden;
+}

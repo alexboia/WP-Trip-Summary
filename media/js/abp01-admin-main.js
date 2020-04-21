@@ -209,6 +209,14 @@
         $('body,html').scrollTop(0);
     }
 
+    function disableWindowScroll() {
+        $('html').addClass('abp01-stop-scrolling');
+    }
+
+    function enableWindowScroll() {
+        $('html').removeClass('abp01-stop-scrolling');
+    }
+
     function toastMessage(success, message) {
         var toastrTarget = editorWindowState.isOpen 
             ? '#abp01-editor-content' 
@@ -1257,6 +1265,9 @@
                 boxShadow: '0 5px 15px rgba(0, 0, 0, 0.7)'
             },
             onBlock: function() {
+                //Disable window scrolling
+                disableWindowScroll();
+
                 //Editor window is now open
                 editorWindowState.isOpen = true;
 
@@ -1278,6 +1289,8 @@
                 }
             },
             onUnblock: function() {
+                //Re-enable window scrolling
+                enableWindowScroll();
                 //Editor window is now closed
                 editorWindowState.isOpen = false;
             }

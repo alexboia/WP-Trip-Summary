@@ -467,7 +467,8 @@ class Abp01_Includes {
 				self::STYLE_LEAFLET,
 				self::STYLE_SELECT2,
 				self::STYLE_JQUERY_TOASTR,
-				self::STYLE_TIPPED_JS
+				self::STYLE_TIPPED_JS,
+				self::STYLE_ADMIN_COMMON
 			)
 		),
 		self::STYLE_ADMIN_SETTINGS => array(
