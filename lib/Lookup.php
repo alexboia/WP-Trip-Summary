@@ -231,24 +231,28 @@ class Abp01_Lookup {
 	 * Gets a list of all supported languages.
 	 * The list is an array that has the language code as a key and a label as a value.
 	 * The label is comprised of both the english name and the native name of the language.
+	 * 
 	 * @return array The list of supported languages
 	 */
 	public static function getSupportedLanguages() {
-		require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
-		$translations = array(
-			'_default' => __('Default', 'abp01-trip-summary'),
-			'en_US' => 'English (United States)'
-		);
+		if (!function_exists('wp_get_available_translations')) {
+			require_once ABSPATH . 'wp-admin/includes/translation-install.php';
+		}
+
+		$translations = array();
 		$systemTranslations = wp_get_available_translations();
+
 		foreach ($systemTranslations as $tx) {
 			$translations[$tx['language']] = sprintf('%s (%s)', $tx['english_name'], $tx['native_name']);
 		}
+
 		return $translations;
 	}
 
 	/**
 	 * Checks whether the given lookup item is in use or not.
 	 * A lookup item is in use if it's associated with a post.
+	 * 
 	 * @param integer $lookupId The id of the lookup item to check for
 	 * @return boolean True if it is, false otherwise
 	 */

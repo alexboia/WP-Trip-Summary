@@ -105,26 +105,6 @@ function abp01_get_ajax_baseurl() {
 }
 
 /**
- * Extracts the IDs of the posts from the given array
- * 
- * @param array $posts The posts array from which to extract the IDs
- * @return array The corresponding array of post IDs
- */
-function abp01_extract_post_ids($posts) {
-	$postIds = array();
-
-	if (!empty($posts) && is_array($posts)) {
-		foreach ($posts as $post) {
-			if (is_object($post) && isset($post->ID)) {
-				$postIds[] = intval($post->ID);
-			}
-		}
-	}
-
-	return $postIds;
-}
-
-/**
  * Creates a nonce to be used in the trip summary editor
  * @param int $postId The ID of the post for which the nonce will be generated
  * @return string The created nonce

@@ -174,3 +174,23 @@ function abp01_get_status_text($text, $status) {
 
 	return '<span class="abp01-status-text ' . $cssClass . '">' . $text . '</span>';
 }
+
+/**
+ * Extracts the IDs of the posts from the given array
+ * 
+ * @param array $posts The posts array from which to extract the IDs
+ * @return array The corresponding array of post IDs
+ */
+function abp01_extract_post_ids($posts) {
+	$postIds = array();
+
+	if (!empty($posts) && is_array($posts)) {
+		foreach ($posts as $post) {
+			if (is_object($post) && isset($post->ID)) {
+				$postIds[] = intval($post->ID);
+			}
+		}
+	}
+
+	return $postIds;
+}

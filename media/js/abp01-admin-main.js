@@ -361,7 +361,9 @@
                 var formatted = '';
           
                 if (noItemsSelected) {
-                  formatted = this.options.get('placeholder') || '';
+                    formatted = this.options.get('placeholder') || '';
+                } else if (data.length === 1) {
+                    formatted = data[0].text;
                 } else {
                     var $allOptions = this.$element.find("option") 
                         || [];
