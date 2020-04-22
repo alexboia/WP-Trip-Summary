@@ -103,6 +103,7 @@ class Abp01_Help {
      * @return string The contents
      */
     public function getHelpContentForCurrentLocale() {
-        return $this->getHelpContentForLocale(get_locale());
+        $currentLocale = get_locale();
+        return $this->getHelpContentForLocale($currentLocale);
     }
 }
