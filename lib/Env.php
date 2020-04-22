@@ -501,6 +501,10 @@ class Abp01_Env {
         return get_admin_url(null, 'admin-ajax.php', 'admin');
     }
 
+    public function getPluginAssetUrl($relativeAssetUrl) {
+        return plugins_url($relativeAssetUrl, ABP01_PLUGIN_MAIN);
+    }
+
     public function getHttpMethod() {
         return isset($_SERVER['REQUEST_METHOD']) 
             ? strtolower($_SERVER['REQUEST_METHOD']) 

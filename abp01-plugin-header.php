@@ -56,6 +56,27 @@ define('ABP01_LOADED', true);
 define('ABP01_PLUGIN_ROOT', __DIR__);
 
 /**
+ * The absolute path to this file - the plug-in header file
+ * 
+ * @var string ABP01_PLUGIN_HEADER
+ */
+define('ABP01_PLUGIN_HEADER', __FILE__);
+
+/**
+ * The absolute path to the main plug-in file - abp01-plugin-main.php
+ * 
+ * @var string ABP01_PLUGIN_MAIN
+ */
+define('ABP01_PLUGIN_MAIN', ABP01_PLUGIN_ROOT . '/abp01-plugin-main.php');
+
+/**
+ * The absolute path to the plug-in's functions file - abp01-plugin-functions.php
+ * 
+ * @var string ABP01_PLUGIN_FUNCTIONS
+ */
+define('ABP01_PLUGIN_FUNCTIONS', ABP01_PLUGIN_ROOT . '/abp01-plugin-functions.php');
+
+/**
  * The name of the directory in which the plug-in is installed.
  *  Eg. wp-trip-summary.
  * 

@@ -34,6 +34,12 @@
 <div id="abp01-help-page">
 	<h2><?php echo esc_html__('WP Trip Summary Help', 'abp01-trip-summary'); ?></h2>
 	<div id="abp01-help-contents">
-		<?php echo $data->helpContents; ?>
+		<?php if (!empty($data->helpContents)): ?>
+			<?php echo $data->helpContents; ?>
+		<?php else: ?>
+			<div id="abp01-help-result" class="error settings-error abp01-help-result">
+				<?php echo esc_html__('No help contents has been found. This usually indicates some problems with the help content files that have been distributed with the plug-in. Please check your website file structure.', 'abp01-trip-summary'); ?>
+			</div>
+		<?php endif; ?>
 	</div>
 </div>

@@ -79,27 +79,19 @@ function abp01_get_route_manager() {
 }
 
 /**
+ * @return Abp01_Help
+ */
+function abp01_get_help() {
+	return new Abp01_Help();
+}
+
+/**
  * Initializes the autoloading process
  * @return void
  */
 function abp01_init_autoloaders() {
 	require_once ABP01_LIB_DIR . '/Autoloader.php';
 	Abp01_Autoloader::init(ABP01_LIB_DIR);
-}
-
-/**
- * Retrieve the help file path that corresponds to the given locale
- * @param String $locale The locale to check for
- * @return String The absolute help file path
- */
-function abp01_get_help_file_for_locale($locale) {
-	if (empty($locale)) {
-		return '';
-	}
-
-	return sprintf('%s/help/%s/index.html', 
-		abp01_get_env()->getDataDir(), 
-		$locale);
 }
 
 /**
@@ -1138,19 +1130,8 @@ function abp01_admin_help_page() {
 		return;
 	}
 
-	$locale = get_locale();
-	$helpFile = abp01_get_help_file_for_locale($locale);
-	
-	if (!is_file($helpFile) || !is_readable($helpFile)) {
-		$helpFile = abp01_get_help_file_for_locale('default');
-		$locale = 'default';
-	}
-	
 	$data = new stdClass();	
-	$data->helpContents = file_get_contents($helpFile);	
-	
-	$helpDataDirUrl = plugins_url('data/help/' . $locale, __FILE__);
-	$data->helpContents = str_ireplace('$helpDataDirUrl$', $helpDataDirUrl, $data->helpContents);
+	$data->helpContents = abp01_get_help()->getHelpContentForCurrentLocale();
 	
 	echo abp01_admin_help_page_render($data);
 }

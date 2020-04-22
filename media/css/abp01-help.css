@@ -49,3 +49,8 @@
 #abp01-help-contents h3 {
     font-size: 19px;
 }
+
+.error.settings-error.abp01-help-result {
+    margin-left: 0px;
+    padding: 10px;
+}
