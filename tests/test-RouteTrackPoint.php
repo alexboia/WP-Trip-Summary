@@ -33,9 +33,16 @@ class RouteTrackPointTests extends WP_UnitTestCase {
     public function test_canCompute_distanceToPoint() {
         $pointBucharest = new Abp01_Route_Track_Point(new Abp01_Route_Track_Coordinate(44.4268, 26.1025));
         $pointRomCenter = new Abp01_Route_Track_Point(new Abp01_Route_Track_Coordinate(45.9432, 24.9668));
+        $pointAlbaIulia = new Abp01_Route_Track_Point(new Abp01_Route_Track_Coordinate(46.0733, 23.5805));
 
         $this->assertEquals(190.7, $pointBucharest->distanceToPoint($pointRomCenter), null, 0.1);
         $this->assertEquals(190.7, $pointRomCenter->distanceToPoint($pointBucharest), null, 0.1);
+
+        $this->assertEquals(269.2, $pointBucharest->distanceToPoint($pointAlbaIulia), null, 0.1);
+        $this->assertEquals(269.2, $pointAlbaIulia->distanceToPoint($pointBucharest), null, 0.1);
+
+        $this->assertEquals(108, $pointRomCenter->distanceToPoint($pointAlbaIulia), null, 0.1);
+        $this->assertEquals(108, $pointAlbaIulia->distanceToPoint($pointRomCenter), null, 0.1);
     }
 
     public function test_canCompute_distanceToLine() {
@@ -64,5 +71,6 @@ class RouteTrackPointTests extends WP_UnitTestCase {
 
         $this->assertEquals(332.57305556, $pointBucharest->bearingToPoint($pointRomCenter), null, 0.1);
         $this->assertEquals(313.73083333, $pointBucharest->bearingToPoint($pointAlbaIulia), null, 0.1);
+        $this->assertEquals(278.19333333, $pointRomCenter->bearingToPoint($pointAlbaIulia), null, 0.1);
     }
 }
