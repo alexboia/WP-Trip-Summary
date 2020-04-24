@@ -35,6 +35,7 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 
 /**
  * Source for the formulas: http://www.movable-type.co.uk/scripts/latlong.html
+ * Also see: http://www.edwilliams.org/ftp/avsig/avform.txt
  * */
 class Abp01_Route_Track_Point {
     public $name;
@@ -47,22 +48,7 @@ class Abp01_Route_Track_Point {
         $this->coordinate = $coord;
     }
 
-    public function distanceToLine(Abp01_Route_Track_Point $a, Abp01_Route_Track_Point $b) {
-        if ($a == null || $b == null) {
-            throw new InvalidArgumentException();
-        }
-
-        $c = $this;
-        $distanceAC = $c->distanceToPoint($a);
-        $bearingAB = $a->bearingToPoint($b);
-        $bearingAC = $a->bearingToPoint($c);
-        $radius = Abp01_Route_Track_Constants::EARTH_RADIUS;
-
-        $dXT = asin(sin($distanceAC / $radius) * sin($bearingAC - $bearingAB)) * $radius;
-        return abs($dXT);
-    }
-
-    public function distanceToPoint(Abp01_Route_Track_Point $to) {
+    private function _distanceToPointMeters(Abp01_Route_Track_Point $to) {
         $latFrom2Rad = deg2rad($this->coordinate->lat);
         $latTo2Rad = deg2rad($to->coordinate->lat);
 
@@ -75,21 +61,47 @@ class Abp01_Route_Track_Point {
             * pow(sin($deltaLng / 2), 2);
 
         $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
-        return $c * Abp01_Route_Track_Constants::EARTH_RADIUS;
+        return $c * Abp01_Route_Track_Constants::EARTH_RADIUS_METERS;
+    }
+
+    public function distanceToLine(Abp01_Route_Track_Point $a, Abp01_Route_Track_Point $b) {
+        if ($a == null || $b == null) {
+            throw new InvalidArgumentException('Line endpoints cannot be null');
+        }
+
+        $c = $this;
+        $radius = Abp01_Route_Track_Constants::EARTH_RADIUS_METERS;
+
+        $bearingAB = deg2rad($a->bearingToPoint($b));
+        $bearingAC = deg2rad($a->bearingToPoint($c));
+        $distanceAC = $a->_distanceToPointMeters($c) / $radius;
+
+        $dXT = asin(sin($distanceAC) * sin($bearingAC - $bearingAB)) * $radius;
+
+        return round(abs($dXT) / 1000, 2);
+    }
+
+    public function distanceToPoint(Abp01_Route_Track_Point $to) {
+        return round($this->_distanceToPointMeters($to) / 1000, 2);
     }
 
     public function bearingToPoint(Abp01_Route_Track_Point $to) {
+        if ($to == null) {
+            throw new InvalidArgumentException('Destination point cannot be null');
+        }
+
         $latFrom2Rad = deg2rad($this->coordinate->lat);
         $latTo2Rad = deg2rad($to->coordinate->lat);
 
-        $lngFrom2Rad = deg2rad($this->coordinate->lng);
-        $lngTo2Rad = deg2rad($to->coordinate->lng);
+        $deltaLng2Rad = deg2rad($to->coordinate->lng - $this->coordinate->lng);
 
-        $y = sin($lngTo2Rad - $lngFrom2Rad) * cos($latTo2Rad);
-        $x = cos($latFrom2Rad) * sin($latTo2Rad) - sin($latFrom2Rad) * cos($latTo2Rad)
-            * cos($lngTo2Rad - $lngFrom2Rad);
+        $x = cos($latFrom2Rad) * sin($latTo2Rad) - 
+            sin($latFrom2Rad) * cos($latTo2Rad) * cos($deltaLng2Rad);
+
+        $y = sin($deltaLng2Rad) * cos($latTo2Rad);
 
         $bearing = atan2($y, $x);
+
         return fmod(rad2deg($bearing) + 360, 360);
     }
 }

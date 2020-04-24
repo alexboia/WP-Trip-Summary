@@ -35,4 +35,6 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 
 class Abp01_Route_Track_Constants {
     const EARTH_RADIUS = 6371;
+
+    const EARTH_RADIUS_METERS = 6371000;
 }
