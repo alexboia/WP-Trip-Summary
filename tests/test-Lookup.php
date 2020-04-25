@@ -30,6 +30,7 @@
  */
 
 class LookupTests extends WP_UnitTestCase {
+	use GenericTestHelpers;
 	use LookupDataTestHelpers;
 
 	const SAMPLE_LOOKUP_LANG = 'sample';
@@ -300,13 +301,5 @@ class LookupTests extends WP_UnitTestCase {
 	private function _newFakeIntNumber($min = 0, $max = PHP_INT_MAX) {
 		$faker = Faker\Factory::create();
 		return $faker->numberBetween($min, $max);
-	}
-
-	protected function _getEnv() {
-		return Abp01_Env::getInstance();
-	}
-	
-	protected function _getDb() {
-		return $this->_getEnv()->getDb();
 	}
 }

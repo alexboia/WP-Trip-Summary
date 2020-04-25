@@ -151,6 +151,23 @@ class RouteInfoTests extends WP_UnitTestCase {
 		$this->assertEquals($expectedLookup, $lookupKey);
 	}
 
+	public function test_canGetAllLookupKeys() {
+		foreach (Abp01_Route_Info::getSupportedTypes() as $type) {
+			$info = new Abp01_Route_Info($type);
+
+			$actualLookupKeys = array();
+			$allLookupKeys = $info->getAllLookupFields();
+			
+			foreach ($info->getValidFields() as $field => $descriptor) {
+				if (isset($descriptor['lookup'])) {
+					$actualLookupKeys[] = $field;
+				}
+			}
+
+			$this->assertEquals($actualLookupKeys, $allLookupKeys);
+		}
+	}
+
 	/**
 	 * @dataProvider _getPerTypeRouteInfoDataSets
 	 */
