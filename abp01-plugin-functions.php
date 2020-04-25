@@ -33,8 +33,60 @@
 defined('ABP01_LOADED') or die;
 
 /**
+ * Returns the current environment accessor instance
+ * 
+ * @return Abp01_Env The current environment accessor instance
+ */
+function abp01_get_env() {
+	return Abp01_Env::getInstance();
+}
+
+/**
+ * Returns the current installer instance
+ * 
+ * @return Abp01_Installer The current installer instance
+ */
+function abp01_get_installer() {
+	return new Abp01_Installer();
+}
+
+/**
+ * Returns the current settings manager instance
+ * 
+ * @return Abp01_Settings The current settings manager instance
+ */
+function abp01_get_settings() {
+	return Abp01_Settings::getInstance();
+}
+
+/**
+ * @return Abp01_Route_Manager
+ */
+function abp01_get_route_manager() {
+	return Abp01_Route_Manager::getInstance();
+}
+
+/**
+ * @return Abp01_Help
+ */
+function abp01_get_help() {
+	return new Abp01_Help();
+}
+
+/**
+ * Initializes the autoloading process
+ * 
+ * @return void
+ */
+function abp01_init_autoloaders() {
+	require_once ABP01_LIB_DIR . '/Autoloader.php';
+	Abp01_Autoloader::init(ABP01_LIB_DIR);
+}
+
+/**
  * Dumps information about the given variable.
  * It uses xdebug_var_dump if available, otherwise it falls back to the standard var_dump, wrapping it in <pre /> tags.
+ * 
  * @param mixed $var The variable to dump
  * @return void
  */
@@ -50,6 +102,7 @@ function abp01_dump($var) {
 
 /**
  * Increase script execution limit and maximum memory limit
+ * 
  * @return void
  */
 function abp01_increase_limits($executionTimeMinutes = 5) {
@@ -71,6 +124,7 @@ function abp01_increase_limits($executionTimeMinutes = 5) {
 
 /**
  * Enable script error reporting
+ * 
  * @return void
  */
 function abp01_enable_error_reporting() {
@@ -86,6 +140,7 @@ function abp01_enable_error_reporting() {
 
 /**
  * Encodes and outputs the given data as JSON and sets the appropriate headers
+ * 
  * @param mixed $data The data to be encoded and sent to client
  * @return void
  */
@@ -105,6 +160,7 @@ function abp01_send_json($data) {
 
 /**
  * Creates a unique string that can be used as a cache buster in URLs
+ * 
  * @return string The generated string
  */
 function abp01_get_cachebuster() {
@@ -112,7 +168,9 @@ function abp01_get_cachebuster() {
 }
 
 /**
- * Appends the given error to the given message if WP_DEBUG is set to true; otherwise returns the original message
+ * Appends the given error to the given message if WP_DEBUG is set to true; 
+ * otherwise returns the original message
+ * 
  * @param string $message
  * @param string|Exception|WP_Error $error
  * @return string The processed message
@@ -193,4 +251,11 @@ function abp01_extract_post_ids($posts) {
 	}
 
 	return $postIds;
+}
+
+/**
+ * @return boolean True if it's enabled, false otherwise
+ */
+function abp01_is_editor_classic_active() {
+	return abp01_get_env()->isPluginActive('classic-editor/classic-editor.php');
 }

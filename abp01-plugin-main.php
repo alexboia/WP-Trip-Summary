@@ -48,53 +48,6 @@ require_once __DIR__ . '/abp01-plugin-header.php';
 require_once __DIR__ . '/abp01-plugin-functions.php';
 
 /**
- * Returns the current environment accessor instance
- * @return Abp01_Env The current environment accessor instance
- */
-function abp01_get_env() {
-	return Abp01_Env::getInstance();
-}
-
-/**
- * Returns the current installer instance
- * @return Abp01_Installer The current installer instance
- */
-function abp01_get_installer() {
-	return new Abp01_Installer();
-}
-
-/**
- * Returns the current settings manager instance
- * @return Abp01_Settings The current settings manager instance
- */
-function abp01_get_settings() {
-	return Abp01_Settings::getInstance();
-}
-
-/**
- * @return Abp01_Route_Manager
- */
-function abp01_get_route_manager() {
-	return Abp01_Route_Manager::getInstance();
-}
-
-/**
- * @return Abp01_Help
- */
-function abp01_get_help() {
-	return new Abp01_Help();
-}
-
-/**
- * Initializes the autoloading process
- * @return void
- */
-function abp01_init_autoloaders() {
-	require_once ABP01_LIB_DIR . '/Autoloader.php';
-	Abp01_Autoloader::init(ABP01_LIB_DIR);
-}
-
-/**
  * Gets the path to be used as a basis when constructing AJAX calls.
  * This is, in effect, the absolute path to WP's admin-ajax.php.
  * 
@@ -727,23 +680,55 @@ function abp01_init_plugin() {
 	//configure script&styles includes and load the text domain
 	Abp01_Includes::setRefPluginsPath(__FILE__);
 	Abp01_Includes::setScriptsInFooter(true);
+
 	load_plugin_textdomain('abp01-trip-summary', false, dirname(plugin_basename(__FILE__)) . '/lang/');
 
 	//check if update is needed
 	$installer = abp01_get_installer();
 	$installer->updateIfNeeded();
+
+	if (!abp01_is_editor_classic_active()) {
+		abp01_register_block_editor_blocks();
+	}
+}
+
+function abp01_rener_trip_summary_shortcode_block($attributes, $content) {
+	return '<div class="abp01-viewer-shortcode-block">' . ('[' . ABP01_VIEWER_SHORTCODE . ']') . '</div>';
+}
+
+function abp01_register_block_editor_blocks() {
+	wp_register_script('abp01-viewer-short-code-block', 
+		plugins_url('media/js/abp01-block-editor-shortcode/block.js', __FILE__),
+		array(),
+		ABP01_VERSION, 
+		true);
+
+	wp_localize_script('abp01-viewer-short-code-block', 'abp01ViewerShortCodeBlockSettings', array(
+		'tagName' => ABP01_VIEWER_SHORTCODE
+	));
+
+	register_block_type('abp01/block-editor-shortcode', array(
+		'editor_script' => 'abp01-viewer-short-code-block',
+		'render_callback' => 'abp01_rener_trip_summary_shortcode_block'
+	));
 }
 
 function abp01_register_classic_editor_settings($settings) {
-	$settings['abp01_viewer_short_code_name'] = ABP01_VIEWER_SHORTCODE;
+	if (abp01_is_editor_classic_active()) {
+		$settings['abp01_viewer_short_code_name'] = ABP01_VIEWER_SHORTCODE;
+	}
 	return $settings;
 }
 
 function abp01_register_classic_editor_buttons($buttons) {
-	return array_merge($buttons, array(
-		'separator',
-		'abp01_insert_viewer_shortcode'
-	));
+	if (abp01_is_editor_classic_active()) {
+		$buttons = array_merge($buttons, array(
+			'separator',
+			'abp01_insert_viewer_shortcode'
+		));
+	}
+
+	return $buttons;
 }
 
 function abp01_register_classic_editor_plugins($plugins) {
@@ -1468,15 +1453,18 @@ function abp01_store_post_viewer_data_cache($postId, $data) {
 	set_transient($cacheKey, $data, ABP01_POST_TRIP_SUMMARY_DATA_CACHE_EXPIRATION_SECONDS);
 }
 
+function abp01_get_post_viewer_data_cache($postId) {
+	$cacheKey = abp01_get_post_viewer_data_cache_key($postId);
+	return get_transient($cacheKey);
+}
+
 function abp01_get_info_data($postId) {
 	//the_content may be called multiple times
 	//	so we need to cache the data to allow 
 	//	for correct handling of this situation
 	//see: https://wordpress.stackexchange.com/questions/225721/hook-added-to-the-content-seems-to-be-called-multiple-times
 
-	$cacheKey = abp01_get_post_viewer_data_cache_key($postId);
-	$data = get_transient($cacheKey);
-
+	$data = abp01_get_post_viewer_data_cache($postId);
 	if (empty($data) || !($data instanceof stdClass)) {
 		$lookup = new Abp01_Lookup();
 		$routeManager = abp01_get_route_manager();
@@ -1514,12 +1502,10 @@ function abp01_get_info_data($postId) {
 
 		//current context information
 		$data->postId = $postId;
-		$data->nonceGet = abp01_create_get_track_nonce($postId);
-		$data->nonceDownload = abp01_create_download_track_nonce($data->postId);
 		$data->ajaxUrl = abp01_get_ajax_baseurl();
 		$data->ajaxGetTrackAction = ABP01_ACTION_GET_TRACK;
 		$data->downloadTrackAction = ABP01_ACTION_DOWNLOAD_TRACK;
-		$data->imgBaseUrl = plugins_url('media/img', __FILE__);
+		$data->imgBaseUrl = abp01_get_env()->getPluginAssetUrl('media/img');
 		
 		//get relevant plug-in settings
 		$settings = abp01_get_settings();
@@ -1532,9 +1518,18 @@ function abp01_get_info_data($postId) {
 		$unitSystem = Abp01_UnitSystem::create($settings->getUnitSystem());
 		$data->unitSystem = $unitSystem->asPlainObject();
 
+		//refresh nonces every time, 
+		//	so we don't need to cache them
+		$data->nonceGet = null;
+		$data->nonceDownload = null;
+
 		//cache data
 		abp01_store_post_viewer_data_cache($postId, $data);
 	}
+
+	//create new nonces
+	$data->nonceGet = abp01_create_get_track_nonce($postId);
+	$data->nonceDownload = abp01_create_download_track_nonce($data->postId);
 
 	return $data;
 }
@@ -1545,6 +1540,10 @@ function abp01_get_content_viewer_shortcode_regexp() {
 
 function abp01_content_has_viewer_shortchode(&$content) {
 	return preg_match(abp01_get_content_viewer_shortcode_regexp(), $content);
+}
+
+function abp01_content_has_viewer_shortcode_block(&$content) {
+	return has_block('abp01/block-editor-shortcode');
 }
 
 /**
@@ -1559,6 +1558,7 @@ function abp01_content_has_viewer_shortchode(&$content) {
 function abp01_render_viewer($postId) {
 	static $viewer = null;
 
+	//only render once for the current request
 	if ($viewer === null) {
 		//fetch data
 		$viewerHtml = null;
@@ -1605,9 +1605,10 @@ function abp01_add_viewer($content) {
 	}
 
 	$viewer = abp01_render_viewer($postId);
-
 	$content = $viewer['teaserHtml'] . $content;
-	if (!abp01_content_has_viewer_shortchode($content)) {
+
+	if (!abp01_content_has_viewer_shortchode($content)
+		&& !abp01_content_has_viewer_shortcode_block($content)) {
 		$content = $content . $viewer['viewerHtml'];
 	} else {
 		//Replace all but on of the shortcode references

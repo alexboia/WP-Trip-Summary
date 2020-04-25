@@ -505,6 +505,14 @@ class Abp01_Env {
         return plugins_url($relativeAssetUrl, ABP01_PLUGIN_MAIN);
     }
 
+    public function isPluginActive($plugin) {
+        if (!function_exists('is_plugin_active')) {
+            return in_array($plugin, (array)get_option('active_plugins', array()));
+        } else {
+            return is_plugin_active($plugin);
+        }
+    }
+
     public function getHttpMethod() {
         return isset($_SERVER['REQUEST_METHOD']) 
             ? strtolower($_SERVER['REQUEST_METHOD']) 

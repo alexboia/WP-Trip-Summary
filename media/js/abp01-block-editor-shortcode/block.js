@@ -28,43 +28,33 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-(function() {
+(function(wpBlocks, wpElement) {
     "use strict";
 
-    tinymce.create('abp01.plugins.ViewerShortcode', {
-        init: function(tinymceEditor, pluginAbsoluteUrl) {
-            tinymceEditor.addButton('abp01_insert_viewer_shortcode', {
-                title : 'Insert Trip Summary Viewer Shortcode',
-                cmd : 'abp01_insert_viewer_shortcode',
-                image : pluginAbsoluteUrl + '/button.png'
-            });
+    var createElement = wpElement
+        .createElement;
 
-            tinymceEditor.addCommand('abp01_insert_viewer_shortcode', function() {
-                var shortcodeContent = [
-                    '<p>',
-                        ('['  + tinymceEditor.settings.abp01_viewer_short_code_name + ']'),
-                    '</p>'
-                ];
+    wpBlocks.registerBlockType('abp01/block-editor-shortcode', {
+        title: 'WP Trip Summary Viewer Shortcode',
+        icon: 'chart-area',
+        category: 'widgets',
+        example: {},
+        edit: function() {
+            var tagName = window
+                .abp01ViewerShortCodeBlockSettings
+                .tagName;
 
-                tinymceEditor.execCommand('mceInsertContent', 0, 
-                    shortcodeContent.join(''));
-            });
+            return createElement(
+                'div',
+                { style: {}, className: 'abp01-viewer-shortcode-block-editor' },
+                ('[' + tagName + ']')
+            );
         },
-
-        createControl : function(controlName, tinymceControlManager) {
+        save: function() {
             return null;
         },
-
-        getInfo : function() {
-            return {
-                longname : 'WP Trip Summary Viewer Shortcode Button',
-                author : 'Alexandru Boia',
-                authorurl : 'http://alexboia.net/',
-                infourl : 'https://wordpress.org/plugins/wp-trip-summary/',
-                version : '0.1'
-            };
-        }
     });
-
-    tinymce.PluginManager.add('abp01_viewer_shortcode', abp01.plugins.ViewerShortcode);
-})();
+})(
+    window.wp.blocks,
+    window.wp.element
+);

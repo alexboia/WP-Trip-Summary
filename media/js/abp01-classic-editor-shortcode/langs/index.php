@@ -1,3 +1,4 @@
+<?php
 /**
  * Copyright (c) 2014-2020 Alexandru Boia
  *
@@ -28,43 +29,5 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-(function() {
-    "use strict";
-
-    tinymce.create('abp01.plugins.ViewerShortcode', {
-        init: function(tinymceEditor, pluginAbsoluteUrl) {
-            tinymceEditor.addButton('abp01_insert_viewer_shortcode', {
-                title : 'Insert Trip Summary Viewer Shortcode',
-                cmd : 'abp01_insert_viewer_shortcode',
-                image : pluginAbsoluteUrl + '/button.png'
-            });
-
-            tinymceEditor.addCommand('abp01_insert_viewer_shortcode', function() {
-                var shortcodeContent = [
-                    '<p>',
-                        ('['  + tinymceEditor.settings.abp01_viewer_short_code_name + ']'),
-                    '</p>'
-                ];
-
-                tinymceEditor.execCommand('mceInsertContent', 0, 
-                    shortcodeContent.join(''));
-            });
-        },
-
-        createControl : function(controlName, tinymceControlManager) {
-            return null;
-        },
-
-        getInfo : function() {
-            return {
-                longname : 'WP Trip Summary Viewer Shortcode Button',
-                author : 'Alexandru Boia',
-                authorurl : 'http://alexboia.net/',
-                infourl : 'https://wordpress.org/plugins/wp-trip-summary/',
-                version : '0.1'
-            };
-        }
-    });
-
-    tinymce.PluginManager.add('abp01_viewer_shortcode', abp01.plugins.ViewerShortcode);
-})();
+header('Location: ../../../../../../../index.php');
+exit;
