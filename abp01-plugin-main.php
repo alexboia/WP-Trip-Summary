@@ -106,6 +106,7 @@ function abp01_get_ajax_baseurl() {
 
 /**
  * Creates a nonce to be used in the trip summary editor
+ * 
  * @param int $postId The ID of the post for which the nonce will be generated
  * @return string The created nonce
  */
@@ -733,6 +734,18 @@ function abp01_init_plugin() {
 	$installer->updateIfNeeded();
 }
 
+function abp01_register_classic_editor_buttons($buttons) {
+	return array_merge($buttons, array(
+		'separator',
+		'abp01_insert_viewer_shortcode'
+	));
+}
+
+function abp01_register_classic_editor_plugins($plugins) {
+	$plugins['abp01_viewer_shortcode'] = abp01_get_env()->getPluginAssetUrl('media/js/abp01-classic-editor-shortcode/plugin.js');
+	return $plugins;
+}
+
 function abp01_register_metaboxes($postType, $post) {
 	if (in_array($postType, array('post', 'page')) && abp01_can_edit_trip_summary($post)) {
 		add_meta_box('abp01-enhanced-editor-launcher-metabox', 
@@ -1103,6 +1116,7 @@ function abp01_save_admin_settings_page_save() {
 
 /**
  * This function handles the admin help page. The execution halts if the user lacks the proper capabilities
+ * 
  * @return void
  */
 function abp01_admin_help_page() {
@@ -1119,6 +1133,7 @@ function abp01_admin_help_page() {
 /**
  * Prepares the required data and renders the plug-in's lookup data management page
  * If the current user does not have the required permissions to manage the plug-in, then the function returns directly.
+ * 
  * @return void
  * */
 function abp01_admin_lookup_page() {
@@ -1173,6 +1188,7 @@ function abp01_admin_lookup_page() {
  * - the current user lacks proper capabilities or...
  * - one of the above-mentioned parameters is empty or...
  * - the given lookup item type is not supported
+ * 
  * @return void
  */
 function abp01_get_lookup_items() {
@@ -1209,6 +1225,7 @@ function abp01_get_lookup_items() {
  * - the current user does not have the required permissions or...
  * - no valid nonce was found or...
  * - the required lang & type parameters were not provided.
+ * 
  * @return void
  */
 function abp01_add_lookup_item() {
@@ -1273,6 +1290,7 @@ function abp01_add_lookup_item() {
  * - the current user does not have the required permissions or...
  * - no valid nonce was found or...
  * - the required lang & id parameters were not provided.
+ * 
  * @return void
  */
 function abp01_edit_lookup_item() {
@@ -1334,6 +1352,7 @@ function abp01_edit_lookup_item() {
  * - no valid nonce was found or...
  * - the required lang & id parameters were not provided or...
  * - the required deleteOnlyLang was not provided
+ * 
  * @return void
  */
 function abp01_delete_lookup_item() {
@@ -1388,6 +1407,7 @@ function abp01_delete_lookup_item() {
  *  - no valid post ID or...
  *  - no valid nonce detected or...
  *  - the current user lacks proper capabilities
+ * 
  * @return void
  */
 function abp01_save_info() {
@@ -1514,14 +1534,61 @@ function abp01_get_info_data($postId) {
 	return $data;
 }
 
+function abp01_get_content_viewer_shortcode_regexp() {
+	return '/(\[\s*' . ABP01_VIEWER_SHORTCODE . '\s*\])/';
+}
+
+function abp01_content_has_viewer_shortchode(&$content) {
+	return preg_match(abp01_get_content_viewer_shortcode_regexp(), $content);
+}
+
+/**
+ * Render the viewer components for the given post identifier.
+ * Return value is an array with a position for each compoent:
+ * 	- 'teaserHtml' key - the frontented teaser - the top part;
+ * 	- 'viewerHtml' key - the viewer itself.
+ * 
+ * @param int $postId The post identifier
+ * @return array The viewer components, as decribed above
+ */
+function abp01_render_viewer($postId) {
+	static $viewer = null;
+
+	if ($viewer === null) {
+		//fetch data
+		$viewerHtml = null;
+		$teaserHtml = null;
+		$data = abp01_get_info_data($postId);
+
+		//render the teaser and the viewer and attach the results to the post content
+		if ($data->info->exists || $data->track->exists) {
+			ob_start();
+			abp01_render_trip_summary_frontend_teaser($data);
+			$teaserHtml = ob_get_clean();
+
+			ob_start();
+			abp01_render_trip_summary_frontend($data);
+			$viewerHtml = ob_get_clean();
+		}
+
+		$viewer = array(
+			'teaserHtml' => $teaserHtml,
+			'viewerHtml' => $viewerHtml
+		);
+	}
+
+	return $viewer;
+}
+
 /**
  * Filter function attached to the 'the_content' filter.
  * Its purpose is to render the trip summary viewer at the end of the post's content, but only within the post's page
  * The assumption is made that the wpautop filter has been previously removed from the filter chain
+ * 
  * @param string $content The initial post content
  * @return string The filtered post content
  */
-function abp01_get_info($content) {
+function abp01_add_viewer($content) {
 	$content = wpautop($content);
 	if (!is_single() && !is_page()) {
 		return $content;
@@ -1532,18 +1599,35 @@ function abp01_get_info($content) {
 		return $content;
 	}
 
-	//fetch data
-	$data = abp01_get_info_data($postId);
+	$viewer = abp01_render_viewer($postId);
 
-	//render the teaser and the viewer and attach the results to the post content
-	if ($data->info->exists || $data->track->exists) {
-		ob_start();
-		abp01_render_trip_summary_frontend_teaser($data);
-		$content = ob_get_clean() . $content;
+	$content = $viewer['teaserHtml'] . $content;
+	if (!abp01_content_has_viewer_shortchode($content)) {
+		$content = $content . $viewer['viewerHtml'];
+	} else {
+		//Replace all but on of the shortcode references
+		$replaced = false;
+		preg_replace_callback(abp01_get_content_viewer_shortcode_regexp(), 
+			function($matches) use (&$replaced) {
+				if ($replaced === false) {
+					$replaced = true;
+					return '[' . ABP01_VIEWER_SHORTCODE . ']';
+				} else {
+					return '';
+				}
+			}, $content);
+	}
 
-		ob_start();
-		abp01_render_trip_summary_frontend($data);
-		$content = $content . ob_get_clean();
+	return $content;
+}
+
+function abp01_render_viewer_shortcode($attributes) {
+	$content = '';
+	$postId = abp01_get_current_post_id();
+
+	if (!empty($postId)) {
+		$viewer = abp01_render_viewer($postId);
+		$content = $viewer['viewerHtml'];
 	}
 
 	return $content;
@@ -1556,6 +1640,7 @@ function abp01_get_info($content) {
  *  - no valid post ID or...
  *  - no valid nonce detected or...
  *  - the current user lacks proper capabilities
+ * 
  * @return void
  */
 function abp01_remove_info() {
@@ -1590,6 +1675,7 @@ function abp01_remove_info() {
  *  - no valid post ID or...
  *  - no valid nonce detected or...
  *  - the current user lacks proper capabilities
+ * 
  * @return void
  */
 function abp01_upload_track() {
@@ -1680,6 +1766,7 @@ function abp01_upload_track() {
  * Handles the track retrieval request. Script execution halts if the request context is not valid:
  *  - invalid HTTP method or...
  *  - invalid nonce provided
+ * 
  * @return void
  */
 function abp01_get_track() {
@@ -1744,6 +1831,7 @@ function abp01_get_track() {
  * - not valid post ID or...
  * - no valid nonce detected or...
  * - track file downloading is disabled.
+ * 
  * @return void
  */
 function abp01_download_track() {
@@ -1790,6 +1878,7 @@ function abp01_download_track() {
  *  - no valid post ID or...
  *  - no valid nonce detected or...
  *  - the current user lacks proper capabilities
+ * 
  * @return void
  */
 function abp01_remove_track() {
@@ -1941,57 +2030,50 @@ function abp01_on_footer_loaded() {
 }
 
 function abp01_run() {
-	if (function_exists('register_activation_hook')) {
-		register_activation_hook(__FILE__, 'abp01_activate');
-	}
-	
-	if (function_exists('register_deactivation_hook')) {
-		register_deactivation_hook(__FILE__, 'abp01_deactivate');
-	}
-	
-	if (function_exists('register_uninstall_hook')) {
-		register_uninstall_hook(__FILE__, 'abp01_uninstall');
-	}
-	
-	if (function_exists('add_action')) {
-		add_action('add_meta_boxes', 'abp01_register_metaboxes', 10, 2);
-		add_action('admin_enqueue_scripts', 'abp01_add_admin_styles');
-		add_action('admin_enqueue_scripts', 'abp01_add_admin_scripts');
-	
-		add_action('wp_ajax_' . ABP01_ACTION_EDIT, 'abp01_save_info');
-		add_action('wp_ajax_' . ABP01_ACTION_UPLOAD_TRACK, 'abp01_upload_track');
-		add_action('wp_ajax_' . ABP01_ACTION_CLEAR_TRACK, 'abp01_remove_track');
-		add_action('wp_ajax_' . ABP01_ACTION_CLEAR_INFO, 'abp01_remove_info');
-		add_action('wp_ajax_' . ABP01_ACTION_SAVE_SETTINGS, 'abp01_save_admin_settings_page_save');
-		add_action('wp_ajax_' . ABP01_ACTION_DOWNLOAD_TRACK, 'abp01_download_track');
-		add_action('wp_ajax_' . ABP01_ACTION_GET_LOOKUP, 'abp01_get_lookup_items');
-		add_action('wp_ajax_' . ABP01_ACTION_ADD_LOOKUP, 'abp01_add_lookup_item');
-		add_action('wp_ajax_' . ABP01_ACTION_EDIT_LOOKUP, 'abp01_edit_lookup_item');
-		add_action('wp_ajax_' . ABP01_ACTION_DELETE_LOOKUP, 'abp01_delete_lookup_item');
-	
-		add_action('wp_ajax_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
-		add_action('wp_ajax_nopriv_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
-		add_action('wp_ajax_nopriv_' . ABP01_ACTION_DOWNLOAD_TRACK, 'abp01_download_track');
-	
-		add_action('wp_enqueue_scripts', 'abp01_add_frontend_styles');
-		add_action('wp_enqueue_scripts', 'abp01_add_frontend_scripts');
-	
-		add_action('init', 'abp01_init_plugin');
-		add_action('admin_menu', 'abp01_create_admin_menu');
-		add_action('update_option_WPLANG', 'abp01_on_language_updated', 10, 3);
-		add_action('in_admin_footer', 'abp01_on_footer_loaded', 1);
-	
-		add_action('manage_posts_custom_column', 'abp01_get_post_listing_custom_column_value', 10, 2);
-		add_action('manage_pages_custom_column', 'abp01_get_post_listing_custom_column_value', 10, 2);
-	}
-	
-	if (function_exists('add_filter') && function_exists('remove_filter')) {
-		remove_filter('the_content', 'wpautop');
-		add_filter('the_content', 'abp01_get_info', 0);
-	
-		add_filter('manage_posts_columns',  'abp01_register_post_listing_columns', 10, 2);
-		add_filter('manage_pages_columns',  'abp01_register_page_listing_columns', 10, 1);
-	}
+	register_activation_hook(__FILE__, 'abp01_activate');
+	register_deactivation_hook(__FILE__, 'abp01_deactivate');
+	register_uninstall_hook(__FILE__, 'abp01_uninstall');
+
+	add_filter('mce_buttons', 'abp01_register_classic_editor_buttons');
+	add_filter('mce_external_plugins', 'abp01_register_classic_editor_plugins');
+
+	add_action('add_meta_boxes', 'abp01_register_metaboxes', 10, 2);
+	add_action('admin_enqueue_scripts', 'abp01_add_admin_styles');
+	add_action('admin_enqueue_scripts', 'abp01_add_admin_scripts');
+
+	add_action('wp_ajax_' . ABP01_ACTION_EDIT, 'abp01_save_info');
+	add_action('wp_ajax_' . ABP01_ACTION_UPLOAD_TRACK, 'abp01_upload_track');
+	add_action('wp_ajax_' . ABP01_ACTION_CLEAR_TRACK, 'abp01_remove_track');
+	add_action('wp_ajax_' . ABP01_ACTION_CLEAR_INFO, 'abp01_remove_info');
+	add_action('wp_ajax_' . ABP01_ACTION_SAVE_SETTINGS, 'abp01_save_admin_settings_page_save');
+	add_action('wp_ajax_' . ABP01_ACTION_DOWNLOAD_TRACK, 'abp01_download_track');
+	add_action('wp_ajax_' . ABP01_ACTION_GET_LOOKUP, 'abp01_get_lookup_items');
+	add_action('wp_ajax_' . ABP01_ACTION_ADD_LOOKUP, 'abp01_add_lookup_item');
+	add_action('wp_ajax_' . ABP01_ACTION_EDIT_LOOKUP, 'abp01_edit_lookup_item');
+	add_action('wp_ajax_' . ABP01_ACTION_DELETE_LOOKUP, 'abp01_delete_lookup_item');
+
+	add_action('wp_ajax_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
+	add_action('wp_ajax_nopriv_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
+	add_action('wp_ajax_nopriv_' . ABP01_ACTION_DOWNLOAD_TRACK, 'abp01_download_track');
+
+	add_action('wp_enqueue_scripts', 'abp01_add_frontend_styles');
+	add_action('wp_enqueue_scripts', 'abp01_add_frontend_scripts');
+
+	add_action('init', 'abp01_init_plugin');
+	add_action('admin_menu', 'abp01_create_admin_menu');
+	add_action('update_option_WPLANG', 'abp01_on_language_updated', 10, 3);
+	add_action('in_admin_footer', 'abp01_on_footer_loaded', 1);
+
+	add_action('manage_posts_custom_column', 'abp01_get_post_listing_custom_column_value', 10, 2);
+	add_action('manage_pages_custom_column', 'abp01_get_post_listing_custom_column_value', 10, 2);
+
+	remove_filter('the_content', 'wpautop');
+	add_filter('the_content', 'abp01_add_viewer', 0);
+
+	add_filter('manage_posts_columns',  'abp01_register_post_listing_columns', 10, 2);
+	add_filter('manage_pages_columns',  'abp01_register_page_listing_columns', 10, 1);
+
+	add_shortcode(ABP01_VIEWER_SHORTCODE, 'abp01_render_viewer_shortcode');
 }
 
 //the autoloaders are ready, general!

@@ -333,17 +333,10 @@ define('ABP01_STATUS_WARN', 2);
 if (!defined('ABP01_POST_TRIP_SUMMARY_DATA_CACHE_EXPIRATION_SECONDS')) {
     /**
      * The number of seconds that trip summary data is cached. 
-     * Used when constructing the data required to display the trip summary viewer.
-     * Required because the the_content filter may be called multiple times 
-     *  (due to the content being potentially read multiple times) 
-     *  when displaying post information; thus, the data is cached 
-     *  for a short amount of time to:
-     *      - avoid incurring a performance hit;
-     *      - provide consistent results between multiple calls in a narrow time window.
      * 
-     * @var int ABP01_POST_TRIP_SUMMARY_DATA_CACHE_EXPIRATION_SECONDS The cache expiration time, in seconds. Defaults to 10.
+     * @var int ABP01_POST_TRIP_SUMMARY_DATA_CACHE_EXPIRATION_SECONDS The cache expiration time, in seconds. Defaults to 600 (10 minutes).
      */
-    define('ABP01_POST_TRIP_SUMMARY_DATA_CACHE_EXPIRATION_SECONDS', 10);
+    define('ABP01_POST_TRIP_SUMMARY_DATA_CACHE_EXPIRATION_SECONDS', 600);
 }
 
 /**
@@ -388,4 +381,14 @@ if (!defined('ABP01_WRAPPED_SCRIPT_MAX_EXECUTION_TIME_MINUTES')) {
      * @var int ABP01_WRAPPED_SCRIPT_MAX_EXECUTION_TIME_MINUTES The time, in minutes. Defaults to 1 minute.
      */
     define('ABP01_WRAPPED_SCRIPT_MAX_EXECUTION_TIME_MINUTES', 1);
+}
+
+if (!defined('ABP01_VIEWER_SHORTCODE')) {
+    /**
+     * The shortcode used to include the viewer at any point in the blog post contents.
+     * Can be set in wp-config.php.
+     * 
+     * @var string ABP01_VIEWER_SHORTCODE The viewer shortcode. Default is 'abp01_trip_summary_viewer'.
+     */
+    define('ABP01_VIEWER_SHORTCODE', 'abp01_trip_summary_viewer');
 }
