@@ -80,13 +80,17 @@ class Abp01_Includes {
 
 	const JS_ABP01_NUMERIC_STEPPER = 'abp01-numeric-stepper';
 
-	const JS_ADMIN_MAIN = 'abp01-main-admin';
+	const JS_ABP01_ADMIN_MAIN = 'abp01-main-admin';
 
-	const JS_FRONTEND_MAIN = 'abp01-main-frontend';
+	const JS_ABP01_FRONTEND_MAIN = 'abp01-main-frontend';
 
-	const JS_ADMIN_SETTINGS = 'abp01-settings-admin';
+	const JS_ABP01_ADMIN_SETTINGS = 'abp01-settings-admin';
 
-	const JS_ADMIN_LOOKUP_MGMT = 'abp01-admin-lookup-management';
+	const JS_ABP01_ADMIN_LOOKUP_MGMT = 'abp01-admin-lookup-management';
+
+	const JS_ABP01_VIEWER_SHORTCODE_BLOCK = 'abp01-viewer-short-code-block';
+
+	const JS_ABP01_CLASSIC_EDITOR_VIEWER_SHORTCODE_PLUGIN = 'abp01-classic-editor-viewer-shortcode-plugin';
 	
 	const JS_SYSTEM_THICKBOX = 'thickbox';
 
@@ -287,7 +291,7 @@ class Abp01_Includes {
 			)
 		), 
 
-		self::JS_ADMIN_MAIN => array(
+		self::JS_ABP01_ADMIN_MAIN => array(
 			'path' => 'media/js/abp01-admin-main.js', 
 			'version' => ABP01_VERSION,
 			'deps' => array(
@@ -306,7 +310,7 @@ class Abp01_Includes {
 				self::JS_ABP01_MAP
 			)
 		), 
-		self::JS_FRONTEND_MAIN => array(
+		self::JS_ABP01_FRONTEND_MAIN => array(
 			'path' => 'media/js/abp01-frontend-main.js', 
 			'version' => ABP01_VERSION,
 			'deps' => array(
@@ -321,7 +325,7 @@ class Abp01_Includes {
 				self::JS_ABP01_MAP
 			)
 		), 
-		self::JS_ADMIN_SETTINGS => array(
+		self::JS_ABP01_ADMIN_SETTINGS => array(
 			'path' => 'media/js/abp01-admin-settings.js', 
 			'version' => ABP01_VERSION,
 			'deps' => array(
@@ -333,7 +337,7 @@ class Abp01_Includes {
 				self::JS_ABP01_NUMERIC_STEPPER
 			)
 		),
-		self::JS_ADMIN_LOOKUP_MGMT => array(
+		self::JS_ABP01_ADMIN_LOOKUP_MGMT => array(
 			'path' => 'media/js/abp01-admin-lookup-management.js',
 			'version' => ABP01_VERSION,
 			'deps' => array(
@@ -344,6 +348,14 @@ class Abp01_Includes {
 				self::JS_URI_JS,
 				self::JS_ABP01_PROGRESS_OVERLAY
 			)
+		),
+		self::JS_ABP01_VIEWER_SHORTCODE_BLOCK => array(
+			'path' => 'media/js/abp01-block-editor-shortcode/block.js',
+			'version' => ABP01_VERSION
+		),
+		self::JS_ABP01_CLASSIC_EDITOR_VIEWER_SHORTCODE_PLUGIN => array(
+			'path' => 'media/js/abp01-classic-editor-shortcode/plugin.js',
+			'version' => ABP01_VERSION
 		)
 	);
 
@@ -563,18 +575,18 @@ class Abp01_Includes {
 		return self::_getActualElement($handle, self::$_styles);
 	}
 
-	private static function _ensureScriptDependencies(array $deps) {
+	private static function _ensureScriptDependencies(array $deps, $list) {
 		foreach ($deps as $depHandle) {
 			if (self::_hasScript($depHandle)) {
-				self::_enqueueScript($depHandle);
+				self::_includeScript($depHandle, $list);
 			}
 		}
 	}
 
-	private static function _ensureStyleDependencies(array $deps) {
+	private static function _ensureStyleDependencies(array $deps, $list) {
 		foreach ($deps as $depHandle) {
 			if (self::_hasStyle($depHandle)) {
-				self::_enqueueStyle($depHandle);
+				self::_includeStyle($depHandle, $list);
 			}
 		}
 	}
@@ -599,13 +611,13 @@ class Abp01_Includes {
 		return $enabled;
 	}
 
-	private static function _enqueueScript($handle) {
+	private static function _includeScript($handle, $list = 'enqueued') {
 		if (empty($handle)) {
 			return;
 		}
 
 		if (self::_hasScript($handle)) {
-			if (!wp_script_is($handle, 'registered')) {
+			if (!wp_script_is($handle, $list)) {
 				$script = self::_getActualScriptToInclude($handle);
 
 				$deps = isset($script['deps']) && is_array($script['deps']) 
@@ -613,22 +625,39 @@ class Abp01_Includes {
 					: array();
 
 				if (!empty($deps)) {
-					self::_ensureScriptDependencies($deps);
+					self::_ensureScriptDependencies($deps, $list);
 				}
 
 				if (self::_scriptNeedsWrap($script)) {
-						$scriptPath = self::_urlRewriteEnabled()
-							? $script['path']
-							: 'abp01-plugin-leaflet-plugins-wrapper.php?load=' . $script['path'];
-					} else {
-						$scriptPath = $script['path'];
-					}
+					$scriptPath = self::_urlRewriteEnabled()
+						? $script['path']
+						: 'abp01-plugin-leaflet-plugins-wrapper.php?load=' . $script['path'];
+				} else {
+					$scriptPath = $script['path'];
+				}
 
-				wp_enqueue_script($handle, 
-					plugins_url($scriptPath, self::$_refPluginsPath), 
-					$deps, 
-					$script['version'], 
-					self::$_scriptsInFooter);
+				$src = plugins_url($scriptPath, self::$_refPluginsPath);
+				if ($list == 'registered') {
+					//just register it, if so requested
+					wp_register_script($handle, 
+						$src,
+						$deps,
+						$script['version'],
+						self::$_scriptsInFooter
+					);
+				} else {
+					//if registered before, just enqueue it.
+					//	otherwise, enqueue it with complete details.	
+					if (!wp_script_is($handle, 'registered')) {
+						wp_enqueue_script($handle, 
+							$src, 
+							$deps, 
+							$script['version'], 
+							self::$_scriptsInFooter);
+					} else {
+						wp_enqueue_script($handle);
+					}
+				}
 				
 				if (isset($script['inline-setup'])) {
 					wp_add_inline_script($handle, $script['inline-setup']);
@@ -641,7 +670,7 @@ class Abp01_Includes {
 		}
 	}
 
-	private static function _enqueueStyle($handle) {
+	private static function _includeStyle($handle, $list = 'enqueued') {
 		if (empty($handle)) {
 			return;
 		}
@@ -657,14 +686,27 @@ class Abp01_Includes {
 				: array();
 
 			if (!empty($deps)) {
-				self::_ensureStyleDependencies($deps);
+				self::_ensureStyleDependencies($deps, $list);
 			}
 
-			wp_enqueue_style($handle, 
-				plugins_url($style['path'], self::$_refPluginsPath), 
-				$deps, 
-				$style['version'], 
-				$style['media']);
+			$src = plugins_url($style['path'], self::$_refPluginsPath);
+			if ($list == 'registered') {
+				wp_register_style($handle,
+					$src,
+					$deps,
+					$style['version'],
+					$style['media']);
+			} else {
+				if (!wp_style_is($handle, 'registered')) {
+					wp_enqueue_style($handle, 
+						$src, 
+						$deps, 
+						$style['version'], 
+						$style['media']);
+				} else {
+					wp_enqueue_style($handle);
+				}
+			}
 		} else {
 			wp_enqueue_style($handle);
 		}
@@ -678,7 +720,7 @@ class Abp01_Includes {
 		self::$_scriptsInFooter = $scriptsInFooter;
 	}
 
-	public static function injectSettings($scriptHandle) {
+	public static function injectPluginSettings($scriptHandle) {
 		$settings = self::_getSettings();
 		$tileLayers = $settings->getTileLayers();
 		$mainTileLayer = $tileLayers[0];
@@ -703,49 +745,68 @@ class Abp01_Includes {
 	}
 
 	public static function includeScriptAdminEditorMain($addScriptSettings, $localization) {
-		self::_enqueueScript(self::JS_ADMIN_MAIN);
+		self::_includeScript(self::JS_ABP01_ADMIN_MAIN);
 
 		if ($addScriptSettings) {
-			self::injectSettings(self::JS_ADMIN_MAIN);
+			self::injectPluginSettings(self::JS_ABP01_ADMIN_MAIN);
 		}
 
 		if (!empty($localization)) {
-			wp_localize_script(self::JS_ADMIN_MAIN, 
+			wp_localize_script(self::JS_ABP01_ADMIN_MAIN, 
 				'abp01MainL10n', 
 				$localization);
 		}
 	}
 
 	public static function includeScriptFrontendMain($addScriptSettings, $localization) {
-		self::_enqueueScript(self::JS_FRONTEND_MAIN);
+		self::_includeScript(self::JS_ABP01_FRONTEND_MAIN);
 
 		if ($addScriptSettings) {
-			self::injectSettings(self::JS_FRONTEND_MAIN);
+			self::injectPluginSettings(self::JS_ABP01_FRONTEND_MAIN);
 		}
 
 		if (!empty($localization)) {
-			wp_localize_script(self::JS_FRONTEND_MAIN, 
+			wp_localize_script(self::JS_ABP01_FRONTEND_MAIN, 
 				'abp01FrontendL10n', 
 				$localization);
 		}
 	}
 
 	public static function includeScriptAdminSettings($localization) {
-		self::_enqueueScript(self::JS_ADMIN_SETTINGS);
+		self::_includeScript(self::JS_ABP01_ADMIN_SETTINGS);
 		if (!empty($localization)) {
-			wp_localize_script(self::JS_ADMIN_SETTINGS, 
+			wp_localize_script(self::JS_ABP01_ADMIN_SETTINGS, 
 				'abp01SettingsL10n', 
 				$localization);
 		}
 	}
 
 	public static function includeScriptAdminLookupMgmt($localization) {
-		self::_enqueueScript(self::JS_ADMIN_LOOKUP_MGMT);
+		self::_includeScript(self::JS_ABP01_ADMIN_LOOKUP_MGMT);
 		if (!empty($localization)) {
-			wp_localize_script(self::JS_ADMIN_LOOKUP_MGMT, 
+			wp_localize_script(self::JS_ABP01_ADMIN_LOOKUP_MGMT, 
 				'abp01LookupMgmtL10n', 
 				$localization);
 		}
+	}
+
+	public static function includeScriptBlockEditorViewerShortCodeBlock() {	
+		self::_includeScript(self::JS_ABP01_VIEWER_SHORTCODE_BLOCK, 'registered');
+		wp_localize_script(self::JS_ABP01_VIEWER_SHORTCODE_BLOCK, 
+			'abp01ViewerShortCodeBlockSettings', 
+			array(
+				'tagName' => ABP01_VIEWER_SHORTCODE
+			));
+	}
+
+	public static function getClassicEditorViewerShortcodePluginUrl() {
+		$script = self::_getActualScriptToInclude(self::JS_ABP01_CLASSIC_EDITOR_VIEWER_SHORTCODE_PLUGIN);
+
+		$src = plugins_url($script['path'], 
+			self::$_refPluginsPath);
+
+		return add_query_arg(array('ver' => $script['version']), 
+			$src);
 	}
 
 	public static function includeStyleFrontendMain() {
@@ -764,7 +825,7 @@ class Abp01_Includes {
 				: array();
 			
 			if (!empty($deps)) {
-				self::_ensureStyleDependencies($deps);
+				self::_ensureStyleDependencies($deps, 'enqueued');
 			}
 
 			wp_enqueue_style(self::STYLE_FRONTEND_MAIN, 
@@ -773,7 +834,7 @@ class Abp01_Includes {
 				$style['version'], 
 				$style['media']);
 		} else {
-			self::_enqueueStyle(self::STYLE_FRONTEND_MAIN);
+			self::_includeStyle(self::STYLE_FRONTEND_MAIN);
 			self::includeStyleFrontendMainThemeSpecificIfPresent();
 		}
 	}
@@ -782,27 +843,27 @@ class Abp01_Includes {
 		$themeId = self::_getEnv()->getCurrentThemeId();
 		if (isset(self::$_styleSlugsForThemeIds[$themeId])) {
 			$styleSlug = self::$_styleSlugsForThemeIds[$themeId];
-			self::_enqueueStyle($styleSlug);
+			self::_includeStyle($styleSlug);
 		}
 	}
 
 	public static function includeStyleAdminMain() {
-		self::_enqueueStyle(self::STYLE_ADMIN_MAIN);
+		self::_includeStyle(self::STYLE_ADMIN_MAIN);
 	}
 
 	public static function includeStyleAdminLookupManagement() {
-		self::_enqueueStyle(self::STYLE_ADMIN_LOOKUP_MANAGEMENT);
+		self::_includeStyle(self::STYLE_ADMIN_LOOKUP_MANAGEMENT);
 	}
 
 	public static function includeStyleAdminSettings() {
-		self::_enqueueStyle(self::STYLE_ADMIN_SETTINGS);
+		self::_includeStyle(self::STYLE_ADMIN_SETTINGS);
 	}
 
 	public static function includeStyleAdminHelp() {
-		self::_enqueueStyle(self::STYLE_ADMIN_HELP);
+		self::_includeStyle(self::STYLE_ADMIN_HELP);
 	}
 
 	public static function includeStyleAdminPostsListing() {
-		self::_enqueueStyle(self::STYLE_ADMIN_POSTS_LISTING);
+		self::_includeStyle(self::STYLE_ADMIN_POSTS_LISTING);
 	}
 }

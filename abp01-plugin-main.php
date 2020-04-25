@@ -697,23 +697,18 @@ function abp01_rener_trip_summary_shortcode_block($attributes, $content) {
 }
 
 function abp01_register_block_editor_blocks() {
-	wp_register_script('abp01-viewer-short-code-block', 
-		plugins_url('media/js/abp01-block-editor-shortcode/block.js', __FILE__),
-		array(),
-		ABP01_VERSION, 
-		true);
-
-	wp_localize_script('abp01-viewer-short-code-block', 'abp01ViewerShortCodeBlockSettings', array(
-		'tagName' => ABP01_VIEWER_SHORTCODE
-	));
+	Abp01_Includes::includeScriptBlockEditorViewerShortCodeBlock();
 
 	register_block_type('abp01/block-editor-shortcode', array(
 		'editor_script' => 'abp01-viewer-short-code-block',
+		//we need server side rendering to account for 
+		//	potential changes of the configured shortcode tag name
 		'render_callback' => 'abp01_rener_trip_summary_shortcode_block'
 	));
 }
 
 function abp01_register_classic_editor_settings($settings) {
+	//ponly register settings if the classic editor is active
 	if (abp01_is_editor_classic_active()) {
 		$settings['abp01_viewer_short_code_name'] = ABP01_VIEWER_SHORTCODE;
 	}
@@ -721,9 +716,9 @@ function abp01_register_classic_editor_settings($settings) {
 }
 
 function abp01_register_classic_editor_buttons($buttons) {
+	//only register buttons if classic editor is active
 	if (abp01_is_editor_classic_active()) {
 		$buttons = array_merge($buttons, array(
-			'separator',
 			'abp01_insert_viewer_shortcode'
 		));
 	}
@@ -732,7 +727,9 @@ function abp01_register_classic_editor_buttons($buttons) {
 }
 
 function abp01_register_classic_editor_plugins($plugins) {
-	$plugins['abp01_viewer_shortcode'] = abp01_get_env()->getPluginAssetUrl('media/js/abp01-classic-editor-shortcode/plugin.js');
+	if (abp01_is_editor_classic_active()) {
+		$plugins['abp01_viewer_shortcode'] = Abp01_Includes::getClassicEditorViewerShortcodePluginUrl();
+	}
 	return $plugins;
 }
 

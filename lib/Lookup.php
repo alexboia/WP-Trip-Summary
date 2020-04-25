@@ -239,7 +239,11 @@ class Abp01_Lookup {
 			require_once ABSPATH . 'wp-admin/includes/translation-install.php';
 		}
 
-		$translations = array();
+		$translations = array(
+			'_default' => __('Default', 'abp01-trip-summary'),
+			'en_US' => 'English (United States)'
+		);
+		
 		$systemTranslations = wp_get_available_translations();
 
 		foreach ($systemTranslations as $tx) {
