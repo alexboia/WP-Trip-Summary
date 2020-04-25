@@ -38,7 +38,7 @@
             });
 
             tinymceEditor.addCommand('abp01_insert_viewer_shortcode', function() {
-                var shortcode = '[abp01_trip_summary_viewer]';
+                var shortcode = '['  + tinymceEditor.settings.abp01_viewer_short_code_name + ']';
                 tinymceEditor.execCommand('mceInsertContent', 0, shortcode);
             });
         },

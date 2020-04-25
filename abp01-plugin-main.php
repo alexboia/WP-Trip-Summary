@@ -734,6 +734,11 @@ function abp01_init_plugin() {
 	$installer->updateIfNeeded();
 }
 
+function abp01_register_classic_editor_settings($settings) {
+	$settings['abp01_viewer_short_code_name'] = ABP01_VIEWER_SHORTCODE;
+	return $settings;
+}
+
 function abp01_register_classic_editor_buttons($buttons) {
 	return array_merge($buttons, array(
 		'separator',
@@ -2036,6 +2041,7 @@ function abp01_run() {
 
 	add_filter('mce_buttons', 'abp01_register_classic_editor_buttons');
 	add_filter('mce_external_plugins', 'abp01_register_classic_editor_plugins');
+	add_filter('tiny_mce_before_init', 'abp01_register_classic_editor_settings');
 
 	add_action('add_meta_boxes', 'abp01_register_metaboxes', 10, 2);
 	add_action('admin_enqueue_scripts', 'abp01_add_admin_styles');
