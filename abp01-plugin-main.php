@@ -48,16 +48,6 @@ require_once __DIR__ . '/abp01-plugin-header.php';
 require_once __DIR__ . '/abp01-plugin-functions.php';
 
 /**
- * Gets the path to be used as a basis when constructing AJAX calls.
- * This is, in effect, the absolute path to WP's admin-ajax.php.
- * 
- * @return string The absolute path to admin-ajax.php
- */
-function abp01_get_ajax_baseurl() {
-	return abp01_get_env()->getAjaxBaseUrl();
-}
-
-/**
  * Creates a nonce to be used in the trip summary editor
  * 
  * @param int $postId The ID of the post for which the nonce will be generated
@@ -167,23 +157,17 @@ function abp01_get_track_upload_destination($postId) {
 }
 
 /**
- * Determine the HTTP method used with the current request
- * @return string The current HTTP method or null if it cannot be determined
- */
-function abp01_get_http_method() {
-	return abp01_get_env()->getHttpMethod();
-}
-
-/**
  * Checks whether an options saving operations is currently underway
+ * 
  * @return bool
  * */
-function abp01_is_saving_options() {
+function abp01_is_saving_wp_options() {
 	return abp01_get_env()->isSavingWpOptions();
 }
 
 /**
  * Checks whether the admin posts listing is currently being browsed (regardless of post ype)
+ * 
  * @return bool
  */
 function abp01_is_browsing_posts_listing() {
@@ -192,6 +176,7 @@ function abp01_is_browsing_posts_listing() {
 
 /**
  * Check whether the currently displayed screen is either the post editing or the post creation screen
+ * 
  * @return bool
  */
 function abp01_is_editing_post() {
@@ -207,7 +192,7 @@ function abp01_is_editing_post() {
  * Check whether the currently displayed screen is the plugin settings management screen
  * @return boolean True if on plugin settings page, false otherwise
  */
-function abp01_is_editing_settings() {
+function abp01_is_editing_plugin_settings() {
 	return abp01_get_env()->isAdminPage(ABP01_MAIN_MENU_SLUG);
 }
 
@@ -236,6 +221,13 @@ function abp01_is_browsing_help() {
  */
 function abp01_get_current_post_id() {
 	return abp01_get_env()->getCurrentPostId('abp01_postId');
+}
+
+function abp01_get_current_post_content() {
+	$postId = abp01_get_current_post_id();
+	return !empty($postId) 
+		? get_the_content(null, false, $postId) 
+		: null;
 }
 
 /**
@@ -673,37 +665,61 @@ function abp01_uninstall() {
 	}
 }
 
+function abp01_init_core() {
+	Abp01_Includes::setRefPluginsPath(__FILE__);
+	Abp01_Includes::setScriptsInFooter(true);
+
+	load_plugin_textdomain('abp01-trip-summary', 
+		false, 
+		dirname(plugin_basename(__FILE__)) . '/lang/');
+}
+
+function abp01_init_viewer_content_hooks() {
+	$priority = has_filter('the_content', 'wpautop');
+	if ($priority !== false) {
+		remove_filter('the_content', 'wpautop', $priority);
+	}
+	
+	add_filter('the_content', 'abp01_add_viewer', 0);
+}
+
 /**
  * Run plug-in init sequence
  */
 function abp01_init_plugin() {
 	//configure script&styles includes and load the text domain
-	Abp01_Includes::setRefPluginsPath(__FILE__);
-	Abp01_Includes::setScriptsInFooter(true);
-
-	load_plugin_textdomain('abp01-trip-summary', false, dirname(plugin_basename(__FILE__)) . '/lang/');
+	abp01_init_core();
 
 	//check if update is needed
-	$installer = abp01_get_installer();
-	$installer->updateIfNeeded();
+	abp01_get_installer()->updateIfNeeded();
 
+	//init content hooks
+	abp01_init_viewer_content_hooks();	
+
+	//register blocks only if classic editor plug-in is not active
 	if (!abp01_is_editor_classic_active()) {
-		abp01_register_block_editor_blocks();
+		abp01_init_block_editor_blocks();
 	}
 }
 
-function abp01_rener_trip_summary_shortcode_block($attributes, $content) {
-	return '<div class="abp01-viewer-shortcode-block">' . ('[' . ABP01_VIEWER_SHORTCODE . ']') . '</div>';
+function abp01_render_trip_summary_shortcode_block($attributes, $content) {
+	static $rendered = false;
+	if ($rendered === false || !doing_filter('the_content')) {
+		$rendered = true;
+		return '<div class="abp01-viewer-shortcode-block">' . ('[' . ABP01_VIEWER_SHORTCODE . ']') . '</div>';
+	} else {
+		return '';
+	}
 }
 
-function abp01_register_block_editor_blocks() {
+function abp01_init_block_editor_blocks() {
 	Abp01_Includes::includeScriptBlockEditorViewerShortCodeBlock();
 
 	register_block_type('abp01/block-editor-shortcode', array(
 		'editor_script' => 'abp01-viewer-short-code-block',
 		//we need server side rendering to account for 
 		//	potential changes of the configured shortcode tag name
-		'render_callback' => 'abp01_rener_trip_summary_shortcode_block'
+		'render_callback' => 'abp01_render_trip_summary_shortcode_block'
 	));
 }
 
@@ -910,7 +926,7 @@ function abp01_add_admin_styles() {
 
 	//if in plug-in editing page and IF the user is allowed to edit the plug-in's settings
 	//include the styles required by the settings editor
-	if (abp01_is_editing_settings() && abp01_can_manage_plugin_settings()) {
+	if (abp01_is_editing_plugin_settings() && abp01_can_manage_plugin_settings()) {
 		Abp01_Includes::includeStyleAdminSettings();
 	}
 
@@ -942,7 +958,7 @@ function abp01_add_admin_scripts() {
 		Abp01_Includes::includeScriptAdminEditorMain(true, abp01_get_main_admin_script_translations());
 	}
 
-	if (abp01_is_editing_settings() && abp01_can_manage_plugin_settings()) {
+	if (abp01_is_editing_plugin_settings() && abp01_can_manage_plugin_settings()) {
 		Abp01_Includes::includeScriptAdminSettings(abp01_get_settings_admin_script_translations());
 	}
 
@@ -1540,7 +1556,7 @@ function abp01_content_has_viewer_shortchode(&$content) {
 }
 
 function abp01_content_has_viewer_shortcode_block(&$content) {
-	return has_block('abp01/block-editor-shortcode');
+	return has_block('abp01/block-editor-shortcode', $content);
 }
 
 /**
@@ -1582,6 +1598,19 @@ function abp01_render_viewer($postId) {
 	return $viewer;
 }
 
+function abp01_ensure_content_has_unique_shortcode(&$content) {
+	$replaced = false;
+	return preg_replace_callback(abp01_get_content_viewer_shortcode_regexp(), 
+		function($matches) use (&$replaced) {
+			if ($replaced === false) {
+				$replaced = true;
+				return '[' . ABP01_VIEWER_SHORTCODE . ']';
+			} else {
+				return '';
+			}
+		}, $content);
+}
+
 /**
  * Filter function attached to the 'the_content' filter.
  * Its purpose is to render the trip summary viewer at the end of the post's content, but only within the post's page
@@ -1607,18 +1636,9 @@ function abp01_add_viewer($content) {
 	if (!abp01_content_has_viewer_shortchode($content)
 		&& !abp01_content_has_viewer_shortcode_block($content)) {
 		$content = $content . $viewer['viewerHtml'];
-	} else {
+	} elseif (abp01_content_has_viewer_shortchode($content)) {
 		//Replace all but on of the shortcode references
-		$replaced = false;
-		preg_replace_callback(abp01_get_content_viewer_shortcode_regexp(), 
-			function($matches) use (&$replaced) {
-				if ($replaced === false) {
-					$replaced = true;
-					return '[' . ABP01_VIEWER_SHORTCODE . ']';
-				} else {
-					return '';
-				}
-			}, $content);
+		$content = abp01_ensure_content_has_unique_shortcode($content);
 	}
 
 	return $content;
@@ -2016,7 +2036,7 @@ function abp01_on_language_updated($oldValue, $value, $optName) {
 	//	since the values corresponding to the previous locale will be pulled.
 	//The solution is to queue a flag that says it needs to be updated at a later point in time,
 	//	which currently is when the footer is being generated, for lack of a better time and place.
-	if ($optName == 'WPLANG' && abp01_is_saving_options()) {
+	if ($optName == 'WPLANG' && abp01_is_saving_wp_options()) {
 		set_transient('abp01_reset_teaser_text_required', 'true', MINUTE_IN_SECONDS);
 	}
 }
@@ -2070,9 +2090,6 @@ function abp01_run() {
 
 	add_action('manage_posts_custom_column', 'abp01_get_post_listing_custom_column_value', 10, 2);
 	add_action('manage_pages_custom_column', 'abp01_get_post_listing_custom_column_value', 10, 2);
-
-	remove_filter('the_content', 'wpautop');
-	add_filter('the_content', 'abp01_add_viewer', 0);
 
 	add_filter('manage_posts_columns',  'abp01_register_post_listing_columns', 10, 2);
 	add_filter('manage_pages_columns',  'abp01_register_page_listing_columns', 10, 1);

@@ -259,3 +259,22 @@ function abp01_extract_post_ids($posts) {
 function abp01_is_editor_classic_active() {
 	return abp01_get_env()->isPluginActive('classic-editor/classic-editor.php');
 }
+
+/**
+ * Gets the path to be used as a basis when constructing AJAX calls.
+ * This is, in effect, the absolute path to WP's admin-ajax.php.
+ * 
+ * @return string The absolute path to admin-ajax.php
+ */
+function abp01_get_ajax_baseurl() {
+	return abp01_get_env()->getAjaxBaseUrl();
+}
+
+/**
+ * Determine the HTTP method used with the current request
+ * 
+ * @return string The current HTTP method or null if it cannot be determined
+ */
+function abp01_get_http_method() {
+	return abp01_get_env()->getHttpMethod();
+}

@@ -28,8 +28,12 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-(function(wpBlocks, wpElement) {
+(function(wp) {
     "use strict";
+
+    var wpElement = wp.element;
+    var wpBlocks = wp.blocks;
+    var wpData = wp.data;
 
     var createElement = wpElement
         .createElement;
@@ -39,7 +43,11 @@
         icon: 'chart-area',
         category: 'widgets',
         example: {},
-        edit: function() {
+        supports: {
+            multiple: false,
+            reusable: false
+        },
+        edit: function(props) {
             var tagName = window
                 .abp01ViewerShortCodeBlockSettings
                 .tagName;
@@ -50,11 +58,18 @@
                 ('[' + tagName + ']')
             );
         },
-        save: function() {
+        save: function(props) {
             return null;
         },
     });
-})(
-    window.wp.blocks,
-    window.wp.element
-);
+
+    wp.domReady(function() {      
+        var currentPost = wpData
+            .select('core/editor')
+            .getCurrentPost();
+        
+        if (!currentPost || (currentPost.type != 'page' && currentPost.type != 'post') ) {
+            wpBlocks.unregisterBlockType('abp01/block-editor-shortcode');
+        }
+    });
+})(window.wp);

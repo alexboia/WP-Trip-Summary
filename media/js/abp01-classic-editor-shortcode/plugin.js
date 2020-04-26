@@ -31,6 +31,29 @@
 (function() {
     "use strict";
 
+    function getShortcodeContent(tinymceEditor) {
+        return [
+            '<p id="abp01-shortcode-container">',
+                ('['  + tinymceEditor.settings.abp01_viewer_short_code_name + ']'),
+            '</p>'
+        ].join('');
+    }
+    
+    function getExistingShortcodeElement(tinymceEditor) {
+        var body = tinymceEditor.getBody();
+        if (body.querySelector) {
+            return body.querySelector('#abp01-shortcode-container');
+        } else {
+            return body.documentElement.getElementById('abp01-shortcode-container');
+        }
+    }
+
+    function insertShortcodeContent(tinymceEditor) {
+        //insert shortcode content and select it
+        tinymceEditor.execCommand('mceInsertContent', 0, getShortcodeContent(tinymceEditor));
+        tinymceEditor.selection.select(getExistingShortcodeElement(tinymceEditor));
+    }
+
     tinymce.create('abp01.plugins.ViewerShortcode', {
         init: function(tinymceEditor, pluginAbsoluteUrl) {
             tinymceEditor.addButton('abp01_insert_viewer_shortcode', {
@@ -40,14 +63,20 @@
             });
 
             tinymceEditor.addCommand('abp01_insert_viewer_shortcode', function() {
-                var shortcodeContent = [
-                    '<p>',
-                        ('['  + tinymceEditor.settings.abp01_viewer_short_code_name + ']'),
-                    '</p>'
-                ];
+                var existing = getExistingShortcodeElement(tinymceEditor);
+                var translatedMessge = tinymceEditor.translate('Shortcode already exists. Do you wish to move it at the new position?');
 
-                tinymceEditor.execCommand('mceInsertContent', 0, 
-                    shortcodeContent.join(''));
+                //if the shortcode already exists, 
+                //  ask the user whether to move it or not
+                //if the user wants to move it, simply remove the current occurence
+                if (existing != null) {
+                    if (confirm(translatedMessge)) {
+                        existing.remove();
+                        insertShortcodeContent(tinymceEditor);
+                    }
+                } else {
+                    insertShortcodeContent(tinymceEditor);
+                }
             });
         },
 
@@ -66,5 +95,6 @@
         }
     });
 
-    tinymce.PluginManager.add('abp01_viewer_shortcode', abp01.plugins.ViewerShortcode);
+    tinymce.PluginManager.add('abp01_viewer_shortcode', 
+        abp01.plugins.ViewerShortcode);
 })();
