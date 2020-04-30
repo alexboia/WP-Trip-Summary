@@ -44,7 +44,7 @@
         if (body.querySelector) {
             return body.querySelector('#abp01-shortcode-container');
         } else {
-            return body.documentElement.getElementById('abp01-shortcode-container');
+            return body.ownerDocument.getElementById('abp01-shortcode-container');
         }
     }
 

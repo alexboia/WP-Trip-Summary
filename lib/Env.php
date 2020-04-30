@@ -380,10 +380,10 @@ class Abp01_Env {
 
     public function getDb() {
         if ($this->_db == null) {
-            $this->_db = new MysqliDb($this->getDbHost(),
-                $this->getDbUserName(),
-                $this->getDbPassword(),
-                $this->getDbName());
+            $this->_db = new MysqliDb($this->_dbHost,
+                $this->_dbUserName,
+                $this->_dbPassword,
+                $this->_dbName);
 
             $this->_initDriverIfNeeded();
         }
@@ -393,9 +393,9 @@ class Abp01_Env {
 
     public function getMetaDb() {
         if ($this->_metaDb == null) {
-            $this->_metaDb = new MysqliDb($this->getDbHost(),
-                $this->getDbUserName(),
-                $this->getDbPassword(),
+            $this->_metaDb = new MysqliDb($this->_dbHost,
+                $this->_dbUserName,
+                $this->_dbPassword,
                 'information_schema');
 
             $this->_initDriverIfNeeded();
@@ -450,12 +450,12 @@ class Abp01_Env {
     }
 
     public function isAdminPage($slug) {
-        return $this->getCurrentPage() == 'admin.php' 
+        return $this->getCurrentAdminPage() == 'admin.php' 
             && $this->_getCurrentAdminPageSlug() == strtolower($slug);
     }
 
     public function isSavingWpOptions() {
-        return $this->getCurrentPage() == 'options.php' && $this->isHttpPost();
+        return $this->getCurrentAdminPage() == 'options.php' && $this->isHttpPost();
     }
 
     public function isListingWpPosts() {
@@ -465,12 +465,12 @@ class Abp01_Env {
             ? $_GET['post_type'] 
             : 'post';
 
-        return $this->getCurrentPage() == 'edit.php' 
+        return $this->getCurrentAdminPage() == 'edit.php' 
             && (empty($requiredPostTypes) || in_array($postType, $requiredPostTypes));
     }
 
     public function isEditingWpPost() {      
-        $isEditingPost = in_array($this->getCurrentPage(), array(
+        $isEditingPost = in_array($this->getCurrentAdminPage(), array(
             'post-new.php', 
             'post.php'
         ));
@@ -491,7 +491,7 @@ class Abp01_Env {
         }
     }
 
-    public function getCurrentPage() {
+    public function getCurrentAdminPage() {
         return isset($GLOBALS['pagenow']) 
             ? strtolower($GLOBALS['pagenow']) 
             : null;

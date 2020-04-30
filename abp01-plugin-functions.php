@@ -101,8 +101,9 @@ function abp01_dump($var) {
 }
 
 /**
- * Increase script execution limit and maximum memory limit
+ * Increase script execution time limit and maximum memory limit
  * 
+ * @param int $executionTimeMinutes The execution time in minutes, to raise the limit to. Defaults to 5 minutes.
  * @return void
  */
 function abp01_increase_limits($executionTimeMinutes = 5) {
@@ -193,6 +194,11 @@ function abp01_append_error($message, $error) {
 }
 
 /**
+ * Constructs the standard AJAX response structure 
+ *  returned by admin-ajax.php ajax actions.
+ * Optionally, additional properties can be added, as an associative array
+ * 
+ * @param array $additionalProps Additional properties to add.
  * @return stdClass A new standard response instance
  */
 function abp01_get_ajax_response($additionalProps = array()) {
