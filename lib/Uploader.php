@@ -48,6 +48,14 @@ class Abp01_Uploader {
 
     const UPLOAD_NOT_VALID = 6;
 
+    const UPLOAD_STORE_INITIALIZATION_FAILED = 7;
+
+    const UPLOAD_INVALID_UPLOAD_PARAMS = 8;
+
+    const UPLOAD_DESTINATION_FILE_NOT_FOUND = 9;
+
+    const UPLOAD_DESTINATION_FILE_CORRUPT = 10;
+
     private $_destinationPath = null;
 
     private $_maxFileSize = 0;
@@ -62,6 +70,8 @@ class Abp01_Uploader {
 
     private $_isReady = false;
 
+    private $_detectedType = null;
+
     private $_chunk = 0;
 
     private $_chunks = 0;
@@ -71,7 +81,7 @@ class Abp01_Uploader {
             throw new InvalidArgumentException();
         }
         if (empty($destinationPath) || !is_dir(dirname($destinationPath))) {
-            throw new InvalidArgumentException();
+            throw new InvalidArgumentException('No destination path was specified');
         }
 
         $this->_destinationPath = $destinationPath;
@@ -83,7 +93,7 @@ class Abp01_Uploader {
         if (isset($config['chunkSize'])) {
             if ($config['chunkSize'] > 0) {
                 if (!isset($config['chunk']) || !isset($config['chunks'])) {
-                    throw new InvalidArgumentException();
+                    throw new InvalidArgumentException('The chunkSize option is set, but at least one of the chunks or chunk option is missing.');
                 }
             }
             $this->_chunk = max(0, intval($config['chunk']));
@@ -102,40 +112,50 @@ class Abp01_Uploader {
     }
 
     public function receive() {
+        $this->_detectedType = null;
+
         if (!$this->hasFileUploaded()) {
+            write_log('Track upload failed because no file has been uploaded.');
             return self::UPLOAD_NO_FILE;
         }
 
         if ($this->_chunkSize > 0 && $this->_chunk > 0 && !file_exists($this->_destinationPath)) {
-            return self::UPLOAD_INTERNAL_ERROR;
+            write_log('Track upload failed because chunk configuration is not valid.');
+            return self::UPLOAD_INVALID_UPLOAD_PARAMS;
         }
 
         if (($this->_chunkSize == 0 || $this->_chunk == 0) && file_exists($this->_destinationPath)) {
+            write_log('Chunk size=0 or first chunk - remove existing destination file.');
             @unlink($this->_destinationPath);
         }
 
         $temp = $this->_getTmpFilePath();
         if (!is_uploaded_file($temp)) {
+            write_log('Track upload failed because temporary location does not contain a safe source file.');
             return self::UPLOAD_NO_FILE;
         }
 
         if (!$this->_isFileSizeValid()) {
+            write_log('Track upload failed because uploaded file is too large.');
             return self::UPLOAD_TOO_LARGE;
         }
 
-        if (!$this->_isTypeValid()) {
+        if (!$this->_detectTypeAndValidate()) {
+            write_log('Track upload failed because uploaded file does not have a valid mime type: "' . $this->_detectedType . '".');
             return self::UPLOAD_INVALID_MIME_TYPE;
         }
 
         $out = @fopen($this->_destinationPath, $this->_chunkSize > 0 ? 'ab' : 'wb');
         if (!$out) {
-            return self::UPLOAD_INTERNAL_ERROR;
+            write_log('Track upload failed because destination file could not be open.');
+            return self::UPLOAD_STORE_INITIALIZATION_FAILED;
         }
 
         $in = @fopen($temp, 'rb');
         if (!$in) {
             @fclose($out);
-            return self::UPLOAD_INTERNAL_ERROR;
+            write_log('Track upload failed because source file could not be open.');
+            return self::UPLOAD_STORE_INITIALIZATION_FAILED;
         }
 
         while ($buffer = fread($in, 4096)) {
@@ -148,6 +168,7 @@ class Abp01_Uploader {
         $isReady = $this->_chunkSize == 0 || ($this->_chunk + 1 >= $this->_chunks);
         if ($isReady && !$this->_passesCustomValidator()) {
             @unlink($this->_destinationPath);
+            write_log('Track upload failed because source file did not pass custom validation.');
             return self::UPLOAD_NOT_VALID;
         }
 
@@ -166,7 +187,7 @@ class Abp01_Uploader {
         $this->_customValidator = !empty($customValidator) ? $customValidator : null;
     }
 
-    private function _isTypeValid() {
+    private function _detectTypeAndValidate() {
         if (count($this->_allowedFileTypes) == 0) {
             return true;
         }
@@ -179,9 +200,9 @@ class Abp01_Uploader {
         }
 
         $sniffer = new MimeReader($file);
-        $detectedType = $sniffer->getType();
+        $this->_detectedType = $sniffer->getType();
 
-        if (empty($detectedType) || !in_array($detectedType, $this->_allowedFileTypes)) {
+        if (empty($this->_detectedType) || !in_array($this->_detectedType, $this->_allowedFileTypes)) {
             return false;
         }
 

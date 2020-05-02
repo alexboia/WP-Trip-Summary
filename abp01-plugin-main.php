@@ -289,7 +289,9 @@ function abp01_save_cached_track($postId, Abp01_Route_Track_Document $route) {
 }
 
 /**
- * Retrieves and deserializes the cached version of the GPX track document corresponding to the given post ID
+ * Retrieves and deserializes the cached version of the 
+ * 	GPX track document corresponding to the given post ID
+ * 
  * @param int $postId
  * @return Abp01_Route_Track_Document The deserialized document
  */
@@ -305,7 +307,9 @@ function abp01_get_cached_track($postId) {
 }
 
 /**
- * Get the directories in which the frontend viewer templates should be searched.
+ * Get the directories in which the frontend 
+ * 	viewer templates should be searched.
+ * 
  * @return stdClass
  */
 function abp01_get_frontend_template_locations() {
@@ -313,7 +317,9 @@ function abp01_get_frontend_template_locations() {
 }
 
 /**
- * Retrieve the translated label that corresponds to the given lookup type/category
+ * Retrieve the translated label that corresponds 
+ * 	to the given lookup type/category
+ * 
  * @param string $type The type for which to retrieve the translated label
  * @return string The translated label
  */
@@ -333,6 +339,7 @@ function abp01_get_lookup_type_label($type) {
 
 /**
  * Retrieve translations used in the main editor script
+ * 
  * @return array key-value pairs where keys are javascript property names and values are the translation strings
  */
 function abp01_get_main_admin_script_translations() {
@@ -368,6 +375,11 @@ function abp01_get_main_admin_script_translations() {
 		'errServerUploadTooLarge' =>  esc_html__('The selected file is too large. Maximum allowed size is 10MB', 'abp01-trip-summary'), 
 		'errServerUploadNoFile' =>  esc_html__('No file was uploaded', 'abp01-trip-summary'), 
 		'errServerUploadInternal' =>  esc_html__('The file could not be uploaded due to a possible internal server issue', 'abp01-trip-summary'), 
+		'errServerUploadStoreFailed' => esc_html__('The file could not be stored on the server (#2). This usually indicates an internal server issue.', 'abp01-trip-summary'),
+		'errServerUploadStoreInitiationFailed' => esc_html__('The file could not be stored on the server (#1). This usually indicates an internal server issue.', 'abp01-trip-summary'),
+		'errServerUploadInvalidUploadParams' => esc_html__('The upload request contains some invalid parameters. This might indicate an error within the plug-in itself or an attempt to forge the request.', 'abp01-trip-summary'),
+		'errServerUploadDestinationFileNotFound' => esc_html__('The destination were the track file was uploaded cannot be found. This usually indicates an internal server issue.', 'abp01-trip-summary'),
+		'errServerUploadDestinationFileCorrupt' => esc_html__('The destination were the track file was uploaded has been found, but is corrupt. This usually indicates a problem with the file itself or, less likely, an internal server issue.', 'abp01-trip-summary'),
 		'errServerUploadFail' =>  esc_html__('The file could not be uploaded', 'abp01-trip-summary'),
 		'selectBoxPlaceholder' => esc_html__('Choose options', 'abp01-trip-summary'),
 		'selectBoxCaptionFormat' => esc_html__('{0} selected', 'abp01-trip-summary'),
@@ -381,6 +393,7 @@ function abp01_get_main_admin_script_translations() {
 
 /**
  * Retrieve translations used in the settings editor script
+ * 
  * @return array Key-value pairs where keys are javascript property names and values are the translation strings
  */
 function abp01_get_settings_admin_script_translations() {
@@ -394,6 +407,7 @@ function abp01_get_settings_admin_script_translations() {
 
 /**
  * Retrieve translations used in the settings editor script
+ * 
  * @return array Key-value pairs where keys are javascript property names and values are the translation strings
  */
 function abp01_get_lookup_admin_script_translations() {
@@ -415,6 +429,7 @@ function abp01_get_lookup_admin_script_translations() {
 
 /**
  * Retrieve translations used when installing the plug-in
+ * 
  * @return array key-value pairs where keys are installation error codes and values are the translated strings
  */
 function abp01_get_installation_error_translations() {
@@ -440,6 +455,7 @@ function abp01_get_installation_error_translations() {
 
 /**
  * Retrieve translations used in the main frontend script
+ * 
  * @return array key-value pairs where keys are javascript property names and values are the translation strings
  */
 function abp01_get_main_frontend_translations() {
@@ -447,7 +463,9 @@ function abp01_get_main_frontend_translations() {
 }
 
 /**
- * Render the editour launcher metabox, in the post creation or post edit screen
+ * Render the editour launcher metabox, 
+ * 	in the post creation or post edit screen
+ * 
  * @param stdClass $data Context data
  * @return void
  */
@@ -459,6 +477,7 @@ function abp01_render_trip_summary_launcher_metabox(stdClass $data) {
 
 /**
  * Renders the editor in the post creation or post edit screen
+ * 
  * @param stdClass $data The existing trip summary and context data
  * @return void
  */
@@ -471,6 +490,7 @@ function abp01_render_trip_summary_editor(stdClass $data) {
 
 /**
  * Renders the plugin settings editor page
+ * 
  * @param stdClass $data The settings context and existing settings values
  * @return void
  */
@@ -482,6 +502,7 @@ function abp01_admin_settings_page_render(stdClass $data) {
 
 /**
  * Renders the plugin help page
+ * 
  * @param stdClass $data The data with the help contents
  * @return void
  */
@@ -493,6 +514,7 @@ function abp01_admin_help_page_render(stdClass $data) {
 
 /**
  * Renders the plugin lookup data management page
+ * 
  * @param stdClass $data The lookup data management page context and the actual data
  * @return void
  */
@@ -503,7 +525,9 @@ function abp01_admin_lookup_page_render(stdClass $data) {
 }
 
 /**
- * Builds the URL to the lookup data management page, in the context of the given lookup type
+ * Builds the URL to the lookup data management page, 
+ * 	in the context of the given lookup type
+ * 
  * @param string $lookupType The lookup-type for which to load the list of items when first loading the page
  * @return string The generated URL
  */
@@ -517,6 +541,7 @@ function abp01_get_admin_lookup_url($lookupType) {
 
 /**
  * Creates the plug-in administration menu structure
+ * 
  * @return void
  */
 function abp01_create_admin_menu() {
@@ -558,6 +583,7 @@ function abp01_create_admin_menu() {
 
 /**
  * Render the trip summary viewer
+ * 
  * @param stdClass $data The trip summary and context data
  * @return void
  */
@@ -585,6 +611,7 @@ function abp01_render_trip_summary_frontend(stdClass $data) {
 
 /**
  * Render the trip summary teaser
+ * 
  * @param stdClass $data The trip summary and context data
  */
 function abp01_render_trip_summary_frontend_teaser(stdClass $data) {	
@@ -611,6 +638,7 @@ function abp01_render_trip_summary_frontend_teaser(stdClass $data) {
 
 /**
  * Handles plug-in activation
+ * 
  * @return void
  */
 function abp01_activate() {
@@ -639,6 +667,7 @@ function abp01_activate() {
 
 /**
  * Handles plug-in deactivation
+ * 
  * @return void
  */
 function abp01_deactivate() {
@@ -653,6 +682,7 @@ function abp01_deactivate() {
 
 /**
  * Handles plug-in removal
+ * 
  * @return void
  */
 function abp01_uninstall() {
@@ -792,6 +822,7 @@ function abp01_add_admin_editor_launcher($post, $args) {
 
 /**
  * Adds the editor in the post creation or post edit screen
+ * 
  * @param object $post The current post being created or modified
  * @return void
  */
@@ -941,7 +972,9 @@ function abp01_add_admin_styles() {
 }
 
 /**
- * Queues the appropriate frontend styles with respect to the current frontend screen
+ * Queues the appropriate frontend styles with 
+ * 	respect to the current frontend screen
+ * 
  * @return void
  */
 function abp01_add_frontend_styles() {
@@ -951,7 +984,9 @@ function abp01_add_frontend_styles() {
 }
 
 /**
- * Queues the appropriate scripts with respect to the current admin screen
+ * Queues the appropriate scripts with respect 
+ * 	to the current admin screen
+ * 
  * @return void
  */
 function abp01_add_admin_scripts() {
@@ -969,7 +1004,9 @@ function abp01_add_admin_scripts() {
 }
 
 /**
- * Queues the appropriate frontend scripts with respect to the current frontend screen
+ * Queues the appropriate frontend scripts 
+ * 	with respect to the current frontend screen
+ * 
  * @return void
  */
 function abp01_add_frontend_scripts() {
@@ -979,8 +1016,12 @@ function abp01_add_frontend_scripts() {
 }
 
 /**
- * Prepares the required data and renders the plug-in's settings administration page.
- * If the current user does not have the required permissions to manage the plug-in, then the function returns directly.
+ * Prepares the required data and renders 
+ * 	the plug-in's settings administration page.
+ * If the current user does not have 
+ * 	the required permissions to manage the plug-in, 
+ * 	then the function returns directly.
+ * 
  * @return void
  * */
 function abp01_admin_settings_page() {
@@ -1025,11 +1066,13 @@ function abp01_admin_settings_page() {
 }
 
 /**
- * This function handles the plug-in settings save action. It receives and processes the corresponding HTTP request.
+ * This function handles the plug-in settings save action. 
+ * It receives and processes the corresponding HTTP request.
  * Execution halts if the given request context is not valid:
  * - invalid HTTP method or...
  * - no valid nonce detected or...
  * - current user lacks proper capabilities
+ * 
  * @return void
  * */
 function abp01_save_admin_settings_page_save() {
@@ -1119,7 +1162,9 @@ function abp01_save_admin_settings_page_save() {
 }
 
 /**
- * This function handles the admin help page. The execution halts if the user lacks the proper capabilities
+ * This function handles the admin help page. 
+ * The execution halts if the user lacks 
+ * 	the proper capabilities
  * 
  * @return void
  */
@@ -1135,8 +1180,11 @@ function abp01_admin_help_page() {
 }
 
 /**
- * Prepares the required data and renders the plug-in's lookup data management page
- * If the current user does not have the required permissions to manage the plug-in, then the function returns directly.
+ * Prepares the required data and renders 
+ * 	the plug-in's lookup data management page
+ * If the current user does not have 
+ * 	the required permissions to manage the plug-in, 
+ * 	then the function returns directly.
  * 
  * @return void
  * */
@@ -1614,8 +1662,10 @@ function abp01_ensure_content_has_unique_shortcode(&$content) {
 
 /**
  * Filter function attached to the 'the_content' filter.
- * Its purpose is to render the trip summary viewer at the end of the post's content, but only within the post's page
- * The assumption is made that the wpautop filter has been previously removed from the filter chain
+ * Its purpose is to render the trip summary viewer 
+ * 	at the end of the post's content, but only within the post's page
+ * The assumption is made that the wpautop filter 
+ * 	has been previously removed from the filter chain
  * 
  * @param string $content The initial post content
  * @return string The filtered post content
@@ -1776,10 +1826,10 @@ function abp01_upload_track() {
 					abp01_clear_post_viewer_data_cache($postId);
 				}
 			} else {
-				$result->status = Abp01_Uploader::UPLOAD_NOT_VALID;
+				$result->status = Abp01_Uploader::UPLOAD_DESTINATION_FILE_CORRUPT;
 			}
 		} else {
-			$result->status = Abp01_Uploader::UPLOAD_NOT_VALID;
+			$result->status = Abp01_Uploader::UPLOAD_DESTINATION_FILE_NOT_FOUND;
 		}
 	}
 
@@ -1787,7 +1837,8 @@ function abp01_upload_track() {
 }
 
 /**
- * Handles the track retrieval request. Script execution halts if the request context is not valid:
+ * Handles the track retrieval request. 
+ * Script execution halts if the request context is not valid:
  *  - invalid HTTP method or...
  *  - invalid nonce provided
  * 

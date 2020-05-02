@@ -100,6 +100,19 @@ function abp01_dump($var) {
 	}
 }
 
+if (!function_exists('write_log')) {
+	function write_log ($message)  {
+	   if (is_array($message) || is_object($message)) {
+			ob_start();
+			var_dump($message);
+			$message = ob_get_clean();
+			error_log($message);
+	   } else {
+			error_log($message);
+	   }
+	}
+ }
+
 /**
  * Increase script execution time limit and maximum memory limit
  * 

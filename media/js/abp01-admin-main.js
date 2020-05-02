@@ -50,6 +50,10 @@
     var UPLOAD_INTERNAL_ERROR = 4;
     var UPLOAD_STORE_FAILED = 5;
     var UPLOAD_NOT_VALID = 6;
+    var UPLOAD_STORE_INITIALIZATION_FAILED = 7;
+    var UPLOAD_INVALID_UPLOAD_PARAMS = 8;
+    var UPLOAD_DESTINATION_FILE_NOT_FOUND = 9;
+    var UPLOAD_DESTINATION_FILE_CORRUPT = 10;
     var UPLOAD_FAILED = 99;
 
     /**
@@ -692,6 +696,11 @@
         uploaderErrors.server[UPLOAD_TOO_LARGE] = abp01MainL10n.errServerUploadTooLarge;
         uploaderErrors.server[UPLOAD_NO_FILE] = abp01MainL10n.errServerUploadNoFile;
         uploaderErrors.server[UPLOAD_INTERNAL_ERROR] = abp01MainL10n.errServerUploadInternal;
+        uploaderErrors.server[UPLOAD_STORE_FAILED] = abp01MainL10n.errServerUploadStoreFailed;
+        uploaderErrors.server[UPLOAD_STORE_INITIALIZATION_FAILED] = abp01MainL10n.errServerUploadStoreInitiationFailed;
+        uploaderErrors.server[UPLOAD_INVALID_UPLOAD_PARAMS] = abp01MainL10n.errServerUploadInvalidUploadParams;
+        uploaderErrors.server[UPLOAD_DESTINATION_FILE_NOT_FOUND] = abp01MainL10n.errServerUploadDestinationFileNotFound;
+        uploaderErrors.server[UPLOAD_DESTINATION_FILE_CORRUPT] = abp01MainL10n.errServerUploadDestinationFileCorrupt;
         uploaderErrors.server[UPLOAD_FAILED] = abp01MainL10n.errServerUploadFail;
     }
 
@@ -1089,7 +1098,9 @@
             },
             target: '#abp01-editor-content',
             positionClass: 'toast-bottom-right',
-            timeOut: 4000
+            timeOut: 30000,
+            extendedTimeOut: 30000,
+            progressBar: true
         });
     }
 

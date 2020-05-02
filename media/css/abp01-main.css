@@ -274,6 +274,7 @@ a.abp01-close-editor:hover {
 
 #toast-container {
     position: absolute !important;
+    max-width: 400px !important;
 }
 
 .abp01-toast-success {
