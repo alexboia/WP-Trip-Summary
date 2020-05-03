@@ -34,52 +34,165 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Uploader {
+    /**
+     * No error while uploading and validating the file.
+     * 
+     * @var int
+     */
     const UPLOAD_OK = 0;
 
-    const UPLOAD_INVALID_MIME_TYPE = 1;
+    /**
+     * File doesn't have a valid mime type.
+     * 
+     * @var int
+     */
+    const UPLOAD_INVALID_MIME_TYPE = 0x01;
 
+    /**
+     * File is larger than the given maximum size.0
+     * 
+     * @var int
+     */
     const UPLOAD_TOO_LARGE = 2;
 
+    /**
+     * No file has been uploaded or uploaded file not found
+     * 
+     * @var int
+     */
     const UPLOAD_NO_FILE = 3;
 
+    /**
+     * Some internal error occure while processing the uploaded file
+     * 
+     * @var int
+     */
     const UPLOAD_INTERNAL_ERROR = 4;
 
+    /**
+     * Could not store the uploaded file
+     * 
+     * @var int
+     */
     const UPLOAD_STORE_FAILED = 5;
 
+    /**
+     * The uploaded file did not pass the custom validation routine
+     * 
+     * @var int
+     */
     const UPLOAD_NOT_VALID = 6;
 
+    /**
+     * There was an error while preparing to store the file
+     * 
+     * @var int
+     */
     const UPLOAD_STORE_INITIALIZATION_FAILED = 7;
 
+    /**
+     * There was a problem with the additional parameters that 
+     *  must be present with the uploaded file
+     * 
+     * @var int
+     */
     const UPLOAD_INVALID_UPLOAD_PARAMS = 8;
 
+    /**
+     * Altough no error occured while uploading and processing the file
+     *  the resulting destination file could not be found or read
+     * 
+     * @var int
+     */
     const UPLOAD_DESTINATION_FILE_NOT_FOUND = 9;
 
+    /**
+     * Altough no error occured while uploading and processing the file
+     *  the resulting destination file is corrupted
+     * 
+     * @var int
+     */
     const UPLOAD_DESTINATION_FILE_CORRUPT = 10;
 
+    /**
+     * The destination file path where the uploaded file is stored
+     * 
+     * @var string
+     */
     private $_destinationPath = null;
 
+    /**
+     * The maximum allowed size for the uploaded file, in bytes
+     * 
+     * @var int
+     */
     private $_maxFileSize = 0;
 
+    /**
+     * The maximum size of the file chunk, 
+     * if chunked upload is enabled for the file
+     * 
+     * @var int
+     */
     private $_chunkSize = 0;
 
+    /**
+     * The allowed file mime types
+     * 
+     * @var string[]
+     */
     private $_allowedFileTypes = array();
 
+    /**
+     * The key that represents the uploaded file in the _FILES superglobal array
+     * 
+     * @var string
+     */
     private $_key = null;
 
+    /**
+     * The custom validation routine handler, called after 
+     *  the built-in validation takes place and only after 
+     * the entire file has been uploaded.
+     * 
+     * @var callable
+     */
     private $_customValidator = null;
 
+    /**
+     * Whether or not the entire file has been completely 
+     *  and successfully uploaded
+     * 
+     * @var boolean
+     */
     private $_isReady = false;
 
+    /**
+     * The detected mime type
+     * 
+     * @var string
+     */
     private $_detectedType = null;
 
+    /**
+     * The file chunk currently being processed
+     * 
+     * @var int
+     */
     private $_chunk = 0;
 
+    /**
+     * The number of chunks that the file has been split into
+     * 
+     * @var int
+     */
     private $_chunks = 0;
 
     public function __construct($key, $destinationPath, array $config = array()) {
         if (empty($key)) {
-            throw new InvalidArgumentException();
+            throw new InvalidArgumentException('No file key has been specified');
         }
+
         if (empty($destinationPath) || !is_dir(dirname($destinationPath))) {
             throw new InvalidArgumentException('No destination path was specified');
         }
@@ -90,6 +203,7 @@ class Abp01_Uploader {
         if (isset($config['maxFileSize'])) {
             $this->_maxFileSize = max(0, intval($config['maxFileSize']));
         }
+
         if (isset($config['chunkSize'])) {
             if ($config['chunkSize'] > 0) {
                 if (!isset($config['chunk']) || !isset($config['chunks'])) {
@@ -100,6 +214,7 @@ class Abp01_Uploader {
             $this->_chunks = max(0, intval($config['chunks']));
             $this->_chunkSize = max(0, intval($config['chunkSize']));
         }
+        
         if (isset($config['allowedFileTypes']) && is_array($config['allowedFileTypes'])) {
             $this->_allowedFileTypes = $config['allowedFileTypes'];
         }
@@ -115,12 +230,12 @@ class Abp01_Uploader {
         $this->_detectedType = null;
 
         if (!$this->hasFileUploaded()) {
-            write_log('Track upload failed because no file has been uploaded.');
+            write_log('File upload failed because no file has been uploaded.');
             return self::UPLOAD_NO_FILE;
         }
 
         if ($this->_chunkSize > 0 && $this->_chunk > 0 && !file_exists($this->_destinationPath)) {
-            write_log('Track upload failed because chunk configuration is not valid.');
+            write_log('File upload failed because chunk configuration is not valid.');
             return self::UPLOAD_INVALID_UPLOAD_PARAMS;
         }
 
@@ -131,30 +246,30 @@ class Abp01_Uploader {
 
         $temp = $this->_getTmpFilePath();
         if (!is_uploaded_file($temp)) {
-            write_log('Track upload failed because temporary location does not contain a safe source file.');
+            write_log('File upload failed because temporary location does not contain a safe source file.');
             return self::UPLOAD_NO_FILE;
         }
 
         if (!$this->_isFileSizeValid()) {
-            write_log('Track upload failed because uploaded file is too large.');
+            write_log('File upload failed because uploaded file is too large.');
             return self::UPLOAD_TOO_LARGE;
         }
 
         if (!$this->_detectTypeAndValidate()) {
-            write_log('Track upload failed because uploaded file does not have a valid mime type: "' . $this->_detectedType . '".');
+            write_log('File upload failed because uploaded file does not have a valid mime type: "' . $this->_detectedType . '".');
             return self::UPLOAD_INVALID_MIME_TYPE;
         }
 
         $out = @fopen($this->_destinationPath, $this->_chunkSize > 0 ? 'ab' : 'wb');
         if (!$out) {
-            write_log('Track upload failed because destination file could not be open.');
+            write_log('File upload failed because destination file could not be open.');
             return self::UPLOAD_STORE_INITIALIZATION_FAILED;
         }
 
         $in = @fopen($temp, 'rb');
         if (!$in) {
             @fclose($out);
-            write_log('Track upload failed because source file could not be open.');
+            write_log('File upload failed because source file could not be open.');
             return self::UPLOAD_STORE_INITIALIZATION_FAILED;
         }
 
@@ -168,8 +283,10 @@ class Abp01_Uploader {
         $isReady = $this->_chunkSize == 0 || ($this->_chunk + 1 >= $this->_chunks);
         if ($isReady && !$this->_passesCustomValidator()) {
             @unlink($this->_destinationPath);
-            write_log('Track upload failed because source file did not pass custom validation.');
+            write_log('File upload failed because source file did not pass custom validation.');
             return self::UPLOAD_NOT_VALID;
+        } else {
+            write_log('The file upload has been successfully processed and completed.');
         }
 
         $this->_isReady = $isReady;
@@ -218,7 +335,7 @@ class Abp01_Uploader {
 
     private function _calculateFileSize() {
         $size = filesize($this->_getTmpFilePath());
-        if ($this->_chunkSize == 0) {
+        if ($this->_chunkSize > 0) {
             if (is_file($this->_destinationPath)) {
                 $size += filesize($this->_destinationPath);
             }

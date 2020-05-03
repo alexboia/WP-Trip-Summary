@@ -607,7 +607,7 @@ class MimeReader {
         $this->footer = &$footer;
     }
 
-    protected function match_pattern( $pattern, $mask, $ignore ) {
+    protected function match_pattern($pattern, $mask, $ignore) {
         if (empty($pattern) || empty($mask)) {
             return false;
         }
@@ -656,8 +656,8 @@ class MimeReader {
         return true;
     }
 
-    protected function html_match_pattern( $pattern, $mask, $ignore ) {
-        if ( empty( $pattern ) || empty( $mask ) ) {
+    protected function html_match_pattern($pattern, $mask, $ignore) {
+        if (empty($pattern) || empty($mask)) {
             return false;
         }
 
@@ -793,15 +793,15 @@ class MimeReader {
         if ($box_size % 4) 
             return false;
 
-        if (substr( $sequence, 4, 4 ) !== "\x66\x74\x79\x70") 
+        if (substr($sequence, 4, 4) !== "\x66\x74\x79\x70") 
             return false;
 
-        if (substr( $sequence, 8, 3 ) === "\x6D\x70\x34") 
+        if (substr($sequence, 8, 3) === "\x6D\x70\x34") 
             return true;
 
         $i = 16;
         while ($i < $box_size) {
-            if (substr( $sequence, $i, 3 ) === "\x6D\x70\x34") {
+            if (substr($sequence, $i, 3) === "\x6D\x70\x34") {
                 return true;
             }
 

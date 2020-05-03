@@ -697,6 +697,7 @@
         uploaderErrors.server[UPLOAD_NO_FILE] = abp01MainL10n.errServerUploadNoFile;
         uploaderErrors.server[UPLOAD_INTERNAL_ERROR] = abp01MainL10n.errServerUploadInternal;
         uploaderErrors.server[UPLOAD_STORE_FAILED] = abp01MainL10n.errServerUploadStoreFailed;
+        uploaderErrors.server[UPLOAD_NOT_VALID] = abp01MainL10n.errServerCustomValidationFail;
         uploaderErrors.server[UPLOAD_STORE_INITIALIZATION_FAILED] = abp01MainL10n.errServerUploadStoreInitiationFailed;
         uploaderErrors.server[UPLOAD_INVALID_UPLOAD_PARAMS] = abp01MainL10n.errServerUploadInvalidUploadParams;
         uploaderErrors.server[UPLOAD_DESTINATION_FILE_NOT_FOUND] = abp01MainL10n.errServerUploadDestinationFileNotFound;

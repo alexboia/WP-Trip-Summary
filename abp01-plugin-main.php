@@ -381,6 +381,7 @@ function abp01_get_main_admin_script_translations() {
 		'errServerUploadDestinationFileNotFound' => esc_html__('The destination were the track file was uploaded cannot be found. This usually indicates an internal server issue.', 'abp01-trip-summary'),
 		'errServerUploadDestinationFileCorrupt' => esc_html__('The destination were the track file was uploaded has been found, but is corrupt. This usually indicates a problem with the file itself or, less likely, an internal server issue.', 'abp01-trip-summary'),
 		'errServerUploadFail' =>  esc_html__('The file could not be uploaded', 'abp01-trip-summary'),
+		'errServerCustomValidationFail' => esc_html__('The uploaded file was not a valid GPX file', 'abp01-trip-summary'), 
 		'selectBoxPlaceholder' => esc_html__('Choose options', 'abp01-trip-summary'),
 		'selectBoxCaptionFormat' => esc_html__('{0} selected', 'abp01-trip-summary'),
 		'selectBoxSelectAllText' => esc_html__('Select all', 'abp01-trip-summary'),
