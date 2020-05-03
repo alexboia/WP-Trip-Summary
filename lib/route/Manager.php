@@ -35,24 +35,34 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 
 class Abp01_Route_Manager {
 	/**
-	 * @var Abp01_Route_Manager The route manager singleton instance
+	 * The route manager singleton instance
+	 * 
+	 * @var Abp01_Route_Manager
 	 * */
 	private static $_instance = null;
 
+	/**
+	 * The last error that occured during a route manager operation
+	 * 
+	 * @var Exception|WP_Error
+	 */
 	private $_lastError = null;
 
 	/**
-	 * @var Abp01_Env The environment
+	 * @var Abp01_Env The environment accessor instance
 	 * */
 	private $_env = null;
 
 	/**
-	 * @var Abp01_Route_SphericalMercator The projection used
+	 * The projection being used to process coordinates
+	 * 
+	 * @var Abp01_Route_SphericalMercator
 	 * */
 	private  $_proj = null;
 
 	/**
 	 * Retrieves the route manager singleton instance
+	 * 
 	 * @return Abp01_Route_Manager
 	 * */
 	public static function getInstance() {
