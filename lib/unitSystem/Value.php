@@ -51,21 +51,49 @@ abstract class Abp01_UnitSystem_Value {
      */
     protected $_unitSystem;
 
-    protected function __construct($value, Abp01_UnitSystem $unitSystem) {
+    protected function __construct($value, $unitSystem = null) {
+        if (!($unitSystem instanceof Abp01_UnitSystem)) {
+            if (!empty($unitSystem)) {
+                $unitSystem = $this->_createUnitSystemInstanceOrThrow($unitSystem);
+            } else {
+                $unitSystem = Abp01_UnitSystem::create(Abp01_UnitSystem::METRIC);
+            }
+        }
+
         $this->_value = $value;
         $this->_unitSystem = $unitSystem;
+    }
+
+    private function _createUnitSystemInstanceOrThrow($unitSystem) {
+        if (!Abp01_UnitSystem::isSupported($unitSystem)) {
+            throw new InvalidArgumentException('Unsupported unit system: "' . $unitSystem . '"');
+        }
+
+        return Abp01_UnitSystem::create($unitSystem);
     }
 
     /**
      * Converts the value to the given unit system
      * 
-     * @param Abp01_UnitSystem $otherSystem The target unit system
-     * @return Abp01_UnitSystemValue The converted value
+     * @param Abp01_UnitSystem|string $otherSystem The target unit system, either as an instance or a supported descriptor value.
+     * @return Abp01_UnitSystem_Value The converted value
      */
-    public function convertTo(Abp01_UnitSystem $otherSystem) {
+    public function convertTo($otherSystem) {
+        $otherSystem = !($otherSystem instanceof Abp01_UnitSystem) 
+            ? $this->_createUnitSystemInstanceOrThrow($otherSystem) 
+            : $otherSystem;
+
         $className = get_class($this);
         $convertedValue = $this->convertValueTo($otherSystem);
+
         return new $className($convertedValue, $otherSystem);
+    }
+
+    public function toPlainObject() {
+        $data = new stdClass();
+        $data->value = $this->_value;
+        $data->unit = $this->getUnit();
+        return $data;
     }
 
     /**

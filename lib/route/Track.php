@@ -34,6 +34,8 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Route_Track {
+    private $_postId;
+
     private $_bounds;
 
     private $_file;
@@ -42,14 +44,20 @@ class Abp01_Route_Track {
 
     public $minAlt;
 
-    public function __construct($file, Abp01_Route_Track_Bbox $bounds, $minAlt = 0, $maxAlt = 0) {
-        if (empty($file)) {
-            throw new InvalidArgumentException();
-        }
-        if ($bounds == null) {
-            throw new InvalidArgumentException();
+    public function __construct($postId, $file, Abp01_Route_Track_Bbox $bounds, $minAlt = 0, $maxAlt = 0) {
+        if (empty($postId)) {
+            throw new InvalidArgumentException('Post ID cannot be empty');
         }
 
+        if (empty($file)) {
+            throw new InvalidArgumentException('File cannot be empty');
+        }
+
+        if ($bounds == null) {
+            throw new InvalidArgumentException('The bounds cannot be empty');
+        }
+
+        $this->_postId = $postId;
         $this->_file = $file;
         $this->_bounds = $bounds;
 
@@ -58,7 +66,8 @@ class Abp01_Route_Track {
     }
 
     public function equals(Abp01_Route_Track $other) {
-        return $other->_bounds->equals($this->_bounds)
+        return $other->_postId == $this->_postId
+            && $other->_bounds->equals($this->_bounds)
             && $other->_file === $this->_file
             && abs($other->minAlt - $this->minAlt) < 0.1
             && abs($other->maxAlt - $this->maxAlt) < 0.1;
@@ -70,5 +79,9 @@ class Abp01_Route_Track {
 
     public function getFile() {
         return $this->_file;
+    }
+
+    public function getPostId() {
+        return $this->_postId;
     }
 }

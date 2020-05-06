@@ -176,7 +176,7 @@ abstract class Abp01_UnitSystem {
         if (isset($conversions[$fromUnit])) {
             if (isset($conversions[$fromUnit][$toUnit])) {
                 $conv = $conversions[$fromUnit][$toUnit];
-                return $value * $conv['factor'] + $conv['offset'];
+                return round($value * $conv['factor'] + $conv['offset'], 2);
             } else {
                 throw new InvalidArgumentException('No conversions available to unit "' . $toUnit . '"');
             }

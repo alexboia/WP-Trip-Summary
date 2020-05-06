@@ -194,8 +194,8 @@ class Abp01_Route_Manager {
 		}
 	}
 
-	public function saveRouteTrack($postId, $currentUserId, Abp01_Route_Track $track) {
-		$postId = intval($postId);
+	public function saveRouteTrack(Abp01_Route_Track $track, $currentUserId) {
+		$postId = intval($track->getPostId());
 		if ($postId <= 0) {
 			throw new InvalidArgumentException('Invalid post ID: "' . $postId . '"');
 		}
@@ -287,6 +287,9 @@ class Abp01_Route_Manager {
 		return Abp01_Route_Info::fromJson($type, $json);
 	}
 
+	/**
+	 * @return Abp01_Route_Track
+	 */
 	public function getRouteTrack($postId) {
 		$postId = intval($postId);
 		if ($postId <= 0) {
@@ -324,7 +327,9 @@ class Abp01_Route_Manager {
 				$maxCoord['lat'],
 				$maxCoord['lng']);
 
-			$track = new Abp01_Route_Track($file, $bounds,
+			$track = new Abp01_Route_Track($postId, 
+				$file, 
+				$bounds,
 				floatval($row['route_min_alt']),
 				floatval($row['route_max_alt']));
 
@@ -332,6 +337,13 @@ class Abp01_Route_Manager {
 		} else {
 			return null;
 		}
+	}
+
+	/**
+	 * @return Abp01_Route_Track_Document
+	 */
+	public function getRouteTrackDocument() {
+
 	}
 
 	public function hasRouteTrack($postId) {
@@ -407,6 +419,104 @@ class Abp01_Route_Manager {
 		}
 
 		return $statusInfo;
+	}
+
+	public function deleteTrackFiles($postId) {
+		//delete track file
+		$trackFile = $this->getTrackUploadDestination($postId);
+		if (!empty($trackFile) && file_exists($trackFile)) {
+			@unlink($trackFile);
+		}
+
+		//delete cached track file
+		$cacheFile = $this->getTrackDocumentCacheFilePath($postId);
+		if (!empty($cacheFile) && file_exists($cacheFile)) {
+			@unlink($cacheFile);
+		}
+	}
+
+	public function getOrCreateDisplayableTrackDocument(Abp01_Route_Track $track) {
+		$trackDocument = $this->_getCachedTrackDocument($track->getPostId());
+
+		if (!($trackDocument instanceof Abp01_Route_Track_Document)) {
+			$file = $this->getTrackUploadDestination($track->getPostId());
+			if (is_readable($file)) {
+				$parser = new Abp01_Route_Track_GpxDocumentParser();
+				$trackDocument = $parser->parse(file_get_contents($file));
+				if (!empty($trackDocument)) {
+					$trackDocument = $trackDocument->simplify(0.01);
+					$this->_cacheTrackDocument($track->getPostId(), $trackDocument);
+				}
+			}
+		}
+
+		return $trackDocument;
+	}
+
+	/**
+	 * Caches the serialized version of the given track document for the given post ID
+	 * 
+	 * @param int $postId The post ID
+	 * @param Abp01_Route_Track_Document $trackDocument The track document
+	 * @return void
+	 */
+	private function _cacheTrackDocument($postId, Abp01_Route_Track_Document $trackDocument) {
+		//Ensure the storage directory structure exists
+		abp01_ensure_storage_directory();
+
+		//Compute the path at which to store the cached file 
+		//	and store the serialized track data
+		$path = $this->getTrackDocumentCacheFilePath($postId);
+		if (!empty($path)) {
+			file_put_contents($path, $trackDocument->serializeDocument(), LOCK_EX);
+		}
+	}
+
+	/**
+	 * Retrieves and deserializes the cached version of the 
+	 * 	track document corresponding to the given post ID
+	 * 
+	 * @param int $postId The post ID
+	 * @return Abp01_Route_Track_Document The deserialized document
+	 */
+	private function _getCachedTrackDocument($postId) {
+		$path = $this->getTrackDocumentCacheFilePath($postId);
+		if (empty($path) || !is_readable($path)) {
+			return null;
+		}
+
+		$contents = file_get_contents($path);
+		return Abp01_Route_Track_Document::fromSerializedDocument($contents);
+	}
+
+	/**
+	 * Computes the track document cache file path for the given post ID
+	 * 
+	 * @param int $postId The post identifier
+	 * @return string
+	 */
+	public function getTrackDocumentCacheFilePath($postId) {
+		$fileName = sprintf('track-%d.cache', $postId);
+		$cacheStorageDir = $this->_env->getCacheStorageDir();
+
+		return is_dir($cacheStorageDir) 
+			? wp_normalize_path($cacheStorageDir . '/' . $fileName) 
+			: null;
+	}
+
+	/**
+	 * Compute the absolute file upload destination file path for the given post ID
+	 * 
+	 * @param int $postId The post ID
+	 * @return string The computed path
+	 */
+	public function getTrackUploadDestination($postId) {
+		$fileName = sprintf('track-%d.gpx', $postId);
+		$tracksStorageDir = abp01_get_env()->getTracksStorageDir();
+
+		return is_dir($tracksStorageDir) 
+			? wp_normalize_path($tracksStorageDir . '/' . $fileName) 
+			: null;
 	}
 
 	public function getLastError() {

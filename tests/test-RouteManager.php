@@ -32,6 +32,7 @@
  class RouteManagerTests extends WP_UnitTestCase {
     use RouteInfoTestDataSets;
     use GenericTestHelpers;
+    use RouteTrackTestDataHelpers;
     use DbTestHelpers;
 
     private $_testPostRouteData = array();
@@ -159,9 +160,9 @@
     public function test_canSaveRouteTrack_nonExistingForPost($track) {
         $routeManager = $this->_getRouteManager();
         $currentUserId = $this->_generateCurrentUserId();
-        $postId = $this->_generatePostId();
+        $postId = $track->getPostId();
 
-        $result = $routeManager->saveRouteTrack($postId, $currentUserId, $track);
+        $result = $routeManager->saveRouteTrack($track, $currentUserId);
         $this->assertTrue($result);
 
         $retrievedTrack = $routeManager->getRouteTrack($postId);
@@ -174,10 +175,10 @@
         $routeManager = $this->_getRouteManager();
         
         foreach ($this->_testPostRouteData as $postId => $postRouteData) {
-            $newTrack = $this->_generateRandomRouteTrack();
+            $newTrack = $this->_generateRandomRouteTrack($postId);
             $currentUserId = $this->_generateCurrentUserId();
 
-            $result = $routeManager->saveRouteTrack($postId, $currentUserId, $newTrack);
+            $result = $routeManager->saveRouteTrack($newTrack, $currentUserId);
             $this->assertTrue($result);
 
             $retrievedTrack = $routeManager->getRouteTrack($postId);
@@ -425,7 +426,7 @@
             $postId = $this->_generatePostId($postIds);
             $routeInfoData = $this->_generateRandomRouteInfoWithType();
             $currentUserId = $this->_generateCurrentUserId();
-            $track = $this->_generateRandomRouteTrack();
+            $track = $this->_generateRandomRouteTrack($postId);
 
             $type = $routeInfoData[0];
             $routeInfo = new Abp01_Route_Info($type);

@@ -59,6 +59,7 @@ function abp01_create_edit_nonce($postId) {
 
 /**
  * Creates a nonce to be used when reading a trip's GPX track
+ * 
  * @param int $postId The ID of the post for which the nonce will be generated
  * @return string The created nonce
  */
@@ -68,6 +69,7 @@ function abp01_create_get_track_nonce($postId) {
 
 /**
  * Creates a nonce to be used when downloading a trips' GPX track
+ * 
  * @param int $postId The ID of the post for which the nonce will be generated
  * @return string The created nonce
  */
@@ -77,6 +79,7 @@ function abp01_create_download_track_nonce($postId) {
 
 /**
  * Creates a nonce to be used when saving plugin settings
+ * 
  * @return string The created nonce
  */
 function abp01_create_edit_settings_nonce() {
@@ -85,6 +88,7 @@ function abp01_create_edit_settings_nonce() {
 
 /**
  * Creates a nonce to be used when managing look-up data operations
+ * 
  * @return string The created nonce
  */
 function abp01_create_manage_lookup_nonce() {
@@ -93,6 +97,7 @@ function abp01_create_manage_lookup_nonce() {
 
 /**
  * Checks whether the current request has a valid nonce for the given post ID in the context of track editing
+ * 
  * @param int $postId
  * @return bool True if valid, False otherwise
  */
@@ -102,6 +107,7 @@ function abp01_verify_edit_nonce($postId) {
 
 /**
  * Checks whether the current request has a valid nonce for the given post ID in the context of reading a trip's GPS track
+ * 
  * @param int $postId
  * @return bool True if valid, False otherwise
  */
@@ -111,6 +117,7 @@ function abp01_verify_get_track_nonce($postId) {
 
 /**
  * Checks whether the current request has a valid nonce for the given post ID in the context of downloading a trip's GPS track
+ * 
  * @param int $postId
  * @return bool True if valid, False otherwise
  */
@@ -120,6 +127,7 @@ function abp01_verify_download_track_nonce($postId) {
 
 /**
  * Checks whether the current request has a valid edit settings nonce
+ * 
  * @return bool True if valid, false otherwise
  */
 function abp01_verify_edit_settings_nonce() {
@@ -128,32 +136,11 @@ function abp01_verify_edit_settings_nonce() {
 
 /**
  * Checks whether the current request has a valid lookup data management nonce
+ * 
  * @return bool True if valid, false otherwise
  */
 function abp01_verify_manage_lookup_nonce() {
 	return check_ajax_referer(ABP01_NONCE_MANAGE_LOOKUP, 'abp01_nonce_lookup_mgmt', false);	
-}
-
-/**
- * Ensures that the root storage directory of the plug-in exists and creates if it does not.
- * @return void
- */
-function abp01_ensure_storage_directory() {
-	abp01_get_installer()->ensureStorageDirectories();
-}
-
-/**
- * Compute the full GPX file upload destination file path for the given post ID
- * @param int $postId
- * @return string The computed path
- */
-function abp01_get_track_upload_destination($postId) {
-	$fileName = sprintf('track-%d.gpx', $postId);
-	$tracksStorageDir = abp01_get_env()->getTracksStorageDir();
-
-	return is_dir($tracksStorageDir) 
-		? wp_normalize_path($tracksStorageDir . '/' . $fileName) 
-		: null;
 }
 
 /**
@@ -190,6 +177,7 @@ function abp01_is_editing_post() {
 
 /**
  * Check whether the currently displayed screen is the plugin settings management screen
+ * 
  * @return boolean True if on plugin settings page, false otherwise
  */
 function abp01_is_editing_plugin_settings() {
@@ -198,6 +186,7 @@ function abp01_is_editing_plugin_settings() {
 
 /**
  * Check whether the currently displayed screen is the plugin lookup data management screen
+ * 
  * @return booelan True if on plugin lookup data management page, false otherwise
  */
 function abp01_is_managing_lookup() {
@@ -206,6 +195,7 @@ function abp01_is_managing_lookup() {
 
 /**
  * Check whether the currently displayed screen is the help page
+ * 
  * @return booelan True if on plugin lookup help page, false otherwise
  */
 function abp01_is_browsing_help() {
@@ -217,6 +207,7 @@ function abp01_is_browsing_help() {
  *  - The global $post object
  *  - The value of the _GET 'post' parameter
  *  - The value of the _GET 'abp01_postId' post parameter
+ * 
  * @return mixed Int if a post ID is found, null otherwise
  */
 function abp01_get_current_post_id() {
@@ -233,6 +224,7 @@ function abp01_get_current_post_content() {
 /**
  * Checks whether the current user can edit the current post's trip summary details.
  * If null is given, the function tries to infer the current post ID from the current context
+ * 
  * @param mixed The current post as either a WP_Post instance, an integer or a null value
  * @return bool True if can edit, false otherwise
  */
@@ -249,61 +241,11 @@ function abp01_can_edit_trip_summary($post = null) {
 
 /**
  * Checkes whether the current user has the permission to manage plug-in settings
+ * 
  * @return boolean True if it has permission, false otherwise
  */
 function abp01_can_manage_plugin_settings() {
 	return Abp01_Auth::getInstance()->canManagePluginSettings();
-}
-
-/**
- * Computes the GPX track cache file path for the given post ID
- * @param int $postId
- * @param bool $ensureExists
- * @return string
- */
-function abp01_get_track_cache_file_path($postId) {
-	$fileName = sprintf('track-%d.cache', $postId);
-	$cacheStorageDir = abp01_get_env()->getCacheStorageDir();
-
-	return is_dir($cacheStorageDir) 
-		? wp_normalize_path($cacheStorageDir . '/' . $fileName) 
-		: null;
-}
-
-/**
- * Caches the serialized version of the given GPX track document for the given post ID
- * @param int $postId
- * @param Abp01_Route_Track_Document $route
- * @return void
- */
-function abp01_save_cached_track($postId, Abp01_Route_Track_Document $route) {
-	//Ensure the storage directory structure exists
-	abp01_ensure_storage_directory();
-
-	//Compute the path at which to store the cached file 
-	//	and store the serialized track data
-	$path = abp01_get_track_cache_file_path($postId);
-	if (!empty($path)) {
-		file_put_contents($path, $route->serializeDocument(), LOCK_EX);
-	}
-}
-
-/**
- * Retrieves and deserializes the cached version of the 
- * 	GPX track document corresponding to the given post ID
- * 
- * @param int $postId
- * @return Abp01_Route_Track_Document The deserialized document
- */
-function abp01_get_cached_track($postId) {
-	$path = abp01_get_track_cache_file_path($postId);
-
-	if (empty($path) || !is_readable($path)) {
-		return null;
-	}
-
-	$contents = file_get_contents($path);
-	return Abp01_Route_Track_Document::fromSerializedDocument($contents);
 }
 
 /**
@@ -1776,8 +1718,10 @@ function abp01_upload_track() {
 	//ensure the storage directory structure exists
 	abp01_ensure_storage_directory();
 
+	$manager = abp01_get_route_manager();
 	$currentUserId = get_current_user_id();
-	$destination = abp01_get_track_upload_destination($postId);
+
+	$destination = $manager->getTrackUploadDestination($postId);
 	if (empty($destination)) {
 		die;
 	}
@@ -1810,21 +1754,22 @@ function abp01_upload_track() {
 	$result->status = $uploader->receive();
 	$result->ready = $uploader->isReady();
 
-	//if the upload has completed, then process the newly uploaded file and save the track information
+	//if the upload has completed, then process the newly 
+	//	uploaded file and save the track information
 	if ($result->ready) {
 		$route = file_get_contents($destination);
 		if (!empty($route)) {
 			$parser = new Abp01_Route_Track_GpxDocumentParser();
 			$route = $parser->parse($route);
 			if ($route && !$parser->hasErrors()) {
-				$manager = abp01_get_route_manager();
 				$destination = basename($destination);
-				$track = new Abp01_Route_Track($destination, 
+				$track = new Abp01_Route_Track($postId, 
+					$destination, 
 					$route->getBounds(), 
 					$route->minAlt, 
 					$route->maxAlt);
 				
-				if (!$manager->saveRouteTrack($postId, $currentUserId, $track)) {
+				if (!$manager->saveRouteTrack($track, $currentUserId)) {
 					$result->status = Abp01_Uploader::UPLOAD_INTERNAL_ERROR;
 				} else {
 					abp01_clear_post_viewer_data_cache($postId);
@@ -1854,6 +1799,7 @@ function abp01_get_track() {
 		die;
 	}
 
+	//Verify cuurent post ID and nonce
 	$postId = abp01_get_current_post_id();
 	if (!$postId || !abp01_verify_get_track_nonce($postId)) {
 		die;
@@ -1863,41 +1809,53 @@ function abp01_get_track() {
 	//memory & cpu time (& xdebug.max_nesting_level)
 	abp01_increase_limits(ABP01_MAX_EXECUTION_TIME_MINUTES);
 
+	$settings = abp01_get_settings();
+	$manager = abp01_get_route_manager();
+
 	//initialize response data
 	$response = abp01_get_ajax_response(array(
 		'track' => null
 	));
 
-	$route = abp01_get_cached_track($postId);
-	if (!($route instanceof Abp01_Route_Track_Document)) {
-		$manager = abp01_get_route_manager();
-		$track = $manager->getRouteTrack($postId);
-		if ($track) {
-			$file = abp01_get_track_upload_destination($postId);
-			if (is_readable($file)) {
-				$parser = new Abp01_Route_Track_GpxDocumentParser();
-				$route = $parser->parse(file_get_contents($file));
-				if ($route) {
-					$route = $route->simplify(0.01);
-					$response->success = true;
-					abp01_save_cached_track($postId, $route);
-				} else {
-					$response->message = esc_html__('Track file could not be parsed', 'abp01-trip-summary');
-				}
-			} else {
-				$response->message = esc_html__('Track file not found or is not readable', 'abp01-trip-summary');
-			}
+	$track = $manager->getRouteTrack($postId);
+	if (!empty($track)) {
+		$trackDocument = $manager->getOrCreateDisplayableTrackDocument($track);
+		if (empty($trackDocument)) {
+			$response->message = esc_html__('Track file not found or is not readable', 'abp01-trip-summary');
+		} else {
+			$response->success = true;
 		}
-	} else {
-		$response->success = true;
 	}
 
 	if ($response->success) {
+		$response->info = new stdClass();
 		$response->track = new stdClass();
-		$response->track->route = $route;
-		$response->track->bounds = $route->getBounds();
-		$response->track->start = $route->getStartPoint();
-		$response->track->end = $route->getEndPoint();
+		$response->profile = new stdClass();
+
+		$response->track->route = $trackDocument;
+		$response->track->bounds = $trackDocument->getBounds();
+		$response->track->start = $trackDocument->getStartPoint();
+		$response->track->end = $trackDocument->getEndPoint();
+		$response->track->minAltitude = $track->minAlt;
+		$response->track->maxAltitude = $track->maxAlt;
+
+		//Only go through the trouble of converting 
+		//	these values for display if the user 
+		//	has opted to show min/max altitude information
+		if ($settings->getShowMinMaxAltitude()) {
+			$targetUnitSystem = $settings->getUnitSystem();
+
+			$minAlt = new Abp01_UnitSystem_Value_Height($track->minAlt);
+			$maxAlt = new Abp01_UnitSystem_Value_Height($track->maxAlt);
+
+			$response->info->minAltitude = $minAlt->convertTo($targetUnitSystem)
+				->toPlainObject();
+			$response->info->maxAltitude = $maxAlt->convertTo($targetUnitSystem)
+				->toPlainObject();
+		} else {
+			$response->info->minAltitude = null;
+			$response->info->maxAltitude = null;
+		}
 	}
 
 	abp01_send_json($response);
@@ -1934,7 +1892,7 @@ function abp01_download_track() {
     abp01_increase_limits(ABP01_MAX_EXECUTION_TIME_MINUTES);
 
     //get the file path and check if it's readable
-    $trackFile = abp01_get_track_upload_destination($postId);
+    $trackFile = abp01_get_route_manager()->getTrackUploadDestination($postId);
     if (empty($trackFile) || !is_readable($trackFile)) {
         die;
     }
@@ -1966,28 +1924,21 @@ function abp01_remove_track() {
 		die;
 	}
 
+	//Validate post ID, nonce and access rights
 	$postId = abp01_get_current_post_id();
-	if (!abp01_verify_edit_nonce($postId) || !abp01_can_edit_trip_summary($postId)) {
+	if (empty($postId) 
+		|| !abp01_verify_edit_nonce($postId) 
+		|| !abp01_can_edit_trip_summary($postId)) {
 		die;
 	}
 
-	$response = abp01_get_ajax_response();
 	$manager = abp01_get_route_manager();
+	$response = abp01_get_ajax_response();
 
 	if ($manager->deleteRouteTrack($postId)) {
-		//delete track file
-		$trackFile = abp01_get_track_upload_destination($postId);
-		if (!empty($trackFile) && file_exists($trackFile)) {
-			@unlink($trackFile);
-		}
-
-		//delete cached track file
-		$cacheFile = abp01_get_track_cache_file_path($postId);
-		if (!empty($cacheFile) && file_exists($cacheFile)) {
-			@unlink($cacheFile);
-		}
-
+		$manager->deleteTrackFiles($postId);
 		abp01_clear_post_viewer_data_cache($postId);
+
 		$response->success = true;
 	} else {
 		$response->message = esc_html__('The data could not be updated due to a possible database error', 'abp01-trip-summary');

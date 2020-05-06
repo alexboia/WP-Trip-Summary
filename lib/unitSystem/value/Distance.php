@@ -37,7 +37,7 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
  * @package WP-Trip-Summary
  */
 class Abp01_UnitSystem_Value_Distance extends Abp01_UnitSystem_Value {
-    public function __construct($value, Abp01_UnitSystem $unitSystem) {
+    public function __construct($value, $unitSystem = null) {
         parent::__construct($value, $unitSystem);
     }
 

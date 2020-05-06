@@ -297,3 +297,13 @@ function abp01_get_ajax_baseurl() {
 function abp01_get_http_method() {
 	return abp01_get_env()->getHttpMethod();
 }
+
+/**
+ * Ensures that the root storage directory of the plug-in
+ *  exists and creates if it does not.
+ * 
+ * @return void
+ */
+function abp01_ensure_storage_directory() {
+	abp01_get_installer()->ensureStorageDirectories();
+}

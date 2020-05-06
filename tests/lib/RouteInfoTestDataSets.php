@@ -124,55 +124,6 @@
 		return $data;
     }
 
-    public function _generateRandomRouteTracks() {
-        $routeTracks = array();
-        $faker = $this->_getFaker();
-
-        $deltaLat = $faker->numberBetween(2, 10);
-        $deltaLng = $faker->numberBetween(2, 10);
-
-        for ($i = 0; $i < 10; $i++) {
-            $routeTracks[] = array(
-                $this->_generateRandomRouteTrack($deltaLat, $deltaLng)
-            );
-        }
-
-        return $routeTracks;
-    }
-
-    protected function _generateRandomRouteTrack() {
-        $faker = $this->_getFaker();
-        
-        if (func_get_args() == 2) {
-            $deltaLat = func_get_arg(0);
-            $deltaLng = func_get_arg(1);
-        } else {
-            $deltaLat = $faker->numberBetween(2, 10);
-            $deltaLng = $faker->numberBetween(2, 10);
-        }
-
-        $minLat = $faker->randomFloat(5, -85, 85 - $deltaLat * 2);
-        $minLng = $faker->randomFloat(5, -180, 180 - $deltaLng * 2);
-
-        $maxLat = $minLat + $deltaLat;
-        $maxLng = $minLng + $deltaLng;
-        
-        $fileName = $faker->uuid . '.gpx';
-
-        $minAltitude = $faker->randomFloat(3, 0, 4000);
-        $maxAltitude = $minAltitude + $faker->randomFloat(3, 0, 4000);
-
-        $bbox = new Abp01_Route_Track_Bbox($minLat, 
-            $minLng, 
-            $maxLat, 
-            $maxLng);
-
-        return new Abp01_Route_Track($fileName, 
-            $bbox, 
-            $minAltitude, 
-            $maxAltitude);
-    }
-
     protected function _generateValue($fieldDescriptor) {
 		$faker = $this->_getFaker();
 		if (!$fieldDescriptor) {
