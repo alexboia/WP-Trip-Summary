@@ -40,6 +40,7 @@
         var mapDestroyed = false;
         var magnifyingGlassControl = null;
         var magnifyingGlassLayer = null;
+        var minMaxAltitudeBox = false;
 
         //default is to show scale, but not show magnifying glass, because I see no real use for it
         opts = $.extend({
@@ -47,6 +48,7 @@
             showMagnifyingGlass: false,
             trackDownloadUrl: null,
             showScale: true,
+            showMinMaxAltitude: false,
             tileLayer: null,
             trackLineColour: '#0033ff',
             trackLineWeight: 3
@@ -103,6 +105,7 @@
          * Adds the magnifying glass feature, comprised of:
          * - the magnifying glass map layer;
          * - the magnifying glass button.
+         * 
          * @param map Object The map to which this feature will be added
          * @param tileLayerUrl String The URL of the tile source used by the magnifying glass layer
          * @return void
@@ -117,18 +120,47 @@
             //add the control to map, using the newly created layer
             magnifyingGlassControl = L.control.magnifyingGlassButton(magnifyingGlassLayer, {
                 forceSeparateButton: true
-            }).addTo(map);
+            });
+
+            magnifyingGlassControl.addTo(map);
+            return magnifyingGlassControl;
         }
 
         /**
          * Adds the track download button to the given map, with the given URL
+         * 
          * @param map Object The map to which the button will be added
          * @param trackDownloadUrl String The URL to which the button will direct the user
          * @return void
          * */
         function addTrackDownloadCapability(map, trackDownloadUrl) {
-            var control = new L.Control.IconButton('dashicons dashicons-download abp01-track-download-link', trackDownloadUrl);
-            control.addTo(map);
+            var trackDownloadButtonControl = L.control.iconButton('dashicons dashicons-download abp01-track-download-link', 
+                trackDownloadUrl);
+
+            trackDownloadButtonControl.addTo(map);
+            return trackDownloadButtonControl;
+        }
+
+        function addMinMaxAltitudeBox(map) {
+            var minMaxAltitudeBoxControl = L.control.minMaxAltitudeBox({});
+            minMaxAltitudeBoxControl.addTo(map);
+            return minMaxAltitudeBoxControl;
+        }
+
+        function addMinMaxAltitudeControl(map) {
+            var minMaxAltitudeBoxTogglerControl = L.control.iconButton('dashicons dashicons-sort abp01-track-minmaxalt-btn', null, {
+                onClick: function(event) {
+                    if (!minMaxAltitudeBox) {
+                        minMaxAltitudeBox = addMinMaxAltitudeBox(map);
+                    } else {
+                        map.removeControl(minMaxAltitudeBox);
+                        minMaxAltitudeBox = null;
+                    }
+                }
+            });
+            
+            minMaxAltitudeBoxTogglerControl.addTo(map);
+            return minMaxAltitudeBoxTogglerControl;
         }
         
         /**
@@ -190,6 +222,11 @@
             //check if we should add the magnifying glass
             if (opts.showMagnifyingGlass && isMagnifyingGlassCapabilityLoaded()) {
                 addMagnifyingGlassCapability(map, tileLayerUrl);
+            }
+
+            //check if we should add min/max altitude display controls
+            if (opts.showMinMaxAltitude) {
+                addMinMaxAltitudeControl(map);
             }
 
             //check if we should add the map scale

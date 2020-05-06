@@ -66,6 +66,8 @@ class Abp01_Includes {
 	
 	const JS_LEAFLET_ICON_BUTTON = 'abp01-leaflet-icon-button';
 
+	const JS_LEAFLET_MIN_MAX_ALTITUDE_BOX = 'abp01-min-max-altitude-box';
+
 	const JS_LODASH = 'lodash';
 
 	const JS_MACHINA = 'machina';
@@ -248,6 +250,15 @@ class Abp01_Includes {
 				self::JS_LEAFLET
 			)
 		),
+		self::JS_LEAFLET_MIN_MAX_ALTITUDE_BOX => array(
+			'path' => 'media/js/abp01-min-max-altitude-box.js',
+			'version' => ABP01_VERSION,
+			'is-leaflet-plugin' => true,
+			'needs-wrap' => false,
+			'deps' => array(
+				self::JS_LEAFLET
+			)
+		),
 		self::JS_MACHINA => array(
 			'path' => 'media/js/3rdParty/machina/machina.js', 
 			'version' => '0.3.1',
@@ -322,6 +333,7 @@ class Abp01_Includes {
 				self::JS_LEAFLET_MAGNIFYING_GLASS,
 				self::JS_LEAFLET_MAGNIFYING_GLASS_BUTTON,
 				self::JS_LEAFLET_ICON_BUTTON,
+				self::JS_LEAFLET_MIN_MAX_ALTITUDE_BOX,
 				self::JS_ABP01_MAP
 			)
 		), 

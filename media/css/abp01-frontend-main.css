@@ -302,10 +302,57 @@ ul.abp01-techbox-tabs {
     text-decoration: underline;
 }
 
-.abp01-track-download-link {
+.abp01-track-download-link,
+.abp01-track-minmaxalt-btn {
     margin-top: 5px;
 }
 
 .abp01-map .leaflet-control-container .leaflet-control a {
     text-decoration: none !important;
+}
+
+.abp01-min-max-altitude-box {
+    width: 210px;
+    height: 60px;
+    background-color: #000000;
+    opacity: 0.75;
+    color: #fff;
+    border-radius: 3px;
+}
+
+.abp01-min-max-altitude-box-line {
+    width: 100%;
+    height: 30px;
+    line-height: 20px;
+    padding: 5px;
+    box-sizing: border-box;
+    vertical-align: middle;
+    font-size: 12px;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.abp01-min-max-altitude-box-line-spacer {
+    width: calc(100% - 10px);
+    height: 1px;
+    border-bottom: 1px solid #fff;
+    box-sizing: border-box;
+    margin: 0px 5px 0px 5px;
+    opacity: 0.25;
+}
+
+.abp01-min-max-altitude-lbl {
+    display: inline-block;
+    width: 65%;
+    box-sizing: border-box;
+    padding-right: 5px;
+    text-align: right;
+    font-weight: bold;
+}
+
+.abp01-min-max-altitude-val {
+    display: inline-block;
+    width: 35%;
+    box-sizing: border-box;
+    text-align: left;
 }
