@@ -33,7 +33,24 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
+/**
+ * @package WP-Trip-Summary
+ */
 class Abp01_UnitSystem_Metric extends Abp01_UnitSystem {
+	protected function getConversions() {
+		return array(
+			'km' => array(
+				'mi' => array('factor' => 0.621371, 'offset' => 0)
+			),
+			'mm' => array(
+				'in' => array('factor' => 0.0393701, 'offset' => 0)
+			),
+			'm' => array(
+				'ft' => array('factor' => 3.28084, 'offset' => 0)
+			)
+		);
+	}
+
 	public function getDistanceUnit() {
 		return 'km';
 	}

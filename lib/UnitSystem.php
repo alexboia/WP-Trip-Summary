@@ -39,6 +39,8 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
  * Currently supported unit systems are:
  * - metric;
  * - imperial.
+ * 
+ * @package WP-Trip-Summary
  * */
 abstract class Abp01_UnitSystem {
     /**
@@ -94,6 +96,113 @@ abstract class Abp01_UnitSystem {
         $data->heightUnit = $this->getHeightUnit();
         return $data;
     }
+
+    public function canConvertDistanceTo(Abp01_UnitSystem $otherSystem) {
+        return $this->_canConvertBetweenUnits($this->getDistanceUnit(), 
+            $otherSystem->getDistanceUnit());
+    }
+
+    /**
+     * Convert the given distance value tot he given unit system
+     * 
+     * @param mixed $value The value to convert
+     * @param Abp01_UnitSystem $otherSystem The target unit system
+     * 
+     * @return mixed The converted value
+     */
+    public function convertDistanceTo($value, Abp01_UnitSystem $otherSystem) {
+        return $this->_convertBetweenUnits($value, 
+            $this->getDistanceUnit(), 
+            $otherSystem->getDistanceUnit());
+    }
+
+    public function canConvertLengthTo(Abp01_UnitSystem $otherSystem) {
+        return $this->_canConvertBetweenUnits($this->getLengthUnit(), 
+            $otherSystem->getLengthUnit());
+    }
+
+    /**
+     * Convert the given length value tot he given unit system
+     * 
+     * @param mixed $value The value to convert
+     * @param Abp01_UnitSystem $otherSystem The target unit system
+     * 
+     * @return mixed The converted value
+     */
+    public function convertLengthTo($value, Abp01_UnitSystem $otherSystem) {
+        return $this->_convertBetweenUnits($value, 
+            $this->getLengthUnit(), 
+            $otherSystem->getLengthUnit());
+    }
+
+    public function canConvertHeightTo(Abp01_UnitSystem $otherSystem) {
+        return $this->_canConvertBetweenUnits($this->getHeightUnit(), 
+            $otherSystem->getHeightUnit());
+    }
+
+    /**
+     * Convert the given height value tot he given unit system
+     * 
+     * @param mixed $value The value to convert
+     * @param Abp01_UnitSystem $otherSystem The target unit system
+     * 
+     * @return mixed The converted value
+     */
+    public function convertHeightTo($value, Abp01_UnitSystem $otherSystem) {
+        return $this->_convertBetweenUnits($value, 
+            $this->getHeightUnit(), 
+            $otherSystem->getHeightUnit());
+    }
+
+    private function _canConvertBetweenUnits($fromUnit, $toUnit) {
+        $conversions = $this->getConversions();
+        return isset($conversions[$fromUnit]) && isset($conversions[$fromUnit][$toUnit]);
+    }
+
+    /**
+     * Convert a value between to units.
+     * 
+     * @param mixed $value
+     * @param string $fromUnit The unit in which the value is originally expressed
+     * @param string $toUnit The unit in which the value needs to be converted
+     * @return mixed The converted value
+     */
+    private function _convertBetweenUnits($value, $fromUnit, $toUnit) {
+        if ($fromUnit == $toUnit) {
+            return $value;
+        }
+
+        $conversions = $this->getConversions();
+        if (isset($conversions[$fromUnit])) {
+            if (isset($conversions[$fromUnit][$toUnit])) {
+                $conv = $conversions[$fromUnit][$toUnit];
+                return $value * $conv['factor'] + $conv['offset'];
+            } else {
+                throw new InvalidArgumentException('No conversions available to unit "' . $toUnit . '"');
+            }
+        } else {
+            throw new InvalidArgumentException('No conversions available from unit "' . $fromUnit . '"');
+        }
+    }
+
+    /**
+     * Gets the available unit conversions, as an array 
+     *  with the following structure:
+     *  
+     *  array(
+     *      sourceUnit => array(
+     *          targetUnit => array('factor' => x, 'offset' => y)
+     *      )
+     *  )
+     * 
+     * Each conversion is expressed, in relation to another unit 
+     *  using a generic formula
+     * 
+     *  targetUnit = sourceUnit * factor + offset.0
+     * 
+     * @return array The available conversions
+     */
+    abstract protected function getConversions();
 
     /**
      * Returns the unit, as a symbol, used to measure distances
