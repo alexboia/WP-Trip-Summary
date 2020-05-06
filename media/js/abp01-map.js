@@ -53,7 +53,11 @@
             showMinMaxAltitude: false,
             tileLayer: null,
             trackLineColour: '#0033ff',
-            trackLineWeight: 3
+            trackLineWeight: 3,
+            labels: {
+                minAltitude: null,
+                maxAltitude: null
+            }
         }, opts);
         
         //tile layer is mandatory, so we will exit with error if not provided
@@ -149,14 +153,14 @@
 
         function addMinMaxAltitudeBox(map) {
             var minMaxAltitudeBoxControl = L.control.minMaxAltitudeBox(trackInfo, {
-                minAltitude: '',
-                maxAltitude: ''
+                minAltitude: opts.labels.minAltitude,
+                maxAltitude: opts.labels.maxAltitude
             });
             minMaxAltitudeBoxControl.addTo(map);
             return minMaxAltitudeBoxControl;
         }
 
-        function addMinMaxAltitudeControl(map) {
+        function addMinMaxAltitudeBoxToggler(map) {
             var minMaxAltitudeBoxTogglerControl = L.control.iconButton('dashicons dashicons-sort abp01-track-minmaxalt-btn', null, {
                 onClick: function(event) {
                     if (!minMaxAltitudeBox) {
@@ -235,7 +239,7 @@
 
             //check if we should add min/max altitude display controls
             if (opts.showMinMaxAltitude) {
-                addMinMaxAltitudeControl(map);
+                addMinMaxAltitudeBoxToggler(map);
             }
 
             //check if we should add the map scale

@@ -314,10 +314,11 @@ ul.abp01-techbox-tabs {
 .abp01-min-max-altitude-box {
     width: 210px;
     height: 60px;
-    background-color: #000000;
-    opacity: 0.75;
+    background-color: #515151;
+    opacity: 0.80;
     color: #fff;
-    border-radius: 3px;
+    border-radius: 2px;
+    box-shadow: 0 2px 2px rgba(0,0,0,.06);
 }
 
 .abp01-min-max-altitude-box-line {
@@ -341,18 +342,25 @@ ul.abp01-techbox-tabs {
     opacity: 0.25;
 }
 
-.abp01-min-max-altitude-lbl {
-    display: inline-block;
-    width: 65%;
+.abp01-min-max-altitude-lbl,
+.abp01-min-max-altitude-val {
+    overflow: hidden;
+    white-space: nowrap;
+    -ms-text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
     box-sizing: border-box;
+    display: inline-block;
+}
+
+.abp01-min-max-altitude-lbl {
+    width: 65%;
     padding-right: 5px;
     text-align: right;
     font-weight: bold;
 }
 
 .abp01-min-max-altitude-val {
-    display: inline-block;
     width: 35%;
-    box-sizing: border-box;
     text-align: left;
 }

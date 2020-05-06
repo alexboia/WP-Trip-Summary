@@ -80,6 +80,12 @@
             trackLineColour: settings.trackLineColour,
             trackLineWeight: settings.trackLineWeight,
 
+            //labels
+            labels: {
+                minAltitude: abp01FrontendL10n.lblMinAltitude,
+                maxAltitude: abp01FrontendL10n.lblMaxAltitude
+            },
+
             //map and data options
             trackDataUrl : getAjaxLoadTrackUrl(),
             iconBaseUrl : context.imgBase,

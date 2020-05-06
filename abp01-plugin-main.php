@@ -402,7 +402,10 @@ function abp01_get_installation_error_translations() {
  * @return array key-value pairs where keys are javascript property names and values are the translation strings
  */
 function abp01_get_main_frontend_translations() {
-	return array();
+	return array(
+		'lblMinAltitude' => esc_html__('Minimum altitude:', 'abp01-trip-summary'),
+		'lblMaxAltitude' => esc_html__('Maximum altitude:', 'abp01-trip-summary')
+	);
 }
 
 /**
