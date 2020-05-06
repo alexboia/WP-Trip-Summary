@@ -3,7 +3,7 @@ Contributors: alexandruboia
 Donate link: https://ko-fi.com/alexandruboia
 Tags: trip, summary, map, gpx, travel
 Requires at least: 5.0
-Tested up to: 5.4.0
+Tested up to: 5.4.1
 Stable tag: 0.2.4
 Requires PHP: 5.6.2
 License: BSD New License

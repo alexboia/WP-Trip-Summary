@@ -302,8 +302,12 @@ ul.abp01-techbox-tabs {
     text-decoration: underline;
 }
 
-.abp01-track-download-link,
 .abp01-track-minmaxalt-btn {
+    margin-top: 3px;
+}
+
+.abp01-track-download-link,
+.leaflet-touch .abp01-track-minmaxalt-btn {
     margin-top: 5px;
 }
 
