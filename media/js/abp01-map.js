@@ -41,6 +41,8 @@
         var magnifyingGlassControl = null;
         var magnifyingGlassLayer = null;
         var minMaxAltitudeBox = false;
+        var trackProfile = null;
+        var trackInfo = null;
 
         //default is to show scale, but not show magnifying glass, because I see no real use for it
         opts = $.extend({
@@ -86,7 +88,11 @@
                 magnifyingGlassLayer = null;
                 map = null;
                 $me = null;
+
                 trackDataUrl = null;
+                trackProfile = null;
+                trackInfo = null;
+
                 mapLoaded = false;
                 mapDestroyed = true;
             }
@@ -142,7 +148,7 @@
         }
 
         function addMinMaxAltitudeBox(map) {
-            var minMaxAltitudeBoxControl = L.control.minMaxAltitudeBox({});
+            var minMaxAltitudeBoxControl = L.control.minMaxAltitudeBox(trackInfo);
             minMaxAltitudeBoxControl.addTo(map);
             return minMaxAltitudeBoxControl;
         }
@@ -158,7 +164,7 @@
                     }
                 }
             });
-            
+
             minMaxAltitudeBoxTogglerControl.addTo(map);
             return minMaxAltitudeBoxTogglerControl;
         }
@@ -305,9 +311,9 @@
          * @return void
          * */
          function loadTrack(onReady) {
-            function onReadyFn(success, bounds, route) {
+            function onReadyFn(success, bounds, route, profile, info) {
                 if (onReady && $.isFunction(onReady)) {
-                    onReady(success, bounds, route);
+                    onReady(success, bounds, route, profile, info);
                 }
             }
 
@@ -317,9 +323,13 @@
                 dataType: 'json'
             }).done(function(data, status, xhr) {
                 if (data && data.success && data.track) {
-                    onReady(true, data.track.bounds, data.track);
+                    onReadyFn(true, 
+                        data.track.bounds, 
+                        data.track, 
+                        data.profile || {}, 
+                        data.info || {});
                 } else {
-                    onReadyFn(false, null, null);
+                    onReadyFn(false, null, null, null, null);
                 }
             }).fail(function(xhr, status, error) {
                 onReadyFn(false, null, null);
@@ -351,12 +361,18 @@
                 opts.handlePreLoad.apply($me);
             }
 
-            loadTrack(function(success, bounds, track) {
+            trackInfo = null;
+            trackProfile = null;
+
+            loadTrack(function(success, bounds, track, profile, info) {
                 try {
                     if (success) {
                         renderMap(bounds);
                         plotRoute(track.route);
                         plotStartAndEnd(track, opts.iconBaseUrl || null);
+                        
+                        trackInfo = info;
+                        trackProfile = profile;
                     }
                 } catch (e) {
                     success = false;

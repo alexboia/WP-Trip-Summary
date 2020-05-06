@@ -38,6 +38,10 @@
             position: 'topright'
         },
 
+        _formatAltitudeDisplay(altInfo) {
+            return altInfo.value + ' ' + altInfo.unit;
+        },
+
         initialize: function(data, options) {
             if (data == null) {
                 throw new Error('Data is required!');
@@ -56,24 +60,28 @@
             var maxAltLine = L.DomUtil.create('div', 'abp01-min-max-altitude-box-line', 
                 container);
 
-            var minAltLabel = L.DomUtil.create('span', 'abp01-min-max-altitude-lbl', minAltLine);
-            var minAltValue = L.DomUtil.create('span', 'abp01-min-max-altitude-val', minAltLine);
+            var minAltLabel = L.DomUtil.create('span', 'abp01-min-max-altitude-lbl', 
+                minAltLine);
+            var minAltValue = L.DomUtil.create('span', 'abp01-min-max-altitude-val', 
+                minAltLine);
 
-            var maxAltLabel = L.DomUtil.create('span', 'abp01-min-max-altitude-lbl', maxAltLine);
-            var maxAltValue = L.DomUtil.create('span', 'abp01-min-max-altitude-val', maxAltLine);
+            var maxAltLabel = L.DomUtil.create('span', 'abp01-min-max-altitude-lbl', 
+                maxAltLine);
+            var maxAltValue = L.DomUtil.create('span', 'abp01-min-max-altitude-val', 
+                maxAltLine);
 
             minAltLabel.innerHTML = 'Minimum altitude:';
             maxAltLabel.innerHTML = 'Maximum altitude:';
 
-            minAltValue.innerHTML = '100 m';
-            maxAltValue.innerHTML = '1000 m';
+            minAltValue.innerHTML = this._formatAltitudeDisplay(this._data.minAltitude);
+            maxAltValue.innerHTML = this._formatAltitudeDisplay(this._data.maxAltitude);
 
             L.DomEvent.disableClickPropagation(container);
             return container;
         },
 
         onRemove: function(map) {
-            
+            return;
         }
     });
 
