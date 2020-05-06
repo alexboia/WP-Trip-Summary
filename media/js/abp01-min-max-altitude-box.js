@@ -33,6 +33,7 @@
 
     L.Control.MinMaxAltitudeBox = L.Control.extend({
         _data: null,
+        _labels: null,
 
         options: {
             position: 'topright'
@@ -42,12 +43,17 @@
             return altInfo.value + ' ' + altInfo.unit;
         },
 
-        initialize: function(data, options) {
+        initialize: function(data, labels, options) {
             if (data == null) {
                 throw new Error('Data is required!');
             }
+
+            if (labels == null) {
+                throw new Error('Labels are required');
+            }
             
             this._data = data;
+            this._labels = labels;
             L.Util.setOptions(this, options || {});
         },
 
@@ -70,8 +76,8 @@
             var maxAltValue = L.DomUtil.create('span', 'abp01-min-max-altitude-val', 
                 maxAltLine);
 
-            minAltLabel.innerHTML = 'Minimum altitude:';
-            maxAltLabel.innerHTML = 'Maximum altitude:';
+            minAltLabel.innerHTML = this._labels.minAltitude || 'Minimum altitude:';
+            maxAltLabel.innerHTML = this._labels.maxAltitude || 'Maximum altitude:';
 
             minAltValue.innerHTML = this._formatAltitudeDisplay(this._data.minAltitude);
             maxAltValue.innerHTML = this._formatAltitudeDisplay(this._data.maxAltitude);

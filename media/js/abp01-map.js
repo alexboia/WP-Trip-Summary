@@ -148,7 +148,10 @@
         }
 
         function addMinMaxAltitudeBox(map) {
-            var minMaxAltitudeBoxControl = L.control.minMaxAltitudeBox(trackInfo);
+            var minMaxAltitudeBoxControl = L.control.minMaxAltitudeBox(trackInfo, {
+                minAltitude: '',
+                maxAltitude: ''
+            });
             minMaxAltitudeBoxControl.addTo(map);
             return minMaxAltitudeBoxControl;
         }
