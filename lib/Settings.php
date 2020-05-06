@@ -41,65 +41,98 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
  * - An option is set to a new value.
  * In order to be persisted, however, the saveSettings() method has to be called explicitly.
  * It uses the WP options API (see https://codex.wordpress.org/Options_API) to read and persist settings.
+ * 
+ * @package WP-Trip-Summary
  * */
 class Abp01_Settings {
 	/**
 	 * Key for the "show teaser" setting
+	 * 
+	 * @var string
 	 * */
 	const OPT_TEASER_SHOW = 'showTeaser';
 
 	/**
 	 * Key for the "top teaser text" setting
+	 * 
+	 * @var string
 	 * */
 	const OPT_TEASER_TOP = 'teaserTopTxt';
 
 	/**
 	 * Key for the "bottom teaser text" setting
+	 * 
+	 * @var string
 	 * */
 	const OPT_TEASER_BOTTOM = 'teaserBottomTxt';
 
 	/**
 	 * Key for the tile layer settings
+	 * 
+	 * @var string
 	 * */
 	const OPT_MAP_TILE_LAYER_URLS = 'mapTileLayerUrls';
 
 	/**
 	 * Key for the "show magnifying glass" setting
+	 * 
+	 * @var string
 	 * */
 	const OPT_MAP_FEATURES_MAGNIFYING_GLASS_SHOW = 'mapMagnifyingGlassShow';
 
 	/**
 	 * Key for the "show full screen" setting
+	 * 
+	 * @var string
 	 * */
 	const OPT_MAP_FEATURES_FULL_SCREEN_SHOW = 'mapFullScreenShow';
 
 	/**
 	 * Key for the "show map scale" setting
+	 * 
+	 * @var string
 	 * */
 	const OPT_MAP_FEATURES_SCALE_SHOW = 'mapScaleShow';
 
 	/**
 	 * Key for the unit system setting
+	 * 
+	 * @var string
 	 * */
 	const OPT_UNIT_SYSTEM = 'unitSystem';
 
 	/**
 	 * Key for the "allow track download" setting
+	 * 
+	 * @var string
 	 * */
 	const OPT_ALLOW_TRACK_DOWNLOAD = 'allowTrackDownload';
 
 	/**
 	 * Key for the "track line colour" setting
+	 * 
+	 * @var string
 	 * */
 	const OPT_TRACK_LINE_COLOUR = 'trackLineColour';
 
 	/**
 	 * Key for the "track line weight" setting
+	 * 
+	 * @var string
 	 */
 	const OPT_TRACK_LINE_WEIGHT = 'trackLineWeight';
 
 	/**
+	 * Key for the "show min max altitude" setting
+	 * 
+	 * @var string
+	 */
+	const OPT_MAP_FEATURES_MINMAX_ALTITUDE = 'minMaxAltitudeShow';
+
+	/**
 	 * The key used to store the serialized settings, using the WP options API
+	 * 
+	 * @var string
 	 * */
 	const OPT_SETTINGS_KEY = 'abp01.settings';
 
@@ -308,6 +341,15 @@ class Abp01_Settings {
 
 	public function setTrackLineWeight($weight) {
 		$this->_setOption(self::OPT_TRACK_LINE_WEIGHT, 'integer', $weight);
+		return $this;
+	}
+
+	public function getShowMinMaxAltitude() {
+		return $this->_getOption(self::OPT_MAP_FEATURES_MINMAX_ALTITUDE, 'boolean', true);
+	}
+
+	public function setShowMinMaxAltitude($showMinMaxAltitude) {
+		$this->_setOption(self::OPT_MAP_FEATURES_MINMAX_ALTITUDE, 'boolean', $showMinMaxAltitude);
 		return $this;
 	}
 

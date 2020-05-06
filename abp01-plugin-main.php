@@ -1055,6 +1055,7 @@ function abp01_admin_settings_page() {
 	$data->settings->allowTrackDownload = $settings->getAllowTrackDownload();
 	$data->settings->trackLineColour = $settings->getTrackLineColour();
 	$data->settings->trackLineWeight = $settings->getTrackLineWeight();
+	$data->settings->showMinMaxAltitude = $settings->getShowMinMaxAltitude();
 
 	//fetch all the allowed unit systems
 	$data->settings->allowedUnitSystems = array();
@@ -1150,6 +1151,7 @@ function abp01_save_admin_settings_page_save() {
 	$settings->setAllowTrackDownload(Abp01_InputFiltering::getPOSTValueAsBoolean('allowTrackDownload'));
 	$settings->setTrackLineColour($trackLineColour);
 	$settings->setTrackLineWeight($trackLineWeight);
+	$settings->setShowMinMaxAltitude(Abp01_InputFiltering::getPOSTValueAsBoolean('showMinMaxAltitude'));
 
 	$settings->setTileLayers($tileLayer);
 	$settings->setUnitSystem($unitSystem);

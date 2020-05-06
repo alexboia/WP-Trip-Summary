@@ -188,6 +188,18 @@
 					</tr>
 					<tr>
 						<th scope="row">
+							<label for="abp01-showMinMaxAltitude"><?php echo esc_html__('Show minimum & maximum altitude?', 'abp01-trip-summary'); ?></label>
+						</th>
+						<td>
+							<input type="checkbox" 
+								id="abp01-showMinMaxAltitude" 
+								name="showMinMaxAltitude" 
+								class="abp01-checkbox" 
+								value="true" <?php echo $data->settings->showMinMaxAltitude ? 'checked="checked"' : ''; ?>/>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
 							<label for="abp01-allowTrackDownload"><?php echo esc_html__('Allow track download?', 'abp01-trip-summary'); ?></label>
 						</th>
 						<td>

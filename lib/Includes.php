@@ -734,6 +734,7 @@ class Abp01_Includes {
 			'mapShowMagnifyingGlass' => $settings->getShowMagnifyingGlass() ? 'true' : 'false', 
 			'mapAllowTrackDownloadUrl' => $settings->getAllowTrackDownload() ? 'true' : 'false',
 			'mapShowScale' => $settings->getShowMapScale() ? 'true' : 'false',
+			'mapShowMinMaxAltitude' => $settings->getShowMinMaxAltitude() ? 'true' : 'false',
 			'mapTileLayer' => array(
 				'url' => esc_js($mainTileLayer->url),
 				'attributionTxt' => esc_js($mainTileLayer->attributionTxt),
