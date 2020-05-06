@@ -744,14 +744,15 @@ function abp01_render_trip_summary_shortcode_block($attributes, $content) {
 }
 
 function abp01_init_block_editor_blocks() {
-	Abp01_Includes::includeScriptBlockEditorViewerShortCodeBlock();
-
-	register_block_type('abp01/block-editor-shortcode', array(
-		'editor_script' => 'abp01-viewer-short-code-block',
-		//we need server side rendering to account for 
-		//	potential changes of the configured shortcode tag name
-		'render_callback' => 'abp01_render_trip_summary_shortcode_block'
-	));
+	if (function_exists('register_block_type')) {
+		Abp01_Includes::includeScriptBlockEditorViewerShortCodeBlock();
+		register_block_type('abp01/block-editor-shortcode', array(
+			'editor_script' => 'abp01-viewer-short-code-block',
+			//we need server side rendering to account for 
+			//	potential changes of the configured shortcode tag name
+			'render_callback' => 'abp01_render_trip_summary_shortcode_block'
+		));
+	}
 }
 
 function abp01_register_classic_editor_settings($settings) {
@@ -1606,7 +1607,7 @@ function abp01_content_has_viewer_shortchode(&$content) {
 }
 
 function abp01_content_has_viewer_shortcode_block(&$content) {
-	return has_block('abp01/block-editor-shortcode', $content);
+	return function_exists('has_block') && has_block('abp01/block-editor-shortcode', $content);
 }
 
 /**
