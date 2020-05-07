@@ -1724,7 +1724,7 @@ function abp01_upload_track() {
 	$manager = abp01_get_route_manager();
 	$currentUserId = get_current_user_id();
 
-	$destination = $manager->getTrackUploadDestination($postId);
+	$destination = $manager->getTrackFilePath($postId);
 	if (empty($destination)) {
 		die;
 	}
@@ -1895,7 +1895,7 @@ function abp01_download_track() {
     abp01_increase_limits(ABP01_MAX_EXECUTION_TIME_MINUTES);
 
     //get the file path and check if it's readable
-    $trackFile = abp01_get_route_manager()->getTrackUploadDestination($postId);
+    $trackFile = abp01_get_route_manager()->getTrackFilePath($postId);
     if (empty($trackFile) || !is_readable($trackFile)) {
         die;
     }
