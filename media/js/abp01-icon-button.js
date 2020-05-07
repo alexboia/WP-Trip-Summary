@@ -47,6 +47,7 @@
         initialize: function(iconCssClass, targetUrl, options) {
             this._iconCssClass = iconCssClass || VOID_ICON_CSS_CLASS;
             this._targetUrl = targetUrl || VOID_TARGET_URL;
+
             L.Util.setOptions(this, options || {});
         },
 
@@ -94,6 +95,7 @@
                     this._handleButtonClicked, 
                     this);
             }
+            
             this._buttonLinkElement = null;
         }
     });

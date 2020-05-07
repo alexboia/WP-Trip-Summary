@@ -175,6 +175,19 @@
             minMaxAltitudeBoxTogglerControl.addTo(map);
             return minMaxAltitudeBoxTogglerControl;
         }
+
+        function addAltitudeProfile(map) {
+            var altitudeProfileControl = L.control.altitudeProfile('abp01-altitude-profile-container',
+                trackProfile,  {
+                    altitudeLabel: 'Altitude:',
+                    distanceLabel: 'Distance:'
+                }, {
+                    iconBaseUrl: opts.iconBaseUrl
+                });
+
+            altitudeProfileControl.addTo(map);
+            return altitudeProfileControl;
+        }
         
         /**
          * Render the tile layer attribution from th given options:
@@ -241,6 +254,8 @@
             if (opts.showMinMaxAltitude) {
                 addMinMaxAltitudeBoxToggler(map);
             }
+
+            addAltitudeProfile(map);
 
             //check if we should add the map scale
             if (opts.showScale) {
@@ -374,14 +389,15 @@
             loadTrack(function(success, bounds, track, profile, info) {
                 try {
                     if (success) {
+                        trackInfo = info;
+                        trackProfile = profile;
+
                         renderMap(bounds);
                         plotRoute(track.route);
                         plotStartAndEnd(track, opts.iconBaseUrl || null);
-                        
-                        trackInfo = info;
-                        trackProfile = profile;
                     }
                 } catch (e) {
+                    console.log(e);
                     success = false;
                 }
 

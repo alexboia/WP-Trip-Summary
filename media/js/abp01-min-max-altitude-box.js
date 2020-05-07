@@ -54,6 +54,7 @@
             
             this._data = data;
             this._labels = labels;
+            
             L.Util.setOptions(this, options || {});
         },
 

@@ -162,12 +162,13 @@ class Abp01_Route_Track_Document {
             foreach ($part->lines as $line) {
                 foreach ($line->trackPoints as $point) {
                     if ($lastPoint != null) {
-                        $distance += $point->distanceToPoint($lastPoint);
+                        $distance += round($point->distanceToPoint($lastPoint), 2);
                     }
 
                     if (!is_null($point->coordinate->alt) && $sampleIndex++ % $samplePoints == 0) {
+                        $altitude = round($point->coordinate->alt, 2);
                         $displayDistance = new Abp01_UnitSystem_Value_Distance($distance);
-                        $displayAltitude = new Abp01_UnitSystem_Value_Height($point->coordinate->alt);
+                        $displayAltitude = new Abp01_UnitSystem_Value_Height($altitude);
 
                         $profile[] = array(
                             'dist' => $distance,
@@ -175,7 +176,7 @@ class Abp01_Route_Track_Document {
                                 ->convertTo($targetSystem)
                                 ->getValue(),
                             
-                            'alt' => $point->coordinate->alt,
+                            'alt' => $altitude,
                             'display_alt' => $displayAltitude
                                 ->convertTo($targetSystem)
                                 ->getValue(),

@@ -68,6 +68,8 @@ class Abp01_Includes {
 
 	const JS_LEAFLET_MIN_MAX_ALTITUDE_BOX = 'abp01-min-max-altitude-box';
 
+	const JS_LEAFLET_ALTITUDE_PROFILE = 'abp01-altitude-profile';
+
 	const JS_LODASH = 'lodash';
 
 	const JS_MACHINA = 'machina';
@@ -263,6 +265,17 @@ class Abp01_Includes {
 				self::JS_LEAFLET
 			)
 		),
+		self::JS_LEAFLET_ALTITUDE_PROFILE => array(
+			'path' => 'media/js/abp01-altitude-profile.js',
+			'version' => ABP01_VERSION,
+			'is-leaflet-plugin' => true,
+			'needs-wrap' => false,
+			'deps' => array(
+				self::JS_LEAFLET,
+				self::JS_CHART_JS,
+				self::JS_LEAFLET_ICON_BUTTON
+			)
+		),
 		self::JS_MACHINA => array(
 			'path' => 'media/js/3rdParty/machina/machina.js', 
 			'version' => '0.3.1',
@@ -345,7 +358,12 @@ class Abp01_Includes {
 
 				array(
 					'handle' => self::JS_CHART_JS,
-					'if' => array(__CLASS__, '_isChartJsRequired')
+					'if' => array(__CLASS__, '_hasAltitudeProfile')
+				),
+
+				array(
+					'handle' => self::JS_LEAFLET_ALTITUDE_PROFILE,
+					'if' => array(__CLASS__, '_hasAltitudeProfile')
 				),
 
 				self::JS_ABP01_MAP
@@ -443,7 +461,7 @@ class Abp01_Includes {
 
 				array(
 					'handle' => self::STYLE_CHART_JS,
-					'if' => array(__CLASS__, '_isChartJsRequired')
+					'if' => array(__CLASS__, '_hasAltitudeProfile')
 				)
 			)
 		), 
@@ -576,7 +594,7 @@ class Abp01_Includes {
 		return !empty(self::$_styles[$handle]);
 	}
 
-	private static function _isChartJsRequired(Abp01_Env $env, Abp01_Settings $settings) {
+	private static function _hasAltitudeProfile(Abp01_Env $env, Abp01_Settings $settings) {
 		return $settings->getShowAltitudeProfile();
 	}
 
