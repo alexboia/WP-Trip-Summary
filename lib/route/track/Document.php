@@ -149,6 +149,65 @@ class Abp01_Route_Track_Document {
         return $document;
     }
 
+    /**
+     * @return Abp01_Route_Track_AltitudeProfile
+     */
+    public function computeAltitudeProfile($samplePoints, $targetSystem) {
+        $distance = 0;
+        $lastPoint = null;
+        $sampleIndex = 0;
+        $profile = array();
+
+        foreach ($this->parts as $part) {
+            foreach ($part->lines as $line) {
+                foreach ($line->trackPoints as $point) {
+                    if ($lastPoint != null) {
+                        $distance += $point->distanceToPoint($lastPoint);
+                    }
+
+                    if (!is_null($point->coordinate->alt) && $sampleIndex++ % $samplePoints == 0) {
+                        $displayDistance = new Abp01_UnitSystem_Value_Distance($distance);
+                        $displayAltitude = new Abp01_UnitSystem_Value_Height($point->coordinate->alt);
+
+                        $profile[] = array(
+                            'dist' => $distance,
+                            'display_distance' => $displayDistance
+                                ->convertTo($targetSystem)
+                                ->getValue(),
+                            
+                            'alt' => $point->coordinate->alt,
+                            'display_alt' => $displayAltitude
+                                ->convertTo($targetSystem)
+                                ->getValue(),
+
+                            'coord' => array(
+                                'lat' => $point->coordinate->lat,
+                                'lng' => $point->coordinate->lng
+                            )
+                        );
+                    }
+
+                    $lastPoint = $point;
+                }
+            }
+        }
+
+        return new Abp01_Route_Track_AltitudeProfile($profile, 
+            $targetSystem->getDistanceUnit(), 
+            $targetSystem->getHeightUnit());
+    }
+
+    public function toPlainObject() {
+        $data = new stdClass();
+        $data->route = $this;
+		$data->bounds = $this->getBounds();
+		$data->start = $this->getStartPoint();
+		$data->end = $this->getEndPoint();
+		$data->minAltitude = $this->minAlt;
+        $data->maxAltitude = $this->maxAlt;
+        return $data;
+    }
+
     public function getBounds() {
         $bounds = new Abp01_Route_Track_Bbox($this->minLat,
             $this->minLng,

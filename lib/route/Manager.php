@@ -339,13 +339,6 @@ class Abp01_Route_Manager {
 		}
 	}
 
-	/**
-	 * @return Abp01_Route_Track_Document
-	 */
-	public function getRouteTrackDocument() {
-
-	}
-
 	public function hasRouteTrack($postId) {
 		$postId = intval($postId);
 		if ($postId <= 0) {
@@ -435,6 +428,21 @@ class Abp01_Route_Manager {
 		}
 	}
 
+	public function getOrCreateDisplayableAltitudeProfile(Abp01_Route_Track $track, $targetSystem, $samplePoints) {
+		$profile = $this->_getCachedTrackProfileDocument($track->getPostId());
+		$targetSystem = !($targetSystem instanceof Abp01_UnitSystem) 
+			? $this->_createUnitSystemInstanceOrThrow($targetSystem) 
+			: $targetSystem;
+
+		if (!is_array($profile)) {
+			$trackDocument = $this->getOrCreateDisplayableTrackDocument($track);
+			$profile = $trackDocument->computeAltitudeProfile($samplePoints, $targetSystem);
+			$this->_cacheTrackProfileDocument($track->getPostId(), $profile);
+		}
+
+		return $profile;
+	}
+
 	public function getOrCreateDisplayableTrackDocument(Abp01_Route_Track $track) {
 		$trackDocument = $this->_getCachedTrackDocument($track->getPostId());
 
@@ -470,6 +478,21 @@ class Abp01_Route_Manager {
 		if (!empty($path)) {
 			file_put_contents($path, $trackDocument->serializeDocument(), LOCK_EX);
 		}
+
+		//Ensure in-memory copy is removed
+		wp_cache_delete($postId, 'abp01_cached_track_documents');
+	}
+
+	private function _cacheTrackProfileDocument($postId, Abp01_Route_Track_AltitudeProfile $trackProfileDocument) {
+		//Ensure the storage directory structure exists
+		abp01_ensure_storage_directory();
+
+		//Compute the path at which to store the cached file 
+		//	and store the serialized track data
+		$path = $this->getTrackProfileDocumentCacheFilePath($postId);
+		if (!empty($path)) {
+			file_put_contents($path, $trackProfileDocument->serializeDocument(), LOCK_EX);
+		}
 	}
 
 	/**
@@ -485,9 +508,37 @@ class Abp01_Route_Manager {
 			return null;
 		}
 
-		$contents = file_get_contents($path);
-		return Abp01_Route_Track_Document::fromSerializedDocument($contents);
+		//First, try to fetch in-memory cached item
+		$trackDocument = wp_cache_get($postId, 'abp01_cached_track_documents');
+		if (empty($trackDocument)) {
+			//If in-memory cached item does not exist, 
+			//	deserialize it from disk cache
+			//	and store it in-memory
+			$contents = file_get_contents($path);
+			$trackDocument = Abp01_Route_Track_Document::fromSerializedDocument($contents);
+			wp_cache_set($postId, $trackDocument, 'abp01_cached_track_documents');
+		}
+
+		return $trackDocument;
 	}
+
+	private function _getCachedTrackProfileDocument($postId) {
+		$path = $this->getTrackProfileDocumentCacheFilePath($postId);
+		if (empty($path) || !is_readable($path)) {
+			return null;
+		}
+
+		$contents = file_get_contents($path);
+		return Abp01_Route_Track_AltitudeProfile::fromSerializedDocument($contents);
+	}
+
+	private function _createUnitSystemInstanceOrThrow($unitSystem) {
+        if (!Abp01_UnitSystem::isSupported($unitSystem)) {
+            throw new InvalidArgumentException('Unsupported unit system: "' . $unitSystem . '"');
+        }
+
+        return Abp01_UnitSystem::create($unitSystem);
+    }
 
 	/**
 	 * Computes the track document cache file path for the given post ID
@@ -504,6 +555,15 @@ class Abp01_Route_Manager {
 			: null;
 	}
 
+	public function getTrackProfileDocumentCacheFilePath($postId) {
+		$fileName = sprintf('track-profile-%d.cache', $postId);
+		$cacheStorageDir = $this->_env->getCacheStorageDir();
+
+		return is_dir($cacheStorageDir) 
+			? wp_normalize_path($cacheStorageDir . '/' . $fileName) 
+			: null;
+	}
+
 	/**
 	 * Compute the absolute file upload destination file path for the given post ID
 	 * 
@@ -512,7 +572,7 @@ class Abp01_Route_Manager {
 	 */
 	public function getTrackFilePath($postId) {
 		$fileName = sprintf('track-%d.gpx', $postId);
-		$tracksStorageDir = abp01_get_env()->getTracksStorageDir();
+		$tracksStorageDir = $this->_env->getTracksStorageDir();
 
 		return is_dir($tracksStorageDir) 
 			? wp_normalize_path($tracksStorageDir . '/' . $fileName) 

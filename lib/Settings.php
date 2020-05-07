@@ -130,16 +130,30 @@ class Abp01_Settings {
 	const OPT_MAP_FEATURES_MINMAX_ALTITUDE = 'minMaxAltitudeShow';
 
 	/**
+	 * Key for "show altitude profile" setting
+	 * 
+	 * @var string
+	 */
+	const OPT_MAP_FEATURES_ALTITUDE_PROFILE = 'altitudeProfileShow';
+
+	/**
 	 * The key used to store the serialized settings, using the WP options API
 	 * 
 	 * @var string
 	 * */
 	const OPT_SETTINGS_KEY = 'abp01.settings';
 
+	/**
+	 * The Abp01_Settings singleton instance
+	 * 
+	 * @var Abp01_Settings
+	 */
 	private static $_instance = null;
 
 	/**
 	 * Holds a cache of the setting array, to avoid repeatedly looking up the settings
+	 * 
+	 * @var array
 	 * */
 	private $_data = null;
 
@@ -350,6 +364,15 @@ class Abp01_Settings {
 
 	public function setShowMinMaxAltitude($showMinMaxAltitude) {
 		$this->_setOption(self::OPT_MAP_FEATURES_MINMAX_ALTITUDE, 'boolean', $showMinMaxAltitude);
+		return $this;
+	}
+
+	public function getShowAltitudeProfile() {
+		return $this->_getOption(self::OPT_MAP_FEATURES_ALTITUDE_PROFILE, 'boolean', true);
+	}
+
+	public function setShowAltitudeProfile($showAltitudeProfile) {
+		$this->_setOption(self::OPT_MAP_FEATURES_ALTITUDE_PROFILE, 'boolean', $showAltitudeProfile);
 		return $this;
 	}
 

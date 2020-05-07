@@ -76,6 +76,8 @@ class Abp01_Includes {
 
 	const JS_TIPPED_JS = 'tipped-js';
 
+	const JS_CHART_JS = 'abp01-chart-js';
+
 	const JS_ABP01_MAP = 'abp01-map';
 
 	const JS_ABP01_PROGRESS_OVERLAY = 'abp01-progress-overlay';
@@ -119,6 +121,8 @@ class Abp01_Includes {
 	const STYLE_JQUERY_TOASTR = 'jquery-toastr-css';
 
 	const STYLE_TIPPED_JS = 'tipped-js-css';
+
+	const STYLE_CHART_JS = 'abp01-chart-js-css';
 
 	const STYLE_ABP01_NUMERIC_STEPPER = 'abp01-numeric-stepper-css';
 
@@ -274,6 +278,10 @@ class Abp01_Includes {
 			'path' => 'media/js/3rdParty/tipped/js/tipped.js', 
 			'version' => '4.7.0'
 		),
+		self::JS_CHART_JS => array(
+			'path' => 'media/js/3rdParty/chartjs/Chart.js', 
+			'version' => '2.9.3'
+		),
 
 		self::JS_ABP01_NUMERIC_STEPPER => array(
 			'path' => 'media/js/abp01-numeric-stepper.js', 
@@ -334,6 +342,12 @@ class Abp01_Includes {
 				self::JS_LEAFLET_MAGNIFYING_GLASS_BUTTON,
 				self::JS_LEAFLET_ICON_BUTTON,
 				self::JS_LEAFLET_MIN_MAX_ALTITUDE_BOX,
+
+				array(
+					'handle' => self::JS_CHART_JS,
+					'if' => array(__CLASS__, '_isChartJsRequired')
+				),
+
 				self::JS_ABP01_MAP
 			)
 		), 
@@ -403,6 +417,19 @@ class Abp01_Includes {
 				self::STYLE_DASHICONS
 			)
 		), 
+		self::STYLE_JQUERY_TOASTR => array(
+			'path' => 'media/js/3rdParty/toastr/toastr.css', 
+			'version' => '2.1.4'
+		), 
+		self::STYLE_TIPPED_JS => array(
+			'path' => 'media/js/3rdParty/tipped/css/tipped.css', 
+			'version' => '4.7.0'
+		),
+		self::STYLE_CHART_JS => array(
+			'path' => 'media/js/3rdParty/chartjs/Chart.css', 
+			'version' => '2.9.3'
+		),
+
 		self::STYLE_FRONTEND_MAIN => array(
 			'path' => 'media/css/abp01-frontend-main.css', 
 			'version' => ABP01_VERSION,
@@ -412,7 +439,12 @@ class Abp01_Includes {
 				self::STYLE_LEAFLET,
 				self::STYLE_LEAFLET_FULLSCREEN,
 				self::STYLE_LEAFLET_MAGNIFYING_GLASS,
-				self::STYLE_LEAFLET_MAGNIFYING_GLASS_BUTTON
+				self::STYLE_LEAFLET_MAGNIFYING_GLASS_BUTTON,
+
+				array(
+					'handle' => self::STYLE_CHART_JS,
+					'if' => array(__CLASS__, '_isChartJsRequired')
+				)
 			)
 		), 
 		self::STYLE_FRONTEND_MAIN_TWENTY_TEN => array(
@@ -471,14 +503,7 @@ class Abp01_Includes {
 				self::STYLE_FRONTEND_MAIN
 			)
 		),
-		self::STYLE_JQUERY_TOASTR => array(
-			'path' => 'media/js/3rdParty/toastr/toastr.css', 
-			'version' => '2.1.4'
-		), 
-		self::STYLE_TIPPED_JS => array(
-			'path' => 'media/js/3rdParty/tipped/css/tipped.css', 
-			'version' => '4.7.0'
-		),
+
 		self::STYLE_ADMIN_COMMON => array(
 			'path' => 'media/css/abp01-admin-common.css', 
 			'version' => ABP01_VERSION
@@ -551,6 +576,10 @@ class Abp01_Includes {
 		return !empty(self::$_styles[$handle]);
 	}
 
+	private static function _isChartJsRequired(Abp01_Env $env, Abp01_Settings $settings) {
+		return $settings->getShowAltitudeProfile();
+	}
+
 	private static function _getActualElement($handle, array &$collection) {
 		$script = null;
 		$actual = null;
@@ -587,16 +616,41 @@ class Abp01_Includes {
 		return self::_getActualElement($handle, self::$_styles);
 	}
 
-	private static function _ensureScriptDependencies(array $deps, $list) {
+	private static function _collectDependencyHandles(array $deps) {
+		$depHandles = array();
+
+		$env = self::_getEnv();
+		$settings = self::_getSettings();
+
 		foreach ($deps as $depHandle) {
+			$includeIf = null;
+			$includeHandle = $depHandle;
+			
+			if (is_array($depHandle)) {
+				$includeHandle = $depHandle['handle'];
+				$includeIf = isset($depHandle['if']) && is_callable($depHandle['if']) 
+					? $depHandle['if'] 
+					: null;
+			}
+
+			if (empty($includeIf) || $includeIf($env, $settings)) {
+				$depHandles[] = $includeHandle;
+			}
+		}
+
+		return $depHandles;
+	}
+
+	private static function _ensureScriptDependencies(array $depsHandles, $list) {
+		foreach ($depsHandles as $depHandle) {
 			if (self::_hasScript($depHandle)) {
 				self::_includeScript($depHandle, $list);
 			}
 		}
 	}
 
-	private static function _ensureStyleDependencies(array $deps, $list) {
-		foreach ($deps as $depHandle) {
+	private static function _ensureStyleDependencies(array $depsHandles, $list) {
+		foreach ($depsHandles as $depHandle) {
 			if (self::_hasStyle($depHandle)) {
 				self::_includeStyle($depHandle, $list);
 			}
@@ -636,6 +690,7 @@ class Abp01_Includes {
 					? $script['deps'] 
 					: array();
 
+				$deps = self::_collectDependencyHandles($deps);
 				if (!empty($deps)) {
 					self::_ensureScriptDependencies($deps, $list);
 				}
@@ -697,6 +752,7 @@ class Abp01_Includes {
 				? $style['deps'] 
 				: array();
 
+			$deps = self::_collectDependencyHandles($deps);
 			if (!empty($deps)) {
 				self::_ensureStyleDependencies($deps, $list);
 			}
@@ -747,6 +803,7 @@ class Abp01_Includes {
 			'mapAllowTrackDownloadUrl' => $settings->getAllowTrackDownload() ? 'true' : 'false',
 			'mapShowScale' => $settings->getShowMapScale() ? 'true' : 'false',
 			'mapShowMinMaxAltitude' => $settings->getShowMinMaxAltitude() ? 'true' : 'false',
+			'mapShowAltitudeProfile' => $settings->getShowAltitudeProfile() ? 'true' : 'false',
 			'mapTileLayer' => array(
 				'url' => esc_js($mainTileLayer->url),
 				'attributionTxt' => esc_js($mainTileLayer->attributionTxt),

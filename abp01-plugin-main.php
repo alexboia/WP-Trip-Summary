@@ -1001,6 +1001,7 @@ function abp01_admin_settings_page() {
 	$data->settings->trackLineColour = $settings->getTrackLineColour();
 	$data->settings->trackLineWeight = $settings->getTrackLineWeight();
 	$data->settings->showMinMaxAltitude = $settings->getShowMinMaxAltitude();
+	$data->settings->showAltitudeProfile = $settings->getShowAltitudeProfile();
 
 	//fetch all the allowed unit systems
 	$data->settings->allowedUnitSystems = array();
@@ -1097,6 +1098,7 @@ function abp01_save_admin_settings_page_save() {
 	$settings->setTrackLineColour($trackLineColour);
 	$settings->setTrackLineWeight($trackLineWeight);
 	$settings->setShowMinMaxAltitude(Abp01_InputFiltering::getPOSTValueAsBoolean('showMinMaxAltitude'));
+	$settings->setShowAltitudeProfile(Abp01_InputFiltering::getPOSTValueAsBoolean('showAltitudeProfile'));
 
 	$settings->setTileLayers($tileLayer);
 	$settings->setUnitSystem($unitSystem);
@@ -1524,6 +1526,8 @@ function abp01_get_info_data($postId) {
 		$data->settings->showTeaser = $settings->getShowTeaser();
 		$data->settings->topTeaserText =  $settings->getTopTeaserText();
 		$data->settings->bottomTeaserText = $settings->getBottomTeaserText();
+		$data->settings->showMinMaxAltitude = $settings->getShowMinMaxAltitude();
+		$data->settings->showAltitudeProfile = $settings->getShowAltitudeProfile();
 		
 		//get measurement units from the configured unit system
 		$unitSystem = Abp01_UnitSystem::create($settings->getUnitSystem());
@@ -1814,11 +1818,9 @@ function abp01_get_track() {
 
 	$settings = abp01_get_settings();
 	$manager = abp01_get_route_manager();
-
-	//initialize response data
-	$response = abp01_get_ajax_response(array(
-		'track' => null
-	));
+	
+	$response = abp01_get_ajax_response();
+	$targetUnitSystem = $settings->getUnitSystem();
 
 	$track = $manager->getRouteTrack($postId);
 	if (!empty($track)) {
@@ -1832,22 +1834,13 @@ function abp01_get_track() {
 
 	if ($response->success) {
 		$response->info = new stdClass();
-		$response->track = new stdClass();
 		$response->profile = new stdClass();
-
-		$response->track->route = $trackDocument;
-		$response->track->bounds = $trackDocument->getBounds();
-		$response->track->start = $trackDocument->getStartPoint();
-		$response->track->end = $trackDocument->getEndPoint();
-		$response->track->minAltitude = $track->minAlt;
-		$response->track->maxAltitude = $track->maxAlt;
+		$response->track = $trackDocument->toPlainObject();
 
 		//Only go through the trouble of converting 
 		//	these values for display if the user 
 		//	has opted to show min/max altitude information
 		if ($settings->getShowMinMaxAltitude()) {
-			$targetUnitSystem = $settings->getUnitSystem();
-
 			$minAlt = new Abp01_UnitSystem_Value_Height($track->minAlt);
 			$maxAlt = new Abp01_UnitSystem_Value_Height($track->maxAlt);
 
@@ -1858,6 +1851,13 @@ function abp01_get_track() {
 		} else {
 			$response->info->minAltitude = null;
 			$response->info->maxAltitude = null;
+		}
+
+		if ($settings->getShowAltitudeProfile()) {
+			$profile = $manager->getOrCreateDisplayableAltitudeProfile($track, $targetUnitSystem, 10);
+			if (!empty($profile)) {
+				$response->profile = $profile->toPlainObject();
+			}
 		}
 	}
 

@@ -200,6 +200,18 @@
 					</tr>
 					<tr>
 						<th scope="row">
+							<label for="abp01-showAltitudeProfile"><?php echo esc_html__('Show altitude profile?', 'abp01-trip-summary'); ?></label>
+						</th>
+						<td>
+							<input type="checkbox" 
+								id="abp01-showAltitudeProfile" 
+								name="showAltitudeProfile" 
+								class="abp01-checkbox" 
+								value="true" <?php echo $data->settings->showAltitudeProfile ? 'checked="checked"' : ''; ?>/>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
 							<label for="abp01-allowTrackDownload"><?php echo esc_html__('Allow track download?', 'abp01-trip-summary'); ?></label>
 						</th>
 						<td>
