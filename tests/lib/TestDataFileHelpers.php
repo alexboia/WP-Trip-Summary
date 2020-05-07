@@ -39,11 +39,11 @@
     }
 
     protected static function _getDataFilePath($fileName) {
-        return self::_getTestDataDir() . DIRECTORY_SEPARATOR . $fileName;
+        return wp_normalize_path(self::_getTestDataDir() . '/' . $fileName);
     }
 
     protected static function _getTestDataDir() {
-        return self::_getRootTestsDir() . DIRECTORY_SEPARATOR . 'assets';
+        return wp_normalize_path(self::_getRootTestsDir() . '/' . 'assets');
     }
 
     protected abstract static function _getRootTestsDir();

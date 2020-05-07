@@ -30,6 +30,8 @@
  */
 
 trait RouteTrackTestDataHelpers {
+    use GenericTestHelpers;
+
     public function _generateRandomRouteTracks() {
         $postIds = array();
         $routeTracks = array();
@@ -41,7 +43,7 @@ trait RouteTrackTestDataHelpers {
         for ($i = 0; $i < 10; $i++) {
             $postId = $this->_generatePostId($postIds);
             $postIds[] = $postId;
-            
+
             $routeTracks[] = array(
                 $this->_generateRandomRouteTrack($postId, $deltaLat, $deltaLng)
             );
@@ -67,7 +69,7 @@ trait RouteTrackTestDataHelpers {
         $maxLat = $minLat + $deltaLat;
         $maxLng = $minLng + $deltaLng;
         
-        $fileName = $faker->uuid . '.gpx';
+        $fileName = $this->_getGpxFileName($postId);
 
         $minAltitude = $faker->randomFloat(3, 0, 4000);
         $maxAltitude = $minAltitude + $faker->randomFloat(3, 0, 4000);
@@ -82,6 +84,36 @@ trait RouteTrackTestDataHelpers {
             $bbox, 
             $minAltitude, 
             $maxAltitude);
+    }
+
+    protected function _storeGpxDocument($postId, $gpxContent) {
+        $path = $this->_getGpxFilePath($postId);
+        file_put_contents($path, $gpxContent);
+    }
+
+    protected function _prepareAndStoreCachedTrackDocument($postId, $gpxContent) {
+        $path = $this->_getCachedTrackDocumentFilePath($postId);
+
+        $parser = new Abp01_Route_Track_GpxDocumentParser();
+        $trackDocument = $parser->parse($gpxContent);
+
+        file_put_contents($path, $trackDocument->serializeDocument());
+    }
+
+    protected function _getGpxFileName($postId) {
+        return sprintf('track-%d.gpx', $postId);
+    }
+
+    protected function _getGpxFilePath($postId) {
+        return wp_normalize_path($this->_getEnv()->getTracksStorageDir() . '/' . $this->_getGpxFileName($postId));
+    }
+
+    protected function _getCachedTrackDocumentFileName($postId) {
+        return sprintf('track-%d.cache', $postId);
+    }
+
+    protected function _getCachedTrackDocumentFilePath($postId) {
+        return wp_normalize_path($this->_getEnv()->getCacheStorageDir() . '/' . $this->_getCachedTrackDocumentFileName($postId));
     }
 
     abstract protected function _generatePostId($excludeAdditionalIds = null);

@@ -30,11 +30,11 @@
  */
 
 require_once 'lib/DbTestHelpers.php';
+require_once 'lib/GenericTestHelpers.php';
+require_once 'lib/TestDataFileHelpers.php';
 require_once 'lib/LookupDataTestHelpers.php';
 require_once 'lib/RouteInfoTestDataSets.php';
 require_once 'lib/RouteTrackTestDataHelpers.php';
-require_once 'lib/GenericTestHelpers.php';
-require_once 'lib/TestDataFileHelpers.php';
 
 require_once 'faker/autoload.php';
 require_once 'lib/GpxDocumentFakerDataProvider.php';

@@ -423,7 +423,7 @@ class Abp01_Route_Manager {
 
 	public function deleteTrackFiles($postId) {
 		//delete track file
-		$trackFile = $this->getTrackUploadDestination($postId);
+		$trackFile = $this->getTrackFilePath($postId);
 		if (!empty($trackFile) && file_exists($trackFile)) {
 			@unlink($trackFile);
 		}
@@ -439,7 +439,7 @@ class Abp01_Route_Manager {
 		$trackDocument = $this->_getCachedTrackDocument($track->getPostId());
 
 		if (!($trackDocument instanceof Abp01_Route_Track_Document)) {
-			$file = $this->getTrackUploadDestination($track->getPostId());
+			$file = $this->getTrackFilePath($track->getPostId());
 			if (is_readable($file)) {
 				$parser = new Abp01_Route_Track_GpxDocumentParser();
 				$trackDocument = $parser->parse(file_get_contents($file));
@@ -510,7 +510,7 @@ class Abp01_Route_Manager {
 	 * @param int $postId The post ID
 	 * @return string The computed path
 	 */
-	public function getTrackUploadDestination($postId) {
+	public function getTrackFilePath($postId) {
 		$fileName = sprintf('track-%d.gpx', $postId);
 		$tracksStorageDir = abp01_get_env()->getTracksStorageDir();
 

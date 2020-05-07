@@ -44,6 +44,19 @@ trait GenericTestHelpers {
         return self::$_faker;
     }
 
+    protected function _assertFileNotEmpty($filePath) {
+        return filesize($filePath) > 0;
+    }
+
+    protected function _removeAllFiles($targetDir, $globPattern) {
+        $files = glob($targetDir . '/' . $globPattern);
+        if (is_array($files)) {
+            foreach ($files as $file) {
+                @unlink($file);
+            }
+        }
+    }
+
     protected function _createWpPosts($postIds) {
         $db = $this->_getDb();
         $postsTableName = $this->_getEnv()->getWpPostsTableName();

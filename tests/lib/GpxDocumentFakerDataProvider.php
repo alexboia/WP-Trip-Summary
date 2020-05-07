@@ -628,16 +628,16 @@ class GpxDocumentFakerDataProvider extends \Faker\Provider\Base {
             'addData' => true,
             
             'tracks' => array(
-                'count' => $this->generator->numberBetween(1, 10),
+                'count' => $this->generator->numberBetween(1, 3),
                 'name' => $this->generator->boolean(),
             ),
 
             'segments' => array(
-                'count' => $this->generator->numberBetween(1, 10)
+                'count' => $this->generator->numberBetween(1, 3)
             ),
 
             'points' => array(
-                'count' => $this->generator->numberBetween(500, 10000),
+                'count' => $this->generator->numberBetween(500, 1500),
                 'name' => $this->generator->boolean(),
                 'desc' => $this->generator->boolean()
             ),

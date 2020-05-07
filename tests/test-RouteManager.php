@@ -297,6 +297,65 @@
         }
     }
 
+    public function test_canGetOrCreateDisplayableTrackDocument_postWithTrackFiles() {
+        $routeManager = $this->_getRouteManager();
+        foreach ($this->_testPostRouteData as $postId => $testPostRouteData) {
+            $trackDocument = $routeManager->getOrCreateDisplayableTrackDocument($testPostRouteData['track']);
+
+            $this->assertNotEmpty($trackDocument);
+            $this->assertNotEmpty($trackDocument->getBounds());
+            $this->assertNotEmpty($trackDocument->getStartPoint());
+            $this->assertNotEmpty($trackDocument->getEndPoint());
+            $this->assertNotEmpty($trackDocument->parts);
+
+            $this->assertFileExists($routeManager->getTrackFilePath($postId));
+            $this->assertFileExists($routeManager->getTrackDocumentCacheFilePath($postId));
+
+            $this->assertFileExists($this->_getGpxFilePath($postId));
+            $this->assertFileExists($this->_getCachedTrackDocumentFilePath($postId));
+
+            $this->_assertFileNotEmpty($routeManager->getTrackFilePath($postId));
+            $this->_assertFileNotEmpty($routeManager->getTrackDocumentCacheFilePath($postId));
+        }
+    }
+
+    public function test_tryGetOrCreateDisplayableTrackDocument_postWithTrackFiles() {
+        $postIds = array();
+        $routeManager = $this->_getRouteManager();
+
+        for ($i = 0; $i < 10; $i++) {
+            $postId = $this->_generatePostId($postIds);
+            $postIds[] = $postId;
+
+            $track = $this->_generateRandomRouteTrack($postId);
+            $trackDocument = $routeManager->getOrCreateDisplayableTrackDocument($track);
+
+            $this->assertEmpty($trackDocument);
+            $this->_assertTrackFilesDoNotExist($routeManager, $postId);
+        }
+    }
+
+    public function test_canDeleteTrackFiles_postWithTrackFiles() {
+        $routeManager = $this->_getRouteManager();
+        foreach ($this->_testPostRouteData as $postId => $testPostRouteData) {
+            $routeManager->deleteTrackFiles($postId);
+            $this->_assertTrackFilesDoNotExist($routeManager, $postId);
+        }
+    }
+
+    public function test_canDeleteTrackFiles_postWithoutTrackFiles() {
+        $postIds = array();
+        $routeManager = $this->_getRouteManager();
+
+        for ($i = 0; $i < 10; $i++) {
+            $postId = $this->_generatePostId($postIds);
+            $postIds[] = $postId;
+
+            $routeManager->deleteTrackFiles($postId);
+            $this->_assertTrackFilesDoNotExist($routeManager, $postId);            
+        }
+    }
+
     private function _assertRouteInfoDataMatchesDbRow($postId, 
         $currentUserId, 
         Abp01_Route_Info $routeInfo) {
@@ -341,6 +400,14 @@
                 $this->assertTrue(in_array($v, $dbRouteLookupData));
             }
         }
+    }
+
+    private function _assertTrackFilesDoNotExist($routeManager, $postId) {
+        $this->assertFileNotExists($routeManager->getTrackFilePath($postId));
+        $this->assertFileNotExists($routeManager->getTrackDocumentCacheFilePath($postId));
+
+        $this->assertFileNotExists($this->_getGpxFilePath($postId));
+        $this->assertFileNotExists($this->_getCachedTrackDocumentFilePath($postId));
     }
 
     private function _asseryPostTripSummaryInfoMatchesIndividualChecks($postId, 
@@ -404,6 +471,7 @@
 
     private function _clearTestData() {
         $this->_clearAllRouteInfo();
+        $this->_removeTestGpxAndCachedTrackDocumentFiles();
         $this->_testPostRouteData = array();
     }
 
@@ -411,6 +479,7 @@
         $env = $this->_getEnv();
         $db = $this->_getDb();
         $proj = $this->_getProjSphericalMercator();
+        $faker = $this->_getFaker();
 
         $postIds = array();
         $testPostRouteData = array();
@@ -422,11 +491,12 @@
 
         $db->startTransaction();
 
-        for ($i = 0; $i < 3; $i ++) {
+        for ($i = 0; $i < 5; $i ++) {
             $postId = $this->_generatePostId($postIds);
             $routeInfoData = $this->_generateRandomRouteInfoWithType();
             $currentUserId = $this->_generateCurrentUserId();
             $track = $this->_generateRandomRouteTrack($postId);
+            $hasCachedTrackDocument = $i % 2 == 0;
 
             $type = $routeInfoData[0];
             $routeInfo = new Abp01_Route_Info($type);
@@ -437,7 +507,8 @@
                 'type' => $type,
                 'routeInfo' => $routeInfo,
                 'currentUserId' => $currentUserId,
-                'track' => $track
+                'track' => $track,
+                'hasCachedTrackDocument' => $hasCachedTrackDocument
             );
 
             //save post info
@@ -515,6 +586,14 @@
                 $track->maxAlt,
                 $currentUserId
             ));
+
+            //generate and save gpx document
+            $gpx = $faker->gpx();
+            $this->_storeGpxDocument($postId, $gpx['content']['text']);
+
+            if ($hasCachedTrackDocument) {
+                $this->_prepareAndStoreCachedTrackDocument($postId, $gpx['content']['text']);
+            }
         }
 
         $db->commit();
@@ -552,6 +631,14 @@
 
         $postId = $faker->numberBetween($max + 1, $max + 1000);
         return $postId;
+    }
+
+    private function _removeTestGpxAndCachedTrackDocumentFiles() {
+        $tracksDir = $this->_getEnv()->getTracksStorageDir();
+        $this->_removeAllFiles($tracksDir, '*.gpx');
+
+        $cacheDir = $this->_getEnv()->getCacheStorageDir();
+        $this->_removeAllFiles($tracksDir, '*.cache');
     }
 
     private function _generateCurrentUserId() {
