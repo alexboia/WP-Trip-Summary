@@ -76,6 +76,7 @@
             showMagnifyingGlass : settings.mapShowMagnifyingGlass,
             showFullScreen : settings.mapShowFullScreen,
             showMinMaxAltitude: settings.mapShowMinMaxAltitude,
+            showAltitudeProfile: settings.mapShowAltitudeProfile,
             trackDownloadUrl: settings.mapAllowTrackDownloadUrl ? getDownloadTrackUrl() : null,
             trackLineColour: settings.trackLineColour,
             trackLineWeight: settings.trackLineWeight,
@@ -83,7 +84,9 @@
             //labels
             labels: {
                 minAltitude: abp01FrontendL10n.lblMinAltitude,
-                maxAltitude: abp01FrontendL10n.lblMaxAltitude
+                maxAltitude: abp01FrontendL10n.lblMaxAltitude,
+                altitude: abp01FrontendL10n.lblAltitude,
+                distance: abp01FrontendL10n.lblDistance
             },
 
             //map and data options
@@ -135,6 +138,7 @@
             mapShowMagnifyingGlass: abp01Settings.mapShowMagnifyingGlass === 'true',
             mapShowScale: abp01Settings.mapShowScale === 'true',
             mapShowMinMaxAltitude: abp01Settings.mapShowMinMaxAltitude === 'true',
+            mapShowAltitudeProfile: abp01Settings.mapShowAltitudeProfile === 'true',
             mapAllowTrackDownloadUrl: abp01Settings.mapAllowTrackDownloadUrl === 'true',
             mapTileLayer: abp01Settings.mapTileLayer || {},
             trackLineColour: abp01Settings.trackLineColour || '#0033ff',

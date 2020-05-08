@@ -32,8 +32,8 @@
     "use strict";
 
     L.Control.AltitudeProfile = L.Control.extend({
-        _data: null,
-        _labels: null,
+        _profileData: null,
+        _profileInfo: null,
 
         _chartContainer: null,
         _canvas: null,
@@ -43,10 +43,18 @@
         _currentPointMarker: null,
         _buttonElement: null,
 
+        _currentHoverTimer: null,
+
         options: {
             position: 'topleft',
             iconBaseUrl: null,
-            chartLineColor: '#003ac1'
+            chartLineColor: '#003ac1',
+            tooltipBackgroundColor: 'rgba(81,81,81,0.80)',
+            hoverPanTimeout: 75,
+            labels: {
+                altitude: 'Altitude:',
+                distance: 'Distance:'
+            }
         },
 
         _removeCurrentHighlightedProfilePoint: function() {
@@ -57,6 +65,7 @@
         },
 
         _highlightProfilePoint: function(point) {
+            var me = this;
             var icon = L.icon({
                 iconUrl: this.options.iconBaseUrl + '/blip.png',
                 iconSize: [24, 28],
@@ -71,7 +80,15 @@
             }
 
             if (!this._map.getBounds().contains(markerCoord)) {
-                this._map.panTo(markerCoord);
+                if (this._currentHoverTimer != null) {
+                    window.clearTimeout(this._currentHoverTimer);
+                    this._currentHoverTimer = null;
+                }
+    
+                this._currentHoverTimer = window.setTimeout(function() {
+                    me._currentHoverTimer = null;
+                    me._map.panTo(markerCoord);
+                }, this.options.hoverPanTimeout);
             }
 
             this._currentPointMarker = L.marker(markerCoord, {
@@ -83,16 +100,43 @@
             var labels = [];
             var values = [];
 
-            for (var i = 0; i < this._data.profile.length; i ++) {
-                var profileDataItem = this._data.profile[i];
-                labels.push(Math.round(profileDataItem.display_distance) + ' ' + this._data.distanceUnit);
-                values.push(profileDataItem.alt);
+            for (var i = 0; i < this._profileData.profile.length; i ++) {
+                var profileDataItem = this._profileData.profile[i];
+                labels.push(Math.round(profileDataItem.displayDistance) + ' ' + this._profileData.distanceUnit);
+                values.push(profileDataItem.displayAlt);
             }
 
             return {
                 labels: labels,
                 values: values
             };
+        },
+
+        _tryGetActivePoint: function() {
+            var point = null;
+            if (!!this._chart.tooltip
+                && this._chart.tooltip._active
+                && this._chart.tooltip._active[0]) {
+                var tooltip = this._chart.tooltip._active[0];
+                if (tooltip.hasOwnProperty('_index') && tooltip._index !== null) {
+                    point = this._profileData.profile[tooltip._index];
+                }
+            }
+            return point;
+        },
+
+        _determineYAxisStepSize: function() {
+            var deltaAlt = Math.abs(this._profileInfo.maxAltitude - this._profileInfo.minAltitude);
+
+            if (deltaAlt >= 1000) {
+                return 100;
+            } 
+
+            if (deltaAlt > 100) {
+                return 50;
+            }
+            
+            return 10;
         },
 
         _createProfileChart: function(context) {
@@ -104,27 +148,12 @@
                 data: {
                     labels: dataSource.labels,
                     datasets: [{
-                        label: me._labels.altitudeTitle || 'Altitude',
                         borderColor: me.options.chartLineColor,
                         data: dataSource.values
                     }]
                 },
 
                 options: {
-                    onHover: function(event, data) {
-                        if (!!me._chart.tooltip
-                            && me._chart.tooltip._active
-                            && me._chart.tooltip._active[0]) {
-                            var tooltip = me._chart.tooltip._active[0];
-                            if (tooltip._index) {
-                                var point = me._data.profile[tooltip._index];
-                                if (point) {
-                                    me._highlightProfilePoint(point);
-                                }
-                            }
-                        }
-                    },
-
                     legend: {
                         display: false
                     },
@@ -132,28 +161,35 @@
                     scales: {
                         yAxes: [{
                            ticks: {
-                              stepSize: 100
+                              stepSize: me._determineYAxisStepSize()
                            }
                         }]
+                    },
+
+                    onHover: function(event, data) {
+                        var point = me._tryGetActivePoint();
+                        if (point) {
+                            me._highlightProfilePoint(point);
+                        }
                     },
 
                     tooltips: {
                         position: 'nearest',
                         intersect: false,
                         displayColors: false,
-                        backgroundColor: 'rgba(81,81,81,0.80)',
+                        backgroundColor: me.options.tooltipBackgroundColor,
                         callbacks: {
                             beforeLabel: function() {
                                 return '';
                             },
                             label: function(item, data) {
-                                return (me._labels.altitudeLabel || 'Altitude:') + ' ' + item.yLabel;
+                                return me.options.labels.altitude + ' ' + item.yLabel;
                             },
                             beforeTitle: function(item, data) {
-                                return (me._labels.distanceLabel || 'Distance:') + ' ';
+                                return me.options.labels.distance + ' ';
                             },
                             afterLabel: function(item, data) {
-                                return me._data.heightUnit;
+                                return me._profileData.heightUnit;
                             }
                         }
                     },
@@ -220,30 +256,33 @@
             return container;
         },
 
-        _handleButtonClicked: function(evt) {   
+        _handleButtonClicked: function(event) {   
             if (this._chart == null) {
                 this._showProfileChart();
             } else {
                 this._hideProfileChart();
             }
+
+            L.DomEvent.preventDefault(event);
+            L.DomEvent.stopPropagation(event);
         },
 
-        initialize: function(chartContainer, data, labels, options) {
+        initialize: function(chartContainer, profileData, profileInfo, options) {
             if (chartContainer == null) {
                 throw new Error('Container is required');
             }
 
-            if (data == null) {
+            if (profileData == null) {
                 throw new Error('Profile data is required');
             }
 
-            if (labels == null) {
-                throw new Error('Labels are required');
+            if (profileInfo == null) {
+                throw new Error('Profile info is required');
             }
 
             this._chartContainer = L.DomUtil.get(chartContainer);
-            this._data = data;
-            this._labels = labels;
+            this._profileData = profileData;
+            this._profileInfo = profileInfo;
 
             L.Util.setOptions(this, options || {});
         },

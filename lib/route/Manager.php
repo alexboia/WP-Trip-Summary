@@ -428,16 +428,25 @@ class Abp01_Route_Manager {
 		}
 	}
 
-	public function getOrCreateDisplayableAltitudeProfile(Abp01_Route_Track $track, $targetSystem, $samplePoints) {
+	public function getOrCreateDisplayableAltitudeProfile(Abp01_Route_Track $track, $targetSystem, $stepPoints = 10) {
+		if ($stepPoints <= 0) {
+			throw new InvalidArgumentException('Number of points to step over must be greater than 0');
+		}
+
 		$profile = $this->_getCachedTrackProfileDocument($track->getPostId());
 		$targetSystem = !($targetSystem instanceof Abp01_UnitSystem) 
 			? $this->_createUnitSystemInstanceOrThrow($targetSystem) 
 			: $targetSystem;
 
-		if (!is_array($profile)) {
+		if (!($profile instanceof Abp01_Route_Track_AltitudeProfile) 
+			|| !$profile->matchesContext($targetSystem, $stepPoints)) {
 			$trackDocument = $this->getOrCreateDisplayableTrackDocument($track);
-			$profile = $trackDocument->computeAltitudeProfile($samplePoints, $targetSystem);
-			$this->_cacheTrackProfileDocument($track->getPostId(), $profile);
+
+			$profile = $trackDocument->computeAltitudeProfile($targetSystem, 
+				$stepPoints);
+			
+			$this->_cacheTrackProfileDocument($track->getPostId(), 
+				$profile);
 		}
 
 		return $profile;
@@ -522,6 +531,9 @@ class Abp01_Route_Manager {
 		return $trackDocument;
 	}
 
+	/**
+	 * @return Abp01_Route_Track_AltitudeProfile
+	 */
 	private function _getCachedTrackProfileDocument($postId) {
 		$path = $this->getTrackProfileDocumentCacheFilePath($postId);
 		if (empty($path) || !is_readable($path)) {

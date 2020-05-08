@@ -30,7 +30,7 @@ then
 	WPTS_TEXT_DOMAIN="abp01-trip-summary"
 fi
 
-wp i18n make-pot "$WPTS_PLUGIN_DIR" "$WPTS_PLUGIN_DIR/lang/$WPTS_TEXT_DOMAIN.pot" --slug="wp-trip-summary" --domain=$WPTS_TEXT_DOMAIN --exclude="build,bin,assets,data,.github,.vscode,help"
+wp i18n make-pot "$WPTS_PLUGIN_DIR" "$WPTS_PLUGIN_DIR/lang/$WPTS_TEXT_DOMAIN.pot" --slug="wp-trip-summary" --domain=$WPTS_TEXT_DOMAIN --exclude="build,bin,assets,data,.github,.vscode,help,media"
 
 if [ "$WPTS_RESTORE_DIR" = true ]
 then

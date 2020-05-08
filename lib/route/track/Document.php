@@ -152,7 +152,7 @@ class Abp01_Route_Track_Document {
     /**
      * @return Abp01_Route_Track_AltitudeProfile
      */
-    public function computeAltitudeProfile($samplePoints, $targetSystem) {
+    public function computeAltitudeProfile($targetSystem, $stepPoints) {
         $distance = 0;
         $lastPoint = null;
         $sampleIndex = 0;
@@ -165,19 +165,17 @@ class Abp01_Route_Track_Document {
                         $distance += round($point->distanceToPoint($lastPoint), 2);
                     }
 
-                    if (!is_null($point->coordinate->alt) && $sampleIndex++ % $samplePoints == 0) {
+                    if (!is_null($point->coordinate->alt) && $sampleIndex++ % $stepPoints == 0) {
                         $altitude = round($point->coordinate->alt, 2);
                         $displayDistance = new Abp01_UnitSystem_Value_Distance($distance);
                         $displayAltitude = new Abp01_UnitSystem_Value_Height($altitude);
 
                         $profile[] = array(
-                            'dist' => $distance,
-                            'display_distance' => $displayDistance
+                            'displayDistance' => $displayDistance
                                 ->convertTo($targetSystem)
                                 ->getValue(),
                             
-                            'alt' => $altitude,
-                            'display_alt' => $displayAltitude
+                            'displayAlt' => $displayAltitude
                                 ->convertTo($targetSystem)
                                 ->getValue(),
 
@@ -195,7 +193,8 @@ class Abp01_Route_Track_Document {
 
         return new Abp01_Route_Track_AltitudeProfile($profile, 
             $targetSystem->getDistanceUnit(), 
-            $targetSystem->getHeightUnit());
+            $targetSystem->getHeightUnit(),
+            $stepPoints);
     }
 
     public function toPlainObject() {

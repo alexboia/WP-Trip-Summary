@@ -40,10 +40,13 @@ class Abp01_Route_Track_AltitudeProfile {
 
     public $heightUnit;
 
-    public function __construct(array $profile, $distanceUnit, $heightUnit) {
+    public $stepPoints;
+
+    public function __construct(array $profile, $distanceUnit, $heightUnit, $stepPoints) {
         $this->profile = $profile;
         $this->distanceUnit = $distanceUnit;
         $this->heightUnit = $heightUnit;
+        $this->stepPoints = $stepPoints;
     }
 
     public static function fromSerializedDocument($serialized) {
@@ -61,9 +64,10 @@ class Abp01_Route_Track_AltitudeProfile {
         return $data;
     }
 
-    public function matchesUnitSystem(Abp01_UnitSystem $check) {
+    public function matchesContext(Abp01_UnitSystem $check, $stepPoints) {
         return $this->distanceUnit === $check->getDistanceUnit()
-            && $this->heightUnit === $check->getHeightUnit();
+            && $this->heightUnit === $check->getHeightUnit()
+            && $this->stepPoints == $stepPoints;
     }
 
     public function serializeDocument() {

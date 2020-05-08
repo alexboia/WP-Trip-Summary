@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Trip Summary 0.2.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-trip-summary\n"
-"POT-Creation-Date: 2020-05-06 22:05+0300\n"
-"PO-Revision-Date: 2020-05-06 22:06+0300\n"
+"POT-Creation-Date: 2020-05-08 11:32+0300\n"
+"PO-Revision-Date: 2020-05-08 11:33+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -400,125 +400,133 @@ msgstr "Altitude minimale:"
 msgid "Maximum altitude:"
 msgstr "Altitude maximale:"
 
-#: abp01-plugin-main.php:496 abp01-plugin-main.php:507
+#: abp01-plugin-main.php:408
+msgid "Altitude:"
+msgstr "Altitude:"
+
+#: abp01-plugin-main.php:409
+msgid "Distance:"
+msgstr "Distance:"
+
+#: abp01-plugin-main.php:498 abp01-plugin-main.php:509
 #: views/wpts-settings.php:42
 msgid "Trip Summary Settings"
 msgstr "Paramètres de WP Trip Summary"
 
-#: abp01-plugin-main.php:497
+#: abp01-plugin-main.php:499
 msgid "Trip Summary"
 msgstr "WP Trip Summary"
 
-#: abp01-plugin-main.php:508
+#: abp01-plugin-main.php:510
 msgid "Settings"
 msgstr "Paramètres"
 
-#: abp01-plugin-main.php:516 abp01-plugin-main.php:517
+#: abp01-plugin-main.php:518 abp01-plugin-main.php:519
 #: views/wpts-lookup-data-management.php:43
 msgid "Lookup data management"
 msgstr "Gestion des éléments de la nomenclature"
 
-#: abp01-plugin-main.php:523 abp01-plugin-main.php:524
+#: abp01-plugin-main.php:525 abp01-plugin-main.php:526
 msgid "Help"
 msgstr "Aide"
 
-#: abp01-plugin-main.php:601
+#: abp01-plugin-main.php:603
 msgid "The plugin cannot be installed on your system"
 msgstr "Ce plugin n'est pas compatible avec votre système"
 
-#: abp01-plugin-main.php:732 views/wpts-frontend.php:50
+#: abp01-plugin-main.php:734 views/wpts-frontend.php:50
 msgid "Trip summary"
 msgstr "Résumé du voyage"
 
-#: abp01-plugin-main.php:1044
+#: abp01-plugin-main.php:1047
 msgid "Unsupported unit system"
 msgstr "Le système d'unités n'est pas valide"
 
-#: abp01-plugin-main.php:1056
+#: abp01-plugin-main.php:1059
 msgid "Tile layer URL is required"
 msgstr "L'URL de la couche de tuiles de carte est obligatoire"
 
-#: abp01-plugin-main.php:1063
+#: abp01-plugin-main.php:1066
 msgid "Tile layer URL does not have a valid format"
 msgstr "L'URL de la couche de tuiles de carte n'a pas un format valide"
 
-#: abp01-plugin-main.php:1070
+#: abp01-plugin-main.php:1073
 msgid "Tile layer attribution URL does not have a valid format"
 msgstr ""
 "L'URL d'attribution de la couche de tuiles de carte n'a pas un format valide"
 
-#: abp01-plugin-main.php:1080
+#: abp01-plugin-main.php:1083
 msgid "The track line colour is not a valid HEX colour code"
 msgstr ""
 "La couleur de la ligne de trace GPS n'est pas un code de couleur HEX valide"
 
-#: abp01-plugin-main.php:1107
+#: abp01-plugin-main.php:1111
 msgid "The settings could not be saved. Please try again."
 msgstr "Les paramètres n'ont pas été enregistrés. Réessayer, s'il vous plaît."
 
-#: abp01-plugin-main.php:1257 abp01-plugin-main.php:1318
+#: abp01-plugin-main.php:1261 abp01-plugin-main.php:1322
 msgid "The default label is mandatory"
 msgstr "L'étiquette par défaut est obligatoire"
 
-#: abp01-plugin-main.php:1266
+#: abp01-plugin-main.php:1270
 msgid "The lookup item could not be created"
 msgstr "L'élément n'a pas été enregistré"
 
-#: abp01-plugin-main.php:1277
+#: abp01-plugin-main.php:1281
 msgid "The lookup item has been created, but the translation could not be saved"
 msgstr ""
 "L'élément de recherche a été enregistré, mais la traduction n'a pas été "
 "enregistrée"
 
-#: abp01-plugin-main.php:1340
+#: abp01-plugin-main.php:1344
 msgid "The lookup item could not be modified"
 msgstr "L'élément n'a pas été enregistré"
 
-#: abp01-plugin-main.php:1384
+#: abp01-plugin-main.php:1388
 msgid "The item translation could not be deleted."
 msgstr "La traduction de l'élément n'a pas été supprimée."
 
-#: abp01-plugin-main.php:1390
+#: abp01-plugin-main.php:1394
 msgid "The item could not be deleted because it is still in use"
 msgstr "L'élément n'a pas été supprimé car il est en cours d'utilisation"
 
-#: abp01-plugin-main.php:1397
+#: abp01-plugin-main.php:1401
 msgid "The item could not be deleted"
 msgstr "L'élément n'a pas été supprimé"
 
-#: abp01-plugin-main.php:1447 abp01-plugin-main.php:1687
+#: abp01-plugin-main.php:1451 abp01-plugin-main.php:1693
 msgid "The data could not be saved due to a possible database error"
 msgstr ""
 "Les données n'ont pas été enregistrées en raison d'une possible erreur de "
 "base de données"
 
-#: abp01-plugin-main.php:1827
+#: abp01-plugin-main.php:1831
 msgid "Track file not found or is not readable"
 msgstr "Le fichier de la piste GPS est introuvable ou n'est pas lisible"
 
-#: abp01-plugin-main.php:1947
+#: abp01-plugin-main.php:1949
 msgid "The data could not be updated due to a possible database error"
 msgstr ""
 "Les données n'ont pas été enregistrées en raison d'une possible erreur de "
 "base de données"
 
-#: abp01-plugin-main.php:1980 views/wpts-editor-launcher-metabox.php:46
+#: abp01-plugin-main.php:1982 views/wpts-editor-launcher-metabox.php:46
 msgid "Trip summary info"
 msgstr "Informations sur le voyage"
 
-#: abp01-plugin-main.php:1982 views/wpts-editor-launcher-metabox.php:58
+#: abp01-plugin-main.php:1984 views/wpts-editor-launcher-metabox.php:58
 msgid "Trip summary track"
 msgstr "Piste GPS"
 
-#: abp01-plugin-main.php:2024 abp01-plugin-main.php:2034
+#: abp01-plugin-main.php:2026 abp01-plugin-main.php:2036
 msgid "Yes"
 msgstr "Oui"
 
-#: abp01-plugin-main.php:2025 abp01-plugin-main.php:2035
+#: abp01-plugin-main.php:2027 abp01-plugin-main.php:2037
 msgid "No"
 msgstr "Non"
 
-#: abp01-plugin-main.php:2027 abp01-plugin-main.php:2037
+#: abp01-plugin-main.php:2029 abp01-plugin-main.php:2039
 msgid "Not available"
 msgstr "Indisponible"
 
@@ -526,7 +534,7 @@ msgstr "Indisponible"
 msgid "Default"
 msgstr "Défaut"
 
-#: lib/Settings.php:224 tests/test-Settings.php:156
+#: lib/Settings.php:238 tests/test-Settings.php:156
 msgid ""
 "For the pragmatic sort, there is also a trip summary at the bottom of this "
 "page. Click here to consult it"
@@ -534,7 +542,7 @@ msgstr ""
 "Pour la personne pragmatique, il y a aussi un résumé du voyage au bas de "
 "cette page. Cliquez ici pour le consulter"
 
-#: lib/Settings.php:228 tests/test-Settings.php:152
+#: lib/Settings.php:242 tests/test-Settings.php:152
 msgid ""
 "It looks like you skipped the story. You should check it out. Click here to "
 "go back to beginning"
@@ -823,18 +831,22 @@ msgid "Show minimum & maximum altitude?"
 msgstr "Afficher l'altitude minimale et maximale?"
 
 #: views/wpts-settings.php:203
+msgid "Show altitude profile?"
+msgstr ""
+
+#: views/wpts-settings.php:215
 msgid "Allow track download?"
 msgstr "Autoriser le téléchargement de la trace GPS?"
 
-#: views/wpts-settings.php:215
+#: views/wpts-settings.php:227
 msgid "Track line colour"
 msgstr "Couleur de la ligne de trace GPS"
 
-#: views/wpts-settings.php:227
+#: views/wpts-settings.php:239
 msgid "Track line weight"
 msgstr "Largeur de la ligne de trace GPS"
 
-#: views/wpts-settings.php:244
+#: views/wpts-settings.php:256
 msgid "Save settings"
 msgstr "Enregistrer les paramètres"
 

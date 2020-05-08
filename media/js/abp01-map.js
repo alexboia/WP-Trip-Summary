@@ -51,6 +51,7 @@
             trackDownloadUrl: null,
             showScale: true,
             showMinMaxAltitude: false,
+            showAltitudeProfile: false,
             tileLayer: null,
             trackLineColour: '#0033ff',
             trackLineWeight: 3,
@@ -177,12 +178,16 @@
         }
 
         function addAltitudeProfile(map) {
-            var altitudeProfileControl = L.control.altitudeProfile('abp01-altitude-profile-container',
-                trackProfile,  {
-                    altitudeLabel: 'Altitude:',
-                    distanceLabel: 'Distance:'
-                }, {
-                    iconBaseUrl: opts.iconBaseUrl
+            var altitudeProfileControl = L.control.altitudeProfile('abp01-altitude-profile-container', 
+                trackProfile, 
+                trackInfo, {
+                    iconBaseUrl: opts.iconBaseUrl,
+                    chartLineColor: opts.trackLineColour,
+                    hoverPanTimeout: 100,
+                    labels: {
+                        altitude: opts.labels.altitude,
+                        distance: opts.labels.distance
+                    }
                 });
 
             altitudeProfileControl.addTo(map);
@@ -255,7 +260,10 @@
                 addMinMaxAltitudeBoxToggler(map);
             }
 
-            addAltitudeProfile(map);
+            //check if we should add altitude profile display controls
+            if (opts.showAltitudeProfile) {
+                addAltitudeProfile(map);
+            }
 
             //check if we should add the map scale
             if (opts.showScale) {

@@ -404,7 +404,9 @@ function abp01_get_installation_error_translations() {
 function abp01_get_main_frontend_translations() {
 	return array(
 		'lblMinAltitude' => esc_html__('Minimum altitude:', 'abp01-trip-summary'),
-		'lblMaxAltitude' => esc_html__('Maximum altitude:', 'abp01-trip-summary')
+		'lblMaxAltitude' => esc_html__('Maximum altitude:', 'abp01-trip-summary'),
+		'lblAltitude' => esc_html__('Altitude:', 'abp01-trip-summary'),
+		'lblDistance' => esc_html__('Distance:', 'abp01-trip-summary')
 	);
 }
 
@@ -1854,7 +1856,7 @@ function abp01_get_track() {
 		}
 
 		if ($settings->getShowAltitudeProfile()) {
-			$profile = $manager->getOrCreateDisplayableAltitudeProfile($track, $targetUnitSystem, 10);
+			$profile = $manager->getOrCreateDisplayableAltitudeProfile($track, $targetUnitSystem, 8);
 			if (!empty($profile)) {
 				$response->profile = $profile->toPlainObject();
 			}
