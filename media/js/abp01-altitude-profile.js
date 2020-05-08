@@ -71,6 +71,13 @@
             }
         },
 
+        _cancelHoverTimer: function() {
+            if (this._currentHoverTimer !== null) {
+                window.clearTimeout(this._currentHoverTimer);
+                this._currentHoverTimer = null;
+            }
+        },
+
         _highlightProfilePoint: function(point) {
             var me = this;
             var icon = L.icon({
@@ -93,10 +100,7 @@
             //  we're going to have a lot of useless pans
             if (!this._map.getBounds().contains(markerCoord)) {
                 //First, cancel out the existing timer
-                if (this._currentHoverTimer != null) {
-                    window.clearTimeout(this._currentHoverTimer);
-                    this._currentHoverTimer = null;
-                }
+                this._cancelHoverTimer();
     
                 //Start a new one
                 this._currentHoverTimer = window.setTimeout(function() {
@@ -264,6 +268,9 @@
             //When the mouse pointer leaves the chart area, 
             //  remove the map marker that highlights 
             //  the current point on the profile
+            //  and cancel the hover timer, so that 
+            //  the map won't needlessly move
+            this._cancelHoverTimer();
             this._removeCurrentHighlightedProfilePoint();
         },
 
