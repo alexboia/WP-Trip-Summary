@@ -136,6 +136,9 @@ class Abp01_Route_Track_Document {
         $this->waypoints[] = $wpt;
     }
 
+    /**
+     * @return Abp01_Route_Track_Document
+     */
     public function simplify($threshold) {
         $document = new Abp01_Route_Track_Document($this->metadata);
 
@@ -195,6 +198,19 @@ class Abp01_Route_Track_Document {
             $targetSystem->getDistanceUnit(), 
             $targetSystem->getHeightUnit(),
             $stepPoints);
+    }
+
+    /**
+     * @return Abp01_Route_Track_Info
+     */
+    public function getDisplayableTrackInfo($targetSystem) {
+        $minAlt = new Abp01_UnitSystem_Value_Height($this->minAlt);
+        $maxAlt = new Abp01_UnitSystem_Value_Height($this->maxAlt);
+
+        $minAlt = $minAlt->convertTo($targetSystem);
+        $maxAlt = $maxAlt->convertTo($targetSystem);
+
+        return new Abp01_Route_Track_Info($minAlt, $maxAlt);
     }
 
     public function toPlainObject() {

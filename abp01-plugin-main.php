@@ -1843,16 +1843,9 @@ function abp01_get_track() {
 		//	these values for display if the user 
 		//	has opted to show min/max altitude information
 		if ($settings->getShowMinMaxAltitude()) {
-			$minAlt = new Abp01_UnitSystem_Value_Height($track->minAlt);
-			$maxAlt = new Abp01_UnitSystem_Value_Height($track->maxAlt);
-
-			$response->info->minAltitude = $minAlt->convertTo($targetUnitSystem)
+			$response->info = $trackDocument
+				->getDisplayableTrackInfo($targetUnitSystem)
 				->toPlainObject();
-			$response->info->maxAltitude = $maxAlt->convertTo($targetUnitSystem)
-				->toPlainObject();
-		} else {
-			$response->info->minAltitude = null;
-			$response->info->maxAltitude = null;
 		}
 
 		if ($settings->getShowAltitudeProfile()) {
