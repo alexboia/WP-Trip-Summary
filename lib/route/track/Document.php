@@ -213,6 +213,9 @@ class Abp01_Route_Track_Document {
         return new Abp01_Route_Track_Info($minAlt, $maxAlt);
     }
 
+    /**
+     * @return stdClass
+     */
     public function toPlainObject() {
         $data = new stdClass();
         $data->route = $this;
@@ -224,6 +227,9 @@ class Abp01_Route_Track_Document {
         return $data;
     }
 
+    /**
+     * @return Abp01_Route_Track_Bbox
+     */
     public function getBounds() {
         $bounds = new Abp01_Route_Track_Bbox($this->minLat,
             $this->minLng,
@@ -232,6 +238,9 @@ class Abp01_Route_Track_Document {
         return $bounds;
     }
 
+    /**
+     * @return Abp01_Route_Track_Point|null
+     */
     function getStartPoint() {
         $part = reset($this->parts);
         if (!$part) {
@@ -245,9 +254,13 @@ class Abp01_Route_Track_Document {
 
         $trackPoint = reset($line->trackPoints);
         return $trackPoint instanceof Abp01_Route_Track_Point
-            ? $trackPoint : null;
+            ? $trackPoint 
+            : null;
     }
 
+    /**
+     * @return Abp01_Route_Track_Point|null
+     */
     function getEndPoint() {
         $part = end($this->parts);
         reset($this->parts);
@@ -264,13 +277,20 @@ class Abp01_Route_Track_Document {
         $trackPoint = end($line->trackPoints);
         reset($line->trackPoints);
         return $trackPoint instanceof Abp01_Route_Track_Point
-            ? $trackPoint : null;
+            ? $trackPoint 
+            : null;
     }
 
+    /**
+     * @return string
+     */
     public function serializeDocument() {
         return serialize($this);
     }
 
+    /**
+     * @return string
+     */
     public function toJson() {
         return json_encode($this);
     }

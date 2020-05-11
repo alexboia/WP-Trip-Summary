@@ -471,6 +471,19 @@ class Abp01_Route_Manager {
 	}
 
 	/**
+     * @return Abp01_Route_Track_Info
+     */
+    public function getDisplayableTrackInfo(Abp01_Route_Track $track, $targetSystem) {
+        $minAlt = new Abp01_UnitSystem_Value_Height($track->minAlt);
+        $maxAlt = new Abp01_UnitSystem_Value_Height($track->maxAlt);
+
+        $minAlt = $minAlt->convertTo($targetSystem);
+        $maxAlt = $maxAlt->convertTo($targetSystem);
+
+        return new Abp01_Route_Track_Info($minAlt, $maxAlt);
+    }
+
+	/**
 	 * Caches the serialized version of the given track document for the given post ID
 	 * 
 	 * @param int $postId The post ID

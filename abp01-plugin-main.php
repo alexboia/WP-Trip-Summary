@@ -1843,8 +1843,8 @@ function abp01_get_track() {
 		//	these values for display if the user 
 		//	has opted to show min/max altitude information
 		if ($settings->getShowMinMaxAltitude()) {
-			$response->info = $trackDocument
-				->getDisplayableTrackInfo($targetUnitSystem)
+			$response->info = $manager
+				->getDisplayableTrackInfo($track, $targetUnitSystem)
 				->toPlainObject();
 		}
 
