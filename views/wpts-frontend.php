@@ -102,7 +102,9 @@
                                 <a id="abp01-map-retry" class="abp01-map-retry" data-role="map-retry" href="javascript:void(0)"><?php echo esc_html__('Retry', 'abp01-trip-summary'); ?></a>
                             </div>
                         </div>
-                        <div id="abp01-altitude-profile-container"></div>
+                        <?php if ($data->settings->showAltitudeProfile): ?>
+                            <div id="abp01-altitude-profile-container"></div>
+                        <?php endif; ?>
                     </div>
                 <?php endif; ?>
             </div>

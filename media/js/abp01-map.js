@@ -32,19 +32,33 @@
     "use strict";
 
     $.fn.mapTrack = function(opts) {
+        //basic map state stuff
         var map = null;
-        var $me = this;
-        var trackDataUrl = null;
-        var mapRedrawTimer = null;
         var mapLoaded = false;
         var mapDestroyed = false;
-        var magnifyingGlassControl = null;
-        var magnifyingGlassLayer = null;
-        var minMaxAltitudeBox = false;
+
+        //jquery variables stuff
+        var $me = this;
+
+        //data store
         var trackProfile = null;
         var trackInfo = null;
+        var trackDataUrl = null;
 
-        //default is to show scale, but not show magnifying glass, because I see no real use for it
+        //timers
+        var mapRedrawTimer = null;
+
+        //map controls handles
+        var magnifyingGlassControl = null;
+        var magnifyingGlassLayer = null;
+        var minMaxAltitudeBoxControl = null;
+        var minMaxAltitudeBoxTogglerControl = null;
+        var altitudeProfileControl = null;
+        var scaleIndicatorControl = null;
+        var trackDownloadControl = null;
+
+        //default is to show scale, but not show magnifying glass, 
+        //  because I see no real use for it
         opts = $.extend({
             showFullScreen: false,
             showMagnifyingGlass: false,
@@ -68,7 +82,8 @@
 
         /**
          * Check if the plug-ins required for showing the magnifying glass are loaded
-         * @return boolean True if they are, False otherwise
+         * 
+         * @return {boolean} True if they are, False otherwise
          * */
         function isMagnifyingGlassCapabilityLoaded() {
             return !!L.magnifyingGlass && !!L.control.magnifyingGlassButton;
@@ -76,21 +91,68 @@
 
         /**
          * Check if the plug-ins required for showing the fullscreen capability are loaded
-         * @return boolean True if they are, False otherwise
+         * 
+         * @return {boolean} True if they are, False otherwise
          * */
         function isFullScreenCapabilityLoaded() {
             return !!L.control.fullscreen;
         }
 
+        /**
+         * Check if the plug-ins required for showing 
+         *  the required min-max altitude box are loaded
+         * 
+         * @return {boolean} True if they are, False otherwise
+         */
+        function isMinMaxAltitudeBoxCapabilityLoaded() {
+            return !!L.Control.MinMaxAltitudeBox && !!L.control.minMaxAltitudeBox;
+        }
+
+        /**
+         * Check if the plug-ins required for showing
+         *  the altitude profile chart are loaded
+         * 
+         * @return {boolean} True if they are, False otherwise
+         */
+        function isAltitudeProfileCapabilityLoaded() {
+            return !!L.Control.AltitudeProfile && !!L.control.altitudeProfile;
+        }
+
         function destroyMap() {
             if (map) {
+                if (scaleIndicatorControl) {
+                    map.removeControl(scaleIndicatorControl);
+                }
+
+                if (magnifyingGlassControl) {
+                    map.removeControl(magnifyingGlassControl);
+                }
+
                 if (magnifyingGlassLayer) {
                     magnifyingGlassLayer.removeFrom(map);
                 }
 
+                if (minMaxAltitudeBoxTogglerControl != null) {
+                    map.removeControl(minMaxAltitudeBoxTogglerControl);
+                }
+
+                if (minMaxAltitudeBoxControl != null) {
+                    map.removeControl(minMaxAltitudeBoxControl);
+                }
+
+                if (altitudeProfileControl != null) {
+                    map.removeControl(altitudeProfileControl);
+                }
+
                 map.remove();
+                
+                scaleIndicatorControl = null;
                 magnifyingGlassControl = null;
                 magnifyingGlassLayer = null;
+                minMaxAltitudeBoxTogglerControl = null;
+                minMaxAltitudeBoxControl = null;
+                altitudeProfileControl = nul;
+                
                 map = null;
                 $me = null;
 
@@ -103,13 +165,22 @@
             }
         }
 
+        /**
+         * Adds the map scale indicator control
+         * 
+         * @param {L.Map} map The map to which the feature will be added
+         * @return {L.Control.Scale} The newly registered scale control
+         */
         function addScaleIndicator(map) {
-            L.control.scale({
+            scaleIndicatorControl = L.control.scale({
                 position: 'bottomleft',
                 updateWhenIdle: true,
                 imperial: false,
                 metric: true
-            }).addTo(map);
+            });
+
+            scaleIndicatorControl.addTo(map);
+            return scaleIndicatorControl;
         }
 
         /**
@@ -117,14 +188,13 @@
          * - the magnifying glass map layer;
          * - the magnifying glass button.
          * 
-         * @param map Object The map to which this feature will be added
-         * @param tileLayerUrl String The URL of the tile source used by the magnifying glass layer
-         * @return void
+         * @param {L.Map} map The map to which this feature will be added
+         * @return {L.Control.MagnifyingGlassButton}
          * */
-        function addMagnifyingGlassCapability(map, tileLayerUrl) {
+        function addMagnifyingGlassCapability(map) {
             //create magnifying glass layer
             magnifyingGlassLayer = L.magnifyingGlass({
-                layers: [ L.tileLayer(tileLayerUrl) ],
+                layers: [ L.tileLayer(opts.tileLayer.url) ],
                 zoomOffset: 3
             });
 
@@ -140,35 +210,47 @@
         /**
          * Adds the track download button to the given map, with the given URL
          * 
-         * @param map Object The map to which the button will be added
-         * @param trackDownloadUrl String The URL to which the button will direct the user
-         * @return void
+         * @param {L.Map} map The map to which the button will be added
+         * @return {L.Control.IconButton} The registered track download button
          * */
-        function addTrackDownloadCapability(map, trackDownloadUrl) {
-            var trackDownloadButtonControl = L.control.iconButton('dashicons dashicons-download abp01-track-download-link', 
-                trackDownloadUrl);
+        function addTrackDownloadCapability(map) {
+            trackDownloadControl = L.control.iconButton('dashicons dashicons-download abp01-track-download-link', 
+                opts.trackDownloadUrl);
 
-            trackDownloadButtonControl.addTo(map);
-            return trackDownloadButtonControl;
+            trackDownloadControl.addTo(map);
+            return trackDownloadControl;
         }
 
+        /**
+         * Adds the overlay box that displays the minimum and maximum altitude
+         * 
+         * @param {L.Map} map The map to which the min-max altitude box should be added
+         * @return {L.Control.MinMaxAltitudeBox} The registered control
+         */
         function addMinMaxAltitudeBox(map) {
-            var minMaxAltitudeBoxControl = L.control.minMaxAltitudeBox(trackInfo, {
+            minMaxAltitudeBoxControl = L.control.minMaxAltitudeBox(trackInfo, {
                 minAltitude: opts.labels.minAltitude,
                 maxAltitude: opts.labels.maxAltitude
             });
+
             minMaxAltitudeBoxControl.addTo(map);
             return minMaxAltitudeBoxControl;
         }
 
+        /**
+         * Adds the button which toggles the min-max altitude box on or off
+         * 
+         * @param {L.Map} map The map to which the min-max altitude box toggler should be added
+         * @return {L.Control.IconButton} The registered control
+         */
         function addMinMaxAltitudeBoxToggler(map) {
-            var minMaxAltitudeBoxTogglerControl = L.control.iconButton('dashicons dashicons-sort abp01-track-minmaxalt-btn', null, {
+            minMaxAltitudeBoxTogglerControl = L.control.iconButton('dashicons dashicons-sort abp01-track-minmaxalt-btn', null, {
                 onClick: function(event) {
-                    if (!minMaxAltitudeBox) {
-                        minMaxAltitudeBox = addMinMaxAltitudeBox(map);
+                    if (!minMaxAltitudeBoxControl) {
+                        minMaxAltitudeBoxControl = addMinMaxAltitudeBox(map);
                     } else {
-                        map.removeControl(minMaxAltitudeBox);
-                        minMaxAltitudeBox = null;
+                        map.removeControl(minMaxAltitudeBoxControl);
+                        minMaxAltitudeBoxControl = null;
                     }
                 }
             });
@@ -177,8 +259,17 @@
             return minMaxAltitudeBoxTogglerControl;
         }
 
+        /**
+         * Adds the altitude profile control to the map. 
+         * It's represented as a button, that belongs to the map, 
+         *  which toggles an altitude profile chart in a container 
+         *  outside the map area.
+         * 
+         * @param {L.Map} map The map to which the altitude profile control should be added
+         * @return {L.Control.AltitudeProfile} The registered control
+         */
         function addAltitudeProfile(map) {
-            var altitudeProfileControl = L.control.altitudeProfile('abp01-altitude-profile-container', 
+            altitudeProfileControl = L.control.altitudeProfile('abp01-altitude-profile-container', 
                 trackProfile, 
                 trackInfo, {
                     iconBaseUrl: opts.iconBaseUrl,
@@ -199,8 +290,8 @@
          * - tileLayer.attributionTxt - the label of the attribution text;
          * - tileLayer.attributionUrl - URL to point to (maybe author home page or further credits page)
          * 
-         * @param opts object The options used to initialize the plug-in
-         * @return string The rendered attribution text
+         * @param {Object} opts The options used to initialize the plug-in
+         * @return {String} The rendered attribution text
          *  */
         function getTileLayerAttribution(opts) {
         	var tileLayerAttribution = null;
@@ -223,7 +314,7 @@
         function renderMap(bounds) {
             var centerLat = (bounds.northEast.lat - bounds.southWest.lat) / 2;
             var centerLng = (bounds.northEast.lng - bounds.southWest.lng) / 2;
-            var tileLayerUrl = opts.tileLayer.url;                        
+            var tileLayerUrl = opts.tileLayer.url;
  
             map = L.map($me.attr('id'), {
                 center: L.latLng(centerLat, centerLng),
@@ -236,6 +327,7 @@
                 }
             });
 
+            //configure the map view to the bounds of the track
             map.fitBounds(L.latLngBounds(
                 L.latLng(bounds.southWest.lat, bounds.southWest.lng),
                 L.latLng(bounds.northEast.lat, bounds.northEast.lng)
@@ -247,21 +339,21 @@
 
             //check if we should add the track download url
             if (opts.trackDownloadUrl) {
-                addTrackDownloadCapability(map, opts.trackDownloadUrl);
+                addTrackDownloadCapability(map);
             }
 
             //check if we should add the magnifying glass
             if (opts.showMagnifyingGlass && isMagnifyingGlassCapabilityLoaded()) {
-                addMagnifyingGlassCapability(map, tileLayerUrl);
+                addMagnifyingGlassCapability(map);
             }
 
             //check if we should add min/max altitude display controls
-            if (opts.showMinMaxAltitude) {
+            if (opts.showMinMaxAltitude && isAltitudeProfileCapabilityLoaded) {
                 addMinMaxAltitudeBoxToggler(map);
             }
 
             //check if we should add altitude profile display controls
-            if (opts.showAltitudeProfile) {
+            if (opts.showAltitudeProfile && isMinMaxAltitudeBoxCapabilityLoaded()) {
                 addAltitudeProfile(map);
             }
 
@@ -337,8 +429,8 @@
          * - bounds - the overall bounds of the loaded track;
          * - track - the actual track vector data.
          *
-         * @param onReady The callback to be invoked upon completion
-         * @return void
+         * @param {Function} onReady The callback to be invoked upon completion
+         * @return {void}
          * */
          function loadTrack(onReady) {
             function onReadyFn(success, bounds, route, profile, info) {
@@ -380,7 +472,7 @@
          * - handlePreLoad, before loading the track data
          * - handleLoad, after all of the above steps have been completed
          *
-         * @return void
+         * @return {void}
          * */
         function loadMap() {
             if (mapLoaded || mapDestroyed) {
