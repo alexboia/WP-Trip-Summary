@@ -13,18 +13,19 @@ An opinionated, multi-language, WordPress trip summary plugin to help travel blo
 
 1. [Is it good for you?](#wpts-isitgoodforyou)
 2. [Features](#wpts-features)
-3. [Progress & Management](#wpts-progress)
-4. [What it does](#wpts-what-does)
-5. [Supported languages](#wpts-langs)
-6. [Changelog](#wpts-changelog)
-7. [Upgrade notices](#wpts-upgrade-notices)
-8. [Roadmap](#wpts-roadmap)
-9. [Requirements](#wpts-requirements)
-10. [Limitations](#wpts-limitations)
-11. [Screenshots](#wpts-screenshots)
-12. [Contributing](#wpts-contributing)
-13. [Credits](#wpts-credits)
-14. [License](#wpts-license)
+3. [Alternatives](#wpts-alternatives)
+4. [Progress & Management](#wpts-progress)
+5. [What it does](#wpts-what-does)
+6. [Supported languages](#wpts-langs)
+7. [Changelog](#wpts-changelog)
+8. [Upgrade notices](#wpts-upgrade-notices)
+9. [Roadmap](#wpts-roadmap)
+10. [Requirements](#wpts-requirements)
+11. [Limitations](#wpts-limitations)
+12. [Screenshots](#wpts-screenshots)
+13. [Contributing](#wpts-contributing)
+14. [Credits](#wpts-credits)
+15. [License](#wpts-license)
 
 ## Is it good for you?
 <a name="wpts-isitgoodforyou"></a>  
@@ -52,6 +53,7 @@ Do you think this would be right for you but there's that extra thing that's mis
 - multi-language.
 
 ## Alternatives to WP Trip Summary
+<a name="wpts-alternatives"></a>  
 
 So I figured it would be nice to list here what other WordPress plugins can be used, if WP Trip Summary does not cover all your needs or its philosophy just isn't for you.
 These certainly are not the only ones, but these are the ones I consider the most relevant.
