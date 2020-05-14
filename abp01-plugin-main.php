@@ -249,16 +249,6 @@ function abp01_can_manage_plugin_settings() {
 }
 
 /**
- * Get the directories in which the frontend 
- * 	viewer templates should be searched.
- * 
- * @return stdClass
- */
-function abp01_get_frontend_template_locations() {
-	return abp01_get_env()->getFrontendTemplateLocations();
-}
-
-/**
  * Retrieve the translated label that corresponds 
  * 	to the given lookup type/category
  * 
@@ -418,9 +408,7 @@ function abp01_get_main_frontend_translations() {
  * @return void
  */
 function abp01_render_trip_summary_launcher_metabox(stdClass $data) {
-	ob_start();
-	require_once abp01_get_env()->getViewFilePath('wpts-editor-launcher-metabox.php');
-	return ob_get_clean();
+	return abp01_get_view()->renderAdminTripSummaryEditorLauncherMetabox($data);
 }
 
 /**
@@ -429,11 +417,8 @@ function abp01_render_trip_summary_launcher_metabox(stdClass $data) {
  * @param stdClass $data The existing trip summary and context data
  * @return void
  */
-function abp01_render_trip_summary_editor(stdClass $data) {
-	require_once abp01_get_env()->getViewHelpersFilePath('controls.php');
-	ob_start();
-	require_once abp01_get_env()->getViewFilePath('wpts-editor.php');
-	return ob_get_clean();
+function abp01_render_admin_trip_summary_editor(stdClass $data) {
+	return abp01_get_view()->renderAdminTripSummaryEditor($data);
 }
 
 /**
@@ -443,9 +428,7 @@ function abp01_render_trip_summary_editor(stdClass $data) {
  * @return void
  */
 function abp01_admin_settings_page_render(stdClass $data) {
-	ob_start();
-	require_once abp01_get_env()->getViewFilePath('wpts-settings.php');
-	return ob_get_clean();
+	return abp01_get_view()->renderAdminSettingsPage($data);
 }
 
 /**
@@ -455,9 +438,7 @@ function abp01_admin_settings_page_render(stdClass $data) {
  * @return void
  */
 function abp01_admin_help_page_render(stdClass $data) {
-	ob_start();
-	require_once abp01_get_env()->getViewFilePath('wpts-help.php');
-	return ob_get_clean();
+	return abp01_get_view()->renderAdminHelpPage($data);
 }
 
 /**
@@ -467,9 +448,7 @@ function abp01_admin_help_page_render(stdClass $data) {
  * @return void
  */
 function abp01_admin_lookup_page_render(stdClass $data) {
-	ob_start();
-	require_once abp01_get_env()->getViewFilePath('wpts-lookup-data-management.php');
-	return ob_get_clean();
+	return abp01_get_view()->renderAdminLookupPage($data);
 }
 
 /**
@@ -536,25 +515,7 @@ function abp01_create_admin_menu() {
  * @return void
  */
 function abp01_render_trip_summary_frontend(stdClass $data) {
-	$locations = abp01_get_frontend_template_locations();
-	$themeHelpers = $locations->theme . '/helpers/controls.frontend.php';
-
-	//if the custom viewer theme has overridden the helpers, include those helpers
-	if (is_readable($themeHelpers)) {
-		require_once $themeHelpers;
-	}
-
-	//include the default helpers - the actual functions will only be defined if no overrides are found
-	require_once $locations->default . '/helpers/controls.frontend.php';
-
-	//if the custom viewer theme has overridden the main view, include the override
-	$themeViewer = $locations->theme . '/wpts-frontend.php';
-	if (!is_readable($themeViewer)) {
-		//otherwise, include the default main view
-		require $locations->default . '/wpts-frontend.php';
-	} else {
-		require $themeViewer;
-	}
+	return abp01_get_view()->renderFrontendViewer($data);
 }
 
 /**
@@ -563,25 +524,7 @@ function abp01_render_trip_summary_frontend(stdClass $data) {
  * @param stdClass $data The trip summary and context data
  */
 function abp01_render_trip_summary_frontend_teaser(stdClass $data) {	
-	$locations = abp01_get_frontend_template_locations();
-	$themeHelpers = $locations->theme . '/helpers/controls.frontend.php';
-
-	//if the custom viewer theme has overridden the helpers, include those helpers
-	if (is_readable($themeHelpers)) {
-		require_once $themeHelpers;
-	}
-
-	//include the default helpers - the actual functions will only be defined if no overrides are found
-	require_once $locations->default . '/helpers/controls.frontend.php';
-
-	//if the custom viewer theme has overridden the teaser view, include the override
-	$themeTeaser = $locations->theme . '/wpts-frontend-teaser.php';
-	if (!is_readable($themeTeaser)) {
-		//otherwise, include the default teaser view
-		require $locations->default . '/wpts-frontend-teaser.php';
-	} else {
-		require $themeTeaser;
-	}
+	return abp01_get_view()->renderFrontendTeaser($data);
 }
 
 /**
@@ -650,6 +593,8 @@ function abp01_init_core() {
 	load_plugin_textdomain('abp01-trip-summary', 
 		false, 
 		dirname(plugin_basename(__FILE__)) . '/lang/');
+
+	abp01_get_view()->initFrontendTheme();
 }
 
 function abp01_init_viewer_content_hooks() {
@@ -840,7 +785,7 @@ function abp01_add_admin_editor_form($post, $args) {
 	}
 
 	//finally, render the editor	
-	echo abp01_render_trip_summary_editor($data);
+	echo abp01_render_admin_trip_summary_editor($data);
 }
 
 /**
@@ -928,7 +873,7 @@ function abp01_add_admin_styles() {
  */
 function abp01_add_frontend_styles() {
 	if (abp01_should_add_frontend_viewer()) {
-		Abp01_Includes::includeStyleFrontendMain();
+		abp01_get_view()->includeFrontendViewerStyles();
 	}
 }
 
@@ -960,7 +905,7 @@ function abp01_add_admin_scripts() {
  */
 function abp01_add_frontend_scripts() {
 	if (abp01_should_add_frontend_viewer()) {
-		Abp01_Includes::includeScriptFrontendMain(true, abp01_get_main_frontend_translations());
+		abp01_get_view()->includeFrontendViewerScripts(abp01_get_main_frontend_translations());
 	}
 }
 
@@ -1584,13 +1529,8 @@ function abp01_render_viewer($postId) {
 
 		//render the teaser and the viewer and attach the results to the post content
 		if ($data->info->exists || $data->track->exists) {
-			ob_start();
-			abp01_render_trip_summary_frontend_teaser($data);
-			$teaserHtml = ob_get_clean();
-
-			ob_start();
-			abp01_render_trip_summary_frontend($data);
-			$viewerHtml = ob_get_clean();
+			$teaserHtml = abp01_render_trip_summary_frontend_teaser($data);
+			$viewerHtml = abp01_render_trip_summary_frontend($data);
 		}
 
 		$viewer = array(

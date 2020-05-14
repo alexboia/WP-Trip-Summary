@@ -898,33 +898,8 @@ class Abp01_Includes {
 	}
 
 	public static function includeStyleFrontendMain() {
-		$style = self::_getActualStyleToInclude(self::STYLE_FRONTEND_MAIN);
-		$alternateLocations = self::_getEnv()->getFrontendTemplateLocations();
-
-		$themeCssFilePath = $alternateLocations->theme . '/' . $style['path'];
-		if (is_readable($themeCssFilePath)) {
-			$cssPathUrl = $alternateLocations->themeUrl . '/' . $style['path'];
-			if (!isset($style['media']) || !$style['media']) {
-				$style['media'] = 'all';
-			}
-	
-			$deps = isset($style['deps']) && is_array($style['deps']) 
-				? $style['deps'] 
-				: array();
-			
-			if (!empty($deps)) {
-				self::_ensureStyleDependencies($deps, 'enqueued');
-			}
-
-			wp_enqueue_style(self::STYLE_FRONTEND_MAIN, 
-				$cssPathUrl, 
-				$deps, 
-				$style['version'], 
-				$style['media']);
-		} else {
-			self::_includeStyle(self::STYLE_FRONTEND_MAIN);
-			self::includeStyleFrontendMainThemeSpecificIfPresent();
-		}
+		self::_includeStyle(self::STYLE_FRONTEND_MAIN);
+		self::includeStyleFrontendMainThemeSpecificIfPresent();
 	}
 
 	public static function includeStyleFrontendMainThemeSpecificIfPresent() {

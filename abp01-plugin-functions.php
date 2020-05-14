@@ -74,6 +74,17 @@ function abp01_get_help() {
 }
 
 /**
+ * @return Abp01_View
+ */
+function abp01_get_view() {
+	static $view = null;
+	if ($view === null) {
+		$view = new Abp01_View();
+	}
+	return $view;
+}
+
+/**
  * Initializes the autoloading process
  * 
  * @return void
