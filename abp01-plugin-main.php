@@ -594,7 +594,7 @@ function abp01_init_core() {
 		false, 
 		dirname(plugin_basename(__FILE__)) . '/lang/');
 
-	abp01_get_view()->initFrontendTheme();
+	abp01_get_view()->initView();
 }
 
 function abp01_init_viewer_content_hooks() {

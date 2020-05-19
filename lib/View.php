@@ -62,7 +62,7 @@ class Abp01_View {
 	    return ob_get_clean();
     }
 
-    public function initFrontendTheme() {
+    public function initView() {
         $frontendThemeClass = apply_filters('abp01_get_frotend_theme_class', 'Abp01_FrontendTheme_Default');
         if (!empty($frontendThemeClass) 
             && in_array('Abp01_FrontendTheme', class_implements($frontendThemeClass, true))) {

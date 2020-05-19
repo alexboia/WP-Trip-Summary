@@ -39,22 +39,56 @@ class Abp01_FrontendTheme_Decorator extends Abp01_FrontendTheme_Default {
     }
 
     public function includeFrontendViewerStyles() {
-
+        if (!Abp01_Includes::includeStyleFrontendMainFromCurrentThemeIfPresent()) {
+            parent::includeFrontendViewerStyles();
+        }
     }
 
     public function registerFrontendViewerHelpers() {
-
+        $locations = $this->_getFrontendTemplateLocations();
+        $themeHelpers = wp_normalize_path($locations->theme . '/helpers/controls.frontend.php');
+        
+        if (is_readable($themeHelpers)) {
+            require_once $themeHelpers;
+        }
+        
+        //include the default helpers - 
+        //  the actual functions will only be defined 
+        //  if no overrides are found
+        parent::registerFrontendViewerHelpers();
     }
 
     public function renderTeaser(stdClass $data) {
+        $locations = $this->_getFrontendTemplateLocations();
+        $themeTeaser = wp_normalize_path($locations->theme . '/wpts-frontend-teaser.php');
 
+        if (!is_readable($themeTeaser)) {
+            ob_start();
+            require $themeTeaser;
+            return ob_get_clean();
+        } else {
+            parent::renderTeaser($data);
+        }
     }
 
     public function renderViewer(stdClass $data) {
+        $locations = $this->_getFrontendTemplateLocations();
+        $themeViewer = wp_normalize_path($locations->theme . '/wpts-frontend.php');
 
+        if (!is_readable($themeViewer)) {
+            ob_start();
+            require $themeViewer;
+            return ob_get_clean();
+        } else {
+            parent::renderViewer($data);
+        }
     }
 
     public function getVersion() {
         return parent::getVersion();
+    }
+
+    private function _getFrontendTemplateLocations() {
+        return $this->_env->getFrontendTemplateLocations();
     }
 }

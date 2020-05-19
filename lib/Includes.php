@@ -910,6 +910,39 @@ class Abp01_Includes {
 		}
 	}
 
+	public static function includeStyleFrontendMainFromCurrentThemeIfPresent() {
+		$found = false;
+		$style = self::_getActualStyleToInclude(self::STYLE_FRONTEND_MAIN);
+		$alternateLocations = self::_getEnv()->getFrontendTemplateLocations();
+
+		$themeCssFilePath = $alternateLocations->theme . '/' . $style['path'];
+		if (is_readable($themeCssFilePath)) {
+			$found = true;
+			$cssPathUrl = $alternateLocations->themeUrl . '/' . $style['path'];
+
+			if (!isset($style['media']) || !$style['media']) {
+				$style['media'] = 'all';
+			}
+
+			$deps = isset($style['deps']) && is_array($style['deps']) 
+				? $style['deps'] 
+				: array();
+
+			$deps = self::_collectDependencyHandles($deps);
+			if (!empty($deps)) {
+				self::_ensureStyleDependencies($deps, 'enqueued');
+			}
+
+			wp_enqueue_style(self::STYLE_FRONTEND_MAIN, 
+				$cssPathUrl, 
+				$deps, 
+				$style['version'], 
+				$style['media']);
+		}
+
+		return $found;
+	}
+
 	public static function includeStyleAdminMain() {
 		self::_includeStyle(self::STYLE_ADMIN_MAIN);
 	}
