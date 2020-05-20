@@ -31,19 +31,6 @@
     defined('ABP01_LOADED') or die;
 ?>
 
-<script type="text/javascript">
-    var abp01_imgBase = '<?php echo esc_js($data->imgBaseUrl); ?>';
-    var abp01_ajaxUrl = '<?php echo esc_js($data->ajaxUrl); ?>';
-    var abp01_ajaxGetTrackAction = '<?php echo esc_js($data->ajaxGetTrackAction); ?>';
-	var abp01_downloadTrackAction = '<?php echo esc_js($data->downloadTrackAction); ?>';
-
-    var abp01_hasInfo = <?php echo $data->info->exists ? 'true' : 'false' ?>;
-    var abp01_hasTrack = <?php echo $data->track->exists ? 'true' : 'false' ?>;
-    var abp01_postId = '<?php echo $data->postId; ?>';
-    var abp01_nonceGet = '<?php echo esc_js($data->nonceGet); ?>';
-	var abp01_nonceDownload = '<?php echo esc_js($data->nonceDownload); ?>';
-</script>
-
 <?php if ($data && ($data->info->exists || $data->track->exists)): ?>
     <div id="abp01-techbox-frontend" class="abp01-techbox-frontend">
         <div id="abp01-techbox-title" class="abp01-techbox-title">

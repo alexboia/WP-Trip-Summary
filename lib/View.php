@@ -56,6 +56,10 @@ class Abp01_View {
         $this->_frontendTheme->registerFrontendViewerHelpers();
     }
 
+    private function _renderFrontendViewerJsVars(stdClass $data) {
+        return $this->_renderCoreView('wpts-frontend-jsvars.php', $data);
+    }
+
     private function _renderCoreView($file, stdClass $data) {
         ob_start();
 	    require $this->_env->getViewFilePath($file);
@@ -63,12 +67,12 @@ class Abp01_View {
     }
 
     public function initView() {
-        $frontendThemeClass = apply_filters('abp01_get_frotend_theme_class', 'Abp01_FrontendTheme_Default');
+        $frontendThemeClass = apply_filters('abp01_get_frotend_theme_class', 'Abp01_FrontendTheme_Decorator');
         if (!empty($frontendThemeClass) 
             && in_array('Abp01_FrontendTheme', class_implements($frontendThemeClass, true))) {
             $this->_frontendTheme = new $frontendThemeClass($this->_env);
         } else {
-            $this->_frontendTheme = new Abp01_FrontendTheme_Default($this->_env);
+            $this->_frontendTheme = new Abp01_FrontendTheme_Decorator($this->_env);
         }
     }
 
@@ -109,6 +113,8 @@ class Abp01_View {
 
     public function renderFrontendViewer(stdClass $data) {
         $this->_registerFrontendHelpers();
-        return $this->_frontendTheme->renderViewer($data);
+        return $this->_renderFrontendViewerJsVars($data) 
+            . PHP_EOL 
+            . $this->_frontendTheme->renderViewer($data);
     }
 }

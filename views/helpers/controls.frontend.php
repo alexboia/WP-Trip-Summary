@@ -34,6 +34,13 @@ if (!defined('ABP01_LOADED')) {
 }
 
 if (!function_exists('abp01_extract_value_from_frontend_data')) {
+    /**
+     * Extracts a field value from the info data store ($data->info)
+     * 
+     * @param stdClass $data The main data store
+     * @param string $field The field to extract from $data->info
+     * @return mixed|null The field value or null if not found
+     */
     function abp01_extract_value_from_frontend_data($data, $field) {
         if ($data->info && isset($data->info->$field)) {
             return $data->info->$field;
@@ -44,6 +51,16 @@ if (!function_exists('abp01_extract_value_from_frontend_data')) {
 }
 
 if (!function_exists('abp01_format_info_item_value')) {
+    /**
+     * Format the given value, also adding a suffix if not empty.
+     * If the value is an array, then each its elements are joined in a comma separated string .
+     * If the value is an object, then its "label" property is returned. 
+     * The same applies for array elements, when the value is an array.
+     * 
+     * @param mixed $value The value to format
+     * @param string $suffix The suffix to append to the formatted value
+     * @return string The formatted value
+     */
     function abp01_format_info_item_value($value, $suffix) {
         $fieldValue = '';
 
@@ -70,6 +87,19 @@ if (!function_exists('abp01_format_info_item_value')) {
 }
 
 if (!function_exists('abp01_display_info_item')) {
+    /**
+     * Render a track information item, given the main data store, the field, the label and an optional suffix.
+     * The data item is extracted from $data->info.
+     * 
+     * @see abp01_format_info_item_value
+     * @see abp01_extract_value_from_frontend_data
+     * 
+     * @param stdClass $data The main data store
+     * @param string $field The field to render
+     * @param string $fieldLabel The label to use when rendering the field
+     * @param string $suffix The suffix to use when rendering the field. Defaults to empty string.
+     * @return string The formmated HTML output
+     */
     function abp01_display_info_item($data, $field, $fieldLabel, $suffix = '') {
         static $itemIndex = 0;
         $value = abp01_extract_value_from_frontend_data($data, $field);

@@ -45,8 +45,7 @@ class Abp01_FrontendTheme_Decorator extends Abp01_FrontendTheme_Default {
     }
 
     public function registerFrontendViewerHelpers() {
-        $locations = $this->_getFrontendTemplateLocations();
-        $themeHelpers = wp_normalize_path($locations->theme . '/helpers/controls.frontend.php');
+        $themeHelpers = $this->_getFrontendTemplateLocation('helpers/controls.frontend.php');
         
         if (is_readable($themeHelpers)) {
             require_once $themeHelpers;
@@ -59,33 +58,36 @@ class Abp01_FrontendTheme_Decorator extends Abp01_FrontendTheme_Default {
     }
 
     public function renderTeaser(stdClass $data) {
-        $locations = $this->_getFrontendTemplateLocations();
-        $themeTeaser = wp_normalize_path($locations->theme . '/wpts-frontend-teaser.php');
+        $themeTeaser = $this->_getFrontendTemplateLocation('wpts-frontend-teaser.php');
 
-        if (!is_readable($themeTeaser)) {
+        if (is_readable($themeTeaser)) {
             ob_start();
             require $themeTeaser;
             return ob_get_clean();
         } else {
-            parent::renderTeaser($data);
+            return parent::renderTeaser($data);
         }
     }
 
     public function renderViewer(stdClass $data) {
-        $locations = $this->_getFrontendTemplateLocations();
-        $themeViewer = wp_normalize_path($locations->theme . '/wpts-frontend.php');
+        $themeViewer = $this->_getFrontendTemplateLocation('wpts-frontend.php');
 
-        if (!is_readable($themeViewer)) {
+        if (is_readable($themeViewer)) {
             ob_start();
             require $themeViewer;
             return ob_get_clean();
         } else {
-            parent::renderViewer($data);
+            return parent::renderViewer($data);
         }
     }
 
     public function getVersion() {
         return parent::getVersion();
+    }
+
+    private function _getFrontendTemplateLocation($file) {
+        $locations = $this->_getFrontendTemplateLocations();
+        return wp_normalize_path($locations->theme . '/' . $file);
     }
 
     private function _getFrontendTemplateLocations() {
