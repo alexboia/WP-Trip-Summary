@@ -53,25 +53,25 @@
                     <div id="abp01-techbox-info" class="abp01-techbox-info" <?php echo $data->track->exists ? 'style="display: none;"' : ''; ?>>
                         <ul>
                             <?php if ($data->info->isBikingTour): ?>
-                                <?php abp01_display_info_item($data, 'bikeDistance', __('Total distance', 'abp01-trip-summary'), $data->unitSystem->distanceUnit); ?>
-                                <?php abp01_display_info_item($data, 'bikeTotalClimb', __('Total climb', 'abp01-trip-summary'), $data->unitSystem->heightUnit); ?>
+                                <?php abp01_display_info_item($data, 'bikeDistance', __('Total distance', 'abp01-trip-summary'), $data->settings->measurementUnits->distanceUnit); ?>
+                                <?php abp01_display_info_item($data, 'bikeTotalClimb', __('Total climb', 'abp01-trip-summary'), $data->settings->measurementUnits->heightUnit); ?>
                                 <?php abp01_display_info_item($data, 'bikeDifficultyLevel', __('Difficulty level', 'abp01-trip-summary'), ''); ?>
                                 <?php abp01_display_info_item($data, 'bikeAccess', __('Access information', 'abp01-trip-summary'), ''); ?>
                                 <?php abp01_display_info_item($data, 'bikeRecommendedSeasons', __('Open during seasons', 'abp01-trip-summary'), ''); ?>
                                 <?php abp01_display_info_item($data, 'bikePathSurfaceType', __('Path surface type', 'abp01-trip-summary'), ''); ?>
                                 <?php abp01_display_info_item($data, 'bikeBikeType', __('Recommended bike type', 'abp01-trip-summary'), ''); ?>
                             <?php elseif ($data->info->isHikingTour): ?>
-                                <?php abp01_display_info_item($data, 'hikingDistance', __('Total distance', 'abp01-trip-summary'), $data->unitSystem->distanceUnit); ?>
-                                <?php abp01_display_info_item($data, 'hikingTotalClimb', __('Total climb', 'abp01-trip-summary'), $data->unitSystem->heightUnit); ?>
+                                <?php abp01_display_info_item($data, 'hikingDistance', __('Total distance', 'abp01-trip-summary'), $data->settings->measurementUnits->distanceUnit); ?>
+                                <?php abp01_display_info_item($data, 'hikingTotalClimb', __('Total climb', 'abp01-trip-summary'), $data->settings->measurementUnits->heightUnit); ?>
                                 <?php abp01_display_info_item($data, 'hikingDifficultyLevel', __('Difficulty level', 'abp01-trip-summary'), ''); ?>
                                 <?php abp01_display_info_item($data, 'hikingAccess', __('Access information', 'abp01-trip-summary'), ''); ?>
                                 <?php abp01_display_info_item($data, 'hikingRecommendedSeasons', __('Open during seasons', 'abp01-trip-summary'), ''); ?>
                                 <?php abp01_display_info_item($data, 'hikingSurfaceType', __('Path surface type', 'abp01-trip-summary'), ''); ?>
                                 <?php abp01_display_info_item($data, 'hikingRouteMarkers', __('Path markers', 'abp01-trip-summary'), ''); ?>
                             <?php elseif ($data->info->isTrainRideTour): ?>
-                                <?php abp01_display_info_item($data, 'trainRideDistance', __('Total distance', 'abp01-trip-summary'), $data->unitSystem->distanceUnit); ?>
+                                <?php abp01_display_info_item($data, 'trainRideDistance', __('Total distance', 'abp01-trip-summary'), $data->settings->measurementUnits->distanceUnit); ?>
                                 <?php abp01_display_info_item($data, 'trainRideChangeNumber', __('Exchanged trains', 'abp01-trip-summary'), ''); ?>
-                                <?php abp01_display_info_item($data, 'trainRideGauge', __('Line gauge', 'abp01-trip-summary'), $data->unitSystem->lengthUnit); ?>
+                                <?php abp01_display_info_item($data, 'trainRideGauge', __('Line gauge', 'abp01-trip-summary'), $data->settings->measurementUnits->lengthUnit); ?>
                                 <?php abp01_display_info_item($data, 'trainRideOperator', __('Railroad operators', 'abp01-trip-summary'), ''); ?>
                                 <?php abp01_display_info_item($data, 'trainRideLineStatus', __('Line status', 'abp01-trip-summary'), ''); ?>
                                 <?php abp01_display_info_item($data, 'trainRideElectrificationStatus', __('Electrification status', 'abp01-trip-summary'), ''); ?>

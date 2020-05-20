@@ -242,6 +242,40 @@ class Abp01_Settings {
 		return __('It looks like you skipped the story. You should check it out. Click here to go back to beginning', 'abp01-trip-summary');
 	}
 
+	public function asPlainObject() {
+		$data = new stdClass();
+
+		//fetch the bulk of the settings
+		$data->showTeaser = $this->getShowTeaser();
+		$data->topTeaserText = $this->getTopTeaserText();
+		$data->bottomTeaserText = $this->getBottomTeaserText();
+		$data->tileLayer = $this->getTileLayers()[0];
+		$data->showFullScreen = $this->getShowFullScreen();
+		$data->showMagnifyingGlass = $this->getShowMagnifyingGlass();
+		$data->unitSystem = $this->getUnitSystem();
+		$data->measurementUnits = $this->getMeasurementUnits();
+		$data->showMapScale = $this->getShowMapScale();
+		$data->allowTrackDownload = $this->getAllowTrackDownload();
+		$data->trackLineColour = $this->getTrackLineColour();
+		$data->trackLineWeight = $this->getTrackLineWeight();
+		$data->showMinMaxAltitude = $this->getShowMinMaxAltitude();
+		$data->showAltitudeProfile = $this->getShowAltitudeProfile();
+
+		//fetch all the allowed unit systems
+		$data->allowedUnitSystems = array();
+		$allowedUnitSystems = $this->getAllowedUnitSystems();
+		foreach ($allowedUnitSystems as $system) {
+			$data->allowedUnitSystems[$system] = ucfirst($system);
+		}
+
+		return $data;
+	}
+
+	public function getMeasurementUnits() {
+		return Abp01_UnitSystem::create($this->getUnitSystem())
+			->asPlainObject();
+	}
+
 	public function getShowTeaser() {
 		return $this->_getOption(self::OPT_TEASER_SHOW, 'boolean', true);
 	}

@@ -932,31 +932,7 @@ function abp01_admin_settings_page() {
 
 	//fetch and process tile layer information
 	$settings = abp01_get_settings();
-	$tileLayers = $settings->getTileLayers();
-
-	//fetch the bulk of the settings
-	$data->settings = new stdClass();
-	$data->settings->showTeaser = $settings->getShowTeaser();
-	$data->settings->topTeaserText = $settings->getTopTeaserText();
-	$data->settings->bottomTeaserText = $settings->getBottomTeaserText();
-	$data->settings->tileLayer = $tileLayers[0];
-	$data->settings->showFullScreen = $settings->getShowFullScreen();
-	$data->settings->showMagnifyingGlass = $settings->getShowMagnifyingGlass();
-	$data->settings->unitSystem = $settings->getUnitSystem();
-	$data->settings->showMapScale = $settings->getShowMapScale();
-	$data->settings->allowTrackDownload = $settings->getAllowTrackDownload();
-	$data->settings->trackLineColour = $settings->getTrackLineColour();
-	$data->settings->trackLineWeight = $settings->getTrackLineWeight();
-	$data->settings->showMinMaxAltitude = $settings->getShowMinMaxAltitude();
-	$data->settings->showAltitudeProfile = $settings->getShowAltitudeProfile();
-
-	//fetch all the allowed unit systems
-	$data->settings->allowedUnitSystems = array();
-	$allowedUnitSystems = $settings->getAllowedUnitSystems();
-
-	foreach ($allowedUnitSystems as $system) {
-		$data->settings->allowedUnitSystems[$system] = ucfirst($system);
-	}
+	$data->settings = $settings->asPlainObject();
 
 	echo abp01_admin_settings_page_render($data);
 }
@@ -1409,8 +1385,10 @@ function abp01_clear_post_viewer_data_cache($postId) {
 }
 
 function abp01_store_post_viewer_data_cache($postId, $data) {
-	$cacheKey = abp01_get_post_viewer_data_cache_key($postId);
-	set_transient($cacheKey, $data, ABP01_POST_TRIP_SUMMARY_DATA_CACHE_EXPIRATION_SECONDS);
+	if (ABP01_POST_TRIP_SUMMARY_DATA_CACHE_EXPIRATION_SECONDS > 0) {
+		$cacheKey = abp01_get_post_viewer_data_cache_key($postId);
+		set_transient($cacheKey, $data, ABP01_POST_TRIP_SUMMARY_DATA_CACHE_EXPIRATION_SECONDS);
+	}
 }
 
 function abp01_get_post_viewer_data_cache($postId) {
@@ -1424,7 +1402,9 @@ function abp01_get_info_data($postId) {
 	//	for correct handling of this situation
 	//see: https://wordpress.stackexchange.com/questions/225721/hook-added-to-the-content-seems-to-be-called-multiple-times
 
+	$settings = abp01_get_settings();
 	$data = abp01_get_post_viewer_data_cache($postId);
+
 	if (empty($data) || !($data instanceof stdClass)) {
 		$lookup = new Abp01_Lookup();
 		$routeManager = abp01_get_route_manager();
@@ -1466,28 +1446,19 @@ function abp01_get_info_data($postId) {
 		$data->ajaxGetTrackAction = ABP01_ACTION_GET_TRACK;
 		$data->downloadTrackAction = ABP01_ACTION_DOWNLOAD_TRACK;
 		$data->imgBaseUrl = abp01_get_env()->getPluginAssetUrl('media/img');
-		
-		//get relevant plug-in settings
-		$settings = abp01_get_settings();
-		$data->settings = new stdClass();
-		$data->settings->showTeaser = $settings->getShowTeaser();
-		$data->settings->topTeaserText =  $settings->getTopTeaserText();
-		$data->settings->bottomTeaserText = $settings->getBottomTeaserText();
-		$data->settings->showMinMaxAltitude = $settings->getShowMinMaxAltitude();
-		$data->settings->showAltitudeProfile = $settings->getShowAltitudeProfile();
-		
-		//get measurement units from the configured unit system
-		$unitSystem = Abp01_UnitSystem::create($settings->getUnitSystem());
-		$data->unitSystem = $unitSystem->asPlainObject();
 
-		//refresh nonces every time, 
+		//refresh nonces and settings every time, 
 		//	so we don't need to cache them
+		$data->settings = null;
 		$data->nonceGet = null;
 		$data->nonceDownload = null;
 
 		//cache data
 		abp01_store_post_viewer_data_cache($postId, $data);
 	}
+
+	//get plug-in settings
+	$data->settings = $settings->asPlainObject();
 
 	//create new nonces
 	$data->nonceGet = abp01_create_get_track_nonce($postId);
