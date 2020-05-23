@@ -95,11 +95,11 @@ define('ABP01_LIB_DIR', ABP01_PLUGIN_ROOT . '/lib');
 
 /**
  * The current version of WP-Trip-Summary.
- *  Eg. 0.2.4.
+ *  Eg. 0.2.5.
  * 
  * @var string
  */
-define('ABP01_VERSION', '0.2.4');
+define('ABP01_VERSION', '0.2.5');
 
 if (!defined('ABP01_MAX_EXECUTION_TIME_MINUTES')) {
     /**
