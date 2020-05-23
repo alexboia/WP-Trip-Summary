@@ -4,7 +4,7 @@ Donate link: https://ko-fi.com/alexandruboia
 Tags: trip, summary, map, gpx, travel
 Requires at least: 5.0
 Tested up to: 5.4.1
-Stable tag: 0.2.4
+Stable tag: 0.2.5
 Requires PHP: 5.6.2
 License: BSD New License
 License URI: https://opensource.org/licenses/BSD-3-Clause
@@ -92,6 +92,12 @@ For those with plug-in versions older than 0.2.1, please see here notes on updat
 = Does it support KML files? =
 The plug-in currently only supports GPX files as a way to upload GPS tracks. KML will be supported round about 0.3, maybe earlier.
 
+= Can I insert the trip summary front-end viewer at a custom location? =
+You can insert the trip summary viewer at a custom location *in the same post for which you have defined it* using the following shortcode: [abp01_trip_summary_viewer] (no parameters required). Only one such shortcode allowed and supported per post.
+
+= Can it be customized? =
+Yes, the front-end viewer of the plug-in (i.e. the one that shows trip summary data to your visitors can be customized). See here how: https://github.com/alexboia/WP-Trip-Summary/wiki/Customizing-the-front-end-viewer.
+
 = How can I contribute? =
 Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summary) and let's talk!
 
@@ -114,6 +120,16 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 5. For those with plug-in versions older than 0.2.1, please see here notes on updating to plug-in version 0.2.1: https://github.com/alexboia/WP-Trip-Summary/blob/master/README-UPDATE-021.md
 
 == Changelog ==
+
+= 0.2.5 =
+* Trip summary front-end viewer can now inserted at a custom location in the post content for which it has been defined using the [abp01_trip_summary_viewer] shortcode (or a special block, if you're using the block editor);
+* Support for trip summary front-end viewer customization: https://github.com/alexboia/WP-Trip-Summary/wiki/Customizing-the-front-end-viewer.
+* Refined error reporting when uploading a new GPS track;
+* Altitude profile now available;
+* Min/max altitude info box now available;
+* Refactoring and stability improvements;
+* Fixed track uploader not opening on Microsoft Edge browsers;
+* Fixed Waymark compatibility issue. 
 
 = 0.2.4 =
 * French translation now available!
@@ -153,6 +169,9 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 First officially distributed version.
 
 == Upgrade Notice ==
+
+= 0.2.5 =
+Upgrade to this version for additional features and improved plug-in stability
 
 = 0.2.4 =
 Upgrade to this version for additional features (including block editor integration) and improved plug-in stability
