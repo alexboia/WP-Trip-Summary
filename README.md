@@ -249,12 +249,12 @@ From there on the main purpose of all 0.2.* versions is to:
       - [x] customize the weight of the line used to plot the track on the map.
    - [ ] improve localization by adding at least one more language:
       - [x] currently, French is in the progress.
-   - [ ] publish a guide for customizing the front-end trip summary viewer (planned for 0.2.5);
+   - [x] publish a guide for customizing the front-end trip summary viewer (planned for 0.2.5);
    - [ ] add some nice to have features, which can be quickly implemented and provide some value, such as:
-      - [ ] display minimum and maximum altitude (planned for 0.2.5);
-      - [ ] compute and display an altitude profile;
+      - [x] display minimum and maximum altitude (planned for 0.2.5);
+      - [x] compute and display an altitude profile;
       - [ ] display GPX waypoints;
-      - [ ] allow the trip summary viewer to be added as a shortcode anywhere in the text (planned for 0.2.5).
+      - [x] allow the trip summary viewer to be added as a shortcode anywhere in the text (planned for 0.2.5).
    - [ ] publish a list of things with which anyone can help, if he or she desires to do so;
    - [ ] refactoring (on-going).
 
