@@ -263,8 +263,7 @@ class Abp01_Settings {
 
 		//fetch all the allowed unit systems
 		$data->allowedUnitSystems = array();
-		$allowedUnitSystems = $this->getAllowedUnitSystems();
-		foreach ($allowedUnitSystems as $system) {
+		foreach ($this->getAllowedUnitSystems() as $system) {
 			$data->allowedUnitSystems[$system] = ucfirst($system);
 		}
 
