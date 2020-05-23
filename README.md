@@ -175,6 +175,16 @@ The following languages are supported:
 ## Changelog
 <a name="wpts-changelog"></a>  
 
+### Version 0.2.5
+- Trip summary front-end viewer can now inserted at a custom location in the post content for which it has been defined using the [abp01_trip_summary_viewer] shortcode (or a special block, if you're using the block editor);
+- Support for trip summary front-end viewer customization: https://github.com/alexboia/WP-Trip-Summary/wiki/Customizing-the-front-end-viewer.
+- Refined error reporting when uploading a new GPS track;
+- Altitude profile now available;
+- Min/max altitude info box now available;
+- Refactoring and stability improvements;
+- Fixed track uploader not opening on Microsoft Edge browsers;
+- Fixed Waymark compatibility issue. 
+
 ### Version 0.2.4
 - French translation now available!
 - The trip summary editor is now launched from a side metabox, which also displays relevant information and features some quick actions;
