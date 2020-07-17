@@ -242,6 +242,15 @@ class AuthTests extends WP_UnitTestCase {
         }
     }
 
+    public static function tearDownAfterClass() {
+        parent::tearDownAfterClass();
+        
+        self::$_testPosts = array();
+        self::$_initialRoleData = array();
+        self::$_testRoleData = array();
+        self::$_testUsers = array();
+    }
+
     public function setUp() {
         parent::setUp();
         update_option(self::$_roleKey, self::$_testRoleData);
@@ -252,15 +261,6 @@ class AuthTests extends WP_UnitTestCase {
         parent::tearDown();
         update_option(self::$_roleKey, self::$_initialRoleData);
         wp_roles()->for_site();
-    }
-
-    public static function tearDownAfterClass() {
-        parent::tearDownAfterClass();
-        
-        self::$_testUsers = array();
-        self::$_testPosts = array();
-        self::$_testRoleData = array();
-        self::$_initialRoleData = array();
     }
 
     public function test_canCheckIfCapCanBeInstalledForRole_ourCapabilities() {
