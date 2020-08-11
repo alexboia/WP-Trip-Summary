@@ -338,8 +338,10 @@ class FrontendThemeDefaultTests extends WP_UnitTestCase {
         $data->settings = new stdClass();
         $data->settings->showTeaser = $showTeaser;
         $data->settings->topTeaserText = 'Test top teaser';
+
         $data->info = new stdClass();
         $data->info->exists = $infoExists;
+
         $data->track = new stdClass();
         $data->track->exists = $trackExists;
 
