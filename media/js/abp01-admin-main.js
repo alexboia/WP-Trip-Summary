@@ -477,8 +477,12 @@
         $ctrlSave.hide();
         clearInputValues($ctrlFormInfoContainer);
         if (hasRouteInfo()) {
-            maybeTrace('Route info present and persisted. Need to clear that first...');
-            clearRouteInfo();
+            if (confirm(abp01MainL10n.lblWarnRemoveTripSummaryInfo)) {
+                maybeTrace('Route info present and persisted. Need to clear that first...');
+                clearRouteInfo();
+            } else {
+                maybeTrace('User cancelled request to reset route info form.');
+            }
         } else {
             maybeTrace('Route info not present or not persisted. Switching to info  type selection...');
             switchToRouteInfoTypeSelection();
@@ -750,25 +754,29 @@
     }
 
     function clearRouteTrack() {
-        showProgress(false, abp01MainL10n.lblClearingTrackWait);
-        $.ajax(getAjaxClearTrackUrl(), {
-            type: 'POST',
-            dataType: 'json',
-            cache: false
-        }).done(function(data, status, xhr) {
-            hideProgress();
-            if (data && data.success) {
-                resetRouteTrackForm();
-                toastMessage(true, abp01MainL10n.lblTrackClearOk);
-                setHasRouteTrack(false);
-                refreshEnhancedEditor();
-            } else {
-                toastMessage(false, data.message || abp01MainL10n.lblTrackClearFail);
-            }
-        }).fail(function(xhr, status, error) {
-            hideProgress();
-            toastMessage(false, abp01MainL10n.lblTrackClearFailNetwork);
-        });
+        if (confirm(abp01MainL10n.lblWarnRemoveTripSummaryTrack)) {
+            showProgress(false, abp01MainL10n.lblClearingTrackWait);
+            $.ajax(getAjaxClearTrackUrl(), {
+                type: 'POST',
+                dataType: 'json',
+                cache: false
+            }).done(function(data, status, xhr) {
+                hideProgress();
+                if (data && data.success) {
+                    resetRouteTrackForm();
+                    toastMessage(true, abp01MainL10n.lblTrackClearOk);
+                    setHasRouteTrack(false);
+                    refreshEnhancedEditor();
+                } else {
+                    toastMessage(false, data.message || abp01MainL10n.lblTrackClearFail);
+                }
+            }).fail(function(xhr, status, error) {
+                hideProgress();
+                toastMessage(false, abp01MainL10n.lblTrackClearFailNetwork);
+            });
+        } else {
+            maybeTrace('User cancelled request to remove route track.');
+        }
     }
 
     function fileEndsWithExtension(file, extension) {

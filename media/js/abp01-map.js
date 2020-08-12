@@ -151,7 +151,7 @@
                 magnifyingGlassLayer = null;
                 minMaxAltitudeBoxTogglerControl = null;
                 minMaxAltitudeBoxControl = null;
-                altitudeProfileControl = nul;
+                altitudeProfileControl = null;
                 
                 map = null;
                 $me = null;

@@ -320,7 +320,9 @@ function abp01_get_main_admin_script_translations() {
 		'lblStatusTextTripSummaryInfoPresent' => esc_html__('Trip summary information is present for this post', 'abp01-trip-summary'),
 		'lblStatusTextTripSummaryInfoNotPresent' => esc_html__('Trip summary information is not present for this post', 'abp01-trip-summary'),
 		'lblStatusTextTripSummaryTrackPresent' => esc_html__('Trip summary track is present for this post', 'abp01-trip-summary'),
-		'lblStatusTextTripSummaryTrackNotPresent' => esc_html__('Trip summary track is not present for this post', 'abp01-trip-summary')
+		'lblStatusTextTripSummaryTrackNotPresent' => esc_html__('Trip summary track is not present for this post', 'abp01-trip-summary'),
+		'lblWarnRemoveTripSummaryInfo' => esc_html__('Are you sure you want to remove the trip summary information? This action cannot be undone!', 'abp01-trip-summary'),
+		'lblWarnRemoveTripSummaryTrack' => esc_html__('Are you sure you want to remove the trip summary track? This action cannot be undone!', 'abp01-trip-summary')
 	);
 }
 
