@@ -251,16 +251,16 @@ ul.abp01-techbox-tabs {
 
 .abp01-map-container {
     width: calc(100% - 10px);
-    padding: 5px 5px 0px 5px;
+    padding: 0px 5px 0px 5px;
     height: 350px;
     position: relative;
 }
 
 .abp01-map {
     width: 100%;
-    height: 345px;
-    margin: 0;
-    padding: 0;
+    height: calc(100% - 10px);
+    margin: 5px 0px 5px 0px;
+    padding: 0px 0px 0px 0px;
     position: relative;
 }
 

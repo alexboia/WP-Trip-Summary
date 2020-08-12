@@ -935,6 +935,7 @@ function abp01_admin_settings_page() {
 	//fetch and process tile layer information
 	$settings = abp01_get_settings();
 	$data->settings = $settings->asPlainObject();
+	$data->optionsLimits = $settings->getOptionsLimits();
 
 	echo abp01_admin_settings_page_render($data);
 }
@@ -1007,11 +1008,20 @@ function abp01_save_admin_settings_page_save() {
 		abp01_send_json($response);
 	}
 
-	//collect track line weight
-	$trackLineWeight = max(1, Abp01_InputFiltering::getPOSTValueAsInteger('trackLineWeight', 3));
+	//Fetch settings manager
+	$settings = abp01_get_settings();
+
+	//collect track line weight and map height
+	$minAllowedMapHeight = $settings->getMinimumAllowedMapHeight();
+	$minAllowedTrackLineWeight = $settings->getMinimumAllowedTrackLineWeight();
+
+	$trackLineWeight = max(Abp01_InputFiltering::getPOSTValueAsInteger('trackLineWeight', 3), 
+		$minAllowedTrackLineWeight);
+
+	$mapHeight = max(Abp01_InputFiltering::getPOSTValueAsInteger('mapHeight', $minAllowedMapHeight),
+		$minAllowedMapHeight);
 
 	//fill in and save settings
-	$settings = abp01_get_settings();
 	$settings->setShowTeaser(Abp01_InputFiltering::getPOSTValueAsBoolean('showTeaser'));
 	$settings->setTopTeaserText(Abp01_InputFiltering::getFilteredPOSTValue('topTeaserText'));
 	$settings->setBottomTeaserText(Abp01_InputFiltering::getFilteredPOSTValue('bottomTeaserText'));
@@ -1024,6 +1034,7 @@ function abp01_save_admin_settings_page_save() {
 	$settings->setTrackLineWeight($trackLineWeight);
 	$settings->setShowMinMaxAltitude(Abp01_InputFiltering::getPOSTValueAsBoolean('showMinMaxAltitude'));
 	$settings->setShowAltitudeProfile(Abp01_InputFiltering::getPOSTValueAsBoolean('showAltitudeProfile'));
+	$settings->setMapHeight($mapHeight);
 
 	$settings->setTileLayers($tileLayer);
 	$settings->setUnitSystem($unitSystem);

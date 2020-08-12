@@ -137,6 +137,13 @@ class Abp01_Settings {
 	const OPT_MAP_FEATURES_ALTITUDE_PROFILE = 'altitudeProfileShow';
 
 	/**
+	 * Key for "map height" setting
+	 * 
+	 * @var string
+	 */
+	const OPT_MAP_HEIGHT = 'mapHeight';
+
+	/**
 	 * The key used to store the serialized settings, using the WP options API
 	 * 
 	 * @var string
@@ -260,6 +267,7 @@ class Abp01_Settings {
 		$data->trackLineWeight = $this->getTrackLineWeight();
 		$data->showMinMaxAltitude = $this->getShowMinMaxAltitude();
 		$data->showAltitudeProfile = $this->getShowAltitudeProfile();
+		$data->mapHeight = $this->getMapHeight();
 
 		//fetch all the allowed unit systems
 		$data->allowedUnitSystems = array();
@@ -267,6 +275,13 @@ class Abp01_Settings {
 			$data->allowedUnitSystems[$system] = ucfirst($system);
 		}
 
+		return $data;
+	}
+
+	public function getOptionsLimits() {
+		$data = new stdClass();
+		$data->minAllowedMapHeight = $this->getMinimumAllowedMapHeight();
+		$data->minAllowedTrackLineWeight = $this->getMinimumAllowedTrackLineWeight();
 		return $data;
 	}
 
@@ -387,8 +402,13 @@ class Abp01_Settings {
 	}
 
 	public function setTrackLineWeight($weight) {
+		$weight = max(intval($weight), $this->getMinimumAllowedTrackLineWeight());
 		$this->_setOption(self::OPT_TRACK_LINE_WEIGHT, 'integer', $weight);
 		return $this;
+	}
+
+	public function getMinimumAllowedTrackLineWeight() {
+		return 1;
 	}
 
 	public function getShowMinMaxAltitude() {
@@ -407,6 +427,20 @@ class Abp01_Settings {
 	public function setShowAltitudeProfile($showAltitudeProfile) {
 		$this->_setOption(self::OPT_MAP_FEATURES_ALTITUDE_PROFILE, 'boolean', $showAltitudeProfile);
 		return $this;
+	}
+
+	public function getMapHeight() {
+		return $this->_getOption(self::OPT_MAP_HEIGHT, 'integer', $this->getMinimumAllowedMapHeight());
+	}
+
+	public function setMapHeight($mapHeight) {
+		$mapHeight = max(intval($mapHeight), $this->getMinimumAllowedMapHeight());
+		$this->_setOption(self::OPT_MAP_HEIGHT, 'integer', $mapHeight);
+		return $this;
+	}
+
+	public function getMinimumAllowedMapHeight() {
+		return 350;
 	}
 
 	public function resetTopTeaserText() {

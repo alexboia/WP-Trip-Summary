@@ -240,9 +240,22 @@
 						</th>
 						<td>
 							<input id="abp01-trackLineWeight" 
+								data-min-line-weight="<?php echo esc_attr($data->optionsLimits->minAllowedTrackLineWeight); ?>"
 								name="trackLineWeight" 
 								type="text" 
 								value="<?php echo esc_attr($data->settings->trackLineWeight); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="abp01-mapHeight"><?php echo esc_html__('Map height', 'abp01-trip-summary'); ?></label>
+						</th>
+						<td>
+							<input id="abp01-mapHeight" 
+								data-min-map-height="<?php echo esc_attr($data->optionsLimits->minAllowedMapHeight); ?>"
+								name="mapHeight" 
+								type="text" 
+								value="<?php echo esc_attr($data->settings->mapHeight); ?>" />
 						</td>
 					</tr>
 				</table>

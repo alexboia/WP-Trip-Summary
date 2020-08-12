@@ -82,7 +82,7 @@
                 <?php endif; ?>
                 <?php if ($data->track->exists): ?>
                     <div id="abp01-techbox-map" class="abp01-techbox-map" <?php echo $data->info->exists ? 'style="display: none;"' : ''; ?>>
-                        <div id="abp01-map-container" class="abp01-map-container" data-role="map-container">
+                        <div id="abp01-map-container" class="abp01-map-container" data-role="map-container" style="height: <?php echo esc_attr($data->settings->mapHeight); ?>px;">
                             <div id="abp01-map" class="abp01-map" data-role="map-holder"></div>
                             <div id="abp01-map-retry-container" class="abp01-map-retry-container" style="display: none;">
                                 <div id="abp01-map-retry-message" class="abp01-map-retry-message"><?php echo esc_html__('The map could not be loaded due to either a network error or a possible server issue.', 'abp01-trip-summary'); ?></div>
