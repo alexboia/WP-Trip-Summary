@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-08-12T11:40:52+00:00\n"
+"POT-Creation-Date: 2020-08-12T19:32:32+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.3.0\n"
 "X-Domain: abp01-trip-summary\n"
@@ -399,94 +399,94 @@ msgstr ""
 msgid "Trip summary"
 msgstr ""
 
-#: abp01-plugin-main.php:970
+#: abp01-plugin-main.php:971
 msgid "Unsupported unit system"
 msgstr ""
 
-#: abp01-plugin-main.php:982
+#: abp01-plugin-main.php:983
 msgid "Tile layer URL is required"
 msgstr ""
 
-#: abp01-plugin-main.php:989
+#: abp01-plugin-main.php:990
 msgid "Tile layer URL does not have a valid format"
 msgstr ""
 
-#: abp01-plugin-main.php:996
+#: abp01-plugin-main.php:997
 msgid "Tile layer attribution URL does not have a valid format"
 msgstr ""
 
-#: abp01-plugin-main.php:1006
+#: abp01-plugin-main.php:1007
 msgid "The track line colour is not a valid HEX colour code"
 msgstr ""
 
-#: abp01-plugin-main.php:1034
+#: abp01-plugin-main.php:1045
 msgid "The settings could not be saved. Please try again."
 msgstr ""
 
-#: abp01-plugin-main.php:1184
-#: abp01-plugin-main.php:1245
+#: abp01-plugin-main.php:1195
+#: abp01-plugin-main.php:1256
 msgid "The default label is mandatory"
 msgstr ""
 
-#: abp01-plugin-main.php:1193
+#: abp01-plugin-main.php:1204
 msgid "The lookup item could not be created"
 msgstr ""
 
-#: abp01-plugin-main.php:1204
+#: abp01-plugin-main.php:1215
 msgid "The lookup item has been created, but the translation could not be saved"
 msgstr ""
 
-#: abp01-plugin-main.php:1267
+#: abp01-plugin-main.php:1278
 msgid "The lookup item could not be modified"
 msgstr ""
 
-#: abp01-plugin-main.php:1311
+#: abp01-plugin-main.php:1322
 msgid "The item translation could not be deleted."
 msgstr ""
 
-#: abp01-plugin-main.php:1317
+#: abp01-plugin-main.php:1328
 msgid "The item could not be deleted because it is still in use"
 msgstr ""
 
-#: abp01-plugin-main.php:1324
+#: abp01-plugin-main.php:1335
 msgid "The item could not be deleted"
 msgstr ""
 
-#: abp01-plugin-main.php:1374
-#: abp01-plugin-main.php:1606
+#: abp01-plugin-main.php:1385
+#: abp01-plugin-main.php:1617
 msgid "The data could not be saved due to a possible database error"
 msgstr ""
 
-#: abp01-plugin-main.php:1744
+#: abp01-plugin-main.php:1755
 msgid "Track file not found or is not readable"
 msgstr ""
 
-#: abp01-plugin-main.php:1855
+#: abp01-plugin-main.php:1866
 msgid "The data could not be updated due to a possible database error"
 msgstr ""
 
-#: abp01-plugin-main.php:1888
+#: abp01-plugin-main.php:1899
 #: views/wpts-editor-launcher-metabox.php:46
 msgid "Trip summary info"
 msgstr ""
 
-#: abp01-plugin-main.php:1890
+#: abp01-plugin-main.php:1901
 #: views/wpts-editor-launcher-metabox.php:58
 msgid "Trip summary track"
 msgstr ""
 
-#: abp01-plugin-main.php:1932
-#: abp01-plugin-main.php:1942
+#: abp01-plugin-main.php:1943
+#: abp01-plugin-main.php:1953
 msgid "Yes"
 msgstr ""
 
-#: abp01-plugin-main.php:1933
-#: abp01-plugin-main.php:1943
+#: abp01-plugin-main.php:1944
+#: abp01-plugin-main.php:1954
 msgid "No"
 msgstr ""
 
-#: abp01-plugin-main.php:1935
-#: abp01-plugin-main.php:1945
+#: abp01-plugin-main.php:1946
+#: abp01-plugin-main.php:1956
 msgid "Not available"
 msgstr ""
 
@@ -494,12 +494,12 @@ msgstr ""
 msgid "Default"
 msgstr ""
 
-#: lib/Settings.php:238
+#: lib/Settings.php:245
 #: tests/test-Settings.php:156
 msgid "For the pragmatic sort, there is also a trip summary at the bottom of this page. Click here to consult it"
 msgstr ""
 
-#: lib/Settings.php:242
+#: lib/Settings.php:249
 #: tests/test-Settings.php:152
 msgid "It looks like you skipped the story. You should check it out. Click here to go back to beginning"
 msgstr ""
@@ -808,6 +808,10 @@ msgstr ""
 msgid "Track line weight"
 msgstr ""
 
-#: views/wpts-settings.php:256
+#: views/wpts-settings.php:251
+msgid "Map height"
+msgstr ""
+
+#: views/wpts-settings.php:269
 msgid "Save settings"
 msgstr ""
