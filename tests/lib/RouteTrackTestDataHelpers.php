@@ -35,7 +35,7 @@ trait RouteTrackTestDataHelpers {
     public function _generateRandomRouteTracks() {
         $postIds = array();
         $routeTracks = array();
-        $faker = $this->_getFaker();
+        $faker = self::_getFaker();
 
         $deltaLat = $faker->numberBetween(2, 10);
         $deltaLng = $faker->numberBetween(2, 10);
@@ -53,7 +53,7 @@ trait RouteTrackTestDataHelpers {
     }
 
     protected function _generateRandomRouteTrack($postId) {
-        $faker = $this->_getFaker();
+        $faker = self::_getFaker();
         
         if (func_get_args() == 3) {
             $deltaLat = func_get_arg(1);

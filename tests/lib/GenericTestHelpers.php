@@ -32,6 +32,60 @@
 trait GenericTestHelpers {
     private static $_faker = null;
 
+    protected function _getEnqueuedStyleUrl($handle) {
+        global $wp_styles;
+        return $wp_styles->registered[$handle]->src;
+    }
+
+    protected function _recursiveCopyDirectory($source, $destination) {
+        $entries = @scandir($source);
+        if ($entries === false) {
+            return;
+        }
+
+        if (!is_dir($destination)) {
+            @mkdir($destination, 0777);
+        }
+
+        foreach ($entries as $entry) {
+            if ($entry != '.' && $entry != '..') {
+                $sourceEntry = $source . '/' . $entry;
+                $destinationEntry = $destination . '/' . $entry;
+
+                if (is_dir($sourceEntry)) {
+                    if (!is_dir($destinationEntry)) {
+                        @mkdir($destinationEntry, 0777);
+                    }
+
+                    $this->_recursiveCopyDirectory($sourceEntry, $destinationEntry);
+                } else {
+                    copy($sourceEntry, $destinationEntry);
+                }
+            }
+        }
+
+    }
+
+    protected function _removeDirectoryRecursively($target) {
+        $entries = @scandir($target, SCANDIR_SORT_ASCENDING);
+        if ($entries === false) {
+            return;
+        }
+
+        foreach ($entries as $entry) {
+            if ($entry != '.' && $entry != '..') {
+                $toRemove = $target . '/' . $entry;
+                if (is_dir($toRemove)) {
+                    $this->_removeDirectoryRecursively($toRemove);
+                } else {
+                    @unlink($toRemove);
+                }
+            }
+        }
+
+        @rmdir($target);
+    }
+
     /**
      * @return \Faker\Generator
      */

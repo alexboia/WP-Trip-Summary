@@ -617,7 +617,7 @@
             $postsTableName);
     }
 
-    private function _generatePostId($excludeAdditionalIds = null) {
+    protected function _generatePostId($excludeAdditionalIds = null) {
         $excludePostsIds = array_keys($this->_testPostRouteData);
         if (!empty($excludeAdditionalIds) && is_array($excludeAdditionalIds)) {
             $excludePostsIds = array_merge($excludePostsIds, $excludeAdditionalIds);

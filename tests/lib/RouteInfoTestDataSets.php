@@ -30,6 +30,8 @@
  */
 
  trait RouteInfoTestDataSets {
+	use GenericTestHelpers;
+
     private $_lookupIndex = 1;
 
     public function _getPerTypeFields() {
@@ -81,7 +83,7 @@
     }
 
     public function _generateRandomRouteInfoWithType($type = null) {
-        $faker = $this->_getFaker();
+        $faker = self::_getFaker();
         
         $type = empty($type) 
             ? $faker->randomElement(Abp01_Route_Info::getSupportedTypes()) 
@@ -125,7 +127,7 @@
     }
 
     protected function _generateValue($fieldDescriptor) {
-		$faker = $this->_getFaker();
+		$faker = self::_getFaker();
 		if (!$fieldDescriptor) {
 			$fieldDescriptor = array(
 				'type' => $faker->randomElement(array('int', 'float', 'string')),
@@ -157,7 +159,7 @@
     }
     
     protected function _generateWord($excluded) {
-		$faker = $this->_getFaker();
+		$faker = self::_getFaker();
 		$word = $faker->word;
 		while (in_array($word, $excluded)) {
 			$word = $faker->word;
@@ -168,9 +170,4 @@
     protected function _getProjSphericalMercator() {
         return new Abp01_Route_SphericalMercator();
     }
-
-    /**
-     * @return \Faker\Generator
-     */
-    abstract protected function _getFaker();
  }
