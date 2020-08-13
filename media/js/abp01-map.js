@@ -56,6 +56,7 @@
         var altitudeProfileControl = null;
         var scaleIndicatorControl = null;
         var trackDownloadControl = null;
+        var recenterMapControl = null;
 
         //default is to show scale, but not show magnifying glass, 
         //  because I see no real use for it
@@ -144,6 +145,10 @@
                     map.removeControl(altitudeProfileControl);
                 }
 
+                if (recenterMapControl != null) {
+                    map.removeControl(recenterMapControl);
+                }
+
                 map.remove();
                 
                 scaleIndicatorControl = null;
@@ -152,6 +157,7 @@
                 minMaxAltitudeBoxTogglerControl = null;
                 minMaxAltitudeBoxControl = null;
                 altitudeProfileControl = null;
+                recenterMapControl = null;
                 
                 map = null;
                 $me = null;
@@ -285,6 +291,12 @@
             return altitudeProfileControl;
         }
         
+        function addReCenterMapControl(map, bounds) {
+            recenterMapControl = L.control.reCenterMap(bounds);
+            recenterMapControl.addTo(map);
+            return recenterMapControl;
+        }
+
         /**
          * Render the tile layer attribution from th given options:
          * - tileLayer.attributionTxt - the label of the attribution text;
@@ -312,10 +324,13 @@
         }
 
         function renderMap(bounds) {
-            var centerLat = (bounds.northEast.lat - bounds.southWest.lat) / 2;
-            var centerLng = (bounds.northEast.lng - bounds.southWest.lng) / 2;
+            var centerLat = bounds.northWest.lat 
+                + (bounds.southWest.lat - bounds.northWest.lat) / 2;
+            var centerLng = bounds.northWest.lng 
+                + (bounds.northEast.lng - bounds.northWest.lng) / 2;
+
             var tileLayerUrl = opts.tileLayer.url;
- 
+
             map = L.map($me.attr('id'), {
                 center: L.latLng(centerLat, centerLng),
                 fullscreenControl: opts.showFullScreen && isFullScreenCapabilityLoaded()
@@ -361,6 +376,9 @@
             if (opts.showScale) {
                 addScaleIndicator(map);
             }
+
+            //add re-center map control
+            addReCenterMapControl(map, bounds);
         }
 
         function plotRoute(route) {

@@ -316,14 +316,20 @@ ul.abp01-techbox-tabs {
 /* Frontend viewer - map controls and widgets */
 
 .abp01-track-minmaxalt-btn,
-.abp01-map-altitude-profile-btn {
+.abp01-map-altitude-profile-btn,
+.abp01-map-recenter-btn {
     margin-top: 3px;
 }
 
 .abp01-track-download-link,
 .leaflet-touch .abp01-track-minmaxalt-btn,
-.leaflet-touch .abp01-map-altitude-profile-btn {
+.leaflet-touch .abp01-map-altitude-profile-btn,
+.leaflet-touch .abp01-map-recenter-btn {
     margin-top: 5px;
+}
+
+.leaflet-touch .abp01-map-recenter-btn {
+    margin-left: 1px;
 }
 
 .abp01-map .leaflet-control-container .leaflet-control a {

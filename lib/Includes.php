@@ -70,6 +70,8 @@ class Abp01_Includes {
 
 	const JS_LEAFLET_ALTITUDE_PROFILE = 'abp01-altitude-profile';
 
+	const JS_LEAFLET_RECENTER_MAP = 'abp01-recenter-map';
+
 	const JS_LODASH = 'lodash';
 
 	const JS_MACHINA = 'machina';
@@ -272,8 +274,16 @@ class Abp01_Includes {
 			'needs-wrap' => false,
 			'deps' => array(
 				self::JS_LEAFLET,
-				self::JS_CHART_JS,
-				self::JS_LEAFLET_ICON_BUTTON
+				self::JS_CHART_JS
+			)
+		),
+		self::JS_LEAFLET_RECENTER_MAP => array(
+			'path' => 'media/js/abp01-recenter-map.js',
+			'version' => ABP01_VERSION,
+			'is-leaflet-plugin' => true,
+			'needs-wrap' => false,
+			'deps' => array(
+				self::JS_LEAFLET
 			)
 		),
 		self::JS_MACHINA => array(
@@ -366,6 +376,7 @@ class Abp01_Includes {
 					'if' => array(__CLASS__, '_hasAltitudeProfile')
 				),
 
+				self::JS_LEAFLET_RECENTER_MAP,
 				self::JS_ABP01_MAP
 			)
 		), 

@@ -283,7 +283,7 @@
                 this._handleButtonClicked, 
                 this);
 
-            //Add icon
+            //add icon
             L.DomUtil.create('span', 
                 'dashicons dashicons-chart-area abp01-map-altitude-profile-btn', 
                 buttonLink);
