@@ -252,6 +252,11 @@ The text shown in the top teaser (above the post content, but right below the ti
 
 The text shown in the bottom teaser (right below the technical summary box).
 
+#### Initial viewer tab
+
+This field allows setting the front-end viewer tab selected when the user visits the post page.
+Default value: Map.
+
 #### Map Tile URL Template
 
 The discussion here is a bit longer.
@@ -320,6 +325,12 @@ The default value is the previously used colour: #0033ff.
 This field allows setting the thickness, in pixels, of the line used to plot the GPS track on the map.
 Applies to both front-end viewer and back-end trip summary editor.
 The default value is the previously used thickness: 3 pixels.
+
+#### Map height
+
+This field allows setting the height, in pixels, of the actual map component. 
+Applies only to the front-end viewer.
+The default value is the former default map height: 350 pixels.
 
 [Back to the Table of Contents](#help-root)
 

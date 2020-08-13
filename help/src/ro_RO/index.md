@@ -256,6 +256,11 @@ Textul teaser-ului afișat deasupra articolului. Există deja o valoare predefin
 
 Textul teaser-ului afișat imediat sub caseta de sumar. Există deja o valoare predefinită.
 
+#### Fila inițial selectată
+
+Acest câmp permite controlarea filei încărcate inițial în viewer-ul din fron-end atunci când utilizatorul deschide pagina unui post.
+Valoarea implicită este: Hartă & Track GPS.
+
 #### Șablonul URL-ului sursei de tile-uri de hartă
 
 Aici discuția e un pic mai lungă. 
@@ -316,16 +321,21 @@ Implicit, câmpul este bifat, deci butonul este afișat.
 
 #### Culoarea liniei track-ului de pe harta
 
-Acest camp permite setarea culorii liniei cu care este reprezentat pe harta track-ul GPS.
-Se aplica atat la viewer-ul din front-end cat si la editorul din back-end.
+Acest câmp permite setarea culorii liniei cu care este reprezentat pe harta track-ul GPS.
+Se aplică atât la viewer-ul din front-end cat si la editorul din back-end.
 Valoarea implicita este: #0033ff (un soi de albastru).
 
 #### Grosimea liniei track-ului de pe harta
 
-Acest camp permite setarea grosimii liniei (in pixeli) cu care este reprezentat pe harta track-ul GPS.
-Se aplica atat la viewer-ul din front-end cat si la editorul din back-end.
+Acest câmp permite setarea grosimii liniei (în pixeli) cu care este reprezentat pe harta track-ul GPS.
+Se aplică atât la viewer-ul din front-end cât și la editorul din back-end.
 Valoarea implicita este: 3 pixeli.
 
+#### Înălțimea hărții
+
+Acest câmp permite setarea înălțimii hărții, în pixeli.
+Se aplică doar hărții afișate în viewer-ul din front-end.
+Valoarea implicită este de 350 de pixeli.
 
 [Înapoi la Cuprins](#help-root)
 

@@ -261,6 +261,11 @@ Le texte d'accroche affiché au-dessus de l'article. Il y a déjà un preset.
 
 Le texte du teaser s'affiche immédiatement sous la zone de résumé. Il y a déjà un preset.
 
+#### Étiquette initialement sélectionnée
+
+Ce champ permet de définir l'étiquette du visualiseur frontal sélectionné lorsque l'utilisateur visite le poste.
+La valeur par défaut est: Carte et trace GPS.
+
 #### Modèle d'URL source de tuile de carte
 
 Ici, la discussion est un peu plus longue.
@@ -330,6 +335,12 @@ La valeur par défaut est: # 0033ff.
 Ce champ vous permet de définir l'épaisseur de ligne (en pixels) avec laquelle la trace GPS est représentée sur la carte.
 S'applique à la fois au visualiseur frontal et à l'éditeur principal.
 La valeur par défaut est: 3 pixels.
+
+#### Hauteur de la carte
+
+Ce champ vous permet de définir la hauteur, en pixels, du composant cartographique.
+S'applique uniquement au visualiseur frontal.
+La valeur par défaut est: 350 pixels.
 
 [Retour au sommaire](#help-root)
 
