@@ -972,6 +972,13 @@ function abp01_save_admin_settings_page_save() {
 		abp01_send_json($response);
 	}
 
+	//check that the initial viewer tab is supported
+	$initialViewerTab = Abp01_InputFiltering::getFilteredPOSTValue('initialViewerTab');
+	if (!Abp01_Viewer::isSupported($initialViewerTab)) {
+		$response->message = esc_html__('Unsupported viewer tab', 'abp01-trip-summary');
+		abp01_send_json($response);
+	}
+
 	//collect and fill in layer parameters
 	$tileLayer = new stdClass();
 	$tileLayer->url = Abp01_InputFiltering::getFilteredPOSTValue('tileLayerUrl');
@@ -1038,6 +1045,7 @@ function abp01_save_admin_settings_page_save() {
 
 	$settings->setTileLayers($tileLayer);
 	$settings->setUnitSystem($unitSystem);
+	$settings->setInitialViewerTab($initialViewerTab);
 
 	if ($settings->saveSettings()) {
 		$response->success = true;

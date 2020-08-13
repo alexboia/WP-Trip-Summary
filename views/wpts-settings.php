@@ -105,6 +105,22 @@
 								class="regular-text abp01-textarea-input"><?php echo esc_html($data->settings->bottomTeaserText); ?></textarea>
 						</td>
 					</tr>
+					<tr>
+						<th scope="row">
+							<label for="abp01-initialViewerTab"><?php echo esc_html__('Initial viewer tab', 'abp01-trip-summary'); ?>:</label>
+						</th>
+						<td>
+							<select name="initialViewerTab" id="abp01-initialViewerTab" class="abp01-select">
+								<?php foreach ($data->settings->allowedViewerTabs as $s => $lbl): ?>
+									<?php if ($data->settings->initialViewerTab == $s): ?>
+									<option value="<?php echo esc_attr($s) ?>" selected="selected"><?php echo esc_html($lbl) ?></option>
+									<?php else: ?>
+										<option value="<?php echo esc_attr($s) ?>"><?php echo esc_html($lbl) ?></option>
+									<?php endif; ?>
+								<?php endforeach; ?>
+							</select>
+						</td>
+					</tr>
 				</table>
 			</div>
 
@@ -128,7 +144,7 @@
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="abp01-tileLayerAttributionUrl"><?php echo esc_html__('Tile layer attribution URL', 'abp01-trip-summary'); ?></label>
+							<label for="abp01-tileLayerAttributionUrl"><?php echo esc_html__('Tile layer attribution URL', 'abp01-trip-summary'); ?>:</label>
 						</th>
 						<td>
 							<input type="text" 
@@ -140,7 +156,7 @@
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="abp01-tileLayerAttributionTxt"><?php echo esc_html__('Tile layer attribution text', 'abp01-trip-summary'); ?></label>
+							<label for="abp01-tileLayerAttributionTxt"><?php echo esc_html__('Tile layer attribution text', 'abp01-trip-summary'); ?>:</label>
 						</th>
 						<td>
 							<input type="text" 
@@ -224,7 +240,7 @@
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="abp01-trackLineColour"><?php echo esc_html__('Track line colour', 'abp01-trip-summary'); ?></label>
+							<label for="abp01-trackLineColour"><?php echo esc_html__('Track line colour', 'abp01-trip-summary'); ?>:</label>
 						</th>
 						<td>
 							<input id="abp01-trackLineColour" 
@@ -236,7 +252,7 @@
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="abp01-trackLineWeight"><?php echo esc_html__('Track line weight', 'abp01-trip-summary'); ?></label>
+							<label for="abp01-trackLineWeight"><?php echo esc_html__('Track line weight', 'abp01-trip-summary'); ?>:</label>
 						</th>
 						<td>
 							<input id="abp01-trackLineWeight" 
@@ -248,7 +264,7 @@
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="abp01-mapHeight"><?php echo esc_html__('Map height', 'abp01-trip-summary'); ?></label>
+							<label for="abp01-mapHeight"><?php echo esc_html__('Map height', 'abp01-trip-summary'); ?>:</label>
 						</th>
 						<td>
 							<input id="abp01-mapHeight" 

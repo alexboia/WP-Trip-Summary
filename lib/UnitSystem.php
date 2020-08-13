@@ -83,6 +83,19 @@ abstract class Abp01_UnitSystem {
     }
 
     /**
+     * Returns an array of available unit systems. 
+     *  Keys are system identifiers, values are system labels.
+     * 
+     * @return string[] The available systems.
+     */
+    public static function getAvailableUnitSystems() {
+        return array(
+            Abp01_UnitSystem::METRIC => ucfirst(Abp01_UnitSystem::METRIC),
+            Abp01_UnitSystem::IMPERIAL => ucfirst(Abp01_UnitSystem::IMPERIAL)
+        );
+    }
+
+    /**
      * Converts the unit system to a plain stdClass object with the following properties:
      *      - distanceUnit;
      *      - lengthUnit;
@@ -97,6 +110,13 @@ abstract class Abp01_UnitSystem {
         return $data;
     }
 
+    /**
+     * Checks whether distance can be converted between 
+     *  the current unit system and the given unit system.
+     * 
+     * @param Abp01_UnitSystem $otherSystem The potential target system
+     * @return bool True if possible, false otherwise
+     */
     public function canConvertDistanceTo(Abp01_UnitSystem $otherSystem) {
         return $this->_canConvertBetweenUnits($this->getDistanceUnit(), 
             $otherSystem->getDistanceUnit());
@@ -116,6 +136,13 @@ abstract class Abp01_UnitSystem {
             $otherSystem->getDistanceUnit());
     }
 
+    /**
+     * Checks whether length can be converted between 
+     *  the current unit system and the given unit system.
+     * 
+     * @param Abp01_UnitSystem $otherSystem The potential target system
+     * @return bool True if possible, false otherwise
+     */
     public function canConvertLengthTo(Abp01_UnitSystem $otherSystem) {
         return $this->_canConvertBetweenUnits($this->getLengthUnit(), 
             $otherSystem->getLengthUnit());
@@ -135,6 +162,13 @@ abstract class Abp01_UnitSystem {
             $otherSystem->getLengthUnit());
     }
 
+    /**
+     * Checks whether height can be converted between 
+     *  the current unit system and the given unit system.
+     * 
+     * @param Abp01_UnitSystem $otherSystem The potential target system
+     * @return bool True if possible, false otherwise
+     */
     public function canConvertHeightTo(Abp01_UnitSystem $otherSystem) {
         return $this->_canConvertBetweenUnits($this->getHeightUnit(), 
             $otherSystem->getHeightUnit());

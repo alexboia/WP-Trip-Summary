@@ -828,7 +828,8 @@ class Abp01_Includes {
 				'attributionUrl' => esc_js($mainTileLayer->attributionUrl)
 			),
 			'trackLineColour' => $settings->getTrackLineColour(),
-			'trackLineWeight' => $settings->getTrackLineWeight()
+			'trackLineWeight' => $settings->getTrackLineWeight(),
+			'initialViewerTab' => $settings->getInitialViewerTab()
 		));
 	}
 

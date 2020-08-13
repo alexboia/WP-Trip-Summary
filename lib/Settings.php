@@ -144,6 +144,13 @@ class Abp01_Settings {
 	const OPT_MAP_HEIGHT = 'mapHeight';
 
 	/**
+	 * Key for "selected viewer tab" setting
+	 * 
+	 * @var string
+	 */
+	const OPT_INITIAL_VIEWER_TAB = 'initialViewerTab';
+
+	/**
 	 * The key used to store the serialized settings, using the WP options API
 	 * 
 	 * @var string
@@ -186,6 +193,7 @@ class Abp01_Settings {
 	 * Loads the settings if the local cache is not yet set.
 	 * The cache is considered unset if it has a null value.
 	 * If no data is found, the cache is initialized with an empty array.
+	 * 
 	 * @return void
 	 * */
 	private function _loadSettingsIfNeeded() {
@@ -197,6 +205,16 @@ class Abp01_Settings {
 		}
 	}
 
+	/**
+	 * Fetch the value for the given option key, 
+	 * 	with the given type and default value.
+	 * 
+	 * @param string $key The option key
+	 * @param string $type The option value type
+	 * @param mixed $default The default option value, returned if no value found for given option key
+	 * 
+	 * @return mixed The option value
+	 */
 	private function _getOption($key, $type, $default) {
 		$this->_loadSettingsIfNeeded();
 		$optionValue = isset($this->_data[$key]) ? $this->_data[$key] : $default;
@@ -207,6 +225,17 @@ class Abp01_Settings {
 		return $optionValue;
 	}
 
+	/**
+	 * Sets the option described by the given key, 
+	 * 	with the given type to the given value.
+	 * The option type is used to filter and sanitize the given option value.
+	 * 
+	 * @param string $key The option key
+	 * @param string $type The option value type
+	 * @param mixed $value The option value
+	 * 
+	 * @return void 
+	 */
 	private function _setOption($key, $type, $value) {
 		$this->_loadSettingsIfNeeded();
 		$this->_data[$key] = Abp01_InputFiltering::filterValue($value, $type);
@@ -268,12 +297,11 @@ class Abp01_Settings {
 		$data->showMinMaxAltitude = $this->getShowMinMaxAltitude();
 		$data->showAltitudeProfile = $this->getShowAltitudeProfile();
 		$data->mapHeight = $this->getMapHeight();
+		$data->initialViewerTab = $this->getInitialViewerTab();
 
 		//fetch all the allowed unit systems
-		$data->allowedUnitSystems = array();
-		foreach ($this->getAllowedUnitSystems() as $system) {
-			$data->allowedUnitSystems[$system] = ucfirst($system);
-		}
+		$data->allowedUnitSystems = $this->getAllowedUnitSystems();
+		$data->allowedViewerTabs = $this->getAllowedViewerTabs();
 
 		return $data;
 	}
@@ -380,7 +408,7 @@ class Abp01_Settings {
 	}
 
 	public function setUnitSystem($unitSystem) {
-		$allowedUnitSystems = $this->getAllowedUnitSystems();
+		$allowedUnitSystems = array_keys($this->getAllowedUnitSystems());
 		if (!in_array($unitSystem, $allowedUnitSystems)) {
 			$unitSystem = $this->getUnitSystem();
 		}
@@ -404,6 +432,19 @@ class Abp01_Settings {
 	public function setTrackLineWeight($weight) {
 		$weight = max(intval($weight), $this->getMinimumAllowedTrackLineWeight());
 		$this->_setOption(self::OPT_TRACK_LINE_WEIGHT, 'integer', $weight);
+		return $this;
+	}
+
+	public function getInitialViewerTab() {
+		return $this->_getOption(self::OPT_INITIAL_VIEWER_TAB, 'string', Abp01_Viewer::TAB_INFO);
+	}
+
+	public function setInitialViewerTab($viewerTab) {
+		$allowedViewerTabs = array_keys($this->getAllowedViewerTabs());
+		if (!in_array($viewerTab, $allowedViewerTabs)) {
+			$viewerTab = $this->getInitialViewerTab();
+		}
+		$this->_setOption(self::OPT_INITIAL_VIEWER_TAB, 'string', $viewerTab);
 		return $this;
 	}
 
@@ -467,6 +508,10 @@ class Abp01_Settings {
 	}
 
 	public function getAllowedUnitSystems() {
-		return array(Abp01_UnitSystem::METRIC, Abp01_UnitSystem::IMPERIAL);
+		return Abp01_UnitSystem::getAvailableUnitSystems();
+	}
+
+	public function getAllowedViewerTabs() {
+		return Abp01_Viewer::getAvailableTabs();
 	}
 }

@@ -142,7 +142,8 @@
             mapAllowTrackDownloadUrl: abp01Settings.mapAllowTrackDownloadUrl === 'true',
             mapTileLayer: abp01Settings.mapTileLayer || {},
             trackLineColour: abp01Settings.trackLineColour || '#0033ff',
-            trackLineWeight: abp01Settings.trackLineWeight || 3
+            trackLineWeight: abp01Settings.trackLineWeight || 3,
+            initialViewerTab: abp01Settings.initialViewerTab || 'abp01-tab-info'
         };
     }
 
@@ -174,22 +175,39 @@
         }, 100);
     }
 
+    function initOrRefreshMap() {
+        if (map != null) {
+            map.forceRedraw();
+        } else {
+            showMap();
+        }
+    }
+
     function initTabs() {
+        //init tabs controller and bind tab selection events
         $ctrlTechboxTabs = $('#abp01-techbox-wrapper').easytabs({
             animate : false,
             tabActiveClass : 'abp01-tab-active',
             panelActiveClass : 'abp01-tabContentActive',
             defaultTab : '#abp01-tab-info',
+            tabs: '.abp01-tab',
             updateHash : false
         });
 
         $ctrlTechboxTabs.bind('easytabs:after', function(e, $clicked, $target, eventSettings) {
-            if ($target.attr('id') == 'abp01-techbox-map') {
-                if (map != null) {
-                    map.forceRedraw();
-                } else {
-                    showMap();
-                }
+            var clickedTab = $clicked
+                .parent()
+                .attr('id');
+
+            if (clickedTab == 'abp01-tab-map') {
+                initOrRefreshMap();
+            }
+        });
+
+        //set initial tab
+        window.setTimeout(function() {
+            if (settings.initialViewerTab == 'abp01-tab-map') {
+                $ctrlTechboxTabs.easytabs('select', '#abp01-tab-map');
             }
         });
     }

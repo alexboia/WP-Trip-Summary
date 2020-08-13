@@ -362,7 +362,7 @@
                 // Find direct tab link that ends in the matching href (like 'a[href$="#panel-1"]', which would also match http://example.com/currentpage/#panel-1)
                 if ( ($tab = plugin.tabs.find("a[href$='" + tabSelector + "']")).length === 0 ) {
 
-                  $.error('Tab \'' + tabSelector + '\' does not exist in tab set');
+                  $.error('Tab \'' + tabSelector + '\' does not exist in tab set'); 
                 }
               }
             }
@@ -696,7 +696,7 @@
 
       // User called public method
       if ( plugin.publicMethods[options] ){
-        return plugin.publicMethods[options](Array.prototype.slice.call( args, 1 ));
+        return plugin.publicMethods[options].apply(plugin.publicMethods, Array.prototype.slice.call( args, 1 ));
       }
     });
   };

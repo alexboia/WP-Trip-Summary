@@ -52,6 +52,18 @@ class SettingsTests extends WP_UnitTestCase {
         $this->assertEquals(Abp01_UnitSystem::METRIC, $settings->getUnitSystem());
     }
 
+    public function test_trySetInvalidInitialViewerTab() {
+        $settings = $this->_getSettings();
+
+        $settings->setInitialViewerTab(Abp01_Viewer::TAB_INFO);
+        $settings->setInitialViewerTab('bogus_tab');
+        $this->assertEquals(Abp01_Viewer::TAB_INFO, $settings->getInitialViewerTab());
+
+        $settings->setInitialViewerTab(Abp01_Viewer::TAB_MAP);
+        $settings->setInitialViewerTab('bogus_tab');
+        $this->assertEquals(Abp01_Viewer::TAB_MAP, $settings->getInitialViewerTab());
+    }
+
     public function test_canSaveSettings() {
         $tileLayer = new stdClass();
         $tileLayer->url = 'http://{s}.tile.example.com/{z}/{x}/{y}.png';
@@ -71,6 +83,7 @@ class SettingsTests extends WP_UnitTestCase {
         $expected->trackLineColour = '#FFCC00';
         $expected->trackLineWeight = 10;
         $expected->mapHeight = 1111;
+        $expected->initialViewerTab = Abp01_Viewer::TAB_MAP;
 
         $settings = $this->_getSettings();
         $settings->setShowFullScreen($expected->showFullScreen);
@@ -85,6 +98,7 @@ class SettingsTests extends WP_UnitTestCase {
         $settings->setTrackLineColour($expected->trackLineColour);
         $settings->setTrackLineWeight($expected->trackLineWeight);
         $settings->setMapHeight($expected->mapHeight);
+        $settings->setInitialViewerTab($expected->initialViewerTab);
 
         $settings->saveSettings();
 		$this->assertEquals($expected, $this->_collectSettings($settings));
@@ -124,6 +138,7 @@ class SettingsTests extends WP_UnitTestCase {
         $data->trackLineColour = $settings->getTrackLineColour();
         $data->trackLineWeight = $settings->getTrackLineWeight();
         $data->mapHeight = $settings->getMapHeight();
+        $data->initialViewerTab = $settings->getInitialViewerTab();
         return $data;
     }
 
@@ -141,6 +156,7 @@ class SettingsTests extends WP_UnitTestCase {
         $defaults->trackLineColour = '#0033ff';
         $defaults->trackLineWeight = 3;
         $defaults->mapHeight = 350;
+        $defaults->initialViewerTab = Abp01_Viewer::TAB_INFO;
         return $defaults;
     }
 
