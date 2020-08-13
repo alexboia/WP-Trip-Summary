@@ -56,6 +56,8 @@ class Abp01_Includes {
 
 	const JS_LEAFLET = 'abp01-leaflet';
 
+	const JS_LEAFLET_UTILITY = 'abp01-leaflet-map-utility';
+
 	const JS_LEAFLET_MAGNIFYING_GLASS = 'abp01-leaflet-magnifyingglass';
 
 	const JS_LEAFLET_MAGNIFYING_GLASS_BUTTON = 'abp01-leaflet-magnifyingglass-button';
@@ -222,6 +224,15 @@ class Abp01_Includes {
 				self::JS_LEAFLET_NOCONFLICT
 			)
 		), 
+		self::JS_LEAFLET_UTILITY => array(
+			'path' => 'media/js/abp01-map-utility.js',
+			'version' => ABP01_VERSION,
+			'is-leaflet-plugin' => true,
+			'needs-wrap' => false,
+			'deps' => array(
+				self::JS_LEAFLET
+			)
+		),
 		self::JS_LEAFLET_MAGNIFYING_GLASS => array(
 			'path' => 'media/js/3rdParty/leaflet-plugins/leaflet-magnifyingglass/leaflet.magnifyingglass.js', 
 			'version' => '1.0.6',
@@ -274,6 +285,7 @@ class Abp01_Includes {
 			'needs-wrap' => false,
 			'deps' => array(
 				self::JS_LEAFLET,
+				self::JS_LEAFLET_UTILITY,
 				self::JS_CHART_JS
 			)
 		),
@@ -283,7 +295,8 @@ class Abp01_Includes {
 			'is-leaflet-plugin' => true,
 			'needs-wrap' => false,
 			'deps' => array(
-				self::JS_LEAFLET
+				self::JS_LEAFLET,
+				self::JS_LEAFLET_UTILITY
 			)
 		),
 		self::JS_MACHINA => array(

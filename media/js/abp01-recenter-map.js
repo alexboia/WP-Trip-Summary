@@ -41,23 +41,15 @@
         },
 
         _createButton: function() {
-            var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control abp01-leaflet-icon-button-container');            
-            var buttonLink = L.DomUtil.create('a', 'abp01-leaflet-icon-button-link', container);
+            var buttonInfo = L.DomUtil.createMapButton({
+                handleButtonClicked: this._handleButtonClicked,
+                eventContext: this,
+                iconCssClass: 'dashicons-fullscreen-exit-alt',
+                additionalCssClass: 'abp01-map-recenter-btn'
+            });
 
-            L.DomEvent.on(buttonLink, 
-                'click', 
-                this._handleButtonClicked, 
-                this);
-
-            //add icon
-            L.DomUtil.create('span', 
-                'dashicons dashicons-fullscreen-exit-alt abp01-map-recenter-btn', 
-                buttonLink);
-
-            //store reference to element
-            buttonLink.href = 'javascript:void(0);';
-            this._buttonElement = buttonLink;
-            return container;
+            this._buttonElement = buttonInfo.buttonElement;
+            return buttonInfo.container;
         },
 
         _handleButtonClicked: function(event) {
