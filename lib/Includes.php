@@ -360,6 +360,7 @@ class Abp01_Includes {
 				self::JS_KITE_JS,
 				self::JS_URI_JS,
 				self::JS_LEAFLET,
+				self::JS_LEAFLET_RECENTER_MAP,
 				self::JS_TIPPED_JS,
 				self::JS_ABP01_PROGRESS_OVERLAY,
 				self::JS_ABP01_MAP
