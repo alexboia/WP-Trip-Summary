@@ -70,6 +70,7 @@ class SettingsTests extends WP_UnitTestCase {
         $expected->unitSystem = Abp01_UnitSystem::IMPERIAL;
         $expected->trackLineColour = '#FFCC00';
         $expected->trackLineWeight = 10;
+        $expected->mapHeight = 1111;
 
         $settings = $this->_getSettings();
         $settings->setShowFullScreen($expected->showFullScreen);
@@ -83,6 +84,7 @@ class SettingsTests extends WP_UnitTestCase {
         $settings->setAllowTrackDownload($expected->allowTrackDownload);
         $settings->setTrackLineColour($expected->trackLineColour);
         $settings->setTrackLineWeight($expected->trackLineWeight);
+        $settings->setMapHeight($expected->mapHeight);
 
         $settings->saveSettings();
 		$this->assertEquals($expected, $this->_collectSettings($settings));
@@ -121,6 +123,7 @@ class SettingsTests extends WP_UnitTestCase {
         $data->allowTrackDownload = $settings->getAllowTrackDownload();
         $data->trackLineColour = $settings->getTrackLineColour();
         $data->trackLineWeight = $settings->getTrackLineWeight();
+        $data->mapHeight = $settings->getMapHeight();
         return $data;
     }
 
@@ -137,6 +140,7 @@ class SettingsTests extends WP_UnitTestCase {
         $defaults->unitSystem = Abp01_UnitSystem::METRIC;
         $defaults->trackLineColour = '#0033ff';
         $defaults->trackLineWeight = 3;
+        $defaults->mapHeight = 350;
         return $defaults;
     }
 

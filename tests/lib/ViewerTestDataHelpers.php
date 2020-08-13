@@ -52,6 +52,7 @@ trait ViewerTestDataHelpers {
         $data->settings->showTeaser = $showTeaser;
         $data->settings->bottomTeaserText = 'Bottom teaser text';
         $data->settings->showAltitudeProfile = $faker->boolean();
+        $data->settings->mapHeight = $faker->numberBetween(450, 1111);
 
         $data->info = new stdClass();
         $data->info->exists = false;
@@ -74,6 +75,7 @@ trait ViewerTestDataHelpers {
         $data->settings->bottomTeaserText = 'Bottom teaser text';
         $data->settings->measurementUnits = $faker->randomElement($this->_getAvailableMeasurementUnits());
         $data->settings->showAltitudeProfile = $faker->boolean();
+        $data->settings->mapHeight = $faker->numberBetween(450, 1111);
 
         $data->info = new stdClass();
         $data->info->exists = true;
@@ -118,6 +120,7 @@ trait ViewerTestDataHelpers {
         $data->settings->bottomTeaserText = 'Bottom teaser text';
         $data->settings->measurementUnits = $faker->randomElement($this->_getAvailableMeasurementUnits());
         $data->settings->showAltitudeProfile = $faker->boolean();
+        $data->settings->mapHeight = $faker->numberBetween(450, 1111);
 
         $data->info = new stdClass();
         $data->info->exists = true;
@@ -162,6 +165,7 @@ trait ViewerTestDataHelpers {
         $data->settings->bottomTeaserText = 'Bottom teaser text';
         $data->settings->measurementUnits = $faker->randomElement($this->_getAvailableMeasurementUnits());
         $data->settings->showAltitudeProfile = $faker->boolean();
+        $data->settings->mapHeight = $faker->numberBetween(450, 1111);
 
         $data->info = new stdClass();
         $data->info->exists = true;
