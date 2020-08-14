@@ -140,6 +140,18 @@
         return context.currentRouteInfoType;
     }
 
+    function getInitialRouteInfoType() {
+        return context.initialRouteInfoType;
+    }
+
+    function setInitialRouteInfoType(type) {
+        context.initialRouteInfoType = type;
+    }
+
+    function hasInitialRouteInfoType() {
+        return !!context.initialRouteInfoType;
+    }
+
     function maybeTrace(text) {
         if (settings._env.WP_DEBUG 
             && window.console 
@@ -485,7 +497,7 @@
             updateTitle(null);
         } else {
             maybeTrace('Route info form not rendered. Resetting initial route info typ...');
-            context.initialRouteInfoType = null;
+            setInitialRouteInfoType(null);
         }
     }
 
@@ -497,13 +509,14 @@
         if (!editorWindowState.formInfoRendered) {
             maybeTrace('Route info form not renedered. Rendering form...');
 
-            var initialRouteInfoType = context.initialRouteInfoType;
-            if (!initialRouteInfoType) {
-                maybeTrace('No selected route info type found. Rendering route info type selector...');
-                showRouteInfoTypeSelector($container);
-            } else {
+            if (hasInitialRouteInfoType()) {
+                var initialRouteInfoType = getInitialRouteInfoType();
                 maybeTrace('Route info type found: <' + initialRouteInfoType + '>. Rendering route info form...');
                 selectRouteInfoType(initialRouteInfoType, false);
+                
+            } else {
+                maybeTrace('No selected route info type found. Rendering route info type selector...');
+                showRouteInfoTypeSelector($container);
             }
 
             //Route info form now rendered; mark it as such.
@@ -1027,9 +1040,9 @@
             nonceDownload: $('#abp01-nonce-download').val(),
             postId: window['abp01_postId'] || 0,
             hasRouteTrack: window['abp01_hasTrack'] || 0,
+            hasRouteInfo: window['abp01_hasInfo'] || 0,
             initialRouteInfoType: window['abp01_tourType'] || null,
             currentRouteInfoType: null,
-            hasRouteInfo: !!window['abp01_tourType'],
             ajaxBaseUrl: window['abp01_ajaxUrl'] || null,
             ajaxLoadTrackAction: window['abp01_ajaxGetTrackAction'] || null,
             ajaxUploadTrackAction: window['abp01_ajaxUploadTrackAction'] || null,
