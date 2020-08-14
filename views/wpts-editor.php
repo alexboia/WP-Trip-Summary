@@ -50,7 +50,8 @@
     var abp01_uploadKey = '<?php echo $data->uploadKey; ?>';
 
     var abp01_postId = '<?php echo $data->postId; ?>';
-    var abp01_hasTrack = <?php echo $data->hasTrack ? 'true' : 'false'; ?>;
+    var abp01_hasTrack = <?php echo $data->hasRouteTrack ? 'true' : 'false'; ?>;
+    var abp01_hasInfo = <?php echo $data->hasRouteInfo ? 'true' : 'false'; ?>;
 
     var abp01_baseTitle = '<?php echo esc_html__('Edit trip summary', 'abp01-trip-summary') ?>';
 </script>
@@ -99,12 +100,18 @@
             <div class="abp01-editor-action"></div>
         </div>
         <div class="abp01-editor-footer">
-            <a id="abp01-resetTechBox" href="javascript:void(0)" class="button button-large button-reset"><?php echo esc_html__('Clear', 'abp01-trip-summary'); ?></a>
+            <a id="abp01-editorQuickActionsTrigger" 
+                class="abp01-quick-actions-editor-trigger"
+                style="display: <?php echo ($data->hasRouteInfo || $data->hasRouteTrack) ? 'block' : 'none' ?>;"
+                data-controller-selector="abp01-editor-window-quick-actions-tooltip" 
+                href="javascript:void(0)"><?php echo esc_html__('Quick actions', 'abp01-trip-summary'); ?></a>
             <a id="abp01-saveTechBox" href="javascript:void(0)" class="button button-primary button-large button-save-summary" <?php echo empty($data->tourType) ? 'style="display:none;"' : ''; ?>><?php echo esc_html__('Save', 'abp01-trip-summary'); ?></a>
             <div class="abp01-clear"></div>
         </div>
     </div>
 </div>
+
+<?php abp01_render_partial_view('wpts-editor-quick-actions.php', $data); ?>
 
 <script id="tpl-abp01-formInfo-unselected" type="text/x-kite">
     <div id="abp01-form-info-typeSelection" class="abp01-type-selector-container">

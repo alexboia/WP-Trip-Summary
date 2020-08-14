@@ -33,6 +33,13 @@ if (!defined('ABP01_LOADED')) {
     die;
 }
 
+if (!function_exists('abp01_render_partial_view')) {
+    function abp01_render_partial_view($view, $data) {
+        $viewFile = abp01_get_env()->getViewFilePath($view);
+        require $viewFile;
+    }
+}
+
 if (!function_exists('abp01_extract_value_from_data')) {
     function abp01_extract_value_from_data($data, $field) {
         if ($data->tourInfo && isset($data->tourInfo[$field])) {

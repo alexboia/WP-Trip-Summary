@@ -85,8 +85,6 @@
                     this._handleButtonClicked, 
                     this);
             }
-
-            this._map = null;
             this._buttonElement = null;
         }
     });

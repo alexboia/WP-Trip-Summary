@@ -336,7 +336,6 @@
             }
 
             //Cleanup the rest of stuff
-            this._map = null;
             this._buttonElement = null;
         }
     });

@@ -185,6 +185,16 @@ a.abp01-close-editor:hover {
     display: none;
 }
 
+.abp01-editor-footer .abp01-quick-actions-editor-trigger {
+    float: left;
+    color: #e14d43;
+    border: 1px solid #e14d43;
+    background: #f3f5f6;
+    padding: 5px;
+    border-radius: 3px;
+    text-decoration: none;
+}
+
 .abp01-type-selector-container {
     margin-top: 150px;
 }

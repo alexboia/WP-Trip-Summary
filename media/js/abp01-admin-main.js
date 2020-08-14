@@ -62,7 +62,6 @@
 
     var baseTitle = null;
     var progressBar = null;
-    var currentRouteInfoType = null;
     var uploader = null;
     var settings = null;
     var context = null;
@@ -92,7 +91,6 @@
      * */
 
     var $ctrlEditorTabs = null;
-    var $ctrlResetTechBox = null;
     var $ctrlTitleContainer = null;
     var $ctrlFormInfoContainer = null;
     var $ctrlFormMapContainer = null;
@@ -128,6 +126,18 @@
 
     function setHasRouteTrack(flag) {
         context.hasRouteTrack = flag;
+    }
+
+    function hasSelectedRouteInfoType() {
+        return !!context.currentRouteInfoType;
+    }
+
+    function setCurrentRouteInfoType(type) {
+        context.currentRouteInfoType = type;
+    }
+
+    function getCurrentRouteInfoType() {
+        return context.currentRouteInfoType;
     }
 
     function maybeTrace(text) {
@@ -193,7 +203,11 @@
 
     function renderQuickActionsTooltip() {
         return getQuickActionsTooltipTemplate()({
-            context: context
+            context: {
+                hasRouteInfo: hasRouteInfo(),
+                hasRouteTrack: hasRouteTrack(),
+                hasSelectedRouteInfoType: hasSelectedRouteInfoType()
+            }
         });
     }
 
@@ -270,38 +284,6 @@
     /**
      * Reset button management functions
      * */
-
-    function executeResetAction() {
-        var handler = $ctrlResetTechBox.data('formInfoResetHandler');
-        if (!handler || !$.isFunction(handler)) {
-            handler = $ctrlResetTechBox.data('formMapResetHandler');
-        }
-        if (handler && $.isFunction(handler)) {
-            handler();
-        }
-    }
-
-    function toggleFormInfoResetBtn(enable) {
-        if (enable) {
-            var resetHandler = arguments.length == 2 ? arguments[1] : null;
-            $ctrlResetTechBox.text(abp01MainL10n.btnClearInfo).show();
-            $ctrlResetTechBox.data('formInfoResetHandler', resetHandler);
-        } else {
-            $ctrlResetTechBox.hide();
-            $ctrlResetTechBox.data('formInfoResetHandler', null);
-        }
-    }
-
-    function toggleRouteTrackMapResetBtn(enable) {
-        if (enable) {
-            var resetHandler = arguments.length == 2 ? arguments[1] : null;
-            $ctrlResetTechBox.text(abp01MainL10n.btnClearTrack).show();
-            $ctrlResetTechBox.data('formMapResetHandler', resetHandler);
-        } else {
-            $ctrlResetTechBox.hide();
-            $ctrlResetTechBox.data('formMapResetHandler', null);
-        }
-    }
 
     function clearInputValues($container) {
         var $input = $container.find('input,select,textarea');
@@ -437,13 +419,12 @@
     }
 
     function selectRouteInfoType(type, clearForm) {
-        currentRouteInfoType = type;
+        setCurrentRouteInfoType(type);
         $ctrlFormInfoContainer.empty();
 
         if (typeof typeSelectRenderers[type] === 'function') {
             $ctrlFormInfoContainer.html(typeSelectRenderers[type]());
             prepareSelectBoxesSelect2($ctrlFormInfoContainer);
-            toggleFormInfoResetBtn(true, resetRouteInfoForm);
             updateTitle(typeTitles[type]);
 
             if (clearForm) {
@@ -453,8 +434,7 @@
             $ctrlSave.show();
         } else {
             updateTitle(null);
-            toggleFormInfoResetBtn(false);
-            currentRouteInfoType = null;
+            setCurrentRouteInfoType(null);
             $ctrlSave.hide();
         }
     }
@@ -474,18 +454,23 @@
     }
 
     function resetRouteInfoForm() {
-        $ctrlSave.hide();
-        clearInputValues($ctrlFormInfoContainer);
         if (hasRouteInfo()) {
             if (confirm(abp01MainL10n.lblWarnRemoveTripSummaryInfo)) {
-                maybeTrace('Route info present and persisted. Need to clear that first...');
+                $ctrlSave.hide();
+                clearInputValues($ctrlFormInfoContainer);
+
+                maybeTrace('Route info present and persisted. Need to clear that first...');               
                 clearRouteInfo();
             } else {
                 maybeTrace('User cancelled request to reset route info form.');
             }
         } else {
+            $ctrlSave.hide();
+            clearInputValues($ctrlFormInfoContainer);
+
             maybeTrace('Route info not present or not persisted. Switching to info  type selection...');
             switchToRouteInfoTypeSelection();
+            refreshEnhancedEditor();
         }
     }
 
@@ -493,9 +478,7 @@
         if (editorWindowState.formInfoRendered) {
             maybeTrace('Route info form rendered. Clearing form and rendering route info type selector...');
 
-            currentRouteInfoType = null;
-
-            toggleFormInfoResetBtn(false);
+            setCurrentRouteInfoType(null);
             destroySelectBoxes($ctrlFormInfoContainer);
 
             $ctrlFormInfoContainer.empty().html(renderRouteInfoTypeSelector());
@@ -506,6 +489,10 @@
         }
     }
 
+    function showRouteInfoTypeSelector($container) {
+        $container.html(renderRouteInfoTypeSelector());
+    }
+
     function showRouteInfoForm($container) {
         if (!editorWindowState.formInfoRendered) {
             maybeTrace('Route info form not renedered. Rendering form...');
@@ -513,7 +500,7 @@
             var initialRouteInfoType = context.initialRouteInfoType;
             if (!initialRouteInfoType) {
                 maybeTrace('No selected route info type found. Rendering route info type selector...');
-                $container.html(renderRouteInfoTypeSelector());
+                showRouteInfoTypeSelector($container);
             } else {
                 maybeTrace('Route info type found: <' + initialRouteInfoType + '>. Rendering route info form...');
                 selectRouteInfoType(initialRouteInfoType, false);
@@ -522,19 +509,12 @@
             //Route info form now rendered; mark it as such.
             editorWindowState.formInfoRendered = true;
         }
-
-        toggleRouteTrackMapResetBtn(false);
-        if (!currentRouteInfoType) {
-            toggleFormInfoResetBtn(false);
-        } else {
-            toggleFormInfoResetBtn(true, resetRouteInfoForm);
-        }
     }
 
     function getRouteInfoFormValues($container) {
         var $input = $container.find('input,select,textarea');
         var values = {
-            type: currentRouteInfoType
+            type: getCurrentRouteInfoType()
         };
 
         function isMultiCheckbox(inputName) {
@@ -724,8 +704,6 @@
 
             $ctrlFormMapContainer.empty().html(renderFormMapUnselected());
             $ctrlMapRetryContainer.hide();
-
-            toggleRouteTrackMapResetBtn(false);
             createTrackUploader();
         }
     }
@@ -743,13 +721,6 @@
             if (map != null) {
                 map.forceRedraw();
             }
-        }
-
-        toggleFormInfoResetBtn(false);
-        if (!hasRouteTrack()) {
-            toggleRouteTrackMapResetBtn(false);
-        } else {
-            toggleRouteTrackMapResetBtn(true, clearRouteTrack);
         }
     }
 
@@ -962,7 +933,6 @@
         uploader.disableBrowse(false);
 
         destroyTrackUploader();
-        toggleRouteTrackMapResetBtn(true, clearRouteTrack);
         toastMessage(true, abp01MainL10n.lblTrackUploaded);
         showMap();
         refreshEnhancedEditor();
@@ -1058,6 +1028,7 @@
             postId: window['abp01_postId'] || 0,
             hasRouteTrack: window['abp01_hasTrack'] || 0,
             initialRouteInfoType: window['abp01_tourType'] || null,
+            currentRouteInfoType: null,
             hasRouteInfo: !!window['abp01_tourType'],
             ajaxBaseUrl: window['abp01_ajaxUrl'] || null,
             ajaxLoadTrackAction: window['abp01_ajaxGetTrackAction'] || null,
@@ -1093,7 +1064,6 @@
         $ctrlTitleContainer = $('#ctrl_abp01_editorTitle');
         $ctrlFormInfoContainer = $('#abp01-form-info');
         $ctrlFormMapContainer = $('#abp01-form-map');
-        $ctrlResetTechBox = $('#abp01-resetTechBox');
         $ctrlSave = $('#abp01-saveTechBox');
     }
 
@@ -1113,11 +1083,11 @@
         });
     }
 
-    function initEventHandlers() {
-        $ctrlResetTechBox.click(function() {
-            executeResetAction();
-        });
+    function getRouteInfoTypeFromElement($element) {
+        return $element.attr('data-type');
+    }
 
+    function initEventHandlers() {
         $ctrlSave.click(function() {
             saveRouteInfo();
         });
@@ -1133,18 +1103,16 @@
 
             .on('click', '#abp01-quick-remove-info', {}, function() {
                 scrollToTop();
-                Tipped.hideAll();
                 resetRouteInfoForm();
             })
             .on('click', '#abp01-quick-remove-track', {}, function() {
                 scrollToTop();
-                Tipped.hideAll();
                 clearRouteTrack();
             })
 
             .on('click', 'a[data-action=abp01-typeSelect]', {}, function() {
-                var routeInfoType = $(this).attr('data-type');
-                selectRouteInfoType(routeInfoType, true);
+                selectRouteInfoType(getRouteInfoTypeFromElement($(this)), true);
+                refreshEnhancedEditor();
             });
     }
 
@@ -1164,23 +1132,35 @@
     function refreshEnhancedEditor() {
         refreshEnhancedEditorStatusItems();
         refreshEnhancedEditorTooltips();
+        refresEditorWindowQuickActionsTooltip();
         refreshEnhancedEditorQuickActions();
     }
 
     function refreshEnhancedEditorQuickActions() {
-        var $quickActionsTrigger = $('#abp01-quick-actions-trigger');
-        var $quickActionsTooltip = $('#abp01-quick-actions-tooltip');
+        var tooltipContents = renderQuickActionsTooltip();
 
-        if (context.hasRouteInfo || context.hasRouteTrack) {
+        var $quickActionsTrigger = $('#abp01-quick-actions-trigger');
+        var $editorQuickActionsTrigger = $('#abp01-editorQuickActionsTrigger');
+
+        var $quickActionsTooltip = $('#abp01-quick-actions-tooltip');
+        var $editorWindowQuickActionsTooltip = $('#abp01-editor-window-quick-actions-tooltip');
+
+        if (hasRouteInfo() || hasSelectedRouteInfoType() || hasRouteTrack()) {
             maybeTrace('Has route info or route track. Showing actions trigger...');
             $quickActionsTrigger.show();
+            $editorQuickActionsTrigger.show();
         } else {
             $quickActionsTrigger.hide();
+            $editorQuickActionsTrigger.hide();
             maybeTrace('Does not have route info nor route track. Hiding actions trigger...');
         }
 
         $quickActionsTooltip
-            .html(renderQuickActionsTooltip())
+            .html(tooltipContents)
+            .hide();
+
+        $editorWindowQuickActionsTooltip
+            .html(tooltipContents)
             .hide();
     }
 
@@ -1188,15 +1168,22 @@
         var $infoItem = $('#abp01-editor-launcher-status-trip-summary-info');
         var $trackItem = $('#abp01-editor-launcher-status-trip-summary-track');
         
-        toggleEnhancedEditorStatusItemIcon($infoItem, context.hasRouteInfo);
-        toggleEnhancedEditorStatusItemText($infoItem, context.hasRouteInfo, 
+        toggleEnhancedEditorStatusItemIcon($infoItem, hasRouteInfo() || hasSelectedRouteInfoType());
+        toggleEnhancedEditorStatusItemText($infoItem, hasRouteInfo() || hasSelectedRouteInfoType(), 
             abp01MainL10n.lblStatusTextTripSummaryInfoPresent, 
             abp01MainL10n.lblStatusTextTripSummaryInfoNotPresent);
 
-        toggleEnhancedEditorStatusItemIcon($trackItem, context.hasRouteTrack);
-        toggleEnhancedEditorStatusItemText($trackItem, context.hasRouteTrack, 
+        toggleEnhancedEditorStatusItemIcon($trackItem, hasRouteTrack());
+        toggleEnhancedEditorStatusItemText($trackItem, hasRouteTrack(), 
             abp01MainL10n.lblStatusTextTripSummaryTrackPresent, 
             abp01MainL10n.lblStatusTextTripSummaryTrackNotPresent);
+    }
+
+    function cleanupTooltip(elementId) {
+        var selector = '#' + elementId;
+        if ($(selector).size()) {
+            Tipped.remove(selector);
+        }
     }
 
     function addSimpleTooltip(elementId) {
@@ -1235,13 +1222,13 @@
             'abp01-editor-launcher-status-trip-summary-track a': 'simple', 
             'abp01-edit-trigger': 'simple',
             'abp01-quick-actions-trigger': 'controller'
-            }, function(selector, mode){
-                if (mode == 'simple') {
-                    addSimpleTooltip(selector);
-                } else {
-                    addControllerTooltip(selector);
-                }
-            });
+        }, function(elementId, mode){
+            if (mode == 'simple') {
+                addSimpleTooltip(elementId);
+            } else {
+                addControllerTooltip(elementId);
+            }
+        });
     }
 
     function cleanupEhancedEditorTooltips() {
@@ -1250,14 +1237,27 @@
             'abp01-editor-launcher-status-trip-summary-track a', 
             'abp01-edit-trigger', 
             'abp01-quick-actions-trigger'
-            ], function(idx, selector){
-                Tipped.remove('#' + selector)
+            ], function(idx, elementId){
+                cleanupTooltip(elementId);
             });
+    }
+
+    function initEditorWindowQuickActionsTooltip() {
+        addControllerTooltip('abp01-editorQuickActionsTrigger');
+    }
+
+    function cleanupEditorWindowQuickActionsTooltip() {
+        cleanupTooltip('abp01-editorQuickActionsTrigger');
     }
 
     function refreshEnhancedEditorTooltips() {
         cleanupEhancedEditorTooltips();
         initEnhancedEditorTooltips();
+    }
+
+    function refresEditorWindowQuickActionsTooltip() {
+        cleanupEditorWindowQuickActionsTooltip();
+        initEditorWindowQuickActionsTooltip();
     }
 
     function initEnhancedEditorLauncher() {
@@ -1289,6 +1289,7 @@
             onBlock: function() {
                 //Disable window scrolling
                 disableWindowScroll();
+                initEditorWindowQuickActionsTooltip();
 
                 //Editor window is now open
                 editorWindowState.isOpen = true;
@@ -1313,6 +1314,7 @@
             onUnblock: function() {
                 //Re-enable window scrolling
                 enableWindowScroll();
+                cleanupEditorWindowQuickActionsTooltip();
                 //Editor window is now closed
                 editorWindowState.isOpen = false;
             }

@@ -74,31 +74,4 @@
         </div>
         <div class="clear"></div>
     </div>
-    <div id="abp01-quick-actions-tooltip" class="abp01-quick-actions-tooltip" style='display:none'>
-        <?php if ($data->hasRouteInfo): ?>
-            <a id="abp01-quick-remove-info" 
-                href="javascript:void(0)"><?php echo esc_html__('Clear info', 'abp01-trip-summary'); ?></a>
-        <?php endif; ?>
-        <?php if ($data->hasRouteTrack): ?>
-            <a id="abp01-quick-download-track" 
-                href="<?php echo esc_attr($data->trackDownloadUrl); ?>"
-                target="_blank"><?php echo esc_html__('Download track', 'abp01-trip-summary'); ?></a>
-            <a id="abp01-quick-remove-track" 
-                href="javascript:void(0)"><?php echo esc_html__('Clear track', 'abp01-trip-summary'); ?></a>
-        <?php endif; ?>
-        <div class="clear"></div>
-    </div>
-    <script id="tpl-abp01-quick-actions-tooltip" type="text/x-kite">
-        {{? context.hasRouteInfo }}
-            <a id="abp01-quick-remove-info" 
-                href="javascript:void(0)"><?php echo esc_html__('Clear info', 'abp01-trip-summary'); ?></a>
-        {{/?}}
-        {{? context.hasRouteTrack }}
-            <a id="abp01-quick-download-track" 
-                href="<?php echo esc_attr($data->trackDownloadUrl); ?>"><?php echo esc_html__('Download track', 'abp01-trip-summary'); ?></a>
-            <a id="abp01-quick-remove-track" 
-                href="javascript:void(0)"><?php echo esc_html__('Clear track', 'abp01-trip-summary'); ?></a>
-        {{/?}}
-        <div class="clear"></div>
-    </script>
 </div>

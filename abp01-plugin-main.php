@@ -697,21 +697,24 @@ function abp01_add_admin_editor($post, $args) {
 	}
 }
 
-function abp01_add_admin_editor_launcher($post, $args) {
-	$postId = intval($post->ID);
-	$routeManager = abp01_get_route_manager();
-
-	$data = new stdClass();
-	$data->postId = $postId;
-	$data->hasRouteTrack = $routeManager->hasRouteTrack($postId);
-	$data->hasRouteInfo = $routeManager->hasRouteInfo($postId);
-
-	$data->trackDownloadUrl = add_query_arg(array(
+function abp01_get_gps_track_download_url($postId) {
+	return add_query_arg(array(
 		'action' => ABP01_ACTION_DOWNLOAD_TRACK,
 		'abp01_nonce_download' => abp01_create_download_track_nonce($postId),
 		'abp01_postId' => $postId,
 		'_cb' => abp01_get_cachebuster()
 	), abp01_get_ajax_baseurl());
+}
+
+function abp01_add_admin_editor_launcher($post, $args) {
+	$postId = intval($post->ID);
+	$manager = abp01_get_route_manager();
+
+	$data = new stdClass();
+	$data->postId = $postId;
+	$data->hasRouteTrack = $manager->hasRouteTrack($postId);
+	$data->hasRouteInfo = $manager->hasRouteInfo($postId);
+	$data->trackDownloadUrl = abp01_get_gps_track_download_url($postId);
 
 	echo abp01_render_trip_summary_launcher_metabox($data);
 }
@@ -754,7 +757,9 @@ function abp01_add_admin_editor_form($post, $args) {
 
 	//current context information
 	$data->postId = intval($post->ID);
-	$data->hasTrack = $manager->hasRouteTrack($post->ID);
+	$data->hasRouteTrack = $manager->hasRouteTrack($post->ID);
+	$data->hasRouteInfo = $manager->hasRouteInfo($post->ID);
+	$data->trackDownloadUrl = abp01_get_gps_track_download_url($post->ID);
 
 	$data->ajaxEditInfoAction = ABP01_ACTION_EDIT;
 	$data->ajaxUploadTrackAction = ABP01_ACTION_UPLOAD_TRACK;
