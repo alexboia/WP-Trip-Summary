@@ -1100,6 +1100,10 @@
         return $element.attr('data-type');
     }
 
+    function getInitialTabFromElement($element) {
+        return $element.attr('data-select-tab');
+    }
+
     function initEventHandlers() {
         $ctrlSave.click(function() {
             saveRouteInfo();
@@ -1107,8 +1111,7 @@
 
         $(document)
             .on('click', 'a[data-action=abp01-openTechBox]', {}, function() {
-                var openWithTab = $(this).attr('data-select-tab');
-                openEditor(openWithTab);
+                openEditor(getInitialTabFromElement($(this)));
             })
             .on('click', 'a[data-action=abp01-closeTechBox]', {}, function() {
                 $.unblockUI();
