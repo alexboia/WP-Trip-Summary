@@ -34,13 +34,13 @@
 <div id="abp01-quick-actions-tooltip" 
     class="abp01-quick-actions-tooltip" 
     style="display:none">
-    <?php abp01_render_partial_view('wpts-editor-quick-actions-tooltip.php', $data); ?>
+    <?php echo abp01_render_partial_view('wpts-editor-quick-actions-tooltip.php', $data); ?>
 </div>
 
 <div id="abp01-editor-window-quick-actions-tooltip" 
     class="abp01-quick-actions-tooltip" 
     style="display:none">
-    <?php abp01_render_partial_view('wpts-editor-quick-actions-tooltip.php', $data); ?>
+    <?php echo abp01_render_partial_view('wpts-editor-quick-actions-tooltip.php', $data); ?>
 </div>
 
 <script id="tpl-abp01-quick-actions-tooltip" type="text/x-kite">

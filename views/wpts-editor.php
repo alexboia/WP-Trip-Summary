@@ -111,7 +111,7 @@
     </div>
 </div>
 
-<?php abp01_render_partial_view('wpts-editor-quick-actions.php', $data); ?>
+<?php echo abp01_render_partial_view('wpts-editor-quick-actions.php', $data); ?>
 
 <script id="tpl-abp01-formInfo-unselected" type="text/x-kite">
     <div id="abp01-form-info-typeSelection" class="abp01-type-selector-container">

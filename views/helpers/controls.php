@@ -35,8 +35,10 @@ if (!defined('ABP01_LOADED')) {
 
 if (!function_exists('abp01_render_partial_view')) {
     function abp01_render_partial_view($view, $data) {
+        ob_start();
         $viewFile = abp01_get_env()->getViewFilePath($view);
         require $viewFile;
+        return ob_get_clean();
     }
 }
 
