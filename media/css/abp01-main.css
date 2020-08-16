@@ -384,7 +384,12 @@ a.abp01-close-editor:hover {
 .abp01-settings-save-result, 
 .abp01-lookup-listing-result, 
 .abp01-lookup-operation-result {
-    margin-left: 0px !important;    
+    margin-left: 0px !important;
+    margin-right: 10px !important;
+}
+
+.abp01-lookup-listing-result {
+    margin-bottom: 10px;
 }
 
 .abp01-lookup-operation-result {

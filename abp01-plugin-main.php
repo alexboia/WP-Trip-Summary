@@ -143,6 +143,14 @@ function abp01_verify_manage_lookup_nonce() {
 	return check_ajax_referer(ABP01_NONCE_MANAGE_LOOKUP, 'abp01_nonce_lookup_mgmt', false);	
 }
 
+function abp01_generate_inuse_lookup_removal_nonce($lookupId) {
+	return wp_create_nonce(ABP01_NONCE_REMOVE_INUSE_LOOKUP . ':' . $lookupId);
+}
+
+function abp01_verify_inuse_lookup_removal_nonce($lookupId) {
+	return check_ajax_referer(ABP01_NONCE_REMOVE_INUSE_LOOKUP . ':' . $lookupId, 'abp01_nonce_lookup_force_remove', false);
+}
+
 /**
  * Checks whether an options saving operations is currently underway
  * 
@@ -1337,9 +1345,18 @@ function abp01_delete_lookup_item() {
 	} else {
 		//otherwise, delete the entire item, all translations included
 		//however, check first whether or not the item is still in use
-		if ($lookup->isLookupInUse($id)) {
-			$response->message = esc_html__('The item could not be deleted because it is still in use', 'abp01-trip-summary');
-			abp01_send_json($response);
+		$usageCount = $lookup->getLookupUsageCount($id);
+		if ($usageCount > 0) {
+			if (!empty($_GET['abp01_nonce_lookup_force_remove'])) {
+				if (!abp01_verify_inuse_lookup_removal_nonce($id)) {
+					die;
+				}
+			} else {
+				$response->requiresConfirmation = true;
+				$response->confirmationNonce = abp01_generate_inuse_lookup_removal_nonce($id);
+				$response->message = sprintf(esc_html__('The item is still associated with %d post(s). Do you wish to proceed?', 'abp01-trip-summary'), $usageCount);
+				abp01_send_json($response);
+			}
 		}
 	
 		if ($lookup->deleteLookup($id)) {

@@ -31,7 +31,6 @@
     defined('ABP01_LOADED') or die;
 ?>
 
-
 <script type="text/javascript">
     var abp01_imgBase = '<?php echo esc_js($data->imgBaseUrl); ?>';
     var abp01_ajaxUrl = '<?php echo esc_js($data->ajaxUrl); ?>';

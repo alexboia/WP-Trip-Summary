@@ -263,7 +263,23 @@ class Abp01_Lookup {
 	public function isLookupInUse($lookupId) {
 		//empty lookup, return
 		if (empty($lookupId) || $lookupId <= 0) {
-			throw new InvalidArgumentException();
+			throw new InvalidArgumentException('Invalid lookup identifier provided');
+		}
+
+		return $this->getLookupUsageCount($lookupId) > 0;
+	}
+
+	/**
+	 * Counts the number of usages for a given lookup identifier.
+	 * A lookup item is in use if it's associated with a post.
+	 * 
+	 * @param integer $lookupId The id of the lookup item to check for
+	 * @return integer The number of associations
+	 */
+	public function getLookupUsageCount($lookupId) {
+		//empty lookup, return
+		if (empty($lookupId) || $lookupId <= 0) {
+			throw new InvalidArgumentException('Invalid lookup identifier provided');
 		}
 
 		//obtain and check database handle state
@@ -280,7 +296,9 @@ class Abp01_Lookup {
 			array($lookupId), 
 			false);
 
-		return is_array($result) && isset($result[0]) && intval($result[0]['post_count_check']) > 0;
+		return is_array($result) && isset($result[0])
+			? intval($result[0]['post_count_check'])
+			: 0;
 	}
 
 	/**
@@ -298,6 +316,7 @@ class Abp01_Lookup {
 		$db = $this->_env->getDb();
 		$lookupTableName = $this->_env->getLookupTableName();
 		$lookupLangTableName = $this->_env->getLookupLangTableName();
+		$lookupPostsTableName = $this->_env->getRouteDetailsLookupTableName();
 
 		if (!$db) {
 			return false;
@@ -308,7 +327,13 @@ class Abp01_Lookup {
 		if ($db->delete($lookupTableName)) {
 			//delete all the available translations
 			$db->where('ID', $lookupId);
-			$result = $db->delete($lookupLangTableName) === false;
+			$result = $db->delete($lookupLangTableName) == true;
+
+			if ($result) {
+				$db->where('lookup_ID', $lookupId);
+				$result = $db->delete($lookupPostsTableName);
+			}
+
 			//remove any cached data related to that item
 			$this->_invalidateCache();
 		} else {

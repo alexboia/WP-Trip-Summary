@@ -42,7 +42,7 @@
 <div id="abp01-admin-lookup-page">
 	<h2><?php echo esc_html__('Lookup data management', 'abp01-trip-summary'); ?></h2>
 	<div id="abp01-admin-lookup-page-beacon"></div>
-	<div id="abp01-lookup-listing-result" class="updated settings-error abp01-lookup-listing-result" style="display:none"></div>
+	<div id="abp01-lookup-listing-result" class="abp01-lookup-listing-result notice" style="display:none"></div>
 	<div id="abp01-admin-lookup-container">
 		<div id="abp01-admin-lookup-control-container">
 			<div class="abp01-lookupControl-item">
@@ -88,7 +88,7 @@
 
 	<div id="abp01-lookup-item-form" style="display: none;">
 		<div class="abp01-lookup-item-form-container">
-			<div id="abp01-lookup-operation-result" class="updated settings-error abp01-lookup-operation-result" style="display:none"></div>
+			<div id="abp01-lookup-operation-result" class="abp01-lookup-operation-result notice" style="display:none"></div>
 			<div class="abp01-lookup-item-form-fields">
 				<div class="abp01-form-line">
 					<label for="abp01-lookup-item-defaultLabel"><?php echo esc_html__('Default label', 'abp01-trip-summary'); ?>:</label>
@@ -108,7 +108,7 @@
 
 	<div id="abp01-lookup-item-delete-form" style="display: none;">
 		<div class="abp01-lookup-item-form-container">
-			<div id="abp01-lookup-delete-operation-result" class="updated settings-error abp01-lookup-operation-result" style="display:none"></div>
+			<div id="abp01-lookup-delete-operation-result" class="abp01-lookup-operation-result notice" style="display:none"></div>
 			<div class="abp01-lookup-item-form-fields">
 				<div class="abp01-form-line abp01-delete-item-warning">
 					<?php echo esc_html__('Are you sure you want to delete this item? This action cannot be undone', 'abp01-trip-summary'); ?>

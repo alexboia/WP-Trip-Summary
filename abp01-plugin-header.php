@@ -258,6 +258,16 @@ define('ABP01_NONCE_DOWNLOAD_TRACK', 'abp01.nonce.downloadTrack');
 define('ABP01_NONCE_MANAGE_LOOKUP', 'abp01.nonce.manageLookup');
 
 /**
+ * The prefix used to construct nonce tokens required 
+ *  when removing lookup items that are in use. 
+ * These nonces are generated during the initial lookup removal request, 
+ *  if WPTS detects that a lookup item is un use.
+ * 
+ * @var string
+ */
+define('ABP01_NONCE_REMOVE_INUSE_LOOKUP', 'abp01.nonce.removeInUseLookup');
+
+/**
  * The name of the file upload file that, 
  *  albeit hidden from view, is used to 
  *  upload the track file to the server
