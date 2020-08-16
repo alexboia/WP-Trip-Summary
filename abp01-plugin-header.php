@@ -99,7 +99,7 @@ define('ABP01_LIB_DIR', ABP01_PLUGIN_ROOT . '/lib');
  * 
  * @var string
  */
-define('ABP01_VERSION', '0.2.5');
+define('ABP01_VERSION', '0.2.6');
 
 if (!defined('ABP01_MAX_EXECUTION_TIME_MINUTES')) {
     /**
