@@ -143,12 +143,34 @@ function abp01_verify_manage_lookup_nonce() {
 	return check_ajax_referer(ABP01_NONCE_MANAGE_LOOKUP, 'abp01_nonce_lookup_mgmt', false);	
 }
 
-function abp01_generate_inuse_lookup_removal_nonce($lookupId) {
+/**
+ * Creates a nonce to be used when confirming removal 
+ * 	of an in-use lookup removal confirmation
+ * 
+ * @return string The created nonce
+ */
+function abp01_create_inuse_lookup_removal_nonce($lookupId) {
 	return wp_create_nonce(ABP01_NONCE_REMOVE_INUSE_LOOKUP . ':' . $lookupId);
 }
 
+/**
+ * Checks whether the current request has a 
+ * 	valid lookup removal confirmation nonce.
+ * 
+ * @return bool True if valid, false otherwise
+ */
 function abp01_verify_inuse_lookup_removal_nonce($lookupId) {
 	return check_ajax_referer(ABP01_NONCE_REMOVE_INUSE_LOOKUP . ':' . $lookupId, 'abp01_nonce_lookup_force_remove', false);
+}
+
+/**
+ * Checks whether the current request has 
+ * 	any lookup removal confirmation nonce (valid or otherwise).
+ * 
+ * @return bool True if valid, false otherwise
+ */
+function abp01_request_has_inuse_lookup_removal_nonce() {
+	return !empty($_GET['abp01_nonce_lookup_force_remove']);
 }
 
 /**
@@ -1347,13 +1369,13 @@ function abp01_delete_lookup_item() {
 		//however, check first whether or not the item is still in use
 		$usageCount = $lookup->getLookupUsageCount($id);
 		if ($usageCount > 0) {
-			if (!empty($_GET['abp01_nonce_lookup_force_remove'])) {
+			if (abp01_request_has_inuse_lookup_removal_nonce()) {
 				if (!abp01_verify_inuse_lookup_removal_nonce($id)) {
 					die;
 				}
 			} else {
 				$response->requiresConfirmation = true;
-				$response->confirmationNonce = abp01_generate_inuse_lookup_removal_nonce($id);
+				$response->confirmationNonce = abp01_create_inuse_lookup_removal_nonce($id);
 				$response->message = sprintf(esc_html__('The item is still associated with %d post(s). Do you wish to proceed?', 'abp01-trip-summary'), $usageCount);
 				abp01_send_json($response);
 			}
