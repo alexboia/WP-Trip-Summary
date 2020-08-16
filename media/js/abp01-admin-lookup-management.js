@@ -108,6 +108,37 @@
         return lookupDelete.nonce;
     }
 
+    function setCurrentItemDeleted() {
+        if (isCurrentlyEditingEditingItem()) {
+            delete currentItems[editingItem.id];
+            clearCurrentlyEditedItem();
+        }
+    }
+
+    function beginEditingItem(itemId) {
+        editingItem = currentItems.hasOwnProperty(itemId) 
+            ? currentItems[itemId] 
+            : null;
+    }
+
+    function isCurrentlyEditingEditingItem() {
+        return !!editingItem;
+    }
+
+    function updateLocalItemData(item) {
+        currentItems[item.id] = item;
+    }
+
+    function clearCurrentlyEditedItem() {
+        editingItem = null;
+    }
+
+    function clearAllLocalData() {
+        clearCurrentlyEditedItem();
+        clearLookupDeleteState();
+        currentItems = {};
+    }
+
     /**
      * Compiles and caches the template used for rendering lookup items data rows
      * @return Function The compiled template
@@ -215,7 +246,9 @@
     function clearMessage($container) {        
     	$container
             .removeClass('notice')
-            .removeClass('error')
+            .removeClass(MESSAGE_ERROR)
+            .removeClass(MESSAGE_SUCCESS)
+            .removeClass(MESSAGE_WARNING)
             .html('')
             .hide();
     }
@@ -274,9 +307,10 @@
      * @return void
      * */
     function cleanupLookupItems() {
-        currentItems = {};
-        editingItem = null;
-        $ctlLookupListing.find('tbody').html('');
+        clearAllLocalData();
+        $ctlLookupListing
+            .find('tbody')
+            .html('');
     }
 
     /**
@@ -363,7 +397,7 @@
                 cleanupLookupItems();
                 renderLookupItems(data.items, false);
                 $.each(data.items, function(idx, item) {
-                    currentItems[item.id] = item;
+                    updateLocalItemData(item);
                 });
             } else {
                 displayMessage($ctlListingResultContainer, 
@@ -405,8 +439,9 @@
         }).done(function(data) {
             hideBusy(null);
             if (data && data.success) {
-                currentItems[data.item.id] = data.item;
+                updateLocalItemData(data.item);
                 renderLookupItems([data.item], true);
+
                 clearForm();
                 displayMessage($ctlOperationResultContainer, 
                     MESSAGE_SUCCESS, 
@@ -456,9 +491,11 @@
             if (data && data.success) {
                 editingItem.defaultLabel = defaultLabel;
                 editingItem.hasTranslation = !!translatedLabel;
-                editingItem.label = editingItem.hasTranslation ? translatedLabel : defaultLabel;
+                editingItem.label = editingItem.hasTranslation 
+                    ? translatedLabel 
+                    : defaultLabel;
 
-                currentItems[editingItem.id] = editingItem;
+                updateLocalItemData(editingItem);
                 refreshLookupItem(editingItem);
 
                 displayMessage($ctlOperationResultContainer, 
@@ -508,12 +545,10 @@
             if (data) {
                 //Successful removal, move on with cleaning everything up
                 if (data.success) {
-                    deleteLookupItemRow(editingItem, deleteOnlyLang && lang !== DEFAULT_LANG);
-
-                    delete currentItems[editingItem.id];
-                    editingItem = null;
-
                     hideBusy(function() {
+                        deleteLookupItemRow(editingItem, deleteOnlyLang && lang !== DEFAULT_LANG);
+                        setCurrentItemDeleted();
+
                         closeDeleteDialog();
                         displayMessage($ctlListingResultContainer, 
                             MESSAGE_SUCCESS, 
@@ -559,7 +594,7 @@
      * @return void
      * */
     function saveLookupItem() {
-        if (!editingItem) {
+        if (!isCurrentlyEditingEditingItem()) {
             createLookupItem();
         } else {
             modifyLookupItem();
@@ -579,7 +614,8 @@
             : abp01LookupMgmtL10n.addItemTitle;
 
         var height = 175;
-        var $translatedLabelFieldLine = $ctlLookupItemTranslatedLabel.closest('div.abp01-form-line');
+        var $translatedLabelFieldLine = $ctlLookupItemTranslatedLabel
+            .closest('div.abp01-form-line');
 
         //if the selected language is other than the default one
         //also show the translated label field
@@ -597,15 +633,17 @@
 
         //set the initial values, if given
         if (currentItemId) {
-            editingItem = currentItems[currentItemId] || null;
-            if (editingItem) {
-                $ctlLookupItemDefaultLabel.val(editingItem.defaultLabel);
-                $ctlLookupItemTranslatedLabel.val(editingItem.hasTranslation ? editingItem.label : '');
+            beginEditingItem(currentItemId);
+            if (isCurrentlyEditingEditingItem()) {
+                $ctlLookupItemDefaultLabel
+                    .val(editingItem.defaultLabel);
+                $ctlLookupItemTranslatedLabel
+                    .val(editingItem.hasTranslation ? editingItem.label : '');
             }
         } else {
             $ctlLookupItemDefaultLabel.val('');
             $ctlLookupItemTranslatedLabel.val('');
-            editingItem = null;
+            clearCurrentlyEditedItem();
         }
 
         //show the editor
@@ -631,7 +669,7 @@
             $ctlDeleteOnlyLangTranslationContainer.show();
         }
 
-        editingItem = currentItems[currentItemId];
+        beginEditingItem(currentItemId);
         tb_show(abp01LookupMgmtL10n.ttlConfirmDelete, '#TB_inline?width=450&height=' + height + '&inlineId=abp01-lookup-item-delete-form');
         setLookupDeleteInitialRequest();
     }
@@ -644,7 +682,7 @@
     function closeEditor() {
         //reset field values
         clearForm();
-        editingItem = null;
+        clearCurrentlyEditedItem();
         //close the window
         clearMessage($ctlOperationResultContainer);
         tb_remove();
@@ -655,11 +693,10 @@
      * @return void
      * */
     function closeDeleteDialog() {
-        editingItem = null;
+        clearLookupDeleteState();
         $ctlDeleteOnlyLangTranslation.prop('checked', false);
         clearMessage($ctlDeleteOperationResultContainer);
         tb_remove();
-        clearLookupDeleteState();
     }
 
     /**
