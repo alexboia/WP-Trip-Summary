@@ -58,8 +58,8 @@ Do you think this would be right for you but there's that extra thing that's mis
 
 You can get the plug-in:
 
-- either from the WordPress plug-in directory: (https://wordpress.org/plugins/wp-trip-summary/)[https://wordpress.org/plugins/wp-trip-summary/];
-- or from the Releases section of the project's page: (https://github.com/alexboia/WP-Trip-Summary/releases)[https://github.com/alexboia/WP-Trip-Summary/releases].
+- either from the WordPress plug-in directory: [https://wordpress.org/plugins/wp-trip-summary/](https://wordpress.org/plugins/wp-trip-summary/);
+- or from the Releases section of the project's page: [https://github.com/alexboia/WP-Trip-Summary/releases](https://github.com/alexboia/WP-Trip-Summary/releases).
 
 ## Alternatives to WP Trip Summary
 <a name="wpts-alternatives"></a>  
