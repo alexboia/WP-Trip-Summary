@@ -13,19 +13,20 @@ An opinionated, multi-language, WordPress trip summary plugin to help travel blo
 
 1. [Is it good for you?](#wpts-isitgoodforyou)
 2. [Features](#wpts-features)
-3. [Alternatives](#wpts-alternatives)
-4. [Progress & Management](#wpts-progress)
-5. [What it does](#wpts-what-does)
-6. [Supported languages](#wpts-langs)
-7. [Changelog](#wpts-changelog)
-8. [Upgrade notices](#wpts-upgrade-notices)
-9. [Roadmap](#wpts-roadmap)
-10. [Requirements](#wpts-requirements)
-11. [Limitations](#wpts-limitations)
-12. [Screenshots](#wpts-screenshots)
-13. [Contributing](#wpts-contributing)
-14. [Credits](#wpts-credits)
-15. [License](#wpts-license)
+3. [Downloading the plug-in](#wpts-get-it)
+4. [Alternatives](#wpts-alternatives)
+5. [Progress & Management](#wpts-progress)
+6. [What it does](#wpts-what-does)
+7. [Supported languages](#wpts-langs)
+8. [Changelog](#wpts-changelog)
+9. [Upgrade notices](#wpts-upgrade-notices)
+10. [Roadmap](#wpts-roadmap)
+11. [Requirements](#wpts-requirements)
+12. [Limitations](#wpts-limitations)
+13. [Screenshots](#wpts-screenshots)
+14. [Contributing](#wpts-contributing)
+15. [Credits](#wpts-credits)
+16. [License](#wpts-license)
 
 ## Is it good for you?
 <a name="wpts-isitgoodforyou"></a>  
@@ -51,6 +52,14 @@ Do you think this would be right for you but there's that extra thing that's mis
    - customizing the visual representation of the track).
 - allows customization of the measurement unit system used to represent various values (ex. `Total distance`, `Total climb` etc.);
 - multi-language.
+
+## Downloading the plug-in
+<a name="wpts-get-it"></a>
+
+You can get the plug-in:
+
+- either from the WordPress plug-in directory: (https://wordpress.org/plugins/wp-trip-summary/)[https://wordpress.org/plugins/wp-trip-summary/];
+- or from the Releases section of the project's page: (https://github.com/alexboia/WP-Trip-Summary/releases)[https://github.com/alexboia/WP-Trip-Summary/releases].
 
 ## Alternatives to WP Trip Summary
 <a name="wpts-alternatives"></a>  
