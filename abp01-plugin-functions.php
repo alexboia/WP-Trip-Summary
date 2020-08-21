@@ -94,6 +94,10 @@ function abp01_init_autoloaders() {
 	Abp01_Autoloader::init(ABP01_LIB_DIR);
 }
 
+function abp01_is_not_empty($value) {
+	return !empty($value);
+}
+
 /**
  * Dumps information about the given variable.
  * It uses xdebug_var_dump if available, otherwise it falls back to the standard var_dump, wrapping it in <pre /> tags.
@@ -109,6 +113,21 @@ function abp01_dump($var) {
 		var_dump($var);
 		print '</pre>';
 	}
+}
+
+function abp01_wp_error_from_mysqlidb(MysqliDb $db) {
+	$lastErrNo = $db->getLastErrno();
+	return $lastErrNo != 0 
+		? new WP_Error($lastErrNo, $db->getLastError()) 
+		: null;
+}
+
+function abp01_wp_error_from_exception(Exception $exc) {
+	return new WP_Error($exc->getCode(), $exc->getMessage(), array(
+		'file' => $exc->getFile(),
+		'line' => $exc->getLine(),
+		'stackTrace' => $exc->getTraceAsString()
+	));
 }
 
 if (!function_exists('write_log')) {

@@ -31,11 +31,7 @@
 
  trait LookupDataTestHelpers {
 	use DbTestHelpers;
-
-    /**
-     * @return Abp01_Env
-     */
-    abstract protected function _getEnv();
+	use GenericTestHelpers;
 
     protected function _clearAllLookupData() {
 		$env = $this->_getEnv();
@@ -43,10 +39,12 @@
 
 		$lookupTableName = $env->getLookupTableName();
 		$langTableName = $env->getLookupLangTableName();
-		$lookupDetailsTableName = $env->getRouteDetailsLookupTableName();
+		$postsLookupTableName = $env->getRouteDetailsLookupTableName();
+		$routeDetailsTableName = $env->getRouteDetailsTableName();
 
-		$this->_truncateTables($db, 
-			$lookupDetailsTableName, 
+		$this->_truncateTables($db,
+			$routeDetailsTableName, 
+			$postsLookupTableName, 
 			$langTableName, 
 			$lookupTableName);
 	}

@@ -54,18 +54,27 @@ class Abp01_Lookup {
 
 	/**
 	 * Internal cache for the lookup data
+	 * @var array
 	 */
 	private $_cache = null;
 
 	/**
 	 * Reference to the environment object
+	 * @var Abp01_Env
 	 */
 	private $_env = null;
 
 	/**
-	 * Current languate setting
+	 * Current language setting
+	 * @var string
 	 */
 	private $_lang = null;
+
+	/**
+	 * Last occurred error
+	 * @var WP_Error
+	 */
+	private $_lastError = null;
 
 	/**
 	 * Constructor. Initializez the current instance with respect to the given languate setting.
@@ -81,12 +90,20 @@ class Abp01_Lookup {
 		}
 	}
 
+	private function _resetLastError() {
+		$this->_lastError = null;
+	}
+
 	/**
 	 * Resets the internal lookup item cache to null
 	 * @return void
 	 */
 	private function _invalidateCache() {
 		$this->_cache = null;
+	}
+
+	private function _setLastErrorFromDb(MysqliDb $db) {
+		$this->_lastError = abp01_wp_error_from_mysqlidb($db);
 	}
 
 	/**
@@ -131,6 +148,9 @@ class Abp01_Lookup {
 		$langTable = $env->getLookupLangTableName();
 		$lang = $this->_lang;
 
+		//reset last error
+		$this->_resetLastError();
+
 		//already an array, so simply return
 		if (is_array($this->_cache)) {
 			return;
@@ -143,7 +163,7 @@ class Abp01_Lookup {
 			LEFT JOIN `' . $langTable . '` lg
 				ON lg.ID = l.ID AND  lg.lookup_lang = ?
 			ORDER BY lg.lookup_label ASC,
-				l.lookup_label ASC', array($lang), false);
+				l.lookup_label ASC', array($lang));
 
 		$this->_cache = array();
 		if (is_array($rows)) {
@@ -158,6 +178,9 @@ class Abp01_Lookup {
 				);
 			}
 		}
+
+		//set last error from db, if any
+		$this->_setLastErrorFromDb($db);
 	}
 
 	/**
@@ -173,12 +196,14 @@ class Abp01_Lookup {
 	 */
 	public function getLookupOptions($type) {
 		$this->_loadDataIfNeeded();
-		$options = array();
+
+		$options = array();	
 		if (isset($this->_cache[$type])) {
 			foreach ($this->_cache[$type] as $id => $label) {
 				$options[] = $this->_createOption($id, $label, $type);
 			}
 		}
+		
 		return $options;
 	}
 
@@ -282,23 +307,65 @@ class Abp01_Lookup {
 			throw new InvalidArgumentException('Invalid lookup identifier provided');
 		}
 
-		//obtain and check database handle state
-		$db = $this->_env->getDb();
-		if (!$db) {
-			return true;
-		}
+		//reset last error
+		$this->_resetLastError();
 
+		//obtain and check database handle
+		$db = $this->_env->getDb();
 		$lookupId = intval($lookupId);
 		$tableName = $this->_env->getRouteDetailsLookupTableName();
+		$result = array();
 
 		//query the association table to check if it's assigned to a post
 		$result = $db->rawQuery('SELECT COUNT(post_ID) AS post_count_check FROM `' . $tableName . '` WHERE lookup_ID = ?',  
-			array($lookupId), 
-			false);
+			array($lookupId));
 
-		return is_array($result) && isset($result[0])
+		$result = is_array($result) && isset($result[0])
 			? intval($result[0]['post_count_check'])
 			: 0;
+
+		//set last error from db, if any
+		$this->_setLastErrorFromDb($db);
+		return $result;
+	}
+
+	private function _updateSerializedRouteDetails($lookupId) {
+		$result = true;
+		$db = $this->_env->getDb();
+		$lookupTableName = $this->_env->getLookupTableName();
+		$routeDetailsTableName = $this->_env->getRouteDetailsTableName();
+		$lookupPostsTableName = $this->_env->getRouteDetailsLookupTableName();
+
+		$rows =  $db->rawQuery('
+			SELECT pr.post_ID, pr.route_type, pr.route_data_serialized, l.lookup_category
+			FROM `' . $lookupPostsTableName .  '` pl
+				LEFT JOIN `' . $lookupTableName . '` l ON l.ID = pl.lookup_ID
+				LEFT JOIN `' . $routeDetailsTableName . '` pr ON pr.post_ID = pl.post_ID
+			WHERE pl.lookup_ID = ?', array($lookupId));
+
+		foreach ($rows as $row) {
+			if (empty($row['route_type']) || empty($row['route_data_serialized'])) {
+				continue;
+			}
+			
+			$info = Abp01_Route_Info::fromJson($row['route_type'], 
+				$row['route_data_serialized']);
+
+			$info->removeLookupValue($row['lookup_category'], 
+				$lookupId);
+
+			$db->where('post_ID', intval($row['post_ID']));
+			$postResult = $db->update($routeDetailsTableName, array(
+				'route_data_serialized' => $info->toJson()
+			));
+
+			if (!$postResult) {
+				$result = false;
+				break;
+			}
+		}
+
+		return $result;
 	}
 
 	/**
@@ -318,31 +385,44 @@ class Abp01_Lookup {
 		$lookupLangTableName = $this->_env->getLookupLangTableName();
 		$lookupPostsTableName = $this->_env->getRouteDetailsLookupTableName();
 
-		if (!$db) {
-			return false;
-		}
+		$this->_resetLastError();
+		$db->startTransaction();
 
-		//delete the main item first
-		$db->where('ID', $lookupId);
-		if ($db->delete($lookupTableName)) {
-			//delete all the available translations
-			$db->where('ID', $lookupId);
-			$result = $db->delete($lookupLangTableName) == true;
+		try {
+			//1. update serialized route details
+			$result = $this->_updateSerializedRouteDetails($lookupId);
 
 			if ($result) {
+				//2. delete associated posts
 				$db->where('lookup_ID', $lookupId);
 				$result = $db->delete($lookupPostsTableName);
+
+				if ($result) {
+					//3. delete all the available translations
+					$db->where('ID', $lookupId);
+					$result = $db->delete($lookupLangTableName) == true;
+
+					if ($result) {
+						//4. delete the actual lookup data item
+						$db->where('ID', $lookupId);
+						$result = $db->delete($lookupTableName);
+					}
+				}
 			}
 
-			//remove any cached data related to that item
-			$this->_invalidateCache();
-		} else {
-			$result = false;
-		}
+			if ($result) {
+				$db->commit();
+				//remove any cached data related to that item
+				$this->_invalidateCache();
+			} else {
+				$db->rollback();
+			}
 
-		if (!$result) {
-			$lastError = trim($db->getLastError());
-			$result = empty($lastError);
+			//set last error from db, if any
+			$this->_setLastErrorFromDb($db);
+		} catch (Exception $exc) {
+			$db->rollback();
+			throw $exc;
 		}
 
 		return $result;
@@ -366,19 +446,15 @@ class Abp01_Lookup {
 		$db = $this->_env->getDb();
 		$lookupLangTableName = $this->_env->getLookupLangTableName();
 
-		if (!$db) {
-			return false;
-		}
+		$this->_resetLastError();
 
 		$db->where('ID', $lookupId);
 		$db->where('lookup_lang', $this->_lang);
 		$result = $db->delete($lookupLangTableName);
 
 		$this->_invalidateCache();
-		if (!$result) {
-			$lastError = trim($db->getLastError());
-			$result = empty($lastError);
-		}
+		$this->_setLastErrorFromDb($db);
+
 		return $result;
 	}
 
@@ -398,13 +474,11 @@ class Abp01_Lookup {
 			throw new InvalidArgumentException();
 		}
 
+		$item = null;
 		$db = $this->_env->getDb();
 		$lookupTableName = $this->_env->getLookupTableName();
 
-		if (!$db) {
-			return null;
-		}
-
+		$this->_resetLastError();
 		$id = $db->insert($lookupTableName, array(			
 			'lookup_label' => $defaultLabel,
 			'lookup_category' => $type
@@ -412,10 +486,11 @@ class Abp01_Lookup {
 
 		if ($id !== false) {
 			$this->_invalidateCache();
-			return $this->_createOption($id, $defaultLabel, $type);
+			$item = $this->_createOption($id, $defaultLabel, $type);
 		}
 
-		return null;
+		$this->_setLastErrorFromDb($db);
+		return $item;
 	}
 
 	/**
@@ -440,10 +515,7 @@ class Abp01_Lookup {
 		$db = $this->_env->getDb();
 		$lookupTranslationTableName = $this->_env->getLookupLangTableName();
 
-		if (!$db) {
-			return false;
-		}
-
+		$this->_resetLastError();
 		$db->insert($lookupTranslationTableName, array(
 			'ID' => $id,
 			'lookup_lang' => $this->_lang,
@@ -451,8 +523,9 @@ class Abp01_Lookup {
 		));	
 
 		$this->_invalidateCache();
-		$lastError = trim($db->getLastError());
-		return empty($lastError);
+		$this->_setLastErrorFromDb($db);
+
+		return empty($this->_lastError);
 	}
 
 	/**
@@ -473,9 +546,7 @@ class Abp01_Lookup {
 		$db = $this->_env->getDb();
 		$lookupTableName = $this->_env->getLookupTableName();
 
-		if (!$db) {
-			return false;
-		}
+		$this->_resetLastError();
 
 		$db->where('ID', $id);
 		$result = $db->update($lookupTableName, array(
@@ -483,6 +554,8 @@ class Abp01_Lookup {
 		));
 
 		$this->_invalidateCache();
+		$this->_setLastErrorFromDb($db);
+
 		return $result;
 	}
 
@@ -508,9 +581,7 @@ class Abp01_Lookup {
 		$db = $this->_env->getDb();
 		$lookupTranslationTableName = $this->_env->getLookupLangTableName();
 
-		if (!$db) {
-			return false;
-		}
+		$this->_resetLastError();
 
 		$db->where('ID', $id);
 		$db->where('lookup_lang', $this->_lang);
@@ -519,6 +590,8 @@ class Abp01_Lookup {
 		));
 
 		$this->_invalidateCache();
+		$this->_setLastErrorFromDb($db);
+
 		return $result;
 	}
 
@@ -541,15 +614,16 @@ class Abp01_Lookup {
 		$db = $this->_env->getDb();
 		$tableName = $this->_env->getLookupLangTableName();
 
-		if (!$db) {
-			return false;
-		}
-
+		$this->_resetLastError();
 		$result = $db->rawQuery('SELECT COUNT(ID) AS count_check FROM `' . $tableName . '` WHERE ID = ? AND lookup_lang = ?',  
-			array($id, $this->_lang), 
-			false);
+			array($id, $this->_lang));
 
-		return is_array($result) && isset($result[0]) && intval($result[0]['count_check']) > 0;
+		$hasTranslation = is_array($result) 
+			&& isset($result[0]) 
+			&& intval($result[0]['count_check']) > 0;
+
+		$this->_setLastErrorFromDb($db);
+		return $hasTranslation;
 	}
 
 	/**
@@ -710,5 +784,12 @@ class Abp01_Lookup {
 	 */
 	public function lookupRecommendedSeason($id) {
 		return $this->lookup(self::RECOMMEND_SEASONS, $id);
+	}
+
+	/**
+	 * @return WP_Error Last error or null if no error occurred
+	 */
+	public function getLastError() {
+		return $this->_lastError;
 	}
 }

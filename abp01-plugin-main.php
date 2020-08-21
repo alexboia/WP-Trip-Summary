@@ -1497,10 +1497,12 @@ function abp01_get_info_data($postId) {
 						foreach ($value as $k => $v) {
 							$value[$k] = $lookup->lookup($lookupKey, $v);
 						}
+						$value = array_filter($value, 'abp01_is_not_empty');
 					} else {
 						$value = $lookup->lookup($lookupKey, $value);
 					}
 				}
+			
 				$data->info->$field = $value;
 			}
 		}

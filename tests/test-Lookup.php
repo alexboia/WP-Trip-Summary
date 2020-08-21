@@ -32,8 +32,11 @@
 class LookupTests extends WP_UnitTestCase {
 	use GenericTestHelpers;
 	use LookupDataTestHelpers;
+	use RouteInfoTestDataSets;
 
 	const SAMPLE_LOOKUP_LANG = 'sample';
+
+	private $_postIdGenerator = 1;
 
 	private $_initialLookupData = array();
 
@@ -54,16 +57,16 @@ class LookupTests extends WP_UnitTestCase {
 
 	public function test_canReadExistingLookup_genericRead_defaultLang() {
 		$lookup = new Abp01_Lookup();
-		foreach ($this->_sampleLookupData as $category => $data) {
-			$result = $lookup->lookup($category, $data['data_id']);
+		foreach ($this->_sampleLookupData as $itemId => $data) {
+			$result = $lookup->lookup($data['data_category'], $itemId);
 			$this->_assertLookupMatchesSampleData($result, $data, false);
 		}
 	}
 
 	public function test_canReadExistingLookup_genericRead_sampleLang() {
 		$lookup = new Abp01_Lookup(self::SAMPLE_LOOKUP_LANG);
-		foreach ($this->_sampleLookupData as $category => $data) {
-			$result = $lookup->lookup($category, $data['data_id']);
+		foreach ($this->_sampleLookupData as $itemId => $data) {
+			$result = $lookup->lookup($data['data_category'], $itemId);
 			$this->_assertLookupMatchesSampleData($result, $data, true);
 		}
 	}
@@ -82,24 +85,32 @@ class LookupTests extends WP_UnitTestCase {
 	}
 
 	public function test_canModifyLookupItem() {
-		$lookup = new Abp01_Lookup();
-		$type = $this->_getRandomLookupType();
-		$existingItemId = $this->_sampleLookupData[$type]['data_id'];
-		$newLabel = $this->_newFakeLabel();
+		$items = array(
+			$this->_getLookupItemWithPostAssociation(),
+			$this->_getLookupItemWithoutPostAssociation()
+		);
 
-		$lookup->modifyLookupItem($existingItemId, $newLabel);
-		$item = $lookup->lookup($type, $existingItemId);
+		foreach ($items as $item) {
+			$lookup = new Abp01_Lookup();	
+			$existingItemId = $item['data_id'];
+			$category = $item['data_category'];
 
-		$this->assertNotNull($item);
-		$this->assertEquals($newLabel, $item->label);
-		$this->assertEquals($type, $item->type);
-		$this->assertEquals($existingItemId, $item->id);
+			$newLabel = $this->_newFakeLabel();
+
+			$lookup->modifyLookupItem($existingItemId, $newLabel);
+			$item = $lookup->lookup($category, $existingItemId);
+
+			$this->assertNotNull($item);
+			$this->assertEquals($newLabel, $item->label);
+			$this->assertEquals($category, $item->type);
+			$this->assertEquals($existingItemId, $item->id);
+		}
 	}
 
-	public function test_canDeleteLookupItem() {
+	public function test_canDeleteLookupItem_withoutPostsAssociation() {
 		$lookup = new Abp01_Lookup();
-		$type = $this->_getLookupTypeWithoutPostAssociation();
-		$existingItemId = $this->_sampleLookupData[$type]['data_id'];
+		$existingItem = $this->_getLookupItemWithoutPostAssociation();
+		$existingItemId = $existingItem['data_id'];
 
 		$lookup->deleteLookup($existingItemId);
 		$item = $this->_getLookup($existingItemId);
@@ -107,46 +118,100 @@ class LookupTests extends WP_UnitTestCase {
 		
 		$this->assertEmpty($item);
 		$this->assertEmpty($itemLangs);
+		$this->assertFalse($lookup->isLookupInUse($existingItemId));
+	}
+
+	public function test_canDeleteLookupItem_withPostsAssociation() {
+		$lookup = new Abp01_Lookup();
+		$existingItem = $this->_getLookupItemWithPostAssociation();
+		$existingItemId = $existingItem['data_id'];
+		$initialInfo = $existingItem['data_route_info'];
+		
+		$allFields = Abp01_Route_Info::getValidFieldsForType($existingItem['data_route_info_type']);
+		$fieldName = $existingItem['data_route_info_field'];
+
+		$fieldDef = $allFields[$fieldName];
+		$isMultiple = isset($fieldDef['multiple']) && $fieldDef['multiple'] == true;
+
+		$lookup->deleteLookup($existingItemId);
+		$item = $this->_getLookup($existingItemId);
+		$itemLangs = $this->_getLookupTranslations($existingItemId);
+		
+		$this->assertEmpty($item);
+		$this->assertEmpty($itemLangs);
+		$this->assertFalse($lookup->isLookupInUse($existingItemId));
+
+		$info = $this->_getRouteInfo($existingItemId);
+		$this->assertNotEmpty($info);
+		
+		$initialValue = $initialInfo->$fieldName;		
+		$newValue = $info->$fieldName;
+
+		if ($isMultiple) {
+			$diff = array_diff($initialValue, $newValue);
+			$this->assertEquals(1, count($diff));
+			$this->assertEquals($existingItemId, $diff[0]);
+		} else {
+			$this->assertEmpty($newValue);
+		}
 	}
 
 	public function test_canCreateLookupItemTranslation() {
-		$lang = 'fr';
-		$newLabel = $this->_newFakeLabel();
-		$type = $this->_getRandomLookupType();
-		$existingItemId = $this->_sampleLookupData[$type]['data_id'];
+		$items = array(
+			$this->_getLookupItemWithoutPostAssociation(),
+			$this->_getLookupItemWithPostAssociation()
+		);
 
-		$lookup = new Abp01_Lookup($lang);
-		$result = $lookup->addLookupItemTranslation($existingItemId, $newLabel);
-
-		$this->assertTrue($result);
-		$this->_assertLookupTranslationMatchesLabel($existingItemId, $lang, $newLabel);
+		foreach ($items as $item) {
+			$lang = 'fr';
+			$newLabel = $this->_newFakeLabel();
+			$existingItemId = $item['data_id'];
+	
+			$lookup = new Abp01_Lookup($lang);
+			$result = $lookup->addLookupItemTranslation($existingItemId, $newLabel);
+	
+			$this->assertTrue($result);
+			$this->_assertLookupTranslationMatchesLabel($existingItemId, $lang, $newLabel);
+		}
 	}
 
 	public function test_canModifyLookupItemTranslation() {
-		$newLabel = $this->_newFakeLabel();
-		$type = $this->_getRandomLookupType();
-		$existingItemId = $this->_sampleLookupData[$type]['data_id'];
-		$existingItemLang = self::SAMPLE_LOOKUP_LANG;
+		$items = array(
+			$this->_getLookupItemWithoutPostAssociation(),
+			$this->_getLookupItemWithPostAssociation()
+		);
 
-		$lookup = new Abp01_Lookup($existingItemLang);
-		$result = $lookup->modifyLookupItemTranslation($existingItemId, $newLabel);
-		$repeatedResult = $lookup->modifyLookupItemTranslation($existingItemId, $newLabel);
-
-		$this->assertTrue($result);
-		$this->assertTrue($repeatedResult);
-		$this->_assertLookupTranslationMatchesLabel($existingItemId, $existingItemLang, $newLabel);
+		foreach ($items as $item) {
+			$newLabel = $this->_newFakeLabel();
+			$existingItemId = $item['data_id'];
+			$existingItemLang = self::SAMPLE_LOOKUP_LANG;
+	
+			$lookup = new Abp01_Lookup($existingItemLang);
+			$result = $lookup->modifyLookupItemTranslation($existingItemId, $newLabel);
+			$repeatedResult = $lookup->modifyLookupItemTranslation($existingItemId, $newLabel);
+	
+			$this->assertTrue($result);
+			$this->assertTrue($repeatedResult);
+			$this->_assertLookupTranslationMatchesLabel($existingItemId, $existingItemLang, $newLabel);
+		}
 	}
 
 	public function test_canDeleteLookupItemTranslation() {
-		$type = $this->_getRandomLookupType();
-		$existingItemId = $this->_sampleLookupData[$type]['data_id'];
-		$existingItemLang = self::SAMPLE_LOOKUP_LANG;
+		$items = array(
+			$this->_getLookupItemWithoutPostAssociation(),
+			$this->_getLookupItemWithPostAssociation()
+		);
 
-		$lookup = new Abp01_Lookup($existingItemLang);
-		$result = $lookup->deleteLookupItemTranslation($existingItemId);
-		
-		$this->assertTrue($result);
-		$this->_assertLookupItemTranslationMissing($existingItemId, $existingItemLang);
+		foreach ($items as $item) {
+			$existingItemId = $item['data_id'];
+			$existingItemLang = self::SAMPLE_LOOKUP_LANG;
+	
+			$lookup = new Abp01_Lookup($existingItemLang);
+			$result = $lookup->deleteLookupItemTranslation($existingItemId);
+			
+			$this->assertTrue($result);
+			$this->_assertLookupItemTranslationMissing($existingItemId, $existingItemLang);
+		}
 	}
 
 	public function test_canCheckIfLookupItemInUse_itemInUse() {
@@ -161,53 +226,88 @@ class LookupTests extends WP_UnitTestCase {
 		$this->assertFalse($lookup->isLookupInUse($item['data_id']));
 	}
 
-	private function _installTestData() {
+	private function _installTestDataSet($associateWithPost) {
 		$db = $this->_getDb();
 		$table = $this->_getEnv()->getLookupTableName();
 		$langTable = $this->_getEnv()->getLookupLangTableName();
-		$faker = Faker\Factory::create();
+		$lookupPostsTable = $this->_getEnv()->getRouteDetailsLookupTableName();
+		$routeDetailsTable = $this->_getEnv()->getRouteDetailsTableName();
+		$faker = self::_getFaker();
 
-		//install test lookup data
-		foreach ($this->_getSupportedLookupCategories() as $category => $associateWithPost) {
-			$newName = $faker->words(3, true);
-			$newNameLang = $faker->words(3, true);
+		foreach (Abp01_Route_Info::getSupportedTypes() as $infoType) {
+			$allFields = Abp01_Route_Info::getValidFieldsForType($infoType);
+			$lookupFieldNames = Abp01_Route_Info::getAllLookupFieldsForType($infoType);
 
-			$newId = $db->insert($table, array(
-				'lookup_category' => $category,
-				'lookup_label' => $newName
-			));
+			foreach ($lookupFieldNames as $fieldName) {
+				$fieldDef = $allFields[$fieldName];
+				$lookupCategory = Abp01_Route_Info::getLookupKeyForType($infoType, $fieldName);
 
-			if ($newId) {
-				$db->insert($langTable, array(
-					'ID' => $newId,
-					'lookup_label' => $newNameLang,
-					'lookup_lang' => self::SAMPLE_LOOKUP_LANG,
+				$newName = $faker->words(3, true);
+				$newNameLang = $faker->words(3, true);
+
+				$newLookupId = $db->insert($table, array(
+					'lookup_category' => $lookupCategory,
+					'lookup_label' => $newName
 				));
-				$this->_sampleLookupData[$category] = array(
-					'data_id' => $newId,
-					'data_label' => $newName,
-					'data_label_lang' => $newNameLang,
-					'data_category' => $category, 
-					'has_post' => $associateWithPost
-				);
-				if ($associateWithPost) {
-					$this->_createLookupAssociation($newId);
+
+				if ($newLookupId) {
+					$db->insert($langTable, array(
+						'ID' => $newLookupId,
+						'lookup_label' => $newNameLang,
+						'lookup_lang' => self::SAMPLE_LOOKUP_LANG,
+					));
+
+					$this->_sampleLookupData[$newLookupId] = array(
+						'data_id' => $newLookupId,
+						'data_label' => $newName,
+						'data_label_lang' => $newNameLang,
+						'data_category' => $lookupCategory, 
+						'data_route_info' => null,
+						'data_route_info_type' => $infoType,
+						'data_route_info_field' => $fieldName,
+						'has_post' => $associateWithPost,
+						'post_id' => null
+					);
+
+					if ($associateWithPost) {
+						$newLookupPostId = $this->_postIdGenerator ++;
+
+						$info = new Abp01_Route_Info($infoType);
+						$info->$fieldName = $this->_generateValue($fieldDef);
+
+						$db->insert($lookupPostsTable, array(
+							'post_ID' => $newLookupPostId,
+							'lookup_ID' => $newLookupId
+						));
+
+						$db->insert($routeDetailsTable, array(
+							'post_ID' => $newLookupPostId,
+							'route_type' => $infoType,
+							'route_data_serialized' => $info->toJson(),
+							'route_data_last_modified_by' => 1,
+							'route_data_last_modified_at' => $db->now()
+						));
+
+						$this->_sampleLookupData[$newLookupId] = array_merge($this->_sampleLookupData[$newLookupId], 
+							array(
+								'data_route_info' => $info,
+								'post_id' => $newLookupPostId
+							));
+					}
 				}
 			}
 		}
 	}
 
-	private function _createLookupAssociation($lookupId) {
-		$db = $this->_getDb();
-		$db->insert($this->_getEnv()->getRouteDetailsLookupTableName(), array(
-			'post_ID' => $this->_newFakeIntNumber(),
-			'lookup_ID' => $lookupId
-		));
+	private function _installTestData() {
+		$this->_installTestDataSet(true);
+		$this->_installTestDataSet(false);
 	}
 
 	private function _clearTestData() {
 		$this->_clearAllLookupData();
 		$this->_sampleLookupData = array();
+		$this->_postIdGenerator = 1;
 	}
 
 	private function _getLookup($lookupId) {
@@ -226,6 +326,20 @@ class LookupTests extends WP_UnitTestCase {
 			return $db->getOne($table);
 		}
 		return $db->get($table);
+	}
+
+	private function _getRouteInfo($lookupId) {
+		$db = $this->_getDb();
+		$table = $this->_getEnv()->getRouteDetailsTableName();
+		$postId = $this->_sampleLookupData[$lookupId]['post_id'];
+
+		$db->where('post_ID', $postId);
+		$row = $db->getOne($table);
+		if (!empty($row)) {
+			return Abp01_Route_Info::fromJson($row['route_type'], $row['route_data_serialized']);
+		} else {
+			return null;
+		}
 	}
 
 	private function _assertLookupMatchesSampleData(stdClass $result, array $data, $useLang) {
@@ -250,29 +364,8 @@ class LookupTests extends WP_UnitTestCase {
 		$this->assertNull($itemTranlation);
 	}
 
-	private function _getSupportedLookupCategories() {
-		return array(
-			Abp01_Lookup::BIKE_TYPE => false,
-			Abp01_Lookup::DIFFICULTY_LEVEL => false,
-			Abp01_Lookup::PATH_SURFACE_TYPE => false,
-			Abp01_Lookup::RAILROAD_ELECTRIFICATION => false,
-			Abp01_Lookup::RAILROAD_LINE_STATUS => false,
-			Abp01_Lookup::RAILROAD_LINE_TYPE => true,
-			Abp01_Lookup::RAILROAD_OPERATOR => true,
-			Abp01_Lookup::RECOMMEND_SEASONS => true
-		);
-	}
-	
-	private function _getLookupTypeWithoutPostAssociation() {
-		foreach ($this->_sampleLookupData as $category => $data) {
-			if (!$data['has_post']) {
-				return $category;
-			}
-		}
-	}
-
 	private function _getLookupItemWithoutPostAssociation() {
-		foreach ($this->_sampleLookupData as $category => $data) {
+		foreach ($this->_sampleLookupData as $itemId => $data) {
 			if (!$data['has_post']) {
 				return $data;
 			}
@@ -280,7 +373,7 @@ class LookupTests extends WP_UnitTestCase {
 	}
 
 	private function _getLookupItemWithPostAssociation() {
-		foreach ($this->_sampleLookupData as $category => $data) {
+		foreach ($this->_sampleLookupData as $itemId => $data) {
 			if ($data['has_post']) {
 				return $data;
 			}
@@ -288,18 +381,18 @@ class LookupTests extends WP_UnitTestCase {
 	}
 
 	private function _getRandomLookupType() {
-		$supportedTypes = array_keys($this->_getSupportedLookupCategories());
+		$supportedTypes = Abp01_Lookup::getSupportedCategories();
 		shuffle($supportedTypes);
 		return $supportedTypes[0];
 	}
 
 	private function _newFakeLabel() {
-		$faker = Faker\Factory::create();
+		$faker = self::_getFaker();
 		return $faker->words(3, true);
 	}
 
 	private function _newFakeIntNumber($min = 0, $max = PHP_INT_MAX) {
-		$faker = Faker\Factory::create();
+		$faker = self::_getFaker();
 		return $faker->numberBetween($min, $max);
 	}
 }

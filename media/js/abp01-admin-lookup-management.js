@@ -671,6 +671,8 @@
 
         beginEditingItem(currentItemId);
         tb_show(abp01LookupMgmtL10n.ttlConfirmDelete, '#TB_inline?width=450&height=' + height + '&inlineId=abp01-lookup-item-delete-form');
+        
+        clearMessage($ctlDeleteOperationResultContainer);
         setLookupDeleteInitialRequest();
     }
 

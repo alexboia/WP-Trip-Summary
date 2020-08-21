@@ -171,6 +171,48 @@ class RouteInfoTests extends WP_UnitTestCase {
 	/**
 	 * @dataProvider _getPerTypeRouteInfoDataSets
 	 */
+	public function test_canRemoveLookupValuesByLookupCategory($type, $data) {
+		for ($i = 0; $i < 10; $i ++) {
+			$info = new Abp01_Route_Info($type);
+			foreach ($data as $key => $value) {
+				$info->$key = $value;
+			}
+
+			$allFieldsInfo = $info->getValidFields();
+			$lookupFieldNames = $info->getAllLookupFields();
+
+			foreach ($lookupFieldNames as $fieldKey) {
+				$fieldInfo = $allFieldsInfo[$fieldKey];		
+				if (isset($fieldInfo['lookup'])) {
+					$fieldValue = $info->$fieldKey;
+					$isMultiple = isset($fieldInfo['multiple']) && $fieldInfo['multiple'] == true;
+
+					$valueToRemove = $isMultiple 
+						? $fieldValue[array_rand($fieldValue, 1)]
+						: $fieldValue;
+
+					$lookupKey = $fieldInfo['lookup'];
+					$info->removeLookupValue($lookupKey, $valueToRemove);
+
+					if (!empty($fieldValue)) {
+						$newFieldValue = $info->$fieldKey;
+
+						if ($isMultiple) {
+							$diff = array_diff($fieldValue, $newFieldValue);
+							$this->assertEquals(1, count($diff));
+							$this->assertEquals($valueToRemove, $diff[0]);
+						} else {
+							$this->assertEmpty($newFieldValue);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * @dataProvider _getPerTypeRouteInfoDataSets
+	 */
 	public function test_canGetData($type, $data) {
 		$info = new Abp01_Route_Info($type);
 		foreach ($data as $field => $value) {

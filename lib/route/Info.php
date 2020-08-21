@@ -44,7 +44,7 @@ class Abp01_Route_Info {
 
     private $_type;
 
-    private $_fields = array(
+    private static $_fields = array(
         self::BIKE => array(
             'bikeDistance' => array(
                 'type' => 'float',
@@ -162,7 +162,7 @@ class Abp01_Route_Info {
             self::TRAIN_RIDE,
             self::HIKING
 		);
-	}
+    }
 
     public static function fromJson($type, $json) {
         if (empty($json)) {
@@ -193,7 +193,7 @@ class Abp01_Route_Info {
         if (!$this->isFieldValid($field)) {
             return null;
         }
-        $def = $this->_fields[$this->_type][$field];
+        $def = self::$_fields[$this->_type][$field];
         if (!is_array($def)) {
             if (is_string($def)) {
                 $def = array(
@@ -225,8 +225,16 @@ class Abp01_Route_Info {
 		);
     }
 
+    private static function _getValidFieldsForType($type) {
+        if (!self::isTypeSupported($type)) {
+            return null;
+        }
+
+        return self::$_fields[$type];
+    }
+
     private function _getValidFields() {
-        return $this->_fields[$this->_type];
+        return self::_getValidFieldsForType($this->_type);
     }
 
     private function _assertKeyValid($k) {
@@ -256,14 +264,44 @@ class Abp01_Route_Info {
         return isset($this->_data[$k]) ? $this->_data[$k] : null;
     }
 
+    public function removeLookupValue($lookupCategory, $lookupId) {
+        foreach (self::$_fields[$this->_type] as $fieldName => $def) {
+            if (isset($def['lookup']) && $def['lookup'] == $lookupCategory) {
+                $currentValue = isset($this->_data[$fieldName]) 
+                    ? $this->_data[$fieldName] 
+                    : null;
+                
+                if (!empty($currentValue)) {
+                    if (isset($def['multiple']) && $def['multiple'] === true) {
+                        $elementIndex = array_search($lookupId, 
+                            $currentValue, 
+                            false);
+
+                        if ($elementIndex !== false) {
+                            unset($currentValue[$elementIndex]);
+                        }
+                    } else {
+                        $currentValue = null;
+                    }
+
+                    $this->_data[$fieldName] = $currentValue;
+                }
+            }
+        }
+    }
+
     public function isLookupKey($field) {
         return !empty($this->getLookupKey($field));
     }
 
-    public function getAllLookupFields() {
+    public static function getAllLookupFieldsForType($type) {
+        if (empty($type) || !self::isTypeSupported($type))  {
+            return null;
+        }
+
         $lookupKeys = array();
 
-        foreach ($this->_fields[$this->_type] as $field => $def) {
+        foreach (self::$_fields[$type] as $field => $def) {
             if (isset($def['lookup'])) {
                 $lookupKeys[] = $field;
             }
@@ -272,13 +310,28 @@ class Abp01_Route_Info {
         return $lookupKeys;
     }
 
-    public function getLookupKey($field) {
-        if (!isset($this->_fields[$this->_type][$field])) {
+    public function getAllLookupFields() {
+        return self::getAllLookupFieldsForType($this->_type);
+    }
+
+    public static function getLookupKeyForType($type, $field) {
+        if (empty($type) || !self::isTypeSupported($type) || empty($field))  {
             return null;
         }
 
-        $def = $this->_fields[$this->_type][$field];
-        return isset($def['lookup']) ? $def['lookup'] : null;
+        if (!isset(self::$_fields[$type][$field])) {
+            return null;
+        }
+
+        $def = self::$_fields[$type][$field];
+
+        return isset($def['lookup']) 
+            ? $def['lookup'] 
+            : null;
+    }
+
+    public function getLookupKey($field) {
+        return self::getLookupKeyForType($this->_type, $field);
     }
 
     public function getData() {
@@ -297,8 +350,16 @@ class Abp01_Route_Info {
         return $this->_type == self::TRAIN_RIDE;
     }
 
+    public function getValidFieldNamesForType($type) {
+        return array_keys(self::_getValidFieldsForType($type));
+    }
+
     public function getValidFieldNames() {
         return array_keys($this->_getValidFields());
+    }
+
+    public static function getValidFieldsForType($type) {
+        return self::_getValidFieldsForType($type);
     }
 
 	public function getValidFields() {
