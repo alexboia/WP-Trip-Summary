@@ -6,8 +6,8 @@
 
 An opinionated, multi-language, WordPress trip summary plugin to help travel bloggers manage and display structured information about their train rides and biking or hiking trips.
 
-[![WP compatibility](https://plugintests.com/plugins/wp-trip-summary/wp-badge.svg)](https://plugintests.com/plugins/wp-trip-summary/latest)
-[![PHP compatibility](https://plugintests.com/plugins/wp-trip-summary/php-badge.svg)](https://plugintests.com/plugins/wp-trip-summary/latest) 
+[![WP compatibility](https://plugintests.com/plugins/wporg/wp-trip-summary/wp-badge.svg)](https://plugintests.com/plugins/wporg/wp-trip-summary/latest)
+[![PHP compatibility](https://plugintests.com/plugins/wporg/wp-trip-summary/php-badge.svg)](https://plugintests.com/plugins/wporg/wp-trip-summary/latest)
 
 ## Contents
 
