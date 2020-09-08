@@ -335,5 +335,5 @@ function abp01_get_http_method() {
  * @return void
  */
 function abp01_ensure_storage_directory() {
-	abp01_get_installer()->ensureStorageDirectories();
+	abp01_get_installer()->ensureStorageDirectoriesAndAssets();
 }

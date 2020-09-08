@@ -35,37 +35,37 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 
 class Abp01_Installer {
 	/**
-	 * @var Integer Error code returned when an incompatible PHP version is detected upon installation
+	 * @var int Error code returned when an incompatible PHP version is detected upon installation
 	 */
     const INCOMPATIBLE_PHP_VERSION = 1;
 
 	/**
-	 * @var Integer Error code returned when an incompatible WordPress version is detected upon installation
+	 * @var int Error code returned when an incompatible WordPress version is detected upon installation
 	 */
     const INCOMPATIBLE_WP_VERSION = 2;
 
 	/**
-	 * @var Integer Error code returned when LIBXML is not found
+	 * @var int Error code returned when LIBXML is not found
 	 */
     const SUPPORT_LIBXML_NOT_FOUND = 3;
 
 	/**
-	 * @var Integer Error code returned when MySQL Spatial extension is not found
+	 * @var int Error code returned when MySQL Spatial extension is not found
 	 */
     const SUPPORT_MYSQL_SPATIAL_NOT_FOUND = 4;
 
 	/**
-	 * @var Integer Error code returned when MySqli extension is not found
+	 * @var int Error code returned when MySqli extension is not found
 	 */
     const SUPPORT_MYSQLI_NOT_FOUND = 5;
 
     /**
-     * @var Integer Error code returned when the installation capabilities cannot be detected
+     * @var int Error code returned when the installation capabilities cannot be detected
      */
     const COULD_NOT_DETECT_INSTALLATION_CAPABILITIES = 255;
 
 	/**
-	 * @var String WP options key for current plug-in version
+	 * @var string WP options key for current plug-in version
 	 */
     const OPT_VERSION = 'abp01.option.version';
 
@@ -75,20 +75,23 @@ class Abp01_Installer {
     private $_env;
 
 	/**
-	 * @var Object The last occured error
+	 * @var mixed The last occured error
 	 */
     private $_lastError = null;
 
 	/**
-	 * @var Boolean Whether or not to install lookup data
+	 * @var bool Whether or not to install lookup data
 	 */
     private $_installLookupData;
     
+    /**
+     * @var array An array of cached lookup data items definitions
+     */
     private $_cachedDefinitions = null;
 
 	/**
 	 * Creates a new installer instance
-	 * @param Boolean $installLookupData Whether or not to install lookup data
+	 * @param bool $installLookupData Whether or not to install lookup data
 	 */
     public function __construct($installLookupData = true) {
         $this->_env = Abp01_Env::getInstance();
@@ -98,7 +101,7 @@ class Abp01_Installer {
 	/**
 	 * Retrieves the current plug-in version (not the currently installed one, 
 	 *	but the one in the package currently being run)
-	 * @return String The current plug-in version
+	 * @return string The current plug-in version
 	 */
     private function _getVersion() {
         return $this->_env->getVersion();
@@ -106,8 +109,9 @@ class Abp01_Installer {
 
 	/**
 	 * Checks whether or not an update is needed
-	 * @param String $version The version to be installed
-	 * @param String $installedVersion The version to be installed
+	 * @param string $version The version to be installed
+	 * @param string $installedVersion The version to be installed
+     * @return bool True if an update is needed, false otherwise
 	 */
     private function _isUpdatedNeeded($version, $installedVersion) {
         return $version != $installedVersion;
@@ -116,7 +120,7 @@ class Abp01_Installer {
 	/**
 	 * Retrieve the currently installed version (which may be different 
 	 *	than the one in the package currently being run)
-	 * @return String The version
+	 * @return string The version
 	 */
     private function _getInstalledVersion() {
         $version = null;
@@ -128,9 +132,9 @@ class Abp01_Installer {
 
 	/**
 	 * Carry out the update operation
-	 * @param String $version The version to be installed
-	 * @param String $installedVersion The version currently being installed
-	 * @return Boolean Whether the operation succeeded or not
+	 * @param string $version The version to be installed
+	 * @param string $installedVersion The version currently being installed
+	 * @return bool Whether the operation succeeded or not
 	 */
     private function _update($version, $installedVersion) {
 		$this->_reset();
@@ -176,7 +180,7 @@ class Abp01_Installer {
 
 	/**
 	 * Update the version 0.2 Beta
-	 * @return Boolean Whether the operation succeeded or not
+	 * @return bool Whether the operation succeeded or not
 	 */
 	private function _updateTo02Beta() {
 		try {
@@ -295,6 +299,12 @@ class Abp01_Installer {
         return $result;
     }
 
+    /**
+     * Ensures all the plug-in's storage directories are created.
+     * If a directory exists, it is not re-created, nor is it purged.
+     * 
+     * @return bool True if the operation succeeded, false otherwise
+     */
     private function _ensureStorageDirectories() {
         $result = true;
         $rootStorageDir = $this->_env->getRootStorageDir();
@@ -376,18 +386,31 @@ class Abp01_Installer {
         }
     }
 
-    private function _removeStorageDirectory() {
+    /**
+     * Removes all the plug-in's storage directories and their contents.
+     * 
+     * @return bool True if the operation succeeded, false otherwise
+     */
+    private function _removeStorageDirectories() {
         $rootStorageDir = $this->_env->getRootStorageDir();
         $tracksStorageDir = $this->_env->getTracksStorageDir();
         $cacheStorageDir = $this->_env->getCacheStorageDir();
 
-        if ($this->_removeDirectoryAndContents($tracksStorageDir) && $this->_removeDirectoryAndContents($cacheStorageDir)) {
+        if ($this->_removeDirectoryAndContents($tracksStorageDir) 
+            && $this->_removeDirectoryAndContents($cacheStorageDir)) {
             return $this->_removeDirectoryAndContents($rootStorageDir);
         } else {
             return false;
         }
     }
 
+    /**
+     * Remove the contents of the given directory and then the directory itself.
+     * If the directory does not exist, true is returned.
+     * 
+     * @param string $directoryPath The path of the directory that must be deleted
+     * @return bool True if the operation succeeded, false otherwise
+     */
     private function _removeDirectoryAndContents($directoryPath) {
         if (!is_dir($directoryPath)) {
             return true;
@@ -500,7 +523,9 @@ class Abp01_Installer {
                     $result = true;
                 }
             } else if ($asset['type'] == 'directory') {
-                @mkdir($assetPath);
+                if (!is_dir($assetPath)) {
+                    @mkdir($assetPath);
+                }
                 $result = is_dir($assetPath);
             }
 
@@ -528,15 +553,31 @@ class Abp01_Installer {
         return '<?php header("Location: ' . str_repeat('../', $redirectCount) . 'index.php"); exit;';
     }
 
+    /**
+     * Checks the current plug-in package version, the currently installed version
+     *  and runs the update operation if they differ.
+     * 
+     * @return bool The operation result: true if succeeded, false otherwise
+     */
     public function updateIfNeeded() {
+        $result = true;
         $version = $this->_getVersion();
         $installedVersion = $this->_getInstalledVersion();
-        if (!$this->_isUpdatedNeeded($version, $installedVersion)) {
-            return true;
+
+        if ($this->_isUpdatedNeeded($version, $installedVersion)) {
+            $result = $this->_update($version, $installedVersion);
         }
-        return $this->_update($version, $installedVersion);
+
+        return $result;
     }
 
+    /**
+     * Checks whether the plug-in can be installed and returns 
+     *  a code that describes the reason it cannot be installed
+     *  or Installer::INSTALL_OK if it can.
+     * 
+     * @return int The error code that describes the result of the test.
+     */
     public function canBeInstalled() {
         $this->_reset();
 
@@ -565,24 +606,33 @@ class Abp01_Installer {
         return empty($this->_lastError) ? 0 : self::COULD_NOT_DETECT_INSTALLATION_CAPABILITIES;
     }
 
+    /**
+     * Activates the plug-in. 
+     * If a step of the activation process fails, 
+     *  the plug-in attempts to rollback the steps that did successfully execute.
+     * The activation process is idempotent, that is, 
+     *  it will not perform the same operations twice.
+     * 
+     * @return bool True if the operation succeeded, false otherwise.
+     */
     public function activate() {
         $this->_reset();
         try {
-            if (!$this->_installStorageDirectory()) {
+            if (!$this->_installStorageDirectoryAndAssets()) {
                 //Ensure no partial directory and file structure remains
-                $this->_removeStorageDirectory();
+                $this->_removeStorageDirectories();
                 return false;
             }
 
             if (!$this->_installSchema()) {
                 //Ensure no partial directory and file structure remains
-                $this->_removeStorageDirectory();
+                $this->_removeStorageDirectories();
                 return false;
             }
 
             if (!$this->_installData()) {
                 //Ensure no partial directory and file structure remains
-                $this->_removeStorageDirectory();
+                $this->_removeStorageDirectories();
                 //Remove schema as well
                 $this->_uninstallSchema();
                 return false;
@@ -600,6 +650,14 @@ class Abp01_Installer {
         return false;
     }
 
+    /**
+     * Deactivates the plug-in.
+     * If a step of the activation process fails, 
+     *  the plug-in attempts to rollback the steps 
+     *  that did successfully execute.
+     * 
+     * @return bool True if the operation succeeded, false otherwise. 
+     */
     public function deactivate() {
         $this->_reset();
         try {
@@ -616,7 +674,7 @@ class Abp01_Installer {
             return $this->deactivate()
                 && $this->_uninstallSchema()
                 && $this->_uninstallSettings()
-                && $this->_removeStorageDirectory()
+                && $this->_removeStorageDirectories()
                 && $this->_uninstallVersion();
         } catch (Exception $e) {
             $this->_lastError = $e;
@@ -624,10 +682,16 @@ class Abp01_Installer {
         return false;
     }
 
-    public function ensureStorageDirectories() {
-        if ($this->_ensureStorageDirectories()) {
-            $this->_installStorageDirsSecurityAssets();
-        }
+    /**
+     * Ensures all the plug-in's storage directories are created, 
+     *  as well as any required assets.
+     * If a directory exists, it is not re-created, nor is it purged.
+     * If a file asset exists, it is overwritten.
+     * 
+     * @return bool True if the operation succeeded, false otherwise
+     */
+    public function ensureStorageDirectoriesAndAssets() {
+        $this->_installStorageDirectoryAndAssets();
     }
 
     public function getRequiredPhpVersion() {
@@ -638,17 +702,28 @@ class Abp01_Installer {
         return $this->_env->getRequiredWpVersion();
     }
 
+    /**
+     * Returns the last occurred exception or null if none found.
+     * 
+     * @return \Exception The last occurred exception.
+     */
     public function getLastError() {
         return $this->_lastError;
     }
 
-    private function _installStorageDirectory() {
+    /**
+     * Ensures all the plug-in's storage directories are created, 
+     *  as well as any required assets.
+     * If a directory exists, it is not re-created, nor is it purged.
+     * If a file asset exists, it is overwritten.
+     * 
+     * @return bool True if the operation succeeded, false otherwise
+     */
+    private function _installStorageDirectoryAndAssets() {
         $result = false;
-
         if ($this->_ensureStorageDirectories()) {
             $result = $this->_installStorageDirsSecurityAssets();
         }
-
         return $result;
     }
 
@@ -743,12 +818,24 @@ class Abp01_Installer {
         return $filePath;
     }
 
+    /**
+     * Checks whether the current PHP version is compatible 
+     * with the plug-in's minimum required PHP version.
+     * 
+     * @return bool True if compatible, false otherwise
+     */
     private function _isCompatPhpVersion() {
         $current = $this->_env->getPhpVersion();
         $required = $this->_env->getRequiredPhpVersion();
         return version_compare($current, $required, '>=');
     }
 
+    /**
+     * Checks whether the current WP version is compatible 
+     * with the plug-in's minimum required WP version.
+     * 
+     * @return bool True if compatible, false otherwise
+     */
     private function _isCompatWpVersion() {
         $current = $this->_env->getWpVersion();
         $required = $this->_env->getRequiredWpVersion();
@@ -831,6 +918,11 @@ class Abp01_Installer {
         return true;
     }
 
+    /**
+     * Deletes the plug-in settings.
+     * 
+     * @return true True if the operation succeeded, false othwerise
+     */
     private function _uninstallSettings() {
         Abp01_Settings::getInstance()->purgeAllSettings();
         return true;
@@ -1000,7 +1092,7 @@ class Abp01_Installer {
 	 * Fetch the definition of the table which stores track data.
 	 * It needs to be within a function because the table name is dynamically computed, 
 	 *	accounting for the WP prefix
-	 * @return String The DDL SQL query
+	 * @return string The DDL SQL query
 	 */
     private function _getRouteTrackTableDefinition() {
         return "CREATE TABLE IF NOT EXISTS `" . $this->_getRouteTrackTableName() . "` (
@@ -1023,7 +1115,7 @@ class Abp01_Installer {
 	 * Fetch the definition of the route details table.
 	 * It needs to be within a function because the table name is dynamically computed, 
 	 *	accounting for the WP prefix
-	 * @return String The DDL SQL query
+	 * @return string The DDL SQL query
 	 */
     private function _getRouteDetailsTableDefinition() {
         return "CREATE TABLE IF NOT EXISTS `" . $this->_getRouteDetailsTableName() . "` (
@@ -1041,7 +1133,7 @@ class Abp01_Installer {
 	 * Fetch the definition of the table which stores per-language lookup data definitions.
 	 * It needs to be within a function because the table name is dynamically computed, 
 	 *	accounting for the WP prefix
-	 * @return String The DDL SQL query
+	 * @return string The DDL SQL query
 	 */
     private function _getLookupLangTableDefinition() {
         return "CREATE TABLE IF NOT EXISTS `" . $this->_getLookupLangTableName() . "` (
@@ -1056,7 +1148,7 @@ class Abp01_Installer {
 	 * Fetch the definition of the table which stores the base lookup data definitions.
 	 * It needs to be within a function because the table name is dynamically computed, 
 	 *	accounting for the WP prefix
-	 * @return String The DDL SQL query
+	 * @return string The DDL SQL query
 	 */
     private function _getLookupTableDefinition() {
         return "CREATE TABLE IF NOT EXISTS `" . $this->_getLookupTableName() . "` (
@@ -1071,7 +1163,7 @@ class Abp01_Installer {
 	 * Fetch the definition of the table which stores the correspondence between posts and lookup data.
 	 * It needs to be within a function because the table name is dynamically computed, 
 	 *	accounting for the WP prefix
-	 * @return String The DDL SQL query
+	 * @return string The DDL SQL query
 	 */
 	private function _getRouteDetailsLookupTableDefinition() {
 		return "CREATE TABLE IF NOT EXISTS `" . $this->_getRouteDetailsLookupTableName() . "` (
@@ -1121,6 +1213,10 @@ class Abp01_Installer {
 		return $db != null ? $db->rawQuery('DROP TABLE IF EXISTS `' . $this->_getRouteDetailsLookupTableName() . '`', null, false) : false;
 	}
 
+    /**
+     * Resets the last occurred error
+     * @return void 
+     */
     private function _reset() {
         $this->_lastError = null;
     }

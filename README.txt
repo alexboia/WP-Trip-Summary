@@ -75,7 +75,7 @@ For train rides the following fields are available:
 Requirements:
 - PHP version 5.6.2 or greater;
 - MySQL version 5.7 or greater (with spatial support);
-- Wordpress 5.0;
+- Wordpress 5.0 or greater;
 - libxml extension;
 - SimpleXml extension;
 - mysqli extension;
