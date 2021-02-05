@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014-2020 Alexandru Boia
+ * Copyright (c) 2014-2021 Alexandru Boia
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -85,9 +85,7 @@ function _manually_install_plugin() {
 		}
 	}
 
-	$installer = new Abp01_Installer();
-	$activated = $installer->activate();
-	if (!$activated) {
+	if (!$installer->activate()) {
 		die('Failed to activate plugin. Cannot continue testing.');
 	}
 

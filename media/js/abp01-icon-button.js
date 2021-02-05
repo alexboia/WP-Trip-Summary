@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014-2020 Alexandru Boia
+ * Copyright (c) 2014-2021 Alexandru Boia
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
