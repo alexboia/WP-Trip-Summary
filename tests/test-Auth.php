@@ -30,15 +30,15 @@
  */
 
 class AuthTests extends WP_UnitTestCase {
-    private static $_roleKey;
+    private $_roleKey;
 
-    private static $_initialRoleData;
+    private $_initialRoleData;
 
-    private static $_testPosts = array();
+    private $_testPosts = array();
 
-    private static $_testUsers = array();
+    private $_testUsers = array();
 
-    private static $_testRoleData = array (
+    private $_testRoleData = array (
         'administrator' => 
             array (
                 'name' => 'Administrator',
@@ -188,16 +188,64 @@ class AuthTests extends WP_UnitTestCase {
             ),
     );
 
-    private static function _capabilityExistsInRoleData($capCode, $roleData) {
+    public function setUp() {
+        parent::setUp();
+        $this->_storeBuiltInRoleData();
+        $this->_setupTestData();
+        $this->_initRolesForCurrentSite();
+    }
+
+    private function _storeBuiltInRoleData() {
+        $this->_roleKey = wp_roles()->role_key;
+        $this->_initialRoleData = get_option($this->_roleKey, array());
+    }
+
+    private function _setupTestData() {
+        foreach ($this->_testRoleData as $roleName => $roleData) {
+            $userId = $this->_createTestUserWithRole($roleName);
+            if ($this->_capabilityExistsInRoleData('edit_posts', $roleData)) {
+                $this->_testPosts[$userId] = $this->_createTestPostAuthoredByUser($userId);
+            }
+
+            $this->_testUsers[$roleName] = $userId;
+        }
+
+        update_option($this->_roleKey, $this->_testRoleData);
+    }
+
+    private function _createTestUserWithRole($roleName) {
+        return self::factory()->user->create(array(
+            'role' => $roleName
+        ));
+    }
+
+    private function _createTestPostAuthoredByUser($userId) {
+        //Avoid this: https://core.trac.wordpress.org/ticket/44416 
+        //  (compact() will throw notice for undefined variables in PHP 7.3)
+        error_reporting(E_ALL & ~E_NOTICE);
+        
+        $postId = self::factory()->post->create(array(
+            'ID' => 0,
+            'post_type' => 'post',
+            'post_author' => $userId
+        ));
+
+        //Restore error reporting
+        error_reporting(E_ALL);
+
+        return $postId;
+    }
+
+    private function _capabilityExistsInRoleData($capCode, $roleData) {
         $roleCaps = $roleData['capabilities'];
         return isset($roleCaps[$capCode]) 
             && $roleCaps[$capCode] === true;
     }
 
-    private static function _capabilitiesExistsInRoleData($capCodes, $roleData) {
+    private function _capabilitiesExistsInRoleData($capCodes, $roleData) {
         $exist = true;
         foreach ($capCodes as $capCode) {
-            if (!self::_capabilityExistsInRoleData($capCode, $roleData)) {
+            if (!$this->_capabilityExistsInRoleData($capCode, $roleData)) {
                 $exist = false;
                 break;
             }
@@ -205,61 +253,32 @@ class AuthTests extends WP_UnitTestCase {
         return $exist;
     }
 
-    private static function _capabilityExistsInTestRole($capCode, $roleName) {
-        return self::_capabilityExistsInRoleData($capCode, self::$_testRoleData[$roleName]);
+    private function _capabilityExistsInTestRole($capCode, $roleName) {
+        return $this->_capabilityExistsInRoleData($capCode, $this->_testRoleData[$roleName]);
     }
 
-    private static function _capabilitiesExistInTestRole($capCodes, $roleName) {
-        return self::_capabilitiesExistsInRoleData($capCodes, self::$_testRoleData[$roleName]);
-    }
-
-    public static function setUpBeforeClass() {
-        parent::setUpBeforeClass();
-
-        self::$_roleKey = wp_roles()->role_key;
-        self::$_initialRoleData = get_option(self::$_roleKey, array());
-
-        foreach (self::$_testRoleData as $roleName => $roleData) {
-            $userId = self::factory()->user->create(array(
-                'role' => $roleName
-            ));
-
-            if (self::_capabilityExistsInRoleData('edit_posts', $roleData)) {
-                //Avoid this: https://core.trac.wordpress.org/ticket/44416
-                error_reporting(E_ALL & ~E_NOTICE);
-                
-                self::$_testPosts[$userId] = self::factory()->post->create(array(
-                    'ID' => 0,
-                    'post_type' => 'post',
-                    'post_author' => $userId
-                ));
-
-                //Restore error reporting
-                error_reporting(E_ALL);
-            }
-
-            self::$_testUsers[$roleName] = $userId;
-        }
-    }
-
-    public static function tearDownAfterClass() {
-        parent::tearDownAfterClass();
-        
-        self::$_testPosts = array();
-        self::$_initialRoleData = array();
-        self::$_testRoleData = array();
-        self::$_testUsers = array();
-    }
-
-    public function setUp() {
-        parent::setUp();
-        update_option(self::$_roleKey, self::$_testRoleData);
-        wp_roles()->for_site();
+    private function _capabilitiesExistInTestRole($capCodes, $roleName) {
+        return $this->_capabilitiesExistsInRoleData($capCodes, $this->_testRoleData[$roleName]);
     }
 
     public function tearDown() {
         parent::tearDown();
-        update_option(self::$_roleKey, self::$_initialRoleData);
+        $this->_restoreBuiltInRolesData();
+        $this->_clearTestData();
+        $this->_initRolesForCurrentSite();
+    }
+
+    private function _restoreBuiltInRolesData() {
+        update_option($this->_roleKey, $this->_initialRoleData);
+    }
+
+    private function _clearTestData() {
+        $this->_testPosts = array();
+        $this->_initialRoleData = array();
+        $this->_testUsers = array();
+    }
+
+    private function _initRolesForCurrentSite() {
         wp_roles()->for_site();
     }
 
@@ -272,7 +291,7 @@ class AuthTests extends WP_UnitTestCase {
                 $requiredCaps = $auth->getRequiredCapabilities($capCode);
                 
                 if (!empty($requiredCaps)) {
-                    $expectedAllowed = self::_capabilitiesExistInTestRole($requiredCaps, $roleName);
+                    $expectedAllowed = $this->_capabilitiesExistInTestRole($requiredCaps, $roleName);
                 }
 
                 if ($expectedAllowed) {
@@ -287,7 +306,7 @@ class AuthTests extends WP_UnitTestCase {
     public function test_tryCheckIfCapCanBeInstalledForRole_otherCapabilities() {
         $auth = $this->_getAuth();
 
-        foreach (self::$_testRoleData as $roleName => $roleData) {
+        foreach ($this->_testRoleData as $roleName => $roleData) {
             $capabilities = $roleData['capabilities'];
             foreach ($capabilities as $capCode => $enabled) {
                 $this->assertFalse($auth->capCanBeInstalledForRole($capCode, $roleName));
@@ -330,11 +349,10 @@ class AuthTests extends WP_UnitTestCase {
         $auth->installCapabilities();
 
         foreach ($auth->getCapabilities() as $roleName => $capCodes) {
-            $userId = self::$_testUsers[$roleName];
+            $userId = $this->_testUsers[$roleName];
 
-            $expectedCanManageTripSummary = 
-                in_array(Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY, $capCodes) 
-                && $auth->capCanBeInstalledForRole(Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY, $roleName);
+            $expectedCanManageTripSummary = $this->_shouldBeAbleToManageTripSummary($roleName, 
+                $capCodes);
 
             $this->_assertCanCheckIfCanManagePluginSettings($auth, 
                 $userId, 
@@ -342,11 +360,16 @@ class AuthTests extends WP_UnitTestCase {
         }
     }
 
+    private function _shouldBeAbleToManageTripSummary($forRoleName, $withCapCodes) {
+        return in_array(Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY, $withCapCodes) 
+            && $this->_getAuth()->capCanBeInstalledForRole(Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY, $forRoleName);
+    }
+
     public function test_tryCheckIfCanManagePluginSettings_whenCapabilitiesNotInstalled() {
         $auth = $this->_getAuth();
 
         foreach ($auth->getCapabilities() as $roleName => $capCodes) {
-            $userId = self::$_testUsers[$roleName];
+            $userId = $this->_testUsers[$roleName];
             $this->_assertCanCheckIfCanManagePluginSettings($auth, 
                 $userId, 
                 false);
@@ -357,12 +380,11 @@ class AuthTests extends WP_UnitTestCase {
         $auth = $this->_getAuth();
         $auth->installCapabilities();
 
-        foreach (self::$_testUsers as $roleName => $userId) {
-            if (isset(self::$_testPosts[$userId])) {
-                $postId = self::$_testPosts[$userId];
-                $expectedCanEditTripSummary = 
-                    self::_capabilityExistsInTestRole('edit_posts', $roleName)
-                    && $auth->capCanBeInstalledForRole(Abp01_Auth::CAP_EDIT_TRIP_SUMMARY, $roleName);
+        foreach ($this->_testUsers as $roleName => $userId) {
+            if (isset($this->_testPosts[$userId])) {
+                $postId = $this->_testPosts[$userId];
+                $expectedCanEditTripSummary = $this->_shouldBeAbleToEditTripSummary('edit_posts', 
+                    $roleName);
 
                 $this->_assertCanEditTripSummary($auth, 
                     $userId, 
@@ -372,19 +394,23 @@ class AuthTests extends WP_UnitTestCase {
         }
     }
 
+    private function _shouldBeAbleToEditTripSummary($withCapability, $forRoleName) {
+        return $this->_capabilityExistsInTestRole($withCapability, $forRoleName)
+            && $this->_getAuth()->capCanBeInstalledForRole(Abp01_Auth::CAP_EDIT_TRIP_SUMMARY, $forRoleName);
+    }
+
     public function test_canCheckIfCanEditTripSummary_whenCapabilitiesInstalled_othersPosts() {
         $auth = $this->_getAuth();
         $auth->installCapabilities();
 
-        foreach (self::$_testUsers as $roleName => $userId) {
-            if (isset(self::$_testPosts[$userId])) {
-                $ownPostId = self::$_testPosts[$userId];
+        foreach ($this->_testUsers as $roleName => $userId) {
+            if (isset($this->_testPosts[$userId])) {
+                $ownPostId = $this->_testPosts[$userId];
 
-                foreach (self::$_testPosts as $postId) {
+                foreach ($this->_testPosts as $postId) {
                     if ($postId != $ownPostId) {
-                        $expectedCanEditTripSummary = 
-                            self::_capabilityExistsInTestRole('edit_others_posts', $roleName)
-                            && $auth->capCanBeInstalledForRole(Abp01_Auth::CAP_EDIT_TRIP_SUMMARY, $roleName);
+                        $expectedCanEditTripSummary = $this->_shouldBeAbleToEditTripSummary('edit_others_posts', 
+                            $roleName);
 
                         $this->_assertCanEditTripSummary($auth, 
                             $userId, 
@@ -399,9 +425,9 @@ class AuthTests extends WP_UnitTestCase {
     public function test_tryCheckIfCanEditTripSummary_whenCapabilitiesNotInstalled_ownPosts() {
         $auth = $this->_getAuth();
 
-        foreach (self::$_testUsers as $roleName => $userId) {
-            if (isset(self::$_testPosts[$userId])) {
-                $postId = self::$_testPosts[$userId];
+        foreach ($this->_testUsers as $roleName => $userId) {
+            if (isset($this->_testPosts[$userId])) {
+                $postId = $this->_testPosts[$userId];
                 $this->_assertCanEditTripSummary($auth, 
                     $userId, 
                     $postId, 
@@ -413,11 +439,11 @@ class AuthTests extends WP_UnitTestCase {
     public function test_tryCheckIfCanEditTripSummary_whenCapabilitiesNotInstalled_othersPosts() {
         $auth = $this->_getAuth();
 
-        foreach (self::$_testUsers as $roleName => $userId) {
-            if (isset(self::$_testPosts[$userId])) {
-                $ownPostId = self::$_testPosts[$userId];
+        foreach ($this->_testUsers as $roleName => $userId) {
+            if (isset($this->_testPosts[$userId])) {
+                $ownPostId = $this->_testPosts[$userId];
 
-                foreach (self::$_testPosts as $postId) {
+                foreach ($this->_testPosts as $postId) {
                     if ($postId != $ownPostId) {
                         $this->_assertCanEditTripSummary($auth, 
                             $userId, 
