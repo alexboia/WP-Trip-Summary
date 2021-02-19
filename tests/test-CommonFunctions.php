@@ -30,5 +30,29 @@
  */
 
 class CommonFunctionsTests extends WP_UnitTestCase {
-    
+    use GenericTestHelpers;
+
+    public function test_canGetWpErrorFromException() {
+        $expectedFile = __FILE__;
+        $expectedLineBefore = __LINE__;
+        $testException = new Exception('Sample error message', 0x1234);
+        $wpError = abp01_wp_error_from_exception($testException);
+
+        $this->assertNotNull($wpError);
+        $this->assertNotEmpty($wpError);
+        $this->assertEquals('Sample error message', $wpError->get_error_message());
+        $this->assertEquals(0x1234, $wpError->get_error_code());
+        
+        $data = $wpError->get_error_data();
+        $this->assertNotEmpty($data);
+        
+        $this->assertArrayHasKey('file', $data);
+        $this->assertEquals($expectedFile, $data['file']);
+
+        $this->assertArrayHasKey('line', $data);
+        $this->assertEquals($expectedLineBefore + 1, $data['line']);
+
+        $this->assertArrayHasKey('stackTrace', $data);
+        $this->assertEquals($testException->getTraceAsString(), $data['stackTrace']);
+    }
 }
