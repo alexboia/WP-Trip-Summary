@@ -43,10 +43,28 @@ trait AdminTestDataHelpers {
         $data->ajaxUrl = $faker->url;
 
         //fetch and process tile layer information
-        $data->settings = $this->_generateTestSettings();
+        $data->settings = $this->_generateTestSettingsAsPlainObject();
         $data->optionsLimits = $this->_generateTestSettingsOptionLimits();
 
         return $data;
+    }
+
+    private function _generateTestSettingsAsPlainObject() {
+        $asPlainObject = new stdClass();
+        $settings = $this->_generateTestSettings();
+
+        foreach ($settings as $key => $value) {
+            if ($key != 'tileLayers') {
+                $asPlainObject->$key = $value;
+            } else {
+                $asPlainObject->tileLayer = $value[0];
+            }
+        }
+
+        $asPlainObject->allowedUnitSystems = Abp01_UnitSystem::getAvailableUnitSystems();
+		$asPlainObject->allowedViewerTabs = Abp01_Viewer::getAvailableTabs();
+
+        return $asPlainObject;
     }
 
     protected function _generateHelpPageData() {

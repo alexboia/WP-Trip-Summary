@@ -32,6 +32,42 @@
 trait SettingsDataHelpers {
     use GenericTestHelpers;
 
+    protected function _getDefaultSettings() {
+        $defaults = new stdClass();
+        $defaults->showFullScreen = true;
+        $defaults->showMagnifyingGlass = true;
+        $defaults->showTeaser = true;
+        $defaults->showMapScale = true;
+        $defaults->allowTrackDownload = true;
+        $defaults->topTeaserText = $this->_getDefaultTopTeaserText();
+        $defaults->bottomTeaserText = $this->_getDefaultBottomTeaserText();
+        $defaults->tileLayers = array($this->_getDefaultTileLayer());
+        $defaults->unitSystem = Abp01_UnitSystem::METRIC;
+        $defaults->trackLineColour = '#0033ff';
+        $defaults->trackLineWeight = 3;
+        $defaults->mapHeight = 350;
+        $defaults->initialViewerTab = Abp01_Viewer::TAB_INFO;
+        $defaults->showMinMaxAltitude = true;
+		$defaults->showAltitudeProfile = true;
+        return $defaults;
+    }
+
+    private function _getDefaultTileLayer() {
+        $tileLayer = new stdClass();
+        $tileLayer->url = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
+        $tileLayer->attributionTxt = 'OpenStreetMap & Contributors';
+        $tileLayer->attributionUrl = 'http://osm.org/copyright';
+        return $tileLayer;
+    }
+
+    private function _getDefaultBottomTeaserText() {
+        return __('It looks like you skipped the story. You should check it out. Click here to go back to beginning', 'abp01-trip-summary');
+    }
+
+    private function _getDefaultTopTeaserText() {
+        return __('For the pragmatic sort, there is also a trip summary at the bottom of this page. Click here to consult it', 'abp01-trip-summary');
+    }
+
     protected function _generateTestSettings() {
         $tileLayer = new stdClass();
         $tileLayer->url = 'http://{s}.tile.example.com/{z}/{x}/{y}.png';
@@ -52,12 +88,8 @@ trait SettingsDataHelpers {
         $settings->trackLineWeight = 10;
         $settings->mapHeight = 1111;
         $settings->initialViewerTab = Abp01_Viewer::TAB_MAP;
-        $settings->tileLayer = $tileLayer;
         $settings->showMinMaxAltitude = true;
 		$settings->showAltitudeProfile = false;
-
-        $settings->allowedUnitSystems = Abp01_UnitSystem::getAvailableUnitSystems();
-		$settings->allowedViewerTabs = Abp01_Viewer::getAvailableTabs();
 
         return $settings;
     }

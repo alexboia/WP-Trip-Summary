@@ -30,6 +30,8 @@
  */
 
 class SettingsTests extends WP_UnitTestCase {
+    use SettingsDataHelpers;
+
     public function tearDown() {
 		parent::tearDown();
         delete_option(Abp01_Settings::OPT_SETTINGS_KEY);
@@ -37,84 +39,159 @@ class SettingsTests extends WP_UnitTestCase {
 
     public function test_canGetSettings_whenDefault() {
         $settings = $this->_getSettings();
-        $this->assertEquals($this->_getDefaults(), $this->_collectSettings($settings));
+        $this->assertEquals($this->_getDefaultSettings(), $this->_collectSettings($settings));
     }
 
     public function test_trySetInvalidUnitSystem() {
+        foreach (Abp01_UnitSystem::getAvailableUnitSystems() as $key => $label) {
+            $this->_testWhenSettingInvalidUnitSystemTheOldOneIsPresereved($key);
+        }
+    }
+
+    private function _testWhenSettingInvalidUnitSystemTheOldOneIsPresereved($initialUnitSystem) {
         $settings = $this->_getSettings();
-
-        $settings->setUnitSystem(Abp01_UnitSystem::IMPERIAL);
+        $settings->setUnitSystem($initialUnitSystem);
         $settings->setUnitSystem('bogus');
-        $this->assertEquals(Abp01_UnitSystem::IMPERIAL, $settings->getUnitSystem());
 
-        $settings->setUnitSystem(Abp01_UnitSystem::METRIC);
-        $settings->setUnitSystem('bogus');
-        $this->assertEquals(Abp01_UnitSystem::METRIC, $settings->getUnitSystem());
+        $this->assertEquals($initialUnitSystem, 
+            $settings->getUnitSystem());
     }
 
     public function test_trySetInvalidInitialViewerTab() {
+        foreach (Abp01_Viewer::getAvailableTabs() as $key => $label) {
+            $this->_testWhensettingInvalidInitialViewerTabTheOldOneIsPreserved($key);
+        }
+    }
+
+    private function _testWhensettingInvalidInitialViewerTabTheOldOneIsPreserved($initialViewerTab) {
         $settings = $this->_getSettings();
-
-        $settings->setInitialViewerTab(Abp01_Viewer::TAB_INFO);
+        $settings->setInitialViewerTab($initialViewerTab);
         $settings->setInitialViewerTab('bogus_tab');
-        $this->assertEquals(Abp01_Viewer::TAB_INFO, $settings->getInitialViewerTab());
 
-        $settings->setInitialViewerTab(Abp01_Viewer::TAB_MAP);
-        $settings->setInitialViewerTab('bogus_tab');
-        $this->assertEquals(Abp01_Viewer::TAB_MAP, $settings->getInitialViewerTab());
+        $this->assertEquals($initialViewerTab, 
+            $settings->getInitialViewerTab());
+    }
+
+    public function test_canConvertToPlainObject() {
+        $settings = $this->_getSettings();
+        $expectedData = $this->_generateTestSettings();
+
+        $this->_fillSettingsWithGeneratedData($settings, 
+            $expectedData);
+
+        $asPlainObject = $settings->asPlainObject();
+
+        $this->_assertSettingsPlainObjectCorrect($expectedData, 
+            $asPlainObject);
+    }
+
+    private function _fillSettingsWithGeneratedData(Abp01_Settings $settings, $data) {
+        $settings->setShowFullScreen($data->showFullScreen);
+        $settings->setShowMagnifyingGlass($data->showMagnifyingGlass);
+        $settings->setShowTeaser($data->showTeaser);
+        $settings->setShowMapScale($data->showMapScale);
+        $settings->setTopTeaserText($data->topTeaserText);
+        $settings->setBottomTeaserText($data->bottomTeaserText);
+        $settings->setUnitSystem($data->unitSystem);
+        $settings->setTileLayers($data->tileLayers);
+        $settings->setAllowTrackDownload($data->allowTrackDownload);
+        $settings->setTrackLineColour($data->trackLineColour);
+        $settings->setTrackLineWeight($data->trackLineWeight);
+        $settings->setMapHeight($data->mapHeight);
+        $settings->setInitialViewerTab($data->initialViewerTab);
+        $settings->setShowMinMaxAltitude($data->showMinMaxAltitude);
+        $settings->setShowAltitudeProfile($data->showAltitudeProfile);
+        return $settings;
+    }
+
+    private function _assertSettingsPlainObjectCorrect($settingsData, $asPlainObject) {
+        $this->assertNotEmpty($asPlainObject);
+
+        $this->assertEquals($settingsData->showTeaser, 
+            $asPlainObject->showTeaser);
+        $this->assertEquals($settingsData->topTeaserText, 
+            $asPlainObject->topTeaserText);
+        $this->assertEquals($settingsData->bottomTeaserText, 
+            $asPlainObject->bottomTeaserText);
+
+        $tileLayers = $settingsData->tileLayers;
+        $this->assertEquals($tileLayers[0], 
+            $asPlainObject->tileLayer);
+
+        $this->assertEquals($settingsData->showFullScreen, 
+            $asPlainObject->showFullScreen);
+        $this->assertEquals($settingsData->showMagnifyingGlass, 
+            $asPlainObject->showMagnifyingGlass);
+        $this->assertEquals($settingsData->unitSystem, 
+            $asPlainObject->unitSystem);
+        
+        $expectedMeasurementUnits = $this->_getMeasurementUnits($settingsData->unitSystem);
+        $this->assertEquals($expectedMeasurementUnits, 
+            $asPlainObject->measurementUnits);
+
+        $this->assertEquals($settingsData->showMapScale, 
+            $asPlainObject->showMapScale);
+        $this->assertEquals($settingsData->allowTrackDownload, 
+            $asPlainObject->allowTrackDownload);
+        $this->assertEquals($settingsData->trackLineColour, 
+            $asPlainObject->trackLineColour);
+        $this->assertEquals($settingsData->trackLineWeight, 
+            $asPlainObject->trackLineWeight);
+        $this->assertEquals($settingsData->mapHeight, 
+            $asPlainObject->mapHeight);
+        $this->assertEquals($settingsData->initialViewerTab, 
+            $asPlainObject->initialViewerTab);
+        $this->assertEquals($settingsData->showMinMaxAltitude, 
+            $asPlainObject->showMinMaxAltitude);
+        $this->assertEquals($settingsData->showAltitudeProfile, 
+            $asPlainObject->showAltitudeProfile);
+    }
+
+    private function _getMeasurementUnits($unitSystem) {
+        return Abp01_UnitSystem::create($unitSystem)
+            ->asPlainObject();
+    }
+
+    public function test_canGetMeasurementUnits() {
+        $settings = $this->_getSettings();
+        foreach (Abp01_UnitSystem::getAvailableUnitSystems() as $key => $label) {
+            $settings->setUnitSystem($key);
+
+            $this->assertEquals($this->_getMeasurementUnits($key), 
+                $settings->getMeasurementUnits());
+        }
+    }
+
+    public function test_canGetOptionLimits() {
+        $settings = $this->_getSettings();
+        $optionLimits = $settings->getOptionsLimits();
+
+        $this->assertEquals($settings->getMinimumAllowedMapHeight(), 
+            $optionLimits->minAllowedMapHeight);
+        $this->assertEquals($settings->getMinimumAllowedTrackLineWeight(), 
+            $optionLimits->minAllowedTrackLineWeight);
     }
 
     public function test_canSaveSettings() {
-        $tileLayer = new stdClass();
-        $tileLayer->url = 'http://{s}.tile.example.com/{z}/{x}/{y}.png';
-        $tileLayer->attributionTxt = 'Example.com & Contributors';
-        $tileLayer->attributionUrl = 'http://tile.example.com/copyright';
-
-        $expected = new stdClass();
-        $expected->showFullScreen = false;
-        $expected->showMagnifyingGlass = false;
-        $expected->showTeaser = false;
-        $expected->showMapScale = false;
-        $expected->allowTrackDownload = false;
-        $expected->topTeaserText = 'Test top teaser text';
-        $expected->bottomTeaserText = 'Test bottom teaser text';
-        $expected->tileLayers = array($tileLayer);
-        $expected->unitSystem = Abp01_UnitSystem::IMPERIAL;
-        $expected->trackLineColour = '#FFCC00';
-        $expected->trackLineWeight = 10;
-        $expected->mapHeight = 1111;
-        $expected->initialViewerTab = Abp01_Viewer::TAB_MAP;
-        $expected->showMinMaxAltitude = false;
-		$expected->showAltitudeProfile = false;
-
         $settings = $this->_getSettings();
-        $settings->setShowFullScreen($expected->showFullScreen);
-        $settings->setShowMagnifyingGlass($expected->showMagnifyingGlass);
-        $settings->setShowTeaser($expected->showTeaser);
-        $settings->setShowMapScale($expected->showMapScale);
-        $settings->setTopTeaserText($expected->topTeaserText);
-        $settings->setBottomTeaserText($expected->bottomTeaserText);
-        $settings->setUnitSystem($expected->unitSystem);
-        $settings->setTileLayers($expected->tileLayers);
-        $settings->setAllowTrackDownload($expected->allowTrackDownload);
-        $settings->setTrackLineColour($expected->trackLineColour);
-        $settings->setTrackLineWeight($expected->trackLineWeight);
-        $settings->setMapHeight($expected->mapHeight);
-        $settings->setInitialViewerTab($expected->initialViewerTab);
-        $settings->setShowMinMaxAltitude($expected->showMinMaxAltitude);
-        $settings->setShowAltitudeProfile($expected->showAltitudeProfile);
+        $expectedData = $this->_generateTestSettings();
+
+        $this->_fillSettingsWithGeneratedData($settings, 
+            $expectedData);
 
         $settings->saveSettings();
-		$this->assertEquals($expected, $this->_collectSettings($settings));
+		$this->assertEquals($expectedData, 
+            $this->_collectSettings($settings));
 		
         $settings->clearSettingsCache();
-        $this->assertEquals($expected, $this->_collectSettings($settings));
+        $this->assertEquals($expectedData, 
+            $this->_collectSettings($settings));
     }
 
     public function test_canPurgeAllSettings_whenDefault() {
         $settings = $this->_getSettings();
         $settings->purgeAllSettings();
-        $this->assertEquals($this->_getDefaults(), $this->_collectSettings($settings));
+        $this->assertEquals($this->_getDefaultSettings(), $this->_collectSettings($settings));
     }
 
     public function test_canPurgeAllSettings_whenModifiedAndSaved() {
@@ -125,7 +202,7 @@ class SettingsTests extends WP_UnitTestCase {
         $settings->clearSettingsCache();
 
         $settings->purgeAllSettings();
-        $this->assertEquals($this->_getDefaults(), $this->_collectSettings($settings));
+        $this->assertEquals($this->_getDefaultSettings(), $this->_collectSettings($settings));
     }
 
     private function _collectSettings(Abp01_Settings $settings) {
@@ -148,40 +225,16 @@ class SettingsTests extends WP_UnitTestCase {
         return $data;
     }
 
-    private function _getDefaults() {
-        $defaults = new stdClass();
-        $defaults->showFullScreen = true;
-        $defaults->showMagnifyingGlass = true;
-        $defaults->showTeaser = true;
-        $defaults->showMapScale = true;
-        $defaults->allowTrackDownload = true;
-        $defaults->topTeaserText = $this->_getExpectedDefaultTopTeaserText();
-        $defaults->bottomTeaserText = $this->_getExpectedDefaultBottomTeaserText();
-        $defaults->tileLayers = array($this->_getExpectedDefaultTileLayer());
-        $defaults->unitSystem = Abp01_UnitSystem::METRIC;
-        $defaults->trackLineColour = '#0033ff';
-        $defaults->trackLineWeight = 3;
-        $defaults->mapHeight = 350;
-        $defaults->initialViewerTab = Abp01_Viewer::TAB_INFO;
-        $defaults->showMinMaxAltitude = true;
-		$defaults->showAltitudeProfile = true;
-        return $defaults;
-    }
+    public function test_trySetMapHeight_lowerThanMinimumAllowedHeight() {
+        $faker = $this->_getFaker();
+        $settings = $this->_getSettings();       
 
-    private function _getExpectedDefaultTileLayer() {
-        $tileLayer = new stdClass();
-        $tileLayer->url = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
-        $tileLayer->attributionTxt = 'OpenStreetMap & Contributors';
-        $tileLayer->attributionUrl = 'http://osm.org/copyright';
-        return $tileLayer;
-    }
+        $invalidMapHeight = $faker->numberBetween(0, 
+            $settings->getMinimumAllowedMapHeight() - 1);
 
-    private function _getExpectedDefaultBottomTeaserText() {
-        return __('It looks like you skipped the story. You should check it out. Click here to go back to beginning', 'abp01-trip-summary');
-    }
-
-    private function _getExpectedDefaultTopTeaserText() {
-        return __('For the pragmatic sort, there is also a trip summary at the bottom of this page. Click here to consult it', 'abp01-trip-summary');
+        $settings->setMapHeight($invalidMapHeight);
+        $this->assertEquals($settings->getMinimumAllowedMapHeight(), 
+            $settings->getMapHeight());
     }
 
     private function _getSettings() {

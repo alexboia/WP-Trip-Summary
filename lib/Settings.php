@@ -280,6 +280,7 @@ class Abp01_Settings {
 
 	public function asPlainObject() {
 		$data = new stdClass();
+		$this->_loadSettingsIfNeeded();
 
 		//fetch the bulk of the settings
 		$data->showTeaser = $this->getShowTeaser();
