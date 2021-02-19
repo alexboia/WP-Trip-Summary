@@ -54,22 +54,55 @@
         )));
 
         $data = $gpx['data'];
-        $deltaPoint = 1 / pow(10, $options['precision']);
+        $deltaPoint = self::_computeDeltaPoint($options);
 
-        $expectMetadata = array(
-            'name' => !empty($data['metadata']['name']) 
-                ? $data['metadata']['name'] 
-                : null,
-            'desc' => !empty($data['metadata']['desc']) 
-                ? $data['metadata']['desc'] 
-                : null,
-            'keywords' => !empty($data['metadata']['keywords']) 
-                ? $data['metadata']['keywords'] 
-                : null
+        $expectMetadata = self::_determineExpectedMetadataInfo($data);
+        $expectTrackParts = self::_determineExpectedTrackParts($data, $deltaPoint);
+        $expectSampleWaypoints = self::_determineExpectedWaypoints($data, $deltaPoint);
+
+        $unformatteGpxFileName = self::_computeUnformattedGpxFileName($fileName);
+
+        self::$_randomGpxFilesTestInfo[$fileName] = array(
+            'expect' => array(
+                'document' => true,
+                'metadata' => $expectMetadata,
+                'trackParts' => $expectTrackParts,
+                'waypoints' => $expectSampleWaypoints
+            )
         );
 
+        self::$_randomGpxFilesTestInfo[$unformatteGpxFileName] = array(
+            'expect' => $fileName
+        );
+
+        self::_writeTestDataFileContents($fileName, 
+            $gpx['content']['text']);
+        self::_writeTestDataFileContents($unformatteGpxFileName, 
+            $gpx['content']['textNoPretty']);
+    }
+
+    private static function _computeDeltaPoint($options) {
+        return 1 / pow(10, $options['precision']);
+    }
+
+    private static function _determineExpectedMetadataInfo($generatedGpxData) {
+        return array(
+            'name' => !empty($generatedGpxData['metadata']['name']) 
+                ? $generatedGpxData['metadata']['name'] 
+                : null,
+            'desc' => !empty($generatedGpxData['metadata']['desc']) 
+                ? $generatedGpxData['metadata']['desc'] 
+                : null,
+            'keywords' => !empty($generatedGpxData['metadata']['keywords']) 
+                ? $generatedGpxData['metadata']['keywords'] 
+                : null
+        );
+    }
+
+    private static function _determineExpectedTrackParts($generatedGpxData, $deltaPoint) {
         $expectTrackParts = array();
-        foreach ($data['content']['tracks'] as $track) {
+
+        foreach ($generatedGpxData['content']['tracks'] as $track) {
             $expectTrackLines = array();
             foreach ($track['segments'] as $segment) {
                 $samplePoints = array();
@@ -90,38 +123,29 @@
             );
         }
 
+        return $expectTrackParts;
+    }
+
+    private static function _determineExpectedWaypoints($generatedGpxData, $deltaPoint) {
         $expectSampleWaypoints = array();
-        foreach ($data['content']['waypoints']['waypoints'] as $waypoint) {
+
+        foreach ($generatedGpxData['content']['waypoints']['waypoints'] as $waypoint) {
             $expectSampleWaypoints[] = array_merge($waypoint, array(
                 'delta' => $deltaPoint
             ));
         }
 
-        $fileNameNoPretty = str_ireplace('.gpx', '-nopretty.gpx', 
+        return $expectSampleWaypoints;
+    }
+
+    private static function _computeUnformattedGpxFileName($fileName) {
+        return str_ireplace('.gpx', '-unformatted.gpx', 
             $fileName);
-
-        self::$_randomGpxFilesTestInfo[$fileName] = array(
-            'expect' => array(
-                'document' => true,
-                'metadata' => $expectMetadata,
-                'trackParts' => $expectTrackParts,
-                'waypoints' => $expectSampleWaypoints
-            )
-        );
-
-        self::$_randomGpxFilesTestInfo[$fileNameNoPretty] = array(
-            'expect' => $fileName
-        );
-
-        self::_setTestDataFileContents($fileName, 
-            $gpx['content']['text']);
-        self::_setTestDataFileContents($fileNameNoPretty, 
-            $gpx['content']['textNoPretty']);
     }
 
     private static function _clearRandomGpxFiles() {
         foreach (array_keys(self::$_randomGpxFilesTestInfo) as $fileName) {
-            unlink(self::_getDataFilePath($fileName));
+            unlink(self::_determineDataFilePath($fileName));
         }
         self::$_randomGpxFilesTestInfo = array();
     }
@@ -137,20 +161,19 @@
         $parser = new Abp01_Route_Track_GpxDocumentParser();
         
         foreach ($testFiles as $fileName => $testFileSpec) {
-            $fileContents = $this->_getTestDataFileContents($fileName); 
+            $fileContents = $this->_readTestDataFileContents($fileName); 
             $document = $parser->parse($fileContents);
             
-            $expect = is_array($testFileSpec['expect']) 
-                ? $testFileSpec['expect'] 
-                : $testFiles[$testFileSpec['expect']]['expect'];
+            $expectedDocumentData = $this->_determineExpectedDocumentData($testFiles,
+                 $testFileSpec);
 
-            if ($expect['document'] === true) {
+            if ($expectedDocumentData['document'] === true) {
                 $this->assertNotNull($document);
+                $this->_assertMetadataCorrect($document, $expectedDocumentData['metadata']);
+                $this->_assertTrackPartsCorrect($document, $expectedDocumentData['trackParts']);
 
-                $this->_assertMetadataCorrect($document, $expect['metadata']);
-                $this->_assertTrackPartsCorrect($document, $expect['trackParts']);
-                if (!empty($expect['waypoints'])) {
-                    $this->_assertWaypointsCorrect($document, $expect['waypoints']);
+                if (!empty($expectedDocumentData['waypoints'])) {
+                    $this->_assertWaypointsCorrect($document, $expectedDocumentData['waypoints']);
                 }
             } else {
                 $this->assertNull($document);
@@ -158,12 +181,18 @@
         }
     }
 
+    private function _determineExpectedDocumentData($testFiles, $testFileSpec) {
+        return is_array($testFileSpec['expect']) 
+            ? $testFileSpec['expect'] 
+            : $testFiles[$testFileSpec['expect']]['expect'];
+    }
+
     public function test_tryParse_incorrectDocument() {
         $testFiles = $this->_getInvalidTestFilesSpec();
         $parser = new Abp01_Route_Track_GpxDocumentParser();
 
         foreach ($testFiles as $fileName) {
-            $fileContents = $this->_getTestDataFileContents($fileName); 
+            $fileContents = $this->_readTestDataFileContents($fileName); 
             $document = $parser->parse($fileContents);
             $this->assertNull($document);
             $this->assertTrue($parser->hasErrors());
@@ -189,16 +218,28 @@
 
     private function _assertMetadataCorrect(Abp01_Route_Track_Document $actualDocument, $expectMeta) {
         $this->assertNotNull($actualDocument->metadata);
+        $this->_assertMetadataNameCorrect($actualDocument, $expectMeta);
+        $this->_assertMetadataDescriptionCorrect($actualDocument, $expectMeta);
+        $this->_assertMetadataKeywordsCorrect($actualDocument, $expectMeta);
+    }
+
+    private function _assertMetadataNameCorrect(Abp01_Route_Track_Document $actualDocument, $expectMeta) {
         if (!empty($expectMeta['name'])) {
             $this->assertEquals($expectMeta['name'], $actualDocument->metadata->name);
         } else {
             $this->assertEmpty($actualDocument->metadata->name);
         }
+    }
+
+    private function _assertMetadataDescriptionCorrect(Abp01_Route_Track_Document $actualDocument, $expectMeta) {
         if (!empty($expectMeta['desc'])) {
             $this->assertEquals($expectMeta['desc'], $actualDocument->metadata->desc);
         } else {
             $this->assertEmpty($actualDocument->metadata->desc);
         }
+    }
+
+    private function _assertMetadataKeywordsCorrect(Abp01_Route_Track_Document $actualDocument, $expectMeta) {
         if (!empty($expectMeta['keywords'])) {
             $this->assertEquals($expectMeta['keywords'], $actualDocument->metadata->keywords);
         } else {
@@ -227,11 +268,7 @@
 
     private function _assertTrackPartCorrect(Abp01_Route_Track_Part $actualTrackPart, $expectTrackPart) {
         $this->assertNotNull($actualTrackPart);
-        if (!empty($expectTrackPart['name'])) {
-            $this->assertEquals($expectTrackPart['name'], $actualTrackPart->name);
-        } else {
-            $this->assertEmpty($actualTrackPart->name);
-        }
+        $this->_assertTrackPartHasCorrectName($actualTrackPart, $expectTrackPart);
 
         $expectTrackLines = $expectTrackPart['trackLines'];
         $countExpectTrackLines = count($expectTrackLines);
@@ -244,39 +281,57 @@
             $actualTrackLine = $actualTrackPart->lines[$iLine];
 
             $this->assertNotNull($actualTrackLine);
-            $this->assertNotNull($actualTrackLine->trackPoints);
-            $this->assertEquals($expectTrackLine['trackPointsCount'], count($actualTrackLine->trackPoints));
+            $this->_assertLineHasCorrectPoints($actualTrackLine, $expectTrackLine);
+        }
+    }
 
-            if (!empty($expectTrackLine['sampleTrackPoints'])) {
-                foreach ($expectTrackLine['sampleTrackPoints'] as $expectTrackPoint) {
-                    $this->_assertLineHasPoint($actualTrackLine, $expectTrackPoint);
-                }
+    private function _assertTrackPartHasCorrectName($actualTrackPart, $expectTrackPart) {
+        if (!empty($expectTrackPart['name'])) {
+            $this->assertEquals($expectTrackPart['name'], $actualTrackPart->name);
+        } else {
+            $this->assertEmpty($actualTrackPart->name);
+        }
+    }
+
+    private function _assertLineHasCorrectPoints(Abp01_Route_Track_Line $line, $expectTrackLine) {
+        $this->assertNotNull($line->trackPoints);
+
+        $this->assertEquals($expectTrackLine['trackPointsCount'], 
+            count($line->trackPoints));
+
+        if (!empty($expectTrackLine['sampleTrackPoints'])) {
+            foreach ($expectTrackLine['sampleTrackPoints'] as $expectTrackPoint) {
+                $this->_assertLineContainsPoint($line, $expectTrackPoint);
             }
         }
     }
 
-    private function _assertLineHasPoint(Abp01_Route_Track_Line $line, $pointSpec) {
+    private function _assertLineContainsPoint(Abp01_Route_Track_Line $line, $expectedPointSpec) {
         $this->_assertCollectionHasPoint($line->trackPoints, 
-            $pointSpec);
+            $expectedPointSpec);
     }
 
-    private function _assertCollectionHasPoint($points, $pointSpec) {
+    private function _assertCollectionHasPoint($points, $expectedPointSpec) {
         $found = false;
 
-        $delta = isset($pointSpec['delta']) 
-            ? $pointSpec['delta'] 
+        $delta = isset($expectedPointSpec['delta']) 
+            ? $expectedPointSpec['delta'] 
             : 0.00;
 
-        foreach ($points as $maybePoint) {
-            if (abs($maybePoint->coordinate->lat - $pointSpec['lat']) / $pointSpec['lat'] <= $delta 
-                && abs($maybePoint->coordinate->lng - $pointSpec['lon']) / $pointSpec['lon'] <= $delta 
-                && abs($maybePoint->coordinate->alt - $pointSpec['ele']) / $pointSpec['ele'] <= $delta) {
+        foreach ($points as $candidatePoint) {
+            if ($this->_candidatePointMatchesExpectedWithinDelta($candidatePoint, $expectedPointSpec, $delta)) {
                 $found = true;
                 break;
             }
         }
 
         $this->assertTrue($found);
+    }
+
+    private function _candidatePointMatchesExpectedWithinDelta($candidatePoint, $expectedPointSpec, $delta) {
+        return abs($candidatePoint->coordinate->lat - $expectedPointSpec['lat']) / $expectedPointSpec['lat'] <= $delta 
+            && abs($candidatePoint->coordinate->lng - $expectedPointSpec['lon']) / $expectedPointSpec['lon'] <= $delta 
+            && abs($candidatePoint->coordinate->alt - $expectedPointSpec['ele']) / $expectedPointSpec['ele'] <= $delta;
     }
 
     private static function _getRandomFileGenerationSpec() {

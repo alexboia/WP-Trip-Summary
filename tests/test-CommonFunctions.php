@@ -29,22 +29,6 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
- trait TestDataFileHelpers {
-    protected static function _writeTestDataFileContents($fileName, $contents) {
-        file_put_contents(self::_determineDataFilePath($fileName), $contents);
-    }
+class CommonFunctionsTests extends WP_UnitTestCase {
     
-    protected static function _readTestDataFileContents($fileName) {
-        return file_get_contents(self::_determineDataFilePath($fileName));
-    }
-
-    protected static function _determineDataFilePath($fileName) {
-        return wp_normalize_path(self::_determineTestDataDir() . '/' . $fileName);
-    }
-
-    protected static function _determineTestDataDir() {
-        return wp_normalize_path(self::_getRootTestsDir() . '/' . 'assets');
-    }
-
-    protected abstract static function _getRootTestsDir();
- }
+}
