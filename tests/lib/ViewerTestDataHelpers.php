@@ -45,8 +45,8 @@ trait ViewerTestDataHelpers {
     }
 
     protected function _getTrackDataOnly($showTeaser) {
-        $data = new stdClass();
         $faker = $this->_getFaker();
+        $data = $this->_createNewFrontendViewerData();
 
         $data->settings = new stdClass();
         $data->settings->showTeaser = $showTeaser;
@@ -66,9 +66,30 @@ trait ViewerTestDataHelpers {
         return $data;
     }
 
-    protected function _getBikingTripData($showTeaser, $trackExists) {
-        $data = new stdClass();
+    protected function _getRandomTrackDataOnly() {
         $faker = $this->_getFaker();
+        return $this->_getTrackDataOnly($faker->boolean());
+    }
+
+    private function _createNewFrontendViewerData() {
+        $faker = $this->_getFaker();
+        $postId = $faker->randomNumber();
+
+        $data = new stdClass();
+        $data->postId = $postId;
+		$data->ajaxUrl = $faker->url;
+		$data->ajaxGetTrackAction = ABP01_ACTION_GET_TRACK;
+		$data->downloadTrackAction = ABP01_ACTION_DOWNLOAD_TRACK;
+		$data->imgBaseUrl = $faker->url;
+        $data->nonceGet = $faker->randomAscii;
+	    $data->nonceDownload = $faker->randomAscii;
+
+        return $data;
+    }
+
+    protected function _getBikingTripData($showTeaser, $trackExists) {
+        $faker = $this->_getFaker();
+        $data = $this->_createNewFrontendViewerData();
 
         $data->settings = new stdClass();
         $data->settings->showTeaser = $showTeaser;
@@ -111,9 +132,15 @@ trait ViewerTestDataHelpers {
         return $data;
     }
 
-    protected function _getHikingTripData($showTeaser, $trackExists) {
-        $data = new stdClass();
+    protected function _getRandomBikingTripData() {
         $faker = $this->_getFaker();
+        return $this->_getBikingTripData($faker->boolean(), 
+            $faker->boolean());
+    }
+
+    protected function _getHikingTripData($showTeaser, $trackExists) {
+        $faker = $this->_getFaker();
+        $data = $this->_createNewFrontendViewerData();
 
         $data->settings = new stdClass();
         $data->settings->showTeaser = $showTeaser;
@@ -156,9 +183,15 @@ trait ViewerTestDataHelpers {
         return $data;
     }
 
-    protected function _getTrainRideTripData($showTeaser, $trackExists) {
-        $data = new stdClass();
+    protected function _getRandomHikingTripData() {
         $faker = $this->_getFaker();
+        return $this->_getHikingTripData($faker->boolean(), 
+            $faker->boolean());
+    }
+
+    protected function _getTrainRideTripData($showTeaser, $trackExists) {
+        $faker = $this->_getFaker();
+        $data = $this->_createNewFrontendViewerData();
 
         $data->settings = new stdClass();
         $data->settings->showTeaser = $showTeaser;
@@ -201,6 +234,12 @@ trait ViewerTestDataHelpers {
         return $data;
     }
 
+    protected function _getRandomTrainRideTripData() {
+        $faker = $this->_getFaker();
+        return $this->_getTrainRideTripData($faker->boolean(), 
+            $faker->boolean());
+    }
+
     protected function _getFrontendTopTeaserData($showTeaser, $infoExists, $trackExists) {
         $data = new stdClass();
         $data->settings = new stdClass();
@@ -214,6 +253,13 @@ trait ViewerTestDataHelpers {
         $data->track->exists = $trackExists;
 
         return $data;
+    }
+
+    protected function _getRandomFrontendTopTeaserData() {
+        $faker = $this->_getFaker();
+        return $this->_getFrontendTopTeaserData($faker->boolean(), 
+            $faker->boolean(), 
+            $faker->boolean());
     }
 
     protected function _randomOptionList($type) {

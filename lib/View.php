@@ -66,14 +66,28 @@ class Abp01_View {
 	    return ob_get_clean();
     }
 
+    public function isUsingTheme($wptsThemeClass) {
+        return !empty($this->_frontendTheme) 
+            && get_class($this->_frontendTheme) == $wptsThemeClass;
+    }
+
     public function initView() {
+        $frontendThemeClass = $this->_determineThemeClass();
+        $this->_frontendTheme = new $frontendThemeClass($this->_env);
+    }
+
+    private function _determineThemeClass() {
         $frontendThemeClass = apply_filters('abp01_get_frotend_theme_class', 'Abp01_FrontendTheme_Decorator');
-        if (!empty($frontendThemeClass) 
-            && in_array('Abp01_FrontendTheme', class_implements($frontendThemeClass, true))) {
-            $this->_frontendTheme = new $frontendThemeClass($this->_env);
-        } else {
-            $this->_frontendTheme = new Abp01_FrontendTheme_Decorator($this->_env);
+        if (!$this->_isThemeClassValid($frontendThemeClass)) {
+            $frontendThemeClass = 'Abp01_FrontendTheme_Decorator';
         }
+        return $frontendThemeClass;
+    }
+
+    private function _isThemeClassValid($frontendThemeClass) {
+        return !empty($frontendThemeClass) 
+            && class_exists($frontendThemeClass)
+            && in_array('Abp01_FrontendTheme', class_implements($frontendThemeClass, true));
     }
 
     public function includeFrontendViewerScripts($translations) {

@@ -84,6 +84,8 @@ class SettingsTests extends WP_UnitTestCase {
         $expected->trackLineWeight = 10;
         $expected->mapHeight = 1111;
         $expected->initialViewerTab = Abp01_Viewer::TAB_MAP;
+        $expected->showMinMaxAltitude = false;
+		$expected->showAltitudeProfile = false;
 
         $settings = $this->_getSettings();
         $settings->setShowFullScreen($expected->showFullScreen);
@@ -99,6 +101,8 @@ class SettingsTests extends WP_UnitTestCase {
         $settings->setTrackLineWeight($expected->trackLineWeight);
         $settings->setMapHeight($expected->mapHeight);
         $settings->setInitialViewerTab($expected->initialViewerTab);
+        $settings->setShowMinMaxAltitude($expected->showMinMaxAltitude);
+        $settings->setShowAltitudeProfile($expected->showAltitudeProfile);
 
         $settings->saveSettings();
 		$this->assertEquals($expected, $this->_collectSettings($settings));
@@ -139,6 +143,8 @@ class SettingsTests extends WP_UnitTestCase {
         $data->trackLineWeight = $settings->getTrackLineWeight();
         $data->mapHeight = $settings->getMapHeight();
         $data->initialViewerTab = $settings->getInitialViewerTab();
+        $data->showMinMaxAltitude = $settings->getShowMinMaxAltitude();
+		$data->showAltitudeProfile = $settings->getShowAltitudeProfile();
         return $data;
     }
 
@@ -157,6 +163,8 @@ class SettingsTests extends WP_UnitTestCase {
         $defaults->trackLineWeight = 3;
         $defaults->mapHeight = 350;
         $defaults->initialViewerTab = Abp01_Viewer::TAB_INFO;
+        $defaults->showMinMaxAltitude = true;
+		$defaults->showAltitudeProfile = true;
         return $defaults;
     }
 

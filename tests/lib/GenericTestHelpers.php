@@ -37,6 +37,12 @@ trait GenericTestHelpers {
         return $wp_styles->registered[$handle]->src;
     }
 
+    protected function _ensureDirExists($dir) {
+        if (!is_dir($dir)) {
+            @mkdir($dir);
+        }
+    }
+
     protected function _recursiveCopyDirectory($source, $destination) {
         $entries = @scandir($source);
         if ($entries === false) {

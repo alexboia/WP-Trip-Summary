@@ -36,6 +36,8 @@ require_once 'lib/LookupDataTestHelpers.php';
 require_once 'lib/RouteInfoTestDataSets.php';
 require_once 'lib/RouteTrackTestDataHelpers.php';
 require_once 'lib/ViewerTestDataHelpers.php';
+require_once 'lib/SettingsDataHelpers.php';
+require_once 'lib/AdminTestDataHelpers.php';
 
 require_once 'faker/autoload.php';
 require_once 'lib/GpxDocumentFakerDataProvider.php';
@@ -90,6 +92,11 @@ function _manually_install_plugin() {
 	}
 
 	_set_plugin_installed();
+	_include_plugin_dependent_test_classes();
+}
+
+function _include_plugin_dependent_test_classes() {
+	require_once 'lib/TestFrontendTheme.php';
 }
 
 function _sync_wp_tests_config($testsDir) {

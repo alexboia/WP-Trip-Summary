@@ -35,12 +35,40 @@ class FrontendThemeDecoratorTests extends WP_UnitTestCase {
 
     public function setUp() {
         parent::setUp();
-        $this->_setupWpTsTestTheme();
+        $this->_setupPluginViewerTestTheme();
+    }
+
+    private function _setupPluginViewerTestTheme() {
+        $this->_ensurePluginViewerTemplateDirectoryExists();
+        $this->_copyLocalTestViewerThemeFilesToWpThemeViewerTemplateDirectory();
+    }
+
+    private function _ensurePluginViewerTemplateDirectoryExists() {
+        $pluginViewerTemplateDir = $this->_getCurrentPluginViewerTemplateDirectory();
+        $this->_ensureDirExists($pluginViewerTemplateDir);
+    }
+
+    private function _copyLocalTestViewerThemeFilesToWpThemeViewerTemplateDirectory() {
+        $localThemeFilesDir = $this->_getLocalViewerTestThemeFilesDirectory();
+        $pluginViewerTemplateDir = $this->_getCurrentPluginViewerTemplateDirectory();
+
+        $this->_recursiveCopyDirectory($localThemeFilesDir, 
+            $pluginViewerTemplateDir);
     }
 
     public function tearDown() {
         parent::tearDown();
-        $this->_cleanupWpTsTestTheme();
+        $this->_cleanupPluginViewerTestTheme();
+    }
+
+    private function _cleanupPluginViewerTestTheme() {
+        $pluginViewerTemplateDir = $this->_getCurrentPluginViewerTemplateDirectory();
+        $this->_removeDirectoryRecursively($pluginViewerTemplateDir);
+    }
+
+    private function _getCurrentPluginViewerTemplateDirectory() {
+        return $this->_getEnv()->getFrontendTemplateLocations()
+            ->theme;
     }
 
     /**
@@ -56,14 +84,29 @@ class FrontendThemeDecoratorTests extends WP_UnitTestCase {
         $theme = $this->_getFrontendThemeDecorator();
         $theme->includeFrontendViewerStyles();
 
-        $themeCssFileBaseUrl = $this->_getEnv()
-            ->getFrontendTemplateLocations()
+        $this->_assertFrontendMainStyleEnqueued();
+        $this->_assertFrontendMainStyledEnqueuedWithCorrectUrl();
+    }
+
+    private function _assertFrontendMainStyleEnqueued() {
+        $isFrontendMainStyleEnqueued = wp_style_is(Abp01_Includes::STYLE_FRONTEND_MAIN, 'enqueued');
+        $this->assertTrue($isFrontendMainStyleEnqueued);
+    }
+
+    private function _assertFrontendMainStyledEnqueuedWithCorrectUrl() {
+        $expectendFrontendMainStyleUrl = $this->_getExpendedPluginThemeCssFileUrl('abp01-frontend-main.css');
+        $actualFrontendMainStyleUrl = $this->_getEnqueuedStyleUrl(Abp01_Includes::STYLE_FRONTEND_MAIN);
+        $this->assertEquals($expectendFrontendMainStyleUrl, $actualFrontendMainStyleUrl);
+    }
+
+    private function _getExpendedPluginThemeCssFileUrl($pluginCssFile) {
+        $pluginViewerTemplateUrl = $this->_getCurrentPluginViewerTemplateUrl();
+        return $pluginViewerTemplateUrl . '/media/css/' . $pluginCssFile;
+    }
+
+    private function _getCurrentPluginViewerTemplateUrl() {
+        return $this->_getEnv()->getFrontendTemplateLocations()
             ->themeUrl;
-
-        $themCssFileUrl = $themeCssFileBaseUrl . '/media/css/abp01-frontend-main.css';
-
-        $this->assertTrue(wp_style_is(Abp01_Includes::STYLE_FRONTEND_MAIN, 'enqueued'));
-        $this->assertEquals($this->_getEnqueuedStyleUrl(Abp01_Includes::STYLE_FRONTEND_MAIN), $themCssFileUrl);
     }
 
     /**
@@ -74,6 +117,11 @@ class FrontendThemeDecoratorTests extends WP_UnitTestCase {
         $theme = $this->_getFrontendThemeDecorator();
         $theme->registerFrontendViewerHelpers();
 
+        $this->_assertViewHelperFunctionsExist();
+        $this->_assertTestThemeFrontendViewHelpersAreRegistered();
+    }
+
+    private function _assertViewHelperFunctionsExist() {
         $expectedFunctions = array(
             'abp01_extract_value_from_frontend_data',
             'abp01_format_info_item_value',
@@ -83,8 +131,9 @@ class FrontendThemeDecoratorTests extends WP_UnitTestCase {
         foreach ($expectedFunctions as $fn) {
             $this->assertTrue(function_exists($fn));
         }
+    }
 
-        //Test return values
+    private function _assertTestThemeFrontendViewHelpersAreRegistered() {
         $value = abp01_extract_value_from_frontend_data(new stdClass(), 'sampleField');
         $this->assertEquals('test_field_value', $value);
 
@@ -94,24 +143,35 @@ class FrontendThemeDecoratorTests extends WP_UnitTestCase {
         ob_start();
         abp01_display_info_item(new stdClass(), 'sampelField', 'Sample label', 'sampleSuffix');
         $displayableItem = ob_get_clean();
-
         $this->assertEquals('test_display_info_item', $displayableItem);
     }
 
     public function test_canRenderTopTeaser_whenShowTeaserTrue() {
+        $dataset = array(
+            array(
+                'data' => $this->_getFrontendTopTeaserData(true, true, false),
+                'expectNotEmpty' => true
+            ),
+            array(
+                'data' => $this->_getFrontendTopTeaserData(true, false, true),
+                'expectNotEmpty' => true
+            ),
+            array(
+                'data' => $this->_getFrontendTopTeaserData(true, true, true),
+                'expectNotEmpty' => true
+            ),
+            array(
+                'data' => $this->_getFrontendTopTeaserData(true, false, false),
+                'expectNotEmpty' => false
+            )
+        );
+
         $theme = $this->_getFrontendThemeDecorator();
-
-        $data = $this->_getFrontendTopTeaserData(true, true, false);
-        $this->_runTeaserRenderingTest($theme, $data, true);
-
-        $data = $this->_getFrontendTopTeaserData(true, false, true);
-        $this->_runTeaserRenderingTest($theme, $data, true);
-
-        $data = $this->_getFrontendTopTeaserData(true, true, true);
-        $this->_runTeaserRenderingTest($theme, $data, true);
-
-        $data = $this->_getFrontendTopTeaserData(true, false, false);
-        $this->_runTeaserRenderingTest($theme, $data, false);
+        foreach ($dataset as $testSpec) {
+            $this->_runTeaserRenderingTest($theme, 
+                $testSpec['data'], 
+                $testSpec['expectNotEmpty']);
+        }
     }
 
     public function test_canRenderTopTeaser_whenShowTeaserFalse() {
@@ -209,27 +269,8 @@ class FrontendThemeDecoratorTests extends WP_UnitTestCase {
         }
     }
 
-    private function _setupWpTsTestTheme() {
-        $themeLocations = $this->_getEnv()
-            ->getFrontendTemplateLocations();
-        
-        $themeDir = $themeLocations->theme;
-        if (!is_dir($themeDir)) {
-            @mkdir($themeDir);
-        }
-
-        $localThemeFilesDir = $this->_getLocalThemeFilesDirectory();
-        $this->_recursiveCopyDirectory(realpath($localThemeFilesDir), realpath($themeDir));
-    }
-
-    private function _cleanupWpTsTestTheme() {
-        $themeLocations = $this->_getEnv()
-            ->getFrontendTemplateLocations();
-        $this->_removeDirectoryRecursively(realpath($themeLocations->theme));
-    }
-
-    private function _getLocalThemeFilesDirectory() {
-        return __DIR__ . '/wpts-test-theme';
+    private function _getLocalViewerTestThemeFilesDirectory() {
+        return realpath(__DIR__ . '/wpts-test-theme');
     }
 
     private function _frontendViewHelperRegistered() {

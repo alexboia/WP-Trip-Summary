@@ -337,3 +337,21 @@ function abp01_get_http_method() {
 function abp01_ensure_storage_directory() {
 	abp01_get_installer()->ensureStorageDirectoriesAndAssets();
 }
+
+if (!function_exists('wp_script_get_data')) {
+	function wp_script_get_data($handle) {
+		return wp_scripts()->get_data($handle, 'data');
+	}
+}
+
+if (!function_exists('wp_script_has_localization')) {
+	function wp_script_has_localization($handle, $localizationVarName) {
+		$data = wp_script_get_data($handle);
+		if ($data !== false) {
+			$searchMarker = sprintf('var %s', $localizationVarName);
+			return strpos($data, $searchMarker) !== false;
+		} else {
+			return false;
+		}
+	}
+}
