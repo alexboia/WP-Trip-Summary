@@ -421,7 +421,7 @@ class Abp01_Env {
     }
 
     public function getCurrentThemeUrl() {
-        return  wp_get_theme()->get_stylesheet_directory_uri();
+        return wp_get_theme()->get_stylesheet_directory_uri();
     }
 
     /**

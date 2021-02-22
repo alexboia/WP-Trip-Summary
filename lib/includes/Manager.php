@@ -154,8 +154,15 @@ class Abp01_Includes_Manager {
 
     private function _determineScriptSrcUrl($script) {
         $scriptPath = $this->_determineScriptPath($script);
-        return plugins_url($scriptPath, 
-            $this->_refPluginsPath);
+        return !$this->_isExplicityAbsolute($scriptPath) 
+            ? plugins_url($scriptPath, $this->_refPluginsPath)
+            : $scriptPath['path'];
+    }
+
+    private function _isExplicityAbsolute($path) {
+        return is_array($path) 
+            && isset($path['absolute']) 
+            && $path['absolute'] === true;
     }
 
     public function getActualScriptToInclude($handle) {
@@ -254,10 +261,11 @@ class Abp01_Includes_Manager {
         return $stylePath;
     }
     
-    private function _determineStyleSrcUrl($script) {
-        $stylePath = $this->_determineStylePath($script);
-        return plugins_url($stylePath, 
-            $this->_refPluginsPath);
+    private function _determineStyleSrcUrl($style) {
+        $stylePath = $this->_determineStylePath($style);
+        return !$this->_isExplicityAbsolute($stylePath) 
+            ? plugins_url($stylePath, $this->_refPluginsPath)
+            : $stylePath['path'];
     }
 
     public function getStyleSrcUrl($handle) {

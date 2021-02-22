@@ -45,7 +45,10 @@ class Abp01_Includes_FrontendStylePerThemePathRewriter implements Abp01_Includes
             $alternateLocations = $this->_getFrontendTemplateLocations();
             $themeCssFilePath = $alternateLocations->theme . '/' . $item['path'];
             if (is_readable($themeCssFilePath)) {
-                $stylePath = $alternateLocations->themeUrl . '/' . $item['path'];
+                $stylePath = array(
+                    'path' => $alternateLocations->themeUrl . '/' . $item['path'],
+                    'absolute' => true
+                );
             } else {
                 $stylePath = $item['path'];
             }
