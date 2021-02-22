@@ -136,6 +136,10 @@ trait GenericTestHelpers {
         );
     }
 
+    protected function _countObjectVars($obj) {
+        return count(get_object_vars($obj));
+    }
+
     public static function emptyValuesProvider() {
         return array(array(
             ''
