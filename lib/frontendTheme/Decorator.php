@@ -39,9 +39,8 @@ class Abp01_FrontendTheme_Decorator extends Abp01_FrontendTheme_Default {
     }
 
     public function includeFrontendViewerStyles() {
-        if (!Abp01_Includes::includeStyleFrontendMainFromCurrentThemeIfPresent()) {
-            parent::includeFrontendViewerStyles();
-        }
+        Abp01_Includes::enableStyleOverrideFromCurrentTheme();
+        parent::includeFrontendViewerStyles();
     }
 
     public function registerFrontendViewerHelpers() {

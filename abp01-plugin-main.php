@@ -619,8 +619,7 @@ function abp01_uninstall() {
 }
 
 function abp01_init_core() {
-	Abp01_Includes::setRefPluginsPath(__FILE__);
-	Abp01_Includes::setScriptsInFooter(true);
+	Abp01_Includes::configure(__FILE__, true);
 
 	load_plugin_textdomain('abp01-trip-summary', 
 		false, 

@@ -162,9 +162,10 @@ class Abp01_Includes {
 
 	const STYLE_FRONTEND_MAIN_TWENTY_NINETEEN = 'abp01-frontend-main-twentynineteen-css';
 
-	private static $_refPluginsPath;
-
-	private static $_scriptsInFooter = false;
+	/**
+	 * @var Abp01_Includes_Manager
+	 */
+	private static $_includesManager = null;
 
 	private static $_scripts = array(
 		self::JS_URI_JS => array(
@@ -476,6 +477,7 @@ class Abp01_Includes {
 		self::STYLE_FRONTEND_MAIN => array(
 			'path' => 'media/css/abp01-frontend-main.css', 
 			'version' => ABP01_VERSION,
+			'allowOverrideFromTheme' => true,
 			'deps' => array(
 				self::STYLE_DASHICONS,
 				self::STYLE_NPROGRESS,
@@ -603,240 +605,52 @@ class Abp01_Includes {
 		'twentynineteen' => self::STYLE_FRONTEND_MAIN_TWENTY_NINETEEN
 	);
 
-	private static function _getEnv() {
-		return Abp01_Env::getInstance();
+	public static function configure($refPluginsPath, $scriptsInFooter) {
+		self::$_includesManager = new Abp01_Includes_Manager(self::$_scripts, 
+			self::$_styles, 
+			$refPluginsPath, 
+			$scriptsInFooter);
+
+		self::$_includesManager
+			->setScriptsPathRewriter(new Abp01_Includes_MaybeLeafletPluginScriptPathRewriter())
+			->setScriptsDependencySelector(new Abp01_Includes_CallbackDependencySelector())
+			->setStylesDependencySelector(new Abp01_Includes_CallbackDependencySelector());
 	}
 
-	private static function _getSettings() {
-		return Abp01_Settings::getInstance();
-	}
-
-	private static function _hasScript($handle) {
-		return !empty(self::$_scripts[$handle]);
-	}
-
-	private static function _hasStyle($handle) {
-		return !empty(self::$_styles[$handle]);
+	public function isConfigured() {
+		return self::$_includesManager instanceof Abp01_Includes_Manager;
 	}
 
 	private static function _hasAltitudeProfile(Abp01_Env $env, Abp01_Settings $settings) {
 		return $settings->getShowAltitudeProfile();
 	}
 
-	private static function _getActualElement($handle, array &$collection) {
-		$script = null;
-		$actual = null;
-
-		if (isset($collection[$handle])) {
-			$script = $collection[$handle];
-			if (!empty($script['alias'])) {
-				$handle = $script['alias'];
-				$actual = isset($collection[$handle]) 
-					? $collection[$handle]
-					: null;
-			}
-
-			if (!empty($actual)) {
-				$deps = isset($script['deps']) 
-					? $script['deps'] 
-					: null;
-				if (!empty($deps)) {
-					$actual['deps'] = $deps;
-				}
-			} else {
-				$actual = $script;
-			}
-		}
-
-		return $actual;
-	}
-
-	private static function _getActualScriptToInclude($handle) {
-		return self::_getActualElement($handle, self::$_scripts);
-	}
-
-	private static function _getActualStyleToInclude($handle) {
-		return self::_getActualElement($handle, self::$_styles);
-	}
-
-	private static function _collectDependencyHandles(array $deps) {
-		$depHandles = array();
-
-		$env = self::_getEnv();
-		$settings = self::_getSettings();
-
-		foreach ($deps as $depHandle) {
-			$includeIf = null;
-			$includeHandle = $depHandle;
-			
-			if (is_array($depHandle)) {
-				$includeHandle = $depHandle['handle'];
-				$includeIf = isset($depHandle['if']) && is_callable($depHandle['if']) 
-					? $depHandle['if'] 
-					: null;
-			}
-
-			if (empty($includeIf) || $includeIf($env, $settings)) {
-				$depHandles[] = $includeHandle;
-			}
-		}
-
-		return $depHandles;
-	}
-
-	private static function _ensureScriptDependencies(array $depsHandles, $list) {
-		foreach ($depsHandles as $depHandle) {
-			if (self::_hasScript($depHandle)) {
-				self::_includeScript($depHandle, $list);
-			}
-		}
-	}
-
-	private static function _ensureStyleDependencies(array $depsHandles, $list) {
-		foreach ($depsHandles as $depHandle) {
-			if (self::_hasStyle($depHandle)) {
-				self::_includeStyle($depHandle, $list);
-			}
-		}
-	}
-
-	private static function _scriptNeedsWrap($script) {
-		return isset($script['is-leaflet-plugin'])  
-			&& $script['is-leaflet-plugin'] === true
-			&& isset($script['needs-wrap']) 
-			&& $script['needs-wrap'] === true;
-	}
-
-	private static function _urlRewriteEnabled() {
-		static $enabled = null;
-
-		if ($enabled === null) {
-			if (!function_exists('got_url_rewrite')) {
-				require_once ABSPATH . 'wp-admin/includes/misc.php';
-			}
-			$enabled = got_url_rewrite();
-		}
-
-		return $enabled;
-	}
-
-	private static function _includeScript($handle, $list = 'enqueued') {
+	private static function _includeScript($handle) {
 		if (empty($handle)) {
 			return;
 		}
-
-		if (self::_hasScript($handle)) {
-			if (!wp_script_is($handle, $list)) {
-				$script = self::_getActualScriptToInclude($handle);
-
-				$deps = isset($script['deps']) && is_array($script['deps']) 
-					? $script['deps'] 
-					: array();
-
-				$deps = self::_collectDependencyHandles($deps);
-				if (!empty($deps)) {
-					self::_ensureScriptDependencies($deps, $list);
-				}
-
-				if (self::_scriptNeedsWrap($script)) {
-					$scriptPath = self::_urlRewriteEnabled()
-						? $script['path']
-						: 'abp01-plugin-leaflet-plugins-wrapper.php?load=' . $script['path'];
-				} else {
-					$scriptPath = $script['path'];
-				}
-
-				$src = plugins_url($scriptPath, self::$_refPluginsPath);
-				if ($list == 'registered') {
-					//just register it, if so requested
-					wp_register_script($handle, 
-						$src,
-						$deps,
-						$script['version'],
-						self::$_scriptsInFooter
-					);
-				} else {
-					//if registered before, just enqueue it.
-					//	otherwise, enqueue it with complete details.	
-					if (!wp_script_is($handle, 'registered')) {
-						wp_enqueue_script($handle, 
-							$src, 
-							$deps, 
-							$script['version'], 
-							self::$_scriptsInFooter);
-					} else {
-						wp_enqueue_script($handle);
-					}
-				}
-				
-				if (isset($script['inline-setup'])) {
-					wp_add_inline_script($handle, $script['inline-setup']);
-				}
-			} else {
-				wp_enqueue_script($handle);
-			}
-		} else {
-			wp_enqueue_script($handle);
-		}
+		self::$_includesManager->enqueueScript($handle);
 	}
 
-	private static function _includeStyle($handle, $list = 'enqueued') {
+	private static function _includeStyle($handle) {
 		if (empty($handle)) {
 			return;
 		}
-
-		if (self::_hasStyle($handle)) {
-			$style = self::_getActualStyleToInclude($handle);
-			if (!isset($style['media']) || !$style['media']) {
-				$style['media'] = 'all';
-			}
-
-			$deps = isset($style['deps']) && is_array($style['deps']) 
-				? $style['deps'] 
-				: array();
-
-			$deps = self::_collectDependencyHandles($deps);
-			if (!empty($deps)) {
-				self::_ensureStyleDependencies($deps, $list);
-			}
-
-			$src = plugins_url($style['path'], self::$_refPluginsPath);
-			if ($list == 'registered') {
-				wp_register_style($handle,
-					$src,
-					$deps,
-					$style['version'],
-					$style['media']);
-			} else {
-				if (!wp_style_is($handle, 'registered')) {
-					wp_enqueue_style($handle, 
-						$src, 
-						$deps, 
-						$style['version'], 
-						$style['media']);
-				} else {
-					wp_enqueue_style($handle);
-				}
-			}
-		} else {
-			wp_enqueue_style($handle);
-		}
-	}
-
-	public static function setRefPluginsPath($refPluginsPath) {
-		self::$_refPluginsPath = $refPluginsPath;
-	}
-
-	public static function setScriptsInFooter($scriptsInFooter) {
-		self::$_scriptsInFooter = $scriptsInFooter;
+		self::$_includesManager->enqueueStyle($handle);
 	}
 
 	public static function injectPluginSettings($scriptHandle) {
+		wp_localize_script($scriptHandle, 
+			'abp01Settings', 
+			self::_getInjectablePluginSettings());
+	}
+
+	private static function _getInjectablePluginSettings() {
 		$settings = self::_getSettings();
 		$tileLayers = $settings->getTileLayers();
 		$mainTileLayer = $tileLayers[0];
 
-		wp_localize_script($scriptHandle, 'abp01Settings', array(
+		return array(
 			'_env' => array(
 				'WP_DEBUG' => defined('WP_DEBUG') && WP_DEBUG === true
 			),
@@ -855,7 +669,11 @@ class Abp01_Includes {
 			'trackLineColour' => $settings->getTrackLineColour(),
 			'trackLineWeight' => $settings->getTrackLineWeight(),
 			'initialViewerTab' => $settings->getInitialViewerTab()
-		));
+		);
+	}
+
+	private static function _getSettings() {
+		return abp01_get_settings();
 	}
 
 	public static function includeScriptAdminEditorMain($addScriptSettings, $localization) {
@@ -914,13 +732,8 @@ class Abp01_Includes {
 	}
 
 	public static function getClassicEditorViewerShortcodePluginUrl() {
-		$script = self::_getActualScriptToInclude(self::JS_ABP01_CLASSIC_EDITOR_VIEWER_SHORTCODE_PLUGIN);
-
-		$src = plugins_url($script['path'], 
-			self::$_refPluginsPath);
-
-		return add_query_arg(array('ver' => $script['version']), 
-			$src);
+		return self::$_includesManager
+			->getScriptSrcUrl(self::JS_ABP01_CLASSIC_EDITOR_VIEWER_SHORTCODE_PLUGIN);
 	}
 
 	public static function includeStyleFrontendMain() {
@@ -936,37 +749,12 @@ class Abp01_Includes {
 		}
 	}
 
-	public static function includeStyleFrontendMainFromCurrentThemeIfPresent() {
-		$found = false;
-		$style = self::_getActualStyleToInclude(self::STYLE_FRONTEND_MAIN);
-		$alternateLocations = self::_getEnv()->getFrontendTemplateLocations();
+	private static function _getEnv() {
+		return abp01_get_env();
+	}
 
-		$themeCssFilePath = $alternateLocations->theme . '/' . $style['path'];
-		if (is_readable($themeCssFilePath)) {
-			$found = true;
-			$cssPathUrl = $alternateLocations->themeUrl . '/' . $style['path'];
-
-			if (!isset($style['media']) || !$style['media']) {
-				$style['media'] = 'all';
-			}
-
-			$deps = isset($style['deps']) && is_array($style['deps']) 
-				? $style['deps'] 
-				: array();
-
-			$deps = self::_collectDependencyHandles($deps);
-			if (!empty($deps)) {
-				self::_ensureStyleDependencies($deps, 'enqueued');
-			}
-
-			wp_enqueue_style(self::STYLE_FRONTEND_MAIN, 
-				$cssPathUrl, 
-				$deps, 
-				$style['version'], 
-				$style['media']);
-		}
-
-		return $found;
+	public static function enableStyleOverrideFromCurrentTheme() {
+		self::$_includesManager->setStylesPathRewriter(new Abp01_Includes_FrontendStylePerThemePathRewriter());
 	}
 
 	public static function includeStyleAdminMain() {
