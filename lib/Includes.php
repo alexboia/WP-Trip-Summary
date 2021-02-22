@@ -606,15 +606,16 @@ class Abp01_Includes {
 	);
 
 	public static function configure($refPluginsPath, $scriptsInFooter) {
-		self::$_includesManager = new Abp01_Includes_Manager(self::$_scripts, 
+		$includesManager = new Abp01_Includes_Manager(self::$_scripts, 
 			self::$_styles, 
 			$refPluginsPath, 
 			$scriptsInFooter);
 
-		self::$_includesManager
-			->setScriptsPathRewriter(new Abp01_Includes_MaybeLeafletPluginScriptPathRewriter())
+		$includesManager->setScriptsPathRewriter(new Abp01_Includes_MaybeLeafletPluginScriptPathRewriter())
 			->setScriptsDependencySelector(new Abp01_Includes_CallbackDependencySelector())
 			->setStylesDependencySelector(new Abp01_Includes_CallbackDependencySelector());
+
+		self::$_includesManager = $includesManager;
 	}
 
 	public function isConfigured() {
@@ -654,18 +655,14 @@ class Abp01_Includes {
 			'_env' => array(
 				'WP_DEBUG' => defined('WP_DEBUG') && WP_DEBUG === true
 			),
-			'showTeaser' => $settings->getShowTeaser() ? 'true' : 'false', 
-			'mapShowFullScreen' => $settings->getShowFullScreen() ? 'true' : 'false', 
-			'mapShowMagnifyingGlass' => $settings->getShowMagnifyingGlass() ? 'true' : 'false', 
-			'mapAllowTrackDownloadUrl' => $settings->getAllowTrackDownload() ? 'true' : 'false',
-			'mapShowScale' => $settings->getShowMapScale() ? 'true' : 'false',
-			'mapShowMinMaxAltitude' => $settings->getShowMinMaxAltitude() ? 'true' : 'false',
-			'mapShowAltitudeProfile' => $settings->getShowAltitudeProfile() ? 'true' : 'false',
-			'mapTileLayer' => array(
-				'url' => esc_js($mainTileLayer->url),
-				'attributionTxt' => esc_js($mainTileLayer->attributionTxt),
-				'attributionUrl' => esc_js($mainTileLayer->attributionUrl)
-			),
+			'showTeaser' => abp01_bool2str($settings->getShowTeaser()), 
+			'mapShowFullScreen' => abp01_bool2str($settings->getShowFullScreen()), 
+			'mapShowMagnifyingGlass' => abp01_bool2str($settings->getShowMagnifyingGlass()), 
+			'mapAllowTrackDownloadUrl' => abp01_bool2str($settings->getAllowTrackDownload()),
+			'mapShowScale' => abp01_bool2str($settings->getShowMapScale()),
+			'mapShowMinMaxAltitude' => abp01_bool2str($settings->getShowMinMaxAltitude()),
+			'mapShowAltitudeProfile' => abp01_bool2str($settings->getShowAltitudeProfile()),
+			'mapTileLayer' => abp01_esc_js_object($mainTileLayer),
 			'trackLineColour' => $settings->getTrackLineColour(),
 			'trackLineWeight' => $settings->getTrackLineWeight(),
 			'initialViewerTab' => $settings->getInitialViewerTab()

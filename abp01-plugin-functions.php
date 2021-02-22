@@ -283,6 +283,58 @@ function abp01_get_status_text($text, $status) {
 }
 
 /**
+ * Reads the public instance variables of the source object,
+ * 	escapes their values and adds them to a result that 
+ * 	depends on the second, $output, parameter:
+ * 	- if OBJECT, then the result is a stdClass whose public instance 
+ * 		variables ar the same as the ones read from the source;
+ * 	- if ARRAY_A, then the result is an associative array, whose 
+ * 		keys are the same as the public instance variables read from the source;
+ * 	- if ARRAY_N, then the result is an indexed array that only contains 
+ * 		the values read from the source object.
+ * 
+ * @param mixed $sourceObject The source object
+ * @param string $output One of OBJECT|ARRAY_A|ARRAY_N constants
+ * @return stdClass|array The result, according to the $output parameter
+ */
+function abp01_esc_js_object($sourceObject, $output = OBJECT) {
+	if ($sourceObject == null) {
+		return null;
+	}
+
+	if (!is_object($sourceObject)) {
+		throw new InvalidArgumentException('Input is not an object');
+	}
+
+	$escaped = $output == OBJECT 
+		? new stdClass() 
+		: array();
+
+	foreach (get_object_vars($sourceObject) as $propKey => $propVal) {
+		if ($output == OBJECT) {
+			$escaped->$propKey = esc_js($propVal);
+		} else if ($output == ARRAY_A) {
+			$escaped[$propKey] = $propVal;
+		} else {
+			$escaped[] = $propVal;
+		}
+	}
+
+	return $escaped;
+}
+
+/**
+ * Convers the input variable to the string 
+ * 	equivalent of its boolean value.
+ * 
+ * @param mixed $var 
+ * @return string 'true' if the input evaluates to true, 'false' otherwise
+ */
+function abp01_bool2str($var) {
+	return $var ? 'true' : 'false';
+}
+
+/**
  * Extracts the IDs of the posts from the given array
  * 
  * @param array $posts The posts array from which to extract the IDs
