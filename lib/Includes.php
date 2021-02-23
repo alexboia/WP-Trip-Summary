@@ -662,7 +662,7 @@ class Abp01_Includes {
 			'mapShowScale' => abp01_bool2str($settings->getShowMapScale()),
 			'mapShowMinMaxAltitude' => abp01_bool2str($settings->getShowMinMaxAltitude()),
 			'mapShowAltitudeProfile' => abp01_bool2str($settings->getShowAltitudeProfile()),
-			'mapTileLayer' => abp01_esc_js_object($mainTileLayer),
+			'mapTileLayer' => abp01_esc_js_object($mainTileLayer, ARRAY_A),
 			'trackLineColour' => $settings->getTrackLineColour(),
 			'trackLineWeight' => $settings->getTrackLineWeight(),
 			'initialViewerTab' => $settings->getInitialViewerTab()

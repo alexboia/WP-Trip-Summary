@@ -583,6 +583,8 @@ function abp01_init_plugin() {
 	if (!abp01_is_editor_classic_active()) {
 		abp01_init_block_editor_blocks();
 	}
+
+	abp01_increase_limits(ABP01_MAX_EXECUTION_TIME_MINUTES);
 }
 
 function abp01_render_trip_summary_shortcode_block($attributes, $content) {
@@ -1626,11 +1628,6 @@ function abp01_upload_track() {
 		die;
 	}
 
-	//increase script execution limits: 
-	//memory & cpu time (& xdebug.max_nesting_level)
-	abp01_increase_limits(ABP01_MAX_EXECUTION_TIME_MINUTES);
-
-	//ensure the storage directory structure exists
 	abp01_ensure_storage_directory();
 
 	$manager = abp01_get_route_manager();
@@ -1720,10 +1717,6 @@ function abp01_get_track() {
 		die;
 	}
 
-	//increase script execution limits: 
-	//memory & cpu time (& xdebug.max_nesting_level)
-	abp01_increase_limits(ABP01_MAX_EXECUTION_TIME_MINUTES);
-
 	$settings = abp01_get_settings();
 	$manager = abp01_get_route_manager();
 	
@@ -1786,30 +1779,14 @@ function abp01_download_track() {
         die;
     }
 
-    //check if track downloads are enabled
     if (!abp01_get_settings()->getAllowTrackDownload()) {
         die;
     }
 
-	//increase script execution limits:
-	//memory & cpu time (& xdebug.max_nesting_level)
-    abp01_increase_limits(ABP01_MAX_EXECUTION_TIME_MINUTES);
+	$trackFileDownloader = new Abp01_Transfer_TrackFileDownloader();
+	$trackFileDownloader->sendTrackFileForPostId($postId);
 
-    //get the file path and check if it's readable
-    $trackFile = abp01_get_route_manager()->getTrackFilePath($postId);
-    if (empty($trackFile) || !is_readable($trackFile)) {
-        die;
-    }
-
-    $fileSize = filesize($trackFile);
-    $fileName = basename($trackFile);
-
-    header('Content-Type: application/gpx');
-    header('Content-Length: ' . $fileSize);
-    header('Content-Disposition: attachment; filename="' . $fileName . '"');
-
-    readfile($trackFile);
-    die;
+	die;
 }
 
 /**
@@ -1876,7 +1853,7 @@ function abp01_get_posts_trip_summary_info($posts) {
 	return $statusInfo;
 }
 
-function abpp01_add_custom_columns($columns) {
+function abp01_add_custom_columns($columns) {
 	$columns['abp01_trip_summary_info_status'] 
 		= esc_html__('Trip summary info', 'abp01-trip-summary');
 	$columns['abp01_trip_summary_track_status'] 
@@ -1886,57 +1863,61 @@ function abpp01_add_custom_columns($columns) {
 
 function abp01_register_post_listing_columns($columns, $postType) {
 	if (in_array($postType, array('post', 'page'))) {
-		 $columns = abpp01_add_custom_columns($columns);
+		 $columns = abp01_add_custom_columns($columns);
 	}
 	return $columns;
 }
 
 function abp01_register_page_listing_columns($columns) {
-	$columns = abpp01_add_custom_columns($columns);
+	$columns = abp01_add_custom_columns($columns);
 	return $columns;
 }
 
 function abp01_get_post_listing_custom_column_value($columnName, $postId) {
-	static $tripSummaryInfo = null;
-
 	$postTripSummaryInfo = null;
 	if ($columnName == 'abp01_trip_summary_info_status' 
 		|| $columnName == 'abp01_trip_summary_track_status') {
-		
-		//Fetch and locally cache the trip summary info
-		if ($tripSummaryInfo === null) {
-			$query = isset($GLOBALS['wp_query'])
-				? $GLOBALS['wp_query'] 
-				: null;
-
-			$tripSummaryInfo = $query != null 
-				? abp01_get_posts_trip_summary_info($query->posts) 
-				: null;
-		}
-
-		$postTripSummaryInfo = !empty($tripSummaryInfo) && isset($tripSummaryInfo[$postId]) 
-			? $tripSummaryInfo[$postId]
-			: null;
+		$postTripSummaryInfo = abp01_get_post_trip_summary_info_from_current_wp_query($postId);
 	}
 
 	if ($columnName == 'abp01_trip_summary_info_status') {
-		if (!empty($postTripSummaryInfo)) {
-			echo $postTripSummaryInfo['has_route_details'] 
-				? abp01_get_status_text(esc_html__('Yes', 'abp01-trip-summary'), ABP01_STATUS_OK) 
-				: abp01_get_status_text(esc_html__('No', 'abp01-trip-summary'), ABP01_STATUS_ERR);
-		} else {
-			echo abp01_get_status_text(esc_html__('Not available', 'abp01-trip-summary'), ABP01_STATUS_WARN);
-		}
+		abp01_echo_formatted_trip_related_info_availability($postTripSummaryInfo, 
+			'has_route_details');
 	}
 
 	if ($columnName == 'abp01_trip_summary_track_status') {
-		if (!empty($postTripSummaryInfo)) {
-			echo $postTripSummaryInfo['has_route_track'] 
-				? abp01_get_status_text(esc_html__('Yes', 'abp01-trip-summary'), ABP01_STATUS_OK)
-				: abp01_get_status_text(esc_html__('No', 'abp01-trip-summary'), ABP01_STATUS_ERR);
-		} else {
-			echo abp01_get_status_text(esc_html__('Not available', 'abp01-trip-summary'), ABP01_STATUS_WARN);
-		}
+		abp01_echo_formatted_trip_related_info_availability($postTripSummaryInfo, 
+			'has_route_track');
+	}
+}
+
+function abp01_get_post_trip_summary_info_from_current_wp_query($postId) {
+	static $tripSummaryInfo = null;
+
+	if ($tripSummaryInfo === null) {
+		$query = isset($GLOBALS['wp_query'])
+			? $GLOBALS['wp_query'] 
+			: null;
+
+		$tripSummaryInfo = $query != null 
+			? abp01_get_posts_trip_summary_info($query->posts) 
+			: null;
+	}
+
+	$postTripSummaryInfo = !empty($tripSummaryInfo) && isset($tripSummaryInfo[$postId]) 
+		? $tripSummaryInfo[$postId]
+		: null;
+
+	return $postTripSummaryInfo;
+}
+
+function abp01_echo_formatted_trip_related_info_availability($tripRelatedInfo, $dataKey) {
+	if (!empty($tripRelatedInfo)) {
+		echo $tripRelatedInfo[$dataKey] 
+			? abp01_get_status_text(esc_html__('Yes', 'abp01-trip-summary'), ABP01_STATUS_OK)
+			: abp01_get_status_text(esc_html__('No', 'abp01-trip-summary'), ABP01_STATUS_ERR);
+	} else {
+		echo abp01_get_status_text(esc_html__('Not available', 'abp01-trip-summary'), ABP01_STATUS_WARN);
 	}
 }
 

@@ -29,6 +29,11 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+require_once 'faker/autoload.php';
+
+require_once 'lib/testDoubles/abp01SendHeader.php';
+require_once 'lib/testDoubles/abp01SetHttpResonseCode.php';
+
 require_once 'lib/DbTestHelpers.php';
 require_once 'lib/GenericTestHelpers.php';
 require_once 'lib/TestDataFileHelpers.php';
@@ -38,8 +43,6 @@ require_once 'lib/RouteTrackTestDataHelpers.php';
 require_once 'lib/ViewerTestDataHelpers.php';
 require_once 'lib/SettingsDataHelpers.php';
 require_once 'lib/AdminTestDataHelpers.php';
-
-require_once 'faker/autoload.php';
 require_once 'lib/GpxDocumentFakerDataProvider.php';
 
 $_tests_dir = getenv( 'WP_TESTS_DIR' );

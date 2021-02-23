@@ -407,3 +407,15 @@ if (!function_exists('wp_script_has_localization')) {
 		}
 	}
 }
+
+if (!function_exists('abp01_send_header')) {
+	function abp01_send_header($header, $replace = true, $httpResponseCode = 0) {
+		header($header, $replace, $httpResponseCode);
+	}
+}
+
+if (!function_exists('abp01_set_http_response_code')) {
+	function abp01_set_http_response_code($responseCode) {
+		http_response_code($responseCode);
+	}
+}
