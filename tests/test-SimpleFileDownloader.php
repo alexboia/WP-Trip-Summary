@@ -54,10 +54,9 @@ class SimpleFileDownloaderTests extends WP_UnitTestCase {
         $this->_assertNoHeadersSent();
 
         $filePath = $this->_determineDataFilePath($testFile);
-        $actualResult = $this->_runFileDownloadTestAndGetResult($filePath);
+        $sentContent = $this->_runFileDownloadTestAndGetResult($filePath);
 
-        $this->assertNotEmpty($actualResult);
-        $this->assertEquals($this->_readTestDataFileContents($testFile), $actualResult);
+        $this->_assertSentContentsMatchesSourceFile($testFile, $sentContent);
         $this->_assertCorrectFileDownloadHeadersSent();
     }
 
@@ -70,9 +69,14 @@ class SimpleFileDownloaderTests extends WP_UnitTestCase {
         
         ob_start();
         $downloader->sendFileWithMimeType($filePath, 'application/gpx');
-        $actualResult = ob_get_clean();
+        $sentContent = ob_get_clean();
         
-        return $actualResult;
+        return $sentContent;
+    }
+
+    private function _assertSentContentsMatchesSourceFile($sourceFile, $sentContent) {
+        $this->assertNotEmpty($sentContent);
+        $this->assertEquals($this->_readTestDataFileContents($sourceFile), $sentContent);
     }
 
     private function _assertCorrectFileDownloadHeadersSent() {
@@ -91,9 +95,9 @@ class SimpleFileDownloaderTests extends WP_UnitTestCase {
         $this->_assertNoHeadersSent();
 
         $filePath = $this->_determineDataFilePath($testFile);
-        $actualResult = $this->_runFileDownloadTestAndGetResult($filePath);
+        $sentContent = $this->_runFileDownloadTestAndGetResult($filePath);
 
-        $this->assertEmpty($actualResult);
+        $this->assertEmpty($sentContent);
         $this->_assertCorrectFileDownloadHeadersSent();
     }
 
@@ -106,9 +110,9 @@ class SimpleFileDownloaderTests extends WP_UnitTestCase {
         $this->_assertNoResponseCodeSet();
 
         $filePath = $this->_determineDataFilePath($testFile);
-        $actualResult = $this->_runFileDownloadTestAndGetResult($filePath);
+        $sentContent = $this->_runFileDownloadTestAndGetResult($filePath);
 
-        $this->assertEmpty($actualResult);
+        $this->assertEmpty($sentContent);
         $this->assertTrue(Abp01SetHttpResponseCodeState::hasCurrentResponseCode());
         $this->assertTrue(Abp01SetHttpResponseCodeState::currentResponseCodeIsHttpNotFound());
     }
