@@ -1,3 +1,4 @@
+<?php
 /**
  * Copyright (c) 2014-2021 Alexandru Boia
  *
@@ -28,29 +29,35 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.abp01-status-text {
-    border-radius: 4px;
-    padding: 10px;
-    background-color: #e5e5e5;
-    color: #2e4453;
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+	exit ;
 }
 
-.abp01-status-ok {
-    background-color: #c6e1c6;
-    color: #5b841b;
-}
+class Abp01_Display_PostListing_TripSummaryStatusColumn extends Abp01_Display_PostListing_Column {
+    public function __construct($key, $label, Abp01_Display_PostListing_ColumnDataSource $dataSource) {
+        parent::__construct($key, $label, $dataSource);
+    }
 
-.abp01-status-err {
-    background-color: #eba3a3;
-    color: #761919;
-}
+    public function renderValue($postId) {
+        $formattedValue = null;
+        $value = parent::renderValue($postId);
 
-.abp01-status-warn {
-    background-color: #f3e9cd;
-    color: #ffba00;
-}
+        if ($value !== null) {
+            $formattedValue = $value
+                ? abp01_get_status_text(esc_html__('Yes', 'abp01-trip-summary'), ABP01_STATUS_OK)
+                : abp01_get_status_text(esc_html__('No', 'abp01-trip-summary'), ABP01_STATUS_ERR);
+        } else {
+            $formattedValue = abp01_get_status_text(esc_html__('Not available', 'abp01-trip-summary'), ABP01_STATUS_WARN);
+        }
 
-.abp01-stop-scrolling {
-    height: 100%;
-    overflow: hidden;
+        return $formattedValue;
+    }
+
+    public function renderLabel() {
+        return parent::renderLabel();
+    }
+
+    public function getKey() {
+        return parent::getKey();
+    }
 }

@@ -1,3 +1,4 @@
+<?php
 /**
  * Copyright (c) 2014-2021 Alexandru Boia
  *
@@ -28,29 +29,46 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.abp01-status-text {
-    border-radius: 4px;
-    padding: 10px;
-    background-color: #e5e5e5;
-    color: #2e4453;
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+	exit ;
 }
 
-.abp01-status-ok {
-    background-color: #c6e1c6;
-    color: #5b841b;
-}
+class Abp01_Display_PostListing_TripSummaryStatusColumnsDecorator extends Abp01_Display_PostListing_ColumnCustomization {
+    public function __construct() {
+        parent::__construct($this->_getColumns(), $this->_getPostTypes());
+    }
 
-.abp01-status-err {
-    background-color: #eba3a3;
-    color: #761919;
-}
+    private function _getColumns() {
+        $routeManager = $this->_getRouteManager();
+        return array(
+            new Abp01_Display_PostListing_TripSummaryStatusColumn(
+                'abp01_trip_summary_info_status', 
+                esc_html__('Trip summary info', 'abp01-trip-summary'), 
+                new Abp01_Display_PostListing_TripSummaryStatusColumnDataSource(
+                    $routeManager, 
+                    'has_route_details'
+                )
+            ),
 
-.abp01-status-warn {
-    background-color: #f3e9cd;
-    color: #ffba00;
-}
+            new Abp01_Display_PostListing_TripSummaryStatusColumn(
+                'abp01_trip_summary_track_status', 
+                esc_html__('Trip summary track', 'abp01-trip-summary'), 
+                new Abp01_Display_PostListing_TripSummaryStatusColumnDataSource(
+                    $routeManager, 
+                    'has_route_track'
+                )
+            )
+        );
+    }
 
-.abp01-stop-scrolling {
-    height: 100%;
-    overflow: hidden;
+    private function _getRouteManager() {
+        return abp01_get_route_manager();
+    }
+
+    private function _getPostTypes() {
+        return array(
+            'post', 
+            'page'
+        );
+    }
 }

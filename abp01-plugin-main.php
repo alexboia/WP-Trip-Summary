@@ -585,6 +585,19 @@ function abp01_init_plugin() {
 	}
 
 	abp01_increase_limits(ABP01_MAX_EXECUTION_TIME_MINUTES);
+	abp01_register_customizations();
+}
+
+function abp01_register_customizations() {
+	foreach (abp01_get_customizations() as $customization) {
+		$customization->apply();
+	}
+}
+
+function abp01_get_customizations() {
+	return array(
+		new Abp01_Display_PostListing_TripSummaryStatusColumnsDecorator()
+	);
 }
 
 function abp01_render_trip_summary_shortcode_block($attributes, $content) {
@@ -1828,99 +1841,6 @@ function abp01_remove_track() {
 	abp01_send_json($response);
 }
 
-function abp01_get_posts_trip_summary_info_cache_key($postIds) {
-	return sprintf('_abp01_posts_listing_info_%s', sha1(join('_', $postIds)));
-}
-
-function abp01_get_posts_trip_summary_info($posts) {
-	$postIds = array();
-	$statusInfo = array();
-
-	//extract post IDs
-	$postIds = abp01_extract_post_ids($posts);
-	if (!empty($postIds)) {
-		//Attempt to extract any cached data
-		$key = abp01_get_posts_trip_summary_info_cache_key($postIds);
-		$statusInfo = get_transient($key);
-
-		//If there is no status information cached, fetch it
-		if (!is_array($statusInfo)) {
-			$statusInfo = abp01_get_route_manager()->getTripSummaryStatusInfo($postIds);
-			set_transient($key, $statusInfo, MINUTE_IN_SECONDS / 2);
-		}
-	}
-
-	return $statusInfo;
-}
-
-function abp01_add_custom_columns($columns) {
-	$columns['abp01_trip_summary_info_status'] 
-		= esc_html__('Trip summary info', 'abp01-trip-summary');
-	$columns['abp01_trip_summary_track_status'] 
-		= esc_html__('Trip summary track', 'abp01-trip-summary');
-	return $columns;
-}
-
-function abp01_register_post_listing_columns($columns, $postType) {
-	if (in_array($postType, array('post', 'page'))) {
-		 $columns = abp01_add_custom_columns($columns);
-	}
-	return $columns;
-}
-
-function abp01_register_page_listing_columns($columns) {
-	$columns = abp01_add_custom_columns($columns);
-	return $columns;
-}
-
-function abp01_get_post_listing_custom_column_value($columnName, $postId) {
-	$postTripSummaryInfo = null;
-	if ($columnName == 'abp01_trip_summary_info_status' 
-		|| $columnName == 'abp01_trip_summary_track_status') {
-		$postTripSummaryInfo = abp01_get_post_trip_summary_info_from_current_wp_query($postId);
-	}
-
-	if ($columnName == 'abp01_trip_summary_info_status') {
-		abp01_echo_formatted_trip_related_info_availability($postTripSummaryInfo, 
-			'has_route_details');
-	}
-
-	if ($columnName == 'abp01_trip_summary_track_status') {
-		abp01_echo_formatted_trip_related_info_availability($postTripSummaryInfo, 
-			'has_route_track');
-	}
-}
-
-function abp01_get_post_trip_summary_info_from_current_wp_query($postId) {
-	static $tripSummaryInfo = null;
-
-	if ($tripSummaryInfo === null) {
-		$query = isset($GLOBALS['wp_query'])
-			? $GLOBALS['wp_query'] 
-			: null;
-
-		$tripSummaryInfo = $query != null 
-			? abp01_get_posts_trip_summary_info($query->posts) 
-			: null;
-	}
-
-	$postTripSummaryInfo = !empty($tripSummaryInfo) && isset($tripSummaryInfo[$postId]) 
-		? $tripSummaryInfo[$postId]
-		: null;
-
-	return $postTripSummaryInfo;
-}
-
-function abp01_echo_formatted_trip_related_info_availability($tripRelatedInfo, $dataKey) {
-	if (!empty($tripRelatedInfo)) {
-		echo $tripRelatedInfo[$dataKey] 
-			? abp01_get_status_text(esc_html__('Yes', 'abp01-trip-summary'), ABP01_STATUS_OK)
-			: abp01_get_status_text(esc_html__('No', 'abp01-trip-summary'), ABP01_STATUS_ERR);
-	} else {
-		echo abp01_get_status_text(esc_html__('Not available', 'abp01-trip-summary'), ABP01_STATUS_WARN);
-	}
-}
-
 function abp01_on_language_updated($oldValue, $value, $optName) {
 	//When the WPLANG updated hook is triggered, 
 	//	the text domain is not yet loaded.
@@ -1975,16 +1895,10 @@ function abp01_run() {
 	add_action('wp_enqueue_scripts', 'abp01_add_frontend_styles');
 	add_action('wp_enqueue_scripts', 'abp01_add_frontend_scripts');
 
-	add_action('init', 'abp01_init_plugin');
+	add_action('plugins_loaded', 'abp01_init_plugin');
 	add_action('admin_menu', 'abp01_create_admin_menu');
 	add_action('update_option_WPLANG', 'abp01_on_language_updated', 10, 3);
 	add_action('in_admin_footer', 'abp01_on_footer_loaded', 1);
-
-	add_action('manage_posts_custom_column', 'abp01_get_post_listing_custom_column_value', 10, 2);
-	add_action('manage_pages_custom_column', 'abp01_get_post_listing_custom_column_value', 10, 2);
-
-	add_filter('manage_posts_columns',  'abp01_register_post_listing_columns', 10, 2);
-	add_filter('manage_pages_columns',  'abp01_register_page_listing_columns', 10, 1);
 
 	add_shortcode(ABP01_VIEWER_SHORTCODE, 'abp01_render_viewer_shortcode');
 }

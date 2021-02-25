@@ -1,3 +1,4 @@
+<?php
 /**
  * Copyright (c) 2014-2021 Alexandru Boia
  *
@@ -28,29 +29,43 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.abp01-status-text {
-    border-radius: 4px;
-    padding: 10px;
-    background-color: #e5e5e5;
-    color: #2e4453;
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+	exit ;
 }
 
-.abp01-status-ok {
-    background-color: #c6e1c6;
-    color: #5b841b;
-}
+class Abp01_Display_PostListing_Column {
+    private $_key;
 
-.abp01-status-err {
-    background-color: #eba3a3;
-    color: #761919;
-}
+    private $_label;
 
-.abp01-status-warn {
-    background-color: #f3e9cd;
-    color: #ffba00;
-}
+    /**
+     * @var Abp01_Display_PostListing_ColumnDataSource
+     */
+    private $_dataSource;
 
-.abp01-stop-scrolling {
-    height: 100%;
-    overflow: hidden;
+    public function __construct($key, $label, Abp01_Display_PostListing_ColumnDataSource $dataSource) {
+        if (empty($key)) {
+            throw new InvalidArgumentException('The column key is required');
+        }
+
+        if (empty($label)) {
+            throw new InvalidArgumentException('The column label is required');
+        }
+
+        $this->_key = $key;
+        $this->_label = $label;
+        $this->_dataSource = $dataSource;
+    }
+
+    public function renderValue($postId) {
+        return $this->_dataSource->getValue($postId);
+    }
+
+    public function renderLabel() {
+        return $this->_label;
+    }
+
+    public function getKey() {
+        return $this->_key;
+    }
 }

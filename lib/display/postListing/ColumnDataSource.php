@@ -1,3 +1,4 @@
+<?php
 /**
  * Copyright (c) 2014-2021 Alexandru Boia
  *
@@ -28,29 +29,10 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.abp01-status-text {
-    border-radius: 4px;
-    padding: 10px;
-    background-color: #e5e5e5;
-    color: #2e4453;
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+	exit ;
 }
 
-.abp01-status-ok {
-    background-color: #c6e1c6;
-    color: #5b841b;
-}
-
-.abp01-status-err {
-    background-color: #eba3a3;
-    color: #761919;
-}
-
-.abp01-status-warn {
-    background-color: #f3e9cd;
-    color: #ffba00;
-}
-
-.abp01-stop-scrolling {
-    height: 100%;
-    overflow: hidden;
+interface Abp01_Display_PostListing_ColumnDataSource {
+    function getValue($postId);
 }
