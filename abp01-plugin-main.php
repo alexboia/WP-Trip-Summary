@@ -566,35 +566,30 @@ function abp01_init_viewer_content_hooks() {
 	add_filter('the_content', 'abp01_add_viewer', 0);
 }
 
-/**
- * Run plug-in init sequence
- */
 function abp01_init_plugin() {
-	//configure script&styles includes and load the text domain
 	abp01_init_core();
-
-	//check if update is needed
-	abp01_get_installer()->updateIfNeeded();
-
-	//init content hooks
+	abp01_update_if_needed();
 	abp01_init_viewer_content_hooks();	
 
-	//register blocks only if classic editor plug-in is not active
 	if (!abp01_is_editor_classic_active()) {
 		abp01_init_block_editor_blocks();
 	}
 
 	abp01_increase_limits(ABP01_MAX_EXECUTION_TIME_MINUTES);
-	abp01_register_customizations();
+	abp01_register_post_listing_customizations();
 }
 
-function abp01_register_customizations() {
-	foreach (abp01_get_customizations() as $customization) {
+function abp01_update_if_needed() {
+	abp01_get_installer()->updateIfNeeded();
+}
+
+function abp01_register_post_listing_customizations() {
+	foreach (abp01_get_post_listing_customizations() as $customization) {
 		$customization->apply();
 	}
 }
 
-function abp01_get_customizations() {
+function abp01_get_post_listing_customizations() {
 	return array(
 		new Abp01_Display_PostListing_TripSummaryStatusColumnsDecorator()
 	);

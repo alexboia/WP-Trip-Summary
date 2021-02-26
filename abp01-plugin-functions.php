@@ -391,12 +391,25 @@ function abp01_ensure_storage_directory() {
 }
 
 if (!function_exists('wp_script_get_data')) {
+	/**
+	 * Retrieves the data section associated with a script handle.
+	 * 
+	 * @param string $handle The script handle
+	 * @return string The data section
+	 */
 	function wp_script_get_data($handle) {
 		return wp_scripts()->get_data($handle, 'data');
 	}
 }
 
 if (!function_exists('wp_script_has_localization')) {
+	/**
+	 * Checks whether or not the script has a localization with the given name.
+	 * 
+	 * @param string $handle The script handle
+	 * @param string $localizationVarName The localization (javascript variable) name
+	 * @return bool True if does, false if it does not
+	 */
 	function wp_script_has_localization($handle, $localizationVarName) {
 		$data = wp_script_get_data($handle);
 		if ($data !== false) {
@@ -409,12 +422,37 @@ if (!function_exists('wp_script_has_localization')) {
 }
 
 if (!function_exists('abp01_send_header')) {
+	/**
+	 * Send a raw HTTP header. Essentially a wrapper over the native header() function, 
+	 * 	with the same signature.
+	 * 
+	 * It is meant to be pluggable, so that it may be 
+	 * 	replaced with either a user-defined function 
+	 * 	or with a test double.
+	 * 
+	 * @param string $header The header string
+	 * @param bool $replace Whether the header should replace a previous similar header, or add a second header of the same type
+	 * @param int $httpResponseCode Forces the HTTP response code to the specified value
+	 * @return void 
+	 */
 	function abp01_send_header($header, $replace = true, $httpResponseCode = 0) {
 		header($header, $replace, $httpResponseCode);
 	}
 }
 
 if (!function_exists('abp01_set_http_response_code')) {
+	/**
+	 * Set the HTTP response code. Essentially a rapper over the native http_response_code() function, 
+	 * 	but with the notable difference that it only supports 
+	 * 	setting the http response code.
+	 * 
+	 * It is meant to be pluggable, so that it may be 
+	 * 	replaced with either a user-defined function 
+	 * 	or with a test double.
+	 * 
+	 * @param mixed $responseCode The response code
+	 * @return void 
+	 */
 	function abp01_set_http_response_code($responseCode) {
 		http_response_code($responseCode);
 	}
