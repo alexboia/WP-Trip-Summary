@@ -566,17 +566,18 @@ function abp01_init_viewer_content_hooks() {
 	add_filter('the_content', 'abp01_add_viewer', 0);
 }
 
-function abp01_init_plugin() {
+function abp01_setup_plugin() {
 	abp01_init_core();
 	abp01_update_if_needed();
-	abp01_init_viewer_content_hooks();	
+	abp01_increase_limits(ABP01_MAX_EXECUTION_TIME_MINUTES);
+	abp01_register_post_listing_customizations();
+}
 
+function abp01_init_plugin() {
+	abp01_init_viewer_content_hooks();	
 	if (!abp01_is_editor_classic_active()) {
 		abp01_init_block_editor_blocks();
 	}
-
-	abp01_increase_limits(ABP01_MAX_EXECUTION_TIME_MINUTES);
-	abp01_register_post_listing_customizations();
 }
 
 function abp01_update_if_needed() {
@@ -1368,7 +1369,7 @@ function abp01_save_info() {
 		}
 	}
 
-	if ($manager->saveRouteInfo($postId, get_current_user_id(), $info)) {
+	if ($manager->saveRouteInfo($postId, $info, get_current_user_id())) {
 		abp01_clear_post_viewer_data_cache($postId);
 		$response->success = true;
 	} else {
@@ -1890,7 +1891,9 @@ function abp01_run() {
 	add_action('wp_enqueue_scripts', 'abp01_add_frontend_styles');
 	add_action('wp_enqueue_scripts', 'abp01_add_frontend_scripts');
 
-	add_action('plugins_loaded', 'abp01_init_plugin');
+	add_action('plugins_loaded', 'abp01_setup_plugin');
+	add_action('init', 'abp01_init_plugin');
+
 	add_action('admin_menu', 'abp01_create_admin_menu');
 	add_action('update_option_WPLANG', 'abp01_on_language_updated', 10, 3);
 	add_action('in_admin_footer', 'abp01_on_footer_loaded', 1);

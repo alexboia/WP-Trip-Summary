@@ -30,6 +30,7 @@
  */
 
 require_once 'faker/autoload.php';
+require_once 'mockery/autoload.php';
 
 require_once 'lib/testDoubles/abp01SendHeader.php';
 require_once 'lib/testDoubles/abp01SetHttpResonseCode.php';
@@ -44,9 +45,10 @@ require_once 'lib/ViewerTestDataHelpers.php';
 require_once 'lib/SettingsDataHelpers.php';
 require_once 'lib/AdminTestDataHelpers.php';
 require_once 'lib/GpxDocumentFakerDataProvider.php';
+require_once 'lib/IntegerIdGenerator.php';
 
-$_tests_dir = getenv( 'WP_TESTS_DIR' );
-if ( ! $_tests_dir ) {
+$_tests_dir = getenv('WP_TESTS_DIR');
+if (!$_tests_dir) {
 	$_tests_dir = '/tmp/wordpress-tests-lib';
 }
 

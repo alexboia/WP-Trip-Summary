@@ -69,7 +69,6 @@ trait GenericTestHelpers {
                 }
             }
         }
-
     }
 
     protected function _removeDirectoryRecursively($target) {
@@ -126,14 +125,20 @@ trait GenericTestHelpers {
         }
     }
 
-    protected function _generateWpPostData($postId) {
+    protected function _generateWpPostData($postId, $output = ARRAY_A) {
         $faker = self::_getFaker();
-        return array(
+        $data = array(
             'ID' => $postId,
             'post_title' => $faker->words(3, true),
             'post_content' => $faker->words(10, true),
             'guid' => $faker->uuid
         );
+
+        if ($output == OBJECT) {
+            $data = (object)$data;
+        }
+
+        return $data;
     }
 
     protected function _countObjectVars($obj) {
@@ -149,11 +154,11 @@ trait GenericTestHelpers {
     }
 
     protected function _getRouteManager() {
-        return Abp01_Route_Manager::getInstance();
+        return abp01_get_route_manager();
     }
 
     protected function _getEnv() {
-        return Abp01_Env::getInstance();
+        return abp01_get_env();
     }
 
     protected function _getDb() {

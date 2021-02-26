@@ -55,15 +55,14 @@ class Abp01_Display_PostListing_TripSummaryStatusColumnDataSource implements Abp
         $postStatusInfo = $this->_getTripSummaryStatusInfoForPostId($postId);
         return isset($postStatusInfo[$this->_dataKey]) 
             ? $postStatusInfo[$this->_dataKey] 
-            : null;
+            : false;
     }
 
     private function _getTripSummaryStatusInfoForPostId($postId) {
         $allStatusInfo = $this->_getTripSummaryStatusInfoForCurrentWpQuery();
-
         $postStatusInfo = isset($allStatusInfo[$postId]) 
             ? $allStatusInfo[$postId]
-            : null;
+            : array();
     
         return $postStatusInfo;
     }
@@ -73,9 +72,9 @@ class Abp01_Display_PostListing_TripSummaryStatusColumnDataSource implements Abp
             $query = $this->_getCurrentWpQuery();
             $allStatusInfo = $query != null
                 ? $this->_getPostsTripSummaryStatusInfo($query->posts)
-                : null;
+                : array();
 
-            $this->_saveTripSummaryStatusInfoCacheForCurrentWpQuery($allStatusInfo);
+            $this->_cacheTripSummaryStatusInfoForCurrentWpQuery($allStatusInfo);
         }
 
         return $this->_retrieveCachedTripSummaryStatusInfoForCurrentWpQuery();
@@ -85,7 +84,7 @@ class Abp01_Display_PostListing_TripSummaryStatusColumnDataSource implements Abp
         return self::$_tripSummaryStatusInfoForCurrentWpQuery !== null;
     }
 
-    private function _saveTripSummaryStatusInfoCacheForCurrentWpQuery($allStatusInfo) {
+    private function _cacheTripSummaryStatusInfoForCurrentWpQuery($allStatusInfo) {
         self::$_tripSummaryStatusInfoForCurrentWpQuery = $allStatusInfo;
     }
 
@@ -114,7 +113,7 @@ class Abp01_Display_PostListing_TripSummaryStatusColumnDataSource implements Abp
             if (!is_array($allStatusInfo)) {
                 $allStatusInfo = $this->_routeManager
                     ->getTripSummaryStatusInfo($postIds);
-                $this->_saveCachedTripSummaryStatusInfo($cacheKey, 
+                $this->_cacheTripSummaryStatusInfo($cacheKey, 
                     $allStatusInfo);
             }
         }
@@ -130,7 +129,7 @@ class Abp01_Display_PostListing_TripSummaryStatusColumnDataSource implements Abp
         return get_transient($cacheKey);
     }
 
-    private function _saveCachedTripSummaryStatusInfo($cacheKey, $statusInfo) {
+    private function _cacheTripSummaryStatusInfo($cacheKey, $statusInfo) {
         set_transient($cacheKey, $statusInfo, MINUTE_IN_SECONDS / 2);
     }
 }

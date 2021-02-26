@@ -63,7 +63,7 @@ function abp01_get_settings() {
  * @return Abp01_Route_Manager
  */
 function abp01_get_route_manager() {
-	return Abp01_Route_Manager::getInstance();
+	return Abp01_Route_Manager_Default::getInstance();
 }
 
 /**

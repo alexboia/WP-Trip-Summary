@@ -9,6 +9,8 @@
  * All WordPress unit tests should inherit from this class.
  */
 class WP_UnitTestCase extends PHPUnit_Framework_TestCase { 
+    public function __construct() {}
+    
     /**
 	 * Fetches the factory object for generating WordPress fixtures.
 	 *
