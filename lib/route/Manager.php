@@ -42,6 +42,8 @@ interface Abp01_Route_Manager {
 
     function deleteRouteTrack($postId);
 
+    function deleteTrackFiles($postId);
+
     function getRouteInfo($postId);
 
     function getRouteTrack($postId);
@@ -51,8 +53,6 @@ interface Abp01_Route_Manager {
     function hasRouteInfo($postId);
 
     function getTripSummaryStatusInfo($postIds);
-
-    function deleteTrackFiles($postId);
 
     function getOrCreateDisplayableAltitudeProfile(Abp01_Route_Track $track, $targetSystem, $stepPoints = 10);
 

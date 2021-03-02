@@ -283,9 +283,74 @@
 
         $this->assertTrue($result);
 
-        $this->_assertRouteInfoDataMatchesDbRow($postId, 
-            $currentUserId, 
-            $routeInfo);
+        $this->_assertRouteInfoDataMatchesDbRow($routeInfo, 
+            $postId,
+            $currentUserId);
+    }
+
+    private function _assertRouteInfoDataMatchesDbRow(Abp01_Route_Info $expectedRouteInfo, $forPostId, $modifiedByUserId) {
+        $dbRouteInfoData = $this->_readDbRouteInfoData($forPostId);
+
+        $this->_assertRouteInfoMatchesDbRouteInfoData($expectedRouteInfo, 
+            $dbRouteInfoData,
+            $modifiedByUserId);
+
+        $dbRouteInfoLookupData = $this->_readDbRouteInfoLookupData($forPostId);
+
+        $this->_assertRouteInfoMatchesDbRouteInfoLookupData($expectedRouteInfo, 
+            $dbRouteInfoLookupData);
+    }
+
+    private function _readDbRouteInfoData($forPostId) {
+        $db = $this->_getDb();
+        $db->where('post_ID', $forPostId);
+        return $db->getOne($this->_getEnv()->getRouteDetailsTableName());
+    }
+
+    private function _readDbRouteInfoLookupData($forPostId) {
+        $db = $this->_getDb();
+        $db->where('post_ID', $forPostId);
+        return $db->getValue($this->_getEnv()->getRouteDetailsLookupTableName(), 
+            'lookup_ID', 
+            null);
+    }
+
+    private function _assertRouteInfoMatchesDbRouteInfoData(Abp01_Route_Info $expectedRouteInfo, $dbRouteInfoData, $modifiedByUserId) {
+        $this->assertNotEmpty($dbRouteInfoData);
+        $this->assertEquals($expectedRouteInfo->getType(), 
+            $dbRouteInfoData['route_type']);
+        $this->assertEquals($modifiedByUserId, 
+            $dbRouteInfoData['route_data_last_modified_by']);
+
+        $dbRouteInfo = $this->_constructRouteInfoFromInfoData($dbRouteInfoData);
+
+        $this->_assertRouteInfoInstancesDataMatches($expectedRouteInfo, 
+            $dbRouteInfo);
+    }
+
+    private function _assertRouteInfoMatchesDbRouteInfoLookupData(Abp01_Route_Info $expectedRouteInfo, $dbRouteInfoLookupData) {
+        $lookupKeys = $expectedRouteInfo->getAllLookupFields();
+
+        $this->assertEquals(!empty($lookupKeys), 
+            !empty($dbRouteInfoLookupData));
+        $this->assertEquals(count($lookupKeys), 
+            count($dbRouteInfoLookupData));
+
+        foreach ($lookupKeys as $key) {
+            $value = $expectedRouteInfo->$key;
+            if (!is_array($value)) {
+                $value = array($value);
+            }
+            
+            foreach ($value as $v) {
+                $this->assertTrue(in_array($v, $dbRouteInfoLookupData));
+            }
+        }
+    }
+
+    private function _constructRouteInfoFromInfoData($routeInfoData) {
+        return Abp01_Route_Info::fromJson($routeInfoData['route_type'], 
+            $routeInfoData['route_data_serialized']);
     }
 
     public function test_canSaveRouteInfo_existingForPost() {
@@ -306,9 +371,9 @@
 
             $this->assertTrue($result);
 
-            $this->_assertRouteInfoDataMatchesDbRow($postId, 
-                $currentUserId, 
-                $routeInfo);
+            $this->_assertRouteInfoDataMatchesDbRow($routeInfo, 
+                $postId,
+                $currentUserId);
         }
     }
 
@@ -507,12 +572,7 @@
         $routeManager = $this->_getRouteManager();
         foreach ($this->_testPostRouteData as $postId => $testPostRouteData) {
             $trackDocument = $routeManager->getOrCreateDisplayableTrackDocument($testPostRouteData['track']);
-
-            $this->assertNotEmpty($trackDocument);
-            $this->assertNotEmpty($trackDocument->getBounds());
-            $this->assertNotEmpty($trackDocument->getStartPoint());
-            $this->assertNotEmpty($trackDocument->getEndPoint());
-            $this->assertNotEmpty($trackDocument->parts);
+            $this->_assertTrackDocumentNotEmpty($trackDocument);
 
             $this->assertFileExists($routeManager->getTrackFilePath($postId));
             $this->assertFileExists($routeManager->getTrackDocumentCacheFilePath($postId));
@@ -523,6 +583,14 @@
             $this->_assertFileNotEmpty($routeManager->getTrackFilePath($postId));
             $this->_assertFileNotEmpty($routeManager->getTrackDocumentCacheFilePath($postId));
         }
+    }
+
+    private function _assertTrackDocumentNotEmpty($trackDocument) {
+        $this->assertNotEmpty($trackDocument);
+        $this->assertNotEmpty($trackDocument->getBounds());
+        $this->assertNotEmpty($trackDocument->getStartPoint());
+        $this->assertNotEmpty($trackDocument->getEndPoint());
+        $this->assertNotEmpty($trackDocument->parts);
     }
 
     public function test_tryGetOrCreateDisplayableTrackDocument_postWithTrackFiles() {
@@ -556,52 +624,6 @@
         }
     }
 
-    private function _assertRouteInfoDataMatchesDbRow($postId, 
-        $currentUserId, 
-        Abp01_Route_Info $routeInfo) {
-
-        $env = $this->_getEnv();
-        $db = $this->_getDb();
-        $lookupKeys = $routeInfo->getAllLookupFields();
-
-        $db->where('post_ID', $postId);
-        $dbRouteData = $db->getOne($env->getRouteDetailsTableName());
-
-        $db->where('post_ID', $postId);
-        $dbRouteLookupData = $db->getValue($env->getRouteDetailsLookupTableName(), 
-            'lookup_ID', 
-            null);
-
-        $this->assertNotEmpty($dbRouteData);
-        $this->assertEquals($routeInfo->getType(), 
-            $dbRouteData['route_type']);
-        $this->assertEquals($currentUserId, 
-            $dbRouteData['route_data_last_modified_by']);
-
-        $dbRouteInfo = Abp01_Route_Info::fromJson($dbRouteData['route_type'], 
-            $dbRouteData['route_data_serialized']);
-
-        foreach ($dbRouteInfo->getData() as $key => $value) {
-            $this->assertEquals($routeInfo->$key, $value);
-        }
-
-        $this->assertEquals(!empty($lookupKeys), 
-            !empty($dbRouteLookupData));
-        $this->assertEquals(count($lookupKeys), 
-            count($dbRouteLookupData));
-
-        foreach ($lookupKeys as $key) {
-            $value = $routeInfo->$key;
-            if (!is_array($value)) {
-                $value = array($value);
-            }
-            
-            foreach ($value as $v) {
-                $this->assertTrue(in_array($v, $dbRouteLookupData));
-            }
-        }
-    }
-
     private function _assertTrackFilesDoNotExist($routeManager, $postId) {
         $this->assertFileNotExists($routeManager->getTrackFilePath($postId));
         $this->assertFileNotExists($routeManager->getTrackDocumentCacheFilePath($postId));
@@ -619,18 +641,9 @@
             $routeManager->hasRouteTrack($postId));
     }
 
-    private function _assertRouteInfoInstancesMatch(Abp01_Route_Info $expected, 
-        Abp01_Route_Info $actual) {
-
-        $expectedData = $expected->getData();
-        $actualData = $actual->getData();
-
-        foreach ($expectedData as $eKey => $eValue) {
-            $this->assertTrue(isset($actualData[$eKey]));
-            
-            $aValue = $actualData[$eKey];
-            $this->assertEquals($eValue, $aValue);
-        }
+    private function _assertRouteInfoInstancesMatch(Abp01_Route_Info $expected, Abp01_Route_Info $actual) {      
+        $this->_assertRouteInfoInstancesDataMatches($expected, 
+            $actual);
 
         $this->assertEquals($expected->getType(), 
             $actual->getType());
@@ -643,25 +656,45 @@
             $actual->isHikingTour());
     }
 
+    private function _assertRouteInfoInstancesDataMatches(Abp01_Route_Info $expected, Abp01_Route_Info $actual) {
+        $expectedData = $expected->getData();
+        $actualData = $actual->getData();
+
+        foreach ($expectedData as $eKey => $eValue) {
+            $this->assertTrue(isset($actualData[$eKey]));
+            
+            $aValue = $actualData[$eKey];
+            $this->assertEquals($eValue, $aValue);
+        }
+    }
+
     private function _assertMissingRouteInfo($postIds) {
-        $env = $this->_getEnv();
-        $db = $this->_getDb();
+        $this->assertEquals(0, $this->_countRouteDetailsRecordsForPostIds($postIds));
+        $this->assertEquals(0, $this->_countRouteDetailsLookupRecordsForPostIds($postIds));
+    }
 
-        $db->where('post_ID', $postIds, 'IN');
-        $result = $db->getOne($env->getRouteDetailsTableName(), 'COUNT(*) as cnt');
-        $this->assertEquals(0, $result['cnt']);
+    private function _countRouteDetailsRecordsForPostIds($postIds) {
+        return $this->_countRecordsByColumnInValueList($this->_getDb(), 
+            $this->_getEnv()->getRouteDetailsTableName(), 
+            'post_ID', 
+            $postIds);
+    }
 
-        $db->where('post_ID', $postIds, 'IN');
-        $result = $db->getOne($env->getRouteDetailsLookupTableName(), 'COUNT(*) as cnt');
-        $this->assertEquals(0, $result['cnt']);
+    private function _countRouteDetailsLookupRecordsForPostIds($postIds) {
+        return $this->_countRecordsByColumnInValueList($this->_getDb(), 
+            $this->_getEnv()->getRouteDetailsLookupTableName(), 
+            'post_ID', 
+            $postIds);
     }
 
     private function _assertMissingRouteTracks($postIds) {
-        $env = $this->_getEnv();
-        $db = $this->_getDb();
+        $this->assertEquals(0, $this->_countRouteTrackRecordsForPostIds($postIds));
+    }
 
-        $db->where('post_ID', $postIds, 'IN');
-        $result = $db->getOne($env->getRouteTrackTableName(), 'COUNT(*) as cnt');
-        $this->assertEquals(0, $result['cnt']);
+    private function _countRouteTrackRecordsForPostIds($postIds) {
+        return $this->_countRecordsByColumnInValueList($this->_getDb(), 
+            $this->_getEnv()->getRouteTrackTableName(), 
+            'post_ID', 
+            $postIds);
     }
  }

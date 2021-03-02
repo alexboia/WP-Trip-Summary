@@ -38,4 +38,15 @@
             $db->rawQuery('TRUNCATE TABLE `' . $table . '`', null, false);
         }
     }
+
+    protected function _countRecordsByColumnInValueList(MysqliDb $db, $table, $column, $values) {
+        $db->where($column, 
+            $values, 
+            'IN');
+
+        $result = $db->getOne($table, 
+            'COUNT(*) as cnt');
+
+        return $result['cnt'];
+    }
  }
