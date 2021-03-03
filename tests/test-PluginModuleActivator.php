@@ -30,6 +30,32 @@
  */
 
 class PluginModuleActivatorTests extends WP_UnitTestCase {
+    public function test_canCheckIfModuleClassValid_validModuleClasses() {
+        $validModuleClasses = array(
+            NoDependenciesSamplePluginModule::class,
+            RequiresOnlyUnsupportedDependenciesSamplePluginModule::class,
+            RequiresAllSupportedDependenciesSamplePluginModule::class,
+            RequiresSomeUnsupportedDependenciesSamplePluginModule::class,
+            RequiresOneSupportedDependencySamplePluginModule::class
+        );
+
+        $activator = $this->_getPluginModuleActivator();
+        foreach ($validModuleClasses as $className)  {
+            $this->assertTrue($activator->isValidModuleClass($className));
+        }
+    }
+
+    public function test_canCheckIfModuleClassValid_invalidModuleClasses() {
+        $invalidModuleClasses = array(
+            NotAValidModuleClassSamplePluginModule::class
+        );
+
+        $activator = $this->_getPluginModuleActivator();
+        foreach ($invalidModuleClasses as $className)  {
+            $this->assertFalse($activator->isValidModuleClass($className));
+        }
+    }
+
     public function test_canCreateModuleInstance_validModuleClass_noDependencies() {
         $activator = $this->_getPluginModuleActivator();
         $moduleInstance = $activator->createModuleInstance(NoDependenciesSamplePluginModule::class);

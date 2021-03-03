@@ -61,21 +61,21 @@ class Abp01_PluginModules_PluginModuleActivator {
         }
 
         $moduleClass = new ReflectionClass($moduleClassName);
-        $moduleDependencyClassNames = $this->_getModuleDependencyClassNames($moduleClass);
-        $moduleDependencyInstances = $this->_getModuleDependencyInstances($moduleDependencyClassNames);
+        $moduleDependencyClassNames = $this->_determineModuleDependencyClassNames($moduleClass);
+        $moduleDependencyInstances = $this->_createModuleDependencyInstances($moduleDependencyClassNames);
 
         $moduleInstance = $moduleClass->newInstanceArgs($moduleDependencyInstances);
         return $moduleInstance;
     }
 
-    private function _getModuleDependencyClassNames(ReflectionClass $moduleClass) {
+    private function _determineModuleDependencyClassNames(ReflectionClass $moduleClass) {
         $dependencyClassNames = array();
-        $moduleClassConstructorParams = $this->_getModuleClassConstructorParameters($moduleClass);
+        $moduleClassConstructorParams = $this->_determineModuleClassConstructorParameters($moduleClass);
 
         foreach ($moduleClassConstructorParams as $constructorParamInfo) {
             $parameterType = $constructorParamInfo->getType();
             if ($parameterType != null) {
-                $dependencyClassNames[] = $this->_getDependencyClassName($parameterType);
+                $dependencyClassNames[] = $this->_determineDependencyClassName($parameterType);
             } else {
                 throw new Abp01_PluginModules_Exception('Not all parameters of module class <' . $moduleClass->getName() . '> constructor have type information');
             }
@@ -84,7 +84,7 @@ class Abp01_PluginModules_PluginModuleActivator {
         return $dependencyClassNames;
     }
 
-    private function _getModuleClassConstructorParameters(ReflectionClass $moduleClass) {
+    private function _determineModuleClassConstructorParameters(ReflectionClass $moduleClass) {
         $constructorParams = array();
         $constructorInfo = $moduleClass->getConstructor();
 
@@ -95,13 +95,13 @@ class Abp01_PluginModules_PluginModuleActivator {
         return $constructorParams;
     }
 
-    private function _getDependencyClassName(ReflectionType $type) {
+    private function _determineDependencyClassName(ReflectionType $type) {
         return ($type instanceof ReflectionNamedType) 
             ? $type->getName()
             : $type->__toString();
     }
 
-    private function _getModuleDependencyInstances($dependencyClassNames) {
+    private function _createModuleDependencyInstances($dependencyClassNames) {
         $dependencyInstances = array();
 
         foreach ($dependencyClassNames as $dependencyClassName) {
@@ -121,7 +121,7 @@ class Abp01_PluginModules_PluginModuleActivator {
     }
 
     private function _createDependencyInstance($dependencyClassName) {
-        $factory = $this->_injectableServiceFactories[$dependencyClassName];
-        return $factory();
+        $dependencyFactory = $this->_injectableServiceFactories[$dependencyClassName];
+        return $dependencyFactory();
     }
 }
