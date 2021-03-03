@@ -29,6 +29,10 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+    exit;
+}
+
 class Abp01_Auth {
     const CAP_WP_UPLOAD_FILES = 'upload_files';
 

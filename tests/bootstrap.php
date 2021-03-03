@@ -102,6 +102,12 @@ function _manually_install_plugin() {
 
 function _include_plugin_dependent_test_classes() {
 	require_once 'lib/TestFrontendTheme.php';
+	require_once 'lib/sampleModuleClasses/NoDependenciesSamplePluginModule.php';
+	require_once 'lib/sampleModuleClasses/RequiresAllSupportedDependenciesSamplePluginModule.php';
+	require_once 'lib/sampleModuleClasses/RequiresOneSupportedDependencySamplePluginModule.php';
+	require_once 'lib/sampleModuleClasses/RequiresSomeUnsupportedDependenciesSamplePluginModule.php';
+	require_once 'lib/sampleModuleClasses/RequiresOnlyUnsupportedDependenciesSamplePluginModule.php';
+	require_once 'lib/sampleModuleClasses/NotAValidModuleClassSamplePluginModule.php';
 }
 
 function _sync_wp_tests_config($testsDir) {
