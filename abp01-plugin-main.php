@@ -224,15 +224,6 @@ function abp01_is_managing_lookup() {
 }
 
 /**
- * Check whether the currently displayed screen is the help page
- * 
- * @return booelan True if on plugin lookup help page, false otherwise
- */
-function abp01_is_browsing_help() {
-	return abp01_get_env()->isAdminPage(ABP01_HELP_SUBMENU_SLUG);
-}
-
-/**
  * Tries to infer the current post ID from the current context. Several paths are tried:
  *  - The global $post object
  *  - The value of the _GET 'post' parameter
@@ -393,16 +384,6 @@ function abp01_admin_settings_page_render(stdClass $data) {
 }
 
 /**
- * Renders the plugin help page
- * 
- * @param stdClass $data The data with the help contents
- * @return void
- */
-function abp01_admin_help_page_render(stdClass $data) {
-	return abp01_get_view()->renderAdminHelpPage($data);
-}
-
-/**
  * Renders the plugin lookup data management page
  * 
  * @param stdClass $data The lookup data management page context and the actual data
@@ -460,13 +441,6 @@ function abp01_create_admin_menu() {
 				Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY, 
 				ABP01_LOOKUP_SUBMENU_SLUG, 
 					'abp01_admin_lookup_page');
-	
-	add_submenu_page(ABP01_MAIN_MENU_SLUG, 
-		esc_html__('Help', 'abp01-trip-summary'), 
-		esc_html__('Help', 'abp01-trip-summary'), 
-			Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY, 
-			ABP01_HELP_SUBMENU_SLUG, 
-				'abp01_admin_help_page');
 }
 
 /**
@@ -568,9 +542,17 @@ function abp01_init_viewer_content_hooks() {
 
 function abp01_setup_plugin() {
 	abp01_init_core();
-	abp01_update_if_needed();
 	abp01_increase_limits(ABP01_MAX_EXECUTION_TIME_MINUTES);
+	abp01_update_if_needed();
 	abp01_register_post_listing_customizations();
+	abp01_setup_plugin_modules();
+}
+
+function abp01_setup_plugin_modules() {
+	$pluginModuleHost = new Abp01_PluginModules_PluginModuleHost(array(
+		Abp01_PluginModules_HelpPluginModule::class
+	));
+	$pluginModuleHost->load();
 }
 
 function abp01_init_plugin() {
@@ -835,10 +817,6 @@ function abp01_add_admin_styles() {
 	if (abp01_is_managing_lookup() && abp01_can_manage_plugin_settings()) {
 		Abp01_Includes::includeStyleAdminLookupManagement();
 	}
-	
-	if (abp01_is_browsing_help() && abp01_can_manage_plugin_settings()) {
-		Abp01_Includes::includeStyleAdminHelp();
-	}
 }
 
 /**
@@ -1028,24 +1006,6 @@ function abp01_save_admin_settings_page_save() {
 	}
 
 	abp01_send_json($response);
-}
-
-/**
- * This function handles the admin help page. 
- * The execution halts if the user lacks 
- * 	the proper capabilities
- * 
- * @return void
- */
-function abp01_admin_help_page() {
-	if (!abp01_can_manage_plugin_settings()) {
-		return;
-	}
-
-	$data = new stdClass();	
-	$data->helpContents = abp01_get_help()->getHelpContentForCurrentLocale();
-	
-	echo abp01_admin_help_page_render($data);
 }
 
 /**

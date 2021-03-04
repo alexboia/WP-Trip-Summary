@@ -28,10 +28,24 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
 abstract class Abp01_PluginModules_PluginModule {
+    /**
+     * @var Abp01_Auth
+     */
+    private $_auth;
+
+    public function __construct(Abp01_Auth $auth) {
+        $this->_auth = $auth;
+    }
+
+    protected function _currentUserCanManagePluginSettings() {
+        return $this->_auth->canManagePluginSettings();
+    }
+
     abstract public function load();
 }
