@@ -29,8 +29,6 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class NotAValidModuleClassSamplePluginModule {
-    public function __construct() {
-        SamplePluginModuleCreationState::reportModuleConstructed(__CLASS__, func_get_args());
-    }
+class SamplePluginModuleDependency {
+    
 }

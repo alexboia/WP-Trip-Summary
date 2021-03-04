@@ -29,8 +29,22 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class NotAValidModuleClassSamplePluginModule {
-    public function __construct() {
+class HasOnlyCustomAvailableDependenciesPluginModule extends Abp01_PluginModules_PluginModule {
+    /**
+     * @var SamplePluginModuleDependency
+     */
+    private $_dep;
+
+    public function __construct(SamplePluginModuleDependency $dep) {
+        $this->_dep = $dep;
         SamplePluginModuleCreationState::reportModuleConstructed(__CLASS__, func_get_args());
+    }
+
+    public function load() {
+        SamplePluginModuleCallState::reportModuleLoadCalled(__CLASS__);
+    }
+
+    public function getDep() {
+        return $this->_dep;
     }
 }

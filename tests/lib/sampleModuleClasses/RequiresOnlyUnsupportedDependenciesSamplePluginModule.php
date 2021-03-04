@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Copyright (c) 2014-2021 Alexandru Boia
@@ -38,10 +37,11 @@ class RequiresOnlyUnsupportedDependenciesSamplePluginModule extends Abp01_Plugin
     public function __construct(WP_Post $wpPost, WP_Query $wpQuery) {
         $this->_wpPost = $wpPost;
         $this->_wpQuery = $wpQuery;
+        SamplePluginModuleCreationState::reportModuleConstructed(__CLASS__, func_get_args());
     }
 
     public function load() {
-        return;
+        SamplePluginModuleCallState::reportModuleLoadCalled(__CLASS__);
     }
 
     public function hasWpPost() {

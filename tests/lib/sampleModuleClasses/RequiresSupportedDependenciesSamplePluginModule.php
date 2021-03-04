@@ -29,8 +29,51 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class NotAValidModuleClassSamplePluginModule {
-    public function __construct() {
+class RequiresSupportedDependenciesSamplePluginModule extends Abp01_PluginModules_PluginModule {
+    private $_settings; 
+
+    private $_env; 
+    
+    private $_routeManager; 
+
+    private $_view;
+    
+    private $_help;
+    
+    public function __construct(Abp01_Settings $settings, 
+        Abp01_Env $env, 
+        Abp01_Route_Manager $routeManager, 
+        Abp01_View $view, 
+        Abp01_Help $help) {
+        $this->_settings = $settings;
+        $this->_env = $env;
+        $this->_routeManager = $routeManager;
+        $this->_view = $view;
+        $this->_help = $help;
         SamplePluginModuleCreationState::reportModuleConstructed(__CLASS__, func_get_args());
+    }
+
+    public function load() {
+        SamplePluginModuleCallState::reportModuleLoadCalled(__CLASS__);
+    }
+
+    public function hasSettings() {
+        return !empty($this->_settings);
+    }
+
+    public function hasEnv() {
+        return !empty($this->_env);
+    }
+
+    public function hasRouteManager() {
+        return !empty($this->_routeManager);
+    }
+
+    public function hasView() {
+        return !empty($this->_view);
+    }
+
+    public function hasHelp() {
+        return !empty($this->_help);
     }
 }

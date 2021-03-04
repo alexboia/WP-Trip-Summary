@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Copyright (c) 2014-2021 Alexandru Boia
@@ -40,8 +39,14 @@ class RequiresAllSupportedDependenciesSamplePluginModule extends Abp01_PluginMod
     private $_view;
     
     private $_help;
+
+    private $_pluginModuleHost;
+
+    private $_auth;
     
-    public function __construct(Abp01_Settings $settings, 
+    public function __construct(Abp01_PluginModules_PluginModuleHost $pluginModuleHost, 
+        Abp01_Auth $auth,
+        Abp01_Settings $settings, 
         Abp01_Env $env, 
         Abp01_Route_Manager $routeManager, 
         Abp01_View $view, 
@@ -51,10 +56,22 @@ class RequiresAllSupportedDependenciesSamplePluginModule extends Abp01_PluginMod
         $this->_routeManager = $routeManager;
         $this->_view = $view;
         $this->_help = $help;
+        $this->_pluginModuleHost = $pluginModuleHost;
+        $this->_auth = $auth;
+
+        SamplePluginModuleCreationState::reportModuleConstructed(__CLASS__, func_get_args());
     }
 
     public function load() {
-        return;
+        SamplePluginModuleCallState::reportModuleLoadCalled(__CLASS__);
+    }
+
+    public function hasPluginModuleHost() {
+        return !empty($this->_pluginModuleHost);
+    }
+
+    public function hasAuth() {
+        return !empty($this->_auth);
     }
 
     public function hasSettings() {

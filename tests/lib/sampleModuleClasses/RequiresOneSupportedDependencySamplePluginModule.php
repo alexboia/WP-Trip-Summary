@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Copyright (c) 2014-2021 Alexandru Boia
@@ -35,10 +34,11 @@ class RequiresOneSupportedDependencySamplePluginModule extends Abp01_PluginModul
 
     public function __construct(Abp01_Help $help) {
         $this->_help = $help;
+        SamplePluginModuleCreationState::reportModuleConstructed(__CLASS__, func_get_args());
     }
 
     public function load() {
-        return;
+        SamplePluginModuleCallState::reportModuleLoadCalled(__CLASS__);
     }
 
     public function hasHelp() {

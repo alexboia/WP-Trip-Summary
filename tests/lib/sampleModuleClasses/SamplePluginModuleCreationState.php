@@ -29,8 +29,49 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class NotAValidModuleClassSamplePluginModule {
-    public function __construct() {
-        SamplePluginModuleCreationState::reportModuleConstructed(__CLASS__, func_get_args());
+class SamplePluginModuleCreationState {
+    private static $_constructedModulesInfo = array();
+
+    public static function reportModuleConstructed($moduleClass, array $args) {
+        self::$_constructedModulesInfo[$moduleClass] = $args;
+    }
+
+    public static function moduleHasNotBeenCreated($moduleClass) {
+        return !isset(self::$_constructedModulesInfo[$moduleClass]);
+    }
+
+    public static function hasModuleTypeBeenConstructedWithArgumentTypes($moduleClass, array $expectedArgTypes) {
+        $result = false;
+
+        if (isset(self::$_constructedModulesInfo[$moduleClass])) {
+            $constructionArgs = self::$_constructedModulesInfo[$moduleClass];
+            $result = self::_constructionArgsMatchExpectedArgTypes($constructionArgs, 
+                $expectedArgTypes);
+        }
+
+        return $result;
+    }
+
+    private static function _constructionArgsMatchExpectedArgTypes(array $constructionArgs, array $expectedArgTypes) {
+        $result = false;
+        $countArgs = count($constructionArgs);
+
+        if ($countArgs == count($expectedArgTypes)) {
+            $result = true;
+            for ($i = 0; $i < $countArgs; $i ++) {
+                $constructionArg = $constructionArgs[$i];
+                $expectedArgType = $expectedArgTypes[$i];
+                if (!is_a($constructionArg, $expectedArgType)) {
+                    $result = false;
+                    break;
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    public static function reset() {
+        self::$_constructedModulesInfo = array();
     }
 }

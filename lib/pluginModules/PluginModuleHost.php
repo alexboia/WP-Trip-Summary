@@ -92,6 +92,9 @@ class Abp01_PluginModules_PluginModuleHost {
             },
             Abp01_Help::class => function() {
                 return $this->getHelp();
+            },
+            Abp01_Auth::class => function() {
+                return $this->getAuth();
             }
         );
     }
@@ -100,6 +103,19 @@ class Abp01_PluginModules_PluginModuleHost {
         foreach ($this->_pluginModules as $module) {
             $module->load();
         }
+    }
+
+    public function hasModule($moduleClass) {
+        $hasModule = false;
+
+        foreach ($this->_pluginModules as $pluginModule) {
+            if (is_a($pluginModule, $moduleClass)) {
+                $hasModule = true;
+                break;
+            }
+        }
+
+        return $hasModule;
     }
 
     public function getRouteManager() {
@@ -120,5 +136,9 @@ class Abp01_PluginModules_PluginModuleHost {
 
     public function getEnv() {
         return abp01_get_env();
+    }
+
+    public function getAuth() {
+        return abp01_get_auth();
     }
 }

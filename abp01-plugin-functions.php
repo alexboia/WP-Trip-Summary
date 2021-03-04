@@ -85,6 +85,13 @@ function abp01_get_view() {
 }
 
 /**
+ * @return Abp01_Auth
+ */
+function abp01_get_auth() {
+	return Abp01_Auth::getInstance();
+}
+
+/**
  * Initializes the autoloading process
  * 
  * @return void

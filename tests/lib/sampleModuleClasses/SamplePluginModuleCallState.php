@@ -29,8 +29,27 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class NotAValidModuleClassSamplePluginModule {
-    public function __construct() {
-        SamplePluginModuleCreationState::reportModuleConstructed(__CLASS__, func_get_args());
+class SamplePluginModuleCallState {
+    private static $_loadCalledForModules = array();
+
+    public static function reportModuleLoadCalled($moduleClass) {
+        if (!isset(self::$_loadCalledForModules[$moduleClass])) {
+            self::$_loadCalledForModules[$moduleClass] = 0;
+        }
+
+        self::$_loadCalledForModules[$moduleClass] ++;
+    }
+
+    public static function hasCalledLoadForModuleCount($numerOfModules) {
+        return count(self::$_loadCalledForModules) === $numerOfModules;
+    }
+
+    public static function hasModuleLoadBeenCalledExactlyOnce($moduleClass) {
+        return isset(self::$_loadCalledForModules[$moduleClass]) 
+            && self::$_loadCalledForModules[$moduleClass] == 1;
+    }
+
+    public static function reset() {
+        self::$_loadCalledForModules = array();
     }
 }

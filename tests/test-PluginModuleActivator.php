@@ -30,11 +30,21 @@
  */
 
 class PluginModuleActivatorTests extends WP_UnitTestCase {
+    public function setUp() {
+        parent::setUp();
+        SamplePluginModuleCreationState::reset();
+    }
+
+    public function tearDown() {
+        parent::tearDown();
+        SamplePluginModuleCreationState::reset();
+    }
+
     public function test_canCheckIfModuleClassValid_validModuleClasses() {
         $validModuleClasses = array(
             NoDependenciesSamplePluginModule::class,
             RequiresOnlyUnsupportedDependenciesSamplePluginModule::class,
-            RequiresAllSupportedDependenciesSamplePluginModule::class,
+            RequiresSupportedDependenciesSamplePluginModule::class,
             RequiresSomeUnsupportedDependenciesSamplePluginModule::class,
             RequiresOneSupportedDependencySamplePluginModule::class
         );
@@ -66,10 +76,10 @@ class PluginModuleActivatorTests extends WP_UnitTestCase {
 
     public function test_canCreateModuleInstance_validModuleClass_allSupportedDependencies() {
         $activator = $this->_getPluginModuleActivator();
-        $moduleInstance = $activator->createModuleInstance(RequiresAllSupportedDependenciesSamplePluginModule::class);
+        $moduleInstance = $activator->createModuleInstance(RequiresSupportedDependenciesSamplePluginModule::class);
 
         $this->assertNotNull($moduleInstance);
-        $this->assertTrue($moduleInstance instanceof RequiresAllSupportedDependenciesSamplePluginModule);
+        $this->assertTrue($moduleInstance instanceof RequiresSupportedDependenciesSamplePluginModule);
 
         $this->assertTrue($moduleInstance->hasView());
         $this->assertTrue($moduleInstance->hasSettings());

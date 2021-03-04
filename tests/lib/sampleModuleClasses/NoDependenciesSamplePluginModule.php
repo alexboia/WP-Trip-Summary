@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Copyright (c) 2014-2021 Alexandru Boia
@@ -31,7 +30,11 @@
  */
 
 class NoDependenciesSamplePluginModule extends Abp01_PluginModules_PluginModule {
+    public function __construct() {
+        SamplePluginModuleCreationState::reportModuleConstructed(__CLASS__, func_get_args());
+    }
+
     public function load() {
-        return;
+        SamplePluginModuleCallState::reportModuleLoadCalled(__CLASS__);
     }
 }
