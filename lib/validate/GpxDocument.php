@@ -29,7 +29,11 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class Abp01_Validate_GpxDocument {
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+	exit;
+}
+
+class Abp01_Validate_GpxDocument implements Abp01_Validate {
     private $_bufferLength;
 
     public function __construct($bufferLength = 50) {

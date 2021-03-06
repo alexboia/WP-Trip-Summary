@@ -39,7 +39,7 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
  * - check that the URL starts with one of the accepted protocols.
  * If the list of accepted protocols is empty, then it is considered that any protocol is accepted
  * */
-class Abp01_Validate_Url {
+class Abp01_Validate_Url implements Abp01_Validate {
 	/**
 	 * @var boolean Whether empty strings are considered valid or not
 	 * */

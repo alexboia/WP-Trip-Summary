@@ -29,35 +29,32 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class ViewerTests extends WP_UnitTestCase {
-    use GenericTestHelpers;
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+	exit;
+}
 
-    public function test_canGetAvailableTabs() {
-        $availableTabs = Abp01_Viewer::getAvailableTabs();
+class Abp01_Validation_Rule_Simple implements Abp01_Validation_Rule {
+    /**
+     * @var Abp01_Validate
+     */
+    private $_validate;
 
-        $this->assertNotEmpty($availableTabs);
-        $this->assertEquals(2, count($availableTabs));
-        $this->assertArrayHasKey(Abp01_Viewer::TAB_INFO, $availableTabs);
-        $this->assertArrayHasKey(Abp01_Viewer::TAB_MAP, $availableTabs);
+    private $_message;
+
+    public function __construct(Abp01_Validate $validate, $message) {
+        if (empty($message)) {
+            throw new InvalidArgumentException('The validation message cannot be empty');
+        }
+
+        $this->_validate = $validate;
+        $this->_message = $message;
     }
 
-    public function test_canCheckIfTabIsSupport_validTabName() {
-        foreach (Abp01_Viewer::getAvailableTabs() as $tab => $label) {
-            $this->assertTrue(Abp01_Viewer::isTabSupported($tab));
-        }
-    }
+    public function validateInputAndGetMessage($input) {
+        $message = !$this->_validate->validate($input)
+            ? $this->_message
+            : null;
 
-    public function test_tryCheckIfTabIsSupport_invalidTabName() {
-        $faker = $this->_getFaker();
-        $validTabs = array_keys(Abp01_Viewer::getAvailableTabs());
-
-        for ($i = 0; $i < 10; $i ++) {
-            $invalidTab = $faker->randomAscii;
-            while (in_array($invalidTab, $validTabs)) {
-                $invalidTab = $faker->randomAscii;
-            }
-
-            $this->assertFalse(Abp01_Viewer::isTabSupported($invalidTab));
-        }
+        return $message;
     }
 }

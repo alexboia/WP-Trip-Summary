@@ -29,35 +29,50 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class ViewerTests extends WP_UnitTestCase {
-    use GenericTestHelpers;
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+	exit;
+}
 
-    public function test_canGetAvailableTabs() {
-        $availableTabs = Abp01_Viewer::getAvailableTabs();
+class Abp01_Validation_Chain {
+    /**
+     * @var array()
+     */
+    private $_inputValidationRules = array();
 
-        $this->assertNotEmpty($availableTabs);
-        $this->assertEquals(2, count($availableTabs));
-        $this->assertArrayHasKey(Abp01_Viewer::TAB_INFO, $availableTabs);
-        $this->assertArrayHasKey(Abp01_Viewer::TAB_MAP, $availableTabs);
+    private $_lastValidationMessage = null;
+
+    public function addInputValidationRule($input, Abp01_Validation_Rule $rule) {
+        $this->_inputValidationRules[] = array(
+            'input' => $input,
+            'rule' => $rule
+        );
     }
 
-    public function test_canCheckIfTabIsSupport_validTabName() {
-        foreach (Abp01_Viewer::getAvailableTabs() as $tab => $label) {
-            $this->assertTrue(Abp01_Viewer::isTabSupported($tab));
-        }
+    public function isInputValid() {
+        $this->_lastValidationMessage = $this->_executeInputValidationRulesAndGetMessage();
+        return empty($this->_lastValidationMessage);
     }
 
-    public function test_tryCheckIfTabIsSupport_invalidTabName() {
-        $faker = $this->_getFaker();
-        $validTabs = array_keys(Abp01_Viewer::getAvailableTabs());
+    private function _executeInputValidationRulesAndGetMessage() {
+        $message = null;
 
-        for ($i = 0; $i < 10; $i ++) {
-            $invalidTab = $faker->randomAscii;
-            while (in_array($invalidTab, $validTabs)) {
-                $invalidTab = $faker->randomAscii;
+        foreach ($this->_inputValidationRules as $inputValidationRule) {
+            $message = $this->_executeInputValidationRuleAndGetMessage($inputValidationRule);
+            if (!empty($message)) {
+                break;
             }
-
-            $this->assertFalse(Abp01_Viewer::isTabSupported($invalidTab));
         }
+
+        return $message;
+    }
+
+    private function _executeInputValidationRuleAndGetMessage($inputValidationRule) {
+        $rule = $inputValidationRule['rule'];
+        $input = $inputValidationRule['input'];
+        return $rule->validateInputAndGetMessage($input);
+    }
+
+    public function getLastValidationMessage() {
+        return $this->_lastValidationMessage;
     }
 }

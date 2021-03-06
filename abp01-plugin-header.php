@@ -229,16 +229,6 @@ define('ABP01_NONCE_GET_TRACK', 'abp01.nonce.getTrack');
 
 /**
  * The prefix used to construct nonce tokens required 
- *  when saving plug-in settings
- * The post Id is appended to this prefix to establish 
- *  the final string used to generate the nonce. 
- * 
- * @var string
- */
-define('ABP01_NONCE_EDIT_SETTINGS', 'abp01.nonce.editSettings');
-
-/**
- * The prefix used to construct nonce tokens required 
  *  when downloading the original GPS track data file (GPX or otherwise)
  * The post Id is appended to this prefix to establish 
  *  the final string used to generate the nonce. 

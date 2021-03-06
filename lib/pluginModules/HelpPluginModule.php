@@ -34,6 +34,8 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_PluginModules_HelpPluginModule extends Abp01_PluginModules_PluginModule {
+    const ADMIN_ENQUEUE_STYLES_HOOK_PRIORITY = 10;
+    
     /**
      * @var Abp01_View
      */
@@ -50,26 +52,37 @@ class Abp01_PluginModules_HelpPluginModule extends Abp01_PluginModules_PluginMod
     private $_help;
 
     public function __construct(Abp01_Env $env, Abp01_Help $help, Abp01_View $view, Abp01_Auth $auth) {
-        parent::__construct($auth);
+        parent::__construct($env, $auth);
+
         $this->_view = $view;
         $this->_env = $env;
         $this->_help = $help;
     }
 
     public function load() {
-        $this->_registerWebPageAssets();
         $this->_registerMenuHook();
+        $this->_registerWebPageAssets();
     }
 
     private function _registerWebPageAssets() {
         add_action('admin_enqueue_scripts', 
-            array($this, 'onAdminEnqueueStyles'), 9998);
+            array($this, 'onAdminEnqueueStyles'), 
+            self::ADMIN_ENQUEUE_STYLES_HOOK_PRIORITY);
     }
 
     public function onAdminEnqueueStyles() {
-        if ($this->_isBrowsingHelp()) {
+        if ($this->_shouldEnqueueWebPageAssets()) {
             Abp01_Includes::includeStyleAdminHelp();
         }
+    }
+
+    private function _shouldEnqueueWebPageAssets() {
+        return $this->_isBrowsingHelp() 
+            && $this->_currentUserCanManagePluginSettings();
+    }
+
+    private function _isBrowsingHelp() {
+        return $this->_env->isAdminPage(ABP01_HELP_SUBMENU_SLUG);
     }
 
     private function _registerMenuHook() {
@@ -80,9 +93,9 @@ class Abp01_PluginModules_HelpPluginModule extends Abp01_PluginModules_PluginMod
         add_submenu_page(ABP01_MAIN_MENU_SLUG, 
 		    esc_html__('Help', 'abp01-trip-summary'), 
 		    esc_html__('Help', 'abp01-trip-summary'), 
-			    Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY, 
-			    ABP01_HELP_SUBMENU_SLUG, 
-				    array($this, 'displayAdminPage'));
+            Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY, 
+            ABP01_HELP_SUBMENU_SLUG, 
+            array($this, 'displayAdminPage'));
     }
 
     public function displayAdminPage() {
@@ -91,12 +104,10 @@ class Abp01_PluginModules_HelpPluginModule extends Abp01_PluginModules_PluginMod
         }
     
         $data = new stdClass();	
-        $data->helpContents = $this->_help->getHelpContentForCurrentLocale();
+        $data->helpContents = $this->_help
+            ->getHelpContentForCurrentLocale();
 
-        echo $this->_view->renderAdminHelpPage($data);
-    }
-
-    private function _isBrowsingHelp() {
-        return $this->_env->isAdminPage(ABP01_HELP_SUBMENU_SLUG);
+        echo $this->_view
+            ->renderAdminHelpPage($data);
     }
 }

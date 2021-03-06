@@ -78,15 +78,6 @@ function abp01_create_download_track_nonce($postId) {
 }
 
 /**
- * Creates a nonce to be used when saving plugin settings
- * 
- * @return string The created nonce
- */
-function abp01_create_edit_settings_nonce() {
-	return wp_create_nonce(ABP01_NONCE_EDIT_SETTINGS);
-}
-
-/**
  * Creates a nonce to be used when managing look-up data operations
  * 
  * @return string The created nonce
@@ -123,15 +114,6 @@ function abp01_verify_get_track_nonce($postId) {
  */
 function abp01_verify_download_track_nonce($postId) {
     return check_ajax_referer(ABP01_NONCE_DOWNLOAD_TRACK . ':' . $postId, 'abp01_nonce_download', false);
-}
-
-/**
- * Checks whether the current request has a valid edit settings nonce
- * 
- * @return bool True if valid, false otherwise
- */
-function abp01_verify_edit_settings_nonce() {
-	return check_ajax_referer(ABP01_NONCE_EDIT_SETTINGS, 'abp01_nonce_settings', false);
 }
 
 /**
@@ -374,16 +356,6 @@ function abp01_render_admin_trip_summary_editor(stdClass $data) {
 }
 
 /**
- * Renders the plugin settings editor page
- * 
- * @param stdClass $data The settings context and existing settings values
- * @return void
- */
-function abp01_admin_settings_page_render(stdClass $data) {
-	return abp01_get_view()->renderAdminSettingsPage($data);
-}
-
-/**
  * Renders the plugin lookup data management page
  * 
  * @param stdClass $data The lookup data management page context and the actual data
@@ -414,25 +386,6 @@ function abp01_get_admin_lookup_url($lookupType) {
  * @return void
  */
 function abp01_create_admin_menu() {
-	//add main menu entry
-	add_menu_page(
-		esc_html__('Trip Summary Settings', 'abp01-trip-summary'),  //page title
-		esc_html__('Trip Summary', 'abp01-trip-summary'), //menu title
-			Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY, //required page capability
-			ABP01_MAIN_MENU_SLUG, //menu slug - unique handle for this menu
-				'abp01_admin_settings_page', //callback for rendering the page
-				'dashicons-chart-area', //icon css class
-					81);
-
-	//add submenu entries - the submenu settings page
-	add_submenu_page(
-		ABP01_MAIN_MENU_SLUG, 
-			esc_html__('Trip Summary Settings', 'abp01-trip-summary'), 
-			esc_html__('Settings', 'abp01-trip-summary'), 
-				Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY, 
-				ABP01_MAIN_MENU_SLUG,
-					'abp01_admin_settings_page');
-
 	//add submenu entries - loookup data management apge
 	add_submenu_page(
 		ABP01_MAIN_MENU_SLUG, 
@@ -550,6 +503,7 @@ function abp01_setup_plugin() {
 
 function abp01_setup_plugin_modules() {
 	$pluginModuleHost = new Abp01_PluginModules_PluginModuleHost(array(
+		Abp01_PluginModules_SettingsPluginModule::class,
 		Abp01_PluginModules_HelpPluginModule::class
 	));
 	$pluginModuleHost->load();
@@ -808,12 +762,6 @@ function abp01_add_admin_styles() {
 		Abp01_Includes::includeStyleAdminMain();
 	}
 
-	//if in plug-in editing page and IF the user is allowed to edit the plug-in's settings
-	//include the styles required by the settings editor
-	if (abp01_is_editing_plugin_settings() && abp01_can_manage_plugin_settings()) {
-		Abp01_Includes::includeStyleAdminSettings();
-	}
-
 	if (abp01_is_managing_lookup() && abp01_can_manage_plugin_settings()) {
 		Abp01_Includes::includeStyleAdminLookupManagement();
 	}
@@ -842,10 +790,6 @@ function abp01_add_admin_scripts() {
 		Abp01_Includes::includeScriptAdminEditorMain(true, abp01_get_admin_trip_summary_editor_script_translations());
 	}
 
-	if (abp01_is_editing_plugin_settings() && abp01_can_manage_plugin_settings()) {
-		Abp01_Includes::includeScriptAdminSettings(abp01_get_settings_admin_script_translations());
-	}
-
 	if (abp01_is_managing_lookup() && abp01_can_manage_plugin_settings()) {
 		Abp01_Includes::includeScriptAdminLookupMgmt(abp01_get_lookup_admin_script_translations());
 	}
@@ -861,151 +805,6 @@ function abp01_add_frontend_scripts() {
 	if (abp01_should_add_frontend_viewer()) {
 		abp01_get_view()->includeFrontendViewerScripts(abp01_get_frontend_viewer_script_translations());
 	}
-}
-
-/**
- * Prepares the required data and renders 
- * 	the plug-in's settings administration page.
- * If the current user does not have 
- * 	the required permissions to manage the plug-in, 
- * 	then the function returns directly.
- * 
- * @return void
- * */
-function abp01_admin_settings_page() {
-	//check if the current user is allowed to access the settings page
-	if (!abp01_can_manage_plugin_settings()) {
-		return;
-	}
-
-	//init data and populate execution context
-	$data = new stdClass();
-	$data->nonce = abp01_create_edit_settings_nonce();
-	$data->ajaxSaveAction = ABP01_ACTION_SAVE_SETTINGS;
-	$data->ajaxUrl = abp01_get_ajax_baseurl();
-
-	//fetch and process tile layer information
-	$settings = abp01_get_settings();
-	$data->settings = $settings->asPlainObject();
-	$data->optionsLimits = $settings->getOptionsLimits();
-
-	echo abp01_admin_settings_page_render($data);
-}
-
-/**
- * This function handles the plug-in settings save action. 
- * It receives and processes the corresponding HTTP request.
- * Execution halts if the given request context is not valid:
- * - invalid HTTP method or...
- * - no valid nonce detected or...
- * - current user lacks proper capabilities
- * 
- * @return void
- * */
-function abp01_save_admin_settings_page_save() {
-	//only HTTP POST methods are allowed
-	if (abp01_get_http_method() != 'post') {
-		die;
-	}
-		
-	//current user must have the right to edit plugin settings
-	//and the received nonce must be valid
-	if (!abp01_can_manage_plugin_settings() || !abp01_verify_edit_settings_nonce()) {
-		die;
-	}
-
-	//initialize response data
-	$response = abp01_get_ajax_response();
-
-	//check that given unit system is supported
-	$unitSystem = Abp01_InputFiltering::getFilteredPOSTValue('unitSystem');
-	if (!Abp01_UnitSystem::isSupported($unitSystem)) {
-		$response->message = esc_html__('Unsupported unit system', 'abp01-trip-summary');
-		abp01_send_json($response);
-	}
-
-	//check that the initial viewer tab is supported
-	$initialViewerTab = Abp01_InputFiltering::getFilteredPOSTValue('initialViewerTab');
-	if (!Abp01_Viewer::isSupported($initialViewerTab)) {
-		$response->message = esc_html__('Unsupported viewer tab', 'abp01-trip-summary');
-		abp01_send_json($response);
-	}
-
-	//collect and fill in layer parameters
-	$tileLayer = new stdClass();
-	$tileLayer->url = Abp01_InputFiltering::getFilteredPOSTValue('tileLayerUrl');
-	$tileLayer->attributionUrl = Abp01_InputFiltering::getFilteredPOSTValue('tileLayerAttributionUrl');
-	$tileLayer->attributionTxt = Abp01_InputFiltering::getFilteredPOSTValue('tileLayerAttributionTxt');
-
-	//tile layer URL must not be empty
-	if (empty($tileLayer->url)) {
-		$response->message = esc_html__('Tile layer URL is required', 'abp01-trip-summary');
-		abp01_send_json($response);
-	}
-
-	//check tile layer URL format
-	$tileLayerUrlValidator = new Abp01_Validate_TileLayerUrl();
-	if (!$tileLayerUrlValidator->validate($tileLayer->url)) {
-		$response->message = esc_html__('Tile layer URL does not have a valid format', 'abp01-trip-summary');
-		abp01_send_json($response);
-	}
-
-	//check tile layer attribution URL; empty values are allowed
-	$urlValidator = new Abp01_Validate_Url(true);
-	if (!$urlValidator->validate($tileLayer->attributionUrl)) {
-		$response->message = esc_html__('Tile layer attribution URL does not have a valid format', 'abp01-trip-summary');
-		abp01_send_json($response);
-	}
-
-	//collect the track line colour
-	$trackLineColour = Abp01_InputFiltering::getFilteredPOSTValue('trackLineColour');
-
-	//check whether the track line colour is a valid hex value
-	$hexColourValidator = new Abp01_Validate_HexColourCode(true);
-	if (!$hexColourValidator->validate($trackLineColour)) {
-		$response->message = esc_html__('The track line colour is not a valid HEX colour code', 'abp01-trip-summary');
-		abp01_send_json($response);
-	}
-
-	//Fetch settings manager
-	$settings = abp01_get_settings();
-
-	//collect track line weight and map height
-	$minAllowedMapHeight = $settings->getMinimumAllowedMapHeight();
-	$minAllowedTrackLineWeight = $settings->getMinimumAllowedTrackLineWeight();
-
-	$trackLineWeight = max(Abp01_InputFiltering::getPOSTValueAsInteger('trackLineWeight', 3), 
-		$minAllowedTrackLineWeight);
-
-	$mapHeight = max(Abp01_InputFiltering::getPOSTValueAsInteger('mapHeight', $minAllowedMapHeight),
-		$minAllowedMapHeight);
-
-	//fill in and save settings
-	$settings->setShowTeaser(Abp01_InputFiltering::getPOSTValueAsBoolean('showTeaser'));
-	$settings->setTopTeaserText(Abp01_InputFiltering::getFilteredPOSTValue('topTeaserText'));
-	$settings->setBottomTeaserText(Abp01_InputFiltering::getFilteredPOSTValue('bottomTeaserText'));
-
-	$settings->setShowFullScreen(Abp01_InputFiltering::getPOSTValueAsBoolean('showFullScreen'));
-	$settings->setShowMagnifyingGlass(Abp01_InputFiltering::getPOSTValueAsBoolean('showMagnifyingGlass'));
-	$settings->setShowMapScale(Abp01_InputFiltering::getPOSTValueAsBoolean('showMapScale'));
-	$settings->setAllowTrackDownload(Abp01_InputFiltering::getPOSTValueAsBoolean('allowTrackDownload'));
-	$settings->setTrackLineColour($trackLineColour);
-	$settings->setTrackLineWeight($trackLineWeight);
-	$settings->setShowMinMaxAltitude(Abp01_InputFiltering::getPOSTValueAsBoolean('showMinMaxAltitude'));
-	$settings->setShowAltitudeProfile(Abp01_InputFiltering::getPOSTValueAsBoolean('showAltitudeProfile'));
-	$settings->setMapHeight($mapHeight);
-
-	$settings->setTileLayers($tileLayer);
-	$settings->setUnitSystem($unitSystem);
-	$settings->setInitialViewerTab($initialViewerTab);
-
-	if ($settings->saveSettings()) {
-		$response->success = true;
-	} else {
-		$response->message = esc_html__('The settings could not be saved. Please try again.', 'abp01-trip-summary');
-	}
-
-	abp01_send_json($response);
 }
 
 /**
@@ -1837,7 +1636,6 @@ function abp01_run() {
 	add_action('wp_ajax_' . ABP01_ACTION_UPLOAD_TRACK, 'abp01_upload_track');
 	add_action('wp_ajax_' . ABP01_ACTION_CLEAR_TRACK, 'abp01_remove_track');
 	add_action('wp_ajax_' . ABP01_ACTION_CLEAR_INFO, 'abp01_remove_info');
-	add_action('wp_ajax_' . ABP01_ACTION_SAVE_SETTINGS, 'abp01_save_admin_settings_page_save');
 	add_action('wp_ajax_' . ABP01_ACTION_DOWNLOAD_TRACK, 'abp01_download_track');
 	add_action('wp_ajax_' . ABP01_ACTION_GET_LOOKUP, 'abp01_get_lookup_items');
 	add_action('wp_ajax_' . ABP01_ACTION_ADD_LOOKUP, 'abp01_add_lookup_item');

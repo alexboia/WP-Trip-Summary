@@ -45,7 +45,7 @@ class Abp01_Viewer {
         );
     }
 
-    public static function isSupported($tab) {
+    public static function isTabSupported($tab) {
         return in_array($tab, array_keys(self::getAvailableTabs()));
     }
 }

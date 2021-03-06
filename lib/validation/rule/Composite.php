@@ -29,35 +29,56 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class ViewerTests extends WP_UnitTestCase {
-    use GenericTestHelpers;
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+	exit;
+}
 
-    public function test_canGetAvailableTabs() {
-        $availableTabs = Abp01_Viewer::getAvailableTabs();
+class Abp01_Validation_Rule_Composite implements Abp01_Validation_Rule {
+    /**
+     * @var array
+     */
+    private $_inputValueKeyValidationRules;
 
-        $this->assertNotEmpty($availableTabs);
-        $this->assertEquals(2, count($availableTabs));
-        $this->assertArrayHasKey(Abp01_Viewer::TAB_INFO, $availableTabs);
-        $this->assertArrayHasKey(Abp01_Viewer::TAB_MAP, $availableTabs);
+    public function __construct(array $inputValueKeyValidationRules) {
+        $this->_inputValueKeyValidationRules = $inputValueKeyValidationRules;
     }
 
-    public function test_canCheckIfTabIsSupport_validTabName() {
-        foreach (Abp01_Viewer::getAvailableTabs() as $tab => $label) {
-            $this->assertTrue(Abp01_Viewer::isTabSupported($tab));
+    public function validateInputAndGetMessage($input) {
+        if ($input == null) {
+            throw new InvalidArgumentException('Input may not be null');
         }
-    }
 
-    public function test_tryCheckIfTabIsSupport_invalidTabName() {
-        $faker = $this->_getFaker();
-        $validTabs = array_keys(Abp01_Viewer::getAvailableTabs());
+        if (!is_object($input) && !is_array($input)) {
+            throw new InvalidArgumentException('Input must be either an object or an array');
+        }
 
-        for ($i = 0; $i < 10; $i ++) {
-            $invalidTab = $faker->randomAscii;
-            while (in_array($invalidTab, $validTabs)) {
-                $invalidTab = $faker->randomAscii;
+        $message = null;
+        $input = $this->_prepareInput($input);
+
+        foreach ($this->_inputValueKeyValidationRules as $key => $rules) {
+            $valueToValidate = isset($input[$key]) 
+                ? $input[$key] 
+                : null;
+
+            if (!is_array($rules)) {
+                $rules = array($rules);
             }
 
-            $this->assertFalse(Abp01_Viewer::isTabSupported($invalidTab));
+            $message = null;
+            foreach ($rules as $rule) {
+                $message = $rule->validateInputAndGetMessage($valueToValidate);
+                if (!empty($message)) {
+                    break 2;
+                }
+            }
         }
+
+        return $message;
+    }
+
+    private function _prepareInput($input) {
+        return is_object($input) 
+            ? get_object_vars($input) 
+            : $input;
     }
 }

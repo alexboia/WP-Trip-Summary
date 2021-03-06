@@ -29,35 +29,12 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class ViewerTests extends WP_UnitTestCase {
-    use GenericTestHelpers;
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+	exit;
+}
 
-    public function test_canGetAvailableTabs() {
-        $availableTabs = Abp01_Viewer::getAvailableTabs();
-
-        $this->assertNotEmpty($availableTabs);
-        $this->assertEquals(2, count($availableTabs));
-        $this->assertArrayHasKey(Abp01_Viewer::TAB_INFO, $availableTabs);
-        $this->assertArrayHasKey(Abp01_Viewer::TAB_MAP, $availableTabs);
-    }
-
-    public function test_canCheckIfTabIsSupport_validTabName() {
-        foreach (Abp01_Viewer::getAvailableTabs() as $tab => $label) {
-            $this->assertTrue(Abp01_Viewer::isTabSupported($tab));
-        }
-    }
-
-    public function test_tryCheckIfTabIsSupport_invalidTabName() {
-        $faker = $this->_getFaker();
-        $validTabs = array_keys(Abp01_Viewer::getAvailableTabs());
-
-        for ($i = 0; $i < 10; $i ++) {
-            $invalidTab = $faker->randomAscii;
-            while (in_array($invalidTab, $validTabs)) {
-                $invalidTab = $faker->randomAscii;
-            }
-
-            $this->assertFalse(Abp01_Viewer::isTabSupported($invalidTab));
-        }
+class Abp01_Validate_InitialViewerTab implements Abp01_Validate {
+    public function validate($input) {
+        return Abp01_Viewer::isTabSupported($input);
     }
 }

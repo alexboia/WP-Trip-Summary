@@ -39,12 +39,22 @@ abstract class Abp01_PluginModules_PluginModule {
      */
     private $_auth;
 
-    public function __construct(Abp01_Auth $auth) {
+    /**
+     * @var Abp01_Env
+     */
+    private $_env;
+
+    public function __construct(Abp01_Env $env, Abp01_Auth $auth) {
+        $this->_env = $env;
         $this->_auth = $auth;
     }
 
     protected function _currentUserCanManagePluginSettings() {
         return $this->_auth->canManagePluginSettings();
+    }
+
+    protected function _getAjaxBaseUrl() {
+        return $this->_env->getAjaxBaseUrl();
     }
 
     abstract public function load();

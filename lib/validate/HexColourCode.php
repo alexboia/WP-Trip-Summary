@@ -37,7 +37,7 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
  * Class used to validate whether or not an input 
  *  is a valid hex colour code
  */
-class Abp01_Validate_HexColourCode {
+class Abp01_Validate_HexColourCode implements Abp01_Validate {
     private $_allowEmpty = true;
 
     public function __construct($allowEmpty) {
