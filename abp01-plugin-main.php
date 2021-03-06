@@ -497,14 +497,14 @@ function abp01_setup_plugin() {
 	abp01_init_core();
 	abp01_increase_limits(ABP01_MAX_EXECUTION_TIME_MINUTES);
 	abp01_update_if_needed();
-	abp01_register_post_listing_customizations();
 	abp01_setup_plugin_modules();
 }
 
 function abp01_setup_plugin_modules() {
 	$pluginModuleHost = new Abp01_PluginModules_PluginModuleHost(array(
 		Abp01_PluginModules_SettingsPluginModule::class,
-		Abp01_PluginModules_HelpPluginModule::class
+		Abp01_PluginModules_HelpPluginModule::class,
+		Abp01_PluginModules_PostListingCustomizationPluginModule::class
 	));
 	$pluginModuleHost->load();
 }
@@ -518,18 +518,6 @@ function abp01_init_plugin() {
 
 function abp01_update_if_needed() {
 	abp01_get_installer()->updateIfNeeded();
-}
-
-function abp01_register_post_listing_customizations() {
-	foreach (abp01_get_post_listing_customizations() as $customization) {
-		$customization->apply();
-	}
-}
-
-function abp01_get_post_listing_customizations() {
-	return array(
-		new Abp01_Display_PostListing_TripSummaryStatusColumnsDecorator()
-	);
 }
 
 function abp01_render_trip_summary_shortcode_block($attributes, $content) {

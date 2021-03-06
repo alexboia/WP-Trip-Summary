@@ -33,3 +33,24 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
+class Abp01_PluginModules_PostListingCustomizationPluginModule extends Abp01_PluginModules_PluginModule {
+    public function __construct(Abp01_Env $env, Abp01_Auth $auth) {
+        parent::__construct($env, $auth);
+    }
+
+    public function load() {
+        $this->_registerPostListingCustomizations();
+    }
+
+    private function _registerPostListingCustomizations() {
+        foreach ($this->_getPostListingCustomizations() as $customization) {
+            $customization->apply();
+        }
+    }
+
+    private function _getPostListingCustomizations() {
+        return array(
+            new Abp01_Display_PostListing_TripSummaryStatusColumnsDecorator()
+        );
+    }
+}
