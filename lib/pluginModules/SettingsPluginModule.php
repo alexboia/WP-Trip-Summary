@@ -29,7 +29,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
- if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
@@ -43,11 +43,6 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
     const PLUGIN_TOP_LEVEL_MENU_ENTRY_ICON = 'dashicons-chart-area';
 
     const DEFAULT_TRACK_LINE_WEIGHT = 3;
-
-    /**
-     * @var Abp01_Env
-     */
-    private $_env;
 
     /**
      * @var Abp01_View
@@ -67,19 +62,19 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
     public function __construct(Abp01_Settings $settings, Abp01_Env $env, Abp01_View $view, Abp01_Auth $auth) {
         parent::__construct($env, $auth);
 
-        $this->_env = $env;
-        $this->_view = $view;
         $this->_settings = $settings;
+        $this->_view = $view;
 
         $this->_initAjaxActions();
     }
 
     private function _initAjaxActions() {
-        $this->_saveSettingsAjaxAction = new Abp01_AdminAjaxAction(
-            ABP01_ACTION_SAVE_SETTINGS, 
-            array($this, 'saveSettings'),
-            'abp01_nonce_settings'
-        );
+        $authCallback = $this->_createManagePluginSettingsAuthCallback();
+
+        $this->_saveSettingsAjaxAction = 
+            Abp01_AdminAjaxAction::create(ABP01_ACTION_SAVE_SETTINGS, array($this, 'saveSettings'))
+                ->useDefaultNonceProvider('abp01_nonce_settings')
+                ->authorizeByCallback($authCallback);
     }
 
     public function load() {

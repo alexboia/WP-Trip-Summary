@@ -140,11 +140,15 @@ class Abp01_Auth {
     }
 
     public function canEditTripSummary($postId) {
-        return current_user_can(self::CAP_EDIT_TRIP_SUMMARY) && current_user_can('edit_post', $postId);
+        return $this->currentUserCan(self::CAP_EDIT_TRIP_SUMMARY) && $this->currentUserCan('edit_post', $postId);
     }
 
     public function canManagePluginSettings() {
-        return current_user_can(self::CAP_MANAGE_TRIP_SUMMARY);
+        return $this->currentUserCan(self::CAP_MANAGE_TRIP_SUMMARY);
+    }
+
+    public function currentUserCan($capability) {
+        return call_user_func_array('current_user_can', func_get_args());
     }
 
     public function getRequiredCapabilities($capCode) {

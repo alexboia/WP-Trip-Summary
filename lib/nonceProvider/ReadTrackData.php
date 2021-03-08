@@ -33,49 +33,25 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
-class Abp01_NonceProvider_Default implements Abp01_NonceProvider {
-    private $_urlParamName = null;
+class Abp01_NonceProvider_ReadTrackData implements Abp01_NonceProvider {
+    /**
+     * @var Abp01_NonceProvider_Default
+     */
+    private $_nonceProvider;
 
-    private $_actionCode = null;
-
-    public function __construct($actionCode, $urlParamName = 'abp01_nonce') {
-        if (empty($actionCode)) {
-            throw new InvalidArgumentException('Nonce action code may not be empty.');
-        }
-
-        if (empty($urlParamName)) {
-            throw new InvalidArgumentException('Nonce URL parameter name may not be empty.');
-        }
-
-        $this->_actionCode = $actionCode . '_nonce';
-        $this->_urlParamName = $urlParamName;
+    public function __construct() {
+        $this->_nonceProvider = new Abp01_NonceProvider_Default(ABP01_ACTION_GET_TRACK, 'abp01_nonce_get');
     }
 
     public function generateNonce() {
-        $resourceId = func_num_args() == 1 
-            ? func_get_arg(0) 
-            : '';
-            
-        return wp_create_nonce($this->_getResourceScopedActionCode($resourceId));
-    }
-
-    private function _getResourceScopedActionCode($resourceId) {
-        return !empty($resourceId) 
-            ? $this->_actionCode . ':' . $resourceId 
-            : $this->_actionCode;
+        return call_user_func_array(array($this->_nonceProvider, __METHOD__), func_get_args());
     }
 
     public function valdidateNonce() {
-        $resourceId = func_num_args() == 1 
-            ? func_get_arg(0) 
-            : '';
-
-        return check_ajax_referer($this->_getResourceScopedActionCode($resourceId), 
-            $this->_urlParamName, 
-            false);
+        return call_user_func_array(array($this->_nonceProvider, __METHOD__), func_get_args());
     }
 
     public function hasNonce() {
-        return !empty($_GET[$this->_urlParamName]);
+        return $this->_nonceProvider->hasNonce();
     }
 }

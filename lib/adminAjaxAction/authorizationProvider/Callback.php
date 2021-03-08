@@ -30,52 +30,17 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
-class Abp01_NonceProvider_Default implements Abp01_NonceProvider {
-    private $_urlParamName = null;
+class Abp01_AdminAjaxAction_AuthorizationProvider_Callback implements Abp01_AdminAjaxAction_AuthorizationProvider {
+    private $_callback;
 
-    private $_actionCode = null;
-
-    public function __construct($actionCode, $urlParamName = 'abp01_nonce') {
-        if (empty($actionCode)) {
-            throw new InvalidArgumentException('Nonce action code may not be empty.');
-        }
-
-        if (empty($urlParamName)) {
-            throw new InvalidArgumentException('Nonce URL parameter name may not be empty.');
-        }
-
-        $this->_actionCode = $actionCode . '_nonce';
-        $this->_urlParamName = $urlParamName;
+    public function __construct($callback) {
+        $this->_callback = $callback;
     }
 
-    public function generateNonce() {
-        $resourceId = func_num_args() == 1 
-            ? func_get_arg(0) 
-            : '';
-            
-        return wp_create_nonce($this->_getResourceScopedActionCode($resourceId));
-    }
-
-    private function _getResourceScopedActionCode($resourceId) {
-        return !empty($resourceId) 
-            ? $this->_actionCode . ':' . $resourceId 
-            : $this->_actionCode;
-    }
-
-    public function valdidateNonce() {
-        $resourceId = func_num_args() == 1 
-            ? func_get_arg(0) 
-            : '';
-
-        return check_ajax_referer($this->_getResourceScopedActionCode($resourceId), 
-            $this->_urlParamName, 
-            false);
-    }
-
-    public function hasNonce() {
-        return !empty($_GET[$this->_urlParamName]);
+    public function isAuthorizedToExecuteAction() {
+        return call_user_func($this->_callback);
     }
 }

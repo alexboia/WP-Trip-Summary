@@ -37,16 +37,26 @@ abstract class Abp01_PluginModules_PluginModule {
     /**
      * @var Abp01_Auth
      */
-    private $_auth;
+    protected $_auth;
 
     /**
      * @var Abp01_Env
      */
-    private $_env;
+    protected $_env;
 
     public function __construct(Abp01_Env $env, Abp01_Auth $auth) {
         $this->_env = $env;
         $this->_auth = $auth;
+    }
+
+    protected function _createManagePluginSettingsAuthCallback() {
+        return function() {
+            return $this->_currentUserCanManagePluginSettings();
+        };
+    }
+
+    protected function _getCurrentPostId() {
+        return $this->_env->getCurrentPostId('abp01_postId');
     }
 
     protected function _currentUserCanManagePluginSettings() {

@@ -43,6 +43,16 @@ class Abp01_PluginModules_PluginModuleHost {
      */
     private $_pluginModuleActivator;
 
+    /**
+     * @var Abp01_NonceProvider_DownloadTrackData
+     */
+    private $_downloadTrackDataNonceProvider;
+
+    /**
+     * @var Abp01_NonceProvider_ReadTrackData
+     */
+    private $_readTrackDataNonceProvider;
+
     public function __construct(array $pluginModulesClasses) {
         $this->_pluginModuleActivator = $this->_createPluginModuleActivator();
         $this->_pluginModules = $this->_createModules($pluginModulesClasses);
@@ -77,6 +87,12 @@ class Abp01_PluginModules_PluginModuleHost {
         return array(
             Abp01_PluginModules_PluginModuleHost::class => function() {
                 return $this;
+            },
+            Abp01_NonceProvider_DownloadTrackData::class => function() {
+                return $this->getTrackDownloadNonceProvider();
+            },
+            Abp01_NonceProvider_ReadTrackData::class => function() {
+                return $this->getReadTrackDataNonceProvider();
             },
             Abp01_Settings::class => function() {
                 return $this->getSettings();
@@ -116,6 +132,20 @@ class Abp01_PluginModules_PluginModuleHost {
         }
 
         return $hasModule;
+    }
+
+    public function getTrackDownloadNonceProvider() {
+        if ($this->_downloadTrackDataNonceProvider == null) {
+            $this->_downloadTrackDataNonceProvider = new Abp01_NonceProvider_DownloadTrackData();
+        }
+        return $this->_downloadTrackDataNonceProvider;
+    }
+
+    public function getReadTrackDataNonceProvider() {
+        if ($this->_readTrackDataNonceProvider == null) {
+            $this->_readTrackDataNonceProvider = new Abp01_NonceProvider_ReadTrackData();
+        }
+        return $this->_readTrackDataNonceProvider;
     }
 
     public function getRouteManager() {

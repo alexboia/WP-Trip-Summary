@@ -43,19 +43,9 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 	const LOOKUP_INUSE_ITEM_NONCE_URL_PARAM_NAME = 'abp01_nonce_lookup_force_remove';
 
 	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
-
-	/**
 	 * @var Abp01_View
 	 */
 	private $_view;
-
-	/**
-	 * @var Abp01_Settings
-	 */
-	private $_settings;
 
 	/**
 	 * @var Abp01_AdminAjaxAction
@@ -92,12 +82,10 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 	 */
 	private $_inUseLookupItemRemovalNonceProvider;
 
-	public function __construct(Abp01_Settings $settings, Abp01_Env $env, Abp01_View $view, Abp01_Auth $auth) {
+	public function __construct(Abp01_Env $env, Abp01_View $view, Abp01_Auth $auth) {
 		parent::__construct($env, $auth);
 
-		$this->_env = $env;
 		$this->_view = $view;
-		$this->_settings = $settings;
 		
 		$this->_availableLookupCategories = 
 			$this->_getAvailableLookupCategories();
@@ -128,29 +116,27 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 	}
 
 	private function _initAjaxActions() {
-		$this->_getLookupDataItemsAjaxAction = new Abp01_AdminAjaxAction(
-			ABP01_ACTION_GET_LOOKUP,
-			array($this, 'getLookupDataItems'),
-			self::LOOKUP_MGMT_NONCE_URL_PARAM_NAME
-		);
+		$authCallback = $this->_createManagePluginSettingsAuthCallback();
 
-		$this->_addLookupDataItemAjaxAction = new Abp01_AdminAjaxAction(
-			ABP01_ACTION_ADD_LOOKUP,
-			array($this, 'addLookupDataItem'),
-			self::LOOKUP_MGMT_NONCE_URL_PARAM_NAME
-		);
+		$this->_getLookupDataItemsAjaxAction = 
+			Abp01_AdminAjaxAction::create(ABP01_ACTION_GET_LOOKUP,array($this, 'getLookupDataItems'))
+				->useDefaultNonceProvider(self::LOOKUP_MGMT_NONCE_URL_PARAM_NAME)
+				->authorizeByCallback($authCallback);
 
-		$this->_editLookupDataItemAjaxAction = new Abp01_AdminAjaxAction(
-			ABP01_ACTION_EDIT_LOOKUP,
-			array($this, 'editLookupDataItem'),
-			self::LOOKUP_MGMT_NONCE_URL_PARAM_NAME
-		);
+		$this->_addLookupDataItemAjaxAction = 
+			Abp01_AdminAjaxAction::create(ABP01_ACTION_ADD_LOOKUP, array($this, 'addLookupDataItem'))
+				->useDefaultNonceProvider(self::LOOKUP_MGMT_NONCE_URL_PARAM_NAME)
+				->authorizeByCallback($authCallback);
 
-		$this->_deleteLookupDataItemAjaxAction = new Abp01_AdminAjaxAction(
-			ABP01_ACTION_DELETE_LOOKUP,
-			array($this, 'deleteLookupDataItem'),
-			self::LOOKUP_MGMT_NONCE_URL_PARAM_NAME
-		);
+		$this->_editLookupDataItemAjaxAction = 
+			Abp01_AdminAjaxAction::create(ABP01_ACTION_EDIT_LOOKUP, array($this, 'editLookupDataItem'))
+				->useDefaultNonceProvider(self::LOOKUP_MGMT_NONCE_URL_PARAM_NAME)
+				->authorizeByCallback($authCallback);
+
+		$this->_deleteLookupDataItemAjaxAction = 
+			Abp01_AdminAjaxAction::create(ABP01_ACTION_DELETE_LOOKUP, array($this, 'deleteLookupDataItem'))
+				->useDefaultNonceProvider(self::LOOKUP_MGMT_NONCE_URL_PARAM_NAME)
+				->authorizeByCallback($authCallback);
 	}
 
 	public function load() {

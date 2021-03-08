@@ -42,11 +42,6 @@ class Abp01_PluginModules_HelpPluginModule extends Abp01_PluginModules_PluginMod
     private $_view;
 
     /**
-     * @var Abp01_Env
-     */
-    private $_env;
-
-    /**
      * @var Abp01_Help
      */
     private $_help;
@@ -55,7 +50,6 @@ class Abp01_PluginModules_HelpPluginModule extends Abp01_PluginModules_PluginMod
         parent::__construct($env, $auth);
 
         $this->_view = $view;
-        $this->_env = $env;
         $this->_help = $help;
     }
 

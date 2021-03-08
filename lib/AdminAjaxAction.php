@@ -40,20 +40,34 @@ class Abp01_AdminAjaxAction {
 
 	private $_requiresAuthentication = true;
 
-	private $_requiredCapability = null;
-
 	/**
 	 * @var Abp01_NonceProvider
 	 */
 	private $_nonceProvider = null;
 
-	public function __construct($actionCode, $callback, $nonceUrlParam = 'abp01_nonce') {
+	/**
+	 * @var Abp01_AdminAjaxAction_AuthorizationProvider
+	 */
+	private $_authProvider = null;
+
+	public function __construct($actionCode, $callback) {
 		$this->_actionCode = $actionCode;
 		$this->_callback = $callback;
-		$this->_nonceProvider = new Abp01_NonceProvider_Default($actionCode, $nonceUrlParam);
+
+		$this->useAuthorizationProvider(new Abp01_AdminAjaxAction_AuthorizationProvider_AlwaysTrue());
+		$this->useNonceProvider(new Abp01_NonceProvider_None());
 	}
 
-	public function setNonceProvider(Abp01_NonceProvider $nonceProvider) {
+	public static function create($actionCode, $callback) {
+		return new self($actionCode, $callback);
+	}
+
+	public function useDefaultNonceProvider($urlParamName) {
+		$this->useNonceProvider(new Abp01_NonceProvider_Default($this->_actionCode, $urlParamName));
+		return $this;
+	}
+
+	public function useNonceProvider(Abp01_NonceProvider $nonceProvider) {
 		$this->_nonceProvider = $nonceProvider;
 		return $this;
 	}
@@ -63,8 +77,18 @@ class Abp01_AdminAjaxAction {
 		return $this;
 	}
 
-	public function setRequiredCapability($requiredPermission) {
-		$this->_requiredCapability = $requiredPermission;
+	public function authorizeByCapability($requiredCapability) {
+		$this->useAuthorizationProvider(new Abp01_AdminAjaxAction_AuthorizationProvider_Simple($requiredCapability));
+		return $this;
+	}
+
+	public function authorizeByCallback($callback) {
+		$this->useAuthorizationProvider(new Abp01_AdminAjaxAction_AuthorizationProvider_Callback($callback));
+		return $this;
+	}
+
+	public function useAuthorizationProvider(Abp01_AdminAjaxAction_AuthorizationProvider $authProvider) {
+		$this->_authProvider = $authProvider;
 		return $this;
 	}
 
@@ -105,8 +129,8 @@ class Abp01_AdminAjaxAction {
 	}
 
 	private function _currentUserCanExecute() {
-		return empty($this->_requiredCapability) 
-			|| current_user_can($this->_requiredCapability);
+		return $this->_authProvider
+			->isAuthorizedToExecuteAction();
 	}
 
 	private function _sendJsonAndExit($data) {
