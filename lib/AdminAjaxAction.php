@@ -30,86 +30,86 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
 class Abp01_AdminAjaxAction {
-    private $_actionCode;
+	private $_actionCode;
 
-    private $_callback;
+	private $_callback;
 
-    private $_requiresAuthentication = true;
+	private $_requiresAuthentication = true;
 
-    private $_requiredCapability = null;
+	private $_requiredCapability = null;
 
-    /**
-     * @var Abp01_NonceProvider
-     */
-    private $_nonceProvider = null;
+	/**
+	 * @var Abp01_NonceProvider
+	 */
+	private $_nonceProvider = null;
 
-    public function __construct($actionCode, $callback, $nonceUrlParam = 'abp01_nonce') {
-        $this->_actionCode = $actionCode;
-        $this->_callback = $callback;
-        $this->_nonceProvider = new Abp01_NonceProvider_Default($actionCode, $nonceUrlParam);
-    }
+	public function __construct($actionCode, $callback, $nonceUrlParam = 'abp01_nonce') {
+		$this->_actionCode = $actionCode;
+		$this->_callback = $callback;
+		$this->_nonceProvider = new Abp01_NonceProvider_Default($actionCode, $nonceUrlParam);
+	}
 
-    public function setNonceProvider(Abp01_NonceProvider $nonceProvider) {
-        $this->_nonceProvider = $nonceProvider;
-        return $this;
-    }
+	public function setNonceProvider(Abp01_NonceProvider $nonceProvider) {
+		$this->_nonceProvider = $nonceProvider;
+		return $this;
+	}
 
-    public function setRequiresAuthentication($requiresAuthentication) {
-        $this->_requiresAuthentication = $requiresAuthentication;
-        return $this;
-    }
+	public function setRequiresAuthentication($requiresAuthentication) {
+		$this->_requiresAuthentication = $requiresAuthentication;
+		return $this;
+	}
 
-    public function setRequiredCapability($requiredPermission) {
-        $this->_requiredCapability = $requiredPermission;
-        return $this;
-    }
+	public function setRequiredCapability($requiredPermission) {
+		$this->_requiredCapability = $requiredPermission;
+		return $this;
+	}
 
-    public function generateNonce() {
-        return $this->_nonceProvider->generateNonce();
-    }
+	public function generateNonce() {
+		return $this->_nonceProvider->generateNonce();
+	}
 
-    public function isNonceValid() {
-        return $this->_nonceProvider->valdidateNonce();
-    }
+	public function isNonceValid() {
+		return $this->_nonceProvider->valdidateNonce();
+	}
 
-    public function register() {
-        $callback = array($this, 'executeAndSendJsonThenExit');
+	public function register() {
+		$callback = array($this, 'executeAndSendJsonThenExit');
 
-        add_action('wp_ajax_' . $this->_actionCode,
-            $callback);
+		add_action('wp_ajax_' . $this->_actionCode,
+			$callback);
 
-        if (!$this->_requiresAuthentication) {
-            add_action('wp_ajax_nopriv_' . $this->_actionCode, 
-                $callback);
-        }
+		if (!$this->_requiresAuthentication) {
+			add_action('wp_ajax_nopriv_' . $this->_actionCode, 
+				$callback);
+		}
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function execute() {
-        if (!$this->isNonceValid() 
-            || !$this->_currentUserCanExecute()) {
-            die;
-        }
+	public function execute() {
+		if (!$this->isNonceValid() 
+			|| !$this->_currentUserCanExecute()) {
+			die;
+		}
 
-        return call_user_func($this->_callback);
-    }
+		return call_user_func($this->_callback);
+	}
 
-    public function executeAndSendJsonThenExit() {
-        $executionResult = $this->execute();
-        $this->_sendJsonAndExit($executionResult);
-    }
+	public function executeAndSendJsonThenExit() {
+		$executionResult = $this->execute();
+		$this->_sendJsonAndExit($executionResult);
+	}
 
-    private function _currentUserCanExecute() {
-        return empty($this->_requiredCapability) 
-            || current_user_can($this->_requiredCapability);
-    }
+	private function _currentUserCanExecute() {
+		return empty($this->_requiredCapability) 
+			|| current_user_can($this->_requiredCapability);
+	}
 
-    private function _sendJsonAndExit($data) {
-        abp01_send_json($data, true);
-    }
+	private function _sendJsonAndExit($data) {
+		abp01_send_json($data, true);
+	}
 }
