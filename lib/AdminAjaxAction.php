@@ -69,7 +69,7 @@ class Abp01_AdminAjaxAction {
     }
 
     public function generateNonce() {
-        return $this->_nonceProvider->generateNonce($this->_actionCode);
+        return $this->_nonceProvider->generateNonce();
     }
 
     public function isNonceValid() {

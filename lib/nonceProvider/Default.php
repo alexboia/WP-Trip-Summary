@@ -52,12 +52,30 @@ class Abp01_NonceProvider_Default implements Abp01_NonceProvider {
     }
 
     public function generateNonce() {
-        return wp_create_nonce($this->_actionCode);
+        $resourceId = func_num_args() == 1 
+            ? func_get_arg(0) 
+            : '';
+            
+        return wp_create_nonce($this->_getResourceScopedActionCode($resourceId));
+    }
+
+    private function _getResourceScopedActionCode($resourceId) {
+        return !empty($resourceId) 
+            ? $this->_actionCode . ':' . $resourceId 
+            : $this->_actionCode;
     }
 
     public function valdidateNonce() {
-        return check_ajax_referer($this->_actionCode, 
+        $resourceId = func_num_args() == 1 
+            ? func_get_arg(0) 
+            : '';
+
+        return check_ajax_referer($this->_getResourceScopedActionCode($resourceId), 
             $this->_nonceUrlParam, 
             false);
+    }
+
+    public function hasNonce() {
+        return !empty($_GET[$this->_nonceUrlParam]);
     }
 }

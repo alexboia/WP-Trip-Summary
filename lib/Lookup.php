@@ -50,7 +50,7 @@ class Abp01_Lookup {
 
 	const RAILROAD_ELECTRIFICATION = 'railroadElectrificationStatus';
 
-	const DEFAULT_LANGUAGE = '_default';
+	const DEFAULT_LANGUAGE_CODE = '_default';
 
 	/**
 	 * Internal cache for the lookup data
@@ -132,7 +132,7 @@ class Abp01_Lookup {
 	 * @return boolean True if it is the default language code, false otherwise
 	 */
 	public static function isDefaultLanguage($lang) {
-		return $lang == self::DEFAULT_LANGUAGE;
+		return $lang == self::DEFAULT_LANGUAGE_CODE;
 	}
 
 	/**
@@ -191,16 +191,16 @@ class Abp01_Lookup {
 	 * - defaultLabel = the default label;
 	 * - hasTranslation = whether the item has a translation in the context of the current language or not
 	 * - label = the translated item label.
-	 * @param string $type The type of the items that should be returned
+	 * @param string $category The type of the items that should be returned
 	 * @return array The list of lookup items
 	 */
-	public function getLookupOptions($type) {
+	public function getLookupOptions($category) {
 		$this->_loadDataIfNeeded();
 
 		$options = array();	
-		if (isset($this->_cache[$type])) {
-			foreach ($this->_cache[$type] as $id => $label) {
-				$options[] = $this->_createOption($id, $label, $type);
+		if (isset($this->_cache[$category])) {
+			foreach ($this->_cache[$category] as $id => $label) {
+				$options[] = $this->_createOption($id, $label, $category);
 			}
 		}
 		
@@ -265,7 +265,7 @@ class Abp01_Lookup {
 		}
 
 		$translations = array(
-			'_default' => __('Default', 'abp01-trip-summary'),
+			self::DEFAULT_LANGUAGE_CODE => __('Default', 'abp01-trip-summary'),
 			'en_US' => 'English (United States)'
 		);
 		
@@ -461,12 +461,12 @@ class Abp01_Lookup {
 	/**
 	 * Creates a new lookup item, with the given type and default label.
 	 * Translations are created separately, after the item is created.
-	 * @param string $type The type of the lookup item
+	 * @param string $category The type of the lookup item
 	 * @param string $defaultLabel The default label of the lookup item
 	 * @return stdClass The descriptor for the newly created item or null if some problem occurs
 	 */
-	public function createLookupItem($type, $defaultLabel) {
-		if (!self::isTypeSupported($type)) {
+	public function createLookupItem($category, $defaultLabel) {
+		if (!self::isTypeSupported($category)) {
 			throw new InvalidArgumentException();
 		}
 
@@ -481,12 +481,12 @@ class Abp01_Lookup {
 		$this->_resetLastError();
 		$id = $db->insert($lookupTableName, array(			
 			'lookup_label' => $defaultLabel,
-			'lookup_category' => $type
+			'lookup_category' => $category
 		));
 
 		if ($id !== false) {
 			$this->_invalidateCache();
-			$item = $this->_createOption($id, $defaultLabel, $type);
+			$item = $this->_createOption($id, $defaultLabel, $category);
 		}
 
 		$this->_setLastErrorFromDb($db);

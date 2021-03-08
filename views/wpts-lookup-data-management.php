@@ -32,8 +32,13 @@
 ?>
 
 <script type="text/javascript">
-	var abp01_nonce = '<?php echo esc_js($data->context->nonce); ?>';
 	var abp01_ajaxUrl = '<?php echo esc_js($data->context->ajaxBaseUrl); ?>';
+
+	var abp01_getLookupNonce = '<?php echo esc_js($data->context->getLookupNonce); ?>';
+	var abp01_addLookupNonce = '<?php echo esc_js($data->context->addLookupNonce); ?>';
+	var abp01_editLookupNonce = '<?php echo esc_js($data->context->editLookupNonce); ?>';
+	var abp01_deleteLookupNonce = '<?php echo esc_js($data->context->deleteLookupNonce); ?>';
+
 	var abp01_ajaxGetLookupAction = '<?php echo esc_js($data->context->getLookupAction); ?>';
 	var abp01_ajaxAddLookupAction = '<?php echo esc_js($data->context->addLookupAction); ?>';
 	var abp01_ajaxEditLookupAction = '<?php echo esc_js($data->context->editLookupAction); ?>';
@@ -48,16 +53,16 @@
 			<div class="abp01-lookupControl-item">
 				<label for="abp01-lookupTypeSelect"><?php echo esc_html__('Lookup type:', 'abp01-trip-summary'); ?></label>
 				<select id="abp01-lookupTypeSelect" class="abp01-lookupControl">
-					<?php foreach ($data->controllers->availableTypes as $value => $label): ?>
-						<option value="<?php echo esc_attr($value); ?>" <?php echo $value == $data->controllers->selectedType ? 'selected="selected"' : '' ?>><?php echo esc_html($label); ?></option>
+					<?php foreach ($data->controls->availableCategories as $key => $label): ?>
+						<option value="<?php echo esc_attr($key); ?>" <?php echo $key == $data->controls->selectedCategory ? 'selected="selected"' : '' ?>><?php echo esc_html($label); ?></option>
 					<?php endforeach; ?>
 				</select>
 			</div>
 			<div class="abp01-lookupControl-item">
 				<label for="abp01-lookupLangSelect"><?php echo esc_html__('Language:', 'abp01-trip-summary'); ?></label>
 				<select id="abp01-lookupLangSelect" class="abp01-lookupControl">
-					<?php foreach ($data->controllers->availableLanguages as $value => $label): ?>
-						<option value="<?php echo esc_attr($value); ?>" <?php echo $value == $data->controllers->selectedLanguage ? 'selected="selected"' : ''; ?>><?php echo esc_html($label); ?></option>
+					<?php foreach ($data->controls->availableLanguages as $key => $label): ?>
+						<option value="<?php echo esc_attr($key); ?>" <?php echo $key == $data->controls->selectedLanguage ? 'selected="selected"' : ''; ?>><?php echo esc_html($label); ?></option>
 					<?php endforeach; ?>
 				</select>
 			</div>

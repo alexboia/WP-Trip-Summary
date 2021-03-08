@@ -78,15 +78,6 @@ function abp01_create_download_track_nonce($postId) {
 }
 
 /**
- * Creates a nonce to be used when managing look-up data operations
- * 
- * @return string The created nonce
- */
-function abp01_create_manage_lookup_nonce() {
-	return wp_create_nonce(ABP01_NONCE_MANAGE_LOOKUP);
-}
-
-/**
  * Checks whether the current request has a valid nonce for the given post ID in the context of track editing
  * 
  * @param int $postId
@@ -114,45 +105,6 @@ function abp01_verify_get_track_nonce($postId) {
  */
 function abp01_verify_download_track_nonce($postId) {
     return check_ajax_referer(ABP01_NONCE_DOWNLOAD_TRACK . ':' . $postId, 'abp01_nonce_download', false);
-}
-
-/**
- * Checks whether the current request has a valid lookup data management nonce
- * 
- * @return bool True if valid, false otherwise
- */
-function abp01_verify_manage_lookup_nonce() {
-	return check_ajax_referer(ABP01_NONCE_MANAGE_LOOKUP, 'abp01_nonce_lookup_mgmt', false);	
-}
-
-/**
- * Creates a nonce to be used when confirming removal 
- * 	of an in-use lookup removal confirmation
- * 
- * @return string The created nonce
- */
-function abp01_create_inuse_lookup_removal_nonce($lookupId) {
-	return wp_create_nonce(ABP01_NONCE_REMOVE_INUSE_LOOKUP . ':' . $lookupId);
-}
-
-/**
- * Checks whether the current request has a 
- * 	valid lookup removal confirmation nonce.
- * 
- * @return bool True if valid, false otherwise
- */
-function abp01_verify_inuse_lookup_removal_nonce($lookupId) {
-	return check_ajax_referer(ABP01_NONCE_REMOVE_INUSE_LOOKUP . ':' . $lookupId, 'abp01_nonce_lookup_force_remove', false);
-}
-
-/**
- * Checks whether the current request has 
- * 	any lookup removal confirmation nonce (valid or otherwise).
- * 
- * @return bool True if valid, false otherwise
- */
-function abp01_request_has_inuse_lookup_removal_nonce() {
-	return !empty($_GET['abp01_nonce_lookup_force_remove']);
 }
 
 /**
@@ -194,15 +146,6 @@ function abp01_is_editing_post() {
  */
 function abp01_is_editing_plugin_settings() {
 	return abp01_get_env()->isAdminPage(ABP01_MAIN_MENU_SLUG);
-}
-
-/**
- * Check whether the currently displayed screen is the plugin lookup data management screen
- * 
- * @return booelan True if on plugin lookup data management page, false otherwise
- */
-function abp01_is_managing_lookup() {
-	return abp01_get_env()->isAdminPage(ABP01_LOOKUP_SUBMENU_SLUG);
 }
 
 /**
@@ -291,15 +234,6 @@ function abp01_get_settings_admin_script_translations() {
 }
 
 /**
- * Retrieve translations used in the settings editor script
- * 
- * @return array Key-value pairs where keys are javascript property names and values are the translation strings
- */
-function abp01_get_lookup_admin_script_translations() {
-	return Abp01_TranslatedScriptMessages::getAdminLookupScriptTranslations();
-}
-
-/**
  * Retrieve translations used when installing the plug-in
  * 
  * @return array key-value pairs where keys are installation error codes and values are the translated strings
@@ -356,16 +290,6 @@ function abp01_render_admin_trip_summary_editor(stdClass $data) {
 }
 
 /**
- * Renders the plugin lookup data management page
- * 
- * @param stdClass $data The lookup data management page context and the actual data
- * @return void
- */
-function abp01_admin_lookup_page_render(stdClass $data) {
-	return abp01_get_view()->renderAdminLookupPage($data);
-}
-
-/**
  * Builds the URL to the lookup data management page, 
  * 	in the context of the given lookup type
  * 
@@ -378,22 +302,6 @@ function abp01_get_admin_lookup_url($lookupType) {
 		$url = sprintf('%s&abp01_type=%s', $url, $lookupType);
 	}
 	return $url;
-}
-
-/**
- * Creates the plug-in administration menu structure
- * 
- * @return void
- */
-function abp01_create_admin_menu() {
-	//add submenu entries - loookup data management apge
-	add_submenu_page(
-		ABP01_MAIN_MENU_SLUG, 
-			esc_html__('Lookup data management', 'abp01-trip-summary'), 
-			esc_html__('Lookup data management', 'abp01-trip-summary'), 
-				Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY, 
-				ABP01_LOOKUP_SUBMENU_SLUG, 
-					'abp01_admin_lookup_page');
 }
 
 /**
@@ -503,6 +411,7 @@ function abp01_setup_plugin() {
 function abp01_setup_plugin_modules() {
 	$pluginModuleHost = new Abp01_PluginModules_PluginModuleHost(array(
 		Abp01_PluginModules_SettingsPluginModule::class,
+		Abp01_PluginModules_LookupDataManagementPluginModule::class,
 		Abp01_PluginModules_HelpPluginModule::class,
 		Abp01_PluginModules_PostListingCustomizationPluginModule::class
 	));
@@ -749,10 +658,6 @@ function abp01_add_admin_styles() {
 	if (abp01_should_add_admin_editor()) {
 		Abp01_Includes::includeStyleAdminMain();
 	}
-
-	if (abp01_is_managing_lookup() && abp01_can_manage_plugin_settings()) {
-		Abp01_Includes::includeStyleAdminLookupManagement();
-	}
 }
 
 /**
@@ -777,10 +682,6 @@ function abp01_add_admin_scripts() {
 	if (abp01_should_add_admin_editor()) {
 		Abp01_Includes::includeScriptAdminEditorMain(true, abp01_get_admin_trip_summary_editor_script_translations());
 	}
-
-	if (abp01_is_managing_lookup() && abp01_can_manage_plugin_settings()) {
-		Abp01_Includes::includeScriptAdminLookupMgmt(abp01_get_lookup_admin_script_translations());
-	}
 }
 
 /**
@@ -793,288 +694,6 @@ function abp01_add_frontend_scripts() {
 	if (abp01_should_add_frontend_viewer()) {
 		abp01_get_view()->includeFrontendViewerScripts(abp01_get_frontend_viewer_script_translations());
 	}
-}
-
-/**
- * Prepares the required data and renders 
- * 	the plug-in's lookup data management page
- * If the current user does not have 
- * 	the required permissions to manage the plug-in, 
- * 	then the function returns directly.
- * 
- * @return void
- * */
-function abp01_admin_lookup_page() {
-	if (!abp01_can_manage_plugin_settings()) {
-		return;
-	}
-	
-	//set available lookup categories/types
-	$data = new stdClass();
-	$data->controllers = new stdClass();
-	$data->controllers->availableTypes = array();
-	foreach (Abp01_Lookup::getSupportedCategories() as $category) {
-		$data->controllers->availableTypes[$category] = abp01_get_lookup_type_label($category);
-	}
-
-	//set available languages
-	$data->controllers->availableLanguages = Abp01_Lookup::getSupportedLanguages();
-
-	//set selected language
-	if (!empty($_GET['abp01_lang']) && array_key_exists($_GET['abp01_lang'], $data->controllers->availableLanguages)) {
-		$data->controllers->selectedLanguage = $_GET['abp01_lang'];
-	} else {
-		$data->controllers->selectedLanguage = '_default';
-	}
-	
-	//set selected category/type
-	if (!empty($_GET['abp01_type']) && array_key_exists($_GET['abp01_type'], $data->controllers->availableTypes)) {
-		$data->controllers->selectedType = $_GET['abp01_type'];
-	} else {
-		$data->controllers->selectedType = current(array_keys($data->controllers->availableTypes));
-	}
-
-	//set current context
-	$data->context = new stdClass();
-	$data->context->nonce = abp01_create_manage_lookup_nonce();
-	$data->context->getLookupAction = ABP01_ACTION_GET_LOOKUP;
-	$data->context->addLookupAction = ABP01_ACTION_ADD_LOOKUP;
-	$data->context->editLookupAction = ABP01_ACTION_EDIT_LOOKUP;
-	$data->context->deleteLookupAction = ABP01_ACTION_DELETE_LOOKUP;
-	$data->context->ajaxBaseUrl = abp01_get_ajax_baseurl();
-
-	//render the page
-	echo abp01_admin_lookup_page_render($data);
-}
-
-/**
- * Retrieves the list of lookup items for the given lookup item type and language.
- * Lookup item type and language are passed as URl parameters
- * Execution halts if the given request context is not valid:
- * - invalit HTTP method or...
- * - no valid nonce detected or...
- * - the current user lacks proper capabilities or...
- * - one of the above-mentioned parameters is empty or...
- * - the given lookup item type is not supported
- * 
- * @return void
- */
-function abp01_get_lookup_items() {
-	//check http method - must be GET
-	if (abp01_get_http_method() != 'get') {
-		die;
-	}
-
-	//check acces rights and look for valid nonce
-	if (!abp01_can_manage_plugin_settings() || !abp01_verify_manage_lookup_nonce()) {
-		die;
-	}
-
-	$type = Abp01_InputFiltering::getGETvalueOrDie('type', array('Abp01_Lookup', 'isTypeSupported'));
-	$lang = Abp01_InputFiltering::getGETvalueOrDie('lang', array('Abp01_Lookup', 'isLanguageSupported'));
-
-	$lookup = new Abp01_Lookup($lang);
-	$items = $lookup->getLookupOptions($type);
-
-	$response = abp01_get_ajax_response(array(
-		'lang' => $lang,
-		'type' => $type,
-		'items' => $items,
-		'success' => true
-	));
-
-	abp01_send_json($response);
-}
-
-/**
- * Handles the lookup item creation save action. 
- * Execution halts if the given request context is not valid:
- * - invalid HTTP method or...
- * - the current user does not have the required permissions or...
- * - no valid nonce was found or...
- * - the required lang & type parameters were not provided.
- * 
- * @return void
- */
-function abp01_add_lookup_item() {
-	//check HTTP method - must be POST
-	if (abp01_get_http_method() != 'post') {
-		die;
-	}
-
-	//check access rights and look for valid nonce
-	if (!abp01_can_manage_plugin_settings() || !abp01_verify_manage_lookup_nonce()) {
-		die;
-	}
-
-	$type = Abp01_InputFiltering::getPOSTValueOrDie('type', array('Abp01_Lookup', 'isTypeSupported'));
-	$lang = Abp01_InputFiltering::getPOSTValueOrDie('lang', array('Abp01_Lookup', 'isLanguageSupported'));
-
-	//initialize response
-	$response = abp01_get_ajax_response(array(
-		'item' => null
-	));
-
-	//fetch labels from POSTed data
-	$defaultLabel = Abp01_InputFiltering::getFilteredPOSTValue('defaultLabel');
-	$translatedLabel = Abp01_InputFiltering::getFilteredPOSTValue('translatedLabel');
-
-	//the default label must not be empty
-	if (empty($defaultLabel)) {
-		$response->message = esc_html__('The default label is mandatory', 'abp01-trip-summary');
-		abp01_send_json($response);
-	}
-
-	$lookup = new Abp01_Lookup($lang);
-	$item = $lookup->createLookupItem($type, $defaultLabel);
-
-	//check if the item has been successfully created
-	if ($item == null) {
-		$response->message = esc_html__('The lookup item could not be created', 'abp01-trip-summary');
-		abp01_send_json($response);
-	}
-
-	//check if we should add the translation as well
-	if (!Abp01_Lookup::isDefaultLanguage($lang) && !empty($translatedLabel)) {
-		$response->success = $lookup->addLookupItemTranslation($item->id, $translatedLabel);
-		if ($response->success) {
-			$item->label = $translatedLabel;
-			$item->hasTranslation = true;
-		} else {
-			$response->message = esc_html__('The lookup item has been created, but the translation could not be saved', 'abp01-trip-summary');
-		}
-	} else {
-		$response->success = true;
-	}
-
-	$response->item = $item;
-	abp01_send_json($response);
-}
-
-/**
- * Handles the lookup item editing save action.
-  * Execution halts if the given request context is not valid:
- * - invalid HTTP method or...
- * - the current user does not have the required permissions or...
- * - no valid nonce was found or...
- * - the required lang & id parameters were not provided.
- * 
- * @return void
- */
-function abp01_edit_lookup_item() {
-	if (abp01_get_http_method() != 'post') {
-		die;
-	}
-
-	if (!abp01_can_manage_plugin_settings() || !abp01_verify_manage_lookup_nonce()) {
-		die;
-	}
-
-	$id = Abp01_InputFiltering::getPOSTValueOrDie('id', 'is_numeric');
-	$lang = Abp01_InputFiltering::getPOSTValueOrDie('lang', array('Abp01_Lookup', 'isLanguageSupported'));
-
-	//initialize response
-	$response = abp01_get_ajax_response();
-
-	//fetch labels from POSTed data
-	$defaultLabel = Abp01_InputFiltering::getFilteredPOSTValue('defaultLabel');
-	$translatedLabel = Abp01_InputFiltering::getFilteredPOSTValue('translatedLabel');
-
-	//the default label must not be empty
-	if (empty($defaultLabel)) {
-		$response->message = esc_html__('The default label is mandatory', 'abp01-trip-summary');
-		abp01_send_json($response);
-	}
-
-	$lookup = new Abp01_Lookup($lang);
-	$modifyItemOk = $lookup->modifyLookupItem($id, $defaultLabel);
-	$modifyItemTranslationOk = false;
-
-	//if there alread is a translation for the item, modify it
-	if ($lookup->hasLookupItemTranslation($id)) {
-		$modifyItemTranslationOk = empty($translatedLabel)
-			? $lookup->deleteLookupItemTranslation($id)
-			: $lookup->modifyLookupItemTranslation($id, $translatedLabel);
-	} else {
-		//otherwise, create a new one, if the translated label is not empty
-		$modifyItemTranslationOk = !empty($translatedLabel) 
-			? $lookup->addLookupItemTranslation($id, $translatedLabel) 
-			: true;
-	}
-
-	//check overall result
-	if (!$modifyItemOk || !$modifyItemTranslationOk) {
-		$response->message = esc_html__('The lookup item could not be modified', 'abp01-trip-summary');
-	} else {
-		$response->success = true;
-	}
-
-	abp01_send_json($response);
-}
-
-/**
- * Handles the lookup item deletion action.
- * Execution halts if the given request context is not valid:
- * - invalid HTTP method or...
- * - the current user does not have the required permissions or...
- * - no valid nonce was found or...
- * - the required lang & id parameters were not provided or...
- * - the required deleteOnlyLang was not provided
- * 
- * @return void
- */
-function abp01_delete_lookup_item() {
-	if (abp01_get_http_method() != 'post') {
-		die;
-	}
-
-	//check for required permission and if the nonce is valid
-	if (!abp01_can_manage_plugin_settings() || !abp01_verify_manage_lookup_nonce()) {
-		die;
-	}
-
-	//fetch required parameters
-	$id = Abp01_InputFiltering::getPOSTValueOrDie('id', 'is_numeric');
-	$lang = Abp01_InputFiltering::getPOSTValueOrDie('lang', array('Abp01_Lookup', 'isLanguageSupported'));
-	$deleteOnlyLang = Abp01_InputFiltering::getPOSTValueOrDie('deleteOnlyLang') === 'true';
-
-	//initialize response
-	$response = abp01_get_ajax_response();
-
-	$lookup = new Abp01_Lookup($lang);
-	//if a translation-only deletion was requested and the language is not the default one,
-	//delete only the translation for the given language
-	if ($deleteOnlyLang && !Abp01_Lookup::isDefaultLanguage($lang)) {
-		if ($lookup->deleteLookupItemTranslation($id)) {
-			$response->success = true;
-		} else {
-			$response->message = esc_html__('The item translation could not be deleted.', 'abp01-trip-summary');
-		}
-	} else {
-		//otherwise, delete the entire item, all translations included
-		//however, check first whether or not the item is still in use
-		$usageCount = $lookup->getLookupUsageCount($id);
-		if ($usageCount > 0) {
-			if (abp01_request_has_inuse_lookup_removal_nonce()) {
-				if (!abp01_verify_inuse_lookup_removal_nonce($id)) {
-					die;
-				}
-			} else {
-				$response->requiresConfirmation = true;
-				$response->confirmationNonce = abp01_create_inuse_lookup_removal_nonce($id);
-				$response->message = sprintf(esc_html__('The item is still associated with %d post(s). Do you wish to proceed?', 'abp01-trip-summary'), $usageCount);
-				abp01_send_json($response);
-			}
-		}
-	
-		if ($lookup->deleteLookup($id)) {
-			$response->success = true;
-		} else {
-			$response->message = esc_html__('The item could not be deleted', 'abp01-trip-summary');
-		}
-	}
-
-	abp01_send_json($response);
 }
 
 /**
@@ -1625,10 +1244,6 @@ function abp01_run() {
 	add_action('wp_ajax_' . ABP01_ACTION_CLEAR_TRACK, 'abp01_remove_track');
 	add_action('wp_ajax_' . ABP01_ACTION_CLEAR_INFO, 'abp01_remove_info');
 	add_action('wp_ajax_' . ABP01_ACTION_DOWNLOAD_TRACK, 'abp01_download_track');
-	add_action('wp_ajax_' . ABP01_ACTION_GET_LOOKUP, 'abp01_get_lookup_items');
-	add_action('wp_ajax_' . ABP01_ACTION_ADD_LOOKUP, 'abp01_add_lookup_item');
-	add_action('wp_ajax_' . ABP01_ACTION_EDIT_LOOKUP, 'abp01_edit_lookup_item');
-	add_action('wp_ajax_' . ABP01_ACTION_DELETE_LOOKUP, 'abp01_delete_lookup_item');
 
 	add_action('wp_ajax_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
 	add_action('wp_ajax_nopriv_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
@@ -1640,7 +1255,6 @@ function abp01_run() {
 	add_action('plugins_loaded', 'abp01_setup_plugin');
 	add_action('init', 'abp01_init_plugin');
 
-	add_action('admin_menu', 'abp01_create_admin_menu');
 	add_action('update_option_WPLANG', 'abp01_on_language_updated', 10, 3);
 	add_action('in_admin_footer', 'abp01_on_footer_loaded', 1);
 

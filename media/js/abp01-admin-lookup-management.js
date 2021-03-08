@@ -139,10 +139,6 @@
         currentItems = {};
     }
 
-    /**
-     * Compiles and caches the template used for rendering lookup items data rows
-     * @return Function The compiled template
-     * */
     function getLookupListingTemplate() {
         if (!tplLookupListing) {
             tplLookupListing = kite('#tpl-abp01-lookupDataRow');
@@ -150,20 +146,15 @@
         return tplLookupListing;
     }
 
-    /**
-     * Reads and returns the current form context/state:
-     * - nonce - the nonce used to authenticate AJAX lookup data management calls
-     * - ajaxBaseUrl - AJAX base URL used when saving the settings
-     * - ajaxGetLookupAction - AJAX action used when retrieving the lookup items
-     * - ajaxAddLookupAction - AJAX action used when creating a new lookup item/lookup item translation
-     * - ajaxEditLookupAction - AJAX action used when editing a lookup item/lookup item translation
-     * - ajaxDeleteLookupAction - AJAX action used when deleting a lookup item/lookup item translation
-     * @return object The context object comprised of the above-mentioned properties
-     * */
     function getContext() {
         return {
-            nonce: window['abp01_nonce'] || null,
             ajaxBaseUrl: window['abp01_ajaxUrl'] || null,
+
+            getLookupNonce: window['abp01_getLookupNonce'] || null,
+            addLookupNonce: window['abp01_addLookupNonce'] || null,
+            editLookupNonce: window['abp01_editLookupNonce'] || null,
+            deleteLookupNonce: window['abp01_deleteLookupNonce'] || null,
+
             ajaxGetLookupAction: window['abp01_ajaxGetLookupAction'] || null,
             ajaxAddLookupAction: window['abp01_ajaxAddLookupAction'] || null,
             ajaxEditLookupAction: window['abp01_ajaxEditLookupAction'] || null,
@@ -171,12 +162,6 @@
         };
     }
 
-    /**
-     * Shows the progress indicator, optionally blocking the given target.
-     * 
-     * @param {jQuery} $target The target element that should be blocked.
-     * @return void
-     */
     function showBusy($target) {
         var centerY = true;
 
@@ -194,11 +179,6 @@
         }
     }
 
-    /**
-     * Hides the progress indicator, calling the provided handler, if any, when done
-     *  
-     * @param {Function} onRemove The on remove handler. Optional
-     */
     function hideBusy(onRemove) {
         if (progressBar != null) {
             progressBar.destroy(onRemove);
@@ -208,14 +188,6 @@
         }
     }
 
-    /**
-     * Displays the given message of the given type (success/failure) in the given container
-     * 
-     * @param {jQuery} $container The container in which the message will be displayed
-     * @param {String} messageType The type of the message
-     * @param {String} message The message to be displayed
-     * @return void
-     * */
     function displayMessage($container, messageType, message) {
         //first clear the result container
         clearMessage($container);
@@ -234,15 +206,6 @@
             .show();
     }
 
-    /**
-     * Clears the message from the given container:
-     * - all the message-specific classes are removed;
-     * - container content is cleared;
-     * - container is hidden
-     * 
-     * @param {jQuery} $container The container for which the message is to be cleared
-     * @return void
-     * */
     function clearMessage($container) {        
     	$container
             .removeClass('notice')
@@ -253,47 +216,31 @@
             .hide();
     }
 
-    /**
-     * Builds the URL from wich the lookup items are loaded
-     * @return String The URL
-     * */
     function getLoadLookupDataUrl() {
         return URI(context.ajaxBaseUrl)
             .addSearch('action', context.ajaxGetLookupAction)
-            .addSearch('abp01_nonce_lookup_mgmt', context.nonce)
+            .addSearch('abp01_nonce_lookup_mgmt', context.getLookupNonce)
             .toString();
     }
 
-    /**
-     * Builds the URL used for creating new lookup items
-     * @return String The URL
-     * */
     function getAddLookupUrl() {
         return URI(context.ajaxBaseUrl)
             .addSearch('action', context.ajaxAddLookupAction)
-            .addSearch('abp01_nonce_lookup_mgmt', context.nonce)
+            .addSearch('abp01_nonce_lookup_mgmt', context.addLookupNonce)
             .toString();
     }
 
-    /**
-     * Builds the URL used for editing existing lookup items
-     * @return String The URL
-     * */
     function getEditLookupUrl() {
         return URI(context.ajaxBaseUrl)
             .addSearch('action', context.ajaxEditLookupAction)
-            .addSearch('abp01_nonce_lookup_mgmt', context.nonce)
+            .addSearch('abp01_nonce_lookup_mgmt', context.editLookupNonce)
             .toString();
     }
 
-    /**
-     * Builds the URL used for deleting existing lookup items
-     * @return String The URL
-     * */
     function getDeleteLookupUrl() {
         var uri = URI(context.ajaxBaseUrl)
             .addSearch('action', context.ajaxDeleteLookupAction)
-            .addSearch('abp01_nonce_lookup_mgmt', context.nonce)
+            .addSearch('abp01_nonce_lookup_mgmt', context.deleteLookupNonce)
 
         if (isLookupDeleteInuUseConfirmationStage()) {
             uri.addSearch('abp01_nonce_lookup_force_remove', getLookupDeleteInUseConfirmationNonce());
@@ -302,10 +249,6 @@
         return uri.toString();
     }
 
-    /**
-     * Removes all the lookup items that are currently displayed in the listing table
-     * @return void
-     * */
     function cleanupLookupItems() {
         clearAllLocalData();
         $ctlLookupListing
@@ -313,23 +256,11 @@
             .html('');
     }
 
-    /**
-     * Clears the fields in the currently displayed form. The cleared fields are:
-     * - the default label field;
-     * - the translated label field.
-     * @return void
-     * */
     function clearForm() {
         $ctlLookupItemTranslatedLabel.val('');
         $ctlLookupItemDefaultLabel.val('');
     }
 
-    /**
-     * Renders the given lookup items and updates the listing table content
-     * @param {Array} items The lookup items
-     * @param {Boolean} append Whether to append the content to the listing or to replace it alltogether
-     * @return void
-     * */
     function renderLookupItems(items, append) {
         var content = getLookupListingTemplate()({
             lookupItems: items
@@ -342,12 +273,6 @@
         }
     }
 
-    /**
-     * Refreshes the table row that corresponds to the given item.
-     * The entire row is re-rendered and the old row is replaced with the new one
-     * @param {Object} item The look-up item for which the row should be refreshed
-     * @return void
-     * */
     function refreshLookupItem(item) {
         var $oldRow = $('#lookupItemRow-' + item.id);
         $oldRow.replaceWith(getLookupListingTemplate()({
@@ -355,13 +280,6 @@
         }));
     }
 
-    /**
-     * Deletes the row that corresponds to the given lookup item 
-     * or simply empties the contents of the cell that contains the translation for the current language
-     * @param {Object} item The item for which the update should be carried out
-     * @param {Boolean} onlyUpdateTranslationCell Whether to simply empty the translation cell, in lieu of deleting the entire row
-     * @return void
-     * */
     function deleteLookupItemRow(item, onlyUpdateTranslationCell) {
         var $row = $('#lookupItemRow-' + item.id);
         if (onlyUpdateTranslationCell) {
@@ -371,11 +289,6 @@
         }
     }
 
-    /**
-     * Reloads the current lookup items list
-     * The lookup item type and language are read from their respective selectors
-     * @return void
-     * */
     function reloadLookupItems() {
         var lookupType = $ctlTypeSelector.val();
         var lookupLang = $ctlLangSelector.val();
@@ -413,15 +326,6 @@
         });
     }
 
-    /**
-     * Manages the actual lookup item creation process:
-     * - reads the required values;
-     * - progress indicator lifecycle;
-     * - displays operation result messages;
-     * - updates the lookup item listing if required;
-     * - fires the AJAX call.
-     * @return void
-     * */
     function createLookupItem() {        
         showBusy($('#TB_window'));
         clearMessage($ctlOperationResultContainer);
@@ -460,15 +364,6 @@
         });
     }
 
-    /**
-     * Manages the actual lookup item modification process:
-     * - reads the required values;
-     * - progress indicator lifecycle;
-     * - displays the operation result message;
-     * - updates the lookup item listing if required;
-     * - fires the AJAX call.
-     * @return void
-     * */
     function modifyLookupItem() {
         var defaultLabel = $ctlLookupItemDefaultLabel.val();
         var translatedLabel = $ctlLookupItemTranslatedLabel.val();
@@ -515,15 +410,6 @@
         });
     }
 
-    /**
-     * Manages the actual lookup item deletion process:
-     * - reads the required values;
-     * - progress indicator lifecycle;
-     * - displays the operation result message;
-     * - updates the lookup listing if required;
-     * - fires the AJAX call.
-     * @return void
-     * */
     function deleteLookupItem() {
         var lang = $ctlLangSelector.val();
         var deleteOnlyLang = $ctlDeleteOnlyLangTranslation.is(':checked');
@@ -587,12 +473,6 @@
         });
     }
 
-    /**
-     * Saves the lookup item in the current form.
-     * If we are editing an item, then modifyLookupItem() will be called.
-     * if we are adding a new item, then createLookupItem() will be called.
-     * @return void
-     * */
     function saveLookupItem() {
         if (!isCurrentlyEditingEditingItem()) {
             createLookupItem();
@@ -601,11 +481,6 @@
         }
     }
 
-    /**
-     * Show the lookup item editor
-     * @param {String} currentItemId The identifier of the item being edited, or null if we are adding a new item
-     * @return void
-     * */
     function showEditor(currentItemId) {
         var lang = $ctlLangSelector.val();
         var langLabel = $ctlLangSelector.find('option:selected').text();
@@ -651,12 +526,6 @@
         tb_show(title, '#TB_inline?width=' + 450 + '&height=' + height + '&inlineId=abp01-lookup-item-form');
     }
 
-    /**
-     * Shows the lookup item deletion dialog for the given item id.
-     * Also sets the currently edited item to the item that corresponds to the given ID.
-     * @param {Integer} currentItemId The identifier of the item to be deleted
-     * @return void
-     * */
     function showDeleteDialog(currentItemId) {
         var lang = $ctlLangSelector.val();
         var height = 180;
@@ -676,11 +545,6 @@
         setLookupDeleteInitialRequest();
     }
 
-    /**
-     * Closes the currently open lookup item editor.
-     * Upon doing so, it will also reset the field values
-     * @return void
-     * */
     function closeEditor() {
         //reset field values
         clearForm();
@@ -690,10 +554,6 @@
         tb_remove();
     }
 
-    /**
-     * Closes the currently open lookup item deletion dialog
-     * @return void
-     * */
     function closeDeleteDialog() {
         clearLookupDeleteState();
         $ctlDeleteOnlyLangTranslation.prop('checked', false);
@@ -701,10 +561,6 @@
         tb_remove();
     }
 
-    /**
-     * Set default styles for the blockUI overlay manager
-     * @return void
-     *  */
     function initBlockUIDefaultStyles() {
         $.blockUI.defaults.css = {
             width: '100%',
@@ -712,12 +568,6 @@
         };
     }
 
-    /**
-     * Initializes the current page controls:
-     * - retain references to elements we are repeatedly using
-     * - bind even listeners
-     * @return void
-     * */
     function initControls() {
         //result containers - they serve as display containers for various operations results
         $ctlListingResultContainer = $('#abp01-lookup-listing-result');
@@ -771,10 +621,6 @@
         $('#abp01-reload-list-bottom').click(reloadLookupItems);
     }
 
-    /**
-     * Reads the global variables that represent the current state/context and stores them in the "context" variable.
-     * @return void
-     * */
     function initContext() {
         context = getContext();
     }
@@ -785,9 +631,6 @@
         };
     }
 
-    /**
-     * Bootstrap everything together
-     * */
     $(document).ready(function() {
         setupKiteFormatters();
         initContext();

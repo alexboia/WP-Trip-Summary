@@ -37,4 +37,6 @@ interface Abp01_NonceProvider {
     function generateNonce();
 
     function valdidateNonce();
+
+    function hasNonce();
 }

@@ -45,11 +45,6 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
     const DEFAULT_TRACK_LINE_WEIGHT = 3;
 
     /**
-     * @var Abp01_Settings
-     */
-    private $_settings;
-
-    /**
      * @var Abp01_Env
      */
     private $_env;
@@ -60,6 +55,11 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
     private $_view;
 
     /**
+     * @var Abp01_Settings
+     */
+    private $_settings;
+
+    /**
      * @var Abp01_AdminAjaxAction
      */
     private $_saveSettingsAjaxAction;
@@ -67,10 +67,14 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
     public function __construct(Abp01_Settings $settings, Abp01_Env $env, Abp01_View $view, Abp01_Auth $auth) {
         parent::__construct($env, $auth);
 
-        $this->_settings = $settings;
-        $this->_view = $view;
         $this->_env = $env;
+        $this->_view = $view;
+        $this->_settings = $settings;
 
+        $this->_initAjaxActions();
+    }
+
+    private function _initAjaxActions() {
         $this->_saveSettingsAjaxAction = new Abp01_AdminAjaxAction(
             ABP01_ACTION_SAVE_SETTINGS, 
             array($this, 'saveSettings'),
@@ -105,6 +109,15 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
         }
     }
 
+    private function _shouldEnqueueWebPageAssets() {
+        return $this->_isViewingSettingsPage() 
+            && $this->_currentUserCanManagePluginSettings();
+    }
+
+    private function _isViewingSettingsPage() {
+        return $this->_env->isAdminPage(ABP01_MAIN_MENU_SLUG);
+    }
+
     public function onAdminEnqueueScripts() {
         if ($this->_shouldEnqueueWebPageAssets()) {
             Abp01_Includes::includeScriptAdminSettings($this->_getAdminSettingsScriptTranslations());
@@ -113,15 +126,6 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
 
     private function _getAdminSettingsScriptTranslations() {
         return Abp01_TranslatedScriptMessages::getAdminSettingsScriptTranslations();
-    }
-
-    private function _shouldEnqueueWebPageAssets() {
-        return $this->_isViewingSettingsPage() 
-            && $this->_currentUserCanManagePluginSettings();
-    }
-
-    private function _isViewingSettingsPage() {
-        return $this->_env->isAdminPage(ABP01_MAIN_MENU_SLUG);
     }
 
     private function _registerMenuHook() {
@@ -181,8 +185,8 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
 
         $unitSystem = Abp01_InputFiltering::getFilteredPOSTValue('unitSystem');
         $initialViewerTab = Abp01_InputFiltering::getFilteredPOSTValue('initialViewerTab');
-        $tileLayer = $this->_readTileLayerFromHttpPost();
         $trackLineColour = Abp01_InputFiltering::getFilteredPOSTValue('trackLineColour');
+        $tileLayer = $this->_readTileLayerFromHttpPost();
 
         $validationChain = new Abp01_Validation_Chain();
         $validationChain->addInputValidationRule($unitSystem, 
@@ -263,7 +267,7 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
         return new Abp01_Validation_Rule_Composite(array(
             'url' => array(
                 new Abp01_Validation_Rule_Simple(
-                    new Abp01_Validate_NotEmpty(),
+                    new Abp01_Validate_NotEmpty(false),
                     esc_html__('Tile layer URL is required', 'abp01-trip-summary')
                 ),
                 new Abp01_Validation_Rule_Simple(

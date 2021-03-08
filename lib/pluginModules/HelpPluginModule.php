@@ -107,7 +107,6 @@ class Abp01_PluginModules_HelpPluginModule extends Abp01_PluginModules_PluginMod
         $data->helpContents = $this->_help
             ->getHelpContentForCurrentLocale();
 
-        echo $this->_view
-            ->renderAdminHelpPage($data);
+        echo $this->_view->renderAdminHelpPage($data);
     }
 }
