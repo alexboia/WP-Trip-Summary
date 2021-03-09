@@ -44,15 +44,12 @@ class Abp01_Viewer {
     private $_view;
 
     /**
-     * @var stdClass
+     * @var array
      */
-    private $_data;
+    private $_contentCache = array();
 
-    private $_renderedParts = null;
-
-    public function __construct(Abp01_View $view, stdClass $data) {
+    public function __construct(Abp01_View $view) {
         $this->_view = $view;
-        $this->_data = $data;
     }
 
     public static function getAvailableTabs() {
@@ -66,33 +63,45 @@ class Abp01_Viewer {
         return in_array($tab, array_keys(self::getAvailableTabs()));
     }
 
-    public function render() {
-        if ($this->_renderedParts === null) {
-            $viewerHtml = null;
-			$teaserHtml = null;
-	
-			//render the teaser and the viewer and attach the results to the post content
-			if ($this->_canBeRendered()) {
-				$teaserHtml = $this->_view->renderFrontendTeaser($this->_data);
-				$viewerHtml = $this->_view->renderFrontendViewer($this->_data);
-			}
-	
-			$this->_renderedParts = array(
-				'teaserHtml' => $teaserHtml,
-				'viewerHtml' => $viewerHtml
-			);
+    public function render(stdClass $data) {
+        $viewerContent = array(
+            'teaserHtml' => null,
+            'viewerHtml' => null
+        );
+
+        if ($this->_canBeRendered($data)) {
+            $viewerContent = $this->_readCachedViewerContent($data->postId);
+            if ($viewerContent === null) {
+                $viewerContent = array(
+                    'teaserHtml' => $this->_view->renderFrontendTeaser($data),
+                    'viewerHtml' => $this->_view->renderFrontendViewer($data)
+                );
+
+                $this->_cacheViewerContent($data->postId, 
+                    $viewerContent);
+            }
         }
 
-        return $this->_renderedParts;
+        return $viewerContent;
     }
 
-    private function _canBeRendered() {
-        return $this->_data->info->exists 
-            || $this->_data->track->exists;
+    private function _canBeRendered(stdClass $data) {
+        return !empty($data->postId) 
+            && ($data->info->exists || $data->track->exists);
     }
 
-    public function renderAndAttachToContent($postContent) {
-        $viewerContentParts = $this->render();
+    private function _readCachedViewerContent($postId) {
+        return isset($this->_contentCache[$postId]) 
+            ? $this->_contentCache[$postId] 
+            : null;
+    }
+
+    private function _cacheViewerContent($postId, array $viewerContent) {
+        $this->_contentCache[$postId] = $viewerContent;
+    }
+
+    public function renderAndAttachToContent(stdClass $data, $postContent) {
+        $viewerContentParts = $this->render($data);
         $postContent = $viewerContentParts['teaserHtml'] . $postContent;
 	
 		if (!$this->_contentHasAnyTypeOfShortCode($postContent)) {

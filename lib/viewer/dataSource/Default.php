@@ -56,20 +56,21 @@ class Abp01_Viewer_DataSource_Default implements Abp01_Viewer_DataSource {
 	}
 
 	public function getTripSummaryViewerData($postId) {
-		$data = $this->_cache->readCachedTripSummaryViewerData($postId);
-		if (empty($data)) {
-			$data = $this->_getTripSummaryViewerData($postId);
-			$this->_cache->cachePostTripSummaryViewerData($postId, $data);
+		$viewerData = $this->_cache->readCachedTripSummaryViewerData($postId);
+		if (empty($viewerData)) {
+			$viewerData = $this->_getTripSummaryViewerData($postId);
+			$this->_cache->cachePostTripSummaryViewerData($postId, $viewerData);
 		}
 
-		return $data;
+		return $viewerData;
 	}
 
 	private function _getTripSummaryViewerData($postId) {
-		$data = new stdClass();
-		$data->info = $this->_getRouteInfoData($postId);
-		$data->track = $this->_getRouteTrackData($postId);
-		return $data;
+		$viewerData = new stdClass();
+		$viewerData->postId = $postId;
+		$viewerData->info = $this->_getRouteInfoData($postId);
+		$viewerData->track = $this->_getRouteTrackData($postId);
+		return $viewerData;
 	}
 
 	private function _getRouteInfoData($postId) {

@@ -37,9 +37,9 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 	const FRONTEND_VIEWER_CONTENT_HOOK_PRIORITY = 0;
 	
 	/**
-	 * @var Abp01_View
+	 * @var Abp01_Viewer
 	 */
-	private $_view;
+	private $_viewer;
 
 	/**
 	 * @var Abp01_Settings
@@ -57,26 +57,22 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 	private $_downloadTrackDataNonceProvider;
 
 	/**
-	 * @var Abp01_Viewer
-	 */
-	private $_currentViewer = null;
-
-	/**
 	 * @var Abp01_Viewer_DataSource
 	 */
 	private $_viewerDataSource;
 
 	public function __construct(Abp01_Viewer_DataSource $viewerDataSource, 
-		Abp01_View $view, 
+		Abp01_Viewer $viewer, 
 		Abp01_Settings $settings, 
 		Abp01_NonceProvider_ReadTrackData $readTrackDataNonceProvider, 
 		Abp01_NonceProvider_DownloadTrackData $downloadTrackDataNonceProvider, 
 		Abp01_Env $env, 
 		Abp01_Auth $auth) {
+
 		parent::__construct($env, $auth);
 
 		$this->_viewerDataSource = $viewerDataSource;
-		$this->_view = $view;
+		$this->_viewer = $viewer;
 		$this->_settings = $settings;
 		$this->_readTrackDataNonceProvider = $readTrackDataNonceProvider;
 		$this->_downloadTrackDataNonceProvider = $downloadTrackDataNonceProvider;
@@ -115,8 +111,8 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 		if ($this->_shouldAddViewer()) {
 			$postId = $this->_getCurrentPostId();
 			if (!empty($postId)) {
-				$viewer = $this->_getViewerForPostId($postId);
-				$postContent = $viewer->renderAndAttachToContent($postContent);
+				$viewerData = $this->_getViewerData($postId);
+				$postContent = $this->_viewer->renderAndAttachToContent($viewerData, $postContent);
 			}			
 		}
 
@@ -127,20 +123,10 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 		return is_single() || is_page();
 	}
 
-	private function _getViewerForPostId($postId) {
-		if ($this->_currentViewer === null) {
-			$viewerData = $this->_getViewerData($postId);
-			$this->_currentViewer = $this->_getViewerForData($viewerData);
-		}
-	
-		return $this->_currentViewer;
-	}
-
 	private function _getViewerData($postId) {
 		$viewerData = $this->_viewerDataSource
 			->getTripSummaryViewerData($postId);
 
-		$viewerData->postId = $postId;
 		$viewerData->ajaxUrl = $this->_getAjaxBaseUrl();
 		$viewerData->ajaxGetTrackAction = ABP01_ACTION_GET_TRACK;
 		$viewerData->downloadTrackAction = ABP01_ACTION_DOWNLOAD_TRACK;
@@ -157,17 +143,13 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 		return $viewerData;
 	}
 
-	private function _getViewerForData(stdClass $viewerData) {
-		return new Abp01_Viewer($this->_view, $viewerData);
-	}
-
 	public function renderViewerShortCode($attributes) {
 		$content = '';
 		$postId = $this->_getCurrentPostId();
 	
 		if (!empty($postId)) {
-			$viewer = $this->_getViewerForPostId($postId);
-			$contentParts = $viewer->render();
+			$viewerData = $this->_getViewerData($postId);
+			$contentParts = $this->_viewer->render($viewerData);
 			$content = $contentParts['viewerHtml'];
 		}
 	

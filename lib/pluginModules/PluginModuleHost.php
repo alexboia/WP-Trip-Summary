@@ -63,6 +63,11 @@ class Abp01_PluginModules_PluginModuleHost {
      */
     private $_viewerDataSource;
 
+    /**
+     * @var Abp01_Viewer
+     */
+    private $_viewer;
+
     public function __construct(array $pluginModulesClasses) {
         $this->_pluginModuleActivator = $this->_createPluginModuleActivator();
         $this->_pluginModules = $this->_createModules($pluginModulesClasses);
@@ -110,6 +115,9 @@ class Abp01_PluginModules_PluginModuleHost {
             Abp01_Viewer_DataSource::class => function() {
                 return $this->getViewerDataSource();
             },
+            Abp01_Viewer::class => function() {
+                return $this->getViewer();
+            },
             Abp01_Settings::class => function() {
                 return $this->getSettings();
             },
@@ -151,23 +159,30 @@ class Abp01_PluginModules_PluginModuleHost {
     }
 
     public function getTrackDownloadNonceProvider() {
-        if ($this->_downloadTrackDataNonceProvider == null) {
+        if ($this->_downloadTrackDataNonceProvider === null) {
             $this->_downloadTrackDataNonceProvider = new Abp01_NonceProvider_DownloadTrackData();
         }
         return $this->_downloadTrackDataNonceProvider;
     }
 
     public function getReadTrackDataNonceProvider() {
-        if ($this->_readTrackDataNonceProvider == null) {
+        if ($this->_readTrackDataNonceProvider === null) {
             $this->_readTrackDataNonceProvider = new Abp01_NonceProvider_ReadTrackData();
         }
         return $this->_readTrackDataNonceProvider;
     }
 
+    public function getViewer() {
+        if ($this->_viewer === null) {
+            $this->_viewer = new Abp01_Viewer($this->getView());
+        }
+        return $this->_viewer;
+    }
+
     public function getViewerDataSource() {
         if ($this->_viewerDataSource === null) {
             $this->_viewerDataSource = new Abp01_Viewer_DataSource_Default($this->getRouteManager(), 
-                $this->getLookup(), 
+                $this->getLookupForCurrentLang(), 
                 $this->getViewerDataSourceCache());
         }
         return $this->_viewerDataSource;
@@ -180,7 +195,7 @@ class Abp01_PluginModules_PluginModuleHost {
         return $this->_viewerDataSourceCache;
     }
 
-    public function getLookup() {
+    public function getLookupForCurrentLang() {
         return new Abp01_Lookup();
     }
 
