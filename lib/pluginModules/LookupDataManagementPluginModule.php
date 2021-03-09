@@ -121,22 +121,26 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 		$this->_getLookupDataItemsAjaxAction = 
 			Abp01_AdminAjaxAction::create(ABP01_ACTION_GET_LOOKUP,array($this, 'getLookupDataItems'))
 				->useDefaultNonceProvider(self::LOOKUP_MGMT_NONCE_URL_PARAM_NAME)
-				->authorizeByCallback($authCallback);
+				->authorizeByCallback($authCallback)
+				->onlyForHttpGet();
 
 		$this->_addLookupDataItemAjaxAction = 
 			Abp01_AdminAjaxAction::create(ABP01_ACTION_ADD_LOOKUP, array($this, 'addLookupDataItem'))
 				->useDefaultNonceProvider(self::LOOKUP_MGMT_NONCE_URL_PARAM_NAME)
-				->authorizeByCallback($authCallback);
+				->authorizeByCallback($authCallback)
+				->onlyForHttpPost();
 
 		$this->_editLookupDataItemAjaxAction = 
 			Abp01_AdminAjaxAction::create(ABP01_ACTION_EDIT_LOOKUP, array($this, 'editLookupDataItem'))
 				->useDefaultNonceProvider(self::LOOKUP_MGMT_NONCE_URL_PARAM_NAME)
-				->authorizeByCallback($authCallback);
+				->authorizeByCallback($authCallback)
+				->onlyForHttpPost();
 
 		$this->_deleteLookupDataItemAjaxAction = 
 			Abp01_AdminAjaxAction::create(ABP01_ACTION_DELETE_LOOKUP, array($this, 'deleteLookupDataItem'))
 				->useDefaultNonceProvider(self::LOOKUP_MGMT_NONCE_URL_PARAM_NAME)
-				->authorizeByCallback($authCallback);
+				->authorizeByCallback($authCallback)
+				->onlyForHttpPost();
 	}
 
 	public function load() {
@@ -299,10 +303,6 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 	}
 
 	public function getLookupDataItems() {
-		if (!$this->_env->isHttpGet()) {
-			die;
-		}
-
 		$forLang = Abp01_InputFiltering::getGETvalueOrDie('lang', 
 			array('Abp01_Lookup', 'isLanguageSupported'));
 
@@ -327,10 +327,6 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 	}
 
 	public function addLookupDataItem() {
-		if (!$this->_env->isHttpPost()) {
-			die;
-		}
-
 		$response = abp01_get_ajax_response(array(
 			'item' => null
 		));
@@ -408,10 +404,6 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 	}
 
 	public function editLookupDataItem() {
-		if (!$this->_env->isHttpPost()) {
-			die;
-		}
-
 		$response = abp01_get_ajax_response();
 
 		$id = $this->_getLookupItemIdFromHttpPostOrDie();
@@ -461,10 +453,6 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 	}
 
 	public function deleteLookupDataItem() {
-		if (!$this->_env->isHttpPost()) {
-			die;
-		}
-
 		$id = $this->_getLookupItemIdFromHttpPostOrDie();
 		$forLang = $this->_getLookupLanguageFromHttpPostOrDie();
 
@@ -541,7 +529,7 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 
 	private function _requestHasInUseLookupRemovalNonce() {
 		return $this->_inUseLookupItemRemovalNonceProvider
-			->hasNonce();
+			->hasNonceInCurrentContext();
 	}
 
 	private function _verifyInuseLookupRemovalNonce($lookupId) {

@@ -74,7 +74,8 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
         $this->_saveSettingsAjaxAction = 
             Abp01_AdminAjaxAction::create(ABP01_ACTION_SAVE_SETTINGS, array($this, 'saveSettings'))
                 ->useDefaultNonceProvider('abp01_nonce_settings')
-                ->authorizeByCallback($authCallback);
+                ->authorizeByCallback($authCallback)
+                ->onlyForHttpPost();
     }
 
     public function load() {
@@ -172,10 +173,6 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
     }
 
     public function saveSettings() {
-        if (!$this->_env->isHttpPost()) {
-            die;
-        }
-
         $response = abp01_get_ajax_response();
 
         $unitSystem = Abp01_InputFiltering::getFilteredPOSTValue('unitSystem');

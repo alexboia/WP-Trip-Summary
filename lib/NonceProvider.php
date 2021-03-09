@@ -34,9 +34,9 @@
 }
 
 interface Abp01_NonceProvider {
-    function generateNonce();
+    function generateNonce($resourceId = null);
 
-    function valdidateNonce();
+    function valdidateNonce($resourceId = null);
 
-    function hasNonce();
+    function hasNonceInCurrentContext();
 }

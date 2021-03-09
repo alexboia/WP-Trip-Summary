@@ -43,15 +43,15 @@ class Abp01_NonceProvider_ReadTrackData implements Abp01_NonceProvider {
         $this->_nonceProvider = new Abp01_NonceProvider_Default(ABP01_ACTION_GET_TRACK, 'abp01_nonce_get');
     }
 
-    public function generateNonce() {
-        return call_user_func_array(array($this->_nonceProvider, __METHOD__), func_get_args());
+    public function generateNonce($resourceId = null) {
+        return $this->_nonceProvider->generateNonce($resourceId);
     }
 
-    public function valdidateNonce() {
-        return call_user_func_array(array($this->_nonceProvider, __METHOD__), func_get_args());
+    public function valdidateNonce($resourceId = null) {
+        return $this->_nonceProvider->valdidateNonce($resourceId);
     }
 
-    public function hasNonce() {
-        return $this->_nonceProvider->hasNonce();
+    public function hasNonceInCurrentContext() {
+        return $this->_nonceProvider->hasNonceInCurrentContext();
     }
 }

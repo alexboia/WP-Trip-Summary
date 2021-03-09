@@ -30,28 +30,67 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
-class Abp01_NonceProvider_DownloadTrackData implements Abp01_NonceProvider {
+class Abp01_PluginModules_DownloadGpxTrackDataPluginModule extends Abp01_PluginModules_PluginModule {
     /**
-     * @var Abp01_NonceProvider_Default
-     */
-    private $_nonceProvider;
+	 * @var Abp01_Settings
+	 */
+	private $_settings;
 
-    public function __construct() {
-        $this->_nonceProvider = new Abp01_NonceProvider_Default(ABP01_NONCE_DOWNLOAD_TRACK, 'abp01_nonce_download');
+    /**
+	 * @var Abp01_AdminAjaxAction
+	 */
+	private $_downloadGpxTrackDataAction;
+
+    public function __construct(Abp01_NonceProvider_DownloadTrackData $downloadTrackDataNonceProvider, 
+		Abp01_Settings $settings, 
+		Abp01_Env $env, 
+		Abp01_Auth $auth) {
+
+		parent::__construct($env, $auth);
+
+		$this->_settings = $settings;
+		$this->_initAjaxActions($downloadTrackDataNonceProvider);
+	}
+
+	private function _initAjaxActions(Abp01_NonceProvider_DownloadTrackData $trackDownloadNonceProvider) {
+		$this->_downloadGpxTrackDataAction = 
+			Abp01_AdminAjaxAction::create(ABP01_ACTION_DOWNLOAD_TRACK, array($this, 'downloadGpxTrack'))
+				->useNonceProvider($trackDownloadNonceProvider)
+				->setRequiresAuthentication(false)
+				->onlyForHttpGet();
+	}
+    
+    public function load() {
+        $this->_registerAjaxActions();
     }
 
-    public function generateNonce($resourceId = null) {
-        return $this->_nonceProvider->generateNonce($resourceId);
-    }
+    private function _registerAjaxActions() {
+		$this->_downloadGpxTrackDataAction
+			->register();
+	}
 
-    public function valdidateNonce($resourceId = null) {
-        return $this->_nonceProvider->valdidateNonce($resourceId);
-    }
+    public function downloadGpxTrack() {
+		$postId = $this->_getCurrentPostId();
+		if (empty($postId)) {
+			die;
+		}
+	
+		if ($this->_trackDataAllowedBySettings()) {
+			$this->_sendGpxTrackDataFileForPostId($postId);
+		}
 
-    public function hasNonceInCurrentContext() {
-        return $this->_nonceProvider->hasNonceInCurrentContext();
-    }
+		die;
+	}
+
+	private function _trackDataAllowedBySettings() {
+		return $this->_settings->getAllowTrackDownload();
+	}
+
+	private function _sendGpxTrackDataFileForPostId($postId) {
+		$trackFileDownloader = new Abp01_Transfer_TrackFileDownloader();
+		$trackFileDownloader->sendTrackFileForPostId($postId);
+	}
 }

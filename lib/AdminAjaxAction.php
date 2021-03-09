@@ -34,6 +34,18 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_AdminAjaxAction {
+	const HTTP_GET = 'get';
+
+	const HTTP_POST = 'post';
+
+	const HTTP_PUT = 'put';
+
+	const HTTP_PATCH = 'patch';
+
+	const HTTP_DELETE = 'delete';
+
+	const HTTP_ANY = '*';
+
 	private $_actionCode;
 
 	private $_callback;
@@ -50,16 +62,58 @@ class Abp01_AdminAjaxAction {
 	 */
 	private $_authProvider = null;
 
+	private $_allowedHttpMethods = array();
+
+	/**
+	 * @var Abp01_Env
+	 */
+	private $_env;
+
 	public function __construct($actionCode, $callback) {
+		$this->_env = abp01_get_env();
 		$this->_actionCode = $actionCode;
 		$this->_callback = $callback;
 
 		$this->useAuthorizationProvider(new Abp01_AdminAjaxAction_AuthorizationProvider_AlwaysTrue());
 		$this->useNonceProvider(new Abp01_NonceProvider_None());
+		$this->allowAllHttpMethods();
 	}
 
 	public static function create($actionCode, $callback) {
 		return new self($actionCode, $callback);
+	}
+
+	public function onlyForHttpMethod($httpMethod) {
+		if (empty($httpMethod)) {
+			throw new InvalidArgumentException('Http method may not be null');
+		}
+
+		$this->_allowedHttpMethods = array($httpMethod);
+		return $this;
+	}
+
+	public function onlyForHttpGet() {
+		return $this->onlyForHttpMethod(self::HTTP_GET);
+	}
+
+	public function onlyForHttpPost() {
+		return $this->onlyForHttpMethod(self::HTTP_POST);
+	}
+
+	public function onlyForHttpPatch() {
+		return $this->onlyForHttpMethod(self::HTTP_PATCH);
+	}
+
+	public function onlyForHttpDelete() {
+		return $this->onlyForHttpMethod(self::HTTP_DELETE);
+	}
+
+	public function onlyForHttpPut() {
+		return $this->onlyForHttpMethod(self::HTTP_PUT);
+	}
+
+	public function allowAllHttpMethods() {
+		return $this->onlyForHttpMethod(self::HTTP_ANY);
 	}
 
 	public function useDefaultNonceProvider($urlParamName) {
@@ -116,6 +170,7 @@ class Abp01_AdminAjaxAction {
 
 	public function execute() {
 		if (!$this->isNonceValid() 
+			|| !$this->_isCurrentHttpMethodAllowed()
 			|| !$this->_currentUserCanExecute()) {
 			die;
 		}
@@ -123,14 +178,24 @@ class Abp01_AdminAjaxAction {
 		return call_user_func($this->_callback);
 	}
 
-	public function executeAndSendJsonThenExit() {
-		$executionResult = $this->execute();
-		$this->_sendJsonAndExit($executionResult);
+	private function _isCurrentHttpMethodAllowed() {
+		$currentMethod = $this->_env->getHttpMethod();
+		return $this->_isHttpMethodAllowed($currentMethod)
+			|| $this->_isHttpMethodAllowed(self::HTTP_ANY);
+	}
+
+	private function _isHttpMethodAllowed($method) {
+		return in_array($method, $this->_allowedHttpMethods);
 	}
 
 	private function _currentUserCanExecute() {
 		return $this->_authProvider
 			->isAuthorizedToExecuteAction();
+	}
+
+	public function executeAndSendJsonThenExit() {
+		$executionResult = $this->execute();
+		$this->_sendJsonAndExit($executionResult);
 	}
 
 	private function _sendJsonAndExit($data) {

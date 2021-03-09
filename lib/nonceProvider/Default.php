@@ -51,9 +51,9 @@ class Abp01_NonceProvider_Default implements Abp01_NonceProvider {
         $this->_urlParamName = $urlParamName;
     }
 
-    public function generateNonce() {
-        $resourceId = func_num_args() == 1 
-            ? func_get_arg(0) 
+    public function generateNonce($resourceId = null) {
+        $resourceId = !empty($resourceId) 
+            ? $resourceId 
             : '';
             
         return wp_create_nonce($this->_getResourceScopedActionCode($resourceId));
@@ -65,9 +65,9 @@ class Abp01_NonceProvider_Default implements Abp01_NonceProvider {
             : $this->_actionCode;
     }
 
-    public function valdidateNonce() {
-        $resourceId = func_num_args() == 1 
-            ? func_get_arg(0) 
+    public function valdidateNonce($resourceId  = null) {
+        $resourceId = !empty($resourceId) 
+            ? $resourceId 
             : '';
 
         return check_ajax_referer($this->_getResourceScopedActionCode($resourceId), 
@@ -75,7 +75,7 @@ class Abp01_NonceProvider_Default implements Abp01_NonceProvider {
             false);
     }
 
-    public function hasNonce() {
+    public function hasNonceInCurrentContext() {
         return !empty($_GET[$this->_urlParamName]);
     }
 }
