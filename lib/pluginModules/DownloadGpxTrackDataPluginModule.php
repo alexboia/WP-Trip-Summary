@@ -34,17 +34,17 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_PluginModules_DownloadGpxTrackDataPluginModule extends Abp01_PluginModules_PluginModule {
-    /**
+	/**
 	 * @var Abp01_Settings
 	 */
 	private $_settings;
 
-    /**
+	/**
 	 * @var Abp01_AdminAjaxAction
 	 */
 	private $_downloadGpxTrackDataAction;
 
-    public function __construct(Abp01_NonceProvider_DownloadTrackData $downloadTrackDataNonceProvider, 
+	public function __construct(Abp01_NonceProvider_DownloadTrackData $downloadTrackDataNonceProvider, 
 		Abp01_Settings $settings, 
 		Abp01_Env $env, 
 		Abp01_Auth $auth) {
@@ -62,17 +62,17 @@ class Abp01_PluginModules_DownloadGpxTrackDataPluginModule extends Abp01_PluginM
 				->setRequiresAuthentication(false)
 				->onlyForHttpGet();
 	}
-    
-    public function load() {
-        $this->_registerAjaxActions();
-    }
+	
+	public function load() {
+		$this->_registerAjaxActions();
+	}
 
-    private function _registerAjaxActions() {
+	private function _registerAjaxActions() {
 		$this->_downloadGpxTrackDataAction
 			->register();
 	}
 
-    public function downloadGpxTrack() {
+	public function downloadGpxTrack() {
 		$postId = $this->_getCurrentPostId();
 		if (empty($postId)) {
 			die;
