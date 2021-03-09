@@ -148,4 +148,12 @@ class Abp01_Viewer {
     private function _getViewerShortcode() {
         return '[' . ABP01_VIEWER_SHORTCODE . ']';
     }
+
+    public function includeFrontendViewerStyles() {
+        $this->_view->includeFrontendViewerStyles();
+    }
+
+    public function includeFrontendViewerScripts(array $translations) {
+        $this->_view->includeFrontendViewerScripts($translations);
+    }
 }

@@ -40,7 +40,7 @@ class Abp01_NonceProvider_DownloadTrackData implements Abp01_NonceProvider {
     private $_nonceProvider;
 
     public function __construct() {
-        $this->_nonceProvider = new Abp01_NonceProvider_Default(ABP01_NONCE_DOWNLOAD_TRACK, 'abp01_nonce_download');
+        $this->_nonceProvider = new Abp01_NonceProvider_Default(ABP01_ACTION_DOWNLOAD_TRACK, 'abp01_nonce_download');
     }
 
     public function generateNonce($resourceId = null) {

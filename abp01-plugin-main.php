@@ -392,14 +392,6 @@ function abp01_init_core() {
 	abp01_get_view()->initView();
 }
 
-function abp01_init_viewer_content_hooks() {
-	$priority = has_filter('the_content', 'wpautop');
-	if ($priority !== false) {
-		remove_filter('the_content', 'wpautop', $priority);
-	}
-	
-	add_filter('the_content', 'abp01_add_viewer', 0);
-}
 
 function abp01_setup_plugin() {
 	abp01_init_core();
@@ -618,33 +610,6 @@ function abp01_should_add_admin_editor() {
 }
 
 /**
- * Checks whether the WPTS viewer should be included, given the current context:
- * 	- current page (must be a post viewing screen);
- * 	- current type of post being viewed (must be 'page' or 'post');
- * 	- current status of WPTS data for current post (must have route details, or route track, or both).
- * 
- * @return boolean True if so, false otherwise
- */
-function abp01_should_add_frontend_viewer() {
-	static $addViewer = null;
-
-	if ($addViewer === null) {
-		$addViewer = false;
-		if (is_single() || is_page()) {
-			$postId = abp01_get_current_post_id();
-			$statusInfo = abp01_get_route_manager()->getTripSummaryStatusInfo($postId);
-
-			if (!empty($statusInfo[$postId])) {
-				$statusInfo = $statusInfo[$postId];
-				$addViewer = ($statusInfo['has_route_details'] || $statusInfo['has_route_track']);
-			}
-		}
-	}
-
-	return $addViewer;
-}
-
-/**
  * Queues the appropriate styles with respect to the current admin screen
  * 
  * @return void
@@ -662,18 +627,6 @@ function abp01_add_admin_styles() {
 }
 
 /**
- * Queues the appropriate frontend styles with 
- * 	respect to the current frontend screen
- * 
- * @return void
- */
-function abp01_add_frontend_styles() {
-	if (abp01_should_add_frontend_viewer()) {
-		abp01_get_view()->includeFrontendViewerStyles();
-	}
-}
-
-/**
  * Queues the appropriate scripts with respect 
  * 	to the current admin screen
  * 
@@ -682,18 +635,6 @@ function abp01_add_frontend_styles() {
 function abp01_add_admin_scripts() {
 	if (abp01_should_add_admin_editor()) {
 		Abp01_Includes::includeScriptAdminEditorMain(true, abp01_get_admin_trip_summary_editor_script_translations());
-	}
-}
-
-/**
- * Queues the appropriate frontend scripts 
- * 	with respect to the current frontend screen
- * 
- * @return void
- */
-function abp01_add_frontend_scripts() {
-	if (abp01_should_add_frontend_viewer()) {
-		abp01_get_view()->includeFrontendViewerScripts(abp01_get_frontend_viewer_script_translations());
 	}
 }
 
@@ -753,197 +694,6 @@ function abp01_get_post_viewer_data_cache_key($postId) {
 function abp01_clear_post_viewer_data_cache($postId) {
 	$cacheKey = abp01_get_post_viewer_data_cache_key($postId);
 	delete_transient($cacheKey);
-}
-
-function abp01_store_post_viewer_data_cache($postId, $data) {
-	if (ABP01_POST_TRIP_SUMMARY_DATA_CACHE_EXPIRATION_SECONDS > 0) {
-		$cacheKey = abp01_get_post_viewer_data_cache_key($postId);
-		set_transient($cacheKey, $data, ABP01_POST_TRIP_SUMMARY_DATA_CACHE_EXPIRATION_SECONDS);
-	}
-}
-
-function abp01_get_post_viewer_data_cache($postId) {
-	$cacheKey = abp01_get_post_viewer_data_cache_key($postId);
-	return get_transient($cacheKey);
-}
-
-function abp01_get_info_data($postId) {
-	//the_content may be called multiple times
-	//	so we need to cache the data to allow 
-	//	for correct handling of this situation
-	//see: https://wordpress.stackexchange.com/questions/225721/hook-added-to-the-content-seems-to-be-called-multiple-times
-
-	$settings = abp01_get_settings();
-	$data = abp01_get_post_viewer_data_cache($postId);
-
-	if (empty($data) || !($data instanceof stdClass)) {
-		$lookup = new Abp01_Lookup();
-		$routeManager = abp01_get_route_manager();
-
-		$data = new stdClass();
-		$routeInfo = $routeManager->getRouteInfo($postId);
-
-		$data->info = new stdClass();
-		$data->info->exists = false;
-
-		$data->track = new stdClass();
-		$data->track->exists = $routeManager->hasRouteTrack($postId);
-
-		//set the current trip summary information
-		if ($routeInfo) {
-			$data->info->exists = true;
-			$data->info->isBikingTour = $routeInfo->isBikingTour();
-			$data->info->isHikingTour = $routeInfo->isHikingTour();
-			$data->info->isTrainRideTour = $routeInfo->isTrainRideTour();
-
-			foreach ($routeInfo->getData() as $field => $value) {
-				$lookupKey = $routeInfo->getLookupKey($field);
-				if ($lookupKey) {
-					if (is_array($value)) {
-						foreach ($value as $k => $v) {
-							$value[$k] = $lookup->lookup($lookupKey, $v);
-						}
-						$value = array_filter($value, 'abp01_is_not_empty');
-					} else {
-						$value = $lookup->lookup($lookupKey, $value);
-					}
-				}
-			
-				$data->info->$field = $value;
-			}
-		}
-
-		//current context information
-		$data->postId = $postId;
-		$data->ajaxUrl = abp01_get_ajax_baseurl();
-		$data->ajaxGetTrackAction = ABP01_ACTION_GET_TRACK;
-		$data->downloadTrackAction = ABP01_ACTION_DOWNLOAD_TRACK;
-		$data->imgBaseUrl = abp01_get_env()->getPluginAssetUrl('media/img');
-
-		//refresh nonces and settings every time, 
-		//	so we don't need to cache them
-		$data->settings = null;
-		$data->nonceGet = null;
-		$data->nonceDownload = null;
-
-		//cache data
-		abp01_store_post_viewer_data_cache($postId, $data);
-	}
-
-	//get plug-in settings
-	$data->settings = $settings->asPlainObject();
-
-	//create new nonces
-	$data->nonceGet = abp01_create_get_track_nonce($postId);
-	$data->nonceDownload = abp01_create_download_track_nonce($data->postId);
-
-	return $data;
-}
-
-function abp01_get_content_viewer_shortcode_regexp() {
-	return '/(\[\s*' . ABP01_VIEWER_SHORTCODE . '\s*\])/';
-}
-
-function abp01_content_has_viewer_shortchode(&$content) {
-	return preg_match(abp01_get_content_viewer_shortcode_regexp(), $content);
-}
-
-function abp01_content_has_viewer_shortcode_block(&$content) {
-	return function_exists('has_block') && has_block('abp01/block-editor-shortcode', $content);
-}
-
-/**
- * Render the viewer components for the given post identifier.
- * Return value is an array with a position for each compoent:
- * 	- 'teaserHtml' key - the frontented teaser - the top part;
- * 	- 'viewerHtml' key - the viewer itself.
- * 
- * @param int $postId The post identifier
- * @return array The viewer components, as decribed above
- */
-function abp01_render_viewer($postId) {
-	static $viewer = null;
-
-	//only render once for the current request
-	if ($viewer === null) {
-		//fetch data
-		$viewerHtml = null;
-		$teaserHtml = null;
-		$data = abp01_get_info_data($postId);
-
-		//render the teaser and the viewer and attach the results to the post content
-		if ($data->info->exists || $data->track->exists) {
-			$teaserHtml = abp01_render_trip_summary_frontend_teaser($data);
-			$viewerHtml = abp01_render_trip_summary_frontend($data);
-		}
-
-		$viewer = array(
-			'teaserHtml' => $teaserHtml,
-			'viewerHtml' => $viewerHtml
-		);
-	}
-
-	return $viewer;
-}
-
-function abp01_ensure_content_has_unique_shortcode(&$content) {
-	$replaced = false;
-	return preg_replace_callback(abp01_get_content_viewer_shortcode_regexp(), 
-		function($matches) use (&$replaced) {
-			if ($replaced === false) {
-				$replaced = true;
-				return '[' . ABP01_VIEWER_SHORTCODE . ']';
-			} else {
-				return '';
-			}
-		}, $content);
-}
-
-/**
- * Filter function attached to the 'the_content' filter.
- * Its purpose is to render the trip summary viewer 
- * 	at the end of the post's content, but only within the post's page
- * The assumption is made that the wpautop filter 
- * 	has been previously removed from the filter chain
- * 
- * @param string $content The initial post content
- * @return string The filtered post content
- */
-function abp01_add_viewer($content) {
-	$content = wpautop($content);
-	if (!is_single() && !is_page()) {
-		return $content;
-	}
-
-	$postId = abp01_get_current_post_id();
-	if (!$postId) {
-		return $content;
-	}
-
-	$viewer = abp01_render_viewer($postId);
-	$content = $viewer['teaserHtml'] . $content;
-
-	if (!abp01_content_has_viewer_shortchode($content)
-		&& !abp01_content_has_viewer_shortcode_block($content)) {
-		$content = $content . $viewer['viewerHtml'];
-	} elseif (abp01_content_has_viewer_shortchode($content)) {
-		//Replace all but on of the shortcode references
-		$content = abp01_ensure_content_has_unique_shortcode($content);
-	}
-
-	return $content;
-}
-
-function abp01_render_viewer_shortcode($attributes) {
-	$content = '';
-	$postId = abp01_get_current_post_id();
-
-	if (!empty($postId)) {
-		$viewer = abp01_render_viewer($postId);
-		$content = $viewer['viewerHtml'];
-	}
-
-	return $content;
 }
 
 /**
@@ -1252,16 +1002,11 @@ function abp01_run() {
 	add_action('wp_ajax_nopriv_' . ABP01_ACTION_GET_TRACK, 'abp01_get_track');
 	add_action('wp_ajax_nopriv_' . ABP01_ACTION_DOWNLOAD_TRACK, 'abp01_download_track');
 
-	add_action('wp_enqueue_scripts', 'abp01_add_frontend_styles');
-	add_action('wp_enqueue_scripts', 'abp01_add_frontend_scripts');
-
 	add_action('plugins_loaded', 'abp01_setup_plugin');
 	add_action('init', 'abp01_init_plugin');
 
 	add_action('update_option_WPLANG', 'abp01_on_language_updated', 10, 3);
 	add_action('in_admin_footer', 'abp01_on_footer_loaded', 1);
-
-	//add_shortcode(ABP01_VIEWER_SHORTCODE, 'abp01_render_viewer_shortcode');
 }
 
 //the autoloaders are ready, general!

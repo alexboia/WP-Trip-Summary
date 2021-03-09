@@ -109,4 +109,8 @@ class Abp01_Viewer_DataSource_Default implements Abp01_Viewer_DataSource {
 		$routeTrackData->exists = $this->_routeManager->hasRouteTrack($postId);
 		return $routeTrackData;
 	}
+
+	public function getTripSummaryStatusInfo($postId) {
+		return $this->_routeManager->getTripSummaryStatusInfo($postId);
+	}
 }

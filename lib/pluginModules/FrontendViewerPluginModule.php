@@ -79,13 +79,61 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 	}
 
 	public function load() {
+		$this->_registerWebPageAssets();
 		$this->_initViewerContentHooks();
+		$this->_registerViewerShortCode();
+	}
+
+	private function _registerWebPageAssets() {
+		add_action('wp_enqueue_scripts', 
+			array($this, 'onFrontendEnqueueStyles'));
+		add_action('wp_enqueue_scripts', 
+			array($this, 'onFrontendEnqueueScripts'));
+	}
+
+	public function onFrontendEnqueueStyles() {
+		if ($this->_shouldAddViewerScripts()) {
+			$this->_viewer->includeFrontendViewerStyles();
+		}
+	}
+
+	private function _shouldAddViewerScripts() {
+		static $addViewerScripts = null;
+	
+		if ($addViewerScripts === null) {
+			$addViewerScripts = false;
+			if ($this->_shouldAddViewer()) {
+				$postId = $this->_getCurrentPostId();
+				$addViewerScripts = $this->_postHasAnyTripSummaryData($postId);
+			}
+		}
+	
+		return $addViewerScripts;
+	}
+
+	private function _postHasAnyTripSummaryData($postId) {
+		$hasData = false;
+		$statusInfo = $this->_viewerDataSource->getTripSummaryStatusInfo($postId);
+	
+		if (!empty($statusInfo[$postId])) {
+			$statusInfo = $statusInfo[$postId];
+			$hasData = ($statusInfo['has_route_details'] || $statusInfo['has_route_track']);
+		}
+
+		return $hasData;
+	}
+
+	public function onFrontendEnqueueScripts() {
+		$this->_viewer->includeFrontendViewerScripts($this->_getFrontendViewerScriptTranslations());
+	}
+
+	private function _getFrontendViewerScriptTranslations() {
+		return Abp01_TranslatedScriptMessages::getFrontendViewerScriptTranslations();
 	}
 
 	function _initViewerContentHooks() {	
 		$this->_removeWpAutoPFilterIfPresent();
 		$this->_registerViewerContentHook();
-		$this->_registerViewerShortCode();
 	}
 
 	private function _removeWpAutoPFilterIfPresent() {

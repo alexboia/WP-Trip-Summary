@@ -35,4 +35,6 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 
 interface Abp01_Viewer_DataSource {
 	function getTripSummaryViewerData($postId);
+
+	function getTripSummaryStatusInfo($postId);
 }
