@@ -1261,7 +1261,7 @@ function abp01_run() {
 	add_action('update_option_WPLANG', 'abp01_on_language_updated', 10, 3);
 	add_action('in_admin_footer', 'abp01_on_footer_loaded', 1);
 
-	add_shortcode(ABP01_VIEWER_SHORTCODE, 'abp01_render_viewer_shortcode');
+	//add_shortcode(ABP01_VIEWER_SHORTCODE, 'abp01_render_viewer_shortcode');
 }
 
 //the autoloaders are ready, general!

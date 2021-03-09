@@ -89,6 +89,7 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 	function _initViewerContentHooks() {	
 		$this->_removeWpAutoPFilterIfPresent();
 		$this->_registerViewerContentHook();
+		$this->_registerViewerShortCode();
 	}
 
 	private function _removeWpAutoPFilterIfPresent() {
@@ -102,6 +103,10 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 		add_filter('the_content', 
 			array($this, 'addViewerToContent'), 
 			self::FRONTEND_VIEWER_CONTENT_HOOK_PRIORITY);
+	}
+
+	private function _registerViewerShortCode() {
+		add_shortcode(ABP01_VIEWER_SHORTCODE, array($this, 'renderViewerShortCode'));
 	}
 
 	public function addViewerToContent($postContent) {
@@ -154,5 +159,18 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 
 	private function _getViewerForData(stdClass $viewerData) {
 		return new Abp01_Viewer($this->_view, $viewerData);
+	}
+
+	public function renderViewerShortCode($attributes) {
+		$content = '';
+		$postId = $this->_getCurrentPostId();
+	
+		if (!empty($postId)) {
+			$viewer = $this->_getViewerForPostId($postId);
+			$contentParts = $viewer->render();
+			$content = $contentParts['viewerHtml'];
+		}
+	
+		return $content;
 	}
 }
