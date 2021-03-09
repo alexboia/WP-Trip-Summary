@@ -30,31 +30,25 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
-class Abp01_NonceProvider_DownloadTrackData implements Abp01_NonceProvider {
-    /**
-     * @var Abp01_NonceProvider_Default
-     */
-    private $_nonceProvider;
+class Abp01_AdminAjaxAction_CurrentResourceProvider_CurrentPostId implements Abp01_AdminAjaxAction_CurrentResourceProvider {
+	/**
+	 * @var Abp01_Env
+	 */
+	private $_env;
 
-    public function __construct() {
-        $this->_nonceProvider = new Abp01_NonceProvider_Default(ABP01_NONCE_DOWNLOAD_TRACK, 'abp01_nonce_download');
-    }
+	private $_searchUrlParam = 'abp01_postId';
 
-    public function generateNonce($resourceId = null) {
-        return $this->_nonceProvider
-            ->generateNonce($resourceId);
-    }
-
-    public function valdidateNonce($resourceId = null) {
-        return $this->_nonceProvider
-            ->valdidateNonce($resourceId);
-    }
-
-    public function hasNonceInCurrentContext() {
-        return $this->_nonceProvider
-            ->hasNonceInCurrentContext();
-    }
+	public function __construct($searchUrlParam = null) {
+		$this->_env = abp01_get_env();
+		if (!empty($searchUrlParam)) {
+			$this->_searchUrlParam = $searchUrlParam;
+		}
+	}
+	
+	public function getCurrentResourceId() {
+		return $this->_env->getCurrentPostId($this->_searchUrlParam);
+	}
 }

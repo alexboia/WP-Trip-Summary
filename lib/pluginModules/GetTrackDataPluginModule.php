@@ -66,6 +66,7 @@ class Abp01_PluginModules_GetTrackDataPluginModule extends Abp01_PluginModules_P
 	private function _initAjaxActions(Abp01_NonceProvider_ReadTrackData $readTrackDataNonceProvider) {
 		$this->_getTrackDataAjaxAction = 
 			Abp01_AdminAjaxAction::create(ABP01_ACTION_GET_TRACK, array($this, 'getTrackData'))
+				->useCurrentResourceProvider(new Abp01_AdminAjaxAction_CurrentResourceProvider_CurrentPostId())
 				->useNonceProvider($readTrackDataNonceProvider)
 				->setRequiresAuthentication(false)
 				->onlyForHttpGet();

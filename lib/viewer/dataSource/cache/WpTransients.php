@@ -33,28 +33,25 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
-class Abp01_NonceProvider_DownloadTrackData implements Abp01_NonceProvider {
-    /**
-     * @var Abp01_NonceProvider_Default
-     */
-    private $_nonceProvider;
+class Abp01_Viewer_DataSource_Cache_WpTransients implements Abp01_Viewer_DataSource_Cache {
+	public function clearCachedPostTripSummaryViewerData($postId) {
+		$cacheKey = $this->_computePostViewerDataCacheKey($postId);
+		delete_transient($cacheKey);
+	}
 
-    public function __construct() {
-        $this->_nonceProvider = new Abp01_NonceProvider_Default(ABP01_NONCE_DOWNLOAD_TRACK, 'abp01_nonce_download');
-    }
+	private function _computePostViewerDataCacheKey($postId) {
+		return sprintf('_abp01_info_data_%s', $postId);
+	}
 
-    public function generateNonce($resourceId = null) {
-        return $this->_nonceProvider
-            ->generateNonce($resourceId);
-    }
+	public function cachePostTripSummaryViewerData($postId, $data) {
+		if (ABP01_POST_TRIP_SUMMARY_DATA_CACHE_EXPIRATION_SECONDS > 0) {
+			$cacheKey = $this->_computePostViewerDataCacheKey($postId);
+			set_transient($cacheKey, $data, ABP01_POST_TRIP_SUMMARY_DATA_CACHE_EXPIRATION_SECONDS);
+		}
+	}
 
-    public function valdidateNonce($resourceId = null) {
-        return $this->_nonceProvider
-            ->valdidateNonce($resourceId);
-    }
-
-    public function hasNonceInCurrentContext() {
-        return $this->_nonceProvider
-            ->hasNonceInCurrentContext();
-    }
+	public function readCachedTripSummaryViewerData($postId) {
+		$cacheKey = $this->_computePostViewerDataCacheKey($postId);
+		return get_transient($cacheKey);
+	}
 }

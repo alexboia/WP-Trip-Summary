@@ -82,7 +82,7 @@ class Abp01_Lookup {
 	 * @param string $lang The desired languate setting. Optional. Defaults to null
 	 */
 	public function __construct($lang = null) {
-		$this->_env = Abp01_Env::getInstance();
+		$this->_env = abp01_get_env();
 		if (empty($lang)) {
 			$this->_lang = $this->_env->getLang();
 		} else {

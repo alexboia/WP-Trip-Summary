@@ -58,6 +58,7 @@ class Abp01_PluginModules_DownloadGpxTrackDataPluginModule extends Abp01_PluginM
 	private function _initAjaxActions(Abp01_NonceProvider_DownloadTrackData $trackDownloadNonceProvider) {
 		$this->_downloadGpxTrackDataAction = 
 			Abp01_AdminAjaxAction::create(ABP01_ACTION_DOWNLOAD_TRACK, array($this, 'downloadGpxTrack'))
+				->useCurrentResourceProvider(new Abp01_AdminAjaxAction_CurrentResourceProvider_CurrentPostId())
 				->useNonceProvider($trackDownloadNonceProvider)
 				->setRequiresAuthentication(false)
 				->onlyForHttpGet();

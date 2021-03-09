@@ -65,6 +65,11 @@ class Abp01_AdminAjaxAction {
 	private $_allowedHttpMethods = array();
 
 	/**
+	 * @var Abp01_AdminAjaxAction_CurrentResourceProvider
+	 */
+	private $_currentResourceProvider;
+
+	/**
 	 * @var Abp01_Env
 	 */
 	private $_env;
@@ -74,6 +79,7 @@ class Abp01_AdminAjaxAction {
 		$this->_actionCode = $actionCode;
 		$this->_callback = $callback;
 
+		$this->useCurrentResourceProvider(new Abp01_AdminAjaxAction_CurrentResourceProvider_None());
 		$this->useAuthorizationProvider(new Abp01_AdminAjaxAction_AuthorizationProvider_AlwaysTrue());
 		$this->useNonceProvider(new Abp01_NonceProvider_None());
 		$this->allowAllHttpMethods();
@@ -81,6 +87,11 @@ class Abp01_AdminAjaxAction {
 
 	public static function create($actionCode, $callback) {
 		return new self($actionCode, $callback);
+	}
+
+	public function useCurrentResourceProvider(Abp01_AdminAjaxAction_CurrentResourceProvider $currentResourceProvider) {
+		$this->_currentResourceProvider = $currentResourceProvider;
+		return $this;
 	}
 
 	public function onlyForHttpMethod($httpMethod) {
@@ -146,12 +157,23 @@ class Abp01_AdminAjaxAction {
 		return $this;
 	}
 
+	public function getCurrentResourceId() {
+		return $this->_currentResourceProvider
+			->getCurrentResourceId();
+	}
+
 	public function generateNonce() {
-		return $this->_nonceProvider->generateNonce();
+		$currentResourceId = $this
+			->getCurrentResourceId();
+		return $this->_nonceProvider
+			->generateNonce($currentResourceId);
 	}
 
 	public function isNonceValid() {
-		return $this->_nonceProvider->valdidateNonce();
+		$currentResourceId = $this
+			->getCurrentResourceId();
+		return $this->_nonceProvider
+			->valdidateNonce($currentResourceId);
 	}
 
 	public function register() {

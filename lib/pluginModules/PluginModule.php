@@ -67,5 +67,9 @@ abstract class Abp01_PluginModules_PluginModule {
         return $this->_env->getAjaxBaseUrl();
     }
 
+    protected function _getPluginMediaImgBaseUrl() {
+        return $this->_env->getPluginAssetUrl('media/img');
+    }
+
     abstract public function load();
 }

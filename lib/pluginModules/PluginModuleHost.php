@@ -53,6 +53,16 @@ class Abp01_PluginModules_PluginModuleHost {
      */
     private $_readTrackDataNonceProvider;
 
+    /**
+     * @var Abp01_Viewer_DataSource_Cache
+     */
+    private $_viewerDataSourceCache;
+
+    /**
+     * @var Abp01_Viewer_DataSource
+     */
+    private $_viewerDataSource;
+
     public function __construct(array $pluginModulesClasses) {
         $this->_pluginModuleActivator = $this->_createPluginModuleActivator();
         $this->_pluginModules = $this->_createModules($pluginModulesClasses);
@@ -93,6 +103,12 @@ class Abp01_PluginModules_PluginModuleHost {
             },
             Abp01_NonceProvider_ReadTrackData::class => function() {
                 return $this->getReadTrackDataNonceProvider();
+            },
+            Abp01_Viewer_DataSource_Cache::class => function() {
+                return $this->getViewerDataSourceCache();
+            },
+            Abp01_Viewer_DataSource::class => function() {
+                return $this->getViewerDataSource();
             },
             Abp01_Settings::class => function() {
                 return $this->getSettings();
@@ -146,6 +162,26 @@ class Abp01_PluginModules_PluginModuleHost {
             $this->_readTrackDataNonceProvider = new Abp01_NonceProvider_ReadTrackData();
         }
         return $this->_readTrackDataNonceProvider;
+    }
+
+    public function getViewerDataSource() {
+        if ($this->_viewerDataSource === null) {
+            $this->_viewerDataSource = new Abp01_Viewer_DataSource_Default($this->getRouteManager(), 
+                $this->getLookup(), 
+                $this->getViewerDataSourceCache());
+        }
+        return $this->_viewerDataSource;
+    }
+
+    public function getViewerDataSourceCache() {
+        if ($this->_viewerDataSourceCache === null) {
+            $this->_viewerDataSourceCache = new Abp01_Viewer_DataSource_Cache_WpTransients();
+        }
+        return $this->_viewerDataSourceCache;
+    }
+
+    public function getLookup() {
+        return new Abp01_Lookup();
     }
 
     public function getRouteManager() {

@@ -64,7 +64,7 @@ function abp01_create_edit_nonce($postId) {
  * @return string The created nonce
  */
 function abp01_create_get_track_nonce($postId) {
-	return wp_create_nonce(ABP01_NONCE_GET_TRACK . ':' . $postId);
+	return wp_create_nonce(ABP01_ACTION_GET_TRACK . ':' . $postId);
 }
 
 /**
@@ -74,7 +74,7 @@ function abp01_create_get_track_nonce($postId) {
  * @return string The created nonce
  */
 function abp01_create_download_track_nonce($postId) {
-    return wp_create_nonce(ABP01_NONCE_DOWNLOAD_TRACK . ':' . $postId);
+    return wp_create_nonce(ABP01_ACTION_DOWNLOAD_TRACK . ':' . $postId);
 }
 
 /**
@@ -94,7 +94,7 @@ function abp01_verify_edit_nonce($postId) {
  * @return bool True if valid, False otherwise
  */
 function abp01_verify_get_track_nonce($postId) {
-	return check_ajax_referer(ABP01_NONCE_GET_TRACK . ':' . $postId, 'abp01_nonce_get', false);
+	return check_ajax_referer(ABP01_ACTION_GET_TRACK . ':' . $postId, 'abp01_nonce_get', false);
 }
 
 /**
@@ -104,7 +104,7 @@ function abp01_verify_get_track_nonce($postId) {
  * @return bool True if valid, False otherwise
  */
 function abp01_verify_download_track_nonce($postId) {
-    return check_ajax_referer(ABP01_NONCE_DOWNLOAD_TRACK . ':' . $postId, 'abp01_nonce_download', false);
+    return check_ajax_referer(ABP01_ACTION_DOWNLOAD_TRACK . ':' . $postId, 'abp01_nonce_download', false);
 }
 
 /**
@@ -413,13 +413,14 @@ function abp01_setup_plugin_modules() {
 		Abp01_PluginModules_SettingsPluginModule::class,
 		Abp01_PluginModules_LookupDataManagementPluginModule::class,
 		Abp01_PluginModules_HelpPluginModule::class,
-		Abp01_PluginModules_PostListingCustomizationPluginModule::class
+		Abp01_PluginModules_PostListingCustomizationPluginModule::class,
+		Abp01_PluginModules_FrontendViewerPluginModule::class
 	));
 	$pluginModuleHost->load();
 }
 
 function abp01_init_plugin() {
-	abp01_init_viewer_content_hooks();	
+	//abp01_init_viewer_content_hooks();	
 	if (!abp01_is_editor_classic_active()) {
 		abp01_init_block_editor_blocks();
 	}
@@ -1203,6 +1204,7 @@ function abp01_remove_track() {
 	abp01_send_json($response);
 }
 
+//TODO: extract to settings module
 function abp01_on_language_updated($oldValue, $value, $optName) {
 	//When the WPLANG updated hook is triggered, 
 	//	the text domain is not yet loaded.
@@ -1215,6 +1217,7 @@ function abp01_on_language_updated($oldValue, $value, $optName) {
 	}
 }
 
+//TODO: extract to settings module
 function abp01_on_footer_loaded() {
 	$resetTeaserTextRequired = get_transient('abp01_reset_teaser_text_required');
 	delete_transient('abp01_reset_teaser_text_required');

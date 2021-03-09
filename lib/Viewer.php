@@ -38,6 +38,23 @@ class Abp01_Viewer {
 
     const TAB_MAP = 'abp01-tab-map';
 
+    /**
+     * @var Abp01_View
+     */
+    private $_view;
+
+    /**
+     * @var stdClass
+     */
+    private $_data;
+
+    private $_renderedParts = null;
+
+    public function __construct(Abp01_View $view, stdClass $data) {
+        $this->_view = $view;
+        $this->_data = $data;
+    }
+
     public static function getAvailableTabs() {
         return array(
             self::TAB_INFO => __('Prosaic details', 'abp01-trip-summary'), 
@@ -47,5 +64,79 @@ class Abp01_Viewer {
 
     public static function isTabSupported($tab) {
         return in_array($tab, array_keys(self::getAvailableTabs()));
+    }
+
+    public function render() {
+        if ($this->_renderedParts === null) {
+            $viewerHtml = null;
+			$teaserHtml = null;
+	
+			//render the teaser and the viewer and attach the results to the post content
+			if ($this->_canBeRendered()) {
+				$teaserHtml = $this->_view->renderFrontendTeaser($this->_data);
+				$viewerHtml = $this->_view->renderFrontendViewer($this->_data);
+			}
+	
+			$this->_renderedParts = array(
+				'teaserHtml' => $teaserHtml,
+				'viewerHtml' => $viewerHtml
+			);
+        }
+
+        return $this->_renderedParts;
+    }
+
+    private function _canBeRendered() {
+        return $this->_data->info->exists 
+            || $this->_data->track->exists;
+    }
+
+    public function renderAndAttachToContent($postContent) {
+        $viewerContentParts = $this->render();
+        $postContent = $viewerContentParts['teaserHtml'] . $postContent;
+	
+		if (!$this->_contentHasAnyTypeOfShortCode($postContent)) {
+			$postContent = $postContent . $viewerContentParts['viewerHtml'];
+		} elseif ($this->_contentHasViewerShortcode($postContent)) {
+			//Replace all but on of the shortcode references
+			$postContent = $this->_ensureContentHasUniqueShortcode($postContent);
+		}
+	
+		return $postContent;
+    }
+
+    private function _contentHasAnyTypeOfShortCode(&$postContent) {
+        return $this->_contentHasViewerShortcode($postContent) 
+            || $this->_contentHasViewerShortCodeBlock($postContent);
+    }
+
+    private function _contentHasViewerShortcode(&$postContent) {
+		return preg_match($this->_getViewerShortcodeRegexp(), $postContent);
+	}
+
+	private function _getViewerShortcodeRegexp() {
+		return '/(\[\s*' . ABP01_VIEWER_SHORTCODE . '\s*\])/';
+	}
+	
+	private function _contentHasViewerShortCodeBlock(&$postContent) {
+		return function_exists('has_block') 
+			&& has_block('abp01/block-editor-shortcode', $postContent);
+	}
+
+	private function _ensureContentHasUniqueShortcode(&$postContent) {
+		$replaced = false;
+		return preg_replace_callback($this->_getViewerShortcodeRegexp(), 
+			function($matches) use (&$replaced) {
+				if ($replaced === false) {
+					$replaced = true;
+					return $this->_getViewerShortcode();
+				} else {
+					return '';
+				}
+			}, $postContent);
+	}
+
+    private function _getViewerShortcode() {
+        return '[' . ABP01_VIEWER_SHORTCODE . ']';
     }
 }

@@ -30,31 +30,11 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
-class Abp01_NonceProvider_DownloadTrackData implements Abp01_NonceProvider {
-    /**
-     * @var Abp01_NonceProvider_Default
-     */
-    private $_nonceProvider;
-
-    public function __construct() {
-        $this->_nonceProvider = new Abp01_NonceProvider_Default(ABP01_NONCE_DOWNLOAD_TRACK, 'abp01_nonce_download');
-    }
-
-    public function generateNonce($resourceId = null) {
-        return $this->_nonceProvider
-            ->generateNonce($resourceId);
-    }
-
-    public function valdidateNonce($resourceId = null) {
-        return $this->_nonceProvider
-            ->valdidateNonce($resourceId);
-    }
-
-    public function hasNonceInCurrentContext() {
-        return $this->_nonceProvider
-            ->hasNonceInCurrentContext();
-    }
+class Abp01_AdminAjaxAction_CurrentResourceProvider_None implements Abp01_AdminAjaxAction_CurrentResourceProvider {
+	public function getCurrentResourceId() {
+		return null;
+	}
 }

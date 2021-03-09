@@ -47,7 +47,7 @@ class Abp01_NonceProvider_Default implements Abp01_NonceProvider {
             throw new InvalidArgumentException('Nonce URL parameter name may not be empty.');
         }
 
-        $this->_actionCode = $actionCode . '_nonce';
+        $this->_actionCode = $actionCode;
         $this->_urlParamName = $urlParamName;
     }
 
