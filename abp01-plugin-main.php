@@ -108,15 +108,6 @@ function abp01_verify_download_track_nonce($postId) {
 }
 
 /**
- * Checks whether an options saving operations is currently underway
- * 
- * @return bool
- * */
-function abp01_is_saving_wp_options() {
-	return abp01_get_env()->isSavingWpOptions();
-}
-
-/**
  * Checks whether the admin posts listing is currently being browsed (regardless of post ype)
  * 
  * @return bool
@@ -137,15 +128,6 @@ function abp01_is_editing_post() {
 	} else {
 		return $env->isEditingWpPost();
 	}
-}
-
-/**
- * Check whether the currently displayed screen is the plugin settings management screen
- * 
- * @return boolean True if on plugin settings page, false otherwise
- */
-function abp01_is_editing_plugin_settings() {
-	return abp01_get_env()->isAdminPage(ABP01_MAIN_MENU_SLUG);
 }
 
 /**
@@ -186,15 +168,6 @@ function abp01_can_edit_trip_summary($post = null) {
 }
 
 /**
- * Checkes whether the current user has the permission to manage plug-in settings
- * 
- * @return boolean True if it has permission, false otherwise
- */
-function abp01_can_manage_plugin_settings() {
-	return Abp01_Auth::getInstance()->canManagePluginSettings();
-}
-
-/**
  * Retrieve the translated label that corresponds 
  * 	to the given lookup type/category
  * 
@@ -222,15 +195,6 @@ function abp01_get_lookup_type_label($type) {
  */
 function abp01_get_admin_trip_summary_editor_script_translations() {
 	return Abp01_TranslatedScriptMessages::getAdminTripSummaryEditorScriptTranslations();
-}
-
-/**
- * Retrieve translations used in the settings editor script
- * 
- * @return array Key-value pairs where keys are javascript property names and values are the translation strings
- */
-function abp01_get_settings_admin_script_translations() {
-	return Abp01_TranslatedScriptMessages::getAdminSettingsScriptTranslations();
 }
 
 /**
@@ -302,25 +266,6 @@ function abp01_get_admin_lookup_url($lookupType) {
 		$url = sprintf('%s&abp01_type=%s', $url, $lookupType);
 	}
 	return $url;
-}
-
-/**
- * Render the trip summary viewer
- * 
- * @param stdClass $data The trip summary and context data
- * @return void
- */
-function abp01_render_trip_summary_frontend(stdClass $data) {
-	return abp01_get_view()->renderFrontendViewer($data);
-}
-
-/**
- * Render the trip summary teaser
- * 
- * @param stdClass $data The trip summary and context data
- */
-function abp01_render_trip_summary_frontend_teaser(stdClass $data) {	
-	return abp01_get_view()->renderFrontendTeaser($data);
 }
 
 /**
@@ -406,7 +351,8 @@ function abp01_setup_plugin_modules() {
 		Abp01_PluginModules_LookupDataManagementPluginModule::class,
 		Abp01_PluginModules_HelpPluginModule::class,
 		Abp01_PluginModules_PostListingCustomizationPluginModule::class,
-		Abp01_PluginModules_FrontendViewerPluginModule::class
+		Abp01_PluginModules_FrontendViewerPluginModule::class,
+		Abp01_PluginModules_TeaserTextsSyncPluginModule::class
 	));
 	$pluginModuleHost->load();
 }
@@ -615,6 +561,7 @@ function abp01_should_add_admin_editor() {
  * @return void
  */
 function abp01_add_admin_styles() {
+	//TODO: move this to customization module
 	if (abp01_is_browsing_posts_listing()) {
 		Abp01_Includes::includeStyleAdminPostsListing();
 	}
@@ -954,31 +901,6 @@ function abp01_remove_track() {
 	abp01_send_json($response);
 }
 
-//TODO: extract to settings module
-function abp01_on_language_updated($oldValue, $value, $optName) {
-	//When the WPLANG updated hook is triggered, 
-	//	the text domain is not yet loaded.
-	//Thus, it's no point in resetting the teasers at this point, 
-	//	since the values corresponding to the previous locale will be pulled.
-	//The solution is to queue a flag that says it needs to be updated at a later point in time,
-	//	which currently is when the footer is being generated, for lack of a better time and place.
-	if ($optName == 'WPLANG' && abp01_is_saving_wp_options()) {
-		set_transient('abp01_reset_teaser_text_required', 'true', MINUTE_IN_SECONDS);
-	}
-}
-
-//TODO: extract to settings module
-function abp01_on_footer_loaded() {
-	$resetTeaserTextRequired = get_transient('abp01_reset_teaser_text_required');
-	delete_transient('abp01_reset_teaser_text_required');
-	if ($resetTeaserTextRequired === 'true') {
-		$settings = abp01_get_settings();
-		$settings->resetTopTeaserText();
-		$settings->resetBottomTeaserText();
-		$settings->saveSettings();
-	}
-}
-
 function abp01_run() {
 	register_activation_hook(__FILE__, 'abp01_activate');
 	register_deactivation_hook(__FILE__, 'abp01_deactivate');
@@ -1004,9 +926,6 @@ function abp01_run() {
 
 	add_action('plugins_loaded', 'abp01_setup_plugin');
 	add_action('init', 'abp01_init_plugin');
-
-	add_action('update_option_WPLANG', 'abp01_on_language_updated', 10, 3);
-	add_action('in_admin_footer', 'abp01_on_footer_loaded', 1);
 }
 
 //the autoloaders are ready, general!

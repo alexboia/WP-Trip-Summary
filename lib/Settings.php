@@ -485,11 +485,11 @@ class Abp01_Settings {
 		return 350;
 	}
 
-	public function resetTopTeaserText() {
+	public function syncTopTeaserTextWithCurrentLocale() {
 		$this->setTopTeaserText($this->_getDefaultTopTeaserText());
 	}
 
-	public function resetBottomTeaserText() {
+	public function syncBottomTeaserTextWithCurrentLocale() {
 		$this->setBottomTeaserText($this->_getDefaultBottomTeaserText());
 	}
 

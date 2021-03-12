@@ -455,7 +455,9 @@ class Abp01_Env {
     }
 
     public function isSavingWpOptions() {
-        return $this->getCurrentAdminPage() == 'options.php' && $this->isHttpPost();
+        $adminPage = $this->getCurrentAdminPage();
+        return ($adminPage == 'options.php' || $adminPage == 'options-general.php') 
+            && $this->isHttpPost();
     }
 
     public function isListingWpPosts() {
