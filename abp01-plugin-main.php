@@ -108,15 +108,6 @@ function abp01_verify_download_track_nonce($postId) {
 }
 
 /**
- * Checks whether the admin posts listing is currently being browsed (regardless of post ype)
- * 
- * @return bool
- */
-function abp01_is_browsing_posts_listing() {
-	return abp01_get_env()->isListingWpPosts();
-}
-
-/**
  * Check whether the currently displayed screen is either the post editing or the post creation screen
  * 
  * @return bool
@@ -561,11 +552,6 @@ function abp01_should_add_admin_editor() {
  * @return void
  */
 function abp01_add_admin_styles() {
-	//TODO: move this to customization module
-	if (abp01_is_browsing_posts_listing()) {
-		Abp01_Includes::includeStyleAdminPostsListing();
-	}
-
 	//if in post editing page and IF the user is allowed to edit a post's trip summary
 	//include the the styles required by the trip summary editor
 	if (abp01_should_add_admin_editor()) {

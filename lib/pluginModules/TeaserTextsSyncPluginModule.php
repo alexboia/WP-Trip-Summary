@@ -86,13 +86,13 @@ class Abp01_PluginModules_TeaserTextsSyncPluginModule extends Abp01_PluginModule
 	}
 
 	public function onAdminFooterLoadedCheckForTeaserSyncRequest() {
-		$syncTeaserTextsRequested = $this->_dequeueTeaserTextsRequest();
+		$syncTeaserTextsRequested = $this->_dequeueTeaserTextsSyncRequest();
 		if ($syncTeaserTextsRequested) {
 			$this->_syncTeaserTexts();
 		}
 	}
 
-	private function _dequeueTeaserTextsRequest() {
+	private function _dequeueTeaserTextsSyncRequest() {
 		$maybeTeaserTextsDequeueRequest = get_transient(self::RESET_TEASER_TEXT_MARKER_TRANSIENT_KEY);
 		delete_transient(self::RESET_TEASER_TEXT_MARKER_TRANSIENT_KEY);
 		return $maybeTeaserTextsDequeueRequest === self::RESET_TEASER_TEXT_MARKER_TRANSIENT_VALUE;

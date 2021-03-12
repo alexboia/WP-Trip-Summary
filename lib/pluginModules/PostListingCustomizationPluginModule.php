@@ -39,7 +39,22 @@ class Abp01_PluginModules_PostListingCustomizationPluginModule extends Abp01_Plu
     }
 
     public function load() {
+        $this->_registerWebPageAssets();
         $this->_registerPostListingCustomizations();
+    }
+
+    private function _registerWebPageAssets() {
+        add_action('admin_enqueue_scripts', array($this, 'onAdminEnqueueStyles'));
+    }
+
+    public function onAdminEnqueueStyles() {
+        if ($this->_shouldAddPostListingStyles()) {
+            Abp01_Includes::includeStyleAdminPostsListing();
+        }
+    }
+
+    private function _shouldAddPostListingStyles() {
+        return $this->_env->isListingWpPosts();
     }
 
     private function _registerPostListingCustomizations() {
