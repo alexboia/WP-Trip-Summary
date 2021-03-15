@@ -121,5 +121,7 @@ class Abp01_PluginModules_GetTrackDataPluginModule extends Abp01_PluginModules_P
 				}
 			}
 		}
+
+		return $response;
 	}
 }

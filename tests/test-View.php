@@ -63,8 +63,7 @@ class ViewTests extends WP_UnitTestCase {
     public function test_canEnqueueFrontendViewerScripts_withLocalization() {
         $view = $this->_getInitializedView();
 
-        $view->includeFrontendViewerScripts(abp01_get_frontend_viewer_script_translations());
-
+        $view->includeFrontendViewerScripts(Abp01_TranslatedScriptMessages::getFrontendViewerScriptTranslations());
         $this->_assertScriptEnqueuedWithTranslations(Abp01_Includes::JS_ABP01_FRONTEND_MAIN, 
             'abp01Settings', 
             'abp01FrontendL10n');

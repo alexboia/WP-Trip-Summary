@@ -139,7 +139,7 @@ class Abp01_Auth {
         return $allowed;
     }
 
-    public function canEditTripSummary($postId) {
+    public function canEditPostTripSummary($postId) {
         return $this->currentUserCan(self::CAP_EDIT_TRIP_SUMMARY) && $this->currentUserCan('edit_post', $postId);
     }
 

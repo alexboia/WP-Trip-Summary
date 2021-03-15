@@ -49,6 +49,37 @@ abstract class Abp01_PluginModules_PluginModule {
         $this->_auth = $auth;
     }
 
+    protected function _cantEditPostTripSummary($post) {
+        if (empty($post)) {
+            throw new InvalidArgumentException('Post information may not be empty!');
+        }
+
+        if ($post && is_object($post)) {
+            $postId = intval($post->ID);
+        } else if ($post && is_numeric($post)) {
+            $postId = $post;
+        } else {
+            $postId = 0;
+        }
+
+        if ($postId <= 0) {
+            throw new InvalidArgumentException('Invalid post information specified!');
+        }
+
+        return $this->_auth->canEditPostTripSummary($postId);
+    }
+
+    protected function _createEditCurrentPostTripSummaryAuthCallback() {
+        return function() {
+            return $this->_canEditCurrentPostTripSummary();
+        };
+    }
+
+    protected function _canEditCurrentPostTripSummary() {
+        $postId = $this->_getCurrentPostId();
+        return $this->_auth->canEditPostTripSummary($postId);
+    }
+
     protected function _createManagePluginSettingsAuthCallback() {
         return function() {
             return $this->_currentUserCanManagePluginSettings();

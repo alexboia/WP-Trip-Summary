@@ -82,7 +82,7 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 	 */
 	private $_inUseLookupItemRemovalNonceProvider;
 
-	public function __construct(Abp01_Env $env, Abp01_View $view, Abp01_Auth $auth) {
+	public function __construct(Abp01_View $view, Abp01_Env $env, Abp01_Auth $auth) {
 		parent::__construct($env, $auth);
 
 		$this->_view = $view;

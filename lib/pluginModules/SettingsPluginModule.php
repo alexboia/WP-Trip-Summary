@@ -59,7 +59,7 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
      */
     private $_saveSettingsAjaxAction;
 
-    public function __construct(Abp01_Settings $settings, Abp01_Env $env, Abp01_View $view, Abp01_Auth $auth) {
+    public function __construct(Abp01_Settings $settings, Abp01_View $view, Abp01_Env $env, Abp01_Auth $auth) {
         parent::__construct($env, $auth);
 
         $this->_settings = $settings;

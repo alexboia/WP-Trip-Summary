@@ -113,28 +113,28 @@ trait AdminTestDataHelpers {
         $lookup = new Abp01_Lookup();
 
         $data->difficultyLevels = $lookup->getDifficultyLevelOptions();
-        $data->difficultyLevelsAdminUrl = abp01_get_admin_lookup_url(Abp01_Lookup::DIFFICULTY_LEVEL);
+        $data->difficultyLevelsAdminUrl = $faker->url;
 
         $data->pathSurfaceTypes = $lookup->getPathSurfaceTypeOptions();
-        $data->pathSurfaceTypesAdminUrl = abp01_get_admin_lookup_url(Abp01_Lookup::PATH_SURFACE_TYPE);
+        $data->pathSurfaceTypesAdminUrl = $faker->url;
 
         $data->recommendedSeasons = $lookup->getRecommendedSeasonsOptions();
-        $data->recommendedSeasonsAdminUrl = abp01_get_admin_lookup_url(Abp01_Lookup::RECOMMEND_SEASONS);
+        $data->recommendedSeasonsAdminUrl = $faker->url;
 
         $data->bikeTypes = $lookup->getBikeTypeOptions();
-        $data->bikeTypesAdminUrl = abp01_get_admin_lookup_url(Abp01_Lookup::BIKE_TYPE);
+        $data->bikeTypesAdminUrl = $faker->url;
 
         $data->railroadOperators = $lookup->getRailroadOperatorOptions();
-        $data->railroadOperatorsAdminUrl = abp01_get_admin_lookup_url(Abp01_Lookup::RAILROAD_OPERATOR);
+        $data->railroadOperatorsAdminUrl = $faker->url;
 
         $data->railroadLineStatuses = $lookup->getRailroadLineStatusOptions();
-        $data->railroadLineStatusesAdminUrl = abp01_get_admin_lookup_url(Abp01_Lookup::RAILROAD_LINE_STATUS);
+        $data->railroadLineStatusesAdminUrl = $faker->url;
 
         $data->railroadLineTypes = $lookup->getRailroadLineTypeOptions();
-        $data->railroadLineTypesAdminUrl = abp01_get_admin_lookup_url(Abp01_Lookup::RAILROAD_LINE_TYPE);
+        $data->railroadLineTypesAdminUrl = $faker->url;
 
         $data->railroadElectrification = $lookup->getRailroadElectrificationOptions();
-        $data->railroadElectrificationAdminUrl = abp01_get_admin_lookup_url(Abp01_Lookup::RAILROAD_ELECTRIFICATION);
+        $data->railroadElectrificationAdminUrl = $faker->url;
 
         //current context information
         $data->postId = $faker->randomNumber();

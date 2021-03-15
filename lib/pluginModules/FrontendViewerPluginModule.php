@@ -92,12 +92,12 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 	}
 
 	public function onFrontendEnqueueStyles() {
-		if ($this->_shouldAddViewerScripts()) {
+		if ($this->_shouldEnqueueWebPageAssets()) {
 			$this->_viewer->includeFrontendViewerStyles();
 		}
 	}
 
-	private function _shouldAddViewerScripts() {
+	private function _shouldEnqueueWebPageAssets() {
 		static $addViewerScripts = null;
 	
 		if ($addViewerScripts === null) {
@@ -124,7 +124,9 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 	}
 
 	public function onFrontendEnqueueScripts() {
-		$this->_viewer->includeFrontendViewerScripts($this->_getFrontendViewerScriptTranslations());
+		if ($this->_shouldEnqueueWebPageAssets()) {
+			$this->_viewer->includeFrontendViewerScripts($this->_getFrontendViewerScriptTranslations());
+		}
 	}
 
 	private function _getFrontendViewerScriptTranslations() {

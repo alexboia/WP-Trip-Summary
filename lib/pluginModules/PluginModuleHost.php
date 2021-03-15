@@ -68,6 +68,11 @@ class Abp01_PluginModules_PluginModuleHost {
      */
     private $_viewer;
 
+    /**
+     * @var Abp01_UrlHelper
+     */
+    private $_urlHelper;
+
     public function __construct(array $pluginModulesClasses) {
         $this->_pluginModuleActivator = $this->_createPluginModuleActivator();
         $this->_pluginModules = $this->_createModules($pluginModulesClasses);
@@ -114,6 +119,9 @@ class Abp01_PluginModules_PluginModuleHost {
             },
             Abp01_Viewer_DataSource::class => function() {
                 return $this->getViewerDataSource();
+            },
+            Abp01_UrlHelper::class => function() {
+                return $this->getUrlHelper();
             },
             Abp01_Viewer::class => function() {
                 return $this->getViewer();
@@ -170,6 +178,13 @@ class Abp01_PluginModules_PluginModuleHost {
             $this->_readTrackDataNonceProvider = new Abp01_NonceProvider_ReadTrackData();
         }
         return $this->_readTrackDataNonceProvider;
+    }
+
+    public function getUrlHelper() {
+        if ($this->_urlHelper === null) {
+            $this->_urlHelper = new Abp01_UrlHelper($this->getEnv(), $this->getTrackDownloadNonceProvider());
+        }
+        return $this->_urlHelper;
     }
 
     public function getViewer() {

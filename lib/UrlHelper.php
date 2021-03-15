@@ -58,7 +58,7 @@ class Abp01_UrlHelper {
 		return $url;
 	}
 
-	function constructGpxTrackDownloadUrl($postId) {
+	public function constructGpxTrackDownloadUrl($postId) {
 		return add_query_arg(array(
 			'action' => ABP01_ACTION_DOWNLOAD_TRACK,
 			'abp01_nonce_download' => $this->_downloadTrackDataNonceProvider->generateNonce($postId),
