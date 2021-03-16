@@ -30,7 +30,8 @@
  */
 
 class NoDependenciesSamplePluginModule extends Abp01_PluginModules_PluginModule {
-    public function __construct() {
+    public function __construct(Abp01_Env $env, Abp01_Auth $auth) {
+        parent::__construct($env, $auth);
         SamplePluginModuleCreationState::reportModuleConstructed(__CLASS__, func_get_args());
     }
 

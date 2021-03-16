@@ -189,6 +189,10 @@ class Abp01_Route_Info {
         $this->_type = $type;
     }
 
+    public static function fromType($type) {
+        return new self($type);
+    }
+
     private function _filterFieldValue($field, $value) {
         if (!$this->isFieldValid($field)) {
             return null;
@@ -262,6 +266,17 @@ class Abp01_Route_Info {
     public function __get($k) {
         $this->_assertKeyValid($k);
         return isset($this->_data[$k]) ? $this->_data[$k] : null;
+    }
+
+    public function populateFromRawInput(array $rawInput) {
+        foreach ($this->getValidFieldNames() as $field) {
+			if (isset($rawInput[$field])) {
+				//Value is filtered on assignment.
+				// @see Abp01_Route_Info::__set
+				// @see Abp01_Route_Info::_filterFieldValue
+				$this->$field = $rawInput[$field];
+			}
+		}
     }
 
     public function removeLookupValue($lookupCategory, $lookupId) {

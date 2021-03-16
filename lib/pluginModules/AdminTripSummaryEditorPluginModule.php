@@ -317,28 +317,28 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 
 		//get the lookup data
 		$data->difficultyLevels = $lookup->getDifficultyLevelOptions();
-		$data->difficultyLevelsAdminUrl = $this->_urlHelper->constructAdminLookupUrl(Abp01_Lookup::DIFFICULTY_LEVEL);
+		$data->difficultyLevelsAdminUrl = $this->_constructAdminLookupUrl(Abp01_Lookup::DIFFICULTY_LEVEL);
 
 		$data->pathSurfaceTypes = $lookup->getPathSurfaceTypeOptions();
-		$data->pathSurfaceTypesAdminUrl = $this->_urlHelper->constructAdminLookupUrl(Abp01_Lookup::PATH_SURFACE_TYPE);
+		$data->pathSurfaceTypesAdminUrl = $this->_constructAdminLookupUrl(Abp01_Lookup::PATH_SURFACE_TYPE);
 
 		$data->recommendedSeasons = $lookup->getRecommendedSeasonsOptions();
-		$data->recommendedSeasonsAdminUrl = $this->_urlHelper->constructAdminLookupUrl(Abp01_Lookup::RECOMMEND_SEASONS);
+		$data->recommendedSeasonsAdminUrl = $this->_constructAdminLookupUrl(Abp01_Lookup::RECOMMEND_SEASONS);
 
 		$data->bikeTypes = $lookup->getBikeTypeOptions();
-		$data->bikeTypesAdminUrl = $this->_urlHelper->constructAdminLookupUrl(Abp01_Lookup::BIKE_TYPE);
+		$data->bikeTypesAdminUrl = $this->_constructAdminLookupUrl(Abp01_Lookup::BIKE_TYPE);
 
 		$data->railroadOperators = $lookup->getRailroadOperatorOptions();
-		$data->railroadOperatorsAdminUrl = $this->_urlHelper->constructAdminLookupUrl(Abp01_Lookup::RAILROAD_OPERATOR);
+		$data->railroadOperatorsAdminUrl = $this->_constructAdminLookupUrl(Abp01_Lookup::RAILROAD_OPERATOR);
 
 		$data->railroadLineStatuses = $lookup->getRailroadLineStatusOptions();
-		$data->railroadLineStatusesAdminUrl = $this->_urlHelper->constructAdminLookupUrl(Abp01_Lookup::RAILROAD_LINE_STATUS);
+		$data->railroadLineStatusesAdminUrl = $this->_constructAdminLookupUrl(Abp01_Lookup::RAILROAD_LINE_STATUS);
 
 		$data->railroadLineTypes = $lookup->getRailroadLineTypeOptions();
-		$data->railroadLineTypesAdminUrl = $this->_urlHelper->constructAdminLookupUrl(Abp01_Lookup::RAILROAD_LINE_TYPE);
+		$data->railroadLineTypesAdminUrl = $this->_constructAdminLookupUrl(Abp01_Lookup::RAILROAD_LINE_TYPE);
 
 		$data->railroadElectrification = $lookup->getRailroadElectrificationOptions();
-		$data->railroadElectrificationAdminUrl = $this->_urlHelper->constructAdminLookupUrl(Abp01_Lookup::RAILROAD_ELECTRIFICATION);
+		$data->railroadElectrificationAdminUrl = $this->_constructAdminLookupUrl(Abp01_Lookup::RAILROAD_ELECTRIFICATION);
 
 		//current context information
 		$data->postId = intval($post->ID);
@@ -387,6 +387,10 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
         return new Abp01_Lookup();
     }
 
+	private function _constructAdminLookupUrl($lookupType) {
+		return $this->_urlHelper->constructAdminLookupUrl($lookupType);
+	}
+
 	private function _addAdminEditorLauncher($post, $args) {
 		$postId = intval($post->ID);
 
@@ -407,17 +411,9 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 			die;
 		}
 
-		$info = new Abp01_Route_Info($type);
 		$response = abp01_get_ajax_response();
-
-		foreach ($info->getValidFieldNames() as $field) {
-			if (isset($_POST[$field])) {
-				//Value is filtered on assignment.
-				// @see Abp01_Route_Info::__set
-				// @see Abp01_Route_Info::_filterFieldValue
-				$info->$field = $_POST[$field];
-			}
-		}
+		$info = Abp01_Route_Info::fromType($type);
+		$info->populateFromRawInput($_POST);
 
 		if ($this->_routeManager->saveRouteInfo($postId, $info, get_current_user_id())) {
 			$this->_viewerDataSourceCache->clearCachedPostTripSummaryViewerData($postId);
@@ -445,37 +441,15 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 
 	public function uploadRouteTrack() {
 		$postId = $this->_getCurrentPostId();
-		$currentUserId = get_current_user_id();
 		$destination = $this->_routeManager->getTrackFilePath($postId);
+
 		if (empty($destination)) {
 			die;
 		}
 
-		//detect chunking
-		if (ABP01_TRACK_UPLOAD_CHUNK_SIZE > 0) {
-			$chunk = isset($_REQUEST['chunk']) ? intval($_REQUEST['chunk']) : 0;
-			$chunks = isset($_REQUEST['chunks']) ? intval($_REQUEST['chunks']) : 0;
-		} else {
-			$chunk = $chunks = 0;
-		}
-
-		//create and configure the uploader
-		$uploader = new Abp01_Uploader(ABP01_TRACK_UPLOAD_KEY, $destination, array(
-			'chunk' => $chunk, 
-			'chunks' => $chunks, 
-			'chunkSize' => ABP01_TRACK_UPLOAD_CHUNK_SIZE, 
-			'maxFileSize' => ABP01_TRACK_UPLOAD_MAX_FILE_SIZE, 
-			'allowedFileTypes' => array(
-				'application/gpx', 
-				'application/x-gpx+xml', 
-				'application/xml-gpx', 
-				'application/xml', 
-				'text/xml',
-				'application/octet-stream'
-		)));
-		$uploader->setCustomValidator(array(new Abp01_Validate_GpxDocument(), 'validate'));
-
 		$response = new stdClass();
+		$uploader = $this->_createUploader($destination);
+
 		$response->status = $uploader->receive();
 		$response->ready = $uploader->isReady();
 
@@ -487,13 +461,14 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 				$parser = new Abp01_Route_Track_GpxDocumentParser();
 				$route = $parser->parse($route);
 				if ($route && !$parser->hasErrors()) {
-					$destination = basename($destination);
+					$destinationFileName = basename($destination);
 					$track = new Abp01_Route_Track($postId, 
-						$destination, 
+						$destinationFileName, 
 						$route->getBounds(), 
 						$route->minAlt, 
 						$route->maxAlt);
-					
+
+					$currentUserId = get_current_user_id();
 					if (!$this->_routeManager->saveRouteTrack($track, $currentUserId)) {
 						$response->status = Abp01_Uploader::UPLOAD_INTERNAL_ERROR;
 					} else {
@@ -508,6 +483,52 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		}
 
 		return $response;
+	}
+
+	private function _createUploader($destination) {
+		$options = $this->_constructUploaderOptions();
+		$uploader = new Abp01_Uploader(ABP01_TRACK_UPLOAD_KEY, 
+			$destination, 
+			$options);
+
+		$uploader->setCustomValidator(array(new Abp01_Validate_GpxDocument(), 'validate'));
+		return $uploader;
+	}
+
+	private function _constructUploaderOptions() {
+		if (ABP01_TRACK_UPLOAD_CHUNK_SIZE > 0) {
+			$currentChunk = $this->_readCurrentChunkFromRequest();
+			$totalChunks = $this->_readTotalChunksFromRequest();
+		} else {
+			$currentChunk = $totalChunks = 0;
+		}
+
+		return array(
+			'chunk' => $currentChunk, 
+			'chunks' => $totalChunks, 
+			'chunkSize' => ABP01_TRACK_UPLOAD_CHUNK_SIZE, 
+			'maxFileSize' => ABP01_TRACK_UPLOAD_MAX_FILE_SIZE, 
+			'allowedFileTypes' => array(
+				'application/gpx', 
+				'application/x-gpx+xml', 
+				'application/xml-gpx', 
+				'application/xml', 
+				'text/xml',
+				'application/octet-stream'
+			)
+		);
+	}
+
+	private function _readCurrentChunkFromRequest() {
+		return isset($_REQUEST['chunk']) 
+			? intval($_REQUEST['chunk']) 
+			: 0;
+	}
+
+	private function _readTotalChunksFromRequest() {
+		return isset($_REQUEST['chunks']) 
+			? intval($_REQUEST['chunks']) 
+			: 0;
 	}
 
 	public function removeRouteTrack() {

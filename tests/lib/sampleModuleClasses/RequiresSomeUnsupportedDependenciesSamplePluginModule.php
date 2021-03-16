@@ -34,7 +34,9 @@ class RequiresSomeUnsupportedDependenciesSamplePluginModule extends Abp01_Plugin
 
     private $_wpQuery;
 
-    public function __construct(Abp01_Help $help, WP_Query $wpQuery) {
+    public function __construct(Abp01_Help $help, WP_Query $wpQuery, Abp01_Env $env, Abp01_Auth $auth) {
+        parent::__construct($env, $auth);
+
         $this->_help = $help;
         $this->_wpQuery = $wpQuery;
         SamplePluginModuleCreationState::reportModuleConstructed(__CLASS__, func_get_args());

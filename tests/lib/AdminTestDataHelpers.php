@@ -86,21 +86,27 @@ trait AdminTestDataHelpers {
         $faker = $this->_getFaker();
 
         $data = new stdClass();
-        $data->controllers = new stdClass();
-        $data->controllers->availableTypes = array();
+        $data->controls = new stdClass();
+        $data->controls->availableTypes = array();
         foreach (Abp01_Lookup::getSupportedCategories() as $category) {
-            $data->controllers->availableTypes[$category] = abp01_get_lookup_type_label($category);
+            $data->controls->availableCategories[$category] = abp01_get_lookup_type_label($category);
         }
 
-        $data->controllers->availableLanguages = Abp01_Lookup::getSupportedLanguages();       
-        $data->controllers->selectedLanguage = '_default';
-        $data->controllers->selectedType = current(array_keys($data->controllers->availableTypes));
+        $data->controls->availableLanguages = Abp01_Lookup::getSupportedLanguages();       
+        $data->controls->selectedLanguage = '_default';
+        $data->controls->selectedCategory = current(array_keys($data->controls->availableCategories));
 
         $data->context = new stdClass();
-        $data->context->nonce = $faker->randomAscii;
+        $data->context->getLookupNonce = $faker->randomAscii;
         $data->context->getLookupAction = $faker->randomAscii;
+
+        $data->context->addLookupNonce = $faker->randomAscii;
         $data->context->addLookupAction = $faker->randomAscii;
+
+        $data->context->editLookupNonce = $faker->randomAscii;
         $data->context->editLookupAction = $faker->randomAscii;
+
+        $data->context->deleteLookupNonce = $faker->randomAscii;
         $data->context->deleteLookupAction = $faker->randomAscii;
         $data->context->ajaxBaseUrl = $faker->url;
 

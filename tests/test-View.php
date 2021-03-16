@@ -219,7 +219,10 @@ class ViewTests extends WP_UnitTestCase {
 
     private function _assertAdminLookupPageHasScriptVars($lookupPage) {
         $this->assertContains('<script type="text/javascript">', $lookupPage);
-        $this->assertContains('var abp01_nonce', $lookupPage);
+        $this->assertContains('var abp01_getLookupNonce', $lookupPage);
+        $this->assertContains('var abp01_addLookupNonce', $lookupPage);
+        $this->assertContains('var abp01_editLookupNonce', $lookupPage);
+        $this->assertContains('var abp01_deleteLookupNonce', $lookupPage);
         $this->assertContains('var abp01_ajaxUrl', $lookupPage);
         $this->assertContains('var abp01_ajaxGetLookupAction', $lookupPage);
         $this->assertContains('var abp01_ajaxAddLookupAction', $lookupPage);

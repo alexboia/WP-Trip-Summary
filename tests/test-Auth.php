@@ -465,13 +465,13 @@ class AuthTests extends WP_UnitTestCase {
         }
     }
 
-    private function _assertCanEditTripSummary($auth, $userId, $postId, $expectedCanEditTripSummary) {
+    private function _assertCanEditTripSummary(Abp01_Auth $auth, $userId, $postId, $expectedCanEditTripSummary) {
         wp_set_current_user($userId);
 
         if ($expectedCanEditTripSummary) {
-            $this->assertTrue($auth->canEditTripSummary($postId));
+            $this->assertTrue($auth->canEditPostTripSummary($postId));
         } else {
-            $this->assertFalse($auth->canEditTripSummary($postId));
+            $this->assertFalse($auth->canEditPostTripSummary($postId));
         }
     }
 

@@ -50,20 +50,21 @@ class PluginModuleHostTests extends WP_UnitTestCase {
         
         $this->assertTrue(SamplePluginModuleCreationState::hasModuleTypeBeenConstructedWithArgumentTypes(RequiresAllSupportedDependenciesSamplePluginModule::class, array(
             Abp01_PluginModules_PluginModuleHost::class,
-            Abp01_Auth::class,
             Abp01_Settings::class,
-            Abp01_Env::class,
             Abp01_Route_Manager::class,
             Abp01_View::class,
-            Abp01_Help::class
+            Abp01_Help::class,
+            Abp01_Env::class,
+            Abp01_Auth::class
         )));
 
         $this->assertTrue(SamplePluginModuleCreationState::hasModuleTypeBeenConstructedWithArgumentTypes(RequiresSupportedDependenciesSamplePluginModule::class, array(
             Abp01_Settings::class,
-            Abp01_Env::class,
             Abp01_Route_Manager::class,
             Abp01_View::class,
-            Abp01_Help::class
+            Abp01_Help::class,
+            Abp01_Env::class,
+            Abp01_Auth::class
         )));
     }
 
@@ -83,7 +84,9 @@ class PluginModuleHostTests extends WP_UnitTestCase {
         $this->assertTrue($pluginHost->hasModule(HasOnlyCustomAvailableDependenciesPluginModule::class));
 
         $this->assertTrue(SamplePluginModuleCreationState::hasModuleTypeBeenConstructedWithArgumentTypes(HasOnlyCustomAvailableDependenciesPluginModule::class, array(
-            SamplePluginModuleDependency::class
+            SamplePluginModuleDependency::class,
+            Abp01_Env::class,
+            Abp01_Auth::class
         )));
     }
 

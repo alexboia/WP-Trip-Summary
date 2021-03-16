@@ -32,8 +32,6 @@
 class RequiresAllSupportedDependenciesSamplePluginModule extends Abp01_PluginModules_PluginModule {
     private $_settings; 
 
-    private $_env; 
-    
     private $_routeManager; 
 
     private $_view;
@@ -41,23 +39,22 @@ class RequiresAllSupportedDependenciesSamplePluginModule extends Abp01_PluginMod
     private $_help;
 
     private $_pluginModuleHost;
-
-    private $_auth;
-    
+   
     public function __construct(Abp01_PluginModules_PluginModuleHost $pluginModuleHost, 
-        Abp01_Auth $auth,
         Abp01_Settings $settings, 
-        Abp01_Env $env, 
         Abp01_Route_Manager $routeManager, 
         Abp01_View $view, 
-        Abp01_Help $help) {
+        Abp01_Help $help,
+        Abp01_Env $env,
+        Abp01_Auth $auth) {
+
+        parent::__construct($env, $auth);
+
         $this->_settings = $settings;
-        $this->_env = $env;
         $this->_routeManager = $routeManager;
         $this->_view = $view;
         $this->_help = $help;
         $this->_pluginModuleHost = $pluginModuleHost;
-        $this->_auth = $auth;
 
         SamplePluginModuleCreationState::reportModuleConstructed(__CLASS__, func_get_args());
     }

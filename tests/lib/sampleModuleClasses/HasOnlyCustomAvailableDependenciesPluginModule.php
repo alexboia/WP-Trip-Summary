@@ -35,7 +35,9 @@ class HasOnlyCustomAvailableDependenciesPluginModule extends Abp01_PluginModules
      */
     private $_dep;
 
-    public function __construct(SamplePluginModuleDependency $dep) {
+    public function __construct(SamplePluginModuleDependency $dep, Abp01_Env $env, Abp01_Auth $auth) {
+        parent::__construct($env, $auth);
+
         $this->_dep = $dep;
         SamplePluginModuleCreationState::reportModuleConstructed(__CLASS__, func_get_args());
     }

@@ -150,6 +150,9 @@ class PluginModuleActivatorTests extends WP_UnitTestCase {
             Abp01_Env::class => function() { 
                 return abp01_get_env();
             },
+            Abp01_Auth::class => function() {
+                return abp01_get_auth();
+            },
             Abp01_View::class => function() {
                 return abp01_get_view();
             },
