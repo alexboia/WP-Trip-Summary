@@ -1034,10 +1034,8 @@
 
     function getContext() {
         return {
-            nonce: $('#abp01-nonce').val(),
             imgBase: window['abp01_imgBase'] || null,
             nonceGet: $('#abp01-nonce-get').val(),
-            nonceDownload: $('#abp01-nonce-download').val(),
             postId: window['abp01_postId'] || 0,
             hasRouteTrack: window['abp01_hasTrack'] || 0,
             hasRouteInfo: window['abp01_hasInfo'] || 0,
@@ -1045,11 +1043,18 @@
             currentRouteInfoType: null,
             ajaxBaseUrl: window['abp01_ajaxUrl'] || null,
             ajaxLoadTrackAction: window['abp01_ajaxGetTrackAction'] || null,
+            
+            uploadTrackNonce: window['abp01_ajaxUploadTrackNonce'] || null,
             ajaxUploadTrackAction: window['abp01_ajaxUploadTrackAction'] || null,
+            
+            editInfoNonce: window['abp01_editInfoNonce'] || null,
             ajaxEditInfoAction: window['abp01_ajaxEditInfoAction'] || null,
+            
+            clearTrackNonce: window['abp01_clearTrackNonce'] || null,
             ajaxClearTrackAction: window['abp01_ajaxClearTrackAction'] || null,
-            ajaxClearInfoAction: window['abp01_ajaxClearInfoAction'] || null,
-            downloadTrackAction: window['abp01_downloadTrackAction'] || null
+
+            clearInfoNonce: window['abp01_clearInfoNonce'] || null,
+            ajaxClearInfoAction: window['abp01_ajaxClearInfoAction'] || null
         };
     }
     
@@ -1341,7 +1346,7 @@
         var context = getContext();
         return URI(context.ajaxBaseUrl)
             .addSearch('action', context.ajaxEditInfoAction)
-            .addSearch('abp01_nonce', context.nonce || '')
+            .addSearch('abp01_nonce', context.editInfoNonce || '')
             .addSearch('abp01_postId', context.postId || 0)
             .toString();
     }
@@ -1350,7 +1355,7 @@
         var context = getContext();
         return URI(context.ajaxBaseUrl)
             .addSearch('action', context.ajaxClearInfoAction)
-            .addSearch('abp01_nonce', context.nonce || '')
+            .addSearch('abp01_nonce', context.clearInfoNonce || '')
             .addSearch('abp01_postId', context.postId || 0)
             .toString();
     }
@@ -1359,7 +1364,7 @@
         var context = getContext();
         return URI(context.ajaxBaseUrl)
             .addSearch('action', context.ajaxUploadTrackAction)
-            .addSearch('abp01_nonce', context.nonce || '')
+            .addSearch('abp01_nonce', context.uploadTrackNonce || '')
             .addSearch('abp01_postId', context.postId || 0)
             .toString();
     }
@@ -1377,16 +1382,8 @@
         var context = getContext();
         return URI(context.ajaxBaseUrl)
             .addSearch('action', context.ajaxClearTrackAction)
-            .addSearch('abp01_nonce', context.nonce || '')
+            .addSearch('abp01_nonce', context.clearTrackNonce || '')
             .addSearch('abp01_postId', context.postId || '')
-            .toString();
-    }
-
-    function getDownloadTrackUrl() {
-        return URI(context.ajaxBaseUrl)
-            .addSearch('action', context.downloadTrackAction)
-            .addSearch('abp01_nonce_download', context.nonceDownload)
-            .addSearch('abp01_postId', context.postId)
             .toString();
     }
 

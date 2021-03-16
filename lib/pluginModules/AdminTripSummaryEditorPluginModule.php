@@ -88,11 +88,6 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 	 */
 	private $_removeRouteTrackAjaxAction;
 
-	/**
-	 * @var Abp01_NonceProvider
-	 */
-	private $_editorNonceProvider;
-	
 	public function __construct(Abp01_Route_Manager $routeManager,
 		Abp01_NonceProvider_ReadTrackData $readTrackDataNonceProvider, 
 		Abp01_NonceProvider_DownloadTrackData $downloadTrackDataNonceProvider, 
@@ -110,9 +105,6 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		$this->_viewerDataSourceCache = $viewerDataSourceCache;
 		$this->_view = $view;
 
-		$this->_editorNonceProvider = new Abp01_NonceProvider_Default(self::TRIP_SUMMARY_EDITOR_NONCE_ACTION, 
-			self::TRIP_SUMMARY_EDITOR_NONCE_URL_PARAM_NAME);
-
 		$this->_initAjaxActions();
 	}
 
@@ -122,33 +114,29 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 
 		$this->_saveRouteInfoAjaxAction = 
 			Abp01_AdminAjaxAction::create(ABP01_ACTION_EDIT, array($this, 'saveRouteInfo'))
-				//->useDefaultNonceProvider(self::TRIP_SUMMARY_EDITOR_NONCE_URL_PARAM_NAME)
+				->useDefaultNonceProvider(self::TRIP_SUMMARY_EDITOR_NONCE_URL_PARAM_NAME)
 				->useCurrentResourceProvider($currentResourceProvider)
-				->useNonceProvider($this->_editorNonceProvider)
 				->authorizeByCallback($authCallback)
 				->onlyForHttpPost();
 
 		$this->_removeRouteInfoAjaxAction = 
 			Abp01_AdminAjaxAction::create(ABP01_ACTION_CLEAR_INFO, array($this, 'removeRouteInfo'))
-				//->useDefaultNonceProvider(self::TRIP_SUMMARY_EDITOR_NONCE_URL_PARAM_NAME)
+				->useDefaultNonceProvider(self::TRIP_SUMMARY_EDITOR_NONCE_URL_PARAM_NAME)
 				->useCurrentResourceProvider($currentResourceProvider)
-				->useNonceProvider($this->_editorNonceProvider)
 				->authorizeByCallback($authCallback)
 				->onlyForHttpPost();
 
 		$this->_uploadRouteTrackAjaxAction = 
 			Abp01_AdminAjaxAction::create(ABP01_ACTION_UPLOAD_TRACK, array($this, 'uploadRouteTrack'))
-				//->useDefaultNonceProvider(self::TRIP_SUMMARY_EDITOR_NONCE_URL_PARAM_NAME)
+				->useDefaultNonceProvider(self::TRIP_SUMMARY_EDITOR_NONCE_URL_PARAM_NAME)
 				->useCurrentResourceProvider($currentResourceProvider)
-				->useNonceProvider($this->_editorNonceProvider)
 				->authorizeByCallback($authCallback)
 				->onlyForHttpPost();
 
 		$this->_removeRouteTrackAjaxAction = 
 			Abp01_AdminAjaxAction::create(ABP01_ACTION_CLEAR_TRACK, array($this, 'removeRouteTrack'))
-				//->useDefaultNonceProvider(self::TRIP_SUMMARY_EDITOR_NONCE_URL_PARAM_NAME)
+				->useDefaultNonceProvider(self::TRIP_SUMMARY_EDITOR_NONCE_URL_PARAM_NAME)
 				->useCurrentResourceProvider($currentResourceProvider)
-				->useNonceProvider($this->_editorNonceProvider)
 				->authorizeByCallback($authCallback)
 				->onlyForHttpPost();
 	}
@@ -315,7 +303,6 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		$data = new stdClass();
 		$lookup = $this->_createLookupForCurrentLang();
 
-		//get the lookup data
 		$data->difficultyLevels = $lookup->getDifficultyLevelOptions();
 		$data->difficultyLevelsAdminUrl = $this->_constructAdminLookupUrl(Abp01_Lookup::DIFFICULTY_LEVEL);
 
@@ -346,25 +333,25 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		$data->hasRouteInfo = $this->_routeManager->hasRouteInfo($post->ID);
 		$data->trackDownloadUrl = $this->_urlHelper->constructGpxTrackDownloadUrl($post->ID);
 
+		$data->editInfoNonce = $this->_saveRouteInfoAjaxAction->generateNonce();
 		$data->ajaxEditInfoAction = ABP01_ACTION_EDIT;
-		$data->ajaxUploadTrackAction = ABP01_ACTION_UPLOAD_TRACK;
-		$data->ajaxGetTrackAction = ABP01_ACTION_GET_TRACK;	
-		$data->ajaxClearTrackAction = ABP01_ACTION_CLEAR_TRACK;
-		$data->ajaxClearInfoAction = ABP01_ACTION_CLEAR_INFO;
-		$data->downloadTrackAction = ABP01_ACTION_DOWNLOAD_TRACK;
 
-		//TODO: should be one nonce per action
-		$data->nonce = $this->_editorNonceProvider->generateNonce($data->postId);
+		$data->uploadTrackNonce = $this->_uploadRouteTrackAjaxAction->generateNonce();
+		$data->ajaxUploadTrackAction = ABP01_ACTION_UPLOAD_TRACK;
+
+		$data->clearTrackNonce = $this->_removeRouteTrackAjaxAction->generateNonce();
+		$data->ajaxClearTrackAction = ABP01_ACTION_CLEAR_TRACK;
+
+		$data->clearInfoNonce = $this->_removeRouteInfoAjaxAction->generateNonce();
+		$data->ajaxClearInfoAction = ABP01_ACTION_CLEAR_INFO;
+
 		//TODO: might be better to replace it with directly generated URL from _urlHelper
 		$data->nonceGet = $this->_readTrackDataNonceProvider->generateNonce($data->postId);	
-		//TODO: this might be redundant with $data->trackDownloadUrl
-		$data->nonceDownload = $this->_downloadTrackDataNonceProvider->generateNonce($data->postId);
+		//$data->getTrackNonce = $this->_readTrackDataNonceProvider->generateNonce($data->postId);	
+		$data->ajaxGetTrackAction = ABP01_ACTION_GET_TRACK;	
 
 		$data->ajaxUrl = $this->_getAjaxBaseUrl();
 		$data->imgBaseUrl = $this->_getPluginMediaImgBaseUrl();
-		//TODO: these should be removed
-		$data->flashUploaderUrl = includes_url('js/plupload/plupload.flash.swf');
-		$data->xapUploaderUrl = includes_url('js/plupload/plupload.silverlight.xap');
 
 		$data->uploadMaxFileSize = ABP01_TRACK_UPLOAD_MAX_FILE_SIZE;
 		$data->uploadChunkSize = ABP01_TRACK_UPLOAD_CHUNK_SIZE;

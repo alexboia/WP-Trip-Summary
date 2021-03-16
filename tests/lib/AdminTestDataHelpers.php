@@ -161,8 +161,6 @@ trait AdminTestDataHelpers {
 
         $data->ajaxUrl = $faker->url;
         $data->imgBaseUrl = $faker->url;
-        $data->flashUploaderUrl = $faker->url;
-        $data->xapUploaderUrl = $faker->url;
 
         $data->uploadMaxFileSize = $faker->randomNumber();
         $data->uploadChunkSize = $faker->randomNumber();

@@ -34,16 +34,17 @@
 <script type="text/javascript">
     var abp01_imgBase = '<?php echo esc_js($data->imgBaseUrl); ?>';
     var abp01_ajaxUrl = '<?php echo esc_js($data->ajaxUrl); ?>';
+    var abp01_editInfoNonce = '<?php echo esc_js($data->editInfoNonce); ?>';
     var abp01_ajaxEditInfoAction = '<?php echo esc_js($data->ajaxEditInfoAction); ?>';
+    var abp01_ajaxUploadTrackNonce = '<?php echo esc_js($data->uploadTrackNonce); ?>';
     var abp01_ajaxUploadTrackAction = '<?php echo esc_js($data->ajaxUploadTrackAction); ?>';
     var abp01_ajaxGetTrackAction = '<?php echo esc_js($data->ajaxGetTrackAction); ?>';
+    var abp01_clearTrackNonce = '<?php echo esc_js($data->clearTrackNonce); ?>';
     var abp01_ajaxClearTrackAction = '<?php echo esc_js($data->ajaxClearTrackAction); ?>';
+    var abp01_clearInfoNonce = '<?php echo esc_js($data->clearInfoNonce); ?>';
     var abp01_ajaxClearInfoAction = '<?php echo esc_js($data->ajaxClearInfoAction); ?>';
-    var abp01_downloadTrackAction = '<?php echo esc_js($data->downloadTrackAction); ?>';
     var abp01_tourType = '<?php echo esc_js($data->tourType); ?>';
 
-    var abp01_flashUploaderUrl = '<?php echo esc_js($data->flashUploaderUrl); ?>';
-    var abp01_xapUploaderUrl = '<?php echo esc_js($data->xapUploaderUrl); ?>';
     var abp01_uploadMaxFileSize = '<?php echo esc_js($data->uploadMaxFileSize); ?>';
     var abp01_uploadChunkSize = '<?php echo esc_js($data->uploadChunkSize); ?>';
     var abp01_uploadKey = '<?php echo $data->uploadKey; ?>';
@@ -56,15 +57,9 @@
 </script>
 
 <div id="abp01-techbox-editor" style="display:none;">
-    <input type="hidden" name="abp01-nonce" 
-        id="abp01-nonce" 
-        value="<?php echo esc_attr($data->nonce); ?>" />
     <input type="hidden" name="abp01-nonce-get" 
         id="abp01-nonce-get" 
         value="<?php echo esc_attr($data->nonceGet); ?>" />
-    <input type="hidden" name="abp01-nonce-download" 
-        id="abp01-nonce-download" 
-        value="<?php echo esc_attr($data->nonceDownload); ?>" />
 
     <div id="abp01-editor-wrapper" class="abp01-editor-wrapper">
         <div class="abp01-editor-title-wrap">
