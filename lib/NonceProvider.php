@@ -36,7 +36,7 @@
 interface Abp01_NonceProvider {
     function generateNonce($resourceId = null);
 
-    function valdidateNonce($resourceId = null);
+    function validateNonce($resourceId = null);
 
     function hasNonceInCurrentContext();
 }

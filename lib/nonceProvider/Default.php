@@ -65,17 +65,17 @@ class Abp01_NonceProvider_Default implements Abp01_NonceProvider {
             : $this->_actionCode;
     }
 
-    public function valdidateNonce($resourceId  = null) {
+    public function validateNonce($resourceId  = null) {
         $resourceId = !empty($resourceId) 
             ? $resourceId 
             : '';
 
         return check_ajax_referer($this->_getResourceScopedActionCode($resourceId), 
             $this->_urlParamName, 
-            false);
+            false) !== false;
     }
 
     public function hasNonceInCurrentContext() {
-        return !empty($_GET[$this->_urlParamName]);
+        return !empty($_REQUEST[$this->_urlParamName]);
     }
 }

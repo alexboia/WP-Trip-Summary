@@ -29,32 +29,31 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
-}
+class NoneNonceProviderTests extends WP_UnitTestCase {
+	use GenericTestHelpers;
 
-class Abp01_NonceProvider_DownloadTrackData implements Abp01_NonceProvider {
-    /**
-     * @var Abp01_NonceProvider_Default
-     */
-    private $_nonceProvider;
+	public function test_canGenerateNonce_noResourceId() {
+		$provider = new Abp01_NonceProvider_None();
+		$this->assertEmpty($provider->generateNonce());
+	}
 
-    public function __construct() {
-        $this->_nonceProvider = new Abp01_NonceProvider_Default(ABP01_ACTION_DOWNLOAD_TRACK, 'abp01_nonce_download');
-    }
+	public function test_canGenerateNonce_withResourceId() {
+		$provider = new Abp01_NonceProvider_None();
+		$this->assertEmpty($provider->generateNonce($this->_generateNonEmptyAscii()));
+	}
 
-    public function generateNonce($resourceId = null) {
-        return $this->_nonceProvider
-            ->generateNonce($resourceId);
-    }
+	public function test_canCheckGeneratedNonce_noResourceId() {
+		$provider = new Abp01_NonceProvider_None();
+		$this->assertTrue($provider->validateNonce());
+	}
 
-    public function validateNonce($resourceId = null) {
-        return $this->_nonceProvider
-            ->validateNonce($resourceId);
-    }
+	public function test_canCheckGeneratedNonce_withResourceId() {
+		$provider = new Abp01_NonceProvider_None();
+		$this->assertTrue($provider->validateNonce($this->_generateNonEmptyAscii()));
+	}
 
-    public function hasNonceInCurrentContext() {
-        return $this->_nonceProvider
-            ->hasNonceInCurrentContext();
-    }
+	public function test_canCheckIfHasNonceInCurrentContext() {
+		$provider = new Abp01_NonceProvider_None();
+		$this->assertTrue($provider->hasNonceInCurrentContext());
+	}
 }

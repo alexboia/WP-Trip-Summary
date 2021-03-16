@@ -91,6 +91,15 @@ trait GenericTestHelpers {
         @rmdir($target);
     }
 
+    protected function _generateNonEmptyAscii() {
+		$faker = $this->_getFaker();
+		$ascii = $faker->randomAscii;
+		while (empty($ascii)) {
+			$ascii = $faker->randomAscii;
+		}
+		return $ascii;
+	}
+
     /**
      * @return \Faker\Generator
      */

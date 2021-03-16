@@ -173,7 +173,7 @@ class Abp01_AdminAjaxAction {
 		$currentResourceId = $this
 			->getCurrentResourceId();
 		return $this->_nonceProvider
-			->valdidateNonce($currentResourceId);
+			->validateNonce($currentResourceId);
 	}
 
 	public function register() {

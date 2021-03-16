@@ -534,7 +534,7 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 
 	private function _verifyInuseLookupRemovalNonce($lookupId) {
 		return $this->_inUseLookupItemRemovalNonceProvider
-			->valdidateNonce($lookupId);
+			->validateNonce($lookupId);
 	}
 
 	function _generateInuseLookupRemovalNonce($lookupId) {

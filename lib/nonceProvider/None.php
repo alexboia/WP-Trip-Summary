@@ -38,7 +38,7 @@ class Abp01_NonceProvider_None implements Abp01_NonceProvider {
         return '';
     }
 
-    public function valdidateNonce($resourceId = null) {
+    public function validateNonce($resourceId = null) {
         return true;
     }
 

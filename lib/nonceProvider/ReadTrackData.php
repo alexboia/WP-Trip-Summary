@@ -48,9 +48,9 @@ class Abp01_NonceProvider_ReadTrackData implements Abp01_NonceProvider {
             ->generateNonce($resourceId);
     }
 
-    public function valdidateNonce($resourceId = null) {
+    public function validateNonce($resourceId = null) {
         return $this->_nonceProvider
-            ->valdidateNonce($resourceId);
+            ->validateNonce($resourceId);
     }
 
     public function hasNonceInCurrentContext() {
