@@ -8,6 +8,9 @@
  * License: New BSD License
  * Plugin URI: https://github.com/alexboia/WP-Trip-Summary
  * Text Domain: abp01-trip-summary
+ * Requires PHP: 5.6.2
+ * Requires at least: 5.3.0
+ * WPTS Version Name: Johannes Honterus
  */
 
 /**
