@@ -30,7 +30,7 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
 class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_PluginModule {
@@ -46,7 +46,7 @@ class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_Plug
 
 	public function load() {
 		$this->_registerMenuHook();
-        $this->_registerWebPageAssets();
+		$this->_registerWebPageAssets();
 	}
 
 	public function registerAdditionalPluginHeaders($extraHeaders) {
@@ -56,8 +56,8 @@ class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_Plug
 	}
 
 	private function _registerMenuHook() {
-        add_action('admin_menu', array($this, 'onAddAdminMenuEntries'));
-    }
+		add_action('admin_menu', array($this, 'onAddAdminMenuEntries'));
+	}
 
 	public function onAddAdminMenuEntries() {
 		add_submenu_page(
