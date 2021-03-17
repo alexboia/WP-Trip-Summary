@@ -1035,14 +1035,15 @@
     function getContext() {
         return {
             imgBase: window['abp01_imgBase'] || null,
-            nonceGet: $('#abp01-nonce-get').val(),
             postId: window['abp01_postId'] || 0,
             hasRouteTrack: window['abp01_hasTrack'] || 0,
             hasRouteInfo: window['abp01_hasInfo'] || 0,
             initialRouteInfoType: window['abp01_tourType'] || null,
             currentRouteInfoType: null,
             ajaxBaseUrl: window['abp01_ajaxUrl'] || null,
-            ajaxLoadTrackAction: window['abp01_ajaxGetTrackAction'] || null,
+
+            getTrackNonce: window['abp01_getTrackNonce'] || null,
+            ajaxGetTrackAction: window['abp01_ajaxGetTrackAction'] || null,
             
             uploadTrackNonce: window['abp01_uploadTrackNonce'] || null,
             ajaxUploadTrackAction: window['abp01_ajaxUploadTrackAction'] || null,
@@ -1372,8 +1373,8 @@
     function getAjaxLoadTrackUrl() {
         var context = getContext();
         return URI(context.ajaxBaseUrl)
-            .addSearch('action', context.ajaxLoadTrackAction)
-            .addSearch('abp01_nonce_get', context.nonceGet || '')
+            .addSearch('action', context.ajaxGetTrackAction)
+            .addSearch('abp01_nonce_get', context.getTrackNonce || '')
             .addSearch('abp01_postId', context.postId || '')
             .toString();
     }

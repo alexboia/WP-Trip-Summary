@@ -345,9 +345,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		$data->clearInfoNonce = $this->_removeRouteInfoAjaxAction->generateNonce();
 		$data->ajaxClearInfoAction = ABP01_ACTION_CLEAR_INFO;
 
-		//TODO: might be better to replace it with directly generated URL from _urlHelper
-		$data->nonceGet = $this->_readTrackDataNonceProvider->generateNonce($data->postId);	
-		//$data->getTrackNonce = $this->_readTrackDataNonceProvider->generateNonce($data->postId);	
+		$data->getTrackNonce = $this->_readTrackDataNonceProvider->generateNonce($data->postId);
 		$data->ajaxGetTrackAction = ABP01_ACTION_GET_TRACK;	
 
 		$data->ajaxUrl = $this->_getAjaxBaseUrl();

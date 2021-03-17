@@ -38,6 +38,7 @@
     var abp01_ajaxEditInfoAction = '<?php echo esc_js($data->ajaxEditInfoAction); ?>';
     var abp01_uploadTrackNonce = '<?php echo esc_js($data->uploadTrackNonce); ?>';
     var abp01_ajaxUploadTrackAction = '<?php echo esc_js($data->ajaxUploadTrackAction); ?>';
+    var abp01_getTrackNonce = '<?php echo esc_js($data->getTrackNonce) ?>';
     var abp01_ajaxGetTrackAction = '<?php echo esc_js($data->ajaxGetTrackAction); ?>';
     var abp01_clearTrackNonce = '<?php echo esc_js($data->clearTrackNonce); ?>';
     var abp01_ajaxClearTrackAction = '<?php echo esc_js($data->ajaxClearTrackAction); ?>';
@@ -57,10 +58,6 @@
 </script>
 
 <div id="abp01-techbox-editor" style="display:none;">
-    <input type="hidden" name="abp01-nonce-get" 
-        id="abp01-nonce-get" 
-        value="<?php echo esc_attr($data->nonceGet); ?>" />
-
     <div id="abp01-editor-wrapper" class="abp01-editor-wrapper">
         <div class="abp01-editor-title-wrap">
             <div id="ctrl_abp01_editorTitle" class="abp01-editor-title">
