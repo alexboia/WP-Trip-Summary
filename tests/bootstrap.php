@@ -30,6 +30,7 @@
  */
 
 require_once 'faker/autoload.php';
+require_once 'mockery/helpers.php';
 require_once 'mockery/autoload.php';
 
 require_once 'lib/testDoubles/abp01SendHeader.php';
