@@ -46,6 +46,9 @@ class Abp01_Auth {
 
     private static $_instance = null;
 
+    /**
+     * @return Abp01_Auth
+     */
     public static function getInstance() {
         if (self::$_instance == null) {
             self::$_instance = new self();

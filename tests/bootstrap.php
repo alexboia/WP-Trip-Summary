@@ -38,6 +38,7 @@ require_once 'lib/testDoubles/abp01SetHttpResonseCode.php';
 require_once 'lib/DbTestHelpers.php';
 require_once 'lib/GenericTestHelpers.php';
 require_once 'lib/TestDataFileHelpers.php';
+require_once 'lib/TestAuthDataHelpers.php';
 require_once 'lib/LookupDataTestHelpers.php';
 require_once 'lib/RouteInfoTestDataSets.php';
 require_once 'lib/RouteTrackTestDataHelpers.php';

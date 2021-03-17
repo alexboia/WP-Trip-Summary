@@ -1044,7 +1044,7 @@
             ajaxBaseUrl: window['abp01_ajaxUrl'] || null,
             ajaxLoadTrackAction: window['abp01_ajaxGetTrackAction'] || null,
             
-            uploadTrackNonce: window['abp01_ajaxUploadTrackNonce'] || null,
+            uploadTrackNonce: window['abp01_uploadTrackNonce'] || null,
             ajaxUploadTrackAction: window['abp01_ajaxUploadTrackAction'] || null,
             
             editInfoNonce: window['abp01_editInfoNonce'] || null,

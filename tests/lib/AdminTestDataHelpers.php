@@ -148,16 +148,19 @@ trait AdminTestDataHelpers {
         $data->hasRouteInfo = false;
         $data->trackDownloadUrl = $faker->url;
 
+        $data->editInfoNonce = $faker->randomAscii;
         $data->ajaxEditInfoAction = $faker->randomAscii;
+        $data->uploadTrackNonce = $faker->randomAscii;
         $data->ajaxUploadTrackAction = $faker->randomAscii;
-        $data->ajaxGetTrackAction = $faker->randomAscii;	
-        $data->ajaxClearTrackAction = $faker->randomAscii;
-        $data->ajaxClearInfoAction = $faker->randomAscii;
-        $data->downloadTrackAction = $faker->randomAscii;
 
-        $data->nonce = $faker->randomAscii;
         $data->nonceGet = $faker->randomAscii;
-        $data->nonceDownload = $faker->randomAscii;
+        $data->ajaxGetTrackAction = $faker->randomAscii;	
+        
+        $data->clearTrackNonce = $faker->randomAscii;
+        $data->ajaxClearTrackAction = $faker->randomAscii;
+
+        $data->clearInfoNonce = $faker->randomAscii;
+        $data->ajaxClearInfoAction = $faker->randomAscii;
 
         $data->ajaxUrl = $faker->url;
         $data->imgBaseUrl = $faker->url;

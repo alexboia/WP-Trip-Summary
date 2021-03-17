@@ -274,10 +274,14 @@ class ViewTests extends WP_UnitTestCase {
         $this->assertContains('<script type="text/javascript">', $editor);
         $this->assertContains('var abp01_imgBase', $editor);
         $this->assertContains('var abp01_ajaxUrl', $editor);
+        $this->assertContains('var abp01_editInfoNonce', $editor);
         $this->assertContains('var abp01_ajaxEditInfoAction', $editor);
+        $this->assertContains('var abp01_uploadTrackNonce', $editor);
         $this->assertContains('var abp01_ajaxUploadTrackAction', $editor);
         $this->assertContains('var abp01_ajaxGetTrackAction', $editor);
+        $this->assertContains('var abp01_clearTrackNonce', $editor);
         $this->assertContains('var abp01_ajaxClearTrackAction', $editor);
+        $this->assertContains('var abp01_clearInfoNonce', $editor);
         $this->assertContains('var abp01_ajaxClearInfoAction', $editor);
         $this->assertContains('var abp01_tourType', $editor);
         $this->assertContains('var abp01_uploadMaxFileSize', $editor);

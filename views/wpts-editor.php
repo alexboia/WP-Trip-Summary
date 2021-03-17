@@ -36,7 +36,7 @@
     var abp01_ajaxUrl = '<?php echo esc_js($data->ajaxUrl); ?>';
     var abp01_editInfoNonce = '<?php echo esc_js($data->editInfoNonce); ?>';
     var abp01_ajaxEditInfoAction = '<?php echo esc_js($data->ajaxEditInfoAction); ?>';
-    var abp01_ajaxUploadTrackNonce = '<?php echo esc_js($data->uploadTrackNonce); ?>';
+    var abp01_uploadTrackNonce = '<?php echo esc_js($data->uploadTrackNonce); ?>';
     var abp01_ajaxUploadTrackAction = '<?php echo esc_js($data->ajaxUploadTrackAction); ?>';
     var abp01_ajaxGetTrackAction = '<?php echo esc_js($data->ajaxGetTrackAction); ?>';
     var abp01_clearTrackNonce = '<?php echo esc_js($data->clearTrackNonce); ?>';
