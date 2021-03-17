@@ -41,8 +41,8 @@ class SimpleAuthorizationProviderTests extends WP_UnitTestCase {
 	}
 	
 	private function _initRolesForCurrentSite() {
-        wp_roles()->for_site();
-    }
+		wp_roles()->for_site();
+	}
 
 	private function _creatTestUsersForTestRoles() {
 		foreach ($this->_getTestRolesIds() as $roleId)  {
@@ -55,10 +55,10 @@ class SimpleAuthorizationProviderTests extends WP_UnitTestCase {
 	}
 
 	private function _createTestUserWithRole($roleId) {
-        return self::factory()->user->create(array(
-            'role' => $roleId
-        ));
-    }
+		return self::factory()->user->create(array(
+			'role' => $roleId
+		));
+	}
 
 	public function tearDown() {
 		parent::tearDown();
