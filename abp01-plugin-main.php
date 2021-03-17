@@ -179,6 +179,7 @@ function abp01_setup_plugin_modules() {
 		Abp01_PluginModules_SettingsPluginModule::class,
 		Abp01_PluginModules_LookupDataManagementPluginModule::class,
 		Abp01_PluginModules_HelpPluginModule::class,
+		Abp01_PluginModules_AboutPagePluginModule::class,
 		Abp01_PluginModules_PostListingCustomizationPluginModule::class,
 		Abp01_PluginModules_DownloadGpxTrackDataPluginModule::class,
 		Abp01_PluginModules_GetTrackDataPluginModule::class,

@@ -28,35 +28,43 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.abp01-status-text {
-    border-radius: 4px;
-    padding: 10px;
-    background-color: #e5e5e5;
-    color: #2e4453;
+#abp01-about-logo {
+	float: left;
+	width: 138px;
+	height: 138px;
 }
 
-.abp01-status-ok {
-    background-color: #c6e1c6;
-    color: #5b841b;
+#abp01-about-logo-inner {
+	background-color: #fff;
+	border-radius: 5px;
+	width: 138px;
+	height: 138px;
+	box-shadow: 0 1px 1px rgba(0,0,0,.04);
 }
 
-.abp01-status-err {
-    background-color: #eba3a3;
-    color: #761919;
+#abp01-about-logo img {
+	width: 128px;
+	height: 128px;
+	margin: 5px;
 }
 
-.abp01-status-warn {
-    background-color: #f3e9cd;
-    color: #ffba00;
+#abp01-about-info {
+	float: left;
+	width: 600px;
+	padding-left: 15px;
 }
 
-.abp01-stop-scrolling {
-    height: 100%;
-    overflow: hidden;
+#abp01-about-info-listing {
+	border: 0px none;
+	border-radius: 5px;
+	border-spacing: 2px;
+	box-shadow: 0 1px 1px rgba(0,0,0,.04);
 }
 
-.abp01-clear {
-    clear: both;
-    width: 0;
-    height: 0
+#abp01-about-info-listing th {
+	font-weight: 600;
+}
+
+#abp01-about-changelog {
+	padding-top: 10px;
 }

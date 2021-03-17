@@ -142,6 +142,8 @@ class Abp01_Includes {
 	
 	const STYLE_ADMIN_HELP = 'abp01-help-css';
 
+	const STYLE_ADMIN_ABOUT = 'abp01-about-css';
+
 	const STYLE_ADMIN_POSTS_LISTING = 'abp01-admin-posts-listing-css';
 
 	const STYLE_SYSTEM_THICKBOX = 'thickbox';
@@ -576,6 +578,7 @@ class Abp01_Includes {
 		self::STYLE_ADMIN_LOOKUP_MANAGEMENT => array(
 			'alias' => self::STYLE_ADMIN_MAIN,
 			'deps' => array(
+				self::STYLE_ADMIN_COMMON,
 				self::STYLE_SYSTEM_THICKBOX,
 				self::STYLE_NPROGRESS,
 				self::STYLE_JQUERY_TOASTR
@@ -584,6 +587,13 @@ class Abp01_Includes {
 		self::STYLE_ADMIN_HELP => array(
 			'path' => 'media/css/abp01-help.css', 
 			'version' => ABP01_VERSION
+		),
+		self::STYLE_ADMIN_ABOUT => array(
+			'path' => 'media/css/abp01-about.css', 
+			'version' => ABP01_VERSION,
+			'deps' => array(
+				self::STYLE_ADMIN_COMMON
+			)
 		),
 		self::STYLE_ADMIN_POSTS_LISTING => array(
 			'path' => 'media/css/abp01-admin-posts-listing.css', 
@@ -768,6 +778,10 @@ class Abp01_Includes {
 
 	public static function includeStyleAdminHelp() {
 		self::_includeStyle(self::STYLE_ADMIN_HELP);
+	}
+
+	public static function includeStyleAdminAbout() {
+		self::_includeStyle(self::STYLE_ADMIN_ABOUT);
 	}
 
 	public static function includeStyleAdminPostsListing() {

@@ -86,12 +86,6 @@ body, html {
     position: relative;
 }
 
-.abp01-clear {
-    clear: both;
-    width: 0;
-    height: 0
-}
-
 a.abp01-close-editor {
     text-decoration: none;
     color: rgb(34,34,34);

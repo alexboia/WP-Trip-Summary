@@ -292,6 +292,13 @@ define('ABP01_LOOKUP_SUBMENU_SLUG', 'abp01-trip-summary-lookup');
 define('ABP01_HELP_SUBMENU_SLUG', 'abp01-trip-summary-help');
 
 /**
+ * Slug used for about page sub-menu mentry.
+ * 
+ * @var string
+ */
+define('ABP01_ABOUT_SUBMENU_SLUG', 'abp01-trip-summary-about');
+
+/**
  * Value used to signify a successful/OK/all-good situation.
  * 
  * @var int

@@ -106,6 +106,10 @@ class Abp01_View {
         return $this->_renderCoreView('wpts-help.php', $data);
     }
 
+
+    public function renderAdminAboutPage(stdClass $data) {
+        return $this->_renderCoreView('wpts-about.php', $data);
+    }
     public function renderAdminLookupPage(stdClass $data) {
         return $this->_renderCoreView('wpts-lookup-data-management.php', $data);
     }

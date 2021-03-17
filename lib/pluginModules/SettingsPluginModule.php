@@ -89,41 +89,6 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
             ->register();
     }
 
-    private function _registerWebPageAssets() {
-        add_action('admin_enqueue_scripts', 
-            array($this, 'onAdminEnqueueStyles'), 
-            self::ADMIN_ENQUEUE_STYLES_HOOK_PRIORITY);
-
-        add_action('admin_enqueue_scripts', 
-            array($this, 'onAdminEnqueueScripts'), 
-            self::ADMIN_ENQUEUE_SCRIPTS_HOOK_PRIORITY);
-    }
-
-    public function onAdminEnqueueStyles() {
-        if ($this->_shouldEnqueueWebPageAssets()) {
-            Abp01_Includes::includeStyleAdminSettings();
-        }
-    }
-
-    private function _shouldEnqueueWebPageAssets() {
-        return $this->_isViewingSettingsPage() 
-            && $this->_currentUserCanManagePluginSettings();
-    }
-
-    private function _isViewingSettingsPage() {
-        return $this->_env->isAdminPage(ABP01_MAIN_MENU_SLUG);
-    }
-
-    public function onAdminEnqueueScripts() {
-        if ($this->_shouldEnqueueWebPageAssets()) {
-            Abp01_Includes::includeScriptAdminSettings($this->_getAdminSettingsScriptTranslations());
-        }
-    }
-
-    private function _getAdminSettingsScriptTranslations() {
-        return Abp01_TranslatedScriptMessages::getAdminSettingsScriptTranslations();
-    }
-
     private function _registerMenuHook() {
         add_action('admin_menu', array($this, 'onAddAdminMenuEntries'));
     }
@@ -170,6 +135,41 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
             ->getOptionsLimits();
 
         echo $this->_view->renderAdminSettingsPage($data);
+    }
+
+    private function _registerWebPageAssets() {
+        add_action('admin_enqueue_scripts', 
+            array($this, 'onAdminEnqueueStyles'), 
+            self::ADMIN_ENQUEUE_STYLES_HOOK_PRIORITY);
+
+        add_action('admin_enqueue_scripts', 
+            array($this, 'onAdminEnqueueScripts'), 
+            self::ADMIN_ENQUEUE_SCRIPTS_HOOK_PRIORITY);
+    }
+
+    public function onAdminEnqueueStyles() {
+        if ($this->_shouldEnqueueWebPageAssets()) {
+            Abp01_Includes::includeStyleAdminSettings();
+        }
+    }
+
+    private function _shouldEnqueueWebPageAssets() {
+        return $this->_isViewingSettingsPage() 
+            && $this->_currentUserCanManagePluginSettings();
+    }
+
+    private function _isViewingSettingsPage() {
+        return $this->_env->isAdminPage(ABP01_MAIN_MENU_SLUG);
+    }
+
+    public function onAdminEnqueueScripts() {
+        if ($this->_shouldEnqueueWebPageAssets()) {
+            Abp01_Includes::includeScriptAdminSettings($this->_getAdminSettingsScriptTranslations());
+        }
+    }
+
+    private function _getAdminSettingsScriptTranslations() {
+        return Abp01_TranslatedScriptMessages::getAdminSettingsScriptTranslations();
     }
 
     public function saveSettings() {
