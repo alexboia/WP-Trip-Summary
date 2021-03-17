@@ -445,7 +445,9 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		if ($response->ready) {
 			$route = file_get_contents($destination);
 			if (!empty($route)) {
-				$parser = new Abp01_Route_Track_GpxDocumentParser();
+				$sourceTrackFileType = $uploader->getDetectedType();
+				$parser = $this->_getSourceTrackFileDocumentParser($sourceTrackFileType);
+
 				$route = $parser->parse($route);
 				if ($route && !$parser->hasErrors()) {
 					$destinationFileName = basename($destination);
@@ -457,15 +459,15 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 
 					$currentUserId = get_current_user_id();
 					if (!$this->_routeManager->saveRouteTrack($track, $currentUserId)) {
-						$response->status = Abp01_Uploader::UPLOAD_INTERNAL_ERROR;
+						$response->status = Abp01_Transfer_Uploader::UPLOAD_INTERNAL_ERROR;
 					} else {
 						$this->_viewerDataSourceCache->clearCachedPostTripSummaryViewerData($postId);
 					}
 				} else {
-					$response->status = Abp01_Uploader::UPLOAD_DESTINATION_FILE_CORRUPT;
+					$response->status = Abp01_Transfer_Uploader::UPLOAD_DESTINATION_FILE_CORRUPT;
 				}
 			} else {
-				$response->status = Abp01_Uploader::UPLOAD_DESTINATION_FILE_NOT_FOUND;
+				$response->status = Abp01_Transfer_Uploader::UPLOAD_DESTINATION_FILE_NOT_FOUND;
 			}
 		}
 
@@ -474,7 +476,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 
 	private function _createUploader($destination) {
 		$options = $this->_constructUploaderOptions();
-		$uploader = new Abp01_Uploader(ABP01_TRACK_UPLOAD_KEY, 
+		$uploader = new Abp01_Transfer_Uploader(ABP01_TRACK_UPLOAD_KEY, 
 			$destination, 
 			$options);
 
@@ -531,5 +533,12 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		}
 
 		return $response;
+	}
+
+	/**
+	 * @return Abp01_Route_Track_DocumentParser
+	 */
+	private function _getSourceTrackFileDocumentParser($detectedType) {
+		return new Abp01_Route_Track_GpxDocumentParser();
 	}
 }
