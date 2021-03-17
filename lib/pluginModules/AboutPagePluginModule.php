@@ -74,6 +74,7 @@ class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_Plug
 		$data->pluginLogoPath = $this->_getPluginLogoPath();
 		$data->pluginData = $this->_getPluginData();
 		$data->envData = $this->_getEnvData();
+		$data->changelog = $this->_readChangeLog();
 		echo $this->_view->renderAdminAboutPage($data);
 	}
 
@@ -96,6 +97,16 @@ class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_Plug
 	private function _registerAdditionalPluginHeadersProvider() {
 		add_filter('extra_plugin_headers', 
 			array($this, 'registerAdditionalPluginHeaders'));
+	}
+
+	private function _readChangeLog() {
+		$filePath = $this->_determineReadmeTxtFilePath();
+		$extractor = new Abp01_ReadmeChangelogExtractor($filePath);
+		return $extractor->extractChangeLog();
+	}
+
+	private function _determineReadmeTxtFilePath() {
+		return ABP01_PLUGIN_ROOT . '/readme.txt';
 	}
 
 	private function _registerWebPageAssets() {

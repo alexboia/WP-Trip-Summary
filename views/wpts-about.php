@@ -42,42 +42,65 @@
 		</div>
 		<div id="abp01-about-info">
 			<table id="abp01-about-info-listing" class="wp-list-table widefat fixed striped">
-				<tr>
-					<th scope="row">Current Version</th>
-					<td><?php echo esc_html($data->pluginData['Version']); ?> / <a target="_blank" href="https://www.wikipedia.org/search-redirect.php?family=wikipedia&language=en&search=<?php echo esc_attr($data->pluginData['WPTS Version Name']); ?>&language=en"><?php echo esc_html($data->pluginData['WPTS Version Name']); ?></a></td>
-				</tr>
-				<tr>
-					<th scope="row">Author</th>
-					<td>
-						<a href="<?php echo esc_attr($data->pluginData['AuthorURI']); ?>" target="_blank"><?php echo esc_html($data->pluginData['AuthorName']); ?></a>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">Minimum WordPress Version</th>
-					<td><?php echo esc_html($data->pluginData['RequiresWP']); ?></td>
-				</tr>
-				<tr>
-					<th scope="row">Your WordPress Version</th>
-					<td><?php echo esc_html($data->envData['CurrentWP']) ?></td>
-				</tr>
-				<tr>
-					<th scope="row">Minimum PHP Version</th>
-					<td><?php echo esc_html($data->pluginData['RequiresPHP']); ?></td>
-				</tr>
-				<tr>
-					<th scope="row">Your PHP Version</th>
-					<td><?php echo esc_html($data->envData['CurrentPHP']) ?></td>
-				</tr>
-				<tr>
-					<th scope="row">Project source</th>
-					<td><a href="<?php echo esc_attr($data->pluginData['PluginURI']); ?>" target="_blank">Github</a></td>
-				</tr>
+				<tbody>
+					<tr>
+						<th scope="row">Current Version</th>
+						<td><?php echo esc_html($data->pluginData['Version']); ?> / <a target="_blank" href="https://www.wikipedia.org/search-redirect.php?family=wikipedia&language=en&search=<?php echo esc_attr($data->pluginData['WPTS Version Name']); ?>&language=en"><?php echo esc_html($data->pluginData['WPTS Version Name']); ?></a></td>
+					</tr>
+					<tr>
+						<th scope="row">Author</th>
+						<td>
+							<a href="<?php echo esc_attr($data->pluginData['AuthorURI']); ?>" target="_blank"><?php echo esc_html($data->pluginData['AuthorName']); ?></a>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Minimum WordPress Version</th>
+						<td><?php echo esc_html($data->pluginData['RequiresWP']); ?></td>
+					</tr>
+					<tr>
+						<th scope="row">Your WordPress Version</th>
+						<td><?php echo esc_html($data->envData['CurrentWP']) ?></td>
+					</tr>
+					<tr>
+						<th scope="row">Minimum PHP Version</th>
+						<td><?php echo esc_html($data->pluginData['RequiresPHP']); ?></td>
+					</tr>
+					<tr>
+						<th scope="row">Your PHP Version</th>
+						<td><?php echo esc_html($data->envData['CurrentPHP']) ?></td>
+					</tr>
+					<tr>
+						<th scope="row">Project source</th>
+						<td><a href="<?php echo esc_attr($data->pluginData['PluginURI']); ?>" target="_blank">Github</a></td>
+					</tr>
+				</tbody>
 			</table>
+			<div id="abp01-about-actions">
+				<a href="https://ko-fi.com/Q5Q01KGLM" target="_blank">
+					<img src="https://www.ko-fi.com/img/githubbutton_sm.svg" />
+				</a>
+			</div>
 		</div>
 		<div class="abp01-clear"></div>
 	</div>
 
 	<div id="abp01-about-changelog">
 		<h3><?php echo esc_html__('Changelog', 'abp01-trip-summary'); ?></h3>
+		<?php foreach ($data->changelog as $version => $items): ?>
+			<div class="abp01-about-changelog-version">
+				<table class="wp-list-table widefat fixed striped">
+					<thead>
+						<th><?php echo esc_html($version); ?></th>
+					</thead>
+					<tbody>
+						<?php foreach ($items as $item): ?>
+							<tr>
+								<td><?php echo esc_html($item); ?></td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			</div>
+		<?php endforeach; ?>
 	</div>
 </div>

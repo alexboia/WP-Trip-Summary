@@ -65,6 +65,26 @@
 	font-weight: 600;
 }
 
+#abp01-about-actions {
+	margin-top: 10px;
+}
+
 #abp01-about-changelog {
 	padding-top: 10px;
+	width: 800px;
+}
+
+.abp01-about-changelog-version {
+	margin-bottom: 10px;
+}
+
+.abp01-about-changelog-version table {
+	border: 0px none;
+	border-radius: 5px;
+	border-spacing: 2px;
+	box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.abp01-about-changelog-version thead th {
+	font-weight: 600;
 }
