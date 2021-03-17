@@ -1,7 +1,4 @@
 <?php
-
-use Mockery\LegacyMockInterface;
-
 /**
  * Copyright (c) 2014-2021 Alexandru Boia
  *
