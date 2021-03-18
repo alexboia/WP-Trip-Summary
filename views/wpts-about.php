@@ -44,39 +44,43 @@
 			<table id="abp01-about-info-listing" class="wp-list-table widefat fixed striped">
 				<tbody>
 					<tr>
-						<th scope="row">Current Version</th>
+						<th scope="row"><?php echo esc_html__('Current Version', 'abp01-trip-summary'); ?></th>
 						<td><?php echo esc_html($data->pluginData['Version']); ?> / <a target="_blank" href="https://www.wikipedia.org/search-redirect.php?family=wikipedia&language=en&search=<?php echo esc_attr($data->pluginData['WPTS Version Name']); ?>&language=en"><?php echo esc_html($data->pluginData['WPTS Version Name']); ?></a></td>
 					</tr>
 					<tr>
-						<th scope="row">Author</th>
+						<th scope="row"><?php echo esc_html__('License', 'abp01-trip-summary') ?></th>
+						<td><a href="<?php echo esc_attr($data->pluginData['License URI']) ?>" target="_blank"><?php echo esc_html($data->pluginData['License']); ?></a></td>
+					</tr>
+					<tr>
+						<th scope="row"><?php echo esc_html__('Author', 'abp01-trip-summary'); ?></th>
 						<td>
 							<a href="<?php echo esc_attr($data->pluginData['AuthorURI']); ?>" target="_blank"><?php echo esc_html($data->pluginData['AuthorName']); ?></a>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">Minimum WordPress Version</th>
+						<th scope="row"><?php echo esc_html__('Minimum WordPress Version', 'abp01-trip-summary'); ?></th>
 						<td><?php echo esc_html($data->pluginData['RequiresWP']); ?></td>
 					</tr>
 					<tr>
-						<th scope="row">Your WordPress Version</th>
+						<th scope="row"><?php echo esc_html__('Your WordPress Version', 'abp01-trip-summary'); ?></th>
 						<td><?php echo esc_html($data->envData['CurrentWP']) ?></td>
 					</tr>
 					<tr>
-						<th scope="row">Minimum PHP Version</th>
+						<th scope="row"><?php echo esc_html__('Minimum PHP Version', 'abp01-trip-summary'); ?></th>
 						<td><?php echo esc_html($data->pluginData['RequiresPHP']); ?></td>
 					</tr>
 					<tr>
-						<th scope="row">Your PHP Version</th>
+						<th scope="row"><?php echo esc_html__('Your PHP Version', 'abp01-trip-summary') ?></th>
 						<td><?php echo esc_html($data->envData['CurrentPHP']) ?></td>
 					</tr>
 					<tr>
-						<th scope="row">Project source</th>
-						<td><a href="<?php echo esc_attr($data->pluginData['PluginURI']); ?>" target="_blank">Github</a></td>
+						<th scope="row"><?php echo esc_html__('Project source', 'abp01-trip-summary'); ?></th>
+						<td><a href="<?php echo esc_attr($data->pluginData['PluginURI']); ?>" target="_blank"><?php echo esc_html__('Github', 'abp01-trip-summary'); ?></a></td>
 					</tr>
 				</tbody>
 			</table>
 			<div id="abp01-about-actions">
-				<a href="https://ko-fi.com/Q5Q01KGLM" target="_blank">
+				<a id="abp01-about-action-supportme" href="https://ko-fi.com/Q5Q01KGLM" target="_blank">
 					<img src="https://www.ko-fi.com/img/githubbutton_sm.svg" />
 				</a>
 			</div>

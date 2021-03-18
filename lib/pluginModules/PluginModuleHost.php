@@ -64,6 +64,11 @@ class Abp01_PluginModules_PluginModuleHost {
     private $_viewerDataSource;
 
     /**
+     * @var Abp01_ChangeLogDataSource
+     */
+    private $_changeLogDataSource;
+
+    /**
      * @var Abp01_Viewer
      */
     private $_viewer;
@@ -119,6 +124,9 @@ class Abp01_PluginModules_PluginModuleHost {
             },
             Abp01_Viewer_DataSource::class => function() {
                 return $this->getViewerDataSource();
+            },
+            Abp01_ChangeLogDataSource::class => function() {
+                return $this->getChangeLogDataSource();
             },
             Abp01_UrlHelper::class => function() {
                 return $this->getUrlHelper();
@@ -202,6 +210,20 @@ class Abp01_PluginModules_PluginModuleHost {
         }
         return $this->_viewerDataSource;
     }
+
+    public function getChangeLogDataSource() {
+        if ($this->_changeLogDataSource === null) {
+            $this->_changeLogDataSource = new Abp01_ChangeLogDataSource_Cached(
+                new Abp01_ChangeLogDataSource_ReadMe($this->_determineReadmeTxtFilePath()), 
+                $this->getEnv()
+            );
+        }
+        return $this->_changeLogDataSource;
+    }
+
+    private function _determineReadmeTxtFilePath() {
+		return ABP01_PLUGIN_ROOT . '/readme.txt';
+	}
 
     public function getViewerDataSourceCache() {
         if ($this->_viewerDataSourceCache === null) {

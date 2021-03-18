@@ -39,8 +39,19 @@ class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_Plug
 	 */
 	private $_view;
 
-	public function __construct(Abp01_View $view, Abp01_Env $env, Abp01_Auth $auth) {
+	/**
+	 * @var Abp01_ChangeLogDataSource
+	 */
+	private $_changeLogDataSource;
+
+	public function __construct(Abp01_ChangeLogDataSource $changeLogDataSource, 
+		Abp01_View $view, 
+		Abp01_Env $env, 
+		Abp01_Auth $auth) {
+
 		parent::__construct($env, $auth);
+
+		$this->_changeLogDataSource = $changeLogDataSource;
 		$this->_view = $view;
 	}
 
@@ -51,7 +62,9 @@ class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_Plug
 
 	public function registerAdditionalPluginHeaders($extraHeaders) {
 		return array_merge($extraHeaders, array(
-			'WPTSVersionName' => 'WPTS Version Name'
+			'WPTSVersionName' => 'WPTS Version Name',
+			'License' => 'License',
+			'License URI' => 'License URI'
 		));
 	}
 
@@ -74,7 +87,7 @@ class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_Plug
 		$data->pluginLogoPath = $this->_getPluginLogoPath();
 		$data->pluginData = $this->_getPluginData();
 		$data->envData = $this->_getEnvData();
-		$data->changelog = $this->_readChangeLog();
+		$data->changelog = $this->_changeLogDataSource->getChangeLog();
 		echo $this->_view->renderAdminAboutPage($data);
 	}
 
@@ -97,16 +110,6 @@ class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_Plug
 	private function _registerAdditionalPluginHeadersProvider() {
 		add_filter('extra_plugin_headers', 
 			array($this, 'registerAdditionalPluginHeaders'));
-	}
-
-	private function _readChangeLog() {
-		$filePath = $this->_determineReadmeTxtFilePath();
-		$extractor = new Abp01_ReadmeChangelogExtractor($filePath);
-		return $extractor->extractChangeLog();
-	}
-
-	private function _determineReadmeTxtFilePath() {
-		return ABP01_PLUGIN_ROOT . '/readme.txt';
 	}
 
 	private function _registerWebPageAssets() {

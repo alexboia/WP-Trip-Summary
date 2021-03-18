@@ -1,3 +1,4 @@
+<?php
 /**
  * Copyright (c) 2014-2021 Alexandru Boia
  *
@@ -28,63 +29,21 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#abp01-about-logo {
-	float: left;
-	width: 138px;
-	height: 138px;
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+	exit;
 }
 
-#abp01-about-logo-inner {
-	background-color: #fff;
-	border-radius: 5px;
-	width: 138px;
-	height: 138px;
-	box-shadow: 0 1px 1px rgba(0,0,0,.04);
-}
+class Abp01_ChangeLogDataSource_ReadMe implements Abp01_ChangeLogDataSource {
+	/**
+	 * @var Abp01_ReadmeChangelogExtractor
+	 */
+	private $_changeLogExtractor;
 
-#abp01-about-logo img {
-	width: 128px;
-	height: 128px;
-	margin: 5px;
-}
+	public function __construct($readmeFilePath) {
+		$this->_changeLogExtractor = new Abp01_ReadmeChangelogExtractor($readmeFilePath);
+	}
 
-#abp01-about-info {
-	float: left;
-	width: 600px;
-	padding-left: 15px;
-}
-
-#abp01-about-info-listing {
-	border: 0px none;
-	border-radius: 5px;
-	border-spacing: 2px;
-	box-shadow: 0 1px 1px rgba(0,0,0,.04);
-}
-
-#abp01-about-info-listing th {
-	font-weight: 600;
-}
-
-#abp01-about-actions {
-	margin-top: 10px;
-}
-
-#abp01-about-changelog {
-	padding-top: 10px;
-	width: 753px;
-}
-
-.abp01-about-changelog-version {
-	margin-bottom: 10px;
-}
-
-.abp01-about-changelog-version table {
-	border: 0px none;
-	border-radius: 5px;
-	border-spacing: 2px;
-	box-shadow: 0 1px 1px rgba(0,0,0,.04);
-}
-
-.abp01-about-changelog-version thead th {
-	font-weight: 600;
+	public function getChangeLog() {
+		return $this->_changeLogExtractor->extractChangeLog();
+	}
 }

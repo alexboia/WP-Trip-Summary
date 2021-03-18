@@ -70,7 +70,7 @@ class Abp01_ReadmeChangelogExtractor {
 			throw new Abp01_Exception('Readme file could not be open.');
 		}
 
-		while (($readmeLine = fgets($this->_readmeFilePointer)) !== false) {
+		while (($readmeLine = $this->_readCurrentLine()) !== false) {
 			$readmeLine = trim($readmeLine);
 			if (empty($readmeLine)) {
 				continue;
@@ -82,8 +82,9 @@ class Abp01_ReadmeChangelogExtractor {
 			}
 		}
 
-		$this->_currentlyProcessedVersion = null;
 		fclose($this->_readmeFilePointer);
+
+		$this->_currentlyProcessedVersion = null;
 		$this->_readmeFilePointer = null;
 
 		return $this->_changelog;
@@ -98,12 +99,16 @@ class Abp01_ReadmeChangelogExtractor {
 		return fopen($this->_readmeFilePath, 'r');
 	}
 
+	private function _readCurrentLine() {
+		return fgets($this->_readmeFilePointer);
+	}
+
 	private function _isChangeLogBeginLine($line) {
 		return preg_match(self::README_BEGIN_MARKER_PATTERN, $line) === 1;
 	}
 
 	private function _processChangelogSection() {
-		while (($readmeLine = fgets($this->_readmeFilePointer)) !== false) {
+		while (($readmeLine = $this->_readCurrentLine()) !== false) {
 			$readmeLine = trim($readmeLine);
 			if (empty($readmeLine)) {
 				continue;
