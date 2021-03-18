@@ -153,7 +153,7 @@ trait AdminTestDataHelpers {
         $data->uploadTrackNonce = $faker->randomAscii;
         $data->ajaxUploadTrackAction = $faker->randomAscii;
 
-        $data->nonceGet = $faker->randomAscii;
+        $data->getTrackNonce = $faker->randomAscii;
         $data->ajaxGetTrackAction = $faker->randomAscii;	
         
         $data->clearTrackNonce = $faker->randomAscii;

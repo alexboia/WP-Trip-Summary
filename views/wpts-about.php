@@ -80,9 +80,12 @@
 				</tbody>
 			</table>
 			<div id="abp01-about-actions">
-				<a id="abp01-about-action-supportme" href="https://ko-fi.com/Q5Q01KGLM" target="_blank">
-					<img src="https://www.ko-fi.com/img/githubbutton_sm.svg" />
-				</a>
+				<a id="abp01-about-get-support" href="https://wordpress.org/support/plugin/wp-trip-summary/" 
+					target="_blank" 
+					class="button button-large"><?php echo esc_html__('Get Support', 'abp01-trip-summary') ?></a>
+				<a id="abp01-about-action-supportme" href="https://ko-fi.com/Q5Q01KGLM" 
+					target="_blank"
+					class="button button-large"><?php echo esc_html__('Buy me a coffee :)', 'abp01-trip-summary'); ?></a>
 			</div>
 		</div>
 		<div class="abp01-clear"></div>
