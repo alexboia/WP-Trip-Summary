@@ -239,6 +239,22 @@ ul.abp01-techbox-tabs {
     width: calc(100% - 210px);
 }
 
+.abp01-info-value .abp01-field-value-multi {
+    margin-right: 2px;
+}
+
+.abp01-info-value .abp01-field-value-multi.abp01-item-layout-vertical {
+    display: block;
+}
+
+.abp01-info-value .abp01-field-value-multi.abp01-item-layout-horizontal {
+    display: inline;
+}
+
+.abp01-info-value .abp01-field-value-show-more-txt {
+    margin-right: 2px;
+}
+
 /* Frontend viewer - map panel */
 
 .abp01-techbox-map,

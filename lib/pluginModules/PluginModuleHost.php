@@ -38,6 +38,16 @@ class Abp01_PluginModules_PluginModuleHost {
      */
     private $_plugin;
 
+    /**
+     * @var Abp01_PluginModules_PluginModule[]
+     */
+    private $_pluginModules;
+
+    /**
+     * @var Abp01_PluginModules_PluginModuleActivator
+     */
+    private $_pluginModuleActivator;
+
     public function __construct(Abp01_Plugin $plugin, array $pluginModulesClasses) {
         $this->_plugin = $plugin;
         $this->_pluginModuleActivator = $this->_createPluginModuleActivator();
@@ -71,6 +81,9 @@ class Abp01_PluginModules_PluginModuleHost {
 
     private function _getDefaultInjectableServiceFactories() {
         return array(
+            Abp01_Plugin::class => function() {
+                return $this->_plugin;
+            },
             Abp01_PluginModules_PluginModuleHost::class => function() {
                 return $this;
             },

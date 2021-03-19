@@ -238,6 +238,28 @@
         }
     }
 
+    function initItemValueTogglers() {
+        $('.abp01-info-value .abp01-field-value-show-more a').click(function() {
+            var $moreLink = $(this);
+            var $moreTxt = $moreLink.siblings('.abp01-field-value-show-more-txt');
+            var $container = $moreLink.parent().parent();
+            var additionalValuesShown = $moreLink.data('abp01-additional-values-shown') === true;
+
+            var $hideableValues = $container.find('.abp01-field-value-hideable');
+            if (additionalValuesShown) {
+                $hideableValues.hide();
+                $moreLink.html(abp01FrontendL10n.lblItemValuesShow);
+                $moreTxt.show();
+            } else {
+                $hideableValues.show();
+                $moreLink.html(abp01FrontendL10n.lblItemValuesHide);
+                $moreTxt.hide();
+            }
+
+            $moreLink.data('abp01-additional-values-shown', !additionalValuesShown);
+        });
+    }
+
     function initControls() {
         $ctrlFrontend = $('#abp01-techbox-frontend');
         $ctrlTeaserAction = $('#abp01-techbox-teaser-action');
@@ -265,6 +287,7 @@
 
         if (context.hasInfo || context.hasTrack) {
             initControls();
+            initItemValueTogglers();
             initTeasers();
             initDocument();
             initMapRetry();

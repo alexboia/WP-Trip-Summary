@@ -341,8 +341,25 @@ a.abp01-close-editor:hover {
     padding: 0;
 }
 
+.abp01-settings-container {
+    background: #fff;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    border-radius: 5px;
+    padding: 5px;
+    width: 753px;
+    margin-top: 10px;
+}
+
+.abp01-settings-container .form-table {
+    margin-top: 0px;
+}
+
 .abp01-settings-container th {
     padding: 10px 5px 10px 0px !important;
+}
+
+.abp01-settings-container th label {
+    margin-left: 10px;
 }
 
 .abp01-settings-container td {
@@ -380,6 +397,10 @@ a.abp01-close-editor:hover {
 .abp01-lookup-operation-result {
     margin-left: 0px !important;
     margin-right: 10px !important;
+}
+
+.abp01-settings-save-result {
+    width: 729px;
 }
 
 .abp01-lookup-listing-result {

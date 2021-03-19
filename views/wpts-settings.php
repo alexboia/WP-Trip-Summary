@@ -47,7 +47,7 @@
 				<?php echo esc_html__('These settings control various aspects that do not belong to any one topic', 'abp01-trip-summary'); ?>
 			</div>
 			<div class="abp01-settings-container">
-				<table class="form-table">
+				<table class="form-table striped">
 					<tr>
 						<th scope="row">
 							<label for="abp01-unitSystem"><?php echo esc_html__('Unit system', 'abp01-trip-summary'); ?>:</label>
@@ -67,12 +67,20 @@
 				</table>
 			</div>
 
+			<div class="apb01-settings-save">
+				<input type="button" 
+					id="abp01-submit-settings-interim-general" 
+					name="abp01-submit-settings" 
+					class="button button-primary abp01-form-submit-btn apb01-settings-save-btn" 
+					value="<?php echo esc_html__('Save settings', 'abp01-trip-summary'); ?>" />
+			</div>
+
 			<h3><?php echo esc_html__('Viewer settings', 'abp01-trip-summary'); ?></h3>
 			<div class="abp01-settings-info description">
 				<?php echo esc_html__('These settings configure the trip summary viewer', 'abp01-trip-summary'); ?>
 			</div>
 			<div class="abp01-settings-container">
-				<table class="form-table">
+				<table class="form-table striped">
 					<tr>
 						<th scope="row">
 							<label for="abp01-showTeaser"><?php echo esc_html__('Show teaser?', 'abp01-trip-summary'); ?></label>
@@ -113,7 +121,7 @@
 							<select name="initialViewerTab" id="abp01-initialViewerTab" class="abp01-select">
 								<?php foreach ($data->settings->allowedViewerTabs as $s => $lbl): ?>
 									<?php if ($data->settings->initialViewerTab == $s): ?>
-									<option value="<?php echo esc_attr($s) ?>" selected="selected"><?php echo esc_html($lbl) ?></option>
+										<option value="<?php echo esc_attr($s) ?>" selected="selected"><?php echo esc_html($lbl) ?></option>
 									<?php else: ?>
 										<option value="<?php echo esc_attr($s) ?>"><?php echo esc_html($lbl) ?></option>
 									<?php endif; ?>
@@ -121,7 +129,43 @@
 							</select>
 						</td>
 					</tr>
+					<tr>
+						<th scope="row">
+							<label for="abp01-viewerItemLayout"><?php echo esc_html__('Chose how multi-value items are laid out', 'abp01-trip-summary'); ?></label>
+						</th>
+						<td>
+							<select name="viewerItemLayout" id="abp01-viewerItemLayout" class="abp01-select">
+								<?php foreach ($data->settings->allowedItemLayouts as $l => $lbl): ?>
+									<?php if ($data->settings->viewerItemLayout == $l): ?>
+										<option value="<?php echo esc_attr($l) ?>" selected="selected"><?php echo esc_html($lbl) ?></option>
+									<?php else: ?>
+										<option value="<?php echo esc_attr($l) ?>"><?php echo esc_html($lbl) ?></option>
+									<?php endif; ?>
+								<?php endforeach; ?>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="abp01-viewerItemValueDisplayCount"><?php echo esc_html__('Chose how many values of a multi-valued item are displayed', 'abp01-trip-summary'); ?></label>
+						</th>
+						<td>
+							<input id="abp01-viewerItemValueDisplayCount" 
+								data-min-viewer-item-value-display-count="<?php echo esc_attr($data->optionsLimits->minViewerItemValueDisplayCount); ?>"
+								name="viewerItemValueDisplayCount" 
+								type="text" 
+								value="<?php echo esc_attr($data->settings->viewerItemValueDisplayCount); ?>" />
+						</td>
+					</tr>
 				</table>
+			</div>
+
+			<div class="apb01-settings-save">
+				<input type="button" 
+					id="abp01-submit-settings-interim-viewer" 
+					name="abp01-submit-settings" 
+					class="button button-primary abp01-form-submit-btn apb01-settings-save-btn" 
+					value="<?php echo esc_html__('Save settings', 'abp01-trip-summary'); ?>" />
 			</div>
 
 			<h3><?php echo esc_html__('Map Settings', 'abp01-trip-summary'); ?></h3>
@@ -129,7 +173,7 @@
 				<?php echo esc_html__('These settings configure the map component', 'abp01-trip-summary'); ?>
 			</div>
 			<div class="abp01-settings-container">
-				<table class="form-table">
+				<table class="form-table striped">
 					<tr>
 						<th scope="row">
 							<label for="abp01-tileLayerUrl"><?php echo esc_html__('Tile layer URL template', 'abp01-trip-summary'); ?>:</label>
@@ -281,7 +325,7 @@
 				<input type="button" 
 					id="abp01-submit-settings" 
 					name="abp01-submit-settings" 
-					class="button button-primary abp01-form-submit-btn" 
+					class="button button-primary abp01-form-submit-btn apb01-settings-save-btn" 
 					value="<?php echo esc_html__('Save settings', 'abp01-trip-summary'); ?>" />
 			</div>
 		</div>

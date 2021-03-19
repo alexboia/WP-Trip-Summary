@@ -137,7 +137,7 @@ class FrontendThemeDecoratorTests extends WP_UnitTestCase {
         $value = abp01_extract_value_from_frontend_data(new stdClass(), 'sampleField');
         $this->assertEquals('test_field_value', $value);
 
-        $value = abp01_format_info_item_value($value, 'sampleSuffix');
+        $value = abp01_format_info_item_value($value, 'sampleSuffix', new stdClass());
         $this->assertEquals('test_formatted_info_item_vlaue', $value);
 
         ob_start();

@@ -61,28 +61,53 @@ if (!function_exists('abp01_format_info_item_value')) {
      * @param string $suffix The suffix to append to the formatted value
      * @return string The formatted value
      */
-    function abp01_format_info_item_value($value, $suffix) {
+    function abp01_format_info_item_value($value, $suffix, $settings) {
         $fieldValue = '';
+        $fieldValueHtml = '';
 
         if (!empty($value)) {
             if (is_array($value)) {
                 $i = 0;
-                $k = count($value);
+                $itemValueCount = count($value);
+                $showCount = $settings->viewerItemValueDisplayCount;
                 foreach ($value as $v) {
-                    $fieldValue .= esc_html(is_object($v) ? $v->label : $v);
-                    if ($i ++ < $k - 1) {
-                        $fieldValue .= ', ';
+                    $fieldValue = esc_html(is_object($v) ? $v->label : $v);
+                    if ($i < $itemValueCount - 1) {
+                        $fieldValue .= ',';
                     }
+
+                    $display = $showCount == 0 || ($i < $showCount);
+                    $displayInlineCss = !$display ? 'display: none;' : '';
+
+                    $layoutCssClass = $settings->viewerItemLayout;
+                    $displayCssClass = !$display ? 'abp01-field-value-hideable' : 'abp01-field-value-show';
+
+                    $fieldValueHtml .= sprintf('<span class="abp01-field-value-multi %s %s" style="%s">%s</span>', 
+                        $layoutCssClass, 
+                        $displayCssClass,
+                        $displayInlineCss,
+                        $fieldValue);
+
+                    $i += 1;
+                }
+
+                if ($showCount > 0 && $showCount < $itemValueCount) {
+                    $fieldValueHtml .= sprintf('<span class="abp01-field-value-multi %s abp01-field-value-show-more"><span class="abp01-field-value-show-more-txt">%s</span><a href="javascript:void(0)">%s</a></span>',
+                        $layoutCssClass,
+                        sprintf(__('and %d more'), ($itemValueCount - $showCount)),
+                        __('(show)', 'abp01-trip-summary'));
                 }
             } else {
                 $fieldValue .= esc_html(is_object($value) ? $value->label : $value);
-            }
-            if (!empty($suffix)) {
-                $fieldValue .= ' ' . $suffix;
+                if (!empty($suffix)) {
+                    $fieldValue .= ' ' . $suffix;
+                }
+
+                $fieldValueHtml = sprintf('<span class="abp01-field-value-single">%s</span>', $fieldValue);
             }
         }
 
-        return $fieldValue;
+        return $fieldValueHtml;
     }
 }
 
@@ -102,12 +127,13 @@ if (!function_exists('abp01_display_info_item')) {
      */
     function abp01_display_info_item($data, $field, $fieldLabel, $suffix = '') {
         static $itemIndex = 0;
+        $settings = $data->settings;
         $value = abp01_extract_value_from_frontend_data($data, $field);
         if (!empty($value)) {
-            $fieldValue = abp01_format_info_item_value($value, $suffix);
+            $fieldValue = abp01_format_info_item_value($value, $suffix, $settings);
             $itemOutput = ('<li class="abp01-info-item ' . $field . ' ' . ($itemIndex % 2 == 0 ? 'abp01-item-even' : 'abp01-item-odd') . '">')
                 . ('<div class="abp01-info-label">' . esc_html($fieldLabel) . ':</div>')
-                . ('<div class="abp01-info-value">' . esc_html($fieldValue) . '</div>')
+                . ('<div class="abp01-info-value">' . $fieldValue . '</div>')
                 . ('<div class="abp01-clear"></div>')
                 . '</li>';
 

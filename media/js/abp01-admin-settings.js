@@ -180,7 +180,7 @@
      * @return void
      *  */
     function initListeners() {
-        $('#abp01-submit-settings').click(saveSettings);
+        $('.apb01-settings-save-btn').click(saveSettings);
     }
     
     /**
@@ -218,6 +218,19 @@
         });
     }
 
+    function initViewerItemValueDisplayCountStepper() {
+        var $ctrlCiewerItemValueDisplayCount = $('#abp01-viewerItemValueDisplayCount');
+        var minViewerItemValueDisplayCount = parseInt($ctrlCiewerItemValueDisplayCount.attr('data-min-viewer-item-value-display-count'));
+        console.log(minViewerItemValueDisplayCount);
+
+        $ctrlCiewerItemValueDisplayCount.abp01NumericStepper({
+            minValue: minViewerItemValueDisplayCount,
+            maxValue: 100,
+            defaultValue: minViewerItemValueDisplayCount,
+            increment: 1
+        });
+    }
+
     $(document).ready(function() {
         initFormState();
         initControls();
@@ -225,6 +238,7 @@
         initColoPickers();
         initTrackLineWeightStepper();
         initMapHeightStepper();
+        initViewerItemValueDisplayCountStepper();
         initListeners();
     });
 })(jQuery);

@@ -89,6 +89,9 @@ class SettingsTests extends WP_UnitTestCase {
         $settings->setShowFullScreen($data->showFullScreen);
         $settings->setShowMagnifyingGlass($data->showMagnifyingGlass);
         $settings->setShowTeaser($data->showTeaser);
+        $settings->setInitialViewerTab($data->initialViewerTab);
+        $settings->setViewerItemLayout($data->viewerItemLayout);
+        $settings->setViewerItemValueDisplayCount($data->viewerItemValueDisplayCount);
         $settings->setShowMapScale($data->showMapScale);
         $settings->setTopTeaserText($data->topTeaserText);
         $settings->setBottomTeaserText($data->bottomTeaserText);
@@ -98,7 +101,6 @@ class SettingsTests extends WP_UnitTestCase {
         $settings->setTrackLineColour($data->trackLineColour);
         $settings->setTrackLineWeight($data->trackLineWeight);
         $settings->setMapHeight($data->mapHeight);
-        $settings->setInitialViewerTab($data->initialViewerTab);
         $settings->setShowMinMaxAltitude($data->showMinMaxAltitude);
         $settings->setShowAltitudeProfile($data->showAltitudeProfile);
         return $settings;
@@ -113,6 +115,10 @@ class SettingsTests extends WP_UnitTestCase {
             $asPlainObject->topTeaserText);
         $this->assertEquals($settingsData->bottomTeaserText, 
             $asPlainObject->bottomTeaserText);
+        $this->assertEquals($settingsData->viewerItemLayout,
+            $asPlainObject->viewerItemLayout);
+        $this->assertEquals($settingsData->viewerItemValueDisplayCount,
+            $asPlainObject->viewerItemValueDisplayCount);
 
         $tileLayers = $settingsData->tileLayers;
         $this->assertEquals($tileLayers[0], 
@@ -210,6 +216,8 @@ class SettingsTests extends WP_UnitTestCase {
         $data->showFullScreen = $settings->getShowFullScreen();
         $data->showMagnifyingGlass = $settings->getShowMagnifyingGlass();
         $data->showTeaser = $settings->getShowTeaser();
+        $data->viewerItemLayout = $settings->getViewerItemLayout();
+        $data->viewerItemValueDisplayCount = $settings->getViewerItemValueDisplayCount();
         $data->showMapScale = $settings->getShowMapScale();
         $data->topTeaserText = $settings->getTopTeaserText();
         $data->bottomTeaserText = $settings->getBottomTeaserText();

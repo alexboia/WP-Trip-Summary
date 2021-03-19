@@ -40,7 +40,7 @@ if (!function_exists('abp01_extract_value_from_frontend_data')) {
 }
 
 if (!function_exists('abp01_format_info_item_value')) {
-    function abp01_format_info_item_value($value, $suffix) {
+    function abp01_format_info_item_value($value, $suffix, $settings) {
         return 'test_formatted_info_item_vlaue';
     }
 }

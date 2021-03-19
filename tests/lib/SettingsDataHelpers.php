@@ -37,6 +37,9 @@ trait SettingsDataHelpers {
         $defaults->showFullScreen = true;
         $defaults->showMagnifyingGlass = true;
         $defaults->showTeaser = true;
+        $defaults->initialViewerTab = Abp01_Viewer::TAB_INFO;
+        $defaults->viewerItemLayout = Abp01_Viewer::ITEM_LAYOUT_HORIZONTAL;
+        $defaults->viewerItemValueDisplayCount = 3;
         $defaults->showMapScale = true;
         $defaults->allowTrackDownload = true;
         $defaults->topTeaserText = $this->_getDefaultTopTeaserText();
@@ -46,7 +49,6 @@ trait SettingsDataHelpers {
         $defaults->trackLineColour = '#0033ff';
         $defaults->trackLineWeight = 3;
         $defaults->mapHeight = 350;
-        $defaults->initialViewerTab = Abp01_Viewer::TAB_INFO;
         $defaults->showMinMaxAltitude = true;
 		$defaults->showAltitudeProfile = true;
         return $defaults;
@@ -69,6 +71,8 @@ trait SettingsDataHelpers {
     }
 
     protected function _generateTestSettings() {
+        $faker = $this->_getFaker();
+
         $tileLayer = new stdClass();
         $tileLayer->url = 'http://{s}.tile.example.com/{z}/{x}/{y}.png';
         $tileLayer->attributionTxt = 'Example.com & Contributors';
@@ -80,16 +84,18 @@ trait SettingsDataHelpers {
         $settings->showTeaser = false;
         $settings->showMapScale = false;
         $settings->allowTrackDownload = false;
-        $settings->topTeaserText = 'Test top teaser text';
-        $settings->bottomTeaserText = 'Test bottom teaser text';
+        $settings->topTeaserText = $faker->sentence();
+        $settings->bottomTeaserText = $faker->sentence();
         $settings->tileLayers = array($tileLayer);
         $settings->unitSystem = Abp01_UnitSystem::IMPERIAL;
         $settings->trackLineColour = '#FFCC00';
         $settings->trackLineWeight = 10;
         $settings->mapHeight = 1111;
-        $settings->initialViewerTab = Abp01_Viewer::TAB_MAP;
+        $settings->initialViewerTab = $faker->randomElement(array_keys(Abp01_Viewer::getAvailableTabs()));
         $settings->showMinMaxAltitude = true;
 		$settings->showAltitudeProfile = false;
+        $settings->viewerItemLayout = $faker->randomElement(array_keys(Abp01_Viewer::getAvailableItemLayouts()));
+        $settings->viewerItemValueDisplayCount = $faker->numberBetween(0, 5);
 
         return $settings;
     }
@@ -99,6 +105,7 @@ trait SettingsDataHelpers {
         $data = new stdClass();
 		$data->minAllowedMapHeight = $faker->randomNumber();
 		$data->minAllowedTrackLineWeight = $faker->randomNumber();
+        $data->minViewerItemValueDisplayCount = $faker->randomNumber();
 		return $data;
     }
 }

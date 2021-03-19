@@ -63,6 +63,7 @@ trait AdminTestDataHelpers {
 
         $asPlainObject->allowedUnitSystems = Abp01_UnitSystem::getAvailableUnitSystems();
 		$asPlainObject->allowedViewerTabs = Abp01_Viewer::getAvailableTabs();
+        $asPlainObject->allowedItemLayouts = Abp01_Viewer::getAvailableTabs();
 
         return $asPlainObject;
     }

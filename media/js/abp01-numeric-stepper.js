@@ -46,7 +46,7 @@
             defaultValue: 1
         }, opts);
 
-        opts.minValue = Math.max(1, opts.minValue);
+        opts.minValue = Math.max(0, opts.minValue);
         opts.increment = Math.max(1, opts.increment);
 
         function isInitialized() {

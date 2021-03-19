@@ -67,6 +67,27 @@ class Abp01_Settings {
 	const OPT_TEASER_BOTTOM = 'teaserBottomTxt';
 
 	/**
+	 * Key for "selected viewer tab" setting
+	 * 
+	 * @var string
+	 */
+	const OPT_INITIAL_VIEWER_TAB = 'initialViewerTab';
+
+	/**
+	 * Key for "chose how multi-value items are laid out" setting
+	 * 
+	 * @var string
+	 */
+	const OPT_VIEWER_ITEM_LAYOUT = 'viewerItemLayout';
+
+	/**
+	 * Key for "chose how many values of a multi-valued item are displayed" setting
+	 * 
+	 * @var string
+	 */
+	const OPT_VIEWER_ITEM_VALUE_DISPLAY_COUNT = 'viewerItemValueDisplayCount';
+
+	/**
 	 * Key for the tile layer settings
 	 * 
 	 * @var string
@@ -142,13 +163,6 @@ class Abp01_Settings {
 	 * @var string
 	 */
 	const OPT_MAP_HEIGHT = 'mapHeight';
-
-	/**
-	 * Key for "selected viewer tab" setting
-	 * 
-	 * @var string
-	 */
-	const OPT_INITIAL_VIEWER_TAB = 'initialViewerTab';
 
 	/**
 	 * The key used to store the serialized settings, using the WP options API
@@ -282,7 +296,6 @@ class Abp01_Settings {
 		$data = new stdClass();
 		$this->_loadSettingsIfNeeded();
 
-		//fetch the bulk of the settings
 		$data->showTeaser = $this->getShowTeaser();
 		$data->topTeaserText = $this->getTopTeaserText();
 		$data->bottomTeaserText = $this->getBottomTeaserText();
@@ -299,10 +312,13 @@ class Abp01_Settings {
 		$data->showAltitudeProfile = $this->getShowAltitudeProfile();
 		$data->mapHeight = $this->getMapHeight();
 		$data->initialViewerTab = $this->getInitialViewerTab();
+		$data->viewerItemLayout = $this->getViewerItemLayout();
+		$data->viewerItemValueDisplayCount = $this->getViewerItemValueDisplayCount();
 
-		//fetch all the allowed unit systems
+		//TODO: these should not be part of the plain settings object
 		$data->allowedUnitSystems = $this->getAllowedUnitSystems();
 		$data->allowedViewerTabs = $this->getAllowedViewerTabs();
+		$data->allowedItemLayouts = $this->getAllowedItemLayouts();
 
 		return $data;
 	}
@@ -311,6 +327,7 @@ class Abp01_Settings {
 		$data = new stdClass();
 		$data->minAllowedMapHeight = $this->getMinimumAllowedMapHeight();
 		$data->minAllowedTrackLineWeight = $this->getMinimumAllowedTrackLineWeight();
+		$data->minViewerItemValueDisplayCount = $this->getMinimumViewerItemValueDisplayCount();
 		return $data;
 	}
 
@@ -344,6 +361,46 @@ class Abp01_Settings {
 	public function setBottomTeaserText($bottomTeaserText) {
 		$this->_setOption(self::OPT_TEASER_BOTTOM, 'string', $bottomTeaserText);
 		return $this;
+	}
+
+	public function getInitialViewerTab() {
+		return $this->_getOption(self::OPT_INITIAL_VIEWER_TAB, 'string', Abp01_Viewer::TAB_INFO);
+	}
+
+	public function setInitialViewerTab($viewerTab) {
+		if (!Abp01_Viewer::isTabSupported($viewerTab)) {
+			$viewerTab = $this->getInitialViewerTab();
+		}
+
+		$this->_setOption(self::OPT_INITIAL_VIEWER_TAB, 'string', $viewerTab);
+		return $this;
+	}
+
+	public function getViewerItemLayout() {
+		return $this->_getOption(self::OPT_VIEWER_ITEM_LAYOUT, 'string', Abp01_Viewer::ITEM_LAYOUT_HORIZONTAL);
+	}
+
+	public function setViewerItemLayout($viewerItemLayout) {
+		if (!Abp01_Viewer::isItemLayoutSupported($viewerItemLayout)) {
+			$viewerItemLayout = $this->getViewerItemLayout();
+		}
+
+		$this->_setOption(self::OPT_VIEWER_ITEM_LAYOUT, 'string', $viewerItemLayout);
+		return $this;
+	}
+
+	public function getViewerItemValueDisplayCount() {
+		return $this->_getOption(self::OPT_VIEWER_ITEM_VALUE_DISPLAY_COUNT, 'integer', 3);
+	}
+
+	public function setViewerItemValueDisplayCount($displayCount) {
+		$displayCount = max($displayCount, $this->getMinimumViewerItemValueDisplayCount());
+		$this->_setOption(self::OPT_VIEWER_ITEM_VALUE_DISPLAY_COUNT, 'integer', $displayCount);
+		return $this;
+	}
+
+	public function getMinimumViewerItemValueDisplayCount() {
+		return 0;
 	}
 
 	public function getTileLayers() {
@@ -436,19 +493,6 @@ class Abp01_Settings {
 		return $this;
 	}
 
-	public function getInitialViewerTab() {
-		return $this->_getOption(self::OPT_INITIAL_VIEWER_TAB, 'string', Abp01_Viewer::TAB_INFO);
-	}
-
-	public function setInitialViewerTab($viewerTab) {
-		$allowedViewerTabs = array_keys($this->getAllowedViewerTabs());
-		if (!in_array($viewerTab, $allowedViewerTabs)) {
-			$viewerTab = $this->getInitialViewerTab();
-		}
-		$this->_setOption(self::OPT_INITIAL_VIEWER_TAB, 'string', $viewerTab);
-		return $this;
-	}
-
 	public function getMinimumAllowedTrackLineWeight() {
 		return 1;
 	}
@@ -514,5 +558,9 @@ class Abp01_Settings {
 
 	public function getAllowedViewerTabs() {
 		return Abp01_Viewer::getAvailableTabs();
+	}
+
+	public function getAllowedItemLayouts() {
+		return Abp01_Viewer::getAvailableItemLayouts();
 	}
 }

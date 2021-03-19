@@ -177,6 +177,7 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
 
         $unitSystem = Abp01_InputFiltering::getFilteredPOSTValue('unitSystem');
         $initialViewerTab = Abp01_InputFiltering::getFilteredPOSTValue('initialViewerTab');
+        $viewerItemLayout = Abp01_InputFiltering::getFilteredPOSTValue('viewerItemLayout');
         $trackLineColour = Abp01_InputFiltering::getFilteredPOSTValue('trackLineColour');
         $tileLayer = $this->_readTileLayerFromHttpPost();
 
@@ -185,6 +186,8 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
             $this->_createUnitSystemValidationRule());
         $validationChain->addInputValidationRule($initialViewerTab, 
             $this->_createInitialViewerTabValidationRule());
+        $validationChain->addInputValidationRule($viewerItemLayout,
+            $this->_createViewerItemLayoutValidationRule());
         $validationChain->addInputValidationRule($tileLayer, 
             $this->_createTileLayerValidationRule());
         $validationChain->addInputValidationRule($trackLineColour, 
@@ -195,14 +198,21 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
             return $response;
         }
 
+        $viewerItemDisplayCount = $this->_readBoundedViewerItemValueDisplayCountFromHttpPost();
         $trackLineWeight = $this->_readBoundedTrackLineWeightFromHttpPost();
         $mapHeight = $this->_readBoundedMapHeightFromHttpPost();
 
         //fill in and save settings
+        $this->_settings->setUnitSystem($unitSystem);
+
         $this->_settings->setShowTeaser(Abp01_InputFiltering::getPOSTValueAsBoolean('showTeaser'));
         $this->_settings->setTopTeaserText(Abp01_InputFiltering::getFilteredPOSTValue('topTeaserText'));
         $this->_settings->setBottomTeaserText(Abp01_InputFiltering::getFilteredPOSTValue('bottomTeaserText'));
+        $this->_settings->setInitialViewerTab($initialViewerTab);
+        $this->_settings->setViewerItemLayout($viewerItemLayout);
+        $this->_settings->setViewerItemValueDisplayCount($viewerItemDisplayCount);
 
+        $this->_settings->setTileLayers($tileLayer);
         $this->_settings->setShowFullScreen(Abp01_InputFiltering::getPOSTValueAsBoolean('showFullScreen'));
         $this->_settings->setShowMagnifyingGlass(Abp01_InputFiltering::getPOSTValueAsBoolean('showMagnifyingGlass'));
         $this->_settings->setShowMapScale(Abp01_InputFiltering::getPOSTValueAsBoolean('showMapScale'));
@@ -212,10 +222,6 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
         $this->_settings->setShowMinMaxAltitude(Abp01_InputFiltering::getPOSTValueAsBoolean('showMinMaxAltitude'));
         $this->_settings->setShowAltitudeProfile(Abp01_InputFiltering::getPOSTValueAsBoolean('showAltitudeProfile'));
         $this->_settings->setMapHeight($mapHeight);
-
-        $this->_settings->setTileLayers($tileLayer);
-        $this->_settings->setUnitSystem($unitSystem);
-        $this->_settings->setInitialViewerTab($initialViewerTab);
 
         if ($this->_settings->saveSettings()) {
             $response->success = true;
@@ -245,6 +251,13 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
         return new Abp01_Validation_Rule_Simple(
             new Abp01_Validate_InitialViewerTab(),
             esc_html__('Unsupported viewer tab', 'abp01-trip-summary')
+        );
+    }
+
+    private function _createViewerItemLayoutValidationRule() {
+        return new Abp01_Validation_Rule_Simple(
+            new Abp01_Validate_ViewerItemLayout(),
+            esc_html__('Unsupported viewer item layout', 'abp01-trip-summary')
         );
     }
 
@@ -294,5 +307,15 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
             $minAllowedMapHeight);
 
         return $mapHeight;
+    }
+
+    private function _readBoundedViewerItemValueDisplayCountFromHttpPost() {
+        $minViewerItemDisplayCount = $this->_settings
+            ->getMinimumViewerItemValueDisplayCount();
+
+        $viewerItemDisplayCount = max(Abp01_InputFiltering::getPOSTValueAsInteger('viewerItemValueDisplayCount', $minViewerItemDisplayCount), 
+            $minViewerItemDisplayCount);
+
+        return $viewerItemDisplayCount;
     }
 }

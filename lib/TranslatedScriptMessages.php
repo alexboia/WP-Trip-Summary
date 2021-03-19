@@ -117,7 +117,9 @@ class Abp01_TranslatedScriptMessages {
             'lblMinAltitude' => esc_html__('Minimum altitude:', 'abp01-trip-summary'),
             'lblMaxAltitude' => esc_html__('Maximum altitude:', 'abp01-trip-summary'),
             'lblAltitude' => esc_html__('Altitude:', 'abp01-trip-summary'),
-            'lblDistance' => esc_html__('Distance:', 'abp01-trip-summary')
+            'lblDistance' => esc_html__('Distance:', 'abp01-trip-summary'),
+            'lblItemValuesShow' => esc_html__('(show)', 'abp01-trip-summary'),
+            'lblItemValuesHide' => esc_html__('(hide)', 'abp01-trip-summary')
         );
     }
 }

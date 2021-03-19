@@ -38,6 +38,10 @@ class Abp01_Viewer {
 
     const TAB_MAP = 'abp01-tab-map';
 
+    const ITEM_LAYOUT_HORIZONTAL = 'abp01-item-layout-horizontal';
+
+    const ITEM_LAYOUT_VERTICAL = 'abp01-item-layout-vertical';
+
     /**
      * @var Abp01_View
      */
@@ -61,6 +65,17 @@ class Abp01_Viewer {
 
     public static function isTabSupported($tab) {
         return in_array($tab, array_keys(self::getAvailableTabs()));
+    }
+
+    public static function getAvailableItemLayouts() {
+        return array(
+            self::ITEM_LAYOUT_HORIZONTAL => __('Horizontally', 'abp01-trip-summary'), 
+            self::ITEM_LAYOUT_VERTICAL => __('Vertically', 'abp01-trip-summary')
+        );
+    }
+
+    public static function isItemLayoutSupported($itemLayout) {
+        return in_array($itemLayout, array_keys(self::getAvailableItemLayouts()));
     }
 
     public function render(stdClass $data) {

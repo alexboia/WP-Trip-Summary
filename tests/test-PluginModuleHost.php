@@ -74,7 +74,7 @@ class PluginModuleHostTests extends WP_UnitTestCase {
             RequiresSupportedDependenciesSamplePluginModule::class
         ));
 
-        return new Abp01_PluginModules_PluginModuleHost($moduleClasses);
+        return new Abp01_PluginModules_PluginModuleHost(new Abp01_Plugin(), $moduleClasses);
     }
 
     public function test_providesAdditionalDependencies_whenCreatingModule() {
@@ -128,6 +128,6 @@ class PluginModuleHostTests extends WP_UnitTestCase {
     }
 
     private function _getPluginHostNoModules() {
-        return new Abp01_PluginModules_PluginModuleHost(array());
+        return new Abp01_PluginModules_PluginModuleHost(new Abp01_Plugin(), array());
     }
 }

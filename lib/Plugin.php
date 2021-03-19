@@ -34,16 +34,6 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Plugin {
-	/**
-     * @var Abp01_PluginModules_PluginModule[]
-     */
-    private $_pluginModules;
-
-    /**
-     * @var Abp01_PluginModules_PluginModuleActivator
-     */
-    private $_pluginModuleActivator;
-
     /**
      * @var Abp01_NonceProvider_DownloadTrackData
      */
@@ -80,7 +70,7 @@ class Abp01_Plugin {
     private $_urlHelper;
 
 	public function __construct() {
-		Abp01_Includes::configure(ABP01_PLUGIN_MAIN, true);
+		return;
 	}
 
 	public function run() {
@@ -194,11 +184,16 @@ class Abp01_Plugin {
 	}
 
 	public function onPluginsLoaded() {
+		$this->_configureScriptIncludes();
 		$this->_loadTextDomain();
 		$this->_initView();
 		$this->_increaseExecutionLimits();
 		$this->_updateIfNeeded();
 		$this->_loadPluginModules();
+	}
+
+	private function _configureScriptIncludes() {
+		Abp01_Includes::configure(ABP01_PLUGIN_MAIN, true);
 	}
 
 	private function _loadTextDomain() {
