@@ -34,51 +34,12 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 
 class Abp01_PluginModules_PluginModuleHost {
     /**
-     * @var Abp01_PluginModules_PluginModule[]
+     * @var Abp01_Plugin
      */
-    private $_pluginModules;
+    private $_plugin;
 
-    /**
-     * @var Abp01_PluginModules_PluginModuleActivator
-     */
-    private $_pluginModuleActivator;
-
-    /**
-     * @var Abp01_NonceProvider_DownloadTrackData
-     */
-    private $_downloadTrackDataNonceProvider;
-
-    /**
-     * @var Abp01_NonceProvider_ReadTrackData
-     */
-    private $_readTrackDataNonceProvider;
-
-    /**
-     * @var Abp01_Viewer_DataSource_Cache
-     */
-    private $_viewerDataSourceCache;
-
-    /**
-     * @var Abp01_Viewer_DataSource
-     */
-    private $_viewerDataSource;
-
-    /**
-     * @var Abp01_ChangeLogDataSource
-     */
-    private $_changeLogDataSource;
-
-    /**
-     * @var Abp01_Viewer
-     */
-    private $_viewer;
-
-    /**
-     * @var Abp01_UrlHelper
-     */
-    private $_urlHelper;
-
-    public function __construct(array $pluginModulesClasses) {
+    public function __construct(Abp01_Plugin $plugin, array $pluginModulesClasses) {
+        $this->_plugin = $plugin;
         $this->_pluginModuleActivator = $this->_createPluginModuleActivator();
         $this->_pluginModules = $this->_createModules($pluginModulesClasses);
     }
@@ -175,88 +136,58 @@ class Abp01_PluginModules_PluginModuleHost {
     }
 
     public function getTrackDownloadNonceProvider() {
-        if ($this->_downloadTrackDataNonceProvider === null) {
-            $this->_downloadTrackDataNonceProvider = new Abp01_NonceProvider_DownloadTrackData();
-        }
-        return $this->_downloadTrackDataNonceProvider;
+        return $this->_plugin->getTrackDownloadNonceProvider();
     }
 
     public function getReadTrackDataNonceProvider() {
-        if ($this->_readTrackDataNonceProvider === null) {
-            $this->_readTrackDataNonceProvider = new Abp01_NonceProvider_ReadTrackData();
-        }
-        return $this->_readTrackDataNonceProvider;
+        return $this->_plugin->getReadTrackDataNonceProvider();
     }
 
     public function getUrlHelper() {
-        if ($this->_urlHelper === null) {
-            $this->_urlHelper = new Abp01_UrlHelper($this->getEnv(), $this->getTrackDownloadNonceProvider());
-        }
-        return $this->_urlHelper;
+        return $this->_plugin->getUrlHelper();
     }
 
     public function getViewer() {
-        if ($this->_viewer === null) {
-            $this->_viewer = new Abp01_Viewer($this->getView());
-        }
-        return $this->_viewer;
+        return $this->_plugin->getViewer();
     }
 
     public function getViewerDataSource() {
-        if ($this->_viewerDataSource === null) {
-            $this->_viewerDataSource = new Abp01_Viewer_DataSource_Default($this->getRouteManager(), 
-                $this->getLookupForCurrentLang(), 
-                $this->getViewerDataSourceCache());
-        }
-        return $this->_viewerDataSource;
+        return $this->_plugin->getViewerDataSource();
     }
 
     public function getChangeLogDataSource() {
-        if ($this->_changeLogDataSource === null) {
-            $this->_changeLogDataSource = new Abp01_ChangeLogDataSource_Cached(
-                new Abp01_ChangeLogDataSource_ReadMe($this->_determineReadmeTxtFilePath()), 
-                $this->getEnv()
-            );
-        }
-        return $this->_changeLogDataSource;
+        return $this->_plugin->getChangeLogDataSource();
     }
 
-    private function _determineReadmeTxtFilePath() {
-		return ABP01_PLUGIN_ROOT . '/readme.txt';
-	}
-
     public function getViewerDataSourceCache() {
-        if ($this->_viewerDataSourceCache === null) {
-            $this->_viewerDataSourceCache = new Abp01_Viewer_DataSource_Cache_WpTransients();
-        }
-        return $this->_viewerDataSourceCache;
+        return $this->_plugin->getViewerDataSourceCache();
     }
 
     public function getLookupForCurrentLang() {
-        return new Abp01_Lookup();
+        return $this->_plugin->getLookupForCurrentLang();
     }
 
     public function getRouteManager() {
-        return abp01_get_route_manager();
+        return $this->_plugin->getRouteManager();
     }
 
     public function getHelp() {
-        return abp01_get_help();
+        return $this->_plugin->getHelp();
     }
 
     public function getView() {
-        return abp01_get_view();
+        return $this->_plugin->getView();
     }
 
     public function getSettings() {
-        return abp01_get_settings();
+        return $this->_plugin->getSettings();
     }
 
     public function getEnv() {
-        return abp01_get_env();
+        return $this->_plugin->getEnv();
     }
 
     public function getAuth() {
-        return abp01_get_auth();
+        return $this->_plugin->getAuth();
     }
 }

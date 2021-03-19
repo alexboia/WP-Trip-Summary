@@ -94,6 +94,15 @@ define('ABP01_PLUGIN_ROOT_NAME', basename(ABP01_PLUGIN_ROOT));
 define('ABP01_LIB_DIR', ABP01_PLUGIN_ROOT . '/lib');
 
 /**
+ * The absolute path to the plug-in's library - lag - directory.
+ *  This is where all the translation files (.po, .mo, .pot) are stored.
+ *  Eg. /whatever/public_html/wp-content/plugins/wp-trip-summary/lang.
+ * 
+ * @var string
+ */
+define('ABP01_LANG_DIR', ABP01_PLUGIN_ROOT . '/lang');
+
+/**
  * The current version of WP-Trip-Summary.
  *  Eg. 0.2.5.
  * 

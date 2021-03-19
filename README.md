@@ -184,15 +184,20 @@ The following languages are supported:
 ## Changelog
 <a name="wpts-changelog"></a>  
 
+### Version 0.2.7
+- Refactoring: the plug-in now has a more manageable and extensible structure, with the most important change being the splitting of all the code previously in `abp01-plugin-main.php`, into separate plugin modules;
+- Feature: Added an about page ([Issue 59](https://github.com/alexboia/WP-Trip-Summary/issues/59));
+- Improved stability and various bug fixes.
+
 ### Version 0.2.6
-- usability improvement: added a control to the front-end viewer map that allows one to re-center the map to the GPS track bounding area - basically the initial state of the map when it's first loaded ([Issue 68](https://github.com/alexboia/WP-Trip-Summary/issues/68)).
-- usability improvement: within the WP-Trip-Summary, the `Clear Track` and `Clear Info` buttons have been grouped using a `Quick Actions` control, such as in the metabox used to display the summary in the post page ([Issue 69](https://github.com/alexboia/WP-Trip-Summary/issues/69)).
-- usability improvement: added confirmation when attempting to remove trip summary information as well as when attempting to remove track data ([Issue 72](https://github.com/alexboia/WP-Trip-Summary/issues/72)).
-- usability improvement: when removing a lookup data item with existing associations (that is, associated with at least a post), WP-Trip-Summary no longer issues a hard denial, but asks the user to confirm whether he/she wishes to proceed removing the item, as well as sever its associations with the posts ([Issue 67](https://github.com/alexboia/WP-Trip-Summary/issues/67)).
-- feature: added an option (to the WP-Trip-Summary settings page) to specify the initially selected WP-Trip-Summary front-end viewer tab ([Issue 71](https://github.com/alexboia/WP-Trip-Summary/issues/71)).
-- feature: added an option (to the WP-Trip-Summary settings page) to specify the front-end viewer map height ([Issue 70](https://github.com/alexboia/WP-Trip-Summary/issues/70)).
-- improved stability;
-- improved documentation.
+- Usability improvement: added a control to the front-end viewer map that allows one to re-center the map to the GPS track bounding area - basically the initial state of the map when it's first loaded ([Issue 68](https://github.com/alexboia/WP-Trip-Summary/issues/68)).
+- Usability improvement: within the WP-Trip-Summary, the `Clear Track` and `Clear Info` buttons have been grouped using a `Quick Actions` control, such as in the metabox used to display the summary in the post page ([Issue 69](https://github.com/alexboia/WP-Trip-Summary/issues/69)).
+- Usability improvement: added confirmation when attempting to remove trip summary information as well as when attempting to remove track data ([Issue 72](https://github.com/alexboia/WP-Trip-Summary/issues/72)).
+- Usability improvement: when removing a lookup data item with existing associations (that is, associated with at least a post), WP-Trip-Summary no longer issues a hard denial, but asks the user to confirm whether he/she wishes to proceed removing the item, as well as sever its associations with the posts ([Issue 67](https://github.com/alexboia/WP-Trip-Summary/issues/67)).
+- Feature: added an option (to the WP-Trip-Summary settings page) to specify the initially selected WP-Trip-Summary front-end viewer tab ([Issue 71](https://github.com/alexboia/WP-Trip-Summary/issues/71)).
+- Feature: added an option (to the WP-Trip-Summary settings page) to specify the front-end viewer map height ([Issue 70](https://github.com/alexboia/WP-Trip-Summary/issues/70)).
+- Improved stability;
+- Improved documentation.
 
 ### Version 0.2.5
 - Trip summary front-end viewer can now inserted at a custom location in the post content for which it has been defined using the [abp01_trip_summary_viewer] shortcode (or a special block, if you're using the block editor);
@@ -263,11 +268,11 @@ From there on the main purpose of all 0.2.* versions is to:
    - [x] improve the overall usability of the plug-in (meaning the minimum amount of features to render it usable enough for most of the users):
       - [x] allow users to see at a glance, when listing posts, which post has trip summary information and track data and which has not;
       - [x] improve trip summary editing experience;
-   - [ ] add some options to allow for quick customization:
+   - [x] add some options to allow for quick customization:
       - [x] customize the colour of the line used to plot the track on the map;
       - [x] customize the weight of the line used to plot the track on the map.
-   - [ ] improve localization by adding at least one more language:
-      - [x] currently, French is in the progress.
+   - [x] improve localization by adding at least one more language:
+      - [x] French translation has been completed.
    - [x] publish a guide for customizing the front-end trip summary viewer (planned for 0.2.5);
    - [ ] add some nice to have features, which can be quickly implemented and provide some value, such as:
       - [x] display minimum and maximum altitude (planned for 0.2.5);

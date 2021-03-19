@@ -34,6 +34,11 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Installer {
+    /**
+     * @var int Status code returned when all installation requirements have been met
+     */
+    const ALL_REQUIREMENTS_MET = 0;
+
 	/**
 	 * @var int Error code returned when an incompatible PHP version is detected upon installation
 	 */
@@ -578,7 +583,7 @@ class Abp01_Installer {
      * 
      * @return int The error code that describes the result of the test.
      */
-    public function canBeInstalled() {
+    public function checkRequirements() {
         $this->_reset();
 
         try {
@@ -603,7 +608,9 @@ class Abp01_Installer {
             $this->_lastError = $e;
         }
 
-        return empty($this->_lastError) ? 0 : self::COULD_NOT_DETECT_INSTALLATION_CAPABILITIES;
+        return empty($this->_lastError) 
+            ? self::ALL_REQUIREMENTS_MET 
+            : self::COULD_NOT_DETECT_INSTALLATION_CAPABILITIES;
     }
 
     /**

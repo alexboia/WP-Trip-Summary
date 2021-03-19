@@ -33,6 +33,16 @@
 defined('ABP01_LOADED') or die;
 
 /**
+ * Initializes the autoloading process
+ * 
+ * @return void
+ */
+function abp01_init_autoloaders() {
+	require_once ABP01_LIB_DIR . '/Autoloader.php';
+	Abp01_Autoloader::init(ABP01_LIB_DIR);
+}
+
+/**
  * Returns the current environment accessor instance
  * 
  * @return Abp01_Env The current environment accessor instance
@@ -92,13 +102,14 @@ function abp01_get_auth() {
 }
 
 /**
- * Initializes the autoloading process
- * 
- * @return void
+ * @return Abp01_Plugin 
  */
-function abp01_init_autoloaders() {
-	require_once ABP01_LIB_DIR . '/Autoloader.php';
-	Abp01_Autoloader::init(ABP01_LIB_DIR);
+function abp01_get_plugin() {
+	static $plugin = null;
+	if ($plugin === null) {
+		$plugin = new Abp01_Plugin();
+	}
+	return $plugin;
 }
 
 function abp01_is_not_empty($value) {
@@ -397,6 +408,27 @@ function abp01_ensure_storage_directory() {
 	abp01_get_installer()->ensureStorageDirectoriesAndAssets();
 }
 
+/**
+ * Retrieve the translated label that corresponds 
+ * 	to the given lookup type/category
+ * 
+ * @param string $type The type for which to retrieve the translated label
+ * @return string The translated label
+ */
+function abp01_get_lookup_type_label($type) {
+	$translations = array(
+		Abp01_Lookup::BIKE_TYPE => esc_html__('Bike type', 'abp01-trip-summary'),
+		Abp01_Lookup::DIFFICULTY_LEVEL => esc_html__('Difficulty level', 'abp01-trip-summary'),
+		Abp01_Lookup::PATH_SURFACE_TYPE => esc_html__('Path surface type', 'abp01-trip-summary'),
+		Abp01_Lookup::RAILROAD_ELECTRIFICATION => esc_html__('Railroad electrification status', 'abp01-trip-summary'),
+		Abp01_Lookup::RAILROAD_LINE_STATUS => esc_html__('Railroad line status', 'abp01-trip-summary'),
+		Abp01_Lookup::RAILROAD_LINE_TYPE => esc_html__('Railroad line type', 'abp01-trip-summary'),
+		Abp01_Lookup::RAILROAD_OPERATOR => esc_html__('Railroad operators', 'abp01-trip-summary'),
+		Abp01_Lookup::RECOMMEND_SEASONS => esc_html__('Recommended seasons', 'abp01-trip-summary')
+	);
+	return isset($translations[$type]) ? $translations[$type] : null;
+}
+
 if (!function_exists('wp_script_get_data')) {
 	/**
 	 * Retrieves the data section associated with a script handle.
@@ -463,4 +495,8 @@ if (!function_exists('abp01_set_http_response_code')) {
 	function abp01_set_http_response_code($responseCode) {
 		http_response_code($responseCode);
 	}
+}
+
+function abp01_run() {
+	abp01_get_plugin()->run();
 }
