@@ -187,6 +187,7 @@ The following languages are supported:
 ### Version 0.2.7
 - Refactoring: the plug-in now has a more manageable and extensible structure, with the most important change being the splitting of all the code previously in `abp01-plugin-main.php`, into separate plugin modules;
 - Feature: Added an about page ([Issue 59](https://github.com/alexboia/WP-Trip-Summary/issues/59));
+- Feature:  Enhanced display for the frontend viewer information items ([issue 75](https://github.com/alexboia/WP-Trip-Summary/issues/75));
 - Improved stability and various bug fixes.
 
 ### Version 0.2.6
