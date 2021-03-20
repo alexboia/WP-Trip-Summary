@@ -239,25 +239,60 @@
     }
 
     function initItemValueTogglers() {
-        $('.abp01-info-value .abp01-field-value-show-more a').click(function() {
-            var $moreLink = $(this);
-            var $moreTxt = $moreLink.siblings('.abp01-field-value-show-more-txt');
-            var $container = $moreLink.parent().parent();
-            var additionalValuesShown = $moreLink.data('abp01-additional-values-shown') === true;
+        $('.abp01-info-value .abp01-field-value-show-more a')
+            .click(toggleAdditionalItemValues);
+    }
 
-            var $hideableValues = $container.find('.abp01-field-value-hideable');
-            if (additionalValuesShown) {
-                $hideableValues.hide();
-                $moreLink.html(abp01FrontendL10n.lblItemValuesShow);
-                $moreTxt.show();
-            } else {
-                $hideableValues.show();
-                $moreLink.html(abp01FrontendL10n.lblItemValuesHide);
-                $moreTxt.hide();
-            }
+    function toggleAdditionalItemValues() {
+        var $moreLink = $(this);
+        var $moreTxt = findMoreTxtElement($moreLink);
+        var $itemValuesContainer = findItemValuesContainer($moreLink);
+        var additionalValuesShown = areAdditionalItemValueShown($moreLink);
 
-            $moreLink.data('abp01-additional-values-shown', !additionalValuesShown);
-        });
+        var $hideableValues = findHideableItemValues($itemValuesContainer);
+        if (additionalValuesShown) {
+            hideAdditionalItemValues($hideableValues, 
+                $moreLink, 
+                $moreTxt);
+        } else {
+            showAdditionalItemValues($hideableValues, 
+                $moreLink, 
+                $moreTxt);
+        }
+
+        setAdditionalItemValuesShowStatus($moreLink, !additionalValuesShown);
+    }
+
+    function findMoreTxtElement($moreLink) {
+        return $moreLink.siblings('.abp01-field-value-show-more-txt');
+    }
+
+    function findItemValuesContainer($moreLink) {
+        return $moreLink.parent().parent();
+    }
+
+    function areAdditionalItemValueShown($moreLink) {
+        return $moreLink.data('abp01-additional-values-shown') === true;
+    }
+
+    function findHideableItemValues($itemValuesContainer) {
+        return $itemValuesContainer.find('.abp01-field-value-hideable');
+    }
+
+    function hideAdditionalItemValues($hideableValues, $moreLink, $moreTxt) {
+        $hideableValues.hide();
+        $moreLink.html(abp01FrontendL10n.lblItemValuesShow);
+        $moreTxt.show();
+    }
+
+    function showAdditionalItemValues($hideableValues, $moreLink, $moreTxt) {
+        $hideableValues.show();
+        $moreLink.html(abp01FrontendL10n.lblItemValuesHide);
+        $moreTxt.hide();
+    }
+
+    function setAdditionalItemValuesShowStatus($moreLink, additionalValuesShown) {
+        $moreLink.data('abp01-additional-values-shown', additionalValuesShown);
     }
 
     function initControls() {

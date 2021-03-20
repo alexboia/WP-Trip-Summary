@@ -50,6 +50,98 @@ if (!function_exists('abp01_extract_value_from_frontend_data')) {
     }
 }
 
+if (!function_exists('abp01_extract_displayable_info_item_value')) {
+    function abp01_extract_displayable_info_item_value($rawValue) {
+        return esc_html(is_object($rawValue) 
+            ? $rawValue->label 
+            : $rawValue);
+    }
+}
+
+if (!function_exists('abp01_render_info_item_value_part')) {
+    function abp01_render_info_item_value_part($fieldValue, $valueIndex, $showCount, $layoutCssClass) {
+        $shouldBeHidden = $showCount > 0 && ($valueIndex >= $showCount);
+
+        $displayCssClass = $shouldBeHidden 
+            ? 'abp01-field-value-hideable' 
+            : 'abp01-field-value-show';
+
+        $displayInlineCss = $shouldBeHidden 
+            ? 'display: none;' 
+            : '';
+
+        $fieldValueHtml = sprintf('<span class="abp01-field-value-multi %s %s" style="%s">%s</span>', 
+            $layoutCssClass, 
+            $displayCssClass,
+            $displayInlineCss,
+            $fieldValue);
+
+        return $fieldValueHtml;
+    }
+}
+
+if (!function_exists('abp01_render_info_item_value_more_link')) {
+    function abp01_render_info_item_value_more_link($countRemaining, $layoutCssClass) {
+        return sprintf(
+                '<span class="abp01-field-value-multi %s abp01-field-value-show-more">'  
+                    . '<span class="abp01-field-value-show-more-txt">%s</span>'  
+                    . '<a href="javascript:void(0)">%s</a>' 
+                . '</span>',
+            $layoutCssClass,
+            sprintf(__('and %d more'), $countRemaining),
+            __('(show)', 'abp01-trip-summary')
+        );
+    }
+}
+
+if (!function_exists('abp01_format_info_item_single_value')) {
+    function abp01_format_info_item_single_value($value, $suffix, $settings) {
+        $fieldValue = abp01_extract_displayable_info_item_value($value);
+        if (!empty($suffix)) {
+            $fieldValue .= ' ' . $suffix;
+        }
+
+        $fieldValueHtml = sprintf('<span class="abp01-field-value-single">%s</span>', 
+            $fieldValue);
+
+        return $fieldValueHtml;
+    }
+}
+
+if (!function_exists('abp01_format_info_item_multi_value')) {
+    function abp01_format_info_item_multi_value($value, $suffix, $settings) {
+        $fieldValue = '';
+        $fieldValueHtml = '';
+        
+        $valueIndex = 0;
+        $itemValueCount = count($value);
+
+        $showCount = $settings->viewerItemValueDisplayCount;
+        $layoutCssClass = $settings->viewerItemLayout;
+
+        foreach ($value as $v) {
+            $fieldValue = abp01_extract_displayable_info_item_value($v);
+            if ($valueIndex < $itemValueCount - 1) {
+                $fieldValue .= ',';
+            }
+
+            $fieldValueHtml .= abp01_render_info_item_value_part($fieldValue, 
+                $valueIndex, 
+                $showCount, 
+                $layoutCssClass);
+
+            $valueIndex += 1;
+        }
+
+        if ($showCount > 0 && $showCount < $itemValueCount) {
+            $fieldValueHtml .= abp01_render_info_item_value_more_link($itemValueCount - $showCount, 
+                $layoutCssClass);
+        }
+
+        return $fieldValueHtml;
+    }
+}
+
 if (!function_exists('abp01_format_info_item_value')) {
     /**
      * Format the given value, also adding a suffix if not empty.
@@ -62,48 +154,17 @@ if (!function_exists('abp01_format_info_item_value')) {
      * @return string The formatted value
      */
     function abp01_format_info_item_value($value, $suffix, $settings) {
-        $fieldValue = '';
         $fieldValueHtml = '';
 
         if (!empty($value)) {
             if (is_array($value)) {
-                $i = 0;
-                $itemValueCount = count($value);
-                $showCount = $settings->viewerItemValueDisplayCount;
-                foreach ($value as $v) {
-                    $fieldValue = esc_html(is_object($v) ? $v->label : $v);
-                    if ($i < $itemValueCount - 1) {
-                        $fieldValue .= ',';
-                    }
-
-                    $display = $showCount == 0 || ($i < $showCount);
-                    $displayInlineCss = !$display ? 'display: none;' : '';
-
-                    $layoutCssClass = $settings->viewerItemLayout;
-                    $displayCssClass = !$display ? 'abp01-field-value-hideable' : 'abp01-field-value-show';
-
-                    $fieldValueHtml .= sprintf('<span class="abp01-field-value-multi %s %s" style="%s">%s</span>', 
-                        $layoutCssClass, 
-                        $displayCssClass,
-                        $displayInlineCss,
-                        $fieldValue);
-
-                    $i += 1;
-                }
-
-                if ($showCount > 0 && $showCount < $itemValueCount) {
-                    $fieldValueHtml .= sprintf('<span class="abp01-field-value-multi %s abp01-field-value-show-more"><span class="abp01-field-value-show-more-txt">%s</span><a href="javascript:void(0)">%s</a></span>',
-                        $layoutCssClass,
-                        sprintf(__('and %d more'), ($itemValueCount - $showCount)),
-                        __('(show)', 'abp01-trip-summary'));
-                }
+                $fieldValueHtml = abp01_format_info_item_multi_value($value, 
+                    $suffix, 
+                    $settings);
             } else {
-                $fieldValue .= esc_html(is_object($value) ? $value->label : $value);
-                if (!empty($suffix)) {
-                    $fieldValue .= ' ' . $suffix;
-                }
-
-                $fieldValueHtml = sprintf('<span class="abp01-field-value-single">%s</span>', $fieldValue);
+                $fieldValueHtml = abp01_format_info_item_single_value($value, 
+                    $suffix, 
+                    $settings);
             }
         }
 
