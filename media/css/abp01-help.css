@@ -34,6 +34,14 @@
     list-style-position: inside;
 }
 
+.abp01-help-section {
+    width: 800px;
+    background: #fff;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    border-radius: 5px;
+    padding: 1px 10px 5px 10px;
+}
+
 #abp01-help-contents ul {
     margin-left: 15px;
 }

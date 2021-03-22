@@ -1,14 +1,17 @@
 # Cuprins {#help-root}
 
+<div class="abp01-help-section" markdown="1">
 - [Detalii Generale](#detalii-generale)
 - [Componenta de Vizualizare](#componenta-vizualizare)
 - [Componenta de Editare](#componenta-editare)
 - [Configurare & Gestiune](#configurare-si-gestiune)
+</div>
 
 # Detalii Generale {#detalii-generale}
 
 ## Despre {#dg-despre}
 
+<div class="abp01-help-section" markdown="1">
 ### Scopul Proiectului {#dg-scopul-proiectului}
 
 Proiectul a început dintr-un motiv cât se poate de egoist: îmi doream să păstrez un jurnal structurat despre excursiile pe care le fac.
@@ -37,9 +40,11 @@ Cu alte cuvinte, vă puteți documenta (doar) aceste trei tipuri de plimbări.
 - Componenta de configurare: se ocupă cu gestiunea opțiunilor generale, dar și cu gestiunea nomenclatoarelor (liste de valori predefinte ce pot fi selectate atunci când se completează datele despre traseul parcurs) ([Detalii aici](#optiuni-de-configurare-si-gestiune)).
 
 [Înapoi la Cuprins](#help-root)
+</div>
 
 ## Capturi de Ecran {#dg-capturi-ecran}
 
+<div class="abp01-help-section abp01-help-image-slideshow" markdown="1">
 #### Pagina de configurare
 ![Pagina de configurare]($helpDataDirUrl$/screenshots/admin-settings.png "Pagina de configurare")
 
@@ -65,9 +70,11 @@ Cu alte cuvinte, vă puteți documenta (doar) aceste trei tipuri de plimbări.
 ![Listare articole - Coloane informationale]($helpDataDirUrl$/screenshots/post-listing-columns.png "Listare articole - Coloane informationale")
 
 [Înapoi la Cuprins](#help-root)
+</div>
 
 ## Cerințe Tehnice {#dg-cerinte-tehnice}
 
+<div class="abp01-help-section" markdown="1">
 Pentru a rula acest modul, aveți nevoie de următoarele:
 
 - PHP versiunea 5.6.2 sau mai recenta;
@@ -82,9 +89,11 @@ Pentru a rula acest modul, aveți nevoie de următoarele:
 În principiu toate aceste cerințe sunt verificate la instalare, iar procesul se oprește dacă nu sunt îndeplinite.
 
 [Înapoi la Cuprins](#help-root)
+</div>
 
 ## Licența {#dg-licenta}
 
+<div class="abp01-help-section" markdown="1">
 Acest modul este distribuit sub licența [BSD New License](https://opensource.org/licenses/BSD-3-Clause). Ce înseamnă asta:
 
 - că îl puteți folosi absolut gratuit și fără vreun alt fel de obligație materială sau financiară;
@@ -93,9 +102,11 @@ Acest modul este distribuit sub licența [BSD New License](https://opensource.or
 - că nu este oferită nici un fel de garanție de bună funcționare, de nici un fel, nici implicită, nici explicită.
 
 [Înapoi la Cuprins](#help-root)
+</div>
 
 ## Mențiuni & Mulțumiri {#dg-mentiuni-multumiri}
 
+<div class="abp01-help-section" markdown="1">
 Modulul WP-Trip-Summary folosește următoarele librării:
 
 1. [PHP-MySQLi-Database-Class](https://github.com/joshcam/PHP-MySQLi-Database-Class) - o librărie construită peste mysqli. Este folosită în locul wpdb, componenta standard din WordPress.
@@ -118,33 +129,41 @@ Modulul WP-Trip-Summary folosește următoarele librării:
 18. [Faker](https://github.com/fzaninotto/Faker) - o librărie PHP ce generează date aleatorii ce pot fi folosite la testare
 
 [Înapoi la Cuprins](#help-root)
+</div>
 
 # Componenta de Vizualizare {#componenta-vizualizare}
 
+<div class="abp01-help-section" markdown="1">
 Componenta de vizualizare este formată din trei zone distincte:
 
 - teaser-ul superior;
 - teaser-ul inferior;
 - caseta tehnică propriu-zisă.
+</div>
 
 ## Teaser-ul Superior
 
+<div class="abp01-help-section" markdown="1">
 Superior ca poziție, desigur, nu calitativ. 
 Este afișat deasupra conținutului articolului, dar sub titlu si are scopul de a ghida cititorul către caseta tehnică.
 Ideea de la care am pornit este că nu toată lumea poate realiza că există un astfel de instrument pe pagină și, în caz că este singurul punct de interes, să fie direcționat acolo unde dorește.
 
 [Înapoi la Cuprins](#help-root)
+</div>
 
 ## Teaser-ul Inferior
 
+<div class="abp01-help-section" markdown="1">
 Inferior ca poziție, desigur, nu calitativ. 
 Este afișat sub conținutului articolului, chiar sub caseta tehnică.
 Nu este afișat mereu, ci doar când sistemul detectează posibilitatea ca utilizatorul să fi sărit peste articol și servește ca un mijloc de a ajunge rapid la început pentru a lectura frumoasa operă.
 
 [Înapoi la Cuprins](#help-root)
+</div>
 
 ## Caseta Tehnică
 
+<div class="abp01-help-section" markdown="1">
 Reprezintă, desigur, zona propriu-zisă unde sunt afișate, pe câte un tab distinct:
 
 - harta cu traseul evidențiat;
@@ -164,17 +183,21 @@ Harta în sine, oferă următoarele unelte:
 O parte din aceste opțiuni pot fi dezactivate folosind componenta de gestiune, așa cum este descris mai jos.
 
 [Înapoi la Cuprins](#help-root)
+</div>
 
 # Componenta de Editare {#componenta-editare}
 
+<div class="abp01-help-section" markdown="1">
 Componenta de editare permite modificarea sumarului tehnic al turei și atașarea track-ului GPS.
 Astfel, asemeni componentei de vizualizare, este organizată în două tab-uri, câte unul pentru fiecare categorie de date:
 
 - formularul de modificare a informațiilor tehnice;
 - zona de încărcare și previzualizare a track-ului GPS.
+</div>
 
 ## Caseta introductivă
 
+<div class="abp01-help-section" markdown="1">
 Caseta introductivă servește la integrarea componentei de editare în fluxul de lucru cu post-uri al WordPress.
 Este prezentată ca un metabox, plasată in bara laterală a ecranului de editare a post-urilor, intitulată: `Tura pe scurt`. 
 Permite accesul rapid la următoarele informații și acțiuni relevante:
@@ -190,8 +213,12 @@ Permite accesul rapid la următoarele informații și acțiuni relevante:
 - descărcarea track-ului GPS atașat post-ului curent (via butonul `Acțiuni rapide`);
 - deschiderea componentei de editare propriu-zise pentru post-ul curent (via butonul `Modifică`).
 
+[Înapoi la Cuprins](#help-root)
+</div>
+
 ## Formularul de Modificare a Informațiilor Tehnice
 
+<div class="abp01-help-section" markdown="1">
 Tab-ul corespunzător este denumit simplu, ”Informații”.
 Dacă nu a fost completat, este populat cu trei butoane, câte unul pentru fiecare tip de tură suportat:
 
@@ -209,9 +236,11 @@ De menționat că, indiferent de formular, dacă vreunul din câmpurile care nec
 - "Șterge Info" - trebuie acționat atunci când se dorește ștergerea întregului set de informații tehnice.
 
 [Înapoi la Cuprins](#help-root)
+</div>
 
 ## Formularul de Încărcare și Previzualizare a Track-ului GPS
 
+<div class="abp01-help-section" markdown="1">
 Tab-ul corespunzător este denumit simplu, "Hartă & Track GPS".
 Dacă nu a fost ales încă nici un track, este populat cu un singur buton, care permite răsfoirea calculatorului personal întru alegerea fișierului GPX dorit spre atașare.
 
@@ -223,9 +252,11 @@ Odată track-ul încărcat, harta va fi centrată, iar zoom-ul său ajustat astf
 - "Șterge track" - trebuie acționat atunci când se dorește ștergerea întregului track (vizibil, desigur, doar după ce a fost încărcat un track).
 
 [Înapoi la Cuprins](#help-root)
+</div>
 
 # Configurare & Gestiune {#configurare-si-gestiune}
 
+<div class="abp01-help-section" markdown="1">
 - [Opțiunile Generice](#configurare-si-gestiune-opt-generice)
 - [Gestiunea Nomenclatoarelor](#configurare-si-gestiune-gst-nomenclatoare)
 
@@ -233,10 +264,12 @@ Elementele de configurare & gestiune sunt puse la punct pentru a oferi o oarecar
 
 - opțiuni generice (unități de măsură, activarea / dezactivarea unor unelte sau elemente de interfață etc.);
 - gestiunea nomenclatoarelor (adică a seturilor de opțiuni predefinite din care se completează unele câmpuri, cum ar fi Nivelul de Dificultate).
+</div>
 
 ## Opțiunile Generice {#configurare-si-gestiune-opt-generice}
 
-Există o pagină dedicată din care opțiunile generice pot fi modificate. Acolo se ajunge din meniul principal, accesând: `Trip Summary -> Configurare`.
+<div class="abp01-help-section" markdown="1">
+Există o pagină dedicată din care opțiunile generice pot fi modificate. Acolo se ajunge din meniul principal, accesând: `Trip Summary - Configurare`.
 
 Odată ajunși aici, există următoarele punct de configurare.
 
@@ -338,9 +371,11 @@ Se aplică doar hărții afișate în viewer-ul din front-end.
 Valoarea implicită este de 350 de pixeli.
 
 [Înapoi la Cuprins](#help-root)
+</div>
 
 ## Gestiunea Nomenclatoarelor {#configurare-si-gestiune-gst-nomenclatoare}
 
+<div class="abp01-help-section" markdown="1">
 Nomenclatoarele sunt seturi de opțiuni predefinite din care se completează unele câmpuri. 
 Valorile acestor opțiuni sunt modificabile în funcție de o limbă aleasă. 
 Sunt disponibile toate limbile suportate de WordPress, plus posibilitatea de a stabili o valoare implicită.
@@ -481,3 +516,4 @@ De notat că atunci când se adaugă un item pentru limba implicită sistemul ce
 Pe de altă parte, când se adaugă un item pentru o limbă anume (ex. Română, Engleză etc.), sistemul cere eticheta atât pentru limba implicită, cât și pentru limba selectată.
 
 [Înapoi la Cuprins](#help-root)
+</div>

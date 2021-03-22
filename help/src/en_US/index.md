@@ -1,14 +1,17 @@
 # Table of Contents {#help-root}
 
+<div class="abp01-help-section" markdown="1">
 - [General Information](#general-information)
 - [The Viewer Component](#viewer-component)
 - [The Editor Component](#editor-component)
 - [Configuration & Management](#configuration-management)
+</div>
 
 # General Information {#general-information}
 
 ## About {#dg-about}
 
+<div class="abp01-help-section" markdown="1">
 ### Purpose of This Project {#dg-project-purpose}
 
 I initially started this project for my own personal use, as something to help me keep some structured information about my trips.
@@ -37,9 +40,11 @@ Depending on the various functions performed by various plug-in components, we c
 - The Configuration Component: handles plug-in option management, but also the look-up data management (various lists of values from which one can be selected when filling various selector fields in the trip data editor)([More details here](#configuration-component)).
 
 [Back to the Table of Contents](#help-root)
+</div>
 
 ## Screenshots {#dg-screenshots}
 
+<div class="abp01-help-section abp01-help-image-slideshow" markdown="1">
 #### The configuration page
 ![The configuration page]($helpDataDirUrl$/screenshots/admin-settings.png "The configuration page")
 
@@ -71,9 +76,11 @@ Depending on the various functions performed by various plug-in components, we c
 ![Post listing - Additional info columns]($helpDataDirUrl$/screenshots/post-listing-columns.png "Post listing - Additional info columns")
 
 [Back to the Table of Contents](#help-root)
+</div>
 
 ## Technical Requirements {#dg-technical-requirements}
 
+<div class="abp01-help-section" markdown="1">
 To run this module, the following technical requirements must be met:
 
 - PHP version 5.6.2 or greater;
@@ -88,9 +95,11 @@ To run this module, the following technical requirements must be met:
 Basically all these requirements are checked upon installation and the process stops if they are not met.
 
 [Back to the Table of Contents](#help-root)
+</div>
 
 ## Licensing Terms {#dg-licensing-terms}
 
+<div class="abp01-help-section" markdown="1">
 This plug-in is distributed under the terms of the [BSD New License](https://opensource.org/licenses/BSD-3-Clause). What this means:
 
 - that you may use it free of charge and without any kind of royalty;
@@ -99,9 +108,11 @@ This plug-in is distributed under the terms of the [BSD New License](https://ope
 - that there is no warranty whatsoever, neither explicit, nor implicit.
 
 [Back to the Table of Contents](#help-root)
+</div>
 
 ## Credits {#dg-credits}
 
+<div class="abp01-help-section" markdown="1">
 This plug-in would have required much more work on my said without the following awesome components:
 
 1. [PHP-MySQLi-Database-Class](https://github.com/joshcam/PHP-MySQLi-Database-Class) - small and practical mysqli wrapper; I use it instead of the awful wpdb;
@@ -124,32 +135,40 @@ This plug-in would have required much more work on my said without the following
 18. [Faker](https://github.com/fzaninotto/Faker) - faker is a PHP library that generates fake data for you
 
 [Back to the Table of Contents](#help-root)
+</div>
 
 # The Viewer Component {#viewer-component}
 
+<div class="abp01-help-section" markdown="1">
 The viewer component is comprised of three distinct areas:
 
 - the top teaser;
 - the bottom teaser;
 - the technical box itself.
+</div>
 
 ## The Top Teaser
 
+<div class="abp01-help-section" markdown="1">
 This is a small box (yellowish, by default) displayed above the post content, but below the post title.
 Its purpose is to guide the readers to the technical box. 
 The idea is to let everyone know that there such thing as a technical box and, if that's the only thing they're searching for, quickly take them there.
 
 [Back to the Table of Contents](#help-root)
+</div>
 
 ## The Bottom Teaser
 
+<div class="abp01-help-section" markdown="1">
 Yet another small box (also yellowish, by default), but displayed below the post content.
 It is not always displayed, but only when the system detects that the user might have skipped the content (i.e. scrolled too fast), in which case the reader is encouraged to jump back to the beginning of the post to read the post.
 
 [Back to the Table of Contents](#help-root)
+</div>
 
 ## The Technical Box
 
+<div class="abp01-help-section" markdown="1">
 This is the area where, each on a distinct tab, the following sections are displayed:
 
 - the map that displays the route;
@@ -159,17 +178,21 @@ Each tab is only displayed when the corresponding information has been provided 
 If there is not any kind of information for any of these tabs, then the entire component is hidden, including the teasers.  
 
 [Back to the Table of Contents](#help-root)
+</div>
 
 # The Editor Component {#editor-component}
 
+<div class="abp01-help-section" markdown="1">
 The editing component allows editing the trip's technical summary, as well as uploading the GPX track.
 Thus, it to is organized in two tabs, one for each category of information:
 
 - the technical summary details editing form;
 - the GPX track upload & preview area.
+</div>
 
 ## The Editor Launcher
 
+<div class="abp01-help-section" markdown="1">
 The editor launcher smoothly integrates the trip summary editing experience into WordPress post editing workflow.  
 It is presented as a metabox, rendered in the sidebar of the post editing screen, titled: `Trip summary`. 
 At a glance, it allows access to the following information and actions:
@@ -185,10 +208,12 @@ At a glance, it allows access to the following information and actions:
 - download the current post's trip summary GPS track (via the `Quick actions` link button);
 - open the trip summary editor form for the current post (via the `Edit` button).
 
-[Înapoi la Cuprins](#help-root)
+[Back to the Table of Contents](#help-root)
+</div>
 
 ## The Technical Summary Details Editing Form
 
+<div class="abp01-help-section" markdown="1">
 The corresponding tab is simply named "Info".
 If no information has been filled in, the form only displays three buttons, one for each supported trip type:
 
@@ -204,9 +229,11 @@ Besides the form, on the bottom side of the screen two additional control button
 - "Clear" - used to when the entire trip information set needs to be removed.
 
 [Back to the Table of Contents](#help-root)
+</div>
 
 ## The GPS Track Upload & Preview Area
 
+<div class="abp01-help-section" markdown="1">
 The corresponding tab is simply named "Map".
 If no track has been uploaded yet, then this screen only displays a button that allows browsing for a GPX track file on the local computer.
 
@@ -218,9 +245,11 @@ Besides the form, on the bottom side of the screen two additional control button
 - "Clear" - used to when the entire track needs to be removed.
 
 [Back to the Table of Contents](#help-root)
+</div>
 
 # Configuration & Management {#configuration-management}
 
+<div class="abp01-help-section" markdown="1">
 - [General Options](#configure-general-options)
 - [Lookup Data Management](#configure-lookup-data)
 
@@ -228,9 +257,11 @@ The configuration elements can be seen as forming two discrete sections:
 
 - general options - measurement units, enabling or disabling various interface elements etc.;
 - lookup data management - these are data sets of predefined options from which some fields are filled in, such as the Difficulty Level.
+</div>
 
 ## General Options {#configure-general-options}
 
+<div class="abp01-help-section" markdown="1">
 There is a dedicated page where these options may be modified to best suit your needs. One can get there by accessing `Trip Summary -> Settings` in the main menu.
 
 Once there, the following settings are made available.
@@ -333,9 +364,11 @@ Applies only to the front-end viewer.
 The default value is the former default map height: 350 pixels.
 
 [Back to the Table of Contents](#help-root)
+</div>
 
 ## Lookup Data Management {#configure-lookup-data}
 
+<div class="abp01-help-section" markdown="1">
 Lookup data represents a couple of sets of predefined options out of which some fields are filled in. Some fields only required one value, some multiple.
 The plug-in supports per-language values for each option in a data set. 
 Also, one can define said values for any WordPress-supported language.
@@ -478,3 +511,4 @@ The following should also be noted:
 - when adding a new option/item for a specific language, the system requires the label for both that language and the default language.
 
 [Back to the Table of Contents](#help-root)
+</div>

@@ -1,14 +1,17 @@
 # Sommaire {#help-root}  
 
+<div class="abp01-help-section" markdown="1">
 - [Détails généraux](#general-information)
 - [Composant de visualisation](#viewer-component)
 - [Composant d'édition](#editor-component)
 - [Configuration et gestion](#configuration-management)
+</div>
 
 # Détails généraux {#general-information}
 
 ## Environ {#dg-about}
 
+<div class="abp01-help-section" markdown="1">
 ### Objectif du projet {#dg-project-purpose}
 
 Le projet a commencé pour une raison aussi égoïste que possible: je voulais tenir un journal structuré sur les voyages que je fais.
@@ -37,9 +40,11 @@ Selon les différentes fonctions exercées par les zones du module, nous pouvons
 - Composant de configuration: il traite de la gestion des options générales, mais aussi de la gestion des nomenclatures (listes de valeurs prédéfinies qui peuvent être sélectionnées lorsque les données sur l'itinéraire sont terminées) ([Détails ici](#configuration-component)).
 
 [Retour au sommaire](#help-root)
+</div>
 
 ## Captures d'écran {#dg-screenshots}
 
+<div class="abp01-help-section abp01-help-image-slideshow" markdown="1">
 #### Page de configuration
 ![Page de configuration]($helpDataDirUrl$/screenshots/admin-settings.png "Page de configuration")
 
@@ -71,9 +76,11 @@ Selon les différentes fonctions exercées par les zones du module, nous pouvons
 ![Liste d'articles - Colonnes d'information]($helpDataDirUrl$/screenshots/post-listing-columns.png "Liste d'articles - Colonnes d'information")
 
 [Retour au sommaire](#help-root)
+</div>
 
 ## Exigences techniques {#dg-technical-requirements}
 
+<div class="abp01-help-section" markdown="1">
 Pour exécuter ce module, vous avez besoin des éléments suivants:
 
 - PHP version 5.6.2 ou ultérieure;
@@ -88,9 +95,11 @@ Pour exécuter ce module, vous avez besoin des éléments suivants:
 En principe, toutes ces exigences sont vérifiées lors de l'installation et le processus s'arrête si elles ne sont pas respectées.
 
 [Retour au sommaire](#help-root)
+</div>
 
 ## Licence {#dg-licensing-terms}
 
+<div class="abp01-help-section" markdown="1">
 Ce module est distribué sous la [Nouvelle licence BSD](https://opensource.org/licenses/BSD-3-Clause). Qu'est-ce que cela signifie:
 
 - que vous pouvez l'utiliser absolument gratuitement et sans autre obligation matérielle ou financière;
@@ -99,9 +108,11 @@ Ce module est distribué sous la [Nouvelle licence BSD](https://opensource.org/l
 - qu'aucune garantie de bon fonctionnement, d'aucune sorte, ni implicite ni explicite n'est offerte.
 
 [Retour au sommaire](#help-root)
+</div>
 
 ## Mentions et remerciements {#dg-credits}
 
+<div class="abp01-help-section" markdown="1">
 Le module WP-Trip-Summary utilise les bibliothèques suivantes:  
 
 1. [PHP-MySQLi-Database-Class](https://github.com/joshcam/PHP-MySQLi-Database-Class) - une bibliothèque construite sur mysqli. Il est utilisé à la place de wpdb, le composant WordPress standard.
@@ -120,33 +131,41 @@ Le module WP-Trip-Summary utilise les bibliothèques suivantes:
 14. [Leaflet.fullscreen](https://github.com/Leaflet/Leaflet.fullscreen) - plug-in Leaflet qui permet d'afficher la carte en plein écran
 
 [Retour au sommaire](#help-root)
+</div>
 
 # Composant de visualisation {#viewer-component}
 
+<div class="abp01-help-section" markdown="1">
 Le composant de visualisation se compose de trois zones distinctes:
 
 - le teaser supérieur;
 - le teaser du bas;
 - le coffret technique lui-même.
+</div>
 
 ## Le teaser supérieur
 
+<div class="abp01-help-section" markdown="1">
 Bien sûr, ce n'est pas un poste de qualité supérieure.
 Il est affiché au-dessus du contenu de l'article, mais sous le titre et vise à guider le lecteur vers la boîte technique.
 L'idée à partir de laquelle j'ai commencé est que tout le monde ne peut pas réaliser qu'il y a un tel outil sur la page et, si c'est le seul point d'intérêt, être dirigé où il veut.
 
 [Retour au sommaire](#help-root)
+</div>
 
 ## Le teaser du bas
 
+<div class="abp01-help-section" markdown="1">
 Plus bas comme position, bien sûr, pas qualitatif.
 Il est affiché sous le contenu de l'article, même sous la case technique.
 Il n'est pas toujours affiché, mais uniquement lorsque le système détecte la possibilité que l'utilisateur saute par-dessus l'article et sert de moyen d'atteindre rapidement le début pour lire le bel ouvrage.
 
 [Retour au sommaire](#help-root)
+</div>
 
 ## Coffret technique
 
+<div class="abp01-help-section" markdown="1">
 Il représente, bien sûr, la zone réelle où ils sont affichés, sur un onglet séparé:
 
 - la carte avec l'itinéraire en surbrillance;
@@ -166,17 +185,21 @@ La carte elle-même propose les outils suivants:
 Certaines de ces options peuvent être désactivées à l'aide du composant de gestion, comme décrit ci-dessous.
 
 [Retour au sommaire](#help-root)
+</div>
 
 # Composant d'édition {#editor-component}
 
+<div class="abp01-help-section" markdown="1">
 Le composant d'édition vous permet de modifier le résumé technique du tour et d'attacher la trace GPS.
 Ainsi, comme le composant de visualisation, il est organisé en deux onglets, un pour chaque catégorie de données:
 
 - le formulaire de modification des informations techniques;
 - Zone de chargement et d'aperçu de la trace GPS.
+</div>
 
 ## Lanceur de l'éditeur de résumé de voyage
 
+<div class="abp01-help-section" markdown="1">
 Le lanceur de l'éditeur de résumé de voyage d'introduction sert à intégrer le composant d'édition dans la station de travail de WordPress.
 Il est présenté sous la forme d'une métabox, placée dans la barre latérale de l'écran de post-édition, intitulée: `Résumé du voyage`.
 Permet un accès rapide aux informations et actions pertinentes suivantes:
@@ -193,9 +216,11 @@ Permet un accès rapide aux informations et actions pertinentes suivantes:
 - ouvrir le composant d'édition lui-même pour le poste actuel (via le bouton `Modifier`).
 
 [Retour au sommaire](#help-root)
+</div>
 
 ## Le formulaire de la modification des informations techniques
 
+<div class="abp01-help-section" markdown="1">
 L'onglet approprié est simplement appelé "Informations".
 S'il n'est pas terminé, il est rempli de trois boutons, un pour chaque type de tour pris en charge:
 
@@ -213,9 +238,11 @@ En plus du formulaire, en bas de l'écran, vous trouverez deux boutons de contr�
 - "Supprimer les informations" - doit être appliqué lorsque vous souhaitez supprimer l'ensemble des informations techniques.
 
 [Retour au sommaire](#help-root)
+</div>
 
 ## Formulaire de téléchargement et de prévisualisation de la trace GPS
 
+<div class="abp01-help-section" markdown="1">
 L'onglet approprié est simplement appelé "Carte et trace GPS".
 Si aucune piste n'a encore été choisie, elle est remplie d'un seul bouton, ce qui vous permet de parcourir votre ordinateur personnel pour choisir le fichier GPX souhaité à joindre.
 
@@ -227,9 +254,11 @@ En plus du formulaire, deux boutons de contrôle se trouvent en bas de l'écran:
 - "Supprimer la piste" - doit être appliqué lorsque vous souhaitez supprimer la piste entière (visible, bien sûr, uniquement après le téléchargement d'une piste).
 
 [Retour au sommaire](#help-root)
+</div>
 
 # Configuration et gestion {#configuration-management}
 
+<div class="abp01-help-section" markdown="1">
 - [Options génériques](#configure-general-options)
 - [Gestion de la nomenclature](#configure-lookup-data)
 
@@ -237,9 +266,11 @@ Les éléments de configuration et de gestion sont réglés pour offrir une cert
 
 - options génériques (unités de mesure, activation / désactivation d'outils ou d'éléments d'interface, etc.);
 - gestion de la nomenclature (c'est-à-dire les jeux d'options prédéfinis à partir desquels certains champs sont remplis, comme le niveau de difficulté).
+</div>
 
 ## Options génériques {#configure-general-options}
 
+<div class="abp01-help-section" markdown="1">
 Il existe une page dédiée à partir de laquelle les options génériques peuvent être modifiées. Vous pouvez y accéder depuis le menu principal en allant sur: `WP Trip Summary -> Paramètres`.
 
 Une fois arrivé ici, il y a les points de configuration suivants.
@@ -343,9 +374,11 @@ S'applique uniquement au visualiseur frontal.
 La valeur par défaut est: 350 pixels.
 
 [Retour au sommaire](#help-root)
+</div>
 
 ## Gestion de la nomenclature {#configure-lookup-data}
 
+<div class="abp01-help-section" markdown="1">
 Les nomenclatures sont des ensembles d'options prédéfinis à partir desquels remplir certains champs.
 Les valeurs de ces options peuvent être modifiées en fonction de la langue choisie.
 Toutes les langues prises en charge par WordPress sont disponibles, plus la possibilité de définir une valeur par défaut.
@@ -486,3 +519,4 @@ Il convient de noter que lors de l'ajout d'un élément pour la langue par défa
 D'autre part, lors de l'ajout d'un élément pour une langue particulière (par exemple le roumain, l'anglais, etc.), le système demande l'étiquette pour la langue par défaut et la langue sélectionnée.
 
 [Retour au sommaire](#help-root)
+</div>
