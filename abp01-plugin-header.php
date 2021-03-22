@@ -216,37 +216,6 @@ define('ABP01_ACTION_ADD_LOOKUP', 'abp01_add_lookup');
 define('ABP01_ACTION_EDIT_LOOKUP', 'abp01_edit_lookup');
 
 /**
- * The prefix used to construct nonce tokens required 
- *  when saving trip summary information, as well as 
- *  when uploading GPS track data.
- * The post Id is appended to this prefix to establish 
- *  the final string used to generate the nonce. 
- * 
- * @var string
- */
-define('ABP01_NONCE_TRIP_SUMMARY_EDITOR', 'abp01.nonce.tripSummaryEditor');
-
-/**
- * The prefix used to construct nonce tokens required 
- *  when retrieving JSON GPS track data.
- * The post Id is appended to this prefix to establish 
- *  the final string used to generate the nonce. 
- * 
- * @var string
- */
-define('ABP01_NONCE_GET_TRACK', 'abp01.nonce.getTrack');
-
-/**
- * The prefix used to construct nonce tokens required 
- *  when downloading the original GPS track data file (GPX or otherwise)
- * The post Id is appended to this prefix to establish 
- *  the final string used to generate the nonce. 
- * 
- * @var string
- */
-define('ABP01_NONCE_DOWNLOAD_TRACK', 'abp01.nonce.downloadTrack');
-
-/**
  * The name of the file upload file that, 
  *  albeit hidden from view, is used to 
  *  upload the track file to the server
