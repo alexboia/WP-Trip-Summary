@@ -113,9 +113,6 @@ class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_Plug
 	private function _registerWebPageAssets() {
 		add_action('admin_enqueue_scripts', 
 			array($this, 'onAdminEnqueueStyles'));
-
-		add_action('admin_enqueue_scripts', 
-			array($this, 'onAdminEnqueueScripts'));
 	}
 
 	public function onAdminEnqueueStyles() {
@@ -130,11 +127,5 @@ class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_Plug
 
 	private function _isViewingAboutPage() {
 		return $this->_env->isAdminPage(ABP01_ABOUT_SUBMENU_SLUG);
-	}
-
-	public function onAdminEnqueueScripts() {
-		if ($this->_shouldEnqueueWebPageAssets()) {
-			
-		}
 	}
 }

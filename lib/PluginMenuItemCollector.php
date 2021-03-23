@@ -73,6 +73,10 @@ class Abp01_PluginMenuItemCollector {
 		if (empty($menuItem['capability'])) {
 			throw new Abp01_Exception('Menu item must have a non-empty capability');
 		}
+		
+		if (!empty($menuItem['parent']) && !empty($menuItem['reRegisterAsChildWithMenuTitle'])) {
+			throw new Abp01_Exception('A child menu item cannot register itself as a child menu item');
+		}
 	}
 
 	private function _collectChildMenuItem($parentSlug, array $menuItem) {
