@@ -88,7 +88,9 @@ class Abp01_Includes {
 
 	const JS_ABP01_PROGRESS_OVERLAY = 'abp01-progress-overlay';
 
-	const JS_ABP01_NUMERIC_STEPPER = 'abp01-numeric-stepper';
+	const JS_ABP01_NUMERIC_STEPPER = 'abp01-numeric-stepper-js';
+
+	const JS_ABP01_HELP_IMAGE_GALLERY = 'abp01-help-image-gallery-js';
 
 	const JS_ABP01_ADMIN_MAIN = 'abp01-main-admin';
 
@@ -133,6 +135,8 @@ class Abp01_Includes {
 	const STYLE_CHART_JS = 'abp01-chart-js-css';
 
 	const STYLE_ABP01_NUMERIC_STEPPER = 'abp01-numeric-stepper-css';
+
+	const STYLE_ABP01_HELP_IMAGE_GALLERY = 'abp01-help-image-gallery-css';
 
 	const STYLE_ADMIN_COMMON = 'abp01-admin-common-css';
 
@@ -331,6 +335,13 @@ class Abp01_Includes {
 				self::JS_JQUERY
 			)
 		),
+		self::JS_ABP01_HELP_IMAGE_GALLERY => array(
+			'path' => 'media/js/abp01-admin-help-image-gallery.js', 
+			'version' => ABP01_VERSION,
+			'deps' => array(
+				self::JS_JQUERY
+			)
+		),
 		self::JS_ABP01_MAP => array(
 			'path' => 'media/js/abp01-map.js', 
 			'version' => ABP01_VERSION,
@@ -430,7 +441,8 @@ class Abp01_Includes {
 				self::JS_JQUERY,
 				self::JS_JQUERY_BLOCKUI,
 				self::JS_URI_JS,
-				self::JS_ABP01_PROGRESS_OVERLAY
+				self::JS_ABP01_PROGRESS_OVERLAY,
+				self::JS_ABP01_HELP_IMAGE_GALLERY
 			)
 		),
 		self::JS_ABP01_VIEWER_SHORTCODE_BLOCK => array(
@@ -475,6 +487,13 @@ class Abp01_Includes {
 				self::STYLE_DASHICONS
 			)
 		), 
+		self::STYLE_ABP01_HELP_IMAGE_GALLERY => array(
+			'path' => 'media/css/abp01-admin-help-image-gallery.css', 
+			'version' => ABP01_VERSION,
+			'deps' => array(
+				self::STYLE_DASHICONS
+			)
+		),
 		self::STYLE_JQUERY_TOASTR => array(
 			'path' => 'media/js/3rdParty/toastr/toastr.css', 
 			'version' => '2.1.4'
@@ -602,6 +621,7 @@ class Abp01_Includes {
 			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::STYLE_NPROGRESS,
+				self::STYLE_ABP01_HELP_IMAGE_GALLERY,
 				self::STYLE_ADMIN_COMMON
 			)
 		),

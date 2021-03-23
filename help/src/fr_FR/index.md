@@ -45,34 +45,34 @@ Selon les différentes fonctions exercées par les zones du module, nous pouvons
 ## Captures d'écran {#dg-screenshots}
 
 <div class="abp01-help-section abp01-help-image-slideshow" markdown="1">
-#### Page de configuration
+#### Page de configuration {.abp01-gallery-item-header}
 ![Page de configuration]($helpDataDirUrl$/screenshots/admin-settings.png "Page de configuration")
 
-#### Édition d'article - Lanceur de l'éditeur de résumé de voyage
+#### Édition d'article - Lanceur de l'éditeur de résumé de voyage {.abp01-gallery-item-header}
 ![Édition d'article - Lanceur de l'éditeur de résumé de voyage]($helpDataDirUrl$/screenshots/admin-edit-launcher.png "Édition d'article - Lanceur de l'éditeur de résumé de voyage")
 
-#### Édition d'article - Lanceur de l'éditeur de résumé de voyage (éditeur de blocs)
+#### Édition d'article - Lanceur de l'éditeur de résumé de voyage (éditeur de blocs) {.abp01-gallery-item-header}
 ![Édition d'article - Lanceur de l'éditeur de résumé de voyage (éditeur de blocs)]($helpDataDirUrl$/screenshots/admin-edit-launcher-block.png "Édition d'article - Lanceur de l'éditeur de résumé de voyage (éditeur de blocs)")
 
 #### Édition d'article - Résumé technique - Sélection du type d'itinéraire
 ![Modifier l'article - Résumé technique - Sélection du type d'itinéraire]($helpDataDirUrl$/screenshots/admin-edit-summary-empty.png "Article Modifier - Résumé technique - Sélection du type d'itinéraire")
 
-#### Modification d'articles - Résumé technique - Informations sur les itinéraires cyclables
+#### Modification d'articles - Résumé technique - Informations sur les itinéraires cyclables {.abp01-gallery-item-header}
 ![Modification d'article - Résumé technique - Informations sur l'itinéraire cyclable]($helpDataDirUrl$/screenshots/admin-edit-summary-bike.png "Edition d'article - Résumé technique - Informations sur l'itinéraire cyclable")
 
-#### Édition d'article - Résumé technique - Carte
+#### Édition d'article - Résumé technique - Carte {.abp01-gallery-item-header}
 ![Édition d'article - Résumé technique - Carte]($helpDataDirUrl$/screenshots/admin-edit-map.png "Édition d'article - Résumé technique - Carte")
 
-#### Item - Teaser d'en haut
+#### Item - Teaser d'en haut {.abp01-gallery-item-header}
 ![Article - Teaser d'en haut]($helpDataDirUrl$/screenshots/viewer-teaser-top.png "Article - Teaser d'en haut")
 
-#### Article - Résumé technique
+#### Article - Résumé technique {.abp01-gallery-item-header}
 ![Article - Résumé technique]($helpDataDirUrl$/screenshots/viewer-summary.png "Article - Résumé technique")
 
-#### Article - Carte
+#### Article - Carte {.abp01-gallery-item-header}
 ![Article - Carte]($helpDataDirUrl$/screenshots/viewer-map.png "Article - Carte")
 
-#### Liste des articles - Colonnes d'information
+#### Liste des articles - Colonnes d'information {.abp01-gallery-item-header}
 ![Liste d'articles - Colonnes d'information]($helpDataDirUrl$/screenshots/post-listing-columns.png "Liste d'articles - Colonnes d'information")
 
 [Retour au sommaire](#help-root)

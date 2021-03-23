@@ -45,34 +45,34 @@ Depending on the various functions performed by various plug-in components, we c
 ## Screenshots {#dg-screenshots}
 
 <div class="abp01-help-section abp01-help-image-slideshow" markdown="1">
-#### The configuration page
+#### The configuration page  {.abp01-gallery-item-header}
 ![The configuration page]($helpDataDirUrl$/screenshots/admin-settings.png "The configuration page")
 
-#### Edit post - Trip summary editor launcher
+#### Edit post - Trip summary editor launcher {.abp01-gallery-item-header}
 ![Edit post - Trip summary editor launcher]($helpDataDirUrl$/screenshots/admin-edit-launcher.png "Edit post - Trip summary editor launcher")
 
-#### Edit post - Trip summary editor launcher (block editor)
+#### Edit post - Trip summary editor launcher (block editor)  {.abp01-gallery-item-header}
 ![Edit post - Trip summary editor launcher (block editor)]($helpDataDirUrl$/screenshots/admin-edit-launcher-block.png "Edit post - Trip summary editor launcher (block editor)")
 
-#### Edit post - Trip data - Select trip type
+#### Edit post - Trip data - Select trip type  {.abp01-gallery-item-header}
 ![Edit post - Trip data - Select trip type]($helpDataDirUrl$/screenshots/admin-edit-summary-empty.png "Edit post - Trip data - Select trip type")
 
-#### Edit post - Trip data - Bike trip-related information
+#### Edit post - Trip data - Bike trip-related information  {.abp01-gallery-item-header}
 ![Edit post - Trip data - Bike trip-related information]($helpDataDirUrl$/screenshots/admin-edit-summary-bike.png "Edit post - Trip data - Bike trip-related information")
 
-#### Edit post - Trip data - Map
+#### Edit post - Trip data - Map  {.abp01-gallery-item-header}
 ![Edit post - Trip data - Map]($helpDataDirUrl$/screenshots/admin-edit-map.png "Edit post - Trip data - Map")
 
-#### Post view - Top teaser
+#### Post view - Top teaser  {.abp01-gallery-item-header}
 ![Post view - Top teaser]($helpDataDirUrl$/screenshots/viewer-teaser-top.png "Post view - Top teaser")
 
-#### Post view - Technical summary
+#### Post view - Technical summary  {.abp01-gallery-item-header}
 ![Post view - Technical summary]($helpDataDirUrl$/screenshots/viewer-summary.png "Post view - Technical summary")
 
-#### Post view - Map
+#### Post view - Map  {.abp01-gallery-item-header}
 ![Post view - Map]($helpDataDirUrl$/screenshots/viewer-map.png "Post view - Map")
 
-#### Post listing - Additional info columns
+#### Post listing - Additional info columns  {.abp01-gallery-item-header}
 ![Post listing - Additional info columns]($helpDataDirUrl$/screenshots/post-listing-columns.png "Post listing - Additional info columns")
 
 [Back to the Table of Contents](#help-root)

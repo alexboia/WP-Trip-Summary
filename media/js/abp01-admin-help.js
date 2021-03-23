@@ -32,6 +32,8 @@
 	"use strict";
 
 	var progressBar = null;
+	var screenshotGallery = null;
+
 	var $ctlLanguageSelector = null;
 	var $ctlHelpContentsContainer = null;
 
@@ -90,7 +92,9 @@
 	}
 
 	function refreshHelp(htmlHelpContents) {
+		destroyScreenshotGallery();
 		$ctlHelpContentsContainer.html(htmlHelpContents);
+		initScreenshotGallery();
 	}
 
 	function initContext() {
@@ -116,10 +120,20 @@
 		};
 	}
 
+	function initScreenshotGallery() {
+		screenshotGallery = $('.abp01-help-image-slideshow').abp01HelpImageGallery();
+	}
+
+	function destroyScreenshotGallery() {
+		screenshotGallery.destroy();
+		screenshotGallery = null;
+	}
+
 	$(document).ready(function() {
 		initContext();
 		initControls();
 		initListeners();
 		initBlockUIDefaultStyles();
+		initScreenshotGallery();
 	});
 })(jQuery);
