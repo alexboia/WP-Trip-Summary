@@ -56,7 +56,6 @@ class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_Plug
 	}
 
 	public function load() {
-		$this->_registerMenuHook();
 		$this->_registerWebPageAssets();
 	}
 
@@ -68,19 +67,18 @@ class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_Plug
 		));
 	}
 
-	private function _registerMenuHook() {
-		add_action('admin_menu', array($this, 'onAddAdminMenuEntries'));
-	}
-
-	public function onAddAdminMenuEntries() {
-		add_submenu_page(
-			ABP01_MAIN_MENU_SLUG, 
-			esc_html__('About WP Trip Summary', 'abp01-trip-summary'), 
-			esc_html__('About', 'abp01-trip-summary'), 
-			Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY, 
-			ABP01_ABOUT_SUBMENU_SLUG, 
-			array($this, 'displayAdminAboutPage'));
-	}
+	public function getMenuItems() {
+        return array(
+			array(
+				'slug' => ABP01_ABOUT_SUBMENU_SLUG,
+				'parent' => ABP01_MAIN_MENU_SLUG,
+				'pageTitle' => esc_html__('About WP Trip Summary', 'abp01-trip-summary'),
+				'menuTitle' => esc_html__('About', 'abp01-trip-summary'),
+				'capability' => Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY,
+				'callback' => array($this, 'displayAdminAboutPage')
+			)
+		);
+    }
 
 	public function displayAdminAboutPage() {
 		$data = new stdClass();

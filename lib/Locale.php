@@ -1,3 +1,4 @@
+<?php
 /**
  * Copyright (c) 2014-2021 Alexandru Boia
  *
@@ -28,56 +29,29 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.abp01-status-text {
-    border-radius: 4px;
-    padding: 10px;
-    background-color: #e5e5e5;
-    color: #2e4453;
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+	exit;
 }
 
-.abp01-status-ok {
-    background-color: #c6e1c6;
-    color: #5b841b;
-}
+class Abp01_Locale {
+	public static function getSystemLocales() {
+		if (!function_exists('wp_get_available_translations')) {
+			require_once ABSPATH . 'wp-admin/includes/translation-install.php';
+		}
 
-.abp01-status-err {
-    background-color: #eba3a3;
-    color: #761919;
-}
+		$translations = array(
+			'en_US' => 'English (United States)'
+		);
+		
+		$systemTranslations = wp_get_available_translations();
+		foreach ($systemTranslations as $tx) {
+			$translations[$tx['language']] = sprintf('%s (%s)', $tx['english_name'], $tx['native_name']);
+		}
 
-.abp01-status-warn {
-    background-color: #f3e9cd;
-    color: #ffba00;
-}
+		return $translations;
+	}
 
-.abp01-stop-scrolling {
-    height: 100%;
-    overflow: hidden;
-}
-
-.abp01-progress-container {
-    width: 400px;
-    height: 45px;
-}
-
-.abp01-progress-label {
-    width: 400px;
-    height: 25px;
-    text-align: center;
-    line-height: 25px;
-    vertical-align: middle;
-    font-size: 13px;
-    color: #fff;
-    font-weight: bold;
-}
-
-.abp01-progress-bar {
-    width: 400px;
-    height: 20px;
-}
-
-.abp01-clear {
-    clear: both;
-    width: 0;
-    height: 0
+	public static function getCurrentLocale() {
+		return get_locale();
+	}
 }

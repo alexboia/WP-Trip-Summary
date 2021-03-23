@@ -102,5 +102,9 @@ abstract class Abp01_PluginModules_PluginModule {
         return $this->_env->getPluginAssetUrl('media/img');
     }
 
+    public function getMenuItems() {
+        return array();
+    }
+
     abstract public function load();
 }

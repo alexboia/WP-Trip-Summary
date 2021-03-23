@@ -98,6 +98,8 @@ class Abp01_Includes {
 
 	const JS_ABP01_ADMIN_LOOKUP_MGMT = 'abp01-admin-lookup-management';
 
+	const JS_ABP01_ADMIN_HELP = 'abp01-admin-help';
+
 	const JS_ABP01_VIEWER_SHORTCODE_BLOCK = 'abp01-viewer-short-code-block';
 
 	const JS_ABP01_CLASSIC_EDITOR_VIEWER_SHORTCODE_PLUGIN = 'abp01-classic-editor-viewer-shortcode-plugin';
@@ -421,6 +423,16 @@ class Abp01_Includes {
 				self::JS_ABP01_PROGRESS_OVERLAY
 			)
 		),
+		self::JS_ABP01_ADMIN_HELP => array(
+			'path' => 'media/js/abp01-admin-help.js',
+			'version' => ABP01_VERSION,
+			'deps' => array(
+				self::JS_JQUERY,
+				self::JS_JQUERY_BLOCKUI,
+				self::JS_URI_JS,
+				self::JS_ABP01_PROGRESS_OVERLAY
+			)
+		),
 		self::JS_ABP01_VIEWER_SHORTCODE_BLOCK => array(
 			'path' => 'media/js/abp01-block-editor-shortcode/block.js',
 			'version' => ABP01_VERSION
@@ -572,21 +584,26 @@ class Abp01_Includes {
 			'deps' => array(
 				self::STYLE_WP_COLOR_PICKER,
 				self::STYLE_NPROGRESS,
-				self::STYLE_ABP01_NUMERIC_STEPPER
+				self::STYLE_ABP01_NUMERIC_STEPPER,
+				self::STYLE_ADMIN_COMMON
 			)
 		),
 		self::STYLE_ADMIN_LOOKUP_MANAGEMENT => array(
 			'alias' => self::STYLE_ADMIN_MAIN,
 			'deps' => array(
-				self::STYLE_ADMIN_COMMON,
 				self::STYLE_SYSTEM_THICKBOX,
 				self::STYLE_NPROGRESS,
-				self::STYLE_JQUERY_TOASTR
+				self::STYLE_JQUERY_TOASTR,
+				self::STYLE_ADMIN_COMMON
 			)
 		),
 		self::STYLE_ADMIN_HELP => array(
 			'path' => 'media/css/abp01-help.css', 
-			'version' => ABP01_VERSION
+			'version' => ABP01_VERSION,
+			'deps' => array(
+				self::STYLE_NPROGRESS,
+				self::STYLE_ADMIN_COMMON
+			)
 		),
 		self::STYLE_ADMIN_ABOUT => array(
 			'path' => 'media/css/abp01-about.css', 
@@ -725,6 +742,15 @@ class Abp01_Includes {
 		if (!empty($localization)) {
 			wp_localize_script(self::JS_ABP01_ADMIN_LOOKUP_MGMT, 
 				'abp01LookupMgmtL10n', 
+				$localization);
+		}
+	}
+
+	public static function includeScriptAdminHelp($localization) {
+		self::_includeScript(self::JS_ABP01_ADMIN_HELP);
+		if (!empty($localization)) {
+			wp_localize_script(self::JS_ABP01_ADMIN_HELP, 
+				'abp01HelpL10n', 
 				$localization);
 		}
 	}

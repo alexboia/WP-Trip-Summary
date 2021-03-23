@@ -69,6 +69,16 @@ class Abp01_Plugin {
      */
     private $_urlHelper;
 
+	/**
+	 * @var Abp01_PluginModules_PluginModuleHost
+	 */
+	private $_pluginModuleHost;
+
+	/**
+	 * @var Abp01_PluginMenu
+	 */
+	private $_pluginMenu;
+
 	public function __construct() {
 		return;
 	}
@@ -189,6 +199,8 @@ class Abp01_Plugin {
 		$this->_initView();
 		$this->_increaseExecutionLimits();
 		$this->_updateIfNeeded();
+		$this->_setupPluginModules();
+		$this->_setupPluginMenu();
 		$this->_loadPluginModules();
 	}
 
@@ -214,8 +226,8 @@ class Abp01_Plugin {
 		self::_getInstaller()->updateIfNeeded();
 	}
 
-	private function _loadPluginModules() {
-		$pluginModuleHost = new Abp01_PluginModules_PluginModuleHost($this, array(
+	private function _setupPluginModules() {
+		$this->_pluginModuleHost = new Abp01_PluginModules_PluginModuleHost($this, array(
 			Abp01_PluginModules_SettingsPluginModule::class,
 			Abp01_PluginModules_LookupDataManagementPluginModule::class,
 			Abp01_PluginModules_HelpPluginModule::class,
@@ -227,7 +239,16 @@ class Abp01_Plugin {
 			Abp01_PluginModules_FrontendViewerPluginModule::class,
 			Abp01_PluginModules_TeaserTextsSyncPluginModule::class
 		));
-		$pluginModuleHost->load();
+	}
+
+	private function _setupPluginMenu() {
+		$menuItems = $this->_pluginModuleHost->getMenuItems();
+		$this->_pluginMenu = new Abp01_PluginMenu($menuItems);
+		$this->_pluginMenu->register();
+	}
+
+	private function _loadPluginModules() {
+		$this->_pluginModuleHost->load();
 	}
 
 	public function getTrackDownloadNonceProvider() {

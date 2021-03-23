@@ -45,20 +45,46 @@ class Abp01_Help {
         $this->_env = Abp01_Env::getInstance();
     }
 
+    private function _isLocaleCodeValid($locale) {
+        return !empty($locale) && preg_match('/^([a-zA-Z]{2})_([a-zA-Z]{2})$/', $locale) === 1;
+    }
+
     /**
      * Retrieve the absolute help file path that corresponds to the given locale
      * 
      * @param string $locale The locale to compute the path for
      * @return string The absolute help file path
      */
-    private function _getHelpFileForLocale($locale) {
-        if (empty($locale)) {
-            return '';
-        }
-    
+    private function _getHelpFilePathForLocale($locale) {
         return sprintf('%s/help/%s/index.html', 
             $this->_env->getDataDir(), 
             $locale);
+    }
+
+    public function hasHelpFileForLocale($locale) {
+        return $this->_isLocaleCodeValid($locale) 
+            && is_readable($this->_getHelpFilePathForLocale($locale));
+    }
+
+    public function getLocalesWithHelpContents() {
+        $localesWithHelp = array();
+        $systemLocales = Abp01_Locale::getSystemLocales();
+        $currentLocale = Abp01_Locale::getCurrentLocale();
+
+        foreach ($systemLocales as $key => $label) {
+            if ($this->hasHelpFileForLocale($key)) {
+                $isCurrent = $key === $currentLocale;
+                if ($isCurrent) {
+                    $label = sprintf('%s - %s', $label, __('Current language', 'abp01-trip-summary'));
+                }
+                $localesWithHelp[$key] = array(
+                    'label' => $label,
+                    'isCurrent' => $isCurrent
+                );
+            }
+        }
+
+        return $localesWithHelp;
     }
 
     /**
@@ -73,10 +99,14 @@ class Abp01_Help {
             throw new InvalidArgumentException('Locale cannot be empty');
         }
 
-        $helpFile = $this->_getHelpFileForLocale($locale);
+        if (!$this->_isLocaleCodeValid($locale)) {
+            throw new InvalidArgumentException('Locale code is not valid');
+        }
+
+        $helpFile = $this->_getHelpFilePathForLocale($locale);
 	
         if (!is_file($helpFile) || !is_readable($helpFile)) {
-            $helpFile = $this->_getHelpFileForLocale($this->_fallbackLocale);
+            $helpFile = $this->_getHelpFilePathForLocale($this->_fallbackLocale);
             $locale = $this->_fallbackLocale;
         }
 
@@ -103,7 +133,7 @@ class Abp01_Help {
      * @return string The contents
      */
     public function getHelpContentForCurrentLocale() {
-        $currentLocale = get_locale();
+        $currentLocale = Abp01_Locale::getCurrentLocale();
         return $this->getHelpContentForLocale($currentLocale);
     }
 }

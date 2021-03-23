@@ -34,7 +34,7 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_PluginModules_HelpPluginModule extends Abp01_PluginModules_PluginModule {
-    const ADMIN_ENQUEUE_STYLES_HOOK_PRIORITY = 10;
+    const ADMIN_ENQUEUE_ASSETS_HOOK_PRIORITY = 10;
     
     /**
      * @var Abp01_View
@@ -46,28 +46,61 @@ class Abp01_PluginModules_HelpPluginModule extends Abp01_PluginModules_PluginMod
      */
     private $_help;
 
-    public function __construct(Abp01_Env $env, Abp01_Help $help, Abp01_View $view, Abp01_Auth $auth) {
+    /**
+     * @var Abp01_AdminAjaxAction
+     */
+    private $_getHelpForLocaleAjaxAction;
+
+    public function __construct(Abp01_Help $help, Abp01_View $view, Abp01_Env $env, Abp01_Auth $auth) {
         parent::__construct($env, $auth);
 
         $this->_view = $view;
         $this->_help = $help;
+
+        $this->_initAjaxActions();
+    }
+
+    private function _initAjaxActions() {
+        $this->_getHelpForLocaleAjaxAction = 
+            Abp01_AdminAjaxAction::create(ABP01_ACTION_GET_HELP_FOR_LOCALE, array($this, 'getHelpForLocale'))
+                ->authorizeByCallback($this->_createManagePluginSettingsAuthCallback())
+                ->setRequiresAuthentication(true)
+                ->useDefaultNonceProvider('abp01_help_nonce');
     }
 
     public function load() {
-        $this->_registerMenuHook();
+        $this->_registerAjaxActions();
         $this->_registerWebPageAssets();
     }
+
+    private function _registerAjaxActions() {
+		$this->_getHelpForLocaleAjaxAction
+			->register();
+	}
 
     private function _registerWebPageAssets() {
         add_action('admin_enqueue_scripts', 
             array($this, 'onAdminEnqueueStyles'), 
-            self::ADMIN_ENQUEUE_STYLES_HOOK_PRIORITY);
+            self::ADMIN_ENQUEUE_ASSETS_HOOK_PRIORITY);
+        add_action('admin_enqueue_scripts', 
+            array($this, 'onAdminEnqueueScripts'), 
+            self::ADMIN_ENQUEUE_ASSETS_HOOK_PRIORITY);
     }
 
     public function onAdminEnqueueStyles() {
         if ($this->_shouldEnqueueWebPageAssets()) {
             Abp01_Includes::includeStyleAdminHelp();
         }
+    }
+
+    public function onAdminEnqueueScripts() {
+        if ($this->_shouldEnqueueWebPageAssets()) {
+            Abp01_Includes::includeScriptAdminHelp($this->_getAdminHelpScriptTranslations());
+        }
+    }
+
+    private function _getAdminHelpScriptTranslations() {
+        return Abp01_TranslatedScriptMessages::getAdminHelpScriptTranslations();
     }
 
     private function _shouldEnqueueWebPageAssets() {
@@ -79,28 +112,58 @@ class Abp01_PluginModules_HelpPluginModule extends Abp01_PluginModules_PluginMod
         return $this->_env->isAdminPage(ABP01_HELP_SUBMENU_SLUG);
     }
 
-    private function _registerMenuHook() {
-        add_action('admin_menu', array($this, 'onAddAdminMenuEntries'));
+    public function getMenuItems() {
+        return array(
+            array(
+                'slug' => ABP01_HELP_SUBMENU_SLUG,
+                'parent' => ABP01_MAIN_MENU_SLUG,
+                'pageTitle' => esc_html__('Help', 'abp01-trip-summary'),
+                'menuTitle' => esc_html__('Help', 'abp01-trip-summary'),
+                'capability' => Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY,
+                'callback' => array($this, 'displayAdminHelpPage')
+            )
+        );
     }
 
-    public function onAddAdminMenuEntries() {
-        add_submenu_page(ABP01_MAIN_MENU_SLUG, 
-		    esc_html__('Help', 'abp01-trip-summary'), 
-		    esc_html__('Help', 'abp01-trip-summary'), 
-            Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY, 
-            ABP01_HELP_SUBMENU_SLUG, 
-            array($this, 'displayAdminPage'));
-    }
-
-    public function displayAdminPage() {
+    public function displayAdminHelpPage() {
         if (!$this->_currentUserCanManagePluginSettings()) {
             return;
         }
     
         $data = new stdClass();	
+        $data->currentLocale = Abp01_Locale::getCurrentLocale();
+        $data->localesWithHelpContents = $this->_help
+            ->getLocalesWithHelpContents();
         $data->helpContents = $this->_help
             ->getHelpContentForCurrentLocale();
 
+        $data->context = new stdClass();
+        $data->context->ajaxBaseUrl = $this->_getAjaxBaseUrl();
+        $data->context->getHelpAction = ABP01_ACTION_GET_HELP_FOR_LOCALE;
+        $data->context->getHelpNonce = $this->_getHelpForLocaleAjaxAction
+            ->generateNonce();
+
         echo $this->_view->renderAdminHelpPage($data);
+    }
+
+    public function getHelpForLocale() {
+        $locale = $this->_readLocaleFromHttpGet();
+        if (empty($locale) || !$this->_help->hasHelpFileForLocale($locale)) {
+            return $locale;
+        }
+
+        $response = abp01_get_ajax_response(array(
+            'htmlHelpContents' => null
+        ));
+
+        $htmlHelpContents = $this->_help->getHelpContentForLocale($locale);
+        $response->htmlHelpContents = $htmlHelpContents;
+        $response->success = true;
+
+        return $response;
+    }
+
+    private function _readLocaleFromHttpGet() {
+        return Abp01_InputFiltering::getFilteredGETValue('help_locale');
     }
 }

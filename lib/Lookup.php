@@ -52,6 +52,8 @@ class Abp01_Lookup {
 
 	const DEFAULT_LANGUAGE_CODE = '_default';
 
+	const EN_US_LANGUAGE_CODE = 'en_US';
+
 	/**
 	 * Internal cache for the lookup data
 	 * @var array
@@ -260,22 +262,15 @@ class Abp01_Lookup {
 	 * @return array The list of supported languages
 	 */
 	public static function getSupportedLanguages() {
-		if (!function_exists('wp_get_available_translations')) {
-			require_once ABSPATH . 'wp-admin/includes/translation-install.php';
-		}
-
-		$translations = array(
+		$languages = array(
 			self::DEFAULT_LANGUAGE_CODE => __('Default', 'abp01-trip-summary'),
-			'en_US' => 'English (United States)'
+			self::EN_US_LANGUAGE_CODE => 'English (United States)'
 		);
 		
-		$systemTranslations = wp_get_available_translations();
+		$systemLanguages = Abp01_Locale::getSystemLocales();
+		$languages = array_merge($languages, $systemLanguages);
 
-		foreach ($systemTranslations as $tx) {
-			$translations[$tx['language']] = sprintf('%s (%s)', $tx['english_name'], $tx['native_name']);
-		}
-
-		return $translations;
+		return $languages;
 	}
 
 	/**

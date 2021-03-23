@@ -306,27 +306,6 @@ a.abp01-close-editor:hover {
     width: auto !important;
 }
 
-.abp01-progress-container {
-    width: 400px;
-    height: 45px;
-}
-
-.abp01-progress-label {
-    width: 400px;
-    height: 25px;
-    text-align: center;
-    line-height: 25px;
-    vertical-align: middle;
-    font-size: 13px;
-    color: #fff;
-    font-weight: bold;
-}
-
-.abp01-progress-bar {
-    width: 400px;
-    height: 20px;
-}
-
 .abp01-map-container {
     width: 650px;
     margin: 5px 5px 3px 5px;

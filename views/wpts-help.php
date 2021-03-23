@@ -31,15 +31,41 @@
 	defined('ABP01_LOADED') or die;
 ?>
 
+<script type="text/javascript">
+	var abp01_ajaxUrl = '<?php echo esc_js($data->context->ajaxBaseUrl); ?>';
+	var abp01_getHelpAction = '<?php echo esc_js($data->context->getHelpAction); ?>';
+	var abp01_getHelpNonce = '<?php echo esc_js($data->context->getHelpNonce); ?>';
+</script>
 <div id="abp01-help-page">
 	<h2><?php echo esc_html__('WP Trip Summary Help', 'abp01-trip-summary'); ?></h2>
 	<div id="abp01-help-contents">
 		<?php if (!empty($data->helpContents)): ?>
-			<?php echo $data->helpContents; ?>
+			<div id="abp01-help-contents-controls">
+				<label for="abp01-help-contents-lang"><?php echo esc_html__('Use the selector below to change the language for displaying the help contents:', 'abp01-trip-summary'); ?></label>
+				<select id="abp01-help-contents-lang" name="abp01-help-contents-lang">
+					<?php foreach ($data->localesWithHelpContents as $key => $info): ?>
+						<?php if ($key === $data->currentLocale): ?>
+							<option value="<?php echo esc_attr($key) ?>" data-is-current="<?php echo abp01_bool2str($info['isCurrent']) ?>" selected="selected"><?php echo esc_html($info['label']) ?></option>
+						<?php else: ?>
+							<option value="<?php echo esc_attr($key) ?>" data-is-current="<?php echo abp01_bool2str($info['isCurrent']) ?>"><?php echo esc_html($info['label']) ?></option>
+						<?php endif; ?>
+					<?php endforeach; ?>
+				</select>
+			</div>
+			<div id="abp01-help-contents-body">
+				<?php echo $data->helpContents; ?>
+			</div>
 		<?php else: ?>
 			<div id="abp01-help-result" class="error settings-error abp01-help-result">
 				<?php echo esc_html__('No help contents has been found. This usually indicates some problems with the help content files that have been distributed with the plug-in. Please check your website file structure.', 'abp01-trip-summary'); ?>
 			</div>
 		<?php endif; ?>
 	</div>
+
+	<script id="tpl-abp01-progress-container" type="text/x-kite">
+		<div id="abp01-progress-container" class="abp01-progress-container">
+			<div data-role="progressLabel" id="abp01-progress-label" class="abp01-progress-label"></div>
+			<div data-role="progressParent" id="abp01-progress-bar" class="abp01-progress-bar"></div>
+		</div>
+	</script>
 </div>

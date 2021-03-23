@@ -80,7 +80,6 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
 
     public function load() {
         $this->_registerAjaxActions();
-        $this->_registerMenuHook();
         $this->_registerWebPageAssets();
     }
 
@@ -89,31 +88,19 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
             ->register();
     }
 
-    private function _registerMenuHook() {
-        add_action('admin_menu', array($this, 'onAddAdminMenuEntries'));
-    }
-
-    public function onAddAdminMenuEntries() {
-        $displaySettingsPageCallback = array($this, 'displayAdminSettingsPage');
-
-        //add main menu entry
-        add_menu_page(
-            esc_html__('Trip Summary Settings', 'abp01-trip-summary'),  //page title
-            esc_html__('Trip Summary', 'abp01-trip-summary'), //menu title
-            Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY, //required page capability
-            ABP01_MAIN_MENU_SLUG, //menu slug - unique handle for this menu
-            $displaySettingsPageCallback,
-            self::PLUGIN_TOP_LEVEL_MENU_ENTRY_ICON, 
-            self::PLUGIN_TOP_LEVEL_MENU_ENTRY_POSITION);
-
-        //add submenu entries - the submenu settings page
-        add_submenu_page(
-            ABP01_MAIN_MENU_SLUG, 
-            esc_html__('Trip Summary Settings', 'abp01-trip-summary'), 
-            esc_html__('Settings', 'abp01-trip-summary'), 
-            Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY, 
-            ABP01_MAIN_MENU_SLUG,
-            $displaySettingsPageCallback);
+    public function getMenuItems() {
+        return array(
+            array(
+                'slug' => ABP01_MAIN_MENU_SLUG,
+                'pageTitle' => esc_html__('Trip Summary Settings', 'abp01-trip-summary'),
+                'menuTitle' => esc_html__('Trip Summary', 'abp01-trip-summary'),
+                'capability' => Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY,
+                'callback' => array($this, 'displayAdminSettingsPage'),
+                'iconUrl' => self::PLUGIN_TOP_LEVEL_MENU_ENTRY_ICON,
+                'position' => self::PLUGIN_TOP_LEVEL_MENU_ENTRY_POSITION,
+                'reRegisterAsChildWithMenuTitle' => esc_html__('Settings', 'abp01-trip-summary')
+            )
+        );
     }
 
     public function displayAdminSettingsPage() {

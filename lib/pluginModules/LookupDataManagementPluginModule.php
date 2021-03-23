@@ -145,7 +145,6 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 
 	public function load() {
 		$this->_registerAjaxActions();
-		$this->_registerMenuHook();
 		$this->_registerWebPageAssets();
 	}
 
@@ -195,19 +194,18 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 		return Abp01_TranslatedScriptMessages::getAdminLookupScriptTranslations();
 	}
 
-	private function _registerMenuHook() {
-		add_action('admin_menu', array($this, 'onAddAdminMenuEntries'));
-	}
-
-	public function onAddAdminMenuEntries() {
-		add_submenu_page(
-			ABP01_MAIN_MENU_SLUG, 
-			esc_html__('Lookup data management', 'abp01-trip-summary'), 
-			esc_html__('Lookup data management', 'abp01-trip-summary'), 
-			Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY, 
-			ABP01_LOOKUP_SUBMENU_SLUG, 
-			array($this, 'displayAdminLookupDataPage'));
-	}
+	public function getMenuItems() {
+        return array(
+			array(
+				'slug' => ABP01_LOOKUP_SUBMENU_SLUG,
+				'parent' => ABP01_MAIN_MENU_SLUG,
+				'pageTitle' => esc_html__('Lookup data management', 'abp01-trip-summary'),
+				'menuTitle' => esc_html__('Lookup data management', 'abp01-trip-summary'),
+				'capability' => Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY,
+				'callback' => array($this, 'displayAdminLookupDataPage')
+			)
+		);
+    }
 
 	public function displayAdminLookupDataPage() {
 		if (!$this->_currentUserCanManagePluginSettings()) {
@@ -230,22 +228,23 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 
 		//set current context
 		$data->context = new stdClass();
+		$data->context->ajaxBaseUrl = $this->_getAjaxBaseUrl();
+
+		$data->context->getLookupAction = ABP01_ACTION_GET_LOOKUP;
 		$data->context->getLookupNonce = $this->_getLookupDataItemsAjaxAction
 			->generateNonce();
-		$data->context->getLookupAction = ABP01_ACTION_GET_LOOKUP;
-
+		
+		$data->context->addLookupAction = ABP01_ACTION_ADD_LOOKUP;
 		$data->context->addLookupNonce = $this->_addLookupDataItemAjaxAction
 			->generateNonce();
-		$data->context->addLookupAction = ABP01_ACTION_ADD_LOOKUP;
 
-		$data->context->editLookupNonce = $this->_editLookupDataItemAjaxAction
-			->generateNonce();
 		$data->context->editLookupAction = ABP01_ACTION_EDIT_LOOKUP;
+		$data->context->editLookupNonce = $this->_editLookupDataItemAjaxAction
+		->generateNonce();
 
+		$data->context->deleteLookupAction = ABP01_ACTION_DELETE_LOOKUP;
 		$data->context->deleteLookupNonce = $this->_deleteLookupDataItemAjaxAction
 			->generateNonce();
-		$data->context->deleteLookupAction = ABP01_ACTION_DELETE_LOOKUP;
-		$data->context->ajaxBaseUrl = $this->_getAjaxBaseUrl();
 
 		echo $this->_view->renderAdminLookupPage($data);
 	}

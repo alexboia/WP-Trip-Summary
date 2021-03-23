@@ -34,6 +34,16 @@
     list-style-position: inside;
 }
 
+#abp01-help-contents-controls label[for="abp01-help-contents-lang"] {
+    display: block;
+    margin-bottom: 10px;
+}
+
+#abp01-help-contents-lang {
+    width: 820px;
+    max-width: 820px;
+}
+
 .abp01-help-section {
     width: 800px;
     background: #fff;

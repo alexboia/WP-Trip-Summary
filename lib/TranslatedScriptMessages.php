@@ -122,4 +122,12 @@ class Abp01_TranslatedScriptMessages {
             'lblItemValuesHide' => esc_html__('(hide)', 'abp01-trip-summary')
         );
     }
+
+    public static function getAdminHelpScriptTranslations() {
+        return array(
+            'msgWorking' => esc_html__('Loading help contents. Please wait...', 'abp01-trip-summary'),
+            'errLoadHelpContentsFailNetwork' => esc_html__('The help contents could not be loaded due to a possible network error or an internal server issue.', 'abp01-trip-summary'),
+            'errLoadHelpContentsGeneric' => esc_html__('The help contents could not be loaded.', 'abp01-trip-summary')
+        );
+    }
 }

@@ -28,6 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
@@ -127,6 +128,19 @@ class Abp01_PluginModules_PluginModuleHost {
                 return $this->getAuth();
             }
         );
+    }
+
+    public function getMenuItems() {
+        $menuItemsCollector = new Abp01_PluginMenuItemCollector();
+
+        foreach ($this->_pluginModules as $module) {
+            $moduleMenuItems = $module->getMenuItems();
+            if (!empty($moduleMenuItems)) {
+                $menuItemsCollector->collectMenuItems($moduleMenuItems);
+            }
+        }
+
+        return $menuItemsCollector->getCollectedMenuItems();
     }
 
     public function load() {
