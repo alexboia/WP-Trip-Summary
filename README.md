@@ -190,6 +190,7 @@ The following languages are supported:
 - Feature: Enhanced display for the frontend viewer information items ([issue 75](https://github.com/alexboia/WP-Trip-Summary/issues/75));
 - Improved usability and UI for the settings page;
 - Improved usability and UI for the help page;
+- Updated help contents;
 - Improved stability and various bug fixes.
 
 ### Version 0.2.6
