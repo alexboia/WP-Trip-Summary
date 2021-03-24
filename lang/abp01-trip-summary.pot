@@ -1,15 +1,15 @@
-# Copyright (C) 2020 Alexandru Boia
+# Copyright (C) 2021 Alexandru Boia
 # This file is distributed under the same license as the WP Trip Summary plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Trip Summary 0.2.5\n"
+"Project-Id-Version: WP Trip Summary 0.2.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-trip-summary\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-08-13T10:51:22+00:00\n"
+"POT-Creation-Date: 2021-03-24T12:01:58+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.3.0\n"
 "X-Domain: abp01-trip-summary\n"
@@ -34,498 +34,608 @@ msgstr ""
 msgid "http://alexboia.net"
 msgstr ""
 
-#: abp01-plugin-main.php:260
-#: views/wpts-editor.php:179
+#: abp01-plugin-functions.php:420
+#: views/wpts-editor.php:177
 msgid "Bike type"
 msgstr ""
 
-#: abp01-plugin-main.php:261
-#: views/wpts-editor.php:138
-#: views/wpts-editor.php:204
+#: abp01-plugin-functions.php:421
+#: views/wpts-editor.php:136
+#: views/wpts-editor.php:202
 #: views/wpts-frontend.php:58
 #: views/wpts-frontend.php:66
 msgid "Difficulty level"
 msgstr ""
 
-#: abp01-plugin-main.php:262
-#: views/wpts-editor.php:167
-#: views/wpts-editor.php:233
+#: abp01-plugin-functions.php:422
+#: views/wpts-editor.php:165
+#: views/wpts-editor.php:231
 #: views/wpts-frontend.php:61
 #: views/wpts-frontend.php:69
 msgid "Path surface type"
 msgstr ""
 
-#: abp01-plugin-main.php:263
+#: abp01-plugin-functions.php:423
 msgid "Railroad electrification status"
 msgstr ""
 
-#: abp01-plugin-main.php:264
+#: abp01-plugin-functions.php:424
 msgid "Railroad line status"
 msgstr ""
 
-#: abp01-plugin-main.php:265
+#: abp01-plugin-functions.php:425
 msgid "Railroad line type"
 msgstr ""
 
-#: abp01-plugin-main.php:266
-#: views/wpts-editor.php:266
+#: abp01-plugin-functions.php:426
+#: views/wpts-editor.php:264
 #: views/wpts-frontend.php:75
 msgid "Railroad operators"
 msgstr ""
 
-#: abp01-plugin-main.php:267
+#: abp01-plugin-functions.php:427
 msgid "Recommended seasons"
 msgstr ""
 
-#: abp01-plugin-main.php:279
-#: views/wpts-editor-launcher-metabox.php:80
-#: views/wpts-editor-launcher-metabox.php:94
-msgid "Clear info"
+#: lib/display/postListing/TripSummaryStatusColumn.php:47
+#: tests/test-TripSummaryStatusColumn.php:73
+msgid "Yes"
 msgstr ""
 
-#: abp01-plugin-main.php:280
-#: views/wpts-editor-launcher-metabox.php:87
-#: views/wpts-editor-launcher-metabox.php:100
-msgid "Clear track"
+#: lib/display/postListing/TripSummaryStatusColumn.php:48
+#: tests/test-TripSummaryStatusColumn.php:78
+msgid "No"
 msgstr ""
 
-#: abp01-plugin-main.php:281
-msgid "GPX files"
+#: lib/display/postListing/TripSummaryStatusColumn.php:50
+#: tests/test-TripSummaryStatusColumn.php:68
+msgid "Not available"
 msgstr ""
 
-#: abp01-plugin-main.php:282
-msgid "Generating preview. Please wait..."
-msgstr ""
-
-#: abp01-plugin-main.php:283
-msgid "Uploading track"
-msgstr ""
-
-#: abp01-plugin-main.php:284
-msgid "The track has been uploaded and saved successfully"
-msgstr ""
-
-#: abp01-plugin-main.php:285
-#: views/wpts-editor.php:115
-msgid "Biking"
-msgstr ""
-
-#: abp01-plugin-main.php:286
-#: views/wpts-editor.php:118
-msgid "Hiking"
-msgstr ""
-
-#: abp01-plugin-main.php:287
-msgid "Train ride"
-msgstr ""
-
-#: abp01-plugin-main.php:288
-msgid "Clearing track. Please wait..."
-msgstr ""
-
-#: abp01-plugin-main.php:289
-msgid "The track has been successfully cleared"
-msgstr ""
-
-#: abp01-plugin-main.php:290
-msgid "The data could not be updated"
-msgstr ""
-
-#: abp01-plugin-main.php:291
-msgid "The data could not be updated due to a possible network error or an internal server issue"
-msgstr ""
-
-#: abp01-plugin-main.php:292
-msgid "Saving data. Please wait..."
-msgstr ""
-
-#: abp01-plugin-main.php:293
-msgid "The data has been saved"
-msgstr ""
-
-#: abp01-plugin-main.php:294
-msgid "The data could not be saved"
-msgstr ""
-
-#: abp01-plugin-main.php:295
-msgid "The data could not be saved due to a possible network error or an internal server issue"
-msgstr ""
-
-#: abp01-plugin-main.php:296
-msgid "Clearing trip info. Please wait..."
-msgstr ""
-
-#: abp01-plugin-main.php:297
-msgid "The trip info has been cleared"
-msgstr ""
-
-#: abp01-plugin-main.php:298
-msgid "The trip info could not be cleared"
-msgstr ""
-
-#: abp01-plugin-main.php:299
-msgid "The trip info could not be cleared due to a possible network error or an internal server issue"
-msgstr ""
-
-#: abp01-plugin-main.php:300
-#: abp01-plugin-main.php:307
-msgid "The selected file is too large. Maximum allowed size is 10MB"
-msgstr ""
-
-#: abp01-plugin-main.php:301
-#: abp01-plugin-main.php:306
-msgid "The selected file type is not valid. Only GPX files are allowed"
-msgstr ""
-
-#: abp01-plugin-main.php:302
-#: abp01-plugin-main.php:303
-msgid "The file could not be read"
-msgstr ""
-
-#: abp01-plugin-main.php:304
-msgid "The uploader could not be initialized"
-msgstr ""
-
-#: abp01-plugin-main.php:305
-#: abp01-plugin-main.php:315
-msgid "The file could not be uploaded"
-msgstr ""
-
-#: abp01-plugin-main.php:308
-msgid "No file was uploaded"
-msgstr ""
-
-#: abp01-plugin-main.php:309
-msgid "The file could not be uploaded due to a possible internal server issue"
-msgstr ""
-
-#: abp01-plugin-main.php:310
-msgid "The file could not be stored on the server (#2). This usually indicates an internal server issue."
-msgstr ""
-
-#: abp01-plugin-main.php:311
-msgid "The file could not be stored on the server (#1). This usually indicates an internal server issue."
-msgstr ""
-
-#: abp01-plugin-main.php:312
-msgid "The upload request contains some invalid parameters. This might indicate an error within the plug-in itself or an attempt to forge the request."
-msgstr ""
-
-#: abp01-plugin-main.php:313
-msgid "The destination were the track file was uploaded cannot be found. This usually indicates an internal server issue."
-msgstr ""
-
-#: abp01-plugin-main.php:314
-msgid "The destination were the track file was uploaded has been found, but is corrupt. This usually indicates a problem with the file itself or, less likely, an internal server issue."
-msgstr ""
-
-#: abp01-plugin-main.php:316
-msgid "The uploaded file was not a valid GPX file"
-msgstr ""
-
-#: abp01-plugin-main.php:317
-msgid "Choose options"
-msgstr ""
-
-#: abp01-plugin-main.php:318
-msgid "{0} selected"
-msgstr ""
-
-#: abp01-plugin-main.php:319
-msgid "Select all"
-msgstr ""
-
-#: abp01-plugin-main.php:320
-#: views/wpts-editor-launcher-metabox.php:41
-msgid "Trip summary information is present for this post"
-msgstr ""
-
-#: abp01-plugin-main.php:321
-#: views/wpts-editor-launcher-metabox.php:42
-msgid "Trip summary information is not present for this post"
-msgstr ""
-
-#: abp01-plugin-main.php:322
-#: views/wpts-editor-launcher-metabox.php:53
-msgid "Trip summary track is present for this post"
-msgstr ""
-
-#: abp01-plugin-main.php:323
-#: views/wpts-editor-launcher-metabox.php:54
-msgid "Trip summary track is not present for this post"
-msgstr ""
-
-#: abp01-plugin-main.php:324
-msgid "Are you sure you want to remove the trip summary information? This action cannot be undone!"
-msgstr ""
-
-#: abp01-plugin-main.php:325
-msgid "Are you sure you want to remove the trip summary track? This action cannot be undone!"
-msgstr ""
-
-#: abp01-plugin-main.php:336
-msgid "The settings could not be saved due to a possible network error or an internal server issue"
-msgstr ""
-
-#: abp01-plugin-main.php:337
-msgid "The settings could not be saved due to a possible internal server issue"
-msgstr ""
-
-#: abp01-plugin-main.php:338
-msgid "Settings successfully saved"
-msgstr ""
-
-#: abp01-plugin-main.php:339
-msgid "Saving settings. Please wait..."
-msgstr ""
-
-#: abp01-plugin-main.php:350
-msgid "Working. Please wait..."
-msgstr ""
-
-#: abp01-plugin-main.php:351
-msgid "Item successfully saved"
-msgstr ""
-
-#: abp01-plugin-main.php:352
-#: views/wpts-lookup-data-management.php:70
-#: views/wpts-lookup-data-management.php:84
-msgid "Add new item"
-msgstr ""
-
-#: abp01-plugin-main.php:353
-msgid "Modify item"
-msgstr ""
-
-#: abp01-plugin-main.php:354
-msgid "The item could not be saved due to a possible network error or an internal server issue"
-msgstr ""
-
-#: abp01-plugin-main.php:355
-msgid "The item could not be saved due to a possible internal server issue"
-msgstr ""
-
-#: abp01-plugin-main.php:356
-msgid "Confirm item removal"
-msgstr ""
-
-#: abp01-plugin-main.php:357
-msgid "The item could not be deleted due to a possible network error or an internal server issue"
-msgstr ""
-
-#: abp01-plugin-main.php:358
-msgid "The item could not be deleted due to a possible internal server issue"
-msgstr ""
-
-#: abp01-plugin-main.php:359
-msgid "The item has been successfully deleted"
-msgstr ""
-
-#: abp01-plugin-main.php:360
-msgid "The lookup items could not be loaded due to a possible network error or an internal server issue"
-msgstr ""
-
-#: abp01-plugin-main.php:361
-msgid "The lookup items could not be loaded"
-msgstr ""
-
-#: abp01-plugin-main.php:379
-msgid "Minimum required PHP version is %s"
-msgstr ""
-
-#: abp01-plugin-main.php:381
-msgid "Minimum required WP version is %s"
-msgstr ""
-
-#: abp01-plugin-main.php:383
-msgid "LIBXML support was not found on your system"
-msgstr ""
-
-#: abp01-plugin-main.php:385
-msgid "Mysqli extension was not found on your system or is not fully compatible"
-msgstr ""
-
-#: abp01-plugin-main.php:387
-msgid "MySQL spatial support was not found on your system"
-msgstr ""
-
-#: abp01-plugin-main.php:398
-msgid "Minimum altitude:"
-msgstr ""
-
-#: abp01-plugin-main.php:399
-msgid "Maximum altitude:"
-msgstr ""
-
-#: abp01-plugin-main.php:400
-msgid "Altitude:"
-msgstr ""
-
-#: abp01-plugin-main.php:401
-msgid "Distance:"
-msgstr ""
-
-#: abp01-plugin-main.php:479
-#: abp01-plugin-main.php:490
-#: views/wpts-settings.php:42
-msgid "Trip Summary Settings"
-msgstr ""
-
-#: abp01-plugin-main.php:480
-msgid "Trip Summary"
-msgstr ""
-
-#: abp01-plugin-main.php:491
-msgid "Settings"
-msgstr ""
-
-#: abp01-plugin-main.php:499
-#: abp01-plugin-main.php:500
-#: views/wpts-lookup-data-management.php:43
-msgid "Lookup data management"
-msgstr ""
-
-#: abp01-plugin-main.php:506
-#: abp01-plugin-main.php:507
-msgid "Help"
-msgstr ""
-
-#: abp01-plugin-main.php:548
-msgid "The plugin cannot be installed on your system"
-msgstr ""
-
-#: abp01-plugin-main.php:681
-#: views/wpts-frontend.php:37
-msgid "Trip summary"
-msgstr ""
-
-#: abp01-plugin-main.php:971
-msgid "Unsupported unit system"
-msgstr ""
-
-#: abp01-plugin-main.php:978
-msgid "Unsupported viewer tab"
-msgstr ""
-
-#: abp01-plugin-main.php:990
-msgid "Tile layer URL is required"
-msgstr ""
-
-#: abp01-plugin-main.php:997
-msgid "Tile layer URL does not have a valid format"
-msgstr ""
-
-#: abp01-plugin-main.php:1004
-msgid "Tile layer attribution URL does not have a valid format"
-msgstr ""
-
-#: abp01-plugin-main.php:1014
-msgid "The track line colour is not a valid HEX colour code"
-msgstr ""
-
-#: abp01-plugin-main.php:1053
-msgid "The settings could not be saved. Please try again."
-msgstr ""
-
-#: abp01-plugin-main.php:1203
-#: abp01-plugin-main.php:1264
-msgid "The default label is mandatory"
-msgstr ""
-
-#: abp01-plugin-main.php:1212
-msgid "The lookup item could not be created"
-msgstr ""
-
-#: abp01-plugin-main.php:1223
-msgid "The lookup item has been created, but the translation could not be saved"
-msgstr ""
-
-#: abp01-plugin-main.php:1286
-msgid "The lookup item could not be modified"
-msgstr ""
-
-#: abp01-plugin-main.php:1330
-msgid "The item translation could not be deleted."
-msgstr ""
-
-#: abp01-plugin-main.php:1336
-msgid "The item could not be deleted because it is still in use"
-msgstr ""
-
-#: abp01-plugin-main.php:1343
-msgid "The item could not be deleted"
-msgstr ""
-
-#: abp01-plugin-main.php:1393
-#: abp01-plugin-main.php:1625
-msgid "The data could not be saved due to a possible database error"
-msgstr ""
-
-#: abp01-plugin-main.php:1763
-msgid "Track file not found or is not readable"
-msgstr ""
-
-#: abp01-plugin-main.php:1874
-msgid "The data could not be updated due to a possible database error"
-msgstr ""
-
-#: abp01-plugin-main.php:1907
+#: lib/display/postListing/TripSummaryStatusColumnsDecorator.php:46
 #: views/wpts-editor-launcher-metabox.php:46
 msgid "Trip summary info"
 msgstr ""
 
-#: abp01-plugin-main.php:1909
+#: lib/display/postListing/TripSummaryStatusColumnsDecorator.php:55
 #: views/wpts-editor-launcher-metabox.php:58
 msgid "Trip summary track"
 msgstr ""
 
-#: abp01-plugin-main.php:1951
-#: abp01-plugin-main.php:1961
-msgid "Yes"
+#: lib/Help.php:80
+msgid "Current language"
 msgstr ""
 
-#: abp01-plugin-main.php:1952
-#: abp01-plugin-main.php:1962
-msgid "No"
-msgstr ""
-
-#: abp01-plugin-main.php:1954
-#: abp01-plugin-main.php:1964
-msgid "Not available"
-msgstr ""
-
-#: lib/Lookup.php:243
+#: lib/Lookup.php:266
 msgid "Default"
 msgstr ""
 
-#: lib/Settings.php:274
-#: tests/test-Settings.php:176
+#: lib/Plugin.php:111
+msgid "Could not activate plug-in: activation failure."
+msgstr ""
+
+#: lib/Plugin.php:134
+msgid "Could not activate plug-in: requirements not met."
+msgstr ""
+
+#: lib/Plugin.php:141
+msgid "Minimum required PHP version is %s"
+msgstr ""
+
+#: lib/Plugin.php:143
+msgid "Minimum required WP version is %s"
+msgstr ""
+
+#: lib/Plugin.php:145
+msgid "LIBXML support was not found on your system"
+msgstr ""
+
+#: lib/Plugin.php:147
+msgid "Mysqli extension was not found on your system or is not fully compatible"
+msgstr ""
+
+#: lib/Plugin.php:149
+msgid "MySQL spatial support was not found on your system"
+msgstr ""
+
+#: lib/Plugin.php:151
+msgid "We could not check whether your system fully supports this plug-in."
+msgstr ""
+
+#: lib/Plugin.php:159
+msgid "Activation error"
+msgstr ""
+
+#: lib/pluginModules/AboutPagePluginModule.php:75
+#: views/wpts-about.php:35
+msgid "About WP Trip Summary"
+msgstr ""
+
+#: lib/pluginModules/AboutPagePluginModule.php:76
+msgid "About"
+msgstr ""
+
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:278
+#: views/wpts-frontend.php:37
+msgid "Trip summary"
+msgstr ""
+
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:407
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:421
+msgid "The data could not be saved due to a possible database error"
+msgstr ""
+
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:530
+msgid "The data could not be updated due to a possible database error"
+msgstr ""
+
+#: lib/pluginModules/GetTrackDataPluginModule.php:97
+msgid "Track file not found or is not readable"
+msgstr ""
+
+#: lib/pluginModules/HelpPluginModule.php:121
+#: lib/pluginModules/HelpPluginModule.php:122
+msgid "Help"
+msgstr ""
+
+#: lib/pluginModules/LookupDataManagementPluginModule.php:202
+#: lib/pluginModules/LookupDataManagementPluginModule.php:203
+#: views/wpts-lookup-data-management.php:48
+msgid "Lookup data management"
+msgstr ""
+
+#: lib/pluginModules/LookupDataManagementPluginModule.php:353
+msgid "The lookup item could not be created"
+msgstr ""
+
+#: lib/pluginModules/LookupDataManagementPluginModule.php:365
+msgid "The lookup item has been created, but the translation could not be saved"
+msgstr ""
+
+#: lib/pluginModules/LookupDataManagementPluginModule.php:396
+msgid "The default label is mandatory"
+msgstr ""
+
+#: lib/pluginModules/LookupDataManagementPluginModule.php:441
+msgid "The lookup item could not be modified"
+msgstr ""
+
+#: lib/pluginModules/LookupDataManagementPluginModule.php:481
+msgid "The item translation could not be deleted."
+msgstr ""
+
+#: lib/pluginModules/LookupDataManagementPluginModule.php:513
+#: lib/pluginModules/LookupDataManagementPluginModule.php:523
+msgid "The item could not be deleted"
+msgstr ""
+
+#: lib/pluginModules/LookupDataManagementPluginModule.php:519
+msgid "The item is still associated with %d post(s). Do you wish to proceed?"
+msgstr ""
+
+#: lib/pluginModules/SettingsPluginModule.php:95
+#: views/wpts-settings.php:42
+msgid "Trip Summary Settings"
+msgstr ""
+
+#: lib/pluginModules/SettingsPluginModule.php:96
+msgid "Trip Summary"
+msgstr ""
+
+#: lib/pluginModules/SettingsPluginModule.php:101
+msgid "Settings"
+msgstr ""
+
+#: lib/pluginModules/SettingsPluginModule.php:216
+msgid "The settings could not be saved. Please try again."
+msgstr ""
+
+#: lib/pluginModules/SettingsPluginModule.php:233
+msgid "Unsupported unit system"
+msgstr ""
+
+#: lib/pluginModules/SettingsPluginModule.php:240
+msgid "Unsupported viewer tab"
+msgstr ""
+
+#: lib/pluginModules/SettingsPluginModule.php:247
+msgid "Unsupported viewer item layout"
+msgstr ""
+
+#: lib/pluginModules/SettingsPluginModule.php:254
+msgid "The track line colour is not a valid HEX colour code"
+msgstr ""
+
+#: lib/pluginModules/SettingsPluginModule.php:263
+msgid "Tile layer URL is required"
+msgstr ""
+
+#: lib/pluginModules/SettingsPluginModule.php:267
+msgid "Tile layer URL does not have a valid format"
+msgstr ""
+
+#: lib/pluginModules/SettingsPluginModule.php:273
+msgid "Tile layer attribution URL does not have a valid format"
+msgstr ""
+
+#: lib/Settings.php:288
+#: tests/lib/SettingsDataHelpers.php:70
 msgid "For the pragmatic sort, there is also a trip summary at the bottom of this page. Click here to consult it"
 msgstr ""
 
-#: lib/Settings.php:278
-#: tests/test-Settings.php:172
+#: lib/Settings.php:292
+#: tests/lib/SettingsDataHelpers.php:66
 msgid "It looks like you skipped the story. You should check it out. Click here to go back to beginning"
 msgstr ""
 
-#: lib/Viewer.php:43
+#: lib/TranslatedScriptMessages.php:39
+#: views/wpts-editor-quick-actions-tooltip.php:36
+#: views/wpts-editor-quick-actions.php:49
+msgid "Clear info"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:40
+#: views/wpts-editor-quick-actions-tooltip.php:43
+#: views/wpts-editor-quick-actions.php:55
+msgid "Clear track"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:41
+msgid "GPX files"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:42
+msgid "Generating preview. Please wait..."
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:43
+msgid "Uploading track"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:44
+msgid "The track has been uploaded and saved successfully"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:45
+#: views/wpts-editor.php:113
+msgid "Biking"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:46
+#: views/wpts-editor.php:116
+msgid "Hiking"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:47
+msgid "Train ride"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:48
+msgid "Clearing track. Please wait..."
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:49
+msgid "The track has been successfully cleared"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:50
+msgid "The data could not be updated"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:51
+msgid "The data could not be updated due to a possible network error or an internal server issue"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:52
+msgid "Saving data. Please wait..."
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:53
+msgid "The data has been saved"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:54
+msgid "The data could not be saved"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:55
+msgid "The data could not be saved due to a possible network error or an internal server issue"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:56
+msgid "Clearing trip info. Please wait..."
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:57
+msgid "The trip info has been cleared"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:58
+msgid "The trip info could not be cleared"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:59
+msgid "The trip info could not be cleared due to a possible network error or an internal server issue"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:60
+#: lib/TranslatedScriptMessages.php:67
+msgid "The selected file is too large. Maximum allowed size is 10MB"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:61
+#: lib/TranslatedScriptMessages.php:66
+msgid "The selected file type is not valid. Only GPX files are allowed"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:62
+#: lib/TranslatedScriptMessages.php:63
+msgid "The file could not be read"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:64
+msgid "The uploader could not be initialized"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:65
+#: lib/TranslatedScriptMessages.php:75
+msgid "The file could not be uploaded"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:68
+msgid "No file was uploaded"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:69
+msgid "The file could not be uploaded due to a possible internal server issue"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:70
+msgid "The file could not be stored on the server (#2). This usually indicates an internal server issue."
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:71
+msgid "The file could not be stored on the server (#1). This usually indicates an internal server issue."
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:72
+msgid "The upload request contains some invalid parameters. This might indicate an error within the plug-in itself or an attempt to forge the request."
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:73
+msgid "The destination were the track file was uploaded cannot be found. This usually indicates an internal server issue."
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:74
+msgid "The destination were the track file was uploaded has been found, but is corrupt. This usually indicates a problem with the file itself or, less likely, an internal server issue."
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:76
+msgid "The uploaded file was not a valid GPX file"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:77
+msgid "Choose options"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:78
+msgid "{0} selected"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:79
+msgid "Select all"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:80
+#: views/wpts-editor-launcher-metabox.php:41
+msgid "Trip summary information is present for this post"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:81
+#: views/wpts-editor-launcher-metabox.php:42
+msgid "Trip summary information is not present for this post"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:82
+#: views/wpts-editor-launcher-metabox.php:53
+msgid "Trip summary track is present for this post"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:83
+#: views/wpts-editor-launcher-metabox.php:54
+msgid "Trip summary track is not present for this post"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:84
+msgid "Are you sure you want to remove the trip summary information? This action cannot be undone!"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:85
+msgid "Are you sure you want to remove the trip summary track? This action cannot be undone!"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:91
+msgid "The settings could not be saved due to a possible network error or an internal server issue"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:92
+msgid "The settings could not be saved due to a possible internal server issue"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:93
+msgid "Settings successfully saved"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:94
+msgid "Saving settings. Please wait..."
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:100
+msgid "Working. Please wait..."
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:101
+msgid "Item successfully saved"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:102
+#: views/wpts-lookup-data-management.php:75
+#: views/wpts-lookup-data-management.php:89
+msgid "Add new item"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:103
+msgid "Modify item"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:104
+msgid "The item could not be saved due to a possible network error or an internal server issue"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:105
+msgid "The item could not be saved due to a possible internal server issue"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:106
+msgid "Confirm item removal"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:107
+msgid "The item could not be deleted due to a possible network error or an internal server issue"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:108
+msgid "The item could not be deleted due to a possible internal server issue"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:109
+msgid "The item has been successfully deleted"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:110
+msgid "The lookup items could not be loaded due to a possible network error or an internal server issue"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:111
+msgid "The lookup items could not be loaded"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:117
+msgid "Minimum altitude:"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:118
+msgid "Maximum altitude:"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:119
+msgid "Altitude:"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:120
+msgid "Distance:"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:121
+#: views/helpers/controls.frontend.php:92
+msgid "(show)"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:122
+msgid "(hide)"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:128
+msgid "Loading help contents. Please wait..."
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:129
+msgid "The help contents could not be loaded due to a possible network error or an internal server issue."
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:130
+msgid "The help contents could not be loaded."
+msgstr ""
+
+#: lib/Viewer.php:61
 #: views/wpts-frontend.php:43
 msgid "Prosaic details"
 msgstr ""
 
-#: lib/Viewer.php:44
-#: views/wpts-editor.php:90
+#: lib/Viewer.php:62
+#: views/wpts-editor.php:82
 #: views/wpts-frontend.php:46
 msgid "Map"
 msgstr ""
 
+#: lib/Viewer.php:72
+msgid "Horizontally"
+msgstr ""
+
+#: lib/Viewer.php:73
+msgid "Vertically"
+msgstr ""
+
+#: views/helpers/controls.frontend.php:91
+msgid "and %d more"
+msgstr ""
+
+#: views/wpts-about.php:47
+msgid "Current Version"
+msgstr ""
+
+#: views/wpts-about.php:51
+msgid "License"
+msgstr ""
+
+#: views/wpts-about.php:55
+msgid "Author"
+msgstr ""
+
+#: views/wpts-about.php:61
+msgid "Minimum WordPress Version"
+msgstr ""
+
+#: views/wpts-about.php:65
+msgid "Your WordPress Version"
+msgstr ""
+
+#: views/wpts-about.php:69
+msgid "Minimum PHP Version"
+msgstr ""
+
+#: views/wpts-about.php:73
+msgid "Your PHP Version"
+msgstr ""
+
+#: views/wpts-about.php:77
+msgid "Project source"
+msgstr ""
+
+#: views/wpts-about.php:78
+msgid "Github"
+msgstr ""
+
+#: views/wpts-about.php:85
+msgid "Get Support"
+msgstr ""
+
+#: views/wpts-about.php:88
+msgid "Buy me a coffee :)"
+msgstr ""
+
+#: views/wpts-about.php:95
+msgid "Changelog"
+msgstr ""
+
 #: views/wpts-button.php:35
-#: views/wpts-editor.php:55
-#: views/wpts-editor.php:72
+#: views/wpts-editor.php:57
+#: views/wpts-editor.php:64
 msgid "Edit trip summary"
 msgstr ""
 
 #: views/wpts-editor-launcher-metabox.php:66
+#: views/wpts-editor.php:98
 msgid "Quick actions"
 msgstr ""
 
@@ -534,127 +644,123 @@ msgid "Click here to edit trip summary information and/or track"
 msgstr ""
 
 #: views/wpts-editor-launcher-metabox.php:73
-#: views/wpts-lookup-data-management.php:140
+#: views/wpts-lookup-data-management.php:145
 msgid "Edit"
 msgstr ""
 
-#: views/wpts-editor-launcher-metabox.php:85
-#: views/wpts-editor-launcher-metabox.php:98
+#: views/wpts-editor-quick-actions-tooltip.php:41
+#: views/wpts-editor-quick-actions.php:53
 msgid "Download track"
 msgstr ""
 
-#: views/wpts-editor.php:85
+#: views/wpts-editor.php:77
 msgid "Info"
 msgstr ""
 
-#: views/wpts-editor.php:102
-msgid "Clear"
-msgstr ""
-
-#: views/wpts-editor.php:103
+#: views/wpts-editor.php:99
 msgid "Save"
 msgstr ""
 
-#: views/wpts-editor.php:112
+#: views/wpts-editor.php:110
 msgid "Chose the type of your tour"
 msgstr ""
 
-#: views/wpts-editor.php:121
+#: views/wpts-editor.php:119
 msgid "Train Ride"
 msgstr ""
 
-#: views/wpts-editor.php:130
-#: views/wpts-editor.php:196
-#: views/wpts-editor.php:254
+#: views/wpts-editor.php:128
+#: views/wpts-editor.php:194
+#: views/wpts-editor.php:252
 #: views/wpts-frontend.php:56
 #: views/wpts-frontend.php:64
 #: views/wpts-frontend.php:72
 msgid "Total distance"
 msgstr ""
 
-#: views/wpts-editor.php:134
-#: views/wpts-editor.php:200
+#: views/wpts-editor.php:132
+#: views/wpts-editor.php:198
 #: views/wpts-frontend.php:57
 #: views/wpts-frontend.php:65
 msgid "Total climb"
 msgstr ""
 
-#: views/wpts-editor.php:141
-#: views/wpts-editor.php:207
+#: views/wpts-editor.php:139
+#: views/wpts-editor.php:205
 msgid "-- Choose an option --"
 msgstr ""
 
-#: views/wpts-editor.php:146
-#: views/wpts-editor.php:162
-#: views/wpts-editor.php:174
-#: views/wpts-editor.php:186
-#: views/wpts-editor.php:212
-#: views/wpts-editor.php:228
-#: views/wpts-editor.php:240
-#: views/wpts-editor.php:273
-#: views/wpts-editor.php:285
-#: views/wpts-editor.php:297
-#: views/wpts-editor.php:309
+#: views/wpts-editor.php:144
+#: views/wpts-editor.php:160
+#: views/wpts-editor.php:172
+#: views/wpts-editor.php:184
+#: views/wpts-editor.php:210
+#: views/wpts-editor.php:226
+#: views/wpts-editor.php:238
+#: views/wpts-editor.php:271
+#: views/wpts-editor.php:283
+#: views/wpts-editor.php:295
+#: views/wpts-editor.php:307
 msgid "No items to select from. Visit the lookup data management page to add some."
 msgstr ""
 
-#: views/wpts-editor.php:151
-#: views/wpts-editor.php:217
+#: views/wpts-editor.php:149
+#: views/wpts-editor.php:215
 #: views/wpts-frontend.php:59
 #: views/wpts-frontend.php:67
 msgid "Access information"
 msgstr ""
 
-#: views/wpts-editor.php:155
-#: views/wpts-editor.php:221
+#: views/wpts-editor.php:153
+#: views/wpts-editor.php:219
 #: views/wpts-frontend.php:60
 #: views/wpts-frontend.php:68
 msgid "Open during seasons"
 msgstr ""
 
-#: views/wpts-editor.php:245
+#: views/wpts-editor.php:243
 msgid "Route markers"
 msgstr ""
 
-#: views/wpts-editor.php:258
+#: views/wpts-editor.php:256
 #: views/wpts-frontend.php:73
 msgid "Exchanged trains"
 msgstr ""
 
-#: views/wpts-editor.php:262
+#: views/wpts-editor.php:260
 #: views/wpts-frontend.php:74
 msgid "Line gauge"
 msgstr ""
 
-#: views/wpts-editor.php:278
+#: views/wpts-editor.php:276
 #: views/wpts-frontend.php:76
 msgid "Line status"
 msgstr ""
 
-#: views/wpts-editor.php:290
+#: views/wpts-editor.php:288
 #: views/wpts-frontend.php:77
 msgid "Electrification status"
 msgstr ""
 
-#: views/wpts-editor.php:302
+#: views/wpts-editor.php:300
 #: views/wpts-frontend.php:78
 msgid "Line type"
 msgstr ""
 
-#: views/wpts-editor.php:319
+#: views/wpts-editor.php:317
 msgid "Upload a GPX track file"
 msgstr ""
 
-#: views/wpts-editor.php:322
+#: views/wpts-editor.php:320
 msgid "Chose file"
 msgstr ""
 
-#: views/wpts-editor.php:339
+#: views/wpts-editor.php:337
 #: views/wpts-frontend.php:88
 msgid "The map could not be loaded due to either a network error or a possible server issue."
 msgstr ""
 
-#: views/wpts-editor.php:340
+#: views/wpts-editor.php:338
 #: views/wpts-frontend.php:89
 msgid "Retry"
 msgstr ""
@@ -667,66 +773,70 @@ msgstr ""
 msgid "Path markers"
 msgstr ""
 
-#: views/wpts-help.php:35
+#: views/wpts-help.php:40
 msgid "WP Trip Summary Help"
 msgstr ""
 
-#: views/wpts-help.php:41
+#: views/wpts-help.php:45
+msgid "Use the selector below to change the language for displaying the help contents:"
+msgstr ""
+
+#: views/wpts-help.php:61
 msgid "No help contents has been found. This usually indicates some problems with the help content files that have been distributed with the plug-in. Please check your website file structure."
 msgstr ""
 
-#: views/wpts-lookup-data-management.php:49
+#: views/wpts-lookup-data-management.php:54
 msgid "Lookup type:"
 msgstr ""
 
-#: views/wpts-lookup-data-management.php:57
+#: views/wpts-lookup-data-management.php:62
 msgid "Language:"
 msgstr ""
 
-#: views/wpts-lookup-data-management.php:69
-#: views/wpts-lookup-data-management.php:83
+#: views/wpts-lookup-data-management.php:74
+#: views/wpts-lookup-data-management.php:88
 msgid "Reload list"
 msgstr ""
 
-#: views/wpts-lookup-data-management.php:75
-#: views/wpts-lookup-data-management.php:94
+#: views/wpts-lookup-data-management.php:80
+#: views/wpts-lookup-data-management.php:99
 msgid "Default label"
 msgstr ""
 
-#: views/wpts-lookup-data-management.php:76
+#: views/wpts-lookup-data-management.php:81
 msgid "Label"
 msgstr ""
 
-#: views/wpts-lookup-data-management.php:77
+#: views/wpts-lookup-data-management.php:82
 msgid "Actions"
 msgstr ""
 
-#: views/wpts-lookup-data-management.php:98
+#: views/wpts-lookup-data-management.php:103
 msgid "Translated label"
 msgstr ""
 
-#: views/wpts-lookup-data-management.php:103
+#: views/wpts-lookup-data-management.php:108
 msgid "Save item"
 msgstr ""
 
-#: views/wpts-lookup-data-management.php:104
-#: views/wpts-lookup-data-management.php:123
+#: views/wpts-lookup-data-management.php:109
+#: views/wpts-lookup-data-management.php:128
 msgid "Cancel"
 msgstr ""
 
-#: views/wpts-lookup-data-management.php:114
+#: views/wpts-lookup-data-management.php:119
 msgid "Are you sure you want to delete this item? This action cannot be undone"
 msgstr ""
 
-#: views/wpts-lookup-data-management.php:117
+#: views/wpts-lookup-data-management.php:122
 msgid "Only delete item translation"
 msgstr ""
 
-#: views/wpts-lookup-data-management.php:122
+#: views/wpts-lookup-data-management.php:127
 msgid "Confirm delete"
 msgstr ""
 
-#: views/wpts-lookup-data-management.php:141
+#: views/wpts-lookup-data-management.php:146
 msgid "Delete"
 msgstr ""
 
@@ -742,86 +852,96 @@ msgstr ""
 msgid "Unit system"
 msgstr ""
 
-#: views/wpts-settings.php:70
-msgid "Viewer settings"
-msgstr ""
-
-#: views/wpts-settings.php:72
-msgid "These settings configure the trip summary viewer"
+#: views/wpts-settings.php:75
+#: views/wpts-settings.php:168
+#: views/wpts-settings.php:329
+msgid "Save settings"
 msgstr ""
 
 #: views/wpts-settings.php:78
+msgid "Viewer settings"
+msgstr ""
+
+#: views/wpts-settings.php:80
+msgid "These settings configure the trip summary viewer"
+msgstr ""
+
+#: views/wpts-settings.php:86
 msgid "Show teaser?"
 msgstr ""
 
-#: views/wpts-settings.php:90
+#: views/wpts-settings.php:98
 msgid "Top teaser text"
 msgstr ""
 
-#: views/wpts-settings.php:100
+#: views/wpts-settings.php:108
 msgid "Bottom teaser text"
 msgstr ""
 
-#: views/wpts-settings.php:110
+#: views/wpts-settings.php:118
 msgid "Initial viewer tab"
 msgstr ""
 
-#: views/wpts-settings.php:127
-msgid "Map Settings"
+#: views/wpts-settings.php:134
+msgid "Chose how multi-value items are laid out"
 msgstr ""
 
-#: views/wpts-settings.php:129
-msgid "These settings configure the map component"
-msgstr ""
-
-#: views/wpts-settings.php:135
-msgid "Tile layer URL template"
-msgstr ""
-
-#: views/wpts-settings.php:147
-msgid "Tile layer attribution URL"
-msgstr ""
-
-#: views/wpts-settings.php:159
-msgid "Tile layer attribution text"
+#: views/wpts-settings.php:150
+msgid "Chose how many values of a multi-valued item are displayed"
 msgstr ""
 
 #: views/wpts-settings.php:171
+msgid "Map Settings"
+msgstr ""
+
+#: views/wpts-settings.php:173
+msgid "These settings configure the map component"
+msgstr ""
+
+#: views/wpts-settings.php:179
+msgid "Tile layer URL template"
+msgstr ""
+
+#: views/wpts-settings.php:191
+msgid "Tile layer attribution URL"
+msgstr ""
+
+#: views/wpts-settings.php:203
+msgid "Tile layer attribution text"
+msgstr ""
+
+#: views/wpts-settings.php:215
 msgid "Enable map fullscreen mode?"
 msgstr ""
 
-#: views/wpts-settings.php:183
+#: views/wpts-settings.php:227
 msgid "Show magnifying glass?"
 msgstr ""
 
-#: views/wpts-settings.php:195
+#: views/wpts-settings.php:239
 msgid "Show map scale?"
 msgstr ""
 
-#: views/wpts-settings.php:207
+#: views/wpts-settings.php:251
 msgid "Show minimum & maximum altitude?"
 msgstr ""
 
-#: views/wpts-settings.php:219
+#: views/wpts-settings.php:263
 msgid "Show altitude profile?"
 msgstr ""
 
-#: views/wpts-settings.php:231
+#: views/wpts-settings.php:275
 msgid "Allow track download?"
 msgstr ""
 
-#: views/wpts-settings.php:243
+#: views/wpts-settings.php:287
 msgid "Track line colour"
 msgstr ""
 
-#: views/wpts-settings.php:255
+#: views/wpts-settings.php:299
 msgid "Track line weight"
 msgstr ""
 
-#: views/wpts-settings.php:267
+#: views/wpts-settings.php:311
 msgid "Map height"
-msgstr ""
-
-#: views/wpts-settings.php:285
-msgid "Save settings"
 msgstr ""

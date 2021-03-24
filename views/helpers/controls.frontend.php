@@ -88,7 +88,7 @@ if (!function_exists('abp01_render_info_item_value_more_link')) {
                     . '<a href="javascript:void(0)">%s</a>' 
                 . '</span>',
             $layoutCssClass,
-            sprintf(__('and %d more'), $countRemaining),
+            sprintf(__('and %d more', 'abp01-trip-summary'), $countRemaining),
             __('(show)', 'abp01-trip-summary')
         );
     }
