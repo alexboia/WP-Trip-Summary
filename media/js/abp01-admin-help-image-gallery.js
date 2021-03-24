@@ -159,7 +159,13 @@
 		}
 
 		function scrollToEnlargedImage() {
-			$('body,html').scrollTop($('#abp01-admin-help-image-gallery-viewer-top').offset().top);
+			$('body,html').scrollTop(getGalleryViewerTopMarkerOffset());
+		}
+
+		function getGalleryViewerTopMarkerOffset() {
+			return $('#abp01-admin-help-image-gallery-viewer-top')
+				.offset()
+				.top;
 		}
 
 		function handleImageThumbnailClicked(e) {

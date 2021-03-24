@@ -88,6 +88,8 @@ class Abp01_Includes {
 
 	const JS_ABP01_PROGRESS_OVERLAY = 'abp01-progress-overlay';
 
+	const JS_ABP01_OPERATION_MESSAGE = 'abp01-operation-message-js';
+
 	const JS_ABP01_NUMERIC_STEPPER = 'abp01-numeric-stepper-js';
 
 	const JS_ABP01_HELP_IMAGE_GALLERY = 'abp01-help-image-gallery-js';
@@ -328,6 +330,13 @@ class Abp01_Includes {
 			'version' => '2.9.3'
 		),
 
+		self::JS_ABP01_OPERATION_MESSAGE => array(
+			'path' => 'media/js/abp01-operation-message.js', 
+			'version' => ABP01_VERSION,
+			'deps' => array(
+				self::JS_JQUERY
+			)
+		),
 		self::JS_ABP01_NUMERIC_STEPPER => array(
 			'path' => 'media/js/abp01-numeric-stepper.js', 
 			'version' => ABP01_VERSION,
@@ -431,7 +440,8 @@ class Abp01_Includes {
 				self::JS_JQUERY_BLOCKUI,
 				self::JS_KITE_JS,
 				self::JS_URI_JS,
-				self::JS_ABP01_PROGRESS_OVERLAY
+				self::JS_ABP01_PROGRESS_OVERLAY,
+				self::JS_ABP01_OPERATION_MESSAGE
 			)
 		),
 		self::JS_ABP01_ADMIN_HELP => array(
@@ -442,7 +452,8 @@ class Abp01_Includes {
 				self::JS_JQUERY_BLOCKUI,
 				self::JS_URI_JS,
 				self::JS_ABP01_PROGRESS_OVERLAY,
-				self::JS_ABP01_HELP_IMAGE_GALLERY
+				self::JS_ABP01_HELP_IMAGE_GALLERY,
+				self::JS_ABP01_OPERATION_MESSAGE
 			)
 		),
 		self::JS_ABP01_VIEWER_SHORTCODE_BLOCK => array(

@@ -65,7 +65,8 @@ class Abp01_PluginModules_HelpPluginModule extends Abp01_PluginModules_PluginMod
             Abp01_AdminAjaxAction::create(ABP01_ACTION_GET_HELP_FOR_LOCALE, array($this, 'getHelpForLocale'))
                 ->authorizeByCallback($this->_createManagePluginSettingsAuthCallback())
                 ->setRequiresAuthentication(true)
-                ->useDefaultNonceProvider('abp01_help_nonce');
+                ->useDefaultNonceProvider('abp01_help_nonce')
+                ->onlyForHttpGet();
     }
 
     public function load() {

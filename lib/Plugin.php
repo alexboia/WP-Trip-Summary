@@ -34,40 +34,40 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Plugin {
-    /**
-     * @var Abp01_NonceProvider_DownloadTrackData
-     */
-    private $_downloadTrackDataNonceProvider;
+	/**
+	 * @var Abp01_NonceProvider_DownloadTrackData
+	 */
+	private $_downloadTrackDataNonceProvider;
 
-    /**
-     * @var Abp01_NonceProvider_ReadTrackData
-     */
-    private $_readTrackDataNonceProvider;
+	/**
+	 * @var Abp01_NonceProvider_ReadTrackData
+	 */
+	private $_readTrackDataNonceProvider;
 
-    /**
-     * @var Abp01_Viewer_DataSource_Cache
-     */
-    private $_viewerDataSourceCache;
+	/**
+	 * @var Abp01_Viewer_DataSource_Cache
+	 */
+	private $_viewerDataSourceCache;
 
-    /**
-     * @var Abp01_Viewer_DataSource
-     */
-    private $_viewerDataSource;
+	/**
+	 * @var Abp01_Viewer_DataSource
+	 */
+	private $_viewerDataSource;
 
-    /**
-     * @var Abp01_ChangeLogDataSource
-     */
-    private $_changeLogDataSource;
+	/**
+	 * @var Abp01_ChangeLogDataSource
+	 */
+	private $_changeLogDataSource;
 
-    /**
-     * @var Abp01_Viewer
-     */
-    private $_viewer;
+	/**
+	 * @var Abp01_Viewer
+	 */
+	private $_viewer;
 
-    /**
-     * @var Abp01_UrlHelper
-     */
-    private $_urlHelper;
+	/**
+	 * @var Abp01_UrlHelper
+	 */
+	private $_urlHelper;
 
 	/**
 	 * @var Abp01_PluginModules_PluginModuleHost
@@ -252,88 +252,88 @@ class Abp01_Plugin {
 	}
 
 	public function getTrackDownloadNonceProvider() {
-        if ($this->_downloadTrackDataNonceProvider === null) {
-            $this->_downloadTrackDataNonceProvider = new Abp01_NonceProvider_DownloadTrackData();
-        }
-        return $this->_downloadTrackDataNonceProvider;
-    }
+		if ($this->_downloadTrackDataNonceProvider === null) {
+			$this->_downloadTrackDataNonceProvider = new Abp01_NonceProvider_DownloadTrackData();
+		}
+		return $this->_downloadTrackDataNonceProvider;
+	}
 
-    public function getReadTrackDataNonceProvider() {
-        if ($this->_readTrackDataNonceProvider === null) {
-            $this->_readTrackDataNonceProvider = new Abp01_NonceProvider_ReadTrackData();
-        }
-        return $this->_readTrackDataNonceProvider;
-    }
+	public function getReadTrackDataNonceProvider() {
+		if ($this->_readTrackDataNonceProvider === null) {
+			$this->_readTrackDataNonceProvider = new Abp01_NonceProvider_ReadTrackData();
+		}
+		return $this->_readTrackDataNonceProvider;
+	}
 
-    public function getUrlHelper() {
-        if ($this->_urlHelper === null) {
-            $this->_urlHelper = new Abp01_UrlHelper($this->getEnv(), $this->getTrackDownloadNonceProvider());
-        }
-        return $this->_urlHelper;
-    }
+	public function getUrlHelper() {
+		if ($this->_urlHelper === null) {
+			$this->_urlHelper = new Abp01_UrlHelper($this->getEnv(), $this->getTrackDownloadNonceProvider());
+		}
+		return $this->_urlHelper;
+	}
 
-    public function getViewer() {
-        if ($this->_viewer === null) {
-            $this->_viewer = new Abp01_Viewer($this->getView());
-        }
-        return $this->_viewer;
-    }
+	public function getViewer() {
+		if ($this->_viewer === null) {
+			$this->_viewer = new Abp01_Viewer($this->getView());
+		}
+		return $this->_viewer;
+	}
 
-    public function getViewerDataSource() {
-        if ($this->_viewerDataSource === null) {
-            $this->_viewerDataSource = new Abp01_Viewer_DataSource_Default($this->getRouteManager(), 
-                $this->getLookupForCurrentLang(), 
-                $this->getViewerDataSourceCache());
-        }
-        return $this->_viewerDataSource;
-    }
+	public function getViewerDataSource() {
+		if ($this->_viewerDataSource === null) {
+			$this->_viewerDataSource = new Abp01_Viewer_DataSource_Default($this->getRouteManager(), 
+				$this->getLookupForCurrentLang(), 
+				$this->getViewerDataSourceCache());
+		}
+		return $this->_viewerDataSource;
+	}
 
-    public function getChangeLogDataSource() {
-        if ($this->_changeLogDataSource === null) {
-            $this->_changeLogDataSource = new Abp01_ChangeLogDataSource_Cached(
-                new Abp01_ChangeLogDataSource_ReadMe($this->_determineReadmeTxtFilePath()), 
-                $this->getEnv()
-            );
-        }
-        return $this->_changeLogDataSource;
-    }
+	public function getChangeLogDataSource() {
+		if ($this->_changeLogDataSource === null) {
+			$this->_changeLogDataSource = new Abp01_ChangeLogDataSource_Cached(
+				new Abp01_ChangeLogDataSource_ReadMe($this->_determineReadmeTxtFilePath()), 
+				$this->getEnv()
+			);
+		}
+		return $this->_changeLogDataSource;
+	}
 
-    private function _determineReadmeTxtFilePath() {
+	private function _determineReadmeTxtFilePath() {
 		return ABP01_PLUGIN_ROOT . '/readme.txt';
 	}
 
-    public function getViewerDataSourceCache() {
-        if ($this->_viewerDataSourceCache === null) {
-            $this->_viewerDataSourceCache = new Abp01_Viewer_DataSource_Cache_WpTransients();
-        }
-        return $this->_viewerDataSourceCache;
-    }
+	public function getViewerDataSourceCache() {
+		if ($this->_viewerDataSourceCache === null) {
+			$this->_viewerDataSourceCache = new Abp01_Viewer_DataSource_Cache_WpTransients();
+		}
+		return $this->_viewerDataSourceCache;
+	}
 
-    public function getLookupForCurrentLang() {
-        return new Abp01_Lookup();
-    }
+	public function getLookupForCurrentLang() {
+		return new Abp01_Lookup();
+	}
 
-    public function getRouteManager() {
-        return abp01_get_route_manager();
-    }
+	public function getRouteManager() {
+		return abp01_get_route_manager();
+	}
 
-    public function getHelp() {
-        return abp01_get_help();
-    }
+	public function getHelp() {
+		return abp01_get_help();
+	}
 
-    public function getView() {
-        return abp01_get_view();
-    }
+	public function getView() {
+		return abp01_get_view();
+	}
 
-    public function getSettings() {
-        return abp01_get_settings();
-    }
+	public function getSettings() {
+		return abp01_get_settings();
+	}
 
-    public function getEnv() {
-        return abp01_get_env();
-    }
+	public function getEnv() {
+		return abp01_get_env();
+	}
 
-    public function getAuth() {
-        return abp01_get_auth();
-    }
+	public function getAuth() {
+		return abp01_get_auth();
+	}
 }
