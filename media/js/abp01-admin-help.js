@@ -36,13 +36,13 @@
 
 	var $ctlLanguageSelector = null;
 	var $ctlHelpContentsContainer = null;
+	var $ctlHelpLoadResult = null;
 
 	var context = null;
 
 	function getContext() {
 		return {
             ajaxBaseUrl: window['abp01_ajaxUrl'] || null,
-
             getHelpNonce: window['abp01_getHelpNonce'] || null,
             ajaxGetHelpAction: window['abp01_getHelpAction'] || null
         };
@@ -73,6 +73,7 @@
 
 	function refreshHelpContentsForLocale(locale) {
 		toggleBusy(true);
+		$ctlHelpLoadResult.abp01OperationMessage('hide');
 		$.ajax(getHelpForLocaleUrl(), {
 			cache: false,
 			dataType: 'json',
@@ -84,10 +85,14 @@
 			toggleBusy(false);
 			if (data && data.success && !!data.htmlHelpContents) {
 				refreshHelp(data.htmlHelpContents);
+			} else {
+				$ctlHelpLoadResult.abp01OperationMessage('error', 
+					data.message || abp01HelpL10n.errLoadHelpContentsGeneric);
 			}
 		}).fail(function() {
 			toggleBusy(false);
-			//TODO: handle failure
+			$ctlHelpLoadResult.abp01OperationMessage('error', 
+				abp01HelpL10n.errLoadHelpContentsFailNetwork);
 		});
 	}
 
@@ -104,6 +109,7 @@
 	function initControls() {
 		$ctlLanguageSelector = $('#abp01-help-contents-lang');
 		$ctlHelpContentsContainer = $('#abp01-help-contents-body');
+		$ctlHelpLoadResult = $('#abp01-help-load-result');
 	}
 
 	function initListeners() {

@@ -44,6 +44,13 @@
     max-width: 820px;
 }
 
+.abp01-help-load-result {
+    margin-left: 0px !important;
+    margin-right: 10px !important;
+    width: 791px;
+    margin-bottom: 10px;
+}
+
 .abp01-help-section {
     width: 800px;
     background: #fff;

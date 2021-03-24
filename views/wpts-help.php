@@ -38,6 +38,7 @@
 </script>
 <div id="abp01-help-page">
 	<h2><?php echo esc_html__('WP Trip Summary Help', 'abp01-trip-summary'); ?></h2>
+	<div id="abp01-help-load-result" class="abp01-help-load-result notice" style="display:none"></div>
 	<div id="abp01-help-contents">
 		<?php if (!empty($data->helpContents)): ?>
 			<div id="abp01-help-contents-controls">
