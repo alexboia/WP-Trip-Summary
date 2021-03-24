@@ -37,10 +37,6 @@
 	var DEFAULT_LANG = '_default';
 	var LOOKUP_DELETE_INITIAL_REQUEST = '_lookup_delete_initial_request';
 	var LOOKUP_DELETE_INUSE_CONFIRMATION = '_lookup_delete_inuse_confirmation';
-	
-	var MESSAGE_SUCCESS = 'notice-success';
-	var MESSAGE_ERROR = 'notice-error';
-	var MESSAGE_WARNING = 'notice-warning';
 
 	/**
 	 * Current form controls
@@ -188,34 +184,6 @@
 		}
 	}
 
-	function displayMessage($container, messageType, message) {
-		//first clear the result container
-		clearMessage($container);
-
-		//style the message box according to success/error status
-		//and show the message
-		$container
-			.removeClass(MESSAGE_ERROR)
-			.removeClass(MESSAGE_SUCCESS)
-			.removeClass(MESSAGE_SUCCESS)
-
-			.addClass('notice')
-			.addClass(messageType)
-
-			.html('<p>' + message + '</p>')
-			.show();
-	}
-
-	function clearMessage($container) {        
-		$container
-			.removeClass('notice')
-			.removeClass(MESSAGE_ERROR)
-			.removeClass(MESSAGE_SUCCESS)
-			.removeClass(MESSAGE_WARNING)
-			.html('')
-			.hide();
-	}
-
 	function getLoadLookupDataUrl() {
 		return URI(context.ajaxBaseUrl)
 			.addSearch('action', context.ajaxGetLookupAction)
@@ -294,7 +262,7 @@
 		var lookupLang = $ctlLangSelector.val();
 
 		showBusy(null);
-		clearMessage($ctlListingResultContainer);
+		$ctlListingResultContainer.abp01OperationMessage('hide');
 
 		$.ajax(getLoadLookupDataUrl(), {
 			cache: false,
@@ -313,14 +281,12 @@
 					updateLocalItemData(item);
 				});
 			} else {
-				displayMessage($ctlListingResultContainer, 
-					MESSAGE_ERROR, 
+				$ctlListingResultContainer.abp01OperationMessage('error', 
 					abp01LookupMgmtL10n.errListingFailGeneric);
 			}
 		}).fail(function() {
 			hideBusy(function() {
-				displayMessage($ctlListingResultContainer, 
-					MESSAGE_ERROR, 
+				$ctlListingResultContainer.abp01OperationMessage('error', 
 					abp01LookupMgmtL10n.errListingFailNetwork);
 			});
 		});
@@ -328,7 +294,7 @@
 
 	function createLookupItem() {        
 		showBusy($('#TB_window'));
-		clearMessage($ctlOperationResultContainer);
+		$ctlOperationResultContainer.abp01OperationMessage('hide');
 
 		$.ajax(getAddLookupUrl(), {
 			cache: false,
@@ -345,20 +311,17 @@
 			if (data && data.success) {
 				updateLocalItemData(data.item);
 				renderLookupItems([data.item], true);
-
 				clearForm();
-				displayMessage($ctlOperationResultContainer, 
-					MESSAGE_SUCCESS, 
+
+				$ctlOperationResultContainer.abp01OperationMessage('success', 
 					abp01LookupMgmtL10n.msgSaveOk);
 			} else {
-				displayMessage($ctlOperationResultContainer, 
-					MESSAGE_ERROR, 
+				$ctlOperationResultContainer.abp01OperationMessage('error', 
 					data.message || abp01LookupMgmtL10n.errFailGeneric);
 			}
 		}).fail(function() {
 			hideBusy(function() {
-				displayMessage($ctlOperationResultContainer, 
-					MESSAGE_ERROR, 
+				$ctlOperationResultContainer.abp01OperationMessage('error', 
 					abp01LookupMgmtL10n.errFailNetwork);
 			});
 		});
@@ -369,7 +332,7 @@
 		var translatedLabel = $ctlLookupItemTranslatedLabel.val();
 
 		showBusy($('#TB_window'));
-		clearMessage($ctlOperationResultContainer);
+		$ctlOperationResultContainer.abp01OperationMessage('hide');
 
 		$.ajax(getEditLookupUrl(), {
 			cache: false,
@@ -393,18 +356,15 @@
 				updateLocalItemData(editingItem);
 				refreshLookupItem(editingItem);
 
-				displayMessage($ctlOperationResultContainer, 
-					MESSAGE_SUCCESS, 
+				$ctlOperationResultContainer.abp01OperationMessage('success', 
 					abp01LookupMgmtL10n.msgSaveOk);
 			} else {
-				displayMessage($ctlOperationResultContainer, 
-					MESSAGE_ERROR, 
+				$ctlOperationResultContainer.abp01OperationMessage('error', 
 					data.message || abp01LookupMgmtL10n.errFailGeneric);
 			}
 		}).fail(function() {
 			hideBusy(function() {
-				displayMessage($ctlOperationResultContainer, 
-					MESSAGE_ERROR, 
+				$ctlOperationResultContainer.abp01OperationMessage('error', 
 					abp01LookupMgmtL10n.errFailNetwork);
 			});
 		});
@@ -415,8 +375,9 @@
 		var deleteOnlyLang = $ctlDeleteOnlyLangTranslation.is(':checked');
 
 		showBusy($('#TB_window'));
-		clearMessage($ctlDeleteOperationResultContainer);
-		clearMessage($ctlListingResultContainer);
+
+		$ctlListingResultContainer.abp01OperationMessage('hide');
+		$ctlDeleteOperationResultContainer.abp01OperationMessage('hide');
 
 		$.ajax(getDeleteLookupUrl(), {
 			cache: false,
@@ -434,40 +395,35 @@
 					hideBusy(function() {
 						deleteLookupItemRow(editingItem, deleteOnlyLang && lang !== DEFAULT_LANG);
 						setCurrentItemDeleted();
-
 						closeDeleteDialog();
-						displayMessage($ctlListingResultContainer, 
-							MESSAGE_SUCCESS, 
+
+						$ctlListingResultContainer.abp01OperationMessage('success', 
 							abp01LookupMgmtL10n.msgDeleteOk);
 					});
 				//The lookup item is in use, set removal stage and ask the user for confirmation
 				} else if (!!data.requiresConfirmation && !!data.confirmationNonce) {
 					hideBusy(function() {
 						setLookupDeleteInUseConfirmation(data.confirmationNonce);
-						displayMessage($ctlDeleteOperationResultContainer, 
-							MESSAGE_WARNING, 
+						$ctlDeleteOperationResultContainer.abp01OperationMessage('warning', 
 							data.message);
 					});
 				//Some kind of failure. Warn the user.
 				} else {
 					hideBusy(function() {
-						displayMessage($ctlDeleteOperationResultContainer, 
-							MESSAGE_ERROR, 
+						$ctlDeleteOperationResultContainer.abp01OperationMessage('error', 
 							data.message || abp01LookupMgmtL10n.errDeleteFailedGeneric);
 					});
 				}
 			//Some kind of failure. Warn the user.
 			} else {
 				hideBusy(function() {
-					displayMessage($ctlDeleteOperationResultContainer, 
-						MESSAGE_ERROR, 
+					$ctlDeleteOperationResultContainer.abp01OperationMessage('error', 
 						data.message || abp01LookupMgmtL10n.errDeleteFailedGeneric);
 				});
 			}
 		}).fail(function() {
 			hideBusy(function() {
-				displayMessage($ctlDeleteOperationResultContainer, 
-					MESSAGE_ERROR, 
+				$ctlDeleteOperationResultContainer.abp01OperationMessage('error', 
 					abp01LookupMgmtL10n.errDeleteFailedNetwork);
 			});
 		});
@@ -522,7 +478,7 @@
 		}
 
 		//show the editor
-		clearMessage($ctlOperationResultContainer);
+		$ctlOperationResultContainer.abp01OperationMessage('hide');
 		tb_show(title, '#TB_inline?width=' + 450 + '&height=' + height + '&inlineId=abp01-lookup-item-form');
 	}
 
@@ -541,7 +497,7 @@
 		beginEditingItem(currentItemId);
 		tb_show(abp01LookupMgmtL10n.ttlConfirmDelete, '#TB_inline?width=450&height=' + height + '&inlineId=abp01-lookup-item-delete-form');
 		
-		clearMessage($ctlDeleteOperationResultContainer);
+		$ctlDeleteOperationResultContainer.abp01OperationMessage('hide');
 		setLookupDeleteInitialRequest();
 	}
 
@@ -550,14 +506,14 @@
 		clearForm();
 		clearCurrentlyEditedItem();
 		//close the window
-		clearMessage($ctlOperationResultContainer);
+		$ctlOperationResultContainer.abp01OperationMessage('hide');
 		tb_remove();
 	}
 
 	function closeDeleteDialog() {
 		clearLookupDeleteState();
 		$ctlDeleteOnlyLangTranslation.prop('checked', false);
-		clearMessage($ctlDeleteOperationResultContainer);
+		$ctlDeleteOperationResultContainer.abp01OperationMessage('hide');
 		tb_remove();
 	}
 
