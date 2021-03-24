@@ -30,162 +30,230 @@
  */
 
 trait AdminTestDataHelpers {
-    use GenericTestHelpers;
-    use SettingsDataHelpers;
+	use GenericTestHelpers;
+	use SettingsDataHelpers;
 
-    protected function _generateAdminSettingsData() {
-        $faker = $this->_getFaker();
+	protected function _generateAdminSettingsData() {
+		$faker = $this->_getFaker();
 
-        //init data and populate execution context
-        $data = new stdClass();
-        $data->nonce = $faker->randomAscii;
-        $data->ajaxSaveAction = $faker->randomAscii;
-        $data->ajaxUrl = $faker->url;
+		//init data and populate execution context
+		$data = new stdClass();
+		$data->nonce = $faker->randomAscii;
+		$data->ajaxSaveAction = $faker->word;
+		$data->ajaxUrl = $faker->url;
 
-        //fetch and process tile layer information
-        $data->settings = $this->_generateTestSettingsAsPlainObject();
-        $data->optionsLimits = $this->_generateTestSettingsOptionLimits();
+		//fetch and process tile layer information
+		$data->settings = $this->_generateTestSettingsAsPlainObject();
+		$data->optionsLimits = $this->_generateTestSettingsOptionLimits();
 
-        return $data;
-    }
+		return $data;
+	}
 
-    private function _generateTestSettingsAsPlainObject() {
-        $asPlainObject = new stdClass();
-        $settings = $this->_generateTestSettings();
+	private function _generateTestSettingsAsPlainObject() {
+		$asPlainObject = new stdClass();
+		$settings = $this->_generateTestSettings();
 
-        foreach ($settings as $key => $value) {
-            if ($key != 'tileLayers') {
-                $asPlainObject->$key = $value;
-            } else {
-                $asPlainObject->tileLayer = $value[0];
-            }
-        }
+		foreach ($settings as $key => $value) {
+			if ($key != 'tileLayers') {
+				$asPlainObject->$key = $value;
+			} else {
+				$asPlainObject->tileLayer = $value[0];
+			}
+		}
 
-        $asPlainObject->allowedUnitSystems = Abp01_UnitSystem::getAvailableUnitSystems();
+		$asPlainObject->allowedUnitSystems = Abp01_UnitSystem::getAvailableUnitSystems();
 		$asPlainObject->allowedViewerTabs = Abp01_Viewer::getAvailableTabs();
-        $asPlainObject->allowedItemLayouts = Abp01_Viewer::getAvailableTabs();
+		$asPlainObject->allowedItemLayouts = Abp01_Viewer::getAvailableTabs();
 
-        return $asPlainObject;
-    }
+		return $asPlainObject;
+	}
 
-    protected function _generateHelpPageData() {
-        $faker = $this->_getFaker();
+	protected function _generateHelpPageData() {
+		$faker = $this->_getFaker();
 
-        $data = new stdClass();	
-	    $data->helpContents = $faker->randomAscii;
+		$data = new stdClass();	
+		$data->context = new stdClass();
+		$data->context->ajaxBaseUrl = $faker->url;
+		$data->context->getHelpAction = $faker->word;
+		$data->context->getHelpNonce = $faker->randomAscii;
 
-        return $data;
-    }
+		$data->currentLocale = $faker->locale;
+		$data->localesWithHelpContents = array();
+		$data->helpContents = $faker->sentences(10, true);
 
-    protected function _generateEmptyHelpPageData() {
-        $data = new stdClass();	
-	    $data->helpContents = null;
-        return $data;
-    }
+		return $data;
+	}
 
-    protected function _generateAdminLookupPageData() {
-        $faker = $this->_getFaker();
+	protected function _generateEmptyHelpPageData() {
+		$faker = $this->_getFaker();
 
-        $data = new stdClass();
-        $data->controls = new stdClass();
-        $data->controls->availableTypes = array();
-        foreach (Abp01_Lookup::getSupportedCategories() as $category) {
-            $data->controls->availableCategories[$category] = abp01_get_lookup_type_label($category);
-        }
+		$data = new stdClass();	
+		$data->context = new stdClass();
+		$data->context->ajaxBaseUrl = $faker->url;
+		$data->context->getHelpAction = $faker->word;
+		$data->context->getHelpNonce = $faker->randomAscii;
+		$data->helpContents = null;
 
-        $data->controls->availableLanguages = Abp01_Lookup::getSupportedLanguages();       
-        $data->controls->selectedLanguage = '_default';
-        $data->controls->selectedCategory = current(array_keys($data->controls->availableCategories));
+		return $data;
+	}
 
-        $data->context = new stdClass();
-        $data->context->getLookupNonce = $faker->randomAscii;
-        $data->context->getLookupAction = $faker->randomAscii;
+	protected function _generateAboutPageData() {
+		$faker = $this->_getFaker();
 
-        $data->context->addLookupNonce = $faker->randomAscii;
-        $data->context->addLookupAction = $faker->randomAscii;
+		$data = new stdClass();
+		$data->pluginLogoPath = $faker->imageUrl();
+		$data->pluginData = $this->_generateAboutPagePluginData();
+		$data->envData = $this->_generateAboutPageEnvData();
+		$data->changelog = $this->_generateAboutPageChangeLog();
 
-        $data->context->editLookupNonce = $faker->randomAscii;
-        $data->context->editLookupAction = $faker->randomAscii;
+		return $data;
+	}
 
-        $data->context->deleteLookupNonce = $faker->randomAscii;
-        $data->context->deleteLookupAction = $faker->randomAscii;
-        $data->context->ajaxBaseUrl = $faker->url;
+	private function _generateAboutPagePluginData() {
+		$faker = $this->_getFaker();
+		return array(
+			'Version' => $faker->uuid,
+			'WPTS Version Name' => $faker->words(3, true),
+			'License URI' => $faker->url,
+			'License' => $faker->words(3, true),
+			'AuthorURI' => $faker->url,
+			'AuthorName' => $faker->name,
+			'RequiresWP' => $faker->uuid,
+			'RequiresPHP' => $faker->uuid,
+			'PluginURI' => $faker->url,
 
-        return $data;
-    }
+		);
+	}
 
-    protected function _generateAdminTripSummaryEditorData() {
-        $data = new stdClass();
-        $faker = $this->_getFaker();
-        $lookup = new Abp01_Lookup();
+	private function _generateAboutPageEnvData() {
+		$faker = $this->_getFaker();
+		return array(
+			'CurrentWP' => $faker->uuid,
+			'CurrentPHP' => $faker->uuid
+		);
+	}
 
-        $data->difficultyLevels = $lookup->getDifficultyLevelOptions();
-        $data->difficultyLevelsAdminUrl = $faker->url;
+	private function _generateAboutPageChangeLog() {
+		$faker = $this->_getFaker();
+		$changelog = array();
+		$versionCount = $faker->numberBetween(1, 10);
+		
+		for ($versionIndex = 0; $versionIndex < $versionCount; $versionIndex ++) {
+			$version = $faker->uuid;
+			$changelog[$version] = array();
 
-        $data->pathSurfaceTypes = $lookup->getPathSurfaceTypeOptions();
-        $data->pathSurfaceTypesAdminUrl = $faker->url;
+			$versionItemCount = $faker->numberBetween(1, 10);
+			for ($itemIndex = 0; $itemIndex < $versionItemCount; $itemIndex ++) {
+				$changelog[$version][] = $faker->words(10, true);
+			}
+		}
 
-        $data->recommendedSeasons = $lookup->getRecommendedSeasonsOptions();
-        $data->recommendedSeasonsAdminUrl = $faker->url;
+		return $changelog;
+	}
 
-        $data->bikeTypes = $lookup->getBikeTypeOptions();
-        $data->bikeTypesAdminUrl = $faker->url;
+	protected function _generateAdminLookupPageData() {
+		$faker = $this->_getFaker();
 
-        $data->railroadOperators = $lookup->getRailroadOperatorOptions();
-        $data->railroadOperatorsAdminUrl = $faker->url;
+		$data = new stdClass();
+		$data->controls = new stdClass();
+		$data->controls->availableTypes = array();
+		foreach (Abp01_Lookup::getSupportedCategories() as $category) {
+			$data->controls->availableCategories[$category] = abp01_get_lookup_type_label($category);
+		}
 
-        $data->railroadLineStatuses = $lookup->getRailroadLineStatusOptions();
-        $data->railroadLineStatusesAdminUrl = $faker->url;
+		$data->controls->availableLanguages = Abp01_Lookup::getSupportedLanguages();       
+		$data->controls->selectedLanguage = '_default';
+		$data->controls->selectedCategory = current(array_keys($data->controls->availableCategories));
 
-        $data->railroadLineTypes = $lookup->getRailroadLineTypeOptions();
-        $data->railroadLineTypesAdminUrl = $faker->url;
+		$data->context = new stdClass();
+		$data->context->getLookupNonce = $faker->randomAscii;
+		$data->context->getLookupAction = $faker->word;
 
-        $data->railroadElectrification = $lookup->getRailroadElectrificationOptions();
-        $data->railroadElectrificationAdminUrl = $faker->url;
+		$data->context->addLookupNonce = $faker->randomAscii;
+		$data->context->addLookupAction = $faker->word;
 
-        //current context information
-        $data->postId = $faker->randomNumber();
-        $data->hasRouteTrack = false;
-        $data->hasRouteInfo = false;
-        $data->trackDownloadUrl = $faker->url;
+		$data->context->editLookupNonce = $faker->randomAscii;
+		$data->context->editLookupAction = $faker->word;
 
-        $data->editInfoNonce = $faker->randomAscii;
-        $data->ajaxEditInfoAction = $faker->randomAscii;
-        $data->uploadTrackNonce = $faker->randomAscii;
-        $data->ajaxUploadTrackAction = $faker->randomAscii;
+		$data->context->deleteLookupNonce = $faker->randomAscii;
+		$data->context->deleteLookupAction = $faker->word;
+		$data->context->ajaxBaseUrl = $faker->url;
 
-        $data->getTrackNonce = $faker->randomAscii;
-        $data->ajaxGetTrackAction = $faker->randomAscii;	
-        
-        $data->clearTrackNonce = $faker->randomAscii;
-        $data->ajaxClearTrackAction = $faker->randomAscii;
+		return $data;
+	}
 
-        $data->clearInfoNonce = $faker->randomAscii;
-        $data->ajaxClearInfoAction = $faker->randomAscii;
+	protected function _generateAdminTripSummaryEditorData() {
+		$data = new stdClass();
+		$faker = $this->_getFaker();
+		$lookup = new Abp01_Lookup();
 
-        $data->ajaxUrl = $faker->url;
-        $data->imgBaseUrl = $faker->url;
+		$data->difficultyLevels = $lookup->getDifficultyLevelOptions();
+		$data->difficultyLevelsAdminUrl = $faker->url;
 
-        $data->uploadMaxFileSize = $faker->randomNumber();
-        $data->uploadChunkSize = $faker->randomNumber();
-        $data->uploadKey = $faker->randomAscii;
+		$data->pathSurfaceTypes = $lookup->getPathSurfaceTypeOptions();
+		$data->pathSurfaceTypesAdminUrl = $faker->url;
 
-        //TODO: generate randomly
-        $data->tourType = null;
-        $data->tourInfo = null;
+		$data->recommendedSeasons = $lookup->getRecommendedSeasonsOptions();
+		$data->recommendedSeasonsAdminUrl = $faker->url;
 
-        return $data;
-    }
+		$data->bikeTypes = $lookup->getBikeTypeOptions();
+		$data->bikeTypesAdminUrl = $faker->url;
 
-    protected function _getAdminEditorLauncherMetaboxData() {
-        $faker = $this->_getFaker();
-        
-        $data = new stdClass();
-        $data->postId = $faker->randomNumber();
-        $data->hasRouteTrack = $faker->boolean();
-        $data->hasRouteInfo = $faker->boolean();
-        $data->trackDownloadUrl = $faker->url;
+		$data->railroadOperators = $lookup->getRailroadOperatorOptions();
+		$data->railroadOperatorsAdminUrl = $faker->url;
 
-        return $data;
-    }
+		$data->railroadLineStatuses = $lookup->getRailroadLineStatusOptions();
+		$data->railroadLineStatusesAdminUrl = $faker->url;
+
+		$data->railroadLineTypes = $lookup->getRailroadLineTypeOptions();
+		$data->railroadLineTypesAdminUrl = $faker->url;
+
+		$data->railroadElectrification = $lookup->getRailroadElectrificationOptions();
+		$data->railroadElectrificationAdminUrl = $faker->url;
+
+		//current context information
+		$data->postId = $faker->randomNumber();
+		$data->hasRouteTrack = false;
+		$data->hasRouteInfo = false;
+		$data->trackDownloadUrl = $faker->url;
+
+		$data->editInfoNonce = $faker->randomAscii;
+		$data->ajaxEditInfoAction = $faker->word;
+		$data->uploadTrackNonce = $faker->randomAscii;
+		$data->ajaxUploadTrackAction = $faker->word;
+
+		$data->getTrackNonce = $faker->randomAscii;
+		$data->ajaxGetTrackAction = $faker->word;	
+		
+		$data->clearTrackNonce = $faker->randomAscii;
+		$data->ajaxClearTrackAction = $faker->word;
+
+		$data->clearInfoNonce = $faker->randomAscii;
+		$data->ajaxClearInfoAction = $faker->word;
+
+		$data->ajaxUrl = $faker->url;
+		$data->imgBaseUrl = $faker->url;
+
+		$data->uploadMaxFileSize = $faker->randomNumber();
+		$data->uploadChunkSize = $faker->randomNumber();
+		$data->uploadKey = $faker->randomAscii;
+
+		//TODO: generate randomly
+		$data->tourType = null;
+		$data->tourInfo = null;
+
+		return $data;
+	}
+
+	protected function _getAdminEditorLauncherMetaboxData() {
+		$faker = $this->_getFaker();
+		
+		$data = new stdClass();
+		$data->postId = $faker->randomNumber();
+		$data->hasRouteTrack = $faker->boolean();
+		$data->hasRouteInfo = $faker->boolean();
+		$data->trackDownloadUrl = $faker->url;
+
+		return $data;
+	}
 }

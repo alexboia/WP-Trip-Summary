@@ -183,12 +183,23 @@ class ViewTests extends WP_UnitTestCase {
         
         $this->assertNotEmpty($helpPage);
         $this->assertContains($data->helpContents, $helpPage);
+        $this->_assertAdminHelpPageHasScriptVars($helpPage);
         $this->_assertAdminHelpPageBasicStructureCorrect($helpPage);
+    }
+
+    private function _assertAdminHelpPageHasScriptVars($helpPage) {
+        $this->assertContains('<script type="text/javascript">', $helpPage);
+        $this->assertContains('var abp01_ajaxUrl', $helpPage);
+        $this->assertContains('var abp01_getHelpAction', $helpPage);
+        $this->assertContains('var abp01_getHelpNonce', $helpPage);
+        $this->assertContains('</script>', $helpPage);
     }
 
     private function _assertAdminHelpPageBasicStructureCorrect($helpPage) {
         $this->assertContains('<div id="abp01-help-page">', $helpPage);
         $this->assertContains('<div id="abp01-help-contents">', $helpPage);
+        $this->assertContains('<select id="abp01-help-contents-lang" name="abp01-help-contents-lang">', $helpPage);
+        $this->assertContains('</select>', $helpPage);
     }
 
     public function test_canRenderAdminHelpPage_emptyHelpContents() {
@@ -198,12 +209,33 @@ class ViewTests extends WP_UnitTestCase {
         $helpPage = $view->renderAdminHelpPage($data);
         
         $this->assertNotEmpty($helpPage);
-        $this->_assertAdminHelpPageBasicStructureCorrect($helpPage);
+        $this->_assertAdminHelpPageHasScriptVars($helpPage);
+        $this->_assertEmptyAdminHelpPageBasicStructureCorrect($helpPage);
     }
 
     private function _assertEmptyAdminHelpPageBasicStructureCorrect($helpPage) {
-        $this->_assertAdminHelpPageBasicStructureCorrect($helpPage);
+        $this->assertContains('<div id="abp01-help-page">', $helpPage);
+        $this->assertContains('<div id="abp01-help-contents">', $helpPage);
         $this->assertContains('<div id="abp01-help-result" class="error settings-error abp01-help-result">', $helpPage);
+    }
+
+    public function test_canRenderAdminAboutPage() {
+        $view = $this->_getInitializedView();
+        $data = $this->_generateAboutPageData();
+
+        $aboutPage = $view->renderAdminAboutPage($data);
+
+        $this->assertNotEmpty($aboutPage);
+        $this->_assertAdminAboutPageBasicStructureCorrect($aboutPage);
+    }
+
+    private function _assertAdminAboutPageBasicStructureCorrect($aboutPage) {
+        $this->assertContains('<div id="abp01-about-page">', $aboutPage);
+        $this->assertContains('<div id="abp01-about-summary">', $aboutPage);
+        $this->assertContains('<div id="abp01-about-logo">', $aboutPage);
+        $this->assertContains('<div id="abp01-about-info">', $aboutPage);
+        $this->assertContains('<div id="abp01-about-actions">', $aboutPage);
+        $this->assertContains('<div id="abp01-about-changelog">', $aboutPage);
     }
 
     public function test_canRenderAdminLookupPage() {

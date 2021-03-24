@@ -428,7 +428,8 @@ class Abp01_Includes {
 				self::JS_JQUERY_BLOCKUI,
 				self::JS_URI_JS,
 				self::JS_ABP01_PROGRESS_OVERLAY,
-				self::JS_ABP01_NUMERIC_STEPPER
+				self::JS_ABP01_NUMERIC_STEPPER,
+				self::JS_ABP01_OPERATION_MESSAGE
 			)
 		),
 		self::JS_ABP01_ADMIN_LOOKUP_MGMT => array(

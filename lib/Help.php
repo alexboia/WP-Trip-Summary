@@ -46,7 +46,9 @@ class Abp01_Help {
     }
 
     private function _isLocaleCodeValid($locale) {
-        return !empty($locale) && preg_match('/^([a-zA-Z]{2})_([a-zA-Z]{2})$/', $locale) === 1;
+        return !empty($locale) 
+            && (preg_match('/^([a-zA-Z0-9]{2,})(_([a-zA-Z0-9]{2,})){0,}$/', $locale) === 1 
+                || $locale == $this->_fallbackLocale);
     }
 
     /**
@@ -100,7 +102,7 @@ class Abp01_Help {
         }
 
         if (!$this->_isLocaleCodeValid($locale)) {
-            throw new InvalidArgumentException('Locale code is not valid');
+            throw new InvalidArgumentException('Locale code <' . $locale . '> is not valid');
         }
 
         $helpFile = $this->_getHelpFilePathForLocale($locale);
