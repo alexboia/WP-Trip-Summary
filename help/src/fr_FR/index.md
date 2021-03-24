@@ -54,7 +54,7 @@ Selon les différentes fonctions exercées par les zones du module, nous pouvons
 #### Édition d'article - Lanceur de l'éditeur de résumé de voyage (éditeur de blocs) {.abp01-gallery-item-header}
 ![Édition d'article - Lanceur de l'éditeur de résumé de voyage (éditeur de blocs)]($helpDataDirUrl$/screenshots/admin-edit-launcher-block.png "Édition d'article - Lanceur de l'éditeur de résumé de voyage (éditeur de blocs)")
 
-#### Édition d'article - Résumé technique - Sélection du type d'itinéraire
+#### Édition d'article - Résumé technique - Sélection du type d'itinéraire {.abp01-gallery-item-header}
 ![Modifier l'article - Résumé technique - Sélection du type d'itinéraire]($helpDataDirUrl$/screenshots/admin-edit-summary-empty.png "Article Modifier - Résumé technique - Sélection du type d'itinéraire")
 
 #### Modification d'articles - Résumé technique - Informations sur les itinéraires cyclables {.abp01-gallery-item-header}
