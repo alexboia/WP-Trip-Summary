@@ -707,8 +707,7 @@ class Abp01_Includes {
 
 	private static function _getInjectablePluginSettings() {
 		$settings = self::_getSettings();
-		$tileLayers = $settings->getTileLayers();
-		$mainTileLayer = $tileLayers[0];
+		$mainTileLayer = $settings->getMainTileLayer();
 
 		return array(
 			'_env' => array(

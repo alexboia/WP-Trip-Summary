@@ -224,6 +224,7 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
         $tileLayer->url = Abp01_InputFiltering::getFilteredPOSTValue('tileLayerUrl');
         $tileLayer->attributionUrl = Abp01_InputFiltering::getFilteredPOSTValue('tileLayerAttributionUrl');
         $tileLayer->attributionTxt = Abp01_InputFiltering::getFilteredPOSTValue('tileLayerAttributionTxt');
+        $tileLayer->apiKey = Abp01_InputFiltering::getFilteredPOSTValue('tileLayerApiKey');
         return $tileLayer;
     }
 

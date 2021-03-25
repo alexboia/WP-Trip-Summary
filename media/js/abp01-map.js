@@ -78,7 +78,20 @@
         
         //tile layer is mandatory, so we will exit with error if not provided
         if (!opts.tileLayer || !opts.tileLayer.url) {
-        	throw new Error('No valid tile layer configuration provided');
+        	throw new Error('No valid tile layer configuration provided: missing tile layer url');
+        }
+
+        //if tile layer url has api key marker, 
+        //  check that an api key has been provided
+        //  (and throw error if none found);
+        //  if an api key is required and has been provided
+        //      replace the marker in the url template
+        if (opts.tileLayer.url.indexOf('{apiKey}') >= 0) {
+            if (!opts.tileLayer.apiKey) {
+                throw new Error('No valid tile layer configuration provided: tile layer url requires api key, but no api key provided');
+            } else {
+                opts.tileLayer.url = opts.tileLayer.url.replace('{apiKey}', opts.tileLayer.apiKey);
+            }
         }
 
         /**

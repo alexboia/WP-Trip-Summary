@@ -35,6 +35,7 @@
     var abp01_nonce = '<?php echo $data->nonce; ?>';//abp01_nonce_settings
     var abp01_ajaxSaveAction = '<?php echo $data->ajaxSaveAction; ?>';
     var abp01_ajaxBaseUrl = '<?php echo $data->ajaxUrl; ?>';
+	var abp01_predefinedTileLayers = <?php echo json_encode($data->settings->allowedPredefinedTileLayers); ?>;
 </script>
 <div id="abp01-settings-page">
 	<form id="abp01-settings-form" method="post">
@@ -184,6 +185,11 @@
 								name="tileLayerUrl" 
 								class="regular-text abp01-text-input" 
 								value="<?php echo esc_attr($data->settings->tileLayer->url); ?>" />
+
+							<input type="button" 
+								id="abp01-predefined-tile-layer-selector" 
+								class="button" 
+								value="<?php echo esc_html__('... or chose pre-defined', 'abp01-trip-summary'); ?>" />
 						</td>
 					</tr>
 					<tr>
@@ -208,6 +214,18 @@
 								name="tileLayerAttributionTxt" 
 								class="regular-text abp01-text-input" 
 								value="<?php echo esc_attr($data->settings->tileLayer->attributionTxt); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="abp01-tileLayerApiKey"><?php echo esc_html__('Tile layer API key', 'abp01-trip-summary'); ?>:</label>
+						</th>
+						<td>
+							<input type="text" 
+								id="abp01-tileLayerApiKey" 
+								name="tileLayerApiKey" 
+								class="regular-text abp01-text-input" 
+								value="<?php echo esc_attr($data->settings->tileLayer->apiKey); ?>" />
 						</td>
 					</tr>
 					<tr>
@@ -335,6 +353,46 @@
 				<div data-role="progressLabel" id="abp01-progress-label" class="abp01-progress-label"></div>
 				<div data-role="progressParent" id="abp01-progress-bar" class="abp01-progress-bar"></div>
 			</div>
+		</script>
+
+		<script id="tpl-abp01-predefined-tile-layers-container" type="text/x-kite">
+			<div id="abp01-predefined-tile-layers-container">
+				<div id="abp01-predefined-tile-layers-container-header">
+					<h3><?php echo __('Chose a pre-defined tile layer service', 'abp01-trip-summary'); ?></h3>
+					<a href="javascript:void(0)" class="abp01-close-tile-layer-selector">
+						<span class="dashicons dashicons-dismiss"></span>
+					</a>
+					<div class="abp01-clear"></div>
+				</div>
+				<div id="abp01-predefined-tile-layers-container-inner">
+					{{#predefinedTileLayers}}
+						<div class="abp01-predefined-tile-layer">
+							<h4>{{label}}</h4>
+							<ul>
+								<li class="abp01-predefined-tile-layer-prop"> 
+									{{tileLayerObject.attributionTxt}}
+								</li>
+								{{? apiKeyRequired }}
+									<li class="abp01-predefined-tile-layer-prop abp01-predefined-tile-layer-prop-warn"> 
+										<span class="abp01-predefined-tile-layer-prop-warn-message">
+											<span class="dashicons dashicons-warning"></span>
+											<?php echo __('This tile layer requires an API key from the service provider', 'abp01-trip-summary'); ?>
+										</span>
+									</li>
+								{{/?}}
+							</ul>
+							<div class="abp01-predefined-tile-layer-actions">
+								<a class="button abp01-view-tile-layer-details" href="{{infoUrl}}" target="_blank">
+									<?php echo __('View details', 'abp01-trip-summary'); ?>
+								</a>
+								<a class="button button-primary abp01-use-tile-layer" data-predefined-tile-layer-id="{{id}}" href="javascript:void(0);">
+									<?php echo __('Use this tile layer', 'abp01-trip-summary'); ?>
+								</a>
+							</div>
+						</div>
+					{{/predefinedTileLayers}}
+				</div
+			</div
 		</script>
 	</form>
 </div>

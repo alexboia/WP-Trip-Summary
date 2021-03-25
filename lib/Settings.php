@@ -45,6 +45,12 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
  * @package WP-Trip-Summary
  * */
 class Abp01_Settings {
+	const MINIMUM_ALLOWED_MAP_HEIGHT = 350;
+
+	const MINIMUM_ALLOWED_TRACK_LINE_WEIGHT = 1;
+
+	const MINIMUM_VIEWER_ITEM_DISPLAY_COUNT = 0;
+
 	/**
 	 * Key for the "show teaser" setting
 	 * 
@@ -255,33 +261,9 @@ class Abp01_Settings {
 		$this->_data[$key] = Abp01_InputFiltering::filterValue($value, $type);
 	}
 
-	/**
-	 * Normalizes the given tile layer instance. Normalization consists of: 
-	 * - checking that the given object is indeed an object and that it has the url property set;
-	 * - if attributionTxt property does not exist, it is set to null;
-	 * - if attributionUrl property does not exist, it is set to null.
-	 * @param Object $tileLayer The tile layer descriptor to be checked and normalized
-	 * @return object Either false (if the tile layer is not an object, or if the url property is not set), or the normalized object.
-	 * */
-	private function _checkAndNormalizeTileLayer($tileLayer) {
-		if (!is_object($tileLayer) || empty($tileLayer->url)) {
-			return false;
-		}
-		if (!isset($tileLayer->attributionTxt)) {
-			$tileLayer->attributionTxt = null;
-		}
-		if (!isset($tileLayer->attributionUrl)) {
-			$tileLayer->attributionUrl = null;
-		}
-		return $tileLayer;
-	}
-
 	private function _getDefaultTileLayer() {
-		$tileLayer = new stdClass();
-		$tileLayer->url = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
-		$tileLayer->attributionTxt = 'OpenStreetMap & Contributors';
-		$tileLayer->attributionUrl = 'http://osm.org/copyright';
-		return $tileLayer;
+		return Abp01_Settings_PredefinedTileLayer::getDefaultTileLayer()
+			->getTileLayerObject();
 	}
 
 	private function _getDefaultTopTeaserText() {
@@ -319,6 +301,7 @@ class Abp01_Settings {
 		$data->allowedUnitSystems = $this->getAllowedUnitSystems();
 		$data->allowedViewerTabs = $this->getAllowedViewerTabs();
 		$data->allowedItemLayouts = $this->getAllowedItemLayouts();
+		$data->allowedPredefinedTileLayers = $this->getAllowedPredefinedTileLayers();
 
 		return $data;
 	}
@@ -400,11 +383,36 @@ class Abp01_Settings {
 	}
 
 	public function getMinimumViewerItemValueDisplayCount() {
-		return 0;
+		return self::MINIMUM_VIEWER_ITEM_DISPLAY_COUNT;
 	}
 
 	public function getTileLayers() {
-		return $this->_getOption(self::OPT_MAP_TILE_LAYER_URLS, 'array', array($this->_getDefaultTileLayer()));
+		$tileLayers = $this->_getOption(self::OPT_MAP_TILE_LAYER_URLS, 'array', array($this->_getDefaultTileLayer()));
+		foreach ($tileLayers as $index => $tileLayer) {
+			$tileLayers[$index] = $this->_checkAndNormalizeTileLayer($tileLayer);
+		}
+		return $tileLayers;
+	}
+
+	public function getMainTileLayer() {
+		$tileLayers = $this->getTileLayers();
+		return $tileLayers[0];
+	}
+
+	private function _checkAndNormalizeTileLayer($tileLayer) {
+		if (!is_object($tileLayer) || empty($tileLayer->url)) {
+			return false;
+		}
+		if (!isset($tileLayer->attributionTxt)) {
+			$tileLayer->attributionTxt = null;
+		}
+		if (!isset($tileLayer->attributionUrl)) {
+			$tileLayer->attributionUrl = null;
+		}
+		if (!isset($tileLayer->apiKey)) {
+			$tileLayer->apiKey = null;
+		}
+		return $tileLayer;
 	}
 
 	public function setTileLayers($tileLayers) {
@@ -494,7 +502,7 @@ class Abp01_Settings {
 	}
 
 	public function getMinimumAllowedTrackLineWeight() {
-		return 1;
+		return self::MINIMUM_ALLOWED_TRACK_LINE_WEIGHT;
 	}
 
 	public function getShowMinMaxAltitude() {
@@ -526,7 +534,7 @@ class Abp01_Settings {
 	}
 
 	public function getMinimumAllowedMapHeight() {
-		return 350;
+		return self::MINIMUM_ALLOWED_MAP_HEIGHT;
 	}
 
 	public function syncTopTeaserTextWithCurrentLocale() {
@@ -536,6 +544,29 @@ class Abp01_Settings {
 	public function syncBottomTeaserTextWithCurrentLocale() {
 		$this->setBottomTeaserText($this->_getDefaultBottomTeaserText());
 	}
+
+	public function getAllowedUnitSystems() {
+		return Abp01_UnitSystem::getAvailableUnitSystems();
+	}
+
+	public function getAllowedViewerTabs() {
+		return Abp01_Viewer::getAvailableTabs();
+	}
+
+	public function getAllowedItemLayouts() {
+		return Abp01_Viewer::getAvailableItemLayouts();
+	}
+
+	public function getAllowedPredefinedTileLayers() {
+		$allowedPredefinedTileLayersInfos = array();
+		$predefinedTileLayers = Abp01_Settings_PredefinedTileLayer::getPredefinedTileLayers();
+		
+		foreach ($predefinedTileLayers as $id => $predefinedLayer) {
+			$allowedPredefinedTileLayersInfos[$id] = $predefinedLayer->asPlainObject();
+		}
+
+		return $allowedPredefinedTileLayersInfos;
+	} 
 
 	public function saveSettings() {
 		$this->_loadSettingsIfNeeded();
@@ -550,17 +581,5 @@ class Abp01_Settings {
 
 	public function clearSettingsCache() {
 		$this->_data = null;
-	}
-
-	public function getAllowedUnitSystems() {
-		return Abp01_UnitSystem::getAvailableUnitSystems();
-	}
-
-	public function getAllowedViewerTabs() {
-		return Abp01_Viewer::getAvailableTabs();
-	}
-
-	public function getAllowedItemLayouts() {
-		return Abp01_Viewer::getAvailableItemLayouts();
 	}
 }
