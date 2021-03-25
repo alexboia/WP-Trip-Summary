@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Trip Summary 0.2.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-trip-summary\n"
-"POT-Creation-Date: 2021-03-24 14:31+0200\n"
-"PO-Revision-Date: 2021-03-24 14:56+0200\n"
+"POT-Creation-Date: 2021-03-25 16:37+0200\n"
+"PO-Revision-Date: 2021-03-25 16:45+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -225,7 +225,7 @@ msgstr "L'élément n'a pas été supprimé"
 msgid "The item is still associated with %d post(s). Do you wish to proceed?"
 msgstr "L'article est associé à %d publication (s). Voulez-vous continuer?"
 
-#: lib/pluginModules/SettingsPluginModule.php:95 views/wpts-settings.php:42
+#: lib/pluginModules/SettingsPluginModule.php:95 views/wpts-settings.php:43
 msgid "Trip Summary Settings"
 msgstr "Paramètres de WP Trip Summary"
 
@@ -241,38 +241,42 @@ msgstr "Paramètres"
 msgid "The settings could not be saved. Please try again."
 msgstr "Les paramètres n'ont pas été enregistrés. Réessayer, s'il vous plaît."
 
-#: lib/pluginModules/SettingsPluginModule.php:233
+#: lib/pluginModules/SettingsPluginModule.php:234
 msgid "Unsupported unit system"
 msgstr "Le système d'unités n'est pas valide"
 
-#: lib/pluginModules/SettingsPluginModule.php:240
+#: lib/pluginModules/SettingsPluginModule.php:241
 msgid "Unsupported viewer tab"
 msgstr "L'étiquette de le visualiseur sélectionnée n'est pas prise en charge"
 
-#: lib/pluginModules/SettingsPluginModule.php:247
+#: lib/pluginModules/SettingsPluginModule.php:248
 msgid "Unsupported viewer item layout"
 msgstr ""
 "La disposition de l'élément de visionneuse sélectionnée n'est pas valide"
 
-#: lib/pluginModules/SettingsPluginModule.php:254
+#: lib/pluginModules/SettingsPluginModule.php:255
 msgid "The track line colour is not a valid HEX colour code"
 msgstr ""
 "La couleur de la ligne de trace GPS n'est pas un code de couleur HEX valide"
 
-#: lib/pluginModules/SettingsPluginModule.php:263
+#: lib/pluginModules/SettingsPluginModule.php:264
 msgid "Tile layer URL is required"
 msgstr "L'URL de la couche de tuiles de carte est obligatoire"
 
-#: lib/pluginModules/SettingsPluginModule.php:267
+#: lib/pluginModules/SettingsPluginModule.php:268
 msgid "Tile layer URL does not have a valid format"
 msgstr "L'URL de la couche de tuiles de carte n'a pas un format valide"
 
-#: lib/pluginModules/SettingsPluginModule.php:273
+#: lib/pluginModules/SettingsPluginModule.php:274
 msgid "Tile layer attribution URL does not have a valid format"
 msgstr ""
 "L'URL d'attribution de la couche de tuiles de carte n'a pas un format valide"
 
-#: lib/Settings.php:288 tests/lib/SettingsDataHelpers.php:70
+#: lib/pluginModules/SettingsPluginModule.php:282
+msgid "Tile layer API key is required"
+msgstr "La clé API de la couche de tuiles est requise"
+
+#: lib/Settings.php:270 tests/lib/SettingsDataHelpers.php:70
 msgid ""
 "For the pragmatic sort, there is also a trip summary at the bottom of this "
 "page. Click here to consult it"
@@ -280,13 +284,61 @@ msgstr ""
 "Pour la personne pragmatique, il y a aussi un résumé du voyage au bas de "
 "cette page. Cliquez ici pour le consulter"
 
-#: lib/Settings.php:292 tests/lib/SettingsDataHelpers.php:66
+#: lib/Settings.php:274 tests/lib/SettingsDataHelpers.php:66
 msgid ""
 "It looks like you skipped the story. You should check it out. Click here to "
 "go back to beginning"
 msgstr ""
 "Il semble que vous ayez sauté l'histoire. Vous devriez également lire cela. "
 "Cliquez ici pour revenir au début"
+
+#: lib/settings/PredefinedTileLayer.php:120
+msgid "Basic Open Street Map Style"
+msgstr "Carte classique Open Street Map"
+
+#: lib/settings/PredefinedTileLayer.php:126
+msgid "Open Street Map, Hike & Bike Map"
+msgstr "Open Street Map, Carte des randonnées et des vélos"
+
+#: lib/settings/PredefinedTileLayer.php:135
+msgid "Thunderforest Atlas Map"
+msgstr "Carte Thunderforest Atlas"
+
+#: lib/settings/PredefinedTileLayer.php:141
+msgid "Thunderforest Landscape Map"
+msgstr "Carte Thunderforest Landscape"
+
+#: lib/settings/PredefinedTileLayer.php:147
+msgid "Thunderforest Mobile Atlas Map"
+msgstr "Carte Thunderforest Mobile Atlas"
+
+#: lib/settings/PredefinedTileLayer.php:153
+msgid "Thunderforest Neighbourhood Map"
+msgstr "Carte Thunderforest Neighbourhood"
+
+#: lib/settings/PredefinedTileLayer.php:159
+msgid "Thunderforest Open Cycle Map"
+msgstr "Thunderforest Open Cycle Map"
+
+#: lib/settings/PredefinedTileLayer.php:165
+msgid "Thunderforest Outdoors Map"
+msgstr "Carte Thunderforest Outdoors"
+
+#: lib/settings/PredefinedTileLayer.php:171
+msgid "Thunderforest Pioneer Map"
+msgstr "Carte Thunderforest Pioneer"
+
+#: lib/settings/PredefinedTileLayer.php:177
+msgid "Thunderforest Spinal Map"
+msgstr "Carte Thunderforest Spinal"
+
+#: lib/settings/PredefinedTileLayer.php:183
+msgid "Thunderforest Transport Map"
+msgstr "Carte Thunderforest Transport"
+
+#: lib/settings/PredefinedTileLayer.php:189
+msgid "Thunderforest Transport Dark Map"
+msgstr "Carte Thunderforest Transport Dark"
 
 #: lib/TranslatedScriptMessages.php:39
 #: views/wpts-editor-quick-actions-tooltip.php:36
@@ -912,114 +964,138 @@ msgstr "Confirmation de la suppression"
 msgid "Delete"
 msgstr "Supprimer"
 
-#: views/wpts-settings.php:45
+#: views/wpts-settings.php:46
 msgid "General Settings"
 msgstr "Paramètres généraux"
 
-#: views/wpts-settings.php:47
+#: views/wpts-settings.php:48
 msgid ""
 "These settings control various aspects that do not belong to any one topic"
 msgstr ""
 "Ces paramètres contrôlent divers aspects qui n'appartiennent à aucun sujet "
 "spécifique"
 
-#: views/wpts-settings.php:53
+#: views/wpts-settings.php:54
 msgid "Unit system"
 msgstr "Le système d'unités de mesure"
 
-#: views/wpts-settings.php:75 views/wpts-settings.php:168
-#: views/wpts-settings.php:329
+#: views/wpts-settings.php:76 views/wpts-settings.php:169
+#: views/wpts-settings.php:352
 msgid "Save settings"
 msgstr "Enregistrer les paramètres"
 
-#: views/wpts-settings.php:78
+#: views/wpts-settings.php:79
 msgid "Viewer settings"
 msgstr "Paramètres du lecteur"
 
-#: views/wpts-settings.php:80
+#: views/wpts-settings.php:81
 msgid "These settings configure the trip summary viewer"
 msgstr "Ces paramètres configurent le lecteur de résumé de voyage"
 
-#: views/wpts-settings.php:86
+#: views/wpts-settings.php:87
 msgid "Show teaser?"
 msgstr "Afficher le texte d'accroche?"
 
-#: views/wpts-settings.php:98
+#: views/wpts-settings.php:99
 msgid "Top teaser text"
 msgstr "Texte d'accroche supérieur"
 
-#: views/wpts-settings.php:108
+#: views/wpts-settings.php:109
 msgid "Bottom teaser text"
 msgstr "Texte d'accroche inférieur"
 
-#: views/wpts-settings.php:118
+#: views/wpts-settings.php:119
 msgid "Initial viewer tab"
 msgstr "Étiquette initialement sélectionnée"
 
-#: views/wpts-settings.php:134
+#: views/wpts-settings.php:135
 msgid "Chose how multi-value items are laid out"
 msgstr "Choisissez comment les éléments à valeurs multiples sont disposés"
 
-#: views/wpts-settings.php:150
+#: views/wpts-settings.php:151
 msgid "Chose how many values of a multi-valued item are displayed"
 msgstr ""
 "Choisissez combien de valeurs d'un élément à valeurs multiples sont affichées"
 
-#: views/wpts-settings.php:171
+#: views/wpts-settings.php:172
 msgid "Map Settings"
 msgstr "Paramètres de la carte"
 
-#: views/wpts-settings.php:173
+#: views/wpts-settings.php:174
 msgid "These settings configure the map component"
 msgstr "Ces paramètres configurent la façon dont la carte est affichée"
 
-#: views/wpts-settings.php:179
+#: views/wpts-settings.php:180
 msgid "Tile layer URL template"
 msgstr "Modèle d'URL source de la couche de tuiles de carte"
 
-#: views/wpts-settings.php:191
+#: views/wpts-settings.php:192
+msgid "... or chose pre-defined"
+msgstr "... ou choisissez prédéfini"
+
+#: views/wpts-settings.php:197
 msgid "Tile layer attribution URL"
 msgstr "URL d'attribution de la source de la couche de tuiles de carte"
 
-#: views/wpts-settings.php:203
+#: views/wpts-settings.php:209
 msgid "Tile layer attribution text"
 msgstr "Texte d'attribution de source de la couche de tuiles"
 
-#: views/wpts-settings.php:215
+#: views/wpts-settings.php:221
+msgid "Tile layer API key"
+msgstr "Clé API de la source de la couche de tuiles"
+
+#: views/wpts-settings.php:233 views/wpts-settings.php:384
+msgid "This tile layer requires an API key from the service provider"
+msgstr "Cette couche de tuiles nécessite une clé API"
+
+#: views/wpts-settings.php:238
 msgid "Enable map fullscreen mode?"
 msgstr "Autoriser le mode plein écran de la carte?"
 
-#: views/wpts-settings.php:227
+#: views/wpts-settings.php:250
 msgid "Show magnifying glass?"
 msgstr "Autoriser l'utilisation de la loupe?"
 
-#: views/wpts-settings.php:239
+#: views/wpts-settings.php:262
 msgid "Show map scale?"
 msgstr "Afficher l'échelle de la carte?"
 
-#: views/wpts-settings.php:251
+#: views/wpts-settings.php:274
 msgid "Show minimum & maximum altitude?"
 msgstr "Afficher l'altitude minimale et maximale?"
 
-#: views/wpts-settings.php:263
+#: views/wpts-settings.php:286
 msgid "Show altitude profile?"
 msgstr "Afficher le profil d'altitude?"
 
-#: views/wpts-settings.php:275
+#: views/wpts-settings.php:298
 msgid "Allow track download?"
 msgstr "Autoriser le téléchargement de la trace GPS?"
 
-#: views/wpts-settings.php:287
+#: views/wpts-settings.php:310
 msgid "Track line colour"
 msgstr "Couleur de la ligne de trace GPS"
 
-#: views/wpts-settings.php:299
+#: views/wpts-settings.php:322
 msgid "Track line weight"
 msgstr "Largeur de la ligne de trace GPS"
 
-#: views/wpts-settings.php:311
+#: views/wpts-settings.php:334
 msgid "Map height"
 msgstr "Hauteur de la carte"
+
+#: views/wpts-settings.php:366
+msgid "Chose a pre-defined tile layer service"
+msgstr "Choisissez une source de couche de tuiles prédéfinie"
+
+#: views/wpts-settings.php:391
+msgid "View details"
+msgstr "Des détails"
+
+#: views/wpts-settings.php:394
+msgid "Use this tile layer"
+msgstr "Utilisez cette source"
 
 #~ msgid "The plugin cannot be installed on your system"
 #~ msgstr "Ce plugin n'est pas compatible avec votre système"
