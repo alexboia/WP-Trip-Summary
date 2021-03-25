@@ -32,9 +32,9 @@
 ?>
 
 <script type="text/javascript">
-    var abp01_nonce = '<?php echo $data->nonce; ?>';//abp01_nonce_settings
-    var abp01_ajaxSaveAction = '<?php echo $data->ajaxSaveAction; ?>';
-    var abp01_ajaxBaseUrl = '<?php echo $data->ajaxUrl; ?>';
+	var abp01_nonce = '<?php echo $data->nonce; ?>';//abp01_nonce_settings
+	var abp01_ajaxSaveAction = '<?php echo $data->ajaxSaveAction; ?>';
+	var abp01_ajaxBaseUrl = '<?php echo $data->ajaxUrl; ?>';
 	var abp01_predefinedTileLayers = <?php echo json_encode($data->settings->allowedPredefinedTileLayers); ?>;
 </script>
 <div id="abp01-settings-page">
