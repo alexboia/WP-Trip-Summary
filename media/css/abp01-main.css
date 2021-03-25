@@ -480,6 +480,11 @@ a.abp01-close-editor:hover {
     box-sizing: content-box;
 }
 
+#abp01-tileLayer-apiKey-nag {
+    margin-top: 5px;
+    cursor: pointer;
+}
+
 /* START Lookup data management section */
 .abp01-lookupControl {
     width: 350px;

@@ -86,6 +86,8 @@ class Abp01_Includes {
 
 	const JS_ABP01_MAP = 'abp01-map';
 
+	const JS_ABP01_COMMON = 'abp01-common-js';
+
 	const JS_ABP01_PROGRESS_OVERLAY = 'abp01-progress-overlay';
 
 	const JS_ABP01_OPERATION_MESSAGE = 'abp01-operation-message-js';
@@ -330,6 +332,13 @@ class Abp01_Includes {
 			'version' => '2.9.3'
 		),
 
+		self::JS_ABP01_COMMON => array(
+			'path' => 'media/js/abp01-common.js', 
+			'version' => ABP01_VERSION,
+			'deps' => array(
+				self::JS_JQUERY
+			)
+		),
 		self::JS_ABP01_OPERATION_MESSAGE => array(
 			'path' => 'media/js/abp01-operation-message.js', 
 			'version' => ABP01_VERSION,
@@ -387,6 +396,7 @@ class Abp01_Includes {
 				self::JS_LEAFLET,
 				self::JS_LEAFLET_RECENTER_MAP,
 				self::JS_TIPPED_JS,
+				self::JS_ABP01_COMMON,
 				self::JS_ABP01_PROGRESS_OVERLAY,
 				self::JS_ABP01_MAP
 			)
@@ -427,6 +437,8 @@ class Abp01_Includes {
 				self::JS_WP_COLOR_PICKER,
 				self::JS_JQUERY_BLOCKUI,
 				self::JS_URI_JS,
+				self::JS_TIPPED_JS,
+				self::JS_ABP01_COMMON,
 				self::JS_ABP01_PROGRESS_OVERLAY,
 				self::JS_ABP01_NUMERIC_STEPPER,
 				self::JS_ABP01_OPERATION_MESSAGE
@@ -441,6 +453,7 @@ class Abp01_Includes {
 				self::JS_JQUERY_BLOCKUI,
 				self::JS_KITE_JS,
 				self::JS_URI_JS,
+				self::JS_ABP01_COMMON,
 				self::JS_ABP01_PROGRESS_OVERLAY,
 				self::JS_ABP01_OPERATION_MESSAGE
 			)
@@ -452,6 +465,7 @@ class Abp01_Includes {
 				self::JS_JQUERY,
 				self::JS_JQUERY_BLOCKUI,
 				self::JS_URI_JS,
+				self::JS_ABP01_COMMON,
 				self::JS_ABP01_PROGRESS_OVERLAY,
 				self::JS_ABP01_HELP_IMAGE_GALLERY,
 				self::JS_ABP01_OPERATION_MESSAGE
@@ -615,6 +629,7 @@ class Abp01_Includes {
 			'deps' => array(
 				self::STYLE_WP_COLOR_PICKER,
 				self::STYLE_NPROGRESS,
+				self::STYLE_TIPPED_JS,
 				self::STYLE_ABP01_NUMERIC_STEPPER,
 				self::STYLE_ADMIN_COMMON
 			)

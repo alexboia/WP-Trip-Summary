@@ -229,6 +229,25 @@ class Abp01_Settings_PredefinedTileLayer {
 		return self::getPredefinedTileLayer($defaultTileLayeId);
 	}
 
+	public function getTileLayerObject() {
+		$tileLayer = new stdClass();
+		$tileLayer->url = $this->_url;
+		$tileLayer->attributionTxt = $this->_attributionTxt;
+		$tileLayer->attributionUrl = $this->_attributionUrl;
+		$tileLayer->apiKey = null;
+		return $tileLayer;
+	}
+
+	public function asPlainObject() {
+		$predefinedTileLayerInfo = new stdClass();
+		$predefinedTileLayerInfo->id = $this->getId();
+		$predefinedTileLayerInfo->label = $this->getLabel();
+		$predefinedTileLayerInfo->infoUrl = $this->getInfoUrl();
+		$predefinedTileLayerInfo->apiKeyRequired = $this->isApiKeyRequired();
+		$predefinedTileLayerInfo->tileLayerObject = $this->getTileLayerObject();
+		return $predefinedTileLayerInfo;
+	}
+
 	public function getId() {
 		return $this->_id;
 	}
@@ -255,24 +274,5 @@ class Abp01_Settings_PredefinedTileLayer {
 
 	public function isApiKeyRequired() {
 		return $this->_apiKeyRequired;
-	}
-
-	public function getTileLayerObject() {
-		$tileLayer = new stdClass();
-		$tileLayer->url = $this->_url;
-		$tileLayer->attributionTxt = $this->_attributionTxt;
-		$tileLayer->attributionUrl = $this->_attributionUrl;
-		$tileLayer->apiKey = null;
-		return $tileLayer;
-	}
-
-	public function asPlainObject() {
-		$predefinedTileLayerInfo = new stdClass();
-		$predefinedTileLayerInfo->id = $this->getId();
-		$predefinedTileLayerInfo->label = $this->getLabel();
-		$predefinedTileLayerInfo->infoUrl = $this->getInfoUrl();
-		$predefinedTileLayerInfo->apiKeyRequired = $this->isApiKeyRequired();
-		$predefinedTileLayerInfo->tileLayerObject = $this->getTileLayerObject();
-		return $predefinedTileLayerInfo;
 	}
 }

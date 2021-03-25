@@ -31,14 +31,10 @@
 (function ($) {
 	"use strict";
 
-	/**
-	 * Current form controls
-	 *  */
-
 	var progressBar = null;
 	var $ctrlSettingsForm = null;
-	var $ctrlSettingsFormBeacon = null;
 	var $ctrlSettingsSaveResult = null;
+	var $ctrlTileLayerApiKeyNag = null;
 
 	var tplPredefinedTileLayerSelector = null;
 	var contentPredefinedTileLayersSelector = null;
@@ -47,6 +43,7 @@
 
 	function getContext() {
 		return {
+			apiKeyNagSetup: false,
 			nonce: window['abp01_nonce'] || null,
 			ajaxSaveAction: window['abp01_ajaxSaveAction'] || null,
 			ajaxBaseUrl: window['abp01_ajaxBaseUrl'] || null,
@@ -66,7 +63,27 @@
 	}
 
 	function scrollToTop() {
-		$('body,html').scrollTop(0);
+		window.abp01.scrollToTop();
+	}
+
+	function disableWindowScroll() {
+        window.abp01.disableWindowScroll();
+    }
+
+    function enableWindowScroll() {
+        window.abp01.enableWindowScroll();
+    }
+
+	function displaySuccessfulOperationMessage(message) {
+		$ctrlSettingsSaveResult.abp01OperationMessage('success', message);
+	}
+
+	function displayFailedOperationMessage(message) {
+		$ctrlSettingsSaveResult.abp01OperationMessage('error', message);
+	}
+
+	function hideOperationMessage() {
+		$ctrlSettingsSaveResult.abp01OperationMessage('hide');
 	}
 
 	function toggleBusy(show) {
@@ -115,18 +132,31 @@
 
 	function getCurrentTileLayerInfoFromInputFields() {
 		return {
-			url: $('#abp01-tileLayerUrl').val(),
-			attributionTxt: $('#abp01-tileLayerAttributionTxt').val(),
-			attributionUrl: $('#abp01-tileLayerAttributionUrl').val(),
-			apiKey: $('#abp01-tileLayerApiKey').val()
+			url: $('#abp01-tileLayerUrl')
+				.val(),
+			attributionTxt: $('#abp01-tileLayerAttributionTxt')
+				.val(),
+			attributionUrl: $('#abp01-tileLayerAttributionUrl')
+				.val(),
+			apiKey: $('#abp01-tileLayerApiKey')
+				.val()
 		};
 	}
 
 	function updateInputFieldsWithTileLayerInfo(tileLayer) {
-		$('#abp01-tileLayerUrl').val(tileLayer.url);
-		$('#abp01-tileLayerAttributionTxt').val(tileLayer.attributionTxt);
-		$('#abp01-tileLayerAttributionUrl').val(tileLayer.attributionUrl);
-		$('#abp01-tileLayerApiKey').val('');
+		$('#abp01-tileLayerUrl')
+			.val(tileLayer.url);
+
+		$('#abp01-tileLayerAttributionTxt')
+			.val(tileLayer.attributionTxt);
+
+		$('#abp01-tileLayerAttributionUrl')
+			.val(tileLayer.attributionUrl);
+
+		$('#abp01-tileLayerApiKey')
+			.val('');
+
+		$('#abp01-tileLayerUrl').change();
 	}
 
 	function getFormSaveUrl() {
@@ -136,30 +166,11 @@
 			.toString();
 	}
 
-	function displaySaveResult(success, message) {
-		//first clear the result container
-		$ctrlSettingsSaveResult
-			.removeClass('notice')
-			.removeClass('error')
-			.html('');
-
-		//style the message box according to success/error status
-		//and show the message
-		$ctrlSettingsSaveResult
-			.addClass(success ? 'notice' : 'error')
-			.html('<p>' + message + '</p>')
-			.show();
-	}
-
-	function hideSaveResult() {
-		$ctrlSettingsSaveResult.hide()
-			.html('');
-	}
-
 	function saveSettings() {
-		hideSaveResult();
 		scrollToTop();
 		toggleBusy(true);
+		hideOperationMessage();
+		
 		$.ajax(getFormSaveUrl(), {
 			type: 'POST',
 			dataType: 'json',
@@ -168,13 +179,14 @@
 		}).done(function (data, status, xhr) {
 			toggleBusy(false);
 			if (data && data.success) {
-				displaySaveResult(true, abp01SettingsL10n.msgSaveOk);
+				updatePreviouslySavedTileLayerFromInputFields();
+				displaySuccessfulOperationMessage(abp01SettingsL10n.msgSaveOk);
 			} else {
-				displaySaveResult(false, data.message || abp01SettingsL10n.errSaveFailGeneric);
+				displayFailedOperationMessage(data.message || abp01SettingsL10n.errSaveFailGeneric);
 			}
 		}).fail(function (xhr, status, error) {
 			toggleBusy(false);
-			displaySaveResult(false, abp01SettingsL10n.errSaveFailNetwork);
+			displayFailedOperationMessage(abp01SettingsL10n.errSaveFailNetwork);
 		});
 	}
 
@@ -182,15 +194,21 @@
 		$.blockUI({
 			message: $(getPredefinedTileLayersSelectorContent()),
 			css: {
-				width: '600px',
+				width: '620px',
 				height: '300px',
-                top: 'calc(50% - 300px)',
+                top: 'calc(50% - 310px)',
                 left: 'calc(50% - 150px)',
 				padding: '10px',
 				borderRadius: '5px',
 				backgroundColor: '#fff',
                 boxShadow: '0 5px 15px rgba(0, 0, 0, 0.7)'
             },
+			onBlock: function() {
+				disableWindowScroll();
+			},
+			onUnblock: function() {
+				enableWindowScroll();
+			}
 		});
 	}
 
@@ -209,10 +227,47 @@
 		closePredefinedTileLayerSelector();
 	}
 
+	function initApiKeyNag() {
+		if (!context.apiKeyNagSetup) {
+			context.apiKeyNagSetup = true;
+			Tipped.create('#abp01-tileLayer-apiKey-nag', $ctrlTileLayerApiKeyNag.attr('data-nag-text'), {
+				position: 'right'
+			});
+		}
+	}
+
+	function updateApiKeyNag() {
+		var needsApiKeyNag = false;
+		var tileLayer = getCurrentTileLayerInfoFromInputFields();
+
+		if (tileLayer.url.indexOf('{apiKey}') >= 0) {
+			needsApiKeyNag = !tileLayer.apiKey || tileLayer.apiKey.length <= 0;
+		}
+
+		if (needsApiKeyNag) {
+			showApiKeyNag();
+		} else {
+			hideApiKeyNag();
+		}
+	}
+
+	function showApiKeyNag() {
+		initApiKeyNag();
+		$ctrlTileLayerApiKeyNag.show();
+	}
+
+	function hideApiKeyNag() {
+		$ctrlTileLayerApiKeyNag.hide();
+	}
+
+	function initFormState() {
+		context = getContext();
+	}
+
 	function initControls() {
 		$ctrlSettingsForm = $('#abp01-settings-form');
-		$ctrlSettingsFormBeacon = $('#abp01-settings-form-beacon');
 		$ctrlSettingsSaveResult = $('#abp01-settings-save-result');
+		$ctrlTileLayerApiKeyNag = $('#abp01-tileLayer-apiKey-nag');
 	}
 
 	function initBlockUIDefaultStyles() {
@@ -228,14 +283,15 @@
 		$('#abp01-predefined-tile-layer-selector')
 			.click(openPredefinedTileLayerSelector);
 
+		$('#abp01-tileLayerUrl')
+			.change(updateApiKeyNag);
+		$('#abp01-tileLayerApiKey')
+			.change(updateApiKeyNag);
+
 		$(document).on('click', '.abp01-close-tile-layer-selector', 
 			closePredefinedTileLayerSelector);
 		$(document).on('click', '.abp01-use-tile-layer', 
 			selectPreDefinedTileLayer);
-	}
-
-	function initFormState() {
-		context = getContext();
 	}
 
 	function initColoPickers() {
@@ -286,5 +342,6 @@
 		initMapHeightStepper();
 		initViewerItemValueDisplayCountStepper();
 		initListeners();
+		updateApiKeyNag();
 	});
 })(jQuery);

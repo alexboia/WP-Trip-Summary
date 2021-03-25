@@ -236,15 +236,15 @@
      * */
 
     function scrollToTop() {
-        $('body,html').scrollTop(0);
+        window.abp01.scrollToTop();
     }
 
     function disableWindowScroll() {
-        $('html').addClass('abp01-stop-scrolling');
+        window.abp01.disableWindowScroll();
     }
 
     function enableWindowScroll() {
-        $('html').removeClass('abp01-stop-scrolling');
+        window.abp01.enableWindowScroll();
     }
 
     function toastMessage(success, message) {

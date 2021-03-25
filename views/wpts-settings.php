@@ -41,7 +41,7 @@
 	<form id="abp01-settings-form" method="post">
 		<div id="abp01-settings-form-beacon"></div>
 		<h2><?php echo esc_html__('Trip Summary Settings', 'abp01-trip-summary'); ?></h2>
-		<div id="abp01-settings-save-result" class="updated settings-error abp01-settings-save-result" style="display:none"></div>
+		<div id="abp01-settings-save-result" class="abp01-settings-save-result notice" style="display:none"></div>
 		<div id="abp01-settings-container">
 			<h3><?php echo esc_html__('General Settings', 'abp01-trip-summary'); ?></h3>
 			<div class="abp01-settings-info description">
@@ -226,6 +226,11 @@
 								name="tileLayerApiKey" 
 								class="regular-text abp01-text-input" 
 								value="<?php echo esc_attr($data->settings->tileLayer->apiKey); ?>" />
+
+							<span id="abp01-tileLayer-apiKey-nag" 
+								class="dashicons dashicons-warning" 
+								style="display: none" 
+								data-nag-text="<?php echo esc_attr__('This tile layer requires an API key from the service provider', 'abp01-trip-summary'); ?>"></span>
 						</td>
 					</tr>
 					<tr>

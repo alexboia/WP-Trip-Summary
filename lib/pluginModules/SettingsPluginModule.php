@@ -176,7 +176,7 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
         $validationChain->addInputValidationRule($viewerItemLayout,
             $this->_createViewerItemLayoutValidationRule());
         $validationChain->addInputValidationRule($tileLayer, 
-            $this->_createTileLayerValidationRule());
+            $this->_createTileLayerValidationRule($tileLayer));
         $validationChain->addInputValidationRule($trackLineColour, 
             $this->_createTrackLineColurValidationRule());
 
@@ -256,8 +256,8 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
         );
     }
 
-    private function _createTileLayerValidationRule() {
-        return new Abp01_Validation_Rule_Composite(array(
+    private function _createTileLayerValidationRule(stdClass $tileLayer) {
+        $rules = array(
             'url' => array(
                 new Abp01_Validation_Rule_Simple(
                     new Abp01_Validate_NotEmpty(false),
@@ -274,7 +274,21 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
                     esc_html__('Tile layer attribution URL does not have a valid format', 'abp01-trip-summary')
                 )
             )
-        ));
+        );
+
+        if ($this->_tileLayerRequiesApiKey($tileLayer)) {
+            $rules['apiKey'] = new Abp01_Validation_Rule_Simple(
+                new Abp01_Validate_NotEmpty(false),
+                esc_html__('Tile layer API key is required', 'abp01-trip-summary')
+            );
+        }
+
+        return new Abp01_Validation_Rule_Composite($rules);
+    }
+
+    private function _tileLayerRequiesApiKey(stdClass $tileLayer) {
+        return $tileLayer->url != null 
+            && stripos($tileLayer->url, '{apiKey}') !== false;
     }
 
     private function _readBoundedTrackLineWeightFromHttpPost() {

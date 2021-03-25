@@ -48,7 +48,7 @@
 	var $ctlLookupListing = null;
 	var $ctlLookupItemDefaultLabel = null;
 	var $ctlLookupItemTranslatedLabel = null;
-	var $ctlOperationResultContainer = null;
+	var $ctlEditorOperationResultContainer = null;
 	var $ctlListingResultContainer = null;
 	var $ctlDeleteOnlyLangTranslation = null;
 	var $ctlDeleteOnlyLangTranslationContainer = null;
@@ -140,6 +140,46 @@
 			tplLookupListing = kite('#tpl-abp01-lookupDataRow');
 		}
 		return tplLookupListing;
+	}
+
+	function displaySuccessfulListingOperationMessage(message) {
+		$ctlListingResultContainer.abp01OperationMessage('success', message);
+	}
+
+	function displayFailedListingOperationMessage(message) {
+		$ctlListingResultContainer.abp01OperationMessage('error', message);
+	}
+
+	function hideListingOperationMessage() {
+		$ctlListingResultContainer.abp01OperationMessage('hide');
+	}
+
+	function displaySuccessfulRemovalOperationMessage(message) {
+		$ctlDeleteOperationResultContainer.abp01OperationMessage('success', message);
+	}
+
+	function displayWarningRemovalOperationMessage(message) {
+		$ctlDeleteOperationResultContainer.abp01OperationMessage('warning', message);
+	}
+
+	function displayFailedRemovalOperationMessage(message) {
+		$ctlDeleteOperationResultContainer.abp01OperationMessage('error', message);
+	}
+
+	function hideRemovalOperationMessage() {
+		$ctlDeleteOperationResultContainer.abp01OperationMessage('hide');
+	}
+
+	function displaySuccessfulEditorOperationMessage(message) {
+		$ctlEditorOperationResultContainer.abp01OperationMessage('success', message);
+	}
+
+	function displayFailedEditorOperationMessage(message) {
+		$ctlEditorOperationResultContainer.abp01OperationMessage('error', message);
+	}
+
+	function hideEditorOperationMessage() {
+		$ctlEditorOperationResultContainer.abp01OperationMessage('hide');
 	}
 
 	function getContext() {
@@ -262,7 +302,7 @@
 		var lookupLang = $ctlLangSelector.val();
 
 		showBusy(null);
-		$ctlListingResultContainer.abp01OperationMessage('hide');
+		hideListingOperationMessage();
 
 		$.ajax(getLoadLookupDataUrl(), {
 			cache: false,
@@ -281,20 +321,18 @@
 					updateLocalItemData(item);
 				});
 			} else {
-				$ctlListingResultContainer.abp01OperationMessage('error', 
-					abp01LookupMgmtL10n.errListingFailGeneric);
+				displayFailedListingOperationMessage(abp01LookupMgmtL10n.errListingFailGeneric);
 			}
 		}).fail(function() {
 			hideBusy(function() {
-				$ctlListingResultContainer.abp01OperationMessage('error', 
-					abp01LookupMgmtL10n.errListingFailNetwork);
+				displayFailedListingOperationMessage(abp01LookupMgmtL10n.errListingFailNetwork);
 			});
 		});
 	}
 
 	function createLookupItem() {        
 		showBusy($('#TB_window'));
-		$ctlOperationResultContainer.abp01OperationMessage('hide');
+		hideEditorOperationMessage();
 
 		$.ajax(getAddLookupUrl(), {
 			cache: false,
@@ -312,17 +350,13 @@
 				updateLocalItemData(data.item);
 				renderLookupItems([data.item], true);
 				clearForm();
-
-				$ctlOperationResultContainer.abp01OperationMessage('success', 
-					abp01LookupMgmtL10n.msgSaveOk);
+				displaySuccessfulEditorOperationMessage(abp01LookupMgmtL10n.msgSaveOk);
 			} else {
-				$ctlOperationResultContainer.abp01OperationMessage('error', 
-					data.message || abp01LookupMgmtL10n.errFailGeneric);
+				displayFailedEditorOperationMessage(data.message || abp01LookupMgmtL10n.errFailGeneric);
 			}
 		}).fail(function() {
 			hideBusy(function() {
-				$ctlOperationResultContainer.abp01OperationMessage('error', 
-					abp01LookupMgmtL10n.errFailNetwork);
+				displayFailedEditorOperationMessage(abp01LookupMgmtL10n.errFailNetwork);
 			});
 		});
 	}
@@ -332,7 +366,7 @@
 		var translatedLabel = $ctlLookupItemTranslatedLabel.val();
 
 		showBusy($('#TB_window'));
-		$ctlOperationResultContainer.abp01OperationMessage('hide');
+		hideEditorOperationMessage();
 
 		$.ajax(getEditLookupUrl(), {
 			cache: false,
@@ -356,15 +390,15 @@
 				updateLocalItemData(editingItem);
 				refreshLookupItem(editingItem);
 
-				$ctlOperationResultContainer.abp01OperationMessage('success', 
+				$ctlEditorOperationResultContainer.abp01OperationMessage('success', 
 					abp01LookupMgmtL10n.msgSaveOk);
 			} else {
-				$ctlOperationResultContainer.abp01OperationMessage('error', 
+				$ctlEditorOperationResultContainer.abp01OperationMessage('error', 
 					data.message || abp01LookupMgmtL10n.errFailGeneric);
 			}
 		}).fail(function() {
 			hideBusy(function() {
-				$ctlOperationResultContainer.abp01OperationMessage('error', 
+				$ctlEditorOperationResultContainer.abp01OperationMessage('error', 
 					abp01LookupMgmtL10n.errFailNetwork);
 			});
 		});
@@ -376,8 +410,8 @@
 
 		showBusy($('#TB_window'));
 
-		$ctlListingResultContainer.abp01OperationMessage('hide');
-		$ctlDeleteOperationResultContainer.abp01OperationMessage('hide');
+		hideListingOperationMessage();
+		hideRemovalOperationMessage();
 
 		$.ajax(getDeleteLookupUrl(), {
 			cache: false,
@@ -396,35 +430,29 @@
 						deleteLookupItemRow(editingItem, deleteOnlyLang && lang !== DEFAULT_LANG);
 						setCurrentItemDeleted();
 						closeDeleteDialog();
-
-						$ctlListingResultContainer.abp01OperationMessage('success', 
-							abp01LookupMgmtL10n.msgDeleteOk);
+						displaySuccessfulListingOperationMessage(abp01LookupMgmtL10n.msgDeleteOk);
 					});
 				//The lookup item is in use, set removal stage and ask the user for confirmation
 				} else if (!!data.requiresConfirmation && !!data.confirmationNonce) {
 					hideBusy(function() {
 						setLookupDeleteInUseConfirmation(data.confirmationNonce);
-						$ctlDeleteOperationResultContainer.abp01OperationMessage('warning', 
-							data.message);
+						displayWarningRemovalOperationMessage(data.message);
 					});
 				//Some kind of failure. Warn the user.
 				} else {
 					hideBusy(function() {
-						$ctlDeleteOperationResultContainer.abp01OperationMessage('error', 
-							data.message || abp01LookupMgmtL10n.errDeleteFailedGeneric);
+						displayFailedRemovalOperationMessage(data.message || abp01LookupMgmtL10n.errDeleteFailedGeneric);
 					});
 				}
 			//Some kind of failure. Warn the user.
 			} else {
 				hideBusy(function() {
-					$ctlDeleteOperationResultContainer.abp01OperationMessage('error', 
-						data.message || abp01LookupMgmtL10n.errDeleteFailedGeneric);
+					displayFailedRemovalOperationMessage(data.message || abp01LookupMgmtL10n.errDeleteFailedGeneric);
 				});
 			}
 		}).fail(function() {
 			hideBusy(function() {
-				$ctlDeleteOperationResultContainer.abp01OperationMessage('error', 
-					abp01LookupMgmtL10n.errDeleteFailedNetwork);
+				displayFailedRemovalOperationMessage(abp01LookupMgmtL10n.errDeleteFailedNetwork);
 			});
 		});
 	}
@@ -478,7 +506,7 @@
 		}
 
 		//show the editor
-		$ctlOperationResultContainer.abp01OperationMessage('hide');
+		hideEditorOperationMessage();
 		tb_show(title, '#TB_inline?width=' + 450 + '&height=' + height + '&inlineId=abp01-lookup-item-form');
 	}
 
@@ -497,7 +525,7 @@
 		beginEditingItem(currentItemId);
 		tb_show(abp01LookupMgmtL10n.ttlConfirmDelete, '#TB_inline?width=450&height=' + height + '&inlineId=abp01-lookup-item-delete-form');
 		
-		$ctlDeleteOperationResultContainer.abp01OperationMessage('hide');
+		hideRemovalOperationMessage();
 		setLookupDeleteInitialRequest();
 	}
 
@@ -506,14 +534,14 @@
 		clearForm();
 		clearCurrentlyEditedItem();
 		//close the window
-		$ctlOperationResultContainer.abp01OperationMessage('hide');
+		hideEditorOperationMessage();
 		tb_remove();
 	}
 
 	function closeDeleteDialog() {
 		clearLookupDeleteState();
 		$ctlDeleteOnlyLangTranslation.prop('checked', false);
-		$ctlDeleteOperationResultContainer.abp01OperationMessage('hide');
+		hideRemovalOperationMessage();
 		tb_remove();
 	}
 
@@ -531,7 +559,7 @@
 	function initControls() {
 		//result containers - they serve as display containers for various operations results
 		$ctlListingResultContainer = $('#abp01-lookup-listing-result');
-		$ctlOperationResultContainer = $('#abp01-lookup-operation-result');
+		$ctlEditorOperationResultContainer = $('#abp01-lookup-operation-result');
 		$ctlDeleteOperationResultContainer = $('#abp01-lookup-delete-operation-result');
 
 		//selection controls
