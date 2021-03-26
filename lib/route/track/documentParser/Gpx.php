@@ -44,7 +44,7 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
-class Abp01_Route_Track_GpxDocumentParser implements Abp01_Route_Track_DocumentParser {
+class Abp01_Route_Track_DocumentParser_Gpx implements Abp01_Route_Track_DocumentParser {
     private $_parseErrors = array();
 
     function __construct() {

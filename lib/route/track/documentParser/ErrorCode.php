@@ -33,8 +33,10 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
-class Abp01_Route_Track_DocumentParserException extends Abp01_Exception {
-	public function __construct($message) {
-		parent::__construct($message);
-	}
+class Abp01_Route_Track_DocumentParser_ErrorCode {
+	const ERROR_CATEGORY_DESERIALIZATION = 0x01;
+
+	const ERROR_CATEGORY_PARSER = 0x02;
+
+	const ERROR_GEOJSON_UNSUPPORTED_DOCUMENT_ROOT = 0x01;
 }

@@ -475,7 +475,7 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 		if (!($trackDocument instanceof Abp01_Route_Track_Document)) {
 			$file = $this->getTrackFilePath($track->getPostId());
 			if (is_readable($file)) {
-				$parser = new Abp01_Route_Track_GpxDocumentParser();
+				$parser = new Abp01_Route_Track_DocumentParser_Gpx();
 				$trackDocument = $parser->parse(file_get_contents($file));
 				if (!empty($trackDocument)) {
 					$trackDocument = $trackDocument->simplify(0.01);

@@ -537,6 +537,6 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 	 * @return Abp01_Route_Track_DocumentParser
 	 */
 	private function _getSourceTrackFileDocumentParser($detectedType) {
-		return new Abp01_Route_Track_GpxDocumentParser();
+		return new Abp01_Route_Track_DocumentParser_Gpx();
 	}
 }

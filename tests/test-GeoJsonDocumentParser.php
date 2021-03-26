@@ -34,9 +34,14 @@ class GeoJsonDocumentParserTests extends WP_UnitTestCase {
 	use TestDataFileHelpers;
 	use RouteTrackDocumentTestHelpers;
 
+	public function test_canCheckIfSupported() {
+        $this->assertEquals(function_exists('json_decode'), 
+            Abp01_Route_Track_DocumentParser_GeoJson::isSupported());
+    }
+
 	public function test_canParse_correctDocument() {
 		$testFiles = $this->_getValidTestFilesSpec();
-		$parser = new Abp01_Route_Track_GeoJsonDocumentParser();
+		$parser = new Abp01_Route_Track_DocumentParser_GeoJson();
 		
 		foreach ($testFiles as $fileName => $testFileSpec) {
 			$fileContents = $this->_readTestDataFileContents($fileName); 
@@ -59,11 +64,30 @@ class GeoJsonDocumentParserTests extends WP_UnitTestCase {
 		}
 	}
 
+	public function test_tryParse_incorrectDocument() {
+		$testFiles = $this->_getInvalidTestFilesSpec();
+		$parser = new Abp01_Route_Track_DocumentParser_GeoJson();
+
+		foreach ($testFiles as $fileName) {
+			$currentException = null;
+			$fileContents = $this->_readTestDataFileContents($fileName); 
+
+			try {
+				$parser->parse($fileContents);
+			} catch (Exception $exc) {
+				$currentException = $exc;
+			}
+
+			$this->assertNotNull($currentException);
+			$this->assertInstanceOf(Abp01_Route_Track_DocumentParser_Exception::class, $currentException);
+		}
+	}
+
 	/**
 	 * @expectedException InvalidArgumentException
 	 */
 	public function test_tryParse_nullData() {
-		$parser = new Abp01_Route_Track_GeoJsonDocumentParser();
+		$parser = new Abp01_Route_Track_DocumentParser_GeoJson();
 		$parser->parse(null);
 	}
 
@@ -71,7 +95,7 @@ class GeoJsonDocumentParserTests extends WP_UnitTestCase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function test_tryParse_emptyData() {
-		$parser = new Abp01_Route_Track_GeoJsonDocumentParser();
+		$parser = new Abp01_Route_Track_DocumentParser_GeoJson();
 		$parser->parse('');
 	}
 
@@ -339,6 +363,13 @@ class GeoJsonDocumentParserTests extends WP_UnitTestCase {
 			'geojson/test4-empty-object-featurecollection-utf8-wo-bom.geojson' => array(
 				'expect' => 'geojson/test3-empty-object-featurecollection-utf8-bom.geojson'
 			),
+		);
+	}
+
+	private function _getInvalidTestFilesSpec() {
+		return array(
+			'geojson/test-inv1-jibberish.geojson', 
+			'geojson/test-inv2-jibberish-malformed.geojson'
 		);
 	}
 

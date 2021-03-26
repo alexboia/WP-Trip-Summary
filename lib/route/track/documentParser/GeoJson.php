@@ -33,7 +33,7 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
-class Abp01_Route_Track_GeoJsonDocumentParser implements Abp01_Route_Track_DocumentParser {
+class Abp01_Route_Track_DocumentParser_GeoJson implements Abp01_Route_Track_DocumentParser {
 	const GEOJSON_DESERIALIZATION_MAX_OBJECT_DEPTH = 1024;
 
 	const GEOJSON_DESERIALIZATION_OUTPUT_ASSOC_ARRAY = true;
@@ -101,21 +101,19 @@ class Abp01_Route_Track_GeoJsonDocumentParser implements Abp01_Route_Track_Docum
 					if ($this->_isGeoJsonGeometryType($geoJsonObjectType)) {
 						$document = $this->_parseGeoJsonGeometryObjectAsDocument($geoJsonObject);
 					} else {
-						$this->_parseErrors[] = array(
-							'code' => self::GEOJSON_UNSUPPORTED_DOCUMENT_ROOT,
-							'message' => sprintf('Unsupported geojson document root: <%s>', $geoJsonObjectType),
-							'file' => __FILE__,
-							'line' => 0
+						throw new Abp01_Route_Track_DocumentParser_Exception(
+							sprintf('Unsupported geojson document root: <%s>', $geoJsonObjectType), 
+							Abp01_Route_Track_DocumentParser_ErrorCode::ERROR_CATEGORY_PARSER, 
+							Abp01_Route_Track_DocumentParser_ErrorCode::ERROR_GEOJSON_UNSUPPORTED_DOCUMENT_ROOT
 						);
 					}
 					break;
 			}
 		} else {
-			$this->_parseErrors[] = array(
-				'code' => json_last_error(),
-				'message' => json_last_error_msg(),
-				'file' => __FILE__,
-				'line' => 0
+			throw new Abp01_Route_Track_DocumentParser_Exception(
+				json_last_error_msg(), 
+				Abp01_Route_Track_DocumentParser_ErrorCode::ERROR_CATEGORY_DESERIALIZATION, 
+				json_last_error()
 			);
 		}
 
@@ -185,47 +183,73 @@ class Abp01_Route_Track_GeoJsonDocumentParser implements Abp01_Route_Track_Docum
 		$geometryType = $this->_getGeoJsonObjectType($geometry);
 		switch ($geometryType) {
 			case self::GEOJSON_TYPE_POINT:
-				$document->addWayPoint($this->_readDocumentTrackPointFromGeoJsonPointGeometry($geometry));
+				$this->_parseAndCollectSingleWayPoint($document, $geometry);
 				break;
 			case self::GEOJSON_TYPE_MULTIPOINT:
-				$points = $this->_readDocumentTrackPointsFromGeoJsonMultiPointGeometry($geometry);
-				foreach ($points as $point) {
-					$document->addWayPoint($point);
-				}
+				$this->_parseAndCollectMultipleWayPoints($document, $geometry);
 				break;
 			case self::GEOJSON_TYPE_LINESTRING:
-				$trackPart = $this->_readDocumentTrackPartFromGeoJsonLineStringGeometry($geometry);
-				if (!$trackPart->isEmpty()) {
-					$document->addTrackPart($trackPart);
-				}
+				$this->_parseAndCollectSingleLineString($document, $geometry);
 				break;
 			case self::GEOJSON_TYPE_MULTILINESTRING:
-				$trackPart = $this->_readDocumentTrackPartFromGeoJsonMultiLineStringGeometry($geometry);
-				if (!$trackPart->isEmpty()) {
-					$document->addTrackPart($trackPart);
-				}
+				$this->_parseAndCollectMultipleLineStrings($document, $geometry);
 				break;
 			case self::GEOJSON_TYPE_POLYGON:
-				//polygons are treated as a set of lines (basically, as a multi line string)
-				//	so one polygon = one track part
-				$trackPart = $this->_readDocumentTrackPartFromGeoJsonPolygonGeometry($geometry);
-				if (!$trackPart->isEmpty()) {
-					$document->addTrackPart($trackPart);
-				}
+				$this->_parseAndCollectSinglePolygon($document, $geometry);
 				break;
 			case self::GEOJSON_TYPE_MULTIPOLYGON:
-				//polygons are treated as a set of sets of lines (basically, as a set of multi line string)
-				//	so one multi-polygon = multiple track parts
-				$trackParts = $this->_readDocumentTrackPartsFromGeoJsonMultiPolygonGeometry($geometry);
-				foreach ($trackParts as $trackPart) {
-					if (!$trackPart->isEmpty()) {
-						$document->addTrackPart($trackPart);
-					}	
-				}
+				$this->_parseAndCollectMultiplePolygons($document, $geometry);
 				break;
 			case self::GEOJSON_TYPE_GEOMETRY_COLLECTION:
 				$this->_parseAndCollectGeometryCollection($document, $geometry);
 				break;
+		}
+	}
+
+	private function _parseAndCollectSingleWayPoint(Abp01_Route_Track_Document $document, $geometry) {
+		$document->addWayPoint($this->_readDocumentTrackPointFromGeoJsonPointGeometry($geometry));
+	}
+
+	private function _parseAndCollectMultipleWayPoints(Abp01_Route_Track_Document $document, $geometry) {
+		$points = $this->_readDocumentTrackPointsFromGeoJsonMultiPointGeometry($geometry);
+		foreach ($points as $point) {
+			$document->addWayPoint($point);
+		}
+	}
+
+	private function _parseAndCollectSingleLineString(Abp01_Route_Track_Document $document, $geometry) {
+		$trackPart = $this->_readDocumentTrackPartFromGeoJsonLineStringGeometry($geometry);
+		if (!$trackPart->isEmpty()) {
+			$document->addTrackPart($trackPart);
+		}
+	}
+
+	private function _parseAndCollectMultipleLineStrings(Abp01_Route_Track_Document $document, $geometry) {
+		$trackPart = $this->_readDocumentTrackPartFromGeoJsonMultiLineStringGeometry($geometry);
+		if (!$trackPart->isEmpty()) {
+			$document->addTrackPart($trackPart);
+		}
+	}
+
+	private function _parseAndCollectSinglePolygon(Abp01_Route_Track_Document $document, $geometry) {
+		//polygons are treated as a set of lines 
+		//	(basically, as a multi line string)
+		//	so one polygon = one track part
+		$trackPart = $this->_readDocumentTrackPartFromGeoJsonPolygonGeometry($geometry);
+		if (!$trackPart->isEmpty()) {
+			$document->addTrackPart($trackPart);
+		}
+	}
+
+	private function _parseAndCollectMultiplePolygons(Abp01_Route_Track_Document $document, $geometry) {
+		//polygons are treated as a set of sets of lines 
+		//	(basically, as a set of multi line string)
+		//	so one multi-polygon = multiple track parts
+		$trackParts = $this->_readDocumentTrackPartsFromGeoJsonMultiPolygonGeometry($geometry);
+		foreach ($trackParts as $trackPart) {
+			if (!$trackPart->isEmpty()) {
+				$document->addTrackPart($trackPart);
+			}	
 		}
 	}
 
@@ -309,7 +333,7 @@ class Abp01_Route_Track_GeoJsonDocumentParser implements Abp01_Route_Track_Docum
 
 	/**
 	 * @return Abp01_Route_Track_Point 
-	 * @throws Abp01_Route_Track_DocumentParserException 
+	 * @throws Abp01_Route_Track_DocumentParser_Exception 
 	 */
 	private function _readDocumentTrackPointFromGeoJsonPointGeometry($pointGeometry) {
 		$position = $this->_getGeometryCoordinates($pointGeometry);
@@ -318,7 +342,7 @@ class Abp01_Route_Track_GeoJsonDocumentParser implements Abp01_Route_Track_Docum
 
 	/**
 	 * @return Abp01_Route_Track_Point[]
-	 * @throws Abp01_Route_Track_DocumentParserException 
+	 * @throws Abp01_Route_Track_DocumentParser_Exception 
 	 */
 	private function _readDocumentTrackPointsFromGeoJsonMultiPointGeometry($multiPointGeometry) {
 		$points = array();
@@ -333,7 +357,7 @@ class Abp01_Route_Track_GeoJsonDocumentParser implements Abp01_Route_Track_Docum
 
 	/**
 	 * @return Abp01_Route_Track_Point 
-	 * @throws Abp01_Route_Track_DocumentParserException 
+	 * @throws Abp01_Route_Track_DocumentParser_Exception 
 	 */
 	private function _readDocumentTrackPointFromGeoJsonPosition(array $position) {
 		$documentTrackCoordinate = $this->_readDocumentTrackCoordinateFromGeoJsonPosition($position);
@@ -342,11 +366,11 @@ class Abp01_Route_Track_GeoJsonDocumentParser implements Abp01_Route_Track_Docum
 
 	/**
 	 * @return Abp01_Route_Track_Coordinate 
-	 * @throws Abp01_Route_Track_DocumentParserException 
+	 * @throws Abp01_Route_Track_DocumentParser_Exception 
 	 */
 	private function _readDocumentTrackCoordinateFromGeoJsonPosition(array $position) {
 		if (count($position) < 2) {
-			throw new Abp01_Route_Track_DocumentParserException('Geometry position may not have less than two elements.');
+			throw new Abp01_Route_Track_DocumentParser_Exception('Geometry position may not have less than two elements.');
 		}
 
 		$longitude = floatval($position[0]);
@@ -364,7 +388,7 @@ class Abp01_Route_Track_GeoJsonDocumentParser implements Abp01_Route_Track_Docum
 
 	/**
 	 * @return Abp01_Route_Track_Part 
-	 * @throws Abp01_Route_Track_DocumentParserException 
+	 * @throws Abp01_Route_Track_DocumentParser_Exception 
 	 */
 	private function _readDocumentTrackPartFromGeoJsonMultiLineStringGeometry($multiLineStringGeometry) {
 		$documentTrackPart = new Abp01_Route_Track_Part();
@@ -381,7 +405,7 @@ class Abp01_Route_Track_GeoJsonDocumentParser implements Abp01_Route_Track_Docum
 
 	/**
 	 * @return Abp01_Route_Track_Part 
-	 * @throws Abp01_Route_Track_DocumentParserException 
+	 * @throws Abp01_Route_Track_DocumentParser_Exception 
 	 */
 	private function _readDocumentTrackPartFromGeoJsonLineStringGeometry($lineStringGeometry) {
 		$documentTrackPart = new Abp01_Route_Track_Part();
@@ -396,7 +420,7 @@ class Abp01_Route_Track_GeoJsonDocumentParser implements Abp01_Route_Track_Docum
 
 	/**
 	 * @return Abp01_Route_Track_Line[] 
-	 * @throws Abp01_Route_Track_DocumentParserException 
+	 * @throws Abp01_Route_Track_DocumentParser_Exception 
 	 */
 	private function _readDocumentTrackLinesFromGeoJsonMultiLineStringGeometry($multiLineStringGeometry) {
 		$documentTrackLines = array();
@@ -411,7 +435,7 @@ class Abp01_Route_Track_GeoJsonDocumentParser implements Abp01_Route_Track_Docum
 
 	/**
 	 * @return Abp01_Route_Track_Line 
-	 * @throws Abp01_Route_Track_DocumentParserException 
+	 * @throws Abp01_Route_Track_DocumentParser_Exception 
 	 */
 	private function _readDocumentTrackLineFromGeoJsonLineStringGeometry($lineStringGeometry) {
 		$positions = $this->_getGeometryCoordinates($lineStringGeometry);
@@ -421,7 +445,7 @@ class Abp01_Route_Track_GeoJsonDocumentParser implements Abp01_Route_Track_Docum
 
 	/**
 	 * @return Abp01_Route_Track_Line 
-	 * @throws Abp01_Route_Track_DocumentParserException 
+	 * @throws Abp01_Route_Track_DocumentParser_Exception 
 	 */
 	private function _readDocumentTrackLineFromGeoJsonPositions(array $positions) {
 		$line = new Abp01_Route_Track_Line();
@@ -433,7 +457,7 @@ class Abp01_Route_Track_GeoJsonDocumentParser implements Abp01_Route_Track_Docum
 
 	/**
 	 * @return Abp01_Route_Track_Part[] 
-	 * @throws Abp01_Route_Track_DocumentParserException 
+	 * @throws Abp01_Route_Track_DocumentParser_Exception 
 	 */
 	private function _readDocumentTrackPartsFromGeoJsonMultiPolygonGeometry($multiPolygonGeometry) {
 		$parts = array();
@@ -452,7 +476,7 @@ class Abp01_Route_Track_GeoJsonDocumentParser implements Abp01_Route_Track_Docum
 
 	/**
 	 * @return Abp01_Route_Track_Part 
-	 * @throws Abp01_Route_Track_DocumentParserException 
+	 * @throws Abp01_Route_Track_DocumentParser_Exception 
 	 */
 	private function _readDocumentTrackPartFromGeoJsonPolygonGeometry($polygonGeometry) {
 		$documentTrackPart = new Abp01_Route_Track_Part();
@@ -469,7 +493,7 @@ class Abp01_Route_Track_GeoJsonDocumentParser implements Abp01_Route_Track_Docum
 
 	/**
 	 * @return Abp01_Route_Track_Line[] 
-	 * @throws Abp01_Route_Track_DocumentParserException 
+	 * @throws Abp01_Route_Track_DocumentParser_Exception 
 	 */
 	private function _readDocumentTrackLinesFromGeoJsonPolygonGeometry($polygonGeometry) {
 		$lines = array();

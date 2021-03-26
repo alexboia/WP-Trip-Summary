@@ -94,7 +94,7 @@ trait RouteTrackTestDataHelpers {
     protected function _prepareAndStoreCachedTrackDocument($postId, $gpxContent) {
         $path = $this->_getCachedTrackDocumentFilePath($postId);
 
-        $parser = new Abp01_Route_Track_GpxDocumentParser();
+        $parser = new Abp01_Route_Track_DocumentParser_Gpx();
         $trackDocument = $parser->parse($gpxContent);
 
         file_put_contents($path, $trackDocument->serializeDocument());
