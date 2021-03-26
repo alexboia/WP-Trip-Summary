@@ -237,18 +237,20 @@
 	}
 
 	function updateApiKeyNag() {
-		var needsApiKeyNag = false;
 		var tileLayer = getCurrentTileLayerInfoFromInputFields();
-
-		if (tileLayer.url.indexOf('{apiKey}') >= 0) {
-			needsApiKeyNag = !tileLayer.apiKey || tileLayer.apiKey.length <= 0;
-		}
-
-		if (needsApiKeyNag) {
+		if (needsApiKey(tileLayer)) {
 			showApiKeyNag();
 		} else {
 			hideApiKeyNag();
 		}
+	}
+
+	function needsApiKey(tileLayer) {
+		var needsApiKey = false;
+		if (tileLayer.url.indexOf('{apiKey}') >= 0) {
+			needsApiKey = !tileLayer.apiKey || tileLayer.apiKey.length <= 0;
+		}
+		return needsApiKey;
 	}
 
 	function showApiKeyNag() {
