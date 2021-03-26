@@ -58,7 +58,7 @@ class Abp01_Route_Track_Document {
 
     public $minAlt;
 
-    public function __construct($metadata) {
+    public function __construct($metadata = null) {
         $this->parts = array();
         $this->waypoints = array();
         $this->metadata = $metadata;
@@ -78,6 +78,18 @@ class Abp01_Route_Track_Document {
             return null;
         }
         return unserialize($serialized);
+    }
+
+    public function isEmpty() {
+        return empty($this->parts);
+    }
+
+    public function setMedata($metadata) {
+        $this->metadata = $metadata;
+    }
+
+    public function getMetadata() {
+        return $this->metadata;
     }
 
     public function addTrackPart(Abp01_Route_Track_Part $track) {
@@ -109,6 +121,10 @@ class Abp01_Route_Track_Document {
         $this->parts[] = $track;
     }
 
+    public function getTrackParts() {
+        return $this->parts;
+    }
+
     public function addWayPoint(Abp01_Route_Track_Point $wpt) {
         if ($wpt->coordinate->lat > $this->maxLat) {
             $this->maxLat = $wpt->coordinate->lat;
@@ -134,6 +150,10 @@ class Abp01_Route_Track_Document {
         }
 
         $this->waypoints[] = $wpt;
+    }
+
+    public function getWaypoints() {
+        return $this->waypoints;
     }
 
     /**

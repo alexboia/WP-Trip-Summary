@@ -76,16 +76,18 @@ class Abp01_Route_Track_GpxDocumentParser implements Abp01_Route_Track_DocumentP
         }
 
         libxml_use_internal_errors($prevUseErrors);
-        return $document instanceof Abp01_Route_Track_Document ? $document : null;
+
+        return $document instanceof Abp01_Route_Track_Document 
+            ? $document 
+            : null;
     }
 
     private function _parseGpx($gpx) {
-        $document = null;
         $meta = $this->_readMetaData($gpx);
         $document = new Abp01_Route_Track_Document($meta);
 
-        $this->_readWayPoints($document, $gpx);
-        $this->_readTracks($document, $gpx);
+        $this->_parseAndCollectWayPoints($document, $gpx);
+        $this->_parseAndCollectTracks($document, $gpx);
 
         return $document;
     }
@@ -107,7 +109,7 @@ class Abp01_Route_Track_GpxDocumentParser implements Abp01_Route_Track_DocumentP
         return $meta;
     }
 
-    private function _readTracks(Abp01_Route_Track_Document $document, $gpx) {
+    private function _parseAndCollectTracks(Abp01_Route_Track_Document $document, $gpx) {
         if (empty($gpx->trk)) {
             return;
         }
@@ -152,7 +154,7 @@ class Abp01_Route_Track_GpxDocumentParser implements Abp01_Route_Track_DocumentP
         return $segment;
     }
 
-    private function _readWayPoints(Abp01_Route_Track_Document $doc, $gpx) {
+    private function _parseAndCollectWayPoints(Abp01_Route_Track_Document $doc, $gpx) {
         if (empty($gpx->wpt)) {
             return;
         }

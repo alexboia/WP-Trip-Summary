@@ -64,6 +64,10 @@ class Abp01_Route_Track_Line {
         $this->trackPoints = array();
     }
 
+    public function isEmpty() {
+        return empty($this->trackPoints);
+    }
+
     public function addPoint(Abp01_Route_Track_Point $point) {
 
         if ($point->coordinate->lat > $this->maxLat) {

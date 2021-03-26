@@ -32,6 +32,7 @@
  class GpxDocumentParserTests extends WP_UnitTestCase {
     use GenericTestHelpers;
     use TestDataFileHelpers;
+    use RouteTrackDocumentTestHelpers;
 
     private static $_randomGpxFilesTestInfo = array();
 
@@ -181,12 +182,6 @@
         }
     }
 
-    private function _determineExpectedDocumentData($testFiles, $testFileSpec) {
-        return is_array($testFileSpec['expect']) 
-            ? $testFileSpec['expect'] 
-            : $testFiles[$testFileSpec['expect']]['expect'];
-    }
-
     public function test_tryParse_incorrectDocument() {
         $testFiles = $this->_getInvalidTestFilesSpec();
         $parser = new Abp01_Route_Track_GpxDocumentParser();
@@ -247,91 +242,12 @@
         }
     }
 
-    private function _assertWaypointsCorrect(Abp01_Route_Track_Document $actualDocument, $expectSampleWaypoints) {
-        foreach ($expectSampleWaypoints as $expectWaypoint) {
-            $this->_assertCollectionHasPoint($actualDocument->waypoints, $expectWaypoint);
-        }
+    private function _assertWaypointsCorrect(Abp01_Route_Track_Document $actualDocument, $expectWaypoints) {
+        $this->assertTrue($this->_areDocumentWayPointsCorrect($actualDocument, $expectWaypoints));
     }
 
-    private function _assertTrackPartsCorrect(Abp01_Route_Track_Document $actualDocument, $expectTrackParts) {
-        $countExpectTrackParts = count($expectTrackParts);
-
-        $this->assertNotNull($actualDocument->parts);
-        $this->assertEquals($countExpectTrackParts, count($actualDocument->parts));
-
-        for ($iPart = 0; $iPart < $countExpectTrackParts; $iPart++ ) {
-            $expectTrackPart = $expectTrackParts[$iPart];
-            $actualTrackPart = $actualDocument->parts[$iPart];
-            $this->_assertTrackPartCorrect($actualTrackPart, $expectTrackPart);
-        }
-    }
-
-    private function _assertTrackPartCorrect(Abp01_Route_Track_Part $actualTrackPart, $expectTrackPart) {
-        $this->assertNotNull($actualTrackPart);
-        $this->_assertTrackPartHasCorrectName($actualTrackPart, $expectTrackPart);
-
-        $expectTrackLines = $expectTrackPart['trackLines'];
-        $countExpectTrackLines = count($expectTrackLines);
-
-        $this->assertNotNull($actualTrackPart->lines);
-        $this->assertEquals($countExpectTrackLines, count($actualTrackPart->lines));
-
-        for ($iLine = 0; $iLine < $countExpectTrackLines; $iLine++) {
-            $expectTrackLine = $expectTrackLines[$iLine];
-            $actualTrackLine = $actualTrackPart->lines[$iLine];
-
-            $this->assertNotNull($actualTrackLine);
-            $this->_assertLineHasCorrectPoints($actualTrackLine, $expectTrackLine);
-        }
-    }
-
-    private function _assertTrackPartHasCorrectName($actualTrackPart, $expectTrackPart) {
-        if (!empty($expectTrackPart['name'])) {
-            $this->assertEquals($expectTrackPart['name'], $actualTrackPart->name);
-        } else {
-            $this->assertEmpty($actualTrackPart->name);
-        }
-    }
-
-    private function _assertLineHasCorrectPoints(Abp01_Route_Track_Line $line, $expectTrackLine) {
-        $this->assertNotNull($line->trackPoints);
-
-        $this->assertEquals($expectTrackLine['trackPointsCount'], 
-            count($line->trackPoints));
-
-        if (!empty($expectTrackLine['sampleTrackPoints'])) {
-            foreach ($expectTrackLine['sampleTrackPoints'] as $expectTrackPoint) {
-                $this->_assertLineContainsPoint($line, $expectTrackPoint);
-            }
-        }
-    }
-
-    private function _assertLineContainsPoint(Abp01_Route_Track_Line $line, $expectedPointSpec) {
-        $this->_assertCollectionHasPoint($line->trackPoints, 
-            $expectedPointSpec);
-    }
-
-    private function _assertCollectionHasPoint($points, $expectedPointSpec) {
-        $found = false;
-
-        $delta = isset($expectedPointSpec['delta']) 
-            ? $expectedPointSpec['delta'] 
-            : 0.00;
-
-        foreach ($points as $candidatePoint) {
-            if ($this->_candidatePointMatchesExpectedWithinDelta($candidatePoint, $expectedPointSpec, $delta)) {
-                $found = true;
-                break;
-            }
-        }
-
-        $this->assertTrue($found);
-    }
-
-    private function _candidatePointMatchesExpectedWithinDelta($candidatePoint, $expectedPointSpec, $delta) {
-        return abs($candidatePoint->coordinate->lat - $expectedPointSpec['lat']) / $expectedPointSpec['lat'] <= $delta 
-            && abs($candidatePoint->coordinate->lng - $expectedPointSpec['lon']) / $expectedPointSpec['lon'] <= $delta 
-            && abs($candidatePoint->coordinate->alt - $expectedPointSpec['ele']) / $expectedPointSpec['ele'] <= $delta;
+    private function _assertTrackPartsCorrect(Abp01_Route_Track_Document $actualDocument, $expectTrackPartsSpec) {
+        $this->assertTrue($this->_areAllTrackPartsCorrect($actualDocument, $expectTrackPartsSpec));
     }
 
     private static function _getRandomFileGenerationSpec() {

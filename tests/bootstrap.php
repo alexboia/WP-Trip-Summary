@@ -43,6 +43,7 @@ require_once 'lib/TestAuthDataHelpers.php';
 require_once 'lib/LookupDataTestHelpers.php';
 require_once 'lib/RouteInfoTestDataSets.php';
 require_once 'lib/RouteTrackTestDataHelpers.php';
+require_once 'lib/RouteTrackDocumentTestHelpers.php';
 require_once 'lib/ViewerTestDataHelpers.php';
 require_once 'lib/SettingsDataHelpers.php';
 require_once 'lib/AdminTestDataHelpers.php';

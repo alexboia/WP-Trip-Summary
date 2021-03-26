@@ -70,6 +70,10 @@ class Abp01_Route_Track_Part {
         $this->maxLng = ~PHP_INT_MAX;
     }
 
+    public function isEmpty() {
+        return empty($this->lines);
+    }
+
     public function addLine(Abp01_Route_Track_Line $line) {
         if ($line->minLat < $this->minLat) {
             $this->minLat = $line->minLat;
@@ -97,6 +101,10 @@ class Abp01_Route_Track_Part {
         }
 
         $this->lines[] = $line;
+    }
+
+    public function getLines() {
+        return $this->lines;
     }
 
     public function simplify($threshold) {
