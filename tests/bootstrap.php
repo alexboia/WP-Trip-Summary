@@ -105,6 +105,7 @@ function _manually_install_plugin() {
 
 function _include_plugin_dependent_test_classes() {
 	require_once 'lib/TestFrontendTheme.php';
+	require_once 'lib/MockDocumentParser.php';
 	require_once 'lib/sampleModuleClasses/SamplePluginModuleDependency.php';
 	require_once 'lib/sampleModuleClasses/SamplePluginModuleCallState.php';
 	require_once 'lib/sampleModuleClasses/SamplePluginModuleCreationState.php';

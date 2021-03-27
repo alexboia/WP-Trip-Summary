@@ -29,6 +29,14 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/**
+ * See these resources for information on the GeoJson format:
+ * 	- https://tools.ietf.org/html/rfc7946#page-9
+ * 	- https://macwright.com/2015/03/23/geojson-second-bite.html
+ * 	- https://macwright.com/2016/06/05/falsehoods-developers-believe-about-geojson.html
+ * 	- https://macwright.com/2016/11/07/the-geojson-ietf-standard.html
+ */
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }

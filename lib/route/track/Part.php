@@ -70,8 +70,14 @@ class Abp01_Route_Track_Part {
         $this->maxLng = ~PHP_INT_MAX;
     }
 
+    public function countLines() {
+        return is_array($this->lines) 
+            ? count($this->lines) 
+            : 0;
+    }
+
     public function isEmpty() {
-        return empty($this->lines);
+        return $this->countLines() == 0;
     }
 
     public function addLine(Abp01_Route_Track_Line $line) {
