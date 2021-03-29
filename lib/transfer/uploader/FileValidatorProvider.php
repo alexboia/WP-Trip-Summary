@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Copyright (c) 2014-2021 Alexandru Boia
  *
@@ -29,16 +29,50 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class MockDocumentParser implements Abp01_Route_Track_DocumentParser {
-    public function parse($sourceString) { 
-		return null;
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+    exit;
+}
+
+class Abp01_Transfer_Uploader_FileValidatorProvider {
+	private $_validatorRegistrations = array();
+
+	public function __construct() {
+		$this->registerValidatorForMimeTypes(new Abp01_Validate_GpxDocument(), 
+			Abp01_KnownMimeTypes::getGpxDocumentMimeTypes());
+		$this->registerValidatorForMimeTypes(new Abp01_Validate_GeoJsonDocument(), 
+			Abp01_KnownMimeTypes::getGeoJsonDocumentMimeTypes());
 	}
 
-    public function hasErrors() { 
-		return false;
+	public function registerValidatorForMimeTypes(Abp01_Validate_File $validatorInstance, array $mimeTypes) {
+		if (empty($mimeTypes)) {
+			throw new InvalidArgumentException('Mime types list may not be empty');
+		}
+
+		$newRegistrations = array();
+		foreach ($mimeTypes as $mimeType) {
+			if (isset($this->_validatorRegistrations[$mimeType])) {
+				throw new InvalidArgumentException('Validator mime types list overlap part of already registered mime types');
+			}
+			$newRegistrations[$mimeType] = $validatorInstance;
+		}
+
+		$this->_validatorRegistrations = array_merge($this->_validatorRegistrations, 
+			$newRegistrations);
+
+		return $this;
 	}
 
-    public function getLastErrors() { 
-		return array();
+	public function resolveValidator($mimeType) {
+		if (empty($mimeType)) {
+			throw new InvalidArgumentException('Mime type may not be null');
+		}
+
+		return isset($this->_validatorRegistrations[$mimeType])
+			? $this->_validatorRegistrations[$mimeType]
+			: null;
+	}
+
+	public function canResolveValidatorForMimeType($mimeType) {
+		return !empty($mimeType) && isset($this->_validatorRegistrations[$mimeType]);
 	}
 }

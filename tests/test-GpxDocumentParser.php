@@ -211,34 +211,10 @@
 	}
 
 	private function _assertMetadataCorrect(Abp01_Route_Track_Document $actualDocument, $expectMeta) {
-		$this->assertNotNull($actualDocument->metadata);
-		$this->_assertMetadataNameCorrect($actualDocument, $expectMeta);
-		$this->_assertMetadataDescriptionCorrect($actualDocument, $expectMeta);
-		$this->_assertMetadataKeywordsCorrect($actualDocument, $expectMeta);
-	}
-
-	private function _assertMetadataNameCorrect(Abp01_Route_Track_Document $actualDocument, $expectMeta) {
-		if (!empty($expectMeta['name'])) {
-			$this->assertEquals($expectMeta['name'], $actualDocument->metadata->name);
-		} else {
-			$this->assertEmpty($actualDocument->metadata->name);
-		}
-	}
-
-	private function _assertMetadataDescriptionCorrect(Abp01_Route_Track_Document $actualDocument, $expectMeta) {
-		if (!empty($expectMeta['desc'])) {
-			$this->assertEquals($expectMeta['desc'], $actualDocument->metadata->desc);
-		} else {
-			$this->assertEmpty($actualDocument->metadata->desc);
-		}
-	}
-
-	private function _assertMetadataKeywordsCorrect(Abp01_Route_Track_Document $actualDocument, $expectMeta) {
-		if (!empty($expectMeta['keywords'])) {
-			$this->assertEquals($expectMeta['keywords'], $actualDocument->metadata->keywords);
-		} else {
-			$this->assertEmpty($actualDocument->metadata->keywords);
-		}
+		$this->assertNotNull($actualDocument->getMetadata());
+		$this->assertTrue($this->_isMetadataNameCorrect($actualDocument, $expectMeta));
+		$this->assertTrue($this->_isMetadataDescriptionCorrect($actualDocument, $expectMeta));
+		$this->assertTrue($this->_areMetadataKeywordsCorrect($actualDocument, $expectMeta));
 	}
 
 	private function _assertWaypointsCorrect(Abp01_Route_Track_Document $actualDocument, $expectWaypoints) {

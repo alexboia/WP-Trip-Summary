@@ -61,9 +61,10 @@ trait AdminTestDataHelpers {
 			}
 		}
 
-		$asPlainObject->allowedUnitSystems = Abp01_UnitSystem::getAvailableUnitSystems();
-		$asPlainObject->allowedViewerTabs = Abp01_Viewer::getAvailableTabs();
-		$asPlainObject->allowedItemLayouts = Abp01_Viewer::getAvailableTabs();
+		$asPlainObject->allowedUnitSystems = Abp01_Settings::getAllowedUnitSystems();
+		$asPlainObject->allowedViewerTabs = Abp01_Settings::getAllowedViewerTabs();
+		$asPlainObject->allowedItemLayouts = Abp01_Settings::getAllowedItemLayouts();
+		$asPlainObject->allowedPredefinedTileLayers = Abp01_Settings::getAllowedPredefinedTileLayers();
 
 		return $asPlainObject;
 	}

@@ -63,7 +63,7 @@ class DocumentParserFactoryTests extends WP_UnitTestCase {
 		$this->assertEquals($expectedMimeTypes, $factory->getRecognizedDocumentMimeTypes());
 	}
 
-	public function test_canCheckIfCanresolveMimeType_registeredMimeType_noAdditionalRegistrations() {
+	public function test_canCheckIfCanResolveMimeType_registeredMimeType_noAdditionalRegistrations() {
 		$factory = new Abp01_Route_Track_DocumentParser_Factory();
 		$registeredMimeTypes = array_keys($this->_getRegisteredDocumentParserMimeTypes());
 		$this->_assertDocumentFactoryCanCheckIfCanResolveRegisteredMimeTypes($factory, $registeredMimeTypes);
@@ -77,7 +77,7 @@ class DocumentParserFactoryTests extends WP_UnitTestCase {
 
 	public function test_canCheckIfCanresolveMimeType_unregisteredMimeType() {
 		$factory = new Abp01_Route_Track_DocumentParser_Factory();
-		$unregisteredMimeTypes = $this->_getRegisteredDocumentParserMimeTypes();
+		$unregisteredMimeTypes = $this->_getUnregisteredDocumentParserMimeTypes();
 		foreach ($unregisteredMimeTypes as $mimeType) {
 			$this->assertFalse($factory->canResolveDocumentParserForMimeType($mimeType));
 		}

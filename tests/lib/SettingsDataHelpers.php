@@ -56,9 +56,10 @@ trait SettingsDataHelpers {
 
     private function _getDefaultTileLayer() {
         $tileLayer = new stdClass();
-        $tileLayer->url = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
+        $tileLayer->url = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
         $tileLayer->attributionTxt = 'OpenStreetMap & Contributors';
-        $tileLayer->attributionUrl = 'http://osm.org/copyright';
+        $tileLayer->attributionUrl = 'https://www.openstreetmap.org/copyright';
+        $tileLayer->apiKey = null;
         return $tileLayer;
     }
 
@@ -77,6 +78,7 @@ trait SettingsDataHelpers {
         $tileLayer->url = 'http://{s}.tile.example.com/{z}/{x}/{y}.png';
         $tileLayer->attributionTxt = 'Example.com & Contributors';
         $tileLayer->attributionUrl = 'http://tile.example.com/copyright';
+        $tileLayer->apiKey = $faker->uuid;
 
         $settings = new stdClass();
         $settings->showFullScreen = false;

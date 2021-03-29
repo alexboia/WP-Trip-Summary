@@ -298,10 +298,10 @@ class Abp01_Settings {
 		$data->viewerItemValueDisplayCount = $this->getViewerItemValueDisplayCount();
 
 		//TODO: these should not be part of the plain settings object
-		$data->allowedUnitSystems = $this->getAllowedUnitSystems();
-		$data->allowedViewerTabs = $this->getAllowedViewerTabs();
-		$data->allowedItemLayouts = $this->getAllowedItemLayouts();
-		$data->allowedPredefinedTileLayers = $this->getAllowedPredefinedTileLayers();
+		$data->allowedUnitSystems = self::getAllowedUnitSystems();
+		$data->allowedViewerTabs = self::getAllowedViewerTabs();
+		$data->allowedItemLayouts = self::getAllowedItemLayouts();
+		$data->allowedPredefinedTileLayers = self::getAllowedPredefinedTileLayers();
 
 		return $data;
 	}
@@ -474,7 +474,7 @@ class Abp01_Settings {
 	}
 
 	public function setUnitSystem($unitSystem) {
-		$allowedUnitSystems = array_keys($this->getAllowedUnitSystems());
+		$allowedUnitSystems = array_keys(self::getAllowedUnitSystems());
 		if (!in_array($unitSystem, $allowedUnitSystems)) {
 			$unitSystem = $this->getUnitSystem();
 		}
@@ -545,19 +545,19 @@ class Abp01_Settings {
 		$this->setBottomTeaserText($this->_getDefaultBottomTeaserText());
 	}
 
-	public function getAllowedUnitSystems() {
+	public static function getAllowedUnitSystems() {
 		return Abp01_UnitSystem::getAvailableUnitSystems();
 	}
 
-	public function getAllowedViewerTabs() {
+	public static function getAllowedViewerTabs() {
 		return Abp01_Viewer::getAvailableTabs();
 	}
 
-	public function getAllowedItemLayouts() {
+	public static function getAllowedItemLayouts() {
 		return Abp01_Viewer::getAvailableItemLayouts();
 	}
 
-	public function getAllowedPredefinedTileLayers() {
+	public static function getAllowedPredefinedTileLayers() {
 		$allowedPredefinedTileLayersInfos = array();
 		$predefinedTileLayers = Abp01_Settings_PredefinedTileLayer::getPredefinedTileLayers();
 		

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Copyright (c) 2014-2021 Alexandru Boia
  *
@@ -29,16 +29,28 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class MockDocumentParser implements Abp01_Route_Track_DocumentParser {
-    public function parse($sourceString) { 
-		return null;
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+    exit;
+}
+
+class Abp01_KnownMimeTypes {
+	public static function getGpxDocumentMimeTypes() {
+		return array(
+			'application/gpx', 
+			'application/x-gpx+xml', 
+			'application/xml-gpx', 
+			'application/xml', 
+			'application/gpx+xml',
+			'text/xml',
+			'application/octet-stream'
+		);
 	}
 
-    public function hasErrors() { 
-		return false;
-	}
-
-    public function getLastErrors() { 
-		return array();
+	public static function getGeoJsonDocumentMimeTypes() {
+		return array(
+			'application/json',
+			'application/geo+json',
+			'application/vnd.geo+json'
+		);
 	}
 }

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Copyright (c) 2014-2021 Alexandru Boia
  *
@@ -29,16 +29,10 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class MockDocumentParser implements Abp01_Route_Track_DocumentParser {
-    public function parse($sourceString) { 
-		return null;
-	}
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+	exit;
+}
 
-    public function hasErrors() { 
-		return false;
-	}
-
-    public function getLastErrors() { 
-		return array();
-	}
+interface Abp01_Validate_File extends Abp01_Validate {
+	//
 }

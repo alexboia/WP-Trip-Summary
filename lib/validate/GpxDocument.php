@@ -33,40 +33,49 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
-class Abp01_Validate_GpxDocument implements Abp01_Validate {
-    private $_bufferLength;
+class Abp01_Validate_GpxDocument implements Abp01_Validate_File {
+	const DEFAULT_TEST_BUFFER_LENGTH = 50;
 
-    public function __construct($bufferLength = 50) {
-        if ($bufferLength <= 0) {
-            throw new InvalidArgumentException('Buffer length must be greater than 0');
-        }
-        $this->_bufferLength = $bufferLength;
-    }
+	private $_bufferLength;
 
-    public function validate($filePath) {
-        if (!is_readable($filePath)) {
-            return false;
-        }
-        $fp = @fopen($filePath, 'rb');
-        if (!$fp) {
-            return false;
-        }
+	public function __construct($bufferLength = self::DEFAULT_TEST_BUFFER_LENGTH) {
+		if ($bufferLength <= 0) {
+			throw new InvalidArgumentException('Buffer length must be greater than 0');
+		}
+		$this->_bufferLength = $bufferLength;
+	}
 
-        $buffer = @fread($fp, $this->_bufferLength);
-        if (!$buffer) {
-            return false;
-        }
+	public function validate($filePath) {
+		if (empty($filePath)) {
+			throw new InvalidArgumentException('File path may not be empty');
+		}
 
-        if (function_exists('mb_stripos')) {
-            $xmlPos = mb_stripos($buffer, '<?xml', 0, 'UTF-8');
-            $gpxMarkerPos = mb_stripos($buffer, '<gpx', 0, 'UTF-8');
-        } else {
-            $xmlPos = stripos($buffer, '<?xml');
-            $gpxMarkerPos = stripos($buffer, '<gpx');
-        }
+		if (!is_readable($filePath)) {
+			return false;
+		}
 
-        @fclose($fp);
-        return ($xmlPos >= 0 || $xmlPos <= 5)
-            && $gpxMarkerPos > 0;
-    }
+		$testFilePointer = @fopen($filePath, 'rb');
+		if (!$testFilePointer) {
+			return false;
+		}
+
+		$isValid = false;
+		$buffer = @fread($testFilePointer, $this->_bufferLength);
+		
+		if ($buffer) {
+			if (function_exists('mb_stripos')) {
+				$xmlPos = mb_stripos($buffer, '<?xml', 0, 'UTF-8');
+				$gpxMarkerPos = mb_stripos($buffer, '<gpx', 0, 'UTF-8');
+			} else {
+				$xmlPos = stripos($buffer, '<?xml');
+				$gpxMarkerPos = stripos($buffer, '<gpx');
+			}
+			
+			$isValid = ($xmlPos >= 0 || $xmlPos <= 5)
+				&& $gpxMarkerPos > 0;
+		}
+
+		@fclose($testFilePointer);
+		return $isValid;
+	}
 }

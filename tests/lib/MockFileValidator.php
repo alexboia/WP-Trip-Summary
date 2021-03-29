@@ -29,16 +29,6 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class MockDocumentParser implements Abp01_Route_Track_DocumentParser {
-    public function parse($sourceString) { 
-		return null;
-	}
-
-    public function hasErrors() { 
-		return false;
-	}
-
-    public function getLastErrors() { 
-		return array();
-	}
+class MockFileValidator implements Abp01_Validate_File {
+    public function validate($input) { }
 }

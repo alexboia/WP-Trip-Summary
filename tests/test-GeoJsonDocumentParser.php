@@ -99,6 +99,13 @@ class GeoJsonDocumentParserTests extends WP_UnitTestCase {
 		$parser->parse('');
 	}
 
+	private function _assertMetadataCorrect(Abp01_Route_Track_Document $actualDocument, $expectMeta) {
+		$this->assertNotNull($actualDocument->getMetadata());
+		$this->assertTrue($this->_isMetadataNameCorrect($actualDocument, $expectMeta));
+		$this->assertTrue($this->_isMetadataDescriptionCorrect($actualDocument, $expectMeta));
+		$this->assertTrue($this->_areMetadataKeywordsCorrect($actualDocument, $expectMeta));
+	}
+
 	private function _assertWaypointsCorrect(Abp01_Route_Track_Document $actualDocument, $expectWaypoints) {
 		$this->assertTrue($this->_areDocumentWayPointsCorrect($actualDocument, $expectWaypoints));
 	}

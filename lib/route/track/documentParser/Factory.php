@@ -37,21 +37,11 @@ class Abp01_Route_Track_DocumentParser_Factory {
 	private $_parserRegistrations = array();
 
 	public function __construct() {
-		$this->registerDocumentParserForMimeTypes(Abp01_Route_Track_DocumentParser_Gpx::class, array(
-			'application/gpx', 
-			'application/x-gpx+xml', 
-			'application/xml-gpx', 
-			'application/xml', 
-			'application/gpx+xml',
-			'text/xml',
-			'application/octet-stream'
-		));
+		$this->registerDocumentParserForMimeTypes(Abp01_Route_Track_DocumentParser_Gpx::class, 
+			Abp01_KnownMimeTypes::getGpxDocumentMimeTypes());
 
-		$this->registerDocumentParserForMimeTypes(Abp01_Route_Track_DocumentParser_GeoJson::class, array(
-			'application/json',
-			'application/geo+json',
-			'application/vnd.geo+json'
-		));
+		$this->registerDocumentParserForMimeTypes(Abp01_Route_Track_DocumentParser_GeoJson::class, 
+			Abp01_KnownMimeTypes::getGeoJsonDocumentMimeTypes());
 	}
 
 	public function registerDocumentParserForMimeTypes($documentParserClass, array $mimeTypes) {

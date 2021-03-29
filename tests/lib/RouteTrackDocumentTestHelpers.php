@@ -30,6 +30,45 @@
  */
 
 trait RouteTrackDocumentTestHelpers {
+    protected function _isMetadataNameCorrect(Abp01_Route_Track_Document $actualDocument, array $expectMeta) {
+        $isMetaNameCorrect = false;
+        $actualMetadata = $actualDocument->getMetadata();
+
+		if (!empty($expectMeta['name'])) {
+			$isMetaNameCorrect = $expectMeta['name'] == $actualMetadata->name;
+		} else {
+			$isMetaNameCorrect = empty($actualMetadata->name);
+		}
+
+        return $isMetaNameCorrect;
+	}
+
+	protected function _isMetadataDescriptionCorrect(Abp01_Route_Track_Document $actualDocument, array $expectMeta) {
+        $isMetaDescriptionCorrect = false;
+        $actualMetadata = $actualDocument->getMetadata();
+
+		if (!empty($expectMeta['desc'])) {
+			$isMetaDescriptionCorrect = $expectMeta['desc'] == $actualMetadata->desc;
+		} else {
+			$isMetaDescriptionCorrect = empty($actualMetadata->desc);
+		}
+
+        return $isMetaDescriptionCorrect;
+	}
+
+	protected function _areMetadataKeywordsCorrect(Abp01_Route_Track_Document $actualDocument, array $expectMeta) {
+		$areMetaKeywordsCorrect = false;
+        $actualMetadata = $actualDocument->getMetadata();
+
+        if (!empty($expectMeta['keywords'])) {
+			$areMetaKeywordsCorrect = $expectMeta['keywords'] == $actualMetadata->keywords;
+		} else {
+			$areMetaKeywordsCorrect = empty($actualMetadata->keywords);
+		}
+
+        return $areMetaKeywordsCorrect;
+	}
+
     protected function _determineExpectedDocumentData($testFiles, $testFileSpec) {
         if (!is_array($testFileSpec['expect'])) {
             $testFileSpecKey = $testFileSpec['expect'];
