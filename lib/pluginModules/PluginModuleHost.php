@@ -88,6 +88,9 @@ class Abp01_PluginModules_PluginModuleHost {
             Abp01_PluginModules_PluginModuleHost::class => function() {
                 return $this;
             },
+            Abp01_Transfer_Uploader_FileValidatorProvider::class => function() {
+                return $this->getFileValidatorProvider();
+            },
             Abp01_NonceProvider_DownloadTrackData::class => function() {
                 return $this->getTrackDownloadNonceProvider();
             },
@@ -160,6 +163,10 @@ class Abp01_PluginModules_PluginModuleHost {
         }
 
         return $hasModule;
+    }
+
+    public function getFileValidatorProvider() {
+        return $this->_plugin->getFileValidatorProvider();
     }
 
     public function getTrackDownloadNonceProvider() {

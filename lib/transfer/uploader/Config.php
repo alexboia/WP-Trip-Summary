@@ -30,57 +30,78 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
-class Abp01_Transfer_Uploader_FileValidatorProvider {
-	private $_validatorRegistrations = array();
+class Abp01_Transfer_Uploader_Config {
+	private $_key;
 
-	public function __construct() {
-		$this->registerValidatorForMimeTypes(new Abp01_Validate_GpxDocument(), 
-			Abp01_KnownMimeTypes::getGpxDocumentMimeTypes());
-		$this->registerValidatorForMimeTypes(new Abp01_Validate_GeoJsonDocument(), 
-			Abp01_KnownMimeTypes::getGeoJsonDocumentMimeTypes());
+	private $_destinationPath;
+
+	private $_maxFileSize;
+
+	private $_chunkSize;
+
+	private $_chunkCount;
+
+	private $_chunk;
+
+	public function __construct($key, $destinationPath) {
+		if (empty($key)) {
+			throw new InvalidArgumentException('No file key has been specified');
+		}
+
+		if (empty($destinationPath) || !is_dir(dirname($destinationPath))) {
+			throw new InvalidArgumentException('No destination path was specified');
+		}
+
+		$this->_destinationPath = $destinationPath;
+        $this->_key = $key;
 	}
 
-	public function registerValidatorForMimeTypes(Abp01_Validate_File $validatorInstance, array $mimeTypes) {
-		if (empty($mimeTypes)) {
-			throw new InvalidArgumentException('Mime types list may not be empty');
-		}
-
-		$newRegistrations = array();
-		foreach ($mimeTypes as $mimeType) {
-			if (isset($this->_validatorRegistrations[$mimeType])) {
-				throw new InvalidArgumentException('Validator mime types list overlap part of already registered mime types');
+	public function setChunking($chunkSize, $chunk, $chunkCount) {
+		$this->_chunkSize = $chunkSize;
+		if ($this->_chunkSize > 0) {
+			if (!is_numeric($chunk) || !is_numeric($chunkCount) || $chunk < 0 || $chunkCount < 0) {
+				throw new InvalidArgumentException('The chunk size is set to greater than zero, but at least one of the chunkCount or chunk arguments is invalid.');
 			}
-			$newRegistrations[$mimeType] = $validatorInstance;
-		}
 
-		$this->_validatorRegistrations = array_merge($this->_validatorRegistrations, 
-			$newRegistrations);
+			$this->_chunk = $chunk;
+			$this->_chunkCount = $chunkCount;
+		} else {
+			$this->_chunk = 0;
+			$this->_chunkCount = 0;
+		}
 
 		return $this;
 	}
 
-	/**
-	 * @return Abp01_Validate_File
-	 * @throws InvalidArgumentException 
-	 */
-	public function resolveValidator($mimeType) {
-		if (empty($mimeType)) {
-			throw new InvalidArgumentException('Mime type may not be null');
-		}
-
-		return isset($this->_validatorRegistrations[$mimeType])
-			? $this->_validatorRegistrations[$mimeType]
-			: null;
+	public function setMaxFileSize($maxFileSize) {
+		$this->_maxFileSize = max(0, $maxFileSize);
+		return $this;
 	}
 
-	public function canResolveValidatorForMimeType($mimeType) {
-		return !empty($mimeType) && isset($this->_validatorRegistrations[$mimeType]);
+	public function getDestinationPath() {
+		return $this->_destinationPath;
 	}
 
-	public function getRecognizedDocumentMimeTypes() {
-		return array_keys($this->_validatorRegistrations);
+	public function getKey() {
+		return $this->_key;
+	}
+
+	public function getChunkSize() {
+		return $this->_chunkSize;
+	}
+
+	public function getChunkCount() {
+		return $this->_chunkCount;
+	}
+
+	public function getChunk() {
+		return $this->_chunk;
+	}
+
+	public function getMaxFileSize() {
+		return $this->_maxFileSize;
 	}
 }

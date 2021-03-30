@@ -352,7 +352,7 @@ class GeoJsonDocumentParserTests extends WP_UnitTestCase {
 					)
 				)
 			),
-			'geojson/test6-simple-shapes-featurecollection-nometa-wo-utf8-bom.geojson' => array(
+			'geojson/test6-simple-shapes-featurecollection-nometa-utf8-wo-bom.geojson' => array(
 				'expect' => 'geojson/test5-simple-shapes-featurecollection-nometa-utf8-bom.geojson'
 			),
 			'geojson/test3-empty-object-featurecollection-utf8-bom.geojson' => array(

@@ -88,7 +88,13 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 	 */
 	private $_removeRouteTrackAjaxAction;
 
+	/**
+	 * @var Abp01_Transfer_Uploader_FileValidatorProvider
+	 */
+	private $_fileValidatorProvider;
+
 	public function __construct(Abp01_Route_Manager $routeManager,
+		Abp01_Transfer_Uploader_FileValidatorProvider $fileValidatorProvider,
 		Abp01_NonceProvider_ReadTrackData $readTrackDataNonceProvider, 
 		Abp01_NonceProvider_DownloadTrackData $downloadTrackDataNonceProvider, 
 		Abp01_Viewer_DataSource_Cache $viewerDataSourceCache,
@@ -99,6 +105,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		parent::__construct($env, $auth);
 
 		$this->_routeManager = $routeManager;
+		$this->_fileValidatorProvider = $fileValidatorProvider;
 		$this->_readTrackDataNonceProvider = $readTrackDataNonceProvider;
 		$this->_downloadTrackDataNonceProvider = $downloadTrackDataNonceProvider;
 		$this->_urlHelper = $urlHelper;
@@ -456,10 +463,10 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 						$route->maxAlt);
 
 					$currentUserId = get_current_user_id();
-					if (!$this->_routeManager->saveRouteTrack($track, $currentUserId)) {
-						$response->status = Abp01_Transfer_Uploader::UPLOAD_INTERNAL_ERROR;
+					if ($this->_routeManager->saveRouteTrack($track, $currentUserId)) {
+						$this->_viewerDataSourceCache->clearCachedPostTripSummaryViewerData($postId);						
 					} else {
-						$this->_viewerDataSourceCache->clearCachedPostTripSummaryViewerData($postId);
+						$response->status = Abp01_Transfer_Uploader::UPLOAD_INTERNAL_ERROR;
 					}
 				} else {
 					$response->status = Abp01_Transfer_Uploader::UPLOAD_DESTINATION_FILE_CORRUPT;
@@ -473,37 +480,30 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 	}
 
 	private function _createUploader($destination) {
-		$options = $this->_constructUploaderOptions();
-		$uploader = new Abp01_Transfer_Uploader(ABP01_TRACK_UPLOAD_KEY, 
-			$destination, 
-			$options);
+		$config = $this->_constructUploaderConfig($destination);
+		$uploader = new Abp01_Transfer_Uploader($config, 
+			$this->_fileValidatorProvider);
 
-		$uploader->setCustomValidator(array(new Abp01_Validate_GpxDocument(), 'validate'));
 		return $uploader;
 	}
 
-	private function _constructUploaderOptions() {
+	private function _constructUploaderConfig($destination) {
 		if (ABP01_TRACK_UPLOAD_CHUNK_SIZE > 0) {
 			$currentChunk = $this->_readCurrentChunkFromRequest();
-			$totalChunks = $this->_readTotalChunksFromRequest();
+			$chunkCount = $this->_readChunkCountFromRequest();
 		} else {
-			$currentChunk = $totalChunks = 0;
+			$currentChunk = $chunkCount = 0;
 		}
 
-		return array(
-			'chunk' => $currentChunk, 
-			'chunks' => $totalChunks, 
-			'chunkSize' => ABP01_TRACK_UPLOAD_CHUNK_SIZE, 
-			'maxFileSize' => ABP01_TRACK_UPLOAD_MAX_FILE_SIZE, 
-			'allowedFileTypes' => array(
-				'application/gpx', 
-				'application/x-gpx+xml', 
-				'application/xml-gpx', 
-				'application/xml', 
-				'text/xml',
-				'application/octet-stream'
-			)
-		);
+		$config = new Abp01_Transfer_Uploader_Config(ABP01_TRACK_UPLOAD_KEY, 
+			$destination);
+
+		$config->setChunking(ABP01_TRACK_UPLOAD_CHUNK_SIZE, 
+				$currentChunk, 
+				$chunkCount)
+			->setMaxFileSize(ABP01_TRACK_UPLOAD_MAX_FILE_SIZE);
+
+		return $config;
 	}
 
 	private function _readCurrentChunkFromRequest() {
@@ -512,7 +512,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 			: 0;
 	}
 
-	private function _readTotalChunksFromRequest() {
+	private function _readChunkCountFromRequest() {
 		return isset($_REQUEST['chunks']) 
 			? intval($_REQUEST['chunks']) 
 			: 0;

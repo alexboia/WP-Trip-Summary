@@ -186,38 +186,25 @@ class Abp01_Transfer_Uploader {
      * 
      * @var int
      */
-    private $_chunks = 0;
+    private $_chunkCount = 0;
 
-    public function __construct($key, $destinationPath, array $config = array()) {
-        if (empty($key)) {
-            throw new InvalidArgumentException('No file key has been specified');
-        }
+    /**
+     * @var Abp01_Transfer_Uploader_FileValidatorProvider
+     */
+    private $_validatorProvider;
 
-        if (empty($destinationPath) || !is_dir(dirname($destinationPath))) {
-            throw new InvalidArgumentException('No destination path was specified');
-        }
+    public function __construct(Abp01_Transfer_Uploader_Config $config, Abp01_Transfer_Uploader_FileValidatorProvider $validatorProvider) {
+        $this->_destinationPath = $config->getDestinationPath();
+        $this->_key = $config->getKey();
 
-        $this->_destinationPath = $destinationPath;
-        $this->_key = $key;
 
-        if (isset($config['maxFileSize'])) {
-            $this->_maxFileSize = max(0, intval($config['maxFileSize']));
-        }
+        $this->_maxFileSize = $config->getMaxFileSize();
+        $this->_chunk = $config->getChunk();
+        $this->_chunkCount = $config->getChunkCount();
+        $this->_chunkSize = $config->getChunkSize();
 
-        if (isset($config['chunkSize'])) {
-            if ($config['chunkSize'] > 0) {
-                if (!isset($config['chunk']) || !isset($config['chunks'])) {
-                    throw new InvalidArgumentException('The chunkSize option is set, but at least one of the chunks or chunk option is missing.');
-                }
-            }
-            $this->_chunk = max(0, intval($config['chunk']));
-            $this->_chunks = max(0, intval($config['chunks']));
-            $this->_chunkSize = max(0, intval($config['chunkSize']));
-        }
-        
-        if (isset($config['allowedFileTypes']) && is_array($config['allowedFileTypes'])) {
-            $this->_allowedFileTypes = $config['allowedFileTypes'];
-        }
+        $this->_allowedFileTypes = $validatorProvider->getRecognizedDocumentMimeTypes();
+        $this->_validatorProvider = $validatorProvider;
     }
 
     public function hasFileUploaded() {
@@ -280,8 +267,8 @@ class Abp01_Transfer_Uploader {
         @fclose($in);
         @fclose($out);
 
-        $isReady = $this->_chunkSize == 0 || ($this->_chunk + 1 >= $this->_chunks);
-        if ($isReady && !$this->_passesCustomValidator()) {
+        $isReady = $this->_chunkSize == 0 || ($this->_chunk + 1 >= $this->_chunkCount);
+        if ($isReady && !$this->_passesFinalValidation()) {
             @unlink($this->_destinationPath);
             write_log('File upload failed because source file did not pass custom validation.');
             return self::UPLOAD_NOT_VALID;
@@ -341,6 +328,19 @@ class Abp01_Transfer_Uploader {
             }
         }
         return $size;
+    }
+
+    private function _passesFinalValidation() {
+        return $this->_passesFileValidator() 
+            && $this->_passesCustomValidator();
+    }
+
+    private function _passesFileValidator() {
+        $fileValidator = $this->_validatorProvider
+            ->resolveValidator($this->_detectedType);
+
+        return $fileValidator
+            ->validate($this->_destinationPath);
     }
 
     private function _passesCustomValidator() {

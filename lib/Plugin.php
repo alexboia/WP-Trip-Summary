@@ -35,6 +35,11 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 
 class Abp01_Plugin {
 	/**
+	 * @var Abp01_Transfer_Uploader_FileValidatorProvider
+	 */
+	private $_fileValidatorProvider;
+	
+	/**
 	 * @var Abp01_NonceProvider_DownloadTrackData
 	 */
 	private $_downloadTrackDataNonceProvider;
@@ -249,6 +254,13 @@ class Abp01_Plugin {
 
 	private function _loadPluginModules() {
 		$this->_pluginModuleHost->load();
+	}
+
+	public function getFileValidatorProvider() {
+		if ($this->_fileValidatorProvider === null) {
+			$this->_fileValidatorProvider = new Abp01_Transfer_Uploader_FileValidatorProvider();
+		}
+		return $this->_fileValidatorProvider;
 	}
 
 	public function getTrackDownloadNonceProvider() {

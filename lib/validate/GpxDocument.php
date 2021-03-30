@@ -34,7 +34,7 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Validate_GpxDocument implements Abp01_Validate_File {
-	const DEFAULT_TEST_BUFFER_LENGTH = 50;
+	const DEFAULT_TEST_BUFFER_LENGTH = 150;
 
 	private $_bufferLength;
 

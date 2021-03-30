@@ -72,7 +72,7 @@ class Abp01_Validate_GeoJsonDocument implements Abp01_Validate_File {
 		if (empty($testBuffers)) {
 			return false;
 		}
-
+	
 		$isValid = $this->_beginBufferStartsWithJsonStart($testBuffers['beginBuffer'])
 			&& $this->_endBufferEndsWithJsonEnd($testBuffers['endBuffer'])
 			&& $this->_combinedBuffersContainAnyDefiningAttribute($testBuffers['beginBuffer'], $testBuffers['endBuffer']);
@@ -90,9 +90,15 @@ class Abp01_Validate_GeoJsonDocument implements Abp01_Validate_File {
 		}
 
 		$beginBuffer = @fread($testFilePointer, $this->_testBufferLength);
+
 		if ($beginBuffer) {
-			if (@fseek($testFilePointer, -$this->_testBufferLength, SEEK_END) !== 0) {
-				$endBuffer = @fread($testFilePointer, $this->_testBufferLength);
+			$fileSize = filesize($filePath);
+			if ($fileSize > $this->_testBufferLength) {
+				if (@fseek($testFilePointer, -$this->_testBufferLength, SEEK_END) === 0) {
+					$endBuffer = @fread($testFilePointer, $this->_testBufferLength);
+				}
+			} else {
+				$endBuffer = $beginBuffer;
 			}
 		}
 
@@ -120,10 +126,10 @@ class Abp01_Validate_GeoJsonDocument implements Abp01_Validate_File {
 		$endBuffer = trim($endBuffer);
 
 		if ($this->_multiByteSearchEnabled) {
-			$jsonEndPos = mb_strripos($endBuffer, '}', 0, 'UTF-8');
+			$jsonEndPos = mb_strripos($endBuffer, '}', null, 'UTF-8');
 			$endBufferLength = mb_strlen($endBuffer, 'UTF-8');
 		} else {
-			$jsonEndPos = strripos($endBuffer, '}', 0);
+			$jsonEndPos = strripos($endBuffer, '}', null);
 			$endBufferLength = strlen($endBuffer);
 		}
 
@@ -137,6 +143,7 @@ class Abp01_Validate_GeoJsonDocument implements Abp01_Validate_File {
 
 		foreach ($this->_searchDefiningAttributes as $attr) {
 			$searchAttrString = '"' . $attr . '"';
+			
 			if ($this->_multiByteSearchEnabled) {
 				$attrIndex = mb_stripos($combinedBuffers, $searchAttrString, 0, 'UTF-8');
 			} else {

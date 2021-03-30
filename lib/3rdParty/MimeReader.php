@@ -45,6 +45,7 @@ class MimeReader {
         $archive = null,
         $text = null,
         $xml = null,
+        $json = null,
         $others = null,
         $unknown = null,
         $html = null;
@@ -294,6 +295,33 @@ class MimeReader {
                 'mime' => 'text/xml',
                 'pattern' => "\x3C\x3F\x78\x6D\x6C",
                 'mask' => "\xFF\xFF\xFF\xFF\xFF",
+                'ignore' => self::$whitespace_characters
+            );
+        }
+
+        if (is_null(self::$json)) {
+            $json = &self::$json;
+            $json = array();
+
+            // UTF-16 Big Endian BOM text
+            $json[] = array (
+                'mime' => 'application/json',
+                'pattern' => "\xFF\xFE\x7B",
+                'mask' => "\xFF\xFF\xFF",
+                'ignore' => self::$whitespace_characters
+            );
+            // UTF-16 Little Endian BOM text
+            $json[] = array (
+                'mime' => 'application/json',
+                'pattern' => "\xFE\xFF\x7B",
+                'mask' => "\xFF\xFF\xFF",
+                'ignore' => self::$whitespace_characters
+            );
+            // UTF-8 BOM text
+            $json[] = array (
+                'mime' => 'application/json',
+                'pattern' => "\xEF\xBB\xBF\x7B",
+                'mask' => "\xFF\xFF\xFF\xFF",
                 'ignore' => self::$whitespace_characters
             );
         }
@@ -728,6 +756,9 @@ class MimeReader {
         if ($this->sniff_xml()) {
             return;
         }
+        if ($this->sniff_json()) {
+            return;
+        }
 
         if ($this->sniff_text()) {
             return;
@@ -941,6 +972,19 @@ class MimeReader {
         $num_xmls = count(self::$xml);
         for ($i = 0; $i < $num_xmls; $i++) {
             $x = &self::$xml[$i];
+            if ($this->match_pattern($x['pattern'], $x['mask'], $x['ignore'])) {
+                $this->detected_type = $x['mime'];
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected function sniff_json() {
+        $num_jsons = count(self::$json);
+        for ($i = 0; $i < $num_jsons; $i++) {
+            $x = &self::$json[$i];
             if ($this->match_pattern($x['pattern'], $x['mask'], $x['ignore'])) {
                 $this->detected_type = $x['mime'];
                 return true;
