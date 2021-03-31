@@ -36,7 +36,5 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 interface Abp01_Route_Track_DocumentParser {
     function parse($sourceString);
 
-    function hasErrors();
-
-    function getLastErrors();
+    function getDefaultMimeType();
 }

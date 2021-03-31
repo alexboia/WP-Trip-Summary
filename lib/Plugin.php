@@ -35,9 +35,19 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 
 class Abp01_Plugin {
 	/**
+	 * @var Abp01_Route_Track_Processor
+	 */
+	private $_routeTrackProcessor;
+
+	/**
 	 * @var Abp01_Transfer_Uploader_FileValidatorProvider
 	 */
 	private $_fileValidatorProvider;
+
+	/**
+	 * @var Abp01_Route_Track_DocumentParser_Factory
+	 */
+	private $_documentParserFactory;
 	
 	/**
 	 * @var Abp01_NonceProvider_DownloadTrackData
@@ -238,7 +248,7 @@ class Abp01_Plugin {
 			Abp01_PluginModules_HelpPluginModule::class,
 			Abp01_PluginModules_AboutPagePluginModule::class,
 			Abp01_PluginModules_PostListingCustomizationPluginModule::class,
-			Abp01_PluginModules_DownloadGpxTrackDataPluginModule::class,
+			Abp01_PluginModules_DownloadTrackDataPluginModule::class,
 			Abp01_PluginModules_GetTrackDataPluginModule::class,
 			Abp01_PluginModules_AdminTripSummaryEditorPluginModule::class,
 			Abp01_PluginModules_FrontendViewerPluginModule::class,
@@ -256,11 +266,25 @@ class Abp01_Plugin {
 		$this->_pluginModuleHost->load();
 	}
 
+	public function getRouteTrackProcessor() {
+		if ($this->_routeTrackProcessor == null) {
+			$this->_routeTrackProcessor = new Abp01_Route_Track_Processor_Default($this->getDocumentParserFactory(), $this->getEnv());
+		}
+		return $this->_routeTrackProcessor;
+	}
+
 	public function getFileValidatorProvider() {
 		if ($this->_fileValidatorProvider === null) {
 			$this->_fileValidatorProvider = new Abp01_Transfer_Uploader_FileValidatorProvider();
 		}
 		return $this->_fileValidatorProvider;
+	}
+
+	public function getDocumentParserFactory() {
+		if ($this->_documentParserFactory === null) {
+			$this->_documentParserFactory = new Abp01_Route_Track_DocumentParser_Factory();
+		}
+		return $this->_documentParserFactory;
 	}
 
 	public function getTrackDownloadNonceProvider() {
@@ -279,7 +303,7 @@ class Abp01_Plugin {
 
 	public function getUrlHelper() {
 		if ($this->_urlHelper === null) {
-			$this->_urlHelper = new Abp01_UrlHelper($this->getEnv(), $this->getTrackDownloadNonceProvider());
+			$this->_urlHelper = new Abp01_UrlHelper($this->getTrackDownloadNonceProvider(), $this->getEnv());
 		}
 		return $this->_urlHelper;
 	}

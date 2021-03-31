@@ -45,11 +45,17 @@ class Abp01_PluginModules_GetTrackDataPluginModule extends Abp01_PluginModules_P
 	private $_routeManager;
 
 	/**
+	 * @var Abp01_Route_Track_Processor
+	 */
+	private $_routeTrackProcessor;
+
+	/**
 	 * @var Abp01_AdminAjaxAction
 	 */
 	private $_getTrackDataAjaxAction;
 
 	public function __construct(Abp01_Route_Manager $routeManager, 
+		Abp01_Route_Track_Processor $routeTrackProcessor,
 		Abp01_NonceProvider_ReadTrackData $readTrackDataNonceProvider,
 		Abp01_Settings $settings, 
 		Abp01_Env $env, 
@@ -59,6 +65,7 @@ class Abp01_PluginModules_GetTrackDataPluginModule extends Abp01_PluginModules_P
 
 		$this->_settings = $settings;
 		$this->_routeManager = $routeManager;
+		$this->_routeTrackProcessor = $routeTrackProcessor;
 
 		$this->_initAjaxActions($readTrackDataNonceProvider);
 	}
@@ -92,7 +99,7 @@ class Abp01_PluginModules_GetTrackDataPluginModule extends Abp01_PluginModules_P
 
 		$track = $this->_routeManager->getRouteTrack($postId);
 		if (!empty($track)) {
-			$trackDocument = $this->_routeManager->getOrCreateDisplayableTrackDocument($track);
+			$trackDocument = $this->_routeTrackProcessor->getOrCreateDisplayableTrackDocument($track);
 			if (empty($trackDocument)) {
 				$response->message = esc_html__('Track file not found or is not readable', 'abp01-trip-summary');
 			} else {
@@ -109,13 +116,13 @@ class Abp01_PluginModules_GetTrackDataPluginModule extends Abp01_PluginModules_P
 			//	these values for display if the user 
 			//	has opted to show min/max altitude information
 			if ($this->_settings->getShowMinMaxAltitude()) {
-				$response->info = $this->_routeManager
-					->getDisplayableTrackInfo($track, $targetUnitSystem)
+				$response->info = $track
+					->getDisplayableInfo($targetUnitSystem)
 					->toPlainObject();
 			}
 
 			if ($this->_settings->getShowAltitudeProfile()) {
-				$profile = $this->_routeManager->getOrCreateDisplayableAltitudeProfile($track, $targetUnitSystem, 8);
+				$profile = $this->_routeTrackProcessor->getOrCreateDisplayableAltitudeProfile($track, $targetUnitSystem, 8);
 				if (!empty($profile)) {
 					$response->profile = $profile->toPlainObject();
 				}

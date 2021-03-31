@@ -34,31 +34,41 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Transfer_TrackFileDownloader {
-	const GPX_TRACK_FILE_MIME_TYPE = 'application/gpx';
+	/**
+	 * @var Abp01_Route_Manager
+	 */
+	private $_routeManager;
+
+	/**
+	 * @var Abp01_Route_Track_FileNameProvider
+	 */
+	private $_trackFileNameProvider;
+
+	public function __construct(Abp01_Route_Manager $routeManager, Abp01_Route_Track_FileNameProvider $trackFileNameProvider) {
+		$this->_routeManager = $routeManager;
+		$this->_trackFileNameProvider = $trackFileNameProvider;
+	}
 
 	public function sendTrackFileForPostId($postId) {
 		if (!$this->_isValidPostId($postId)) {
 			throw new InvalidArgumentException('Invalid post identifier given');
 		}
 
-		$trackFile = $this->_getTrackFilePath($postId);
-		$withMimeType = $this->_getMimeType($postId);
+		$track = $this->_getTrack($postId);
+		$trackFilePath = $this->_trackFileNameProvider->constructTrackFilePath($track);
+		$trackFileMimeType = $track->getFileMimeType();
 
-		$this->_sendFileWithMimeType($trackFile, 
-			$withMimeType);
+		$this->_sendFileWithMimeType($trackFilePath, 
+			$trackFileMimeType);
 	}
 
 	private function _isValidPostId($postId) {
 		return !empty($postId) && is_numeric($postId) && $postId > 0;
 	}
 
-	private function _getTrackFilePath($postId) {
-		return $this->_getRouteManager()
-			->getTrackFilePath($postId);
-	}
-
-	private function _getMimeType($postId) {
-		return self::GPX_TRACK_FILE_MIME_TYPE;
+	private function _getTrack($postId) {
+		return $this->_routeManager
+			->getRouteTrack($postId);
 	}
 
 	private function _sendFileWithMimeType($trackFile, $withMimeType) {
@@ -90,9 +100,5 @@ class Abp01_Transfer_TrackFileDownloader {
 
 	private function _isValidFileDownloaderInstance($instance) {
 		return $instance instanceof Abp01_Transfer_FileDownloader;
-	}
-
-	private function _getRouteManager() {
-		return abp01_get_route_manager();
 	}
 }

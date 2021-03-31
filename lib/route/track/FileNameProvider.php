@@ -30,17 +30,11 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
-class Abp01_Route_Track_DocumentParser_ErrorCode {
-	const ERROR_CATEGORY_DESERIALIZATION = 0x01;
+interface Abp01_Route_Track_FileNameProvider {
+	function constructTrackFilePathForPostId($postId, $trackFileMimeType);
 
-	const ERROR_CATEGORY_PARSER = 0x02;
-
-	const ERROR_GEOJSON_UNSUPPORTED_DOCUMENT_ROOT = 0x01;
-
-	const ERROR_GEOJSON_UNKNOWN_ERROR = PHP_INT_MAX;
-
-	const ERROR_GPX_UNKNOWN_ERROR = PHP_INT_MAX;
+	function constructTrackFilePath(Abp01_Route_Track $track);
 }

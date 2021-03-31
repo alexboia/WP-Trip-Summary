@@ -88,8 +88,17 @@ class Abp01_PluginModules_PluginModuleHost {
             Abp01_PluginModules_PluginModuleHost::class => function() {
                 return $this;
             },
+            Abp01_Route_Track_Processor::class => function() {
+                return $this->getRouteTrackProcessor();
+            },
+            Abp01_Route_Track_FileNameProvider::class => function() {
+                return $this->getRouteTrackProcessor();
+            },
             Abp01_Transfer_Uploader_FileValidatorProvider::class => function() {
                 return $this->getFileValidatorProvider();
+            },
+            Abp01_Route_Track_DocumentParser_Factory::class => function() {
+                return $this->getDocumentParserFactory();
             },
             Abp01_NonceProvider_DownloadTrackData::class => function() {
                 return $this->getTrackDownloadNonceProvider();
@@ -165,8 +174,16 @@ class Abp01_PluginModules_PluginModuleHost {
         return $hasModule;
     }
 
+    public function getRouteTrackProcessor() {
+        return $this->_plugin->getRouteTrackProcessor();
+    }
+
     public function getFileValidatorProvider() {
         return $this->_plugin->getFileValidatorProvider();
+    }
+
+    public function getDocumentParserFactory() {
+        return $this->_plugin->getDocumentParserFactory();
     }
 
     public function getTrackDownloadNonceProvider() {

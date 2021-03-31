@@ -64,9 +64,9 @@ class Abp01_Route_Track_AltitudeProfile {
         return $data;
     }
 
-    public function matchesContext(Abp01_UnitSystem $check, $stepPoints) {
-        return $this->distanceUnit === $check->getDistanceUnit()
-            && $this->heightUnit === $check->getHeightUnit()
+    public function matchesContext(Abp01_UnitSystem $unitSystem, $stepPoints) {
+        return $this->distanceUnit === $unitSystem->getDistanceUnit()
+            && $this->heightUnit === $unitSystem->getHeightUnit()
             && $this->stepPoints == $stepPoints;
     }
 

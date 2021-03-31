@@ -44,9 +44,9 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 	private $_routeManager;
 
 	/**
-	 * @var Abp01_NonceProvider_DownloadTrackData
+	 * @var Abp01_Route_Track_Processor
 	 */
-	private $_downloadTrackDataNonceProvider;
+	private $_routeTrackProcessor;
 
 	/**
 	 * @var Abp01_NonceProvider_ReadTrackData
@@ -94,9 +94,9 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 	private $_fileValidatorProvider;
 
 	public function __construct(Abp01_Route_Manager $routeManager,
+		Abp01_Route_Track_Processor $routeTrackProcessor,
 		Abp01_Transfer_Uploader_FileValidatorProvider $fileValidatorProvider,
 		Abp01_NonceProvider_ReadTrackData $readTrackDataNonceProvider, 
-		Abp01_NonceProvider_DownloadTrackData $downloadTrackDataNonceProvider, 
 		Abp01_Viewer_DataSource_Cache $viewerDataSourceCache,
 		Abp01_View $view,
 		Abp01_UrlHelper $urlHelper,
@@ -105,9 +105,9 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		parent::__construct($env, $auth);
 
 		$this->_routeManager = $routeManager;
+		$this->_routeTrackProcessor = $routeTrackProcessor;
 		$this->_fileValidatorProvider = $fileValidatorProvider;
 		$this->_readTrackDataNonceProvider = $readTrackDataNonceProvider;
-		$this->_downloadTrackDataNonceProvider = $downloadTrackDataNonceProvider;
 		$this->_urlHelper = $urlHelper;
 		$this->_viewerDataSourceCache = $viewerDataSourceCache;
 		$this->_view = $view;
@@ -433,46 +433,38 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 
 	public function uploadRouteTrack() {
 		$postId = $this->_getCurrentPostId();
-		$destination = $this->_routeManager->getTrackFilePath($postId);
-
-		if (empty($destination)) {
-			die;
-		}
+		$uploader = $this->_createUploader($postId);
 
 		$response = new stdClass();
-		$uploader = $this->_createUploader($destination);
-
 		$response->status = $uploader->receive();
 		$response->ready = $uploader->isReady();
 
 		//if the upload has completed, then process the newly 
 		//	uploaded file and save the track information
 		if ($response->ready) {
-			$route = file_get_contents($destination);
-			if (!empty($route)) {
-				$sourceTrackFileType = $uploader->getDetectedType();
-				$parser = $this->_getSourceTrackFileDocumentParser($sourceTrackFileType);
+			try {
+				$uploadedTrackFilePath = $uploader->getDestinationPath();
+				$uploadedTrackFileMimeType = $uploader->getDetectedType();
 
-				$route = $parser->parse($route);
-				if ($route && !$parser->hasErrors()) {
-					$destinationFileName = basename($destination);
-					$track = new Abp01_Route_Track($postId, 
-						$destinationFileName, 
-						$route->getBounds(), 
-						$route->minAlt, 
-						$route->maxAlt);
+				$sourceTrackFilePath = $this->_routeTrackProcessor->constructTrackFilePathForPostId($postId, 
+					$uploadedTrackFileMimeType);
 
-					$currentUserId = get_current_user_id();
-					if ($this->_routeManager->saveRouteTrack($track, $currentUserId)) {
-						$this->_viewerDataSourceCache->clearCachedPostTripSummaryViewerData($postId);						
-					} else {
-						$response->status = Abp01_Transfer_Uploader::UPLOAD_INTERNAL_ERROR;
-					}
-				} else {
-					$response->status = Abp01_Transfer_Uploader::UPLOAD_DESTINATION_FILE_CORRUPT;
+				if ($sourceTrackFilePath != $uploadedTrackFilePath) {
+					@rename($uploadedTrackFilePath, $sourceTrackFilePath);
 				}
-			} else {
-				$response->status = Abp01_Transfer_Uploader::UPLOAD_DESTINATION_FILE_NOT_FOUND;
+
+				$track = $this->_routeTrackProcessor->processInitialTrackSourceFile($postId, 
+					$sourceTrackFilePath,
+					$uploadedTrackFileMimeType);
+
+				$currentUserId = get_current_user_id();
+				if ($this->_routeManager->saveRouteTrack($track, $currentUserId)) {
+					$this->_viewerDataSourceCache->clearCachedPostTripSummaryViewerData($postId);						
+				} else {
+					$response->status = Abp01_Transfer_Uploader::UPLOAD_INTERNAL_ERROR;
+				}
+			} catch (Abp01_Route_Track_DocumentParser_Exception $exc) {
+				$response->status = Abp01_Transfer_Uploader::UPLOAD_DESTINATION_FILE_CORRUPT;
 			}
 		}
 
@@ -481,13 +473,13 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 
 	private function _createUploader($destination) {
 		$config = $this->_constructUploaderConfig($destination);
-		$uploader = new Abp01_Transfer_Uploader($config, 
-			$this->_fileValidatorProvider);
-
+		$uploader = new Abp01_Transfer_Uploader($config);
 		return $uploader;
 	}
 
-	private function _constructUploaderConfig($destination) {
+	private function _constructUploaderConfig($postId) {
+		$fileNameProvider = $this->_constructFileNameProvider($postId);
+
 		if (ABP01_TRACK_UPLOAD_CHUNK_SIZE > 0) {
 			$currentChunk = $this->_readCurrentChunkFromRequest();
 			$chunkCount = $this->_readChunkCountFromRequest();
@@ -496,14 +488,18 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		}
 
 		$config = new Abp01_Transfer_Uploader_Config(ABP01_TRACK_UPLOAD_KEY, 
-			$destination);
+			$fileNameProvider,
+			$this->_fileValidatorProvider);
 
-		$config->setChunking(ABP01_TRACK_UPLOAD_CHUNK_SIZE, 
-				$currentChunk, 
-				$chunkCount)
+		$config->setChunking(ABP01_TRACK_UPLOAD_CHUNK_SIZE, $currentChunk, $chunkCount)
 			->setMaxFileSize(ABP01_TRACK_UPLOAD_MAX_FILE_SIZE);
 
 		return $config;
+	}
+
+	private function _constructFileNameProvider($postId) {
+		return new Abp01_Transfer_Uploader_FileNameProvider_Track($this->_routeTrackProcessor, 
+			$postId);
 	}
 
 	private function _readCurrentChunkFromRequest() {
@@ -523,7 +519,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		$response = abp01_get_ajax_response();
 
 		if ($this->_routeManager->deleteRouteTrack($postId)) {
-			$this->_routeManager->deleteTrackFiles($postId);
+			$this->_routeTrackProcessor->deleteTrackFiles($postId);
 			$this->_viewerDataSourceCache->clearCachedPostTripSummaryViewerData($postId);
 			$response->success = true;
 		} else {
@@ -531,12 +527,5 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		}
 
 		return $response;
-	}
-
-	/**
-	 * @return Abp01_Route_Track_DocumentParser
-	 */
-	private function _getSourceTrackFileDocumentParser($detectedType) {
-		return new Abp01_Route_Track_DocumentParser_Gpx();
 	}
 }

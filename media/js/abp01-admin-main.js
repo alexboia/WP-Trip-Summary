@@ -832,7 +832,7 @@
                 max_file_size: window.abp01_uploadMaxFileSize || 10485760,
                 mime_types: [
                     { title: abp01MainL10n.lblPluploadFileTypeSelector,
-                        extensions: 'gpx' }
+                        extensions: 'gpx,geojson,json' }
                 ]
             },
             runtimes: 'html5,html4',

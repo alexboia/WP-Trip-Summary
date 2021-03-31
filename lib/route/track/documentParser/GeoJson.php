@@ -65,8 +65,6 @@ class Abp01_Route_Track_DocumentParser_GeoJson implements Abp01_Route_Track_Docu
 	const GEOJSON_TYPE_FEATURE = 'Feature';
 
 	const GEOJSON_TYPE_FEATURE_COLLECTION = 'FeatureCollection';
-	
-	private $_parseErrors = array();
 
 	public function __construct() {
 		if (!self::isSupported()) {
@@ -550,11 +548,7 @@ class Abp01_Route_Track_DocumentParser_GeoJson implements Abp01_Route_Track_Docu
 			: array();
 	}
 
-    public function hasErrors() { 
-
-	}
-
-    public function getLastErrors() { 
-
-	}
+	public function getDefaultMimeType() {
+        return 'application/geo+json';
+    }
 }

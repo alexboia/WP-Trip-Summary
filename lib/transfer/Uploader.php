@@ -121,6 +121,13 @@ class Abp01_Transfer_Uploader {
      */
     private $_destinationPath = null;
 
+    private $_declaredFileMimeType = null;
+
+    /**
+     * @var Abp01_Transfer_Uploader_FileNameProvider
+     */
+    private $_fileNameProvider = null;
+
     /**
      * The maximum allowed size for the uploaded file, in bytes
      * 
@@ -193,33 +200,46 @@ class Abp01_Transfer_Uploader {
      */
     private $_validatorProvider;
 
-    public function __construct(Abp01_Transfer_Uploader_Config $config, Abp01_Transfer_Uploader_FileValidatorProvider $validatorProvider) {
-        $this->_destinationPath = $config->getDestinationPath();
+    public function __construct(Abp01_Transfer_Uploader_Config $config) {
         $this->_key = $config->getKey();
 
+        $this->_fileNameProvider = $config->getFileNameProvider();
+        $this->_validatorProvider = $config->getFileValidatorProvider();
+        $this->_allowedFileTypes = $this->_validatorProvider->getRecognizedDocumentMimeTypes();
 
         $this->_maxFileSize = $config->getMaxFileSize();
         $this->_chunk = $config->getChunk();
         $this->_chunkCount = $config->getChunkCount();
         $this->_chunkSize = $config->getChunkSize();
-
-        $this->_allowedFileTypes = $validatorProvider->getRecognizedDocumentMimeTypes();
-        $this->_validatorProvider = $validatorProvider;
     }
 
-    public function hasFileUploaded() {
+    public function hasUploadedFile() {
         return isset($_FILES[$this->_key]) && is_array($_FILES[$this->_key]) &&
             !empty($_FILES[$this->_key]['size']) &&
             !empty($_FILES[$this->_key]['tmp_name']);
     }
 
+    private function _getUploadedFileDeclaredMimeType() {
+        return $_FILES[$this->_key]['type'];
+    }
+
     public function receive() {
         $this->_detectedType = null;
 
-        if (!$this->hasFileUploaded()) {
+        if (!$this->hasUploadedFile()) {
             write_log('File upload failed because no file has been uploaded.');
             return self::UPLOAD_NO_FILE;
         }
+
+        $this->_declaredFileMimeType = $this
+            ->_getUploadedFileDeclaredMimeType();
+        
+        write_log('Incoming file mime type is <' . $this->_declaredFileMimeType . '>');
+
+        $this->_destinationPath = $this->_fileNameProvider
+            ->constructFilePath($this->_declaredFileMimeType);
+
+        write_log('Destination file path is <' . $this->_destinationPath . '>');
 
         if ($this->_chunkSize > 0 && $this->_chunk > 0 && !file_exists($this->_destinationPath)) {
             write_log('File upload failed because chunk configuration is not valid.');
@@ -231,7 +251,7 @@ class Abp01_Transfer_Uploader {
             @unlink($this->_destinationPath);
         }
 
-        $temp = $this->_getTmpFilePath();
+        $temp = $this->_getUploadedFileTmpPath();
         if (!is_uploaded_file($temp)) {
             write_log('File upload failed because temporary location does not contain a safe source file.');
             return self::UPLOAD_NO_FILE;
@@ -298,7 +318,7 @@ class Abp01_Transfer_Uploader {
 
         $file = null;
         if ($this->_chunkSize == 0 || !file_exists($this->_destinationPath)) {
-            $file = $this->_getTmpFilePath();
+            $file = $this->_getUploadedFileTmpPath();
         } else {
             $file = $this->_destinationPath;
         }
@@ -321,7 +341,7 @@ class Abp01_Transfer_Uploader {
     }
 
     private function _calculateFileSize() {
-        $size = filesize($this->_getTmpFilePath());
+        $size = filesize($this->_getUploadedFileTmpPath());
         if ($this->_chunkSize > 0) {
             if (is_file($this->_destinationPath)) {
                 $size += filesize($this->_destinationPath);
@@ -350,11 +370,15 @@ class Abp01_Transfer_Uploader {
         return true;
     }
 
-    private function _getTmpFilePath() {
+    private function _getUploadedFileTmpPath() {
         return $_FILES[$this->_key]['tmp_name'];
     }
 
     public function getDetectedType() {
         return $this->_detectedType;
+    }
+
+    public function getDestinationPath() {
+        return $this->_destinationPath;
     }
 }

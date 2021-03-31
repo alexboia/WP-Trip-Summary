@@ -147,34 +147,36 @@ class Abp01_Installer {
 
         if (empty($installedVersion)) {
             //If no installed version is set, this is the very first version, 
-            //  so we need to run the update to 0.2b, to 0.2.1, then to 0.2.2
-            //NOTE: 0.2.3 did not have any specific update procedure
+            //  we need to run all updates in order
             $result = $this->_updateTo02Beta() 
                 && $this->_updateTo021() 
-                && $this->_updateTo022();
+                && $this->_updateTo022()
+                && $this->_updateTo024();
         } else {
             //...otherwise, we need to see 
             //  which installed version this is
             switch ($installedVersion) {
                 case '0.2b':
-                    //If the installed version is 0.2b, 
-                    //  then run the update to 0.2.1, then to 0.2.2
                     $result = $this->_updateTo021() 
-                        && $this->_updateTo022();
+                        && $this->_updateTo022()
+                        && $this->_updateTo024();
                 break;
                 case '0.2.1':
-                    //If the installed version is 0.2.1, 
-                    //  then run the update to 0.2.2
-                    $result = $this->_updateTo022();
+                    $result = $this->_updateTo022() 
+                        && $this->_updateTo024();
                 break;
+                case '0.2.2':
+                case '0.2.3':
+                    $result = $this->_updateTo024();
+                    break;
             }
         }
 
-        //Finally, run the update to 0.2.4, 
+        //Finally, run the update to 0.2.7, 
         //  if the pervious updates (if there were any), 
         //  were successful
         if ($result) {
-            $result = $this->_updateTo024();
+            $result = $this->_updateTo027();
         }
 
 		if ($result) {
@@ -470,6 +472,11 @@ class Abp01_Installer {
     private function _updateTo024() {
         $this->_addLookupCategoryIndexToLookupTable();
         $this->_installDataTranslationsForLanguage('fr_FR');
+        return true;
+    }
+
+    private function _updateTo027() {
+        $this->_addRouteTrackFileMimeTypeColumnToRouteTrackTable();
         return true;
     }
 
@@ -1095,6 +1102,22 @@ class Abp01_Installer {
         return $result;
     }
 
+    private function _addRouteTrackFileMimeTypeColumnToRouteTrackTable() {
+        $result = false;
+
+        try {
+            $db = $this->_env->getDb();
+            $db->rawQuery("ALTER TABLE `" . $this->_getRouteTrackTableName() .  "` 
+                ADD COLUMN route_track_file_mime_type VARCHAR(250) NOT NULL DEFAULT 'application/gpx' 
+                AFTER route_track_file");
+            $result = empty(trim($db->getLastError()));
+        } catch (Exception $exc) {
+            $result = false;
+        }
+
+        return $result;
+    }
+
 	/**
 	 * Fetch the definition of the table which stores track data.
 	 * It needs to be within a function because the table name is dynamically computed, 
@@ -1105,6 +1128,7 @@ class Abp01_Installer {
         return "CREATE TABLE IF NOT EXISTS `" . $this->_getRouteTrackTableName() . "` (
             `post_ID` BIGINT(20) UNSIGNED NOT NULL,
             `route_track_file` LONGTEXT NOT NULL,
+            `route_track_file_mime_type` VARCHAR(250) NOT NULL DEFAULT 'application/gpx' ,
             `route_min_coord` POINT NOT NULL,
             `route_max_coord` POINT NOT NULL,
             `route_bbox` POLYGON NOT NULL,

@@ -36,7 +36,15 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 class Abp01_Transfer_Uploader_Config {
 	private $_key;
 
-	private $_destinationPath;
+	/**
+	 * @var Abp01_Transfer_Uploader_FileNameProvider
+	 */
+	private $_fileNameProvider;
+
+	/**
+	 * @var Abp01_Transfer_Uploader_FileValidatorProvider
+	 */
+	private $_fileValidatorProvider;
 
 	private $_maxFileSize;
 
@@ -46,16 +54,16 @@ class Abp01_Transfer_Uploader_Config {
 
 	private $_chunk;
 
-	public function __construct($key, $destinationPath) {
+	public function __construct($key, 
+		Abp01_Transfer_Uploader_FileNameProvider $fileNameProvider, 
+		Abp01_Transfer_Uploader_FileValidatorProvider $validatorProvider) {
+
 		if (empty($key)) {
 			throw new InvalidArgumentException('No file key has been specified');
 		}
 
-		if (empty($destinationPath) || !is_dir(dirname($destinationPath))) {
-			throw new InvalidArgumentException('No destination path was specified');
-		}
-
-		$this->_destinationPath = $destinationPath;
+		$this->_fileNameProvider = $fileNameProvider;
+		$this->_fileValidatorProvider = $validatorProvider;
         $this->_key = $key;
 	}
 
@@ -81,8 +89,12 @@ class Abp01_Transfer_Uploader_Config {
 		return $this;
 	}
 
-	public function getDestinationPath() {
-		return $this->_destinationPath;
+	public function getFileNameProvider() {
+		return $this->_fileNameProvider;
+	}
+
+	public function getFileValidatorProvider() {
+		return $this->_fileValidatorProvider;
 	}
 
 	public function getKey() {

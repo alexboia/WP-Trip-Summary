@@ -216,12 +216,13 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 
 		$data = array(
 			'post_ID' => $postId,
-			'route_track_file' => $track->getFile(),
+			'route_track_file' => $track->getFileName(),
+			'route_track_file_mime_type' => $track->getFileMimeType(),
 			'route_bbox' => $db->func("ST_Envelope(LINESTRING(ST_GeomFromText(ST_AsText(POINT(?, ?)), 3857), ST_GeomFromText(ST_AsText(POINT(?, ?)), 3857)))", $lineBetween),
 			'route_min_coord' => $db->func("ST_GeomFromText(ST_AsText(POINT(?, ?)), 3857)", $minCoord),
 			'route_max_coord' => $db->func("ST_GeomFromText(ST_AsText(POINT(?, ?)), 3857)", $maxCoord),
-			'route_min_alt' => $track->minAlt,
-			'route_max_alt' => $track->maxAlt,
+			'route_min_alt' => $track->getMinimumAltitude(),
+			'route_max_alt' => $track->getMaximumAltitude(),
 			'route_track_modified_at' => $db->now(),
 			'route_track_modified_by' => $currentUserId
 		);
@@ -304,6 +305,7 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 			'route_min_alt',
 			'route_max_alt',
 			'route_track_file',
+			'route_track_file_mime_type',
 			'ST_X(route_min_coord) AS route_min_lng',
 			'ST_Y(route_min_coord) AS route_min_lat',
 			'ST_X(route_max_coord) AS route_max_lng',
@@ -315,7 +317,8 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 
 		if (isset($row['route_track_file']) && $row['route_track_file']) {
 			$proj = $this->_proj;
-			$file = $row['route_track_file'];
+			$fileName = $row['route_track_file'];
+			$fileMimeType = $row['route_track_file_mime_type'];
 
 			$minCoord = $proj->inverse(floatval($row['route_min_lng']), 
 				floatval($row['route_min_lat']));
@@ -328,7 +331,8 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 				$maxCoord['lng']);
 
 			$track = new Abp01_Route_Track($postId, 
-				$file, 
+				$fileName, 
+				$fileMimeType,
 				$bounds,
 				floatval($row['route_min_alt']),
 				floatval($row['route_max_alt']));
@@ -431,201 +435,7 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 		);
 	}
 
-	public function deleteTrackFiles($postId) {
-		//delete track file
-		$trackFile = $this->getTrackFilePath($postId);
-		if (!empty($trackFile) && file_exists($trackFile)) {
-			@unlink($trackFile);
-		}
-
-		//delete cached track file
-		$cacheFile = $this->getTrackDocumentCacheFilePath($postId);
-		if (!empty($cacheFile) && file_exists($cacheFile)) {
-			@unlink($cacheFile);
-		}
-	}
-
-	public function getOrCreateDisplayableAltitudeProfile(Abp01_Route_Track $track, $targetSystem, $stepPoints = 10) {
-		if ($stepPoints <= 0) {
-			throw new InvalidArgumentException('Number of points to step over must be greater than 0');
-		}
-
-		$profile = $this->_getCachedTrackProfileDocument($track->getPostId());
-		$targetSystem = !($targetSystem instanceof Abp01_UnitSystem) 
-			? $this->_createUnitSystemInstanceOrThrow($targetSystem) 
-			: $targetSystem;
-
-		if (!($profile instanceof Abp01_Route_Track_AltitudeProfile) 
-			|| !$profile->matchesContext($targetSystem, $stepPoints)) {
-			$trackDocument = $this->getOrCreateDisplayableTrackDocument($track);
-
-			$profile = $trackDocument->computeAltitudeProfile($targetSystem, 
-				$stepPoints);
-			
-			$this->_cacheTrackProfileDocument($track->getPostId(), 
-				$profile);
-		}
-
-		return $profile;
-	}
-
-	public function getOrCreateDisplayableTrackDocument(Abp01_Route_Track $track) {
-		$trackDocument = $this->_getCachedTrackDocument($track->getPostId());
-
-		if (!($trackDocument instanceof Abp01_Route_Track_Document)) {
-			$file = $this->getTrackFilePath($track->getPostId());
-			if (is_readable($file)) {
-				$parser = new Abp01_Route_Track_DocumentParser_Gpx();
-				$trackDocument = $parser->parse(file_get_contents($file));
-				if (!empty($trackDocument)) {
-					$trackDocument = $trackDocument->simplify(0.01);
-					$this->_cacheTrackDocument($track->getPostId(), $trackDocument);
-				}
-			}
-		}
-
-		return $trackDocument;
-	}
-
-	/**
-     * @return Abp01_Route_Track_Info
-     */
-    public function getDisplayableTrackInfo(Abp01_Route_Track $track, $targetSystem) {
-        $minAlt = new Abp01_UnitSystem_Value_Height($track->minAlt);
-        $maxAlt = new Abp01_UnitSystem_Value_Height($track->maxAlt);
-
-        $minAlt = $minAlt->convertTo($targetSystem);
-        $maxAlt = $maxAlt->convertTo($targetSystem);
-
-        return new Abp01_Route_Track_Info($minAlt, $maxAlt);
-    }
-
-	/**
-	 * Caches the serialized version of the given track document for the given post ID
-	 * 
-	 * @param int $postId The post ID
-	 * @param Abp01_Route_Track_Document $trackDocument The track document
-	 * @return void
-	 */
-	private function _cacheTrackDocument($postId, Abp01_Route_Track_Document $trackDocument) {
-		//Ensure the storage directory structure exists
-		abp01_ensure_storage_directory();
-
-		//Compute the path at which to store the cached file 
-		//	and store the serialized track data
-		$path = $this->getTrackDocumentCacheFilePath($postId);
-		if (!empty($path)) {
-			file_put_contents($path, $trackDocument->serializeDocument(), LOCK_EX);
-		}
-
-		//Ensure in-memory copy is removed
-		wp_cache_delete($postId, 'abp01_cached_track_documents');
-	}
-
-	private function _cacheTrackProfileDocument($postId, Abp01_Route_Track_AltitudeProfile $trackProfileDocument) {
-		//Ensure the storage directory structure exists
-		abp01_ensure_storage_directory();
-
-		//Compute the path at which to store the cached file 
-		//	and store the serialized track data
-		$path = $this->getTrackProfileDocumentCacheFilePath($postId);
-		if (!empty($path)) {
-			file_put_contents($path, $trackProfileDocument->serializeDocument(), LOCK_EX);
-		}
-	}
-
-	/**
-	 * Retrieves and deserializes the cached version of the 
-	 * 	track document corresponding to the given post ID
-	 * 
-	 * @param int $postId The post ID
-	 * @return Abp01_Route_Track_Document The deserialized document
-	 */
-	private function _getCachedTrackDocument($postId) {
-		$path = $this->getTrackDocumentCacheFilePath($postId);
-		if (empty($path) || !is_readable($path)) {
-			return null;
-		}
-
-		//First, try to fetch in-memory cached item
-		$trackDocument = wp_cache_get($postId, 'abp01_cached_track_documents');
-		if (empty($trackDocument)) {
-			//If in-memory cached item does not exist, 
-			//	deserialize it from disk cache
-			//	and store it in-memory
-			$contents = file_get_contents($path);
-			$trackDocument = Abp01_Route_Track_Document::fromSerializedDocument($contents);
-			wp_cache_set($postId, $trackDocument, 'abp01_cached_track_documents');
-		}
-
-		return $trackDocument;
-	}
-
-	/**
-	 * @return Abp01_Route_Track_AltitudeProfile
-	 */
-	private function _getCachedTrackProfileDocument($postId) {
-		$path = $this->getTrackProfileDocumentCacheFilePath($postId);
-		if (empty($path) || !is_readable($path)) {
-			return null;
-		}
-
-		$contents = file_get_contents($path);
-		return Abp01_Route_Track_AltitudeProfile::fromSerializedDocument($contents);
-	}
-
-	private function _createUnitSystemInstanceOrThrow($unitSystem) {
-        if (!Abp01_UnitSystem::isSupported($unitSystem)) {
-            throw new InvalidArgumentException('Unsupported unit system: "' . $unitSystem . '"');
-        }
-
-        return Abp01_UnitSystem::create($unitSystem);
-    }
-
-	/**
-	 * Computes the track document cache file path for the given post ID
-	 * 
-	 * @param int $postId The post identifier
-	 * @return string
-	 */
-	public function getTrackDocumentCacheFilePath($postId) {
-		$fileName = sprintf('track-%d.cache', $postId);
-		$cacheStorageDir = $this->_env->getCacheStorageDir();
-
-		return is_dir($cacheStorageDir) 
-			? wp_normalize_path($cacheStorageDir . '/' . $fileName) 
-			: null;
-	}
-
-	public function getTrackProfileDocumentCacheFilePath($postId) {
-		$fileName = sprintf('track-profile-%d.cache', $postId);
-		$cacheStorageDir = $this->_env->getCacheStorageDir();
-
-		return is_dir($cacheStorageDir) 
-			? wp_normalize_path($cacheStorageDir . '/' . $fileName) 
-			: null;
-	}
-
-	/**
-	 * Compute the absolute file upload destination file path for the given post ID
-	 * 
-	 * @param int $postId The post ID
-	 * @return string The computed path
-	 */
-	public function getTrackFilePath($postId) {
-		$fileName = sprintf('track-%d.gpx', $postId);
-		$tracksStorageDir = $this->_env->getTracksStorageDir();
-
-		return is_dir($tracksStorageDir) 
-			? wp_normalize_path($tracksStorageDir . '/' . $fileName) 
-			: null;
-	}
-
 	public function getLastError() {
 		return $this->_lastError;
-	}
-
-	public function getProj() {
-		return $this->_proj;
 	}
 }

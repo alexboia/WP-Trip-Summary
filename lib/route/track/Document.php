@@ -242,8 +242,8 @@ class Abp01_Route_Track_Document {
 		$data->bounds = $this->getBounds();
 		$data->start = $this->getStartPoint();
 		$data->end = $this->getEndPoint();
-		$data->minAltitude = $this->minAlt;
-        $data->maxAltitude = $this->maxAlt;
+		$data->minAltitude = $this->getMinAlt();
+        $data->maxAltitude = $this->getMaxAlt();
         return $data;
     }
 
@@ -256,6 +256,14 @@ class Abp01_Route_Track_Document {
             $this->maxLat,
             $this->maxLng);
         return $bounds;
+    }
+
+    public function getMinAlt() {
+        return $this->minAlt;
+    }
+
+    public function getMaxAlt() {
+        return $this->maxAlt;
     }
 
     /**

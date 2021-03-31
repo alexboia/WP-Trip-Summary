@@ -44,8 +44,8 @@ class Abp01_UrlHelper {
 	 */
 	private $_downloadTrackDataNonceProvider;
 
-	public function __construct(Abp01_Env $env,
-		Abp01_NonceProvider_DownloadTrackData $downloadTrackDataNonceProvider) {
+	public function __construct(Abp01_NonceProvider_DownloadTrackData $downloadTrackDataNonceProvider, 
+		Abp01_Env $env) {
 		$this->_env = $env;
 		$this->_downloadTrackDataNonceProvider = $downloadTrackDataNonceProvider;
 	}

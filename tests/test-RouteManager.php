@@ -197,7 +197,7 @@
             ?
         )', array(
             $postId, 
-            $track->getFile(),
+            $track->getFileName(),
             $minCoord['mercX'], $minCoord['mercY'], $maxCoord['mercX'], $maxCoord['mercY'],
             $minCoord['mercX'], $minCoord['mercY'],
             $maxCoord['mercX'], $maxCoord['mercY'],

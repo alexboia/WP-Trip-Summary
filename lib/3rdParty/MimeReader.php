@@ -303,25 +303,32 @@ class MimeReader {
             $json = &self::$json;
             $json = array();
 
-            // UTF-16 Big Endian BOM text
+            // UTF-16 Big Endian BOM JSON
             $json[] = array (
                 'mime' => 'application/json',
                 'pattern' => "\xFF\xFE\x7B",
                 'mask' => "\xFF\xFF\xFF",
                 'ignore' => self::$whitespace_characters
             );
-            // UTF-16 Little Endian BOM text
+            // UTF-16 Little Endian BOM JSON
             $json[] = array (
                 'mime' => 'application/json',
                 'pattern' => "\xFE\xFF\x7B",
                 'mask' => "\xFF\xFF\xFF",
                 'ignore' => self::$whitespace_characters
             );
-            // UTF-8 BOM text
+            // UTF-8 BOM JSON
             $json[] = array (
                 'mime' => 'application/json',
                 'pattern' => "\xEF\xBB\xBF\x7B",
                 'mask' => "\xFF\xFF\xFF\xFF",
+                'ignore' => self::$whitespace_characters
+            );
+            // No BOM text
+            $json[] = array (
+                'mime' => 'application/json',
+                'pattern' => "\x7B",
+                'mask' => "\xFF",
                 'ignore' => self::$whitespace_characters
             );
         }

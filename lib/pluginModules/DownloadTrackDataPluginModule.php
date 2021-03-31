@@ -33,7 +33,7 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
-class Abp01_PluginModules_DownloadGpxTrackDataPluginModule extends Abp01_PluginModules_PluginModule {
+class Abp01_PluginModules_DownloadTrackDataPluginModule extends Abp01_PluginModules_PluginModule {
 	/**
 	 * @var Abp01_Settings
 	 */
@@ -44,7 +44,19 @@ class Abp01_PluginModules_DownloadGpxTrackDataPluginModule extends Abp01_PluginM
 	 */
 	private $_downloadGpxTrackDataAction;
 
-	public function __construct(Abp01_NonceProvider_DownloadTrackData $downloadTrackDataNonceProvider, 
+	/**
+	 * @var Abp01_Route_Manager
+	 */
+	private $_routeManager;
+
+	/**
+	 * @var Abp01_Route_Track_FileNameProvider
+	 */
+	private $_trackFileNameProvider;
+
+	public function __construct(Abp01_Route_Manager $routeManager,
+		Abp01_Route_Track_FileNameProvider $trackFileNameProvider,
+		Abp01_NonceProvider_DownloadTrackData $downloadTrackDataNonceProvider, 
 		Abp01_Settings $settings, 
 		Abp01_Env $env, 
 		Abp01_Auth $auth) {
@@ -52,6 +64,9 @@ class Abp01_PluginModules_DownloadGpxTrackDataPluginModule extends Abp01_PluginM
 		parent::__construct($env, $auth);
 
 		$this->_settings = $settings;
+		$this->_routeManager = $routeManager;
+		$this->_trackFileNameProvider = $trackFileNameProvider;
+
 		$this->_initAjaxActions($downloadTrackDataNonceProvider);
 	}
 
@@ -91,7 +106,12 @@ class Abp01_PluginModules_DownloadGpxTrackDataPluginModule extends Abp01_PluginM
 	}
 
 	private function _sendGpxTrackDataFileForPostId($postId) {
-		$trackFileDownloader = new Abp01_Transfer_TrackFileDownloader();
+		$trackFileDownloader = $this->_createTrackFileDownloader();
 		$trackFileDownloader->sendTrackFileForPostId($postId);
+	}
+
+	private function _createTrackFileDownloader() {
+		return new Abp01_Transfer_TrackFileDownloader($this->_routeManager, 
+			$this->_trackFileNameProvider);
 	}
 }

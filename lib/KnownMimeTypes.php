@@ -41,8 +41,7 @@ class Abp01_KnownMimeTypes {
 			'application/xml-gpx', 
 			'application/xml', 
 			'application/gpx+xml',
-			'text/xml',
-			'application/octet-stream'
+			'text/xml'
 		);
 	}
 
