@@ -36,5 +36,7 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 interface Abp01_Route_Track_FileNameProvider {
 	function constructTrackFilePathForPostId($postId, $trackFileMimeType);
 
+	function constructTempTrackFilePathForPostId($postId, $trackFileMimeType);
+
 	function constructTrackFilePath(Abp01_Route_Track $track);
 }

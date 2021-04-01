@@ -369,19 +369,35 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
 			throw new InvalidArgumentException('Track file mime type <' . $trackFileMimeType . '> is not supported');
 		}
 
-		$trackFileName = $this->_constructTrackFileName($postId, 
-			$extension);
-
-		return $this->_constructTrackFilePath($trackFileName);
-	}
-
-	public function constructTrackFilePath(Abp01_Route_Track $track) {
-		return $this->_constructTrackFilePath($track->getFileName());
+		return $this->_constructTrackFilePathForPostId($postId, $extension);
 	}
 
 	private function _resolveFileExtensionForMimeType($trackFileMimeType) {
 		return isset($this->_trackFileMapTypesToExtensionsMapping[$trackFileMimeType])
 			? $this->_trackFileMapTypesToExtensionsMapping[$trackFileMimeType]
 			: self::DEFAULT_FILE_EXTENSION;
+	}
+
+	private function _constructTrackFilePathForPostId($postId, $extension) {
+		$trackFileName = $this->_constructTrackFileName($postId, 
+			$extension);
+
+		return $this->_constructTrackFilePath($trackFileName);
+	}
+
+	public function constructTempTrackFilePathForPostId($postId, $trackFileMimeType) {
+		if (empty($postId)) {
+			throw new InvalidArgumentException('Post id may not be empty');
+		}
+
+		if (empty($trackFileMimeType)) {
+			throw new InvalidArgumentException('Track file mime type may not be empty');
+		}
+	
+		return $this->_constructTrackFilePathForPostId($postId, self::DEFAULT_FILE_EXTENSION);
+	}
+
+	public function constructTrackFilePath(Abp01_Route_Track $track) {
+		return $this->_constructTrackFilePath($track->getFileName());
 	}
 }

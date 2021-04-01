@@ -30,355 +30,376 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
 class Abp01_Transfer_Uploader {
-    /**
-     * No error while uploading and validating the file.
-     * 
-     * @var int
-     */
-    const UPLOAD_OK = 0;
+	/**
+	 * No error while uploading and validating the file.
+	 * 
+	 * @var int
+	 */
+	const UPLOAD_OK = 0;
 
-    /**
-     * File doesn't have a valid mime type.
-     * 
-     * @var int
-     */
-    const UPLOAD_INVALID_MIME_TYPE = 0x01;
+	/**
+	 * File doesn't have a valid mime type.
+	 * 
+	 * @var int
+	 */
+	const UPLOAD_INVALID_MIME_TYPE = 0x01;
 
-    /**
-     * File is larger than the given maximum size.0
-     * 
-     * @var int
-     */
-    const UPLOAD_TOO_LARGE = 2;
+	/**
+	 * File is larger than the given maximum size.0
+	 * 
+	 * @var int
+	 */
+	const UPLOAD_TOO_LARGE = 2;
 
-    /**
-     * No file has been uploaded or uploaded file not found
-     * 
-     * @var int
-     */
-    const UPLOAD_NO_FILE = 3;
+	/**
+	 * No file has been uploaded or uploaded file not found
+	 * 
+	 * @var int
+	 */
+	const UPLOAD_NO_FILE = 3;
 
-    /**
-     * Some internal error occure while processing the uploaded file
-     * 
-     * @var int
-     */
-    const UPLOAD_INTERNAL_ERROR = 4;
+	/**
+	 * Some internal error occure while processing the uploaded file
+	 * 
+	 * @var int
+	 */
+	const UPLOAD_INTERNAL_ERROR = 4;
 
-    /**
-     * Could not store the uploaded file
-     * 
-     * @var int
-     */
-    const UPLOAD_STORE_FAILED = 5;
+	/**
+	 * Could not store the uploaded file
+	 * 
+	 * @var int
+	 */
+	const UPLOAD_STORE_FAILED = 5;
 
-    /**
-     * The uploaded file did not pass the custom validation routine
-     * 
-     * @var int
-     */
-    const UPLOAD_NOT_VALID = 6;
+	/**
+	 * The uploaded file did not pass the custom validation routine
+	 * 
+	 * @var int
+	 */
+	const UPLOAD_NOT_VALID = 6;
 
-    /**
-     * There was an error while preparing to store the file
-     * 
-     * @var int
-     */
-    const UPLOAD_STORE_INITIALIZATION_FAILED = 7;
+	/**
+	 * There was an error while preparing to store the file
+	 * 
+	 * @var int
+	 */
+	const UPLOAD_STORE_INITIALIZATION_FAILED = 7;
 
-    /**
-     * There was a problem with the additional parameters that 
-     *  must be present with the uploaded file
-     * 
-     * @var int
-     */
-    const UPLOAD_INVALID_UPLOAD_PARAMS = 8;
+	/**
+	 * There was a problem with the additional parameters that 
+	 *  must be present with the uploaded file
+	 * 
+	 * @var int
+	 */
+	const UPLOAD_INVALID_UPLOAD_PARAMS = 8;
 
-    /**
-     * Altough no error occured while uploading and processing the file
-     *  the resulting destination file could not be found or read
-     * 
-     * @var int
-     */
-    const UPLOAD_DESTINATION_FILE_NOT_FOUND = 9;
+	/**
+	 * Altough no error occured while uploading and processing the file
+	 *  the resulting destination file could not be found or read
+	 * 
+	 * @var int
+	 */
+	const UPLOAD_DESTINATION_FILE_NOT_FOUND = 9;
 
-    /**
-     * Altough no error occured while uploading and processing the file
-     *  the resulting destination file is corrupted
-     * 
-     * @var int
-     */
-    const UPLOAD_DESTINATION_FILE_CORRUPT = 10;
+	/**
+	 * Altough no error occured while uploading and processing the file
+	 *  the resulting destination file is corrupted
+	 * 
+	 * @var int
+	 */
+	const UPLOAD_DESTINATION_FILE_CORRUPT = 10;
 
-    /**
-     * The destination file path where the uploaded file is stored
-     * 
-     * @var string
-     */
-    private $_destinationPath = null;
+	/**
+	 * The destination file path where the uploaded file is stored
+	 * 
+	 * @var string
+	 */
+	private $_destinationPath = null;
 
-    private $_declaredFileMimeType = null;
+	private $_declaredFileMimeType = null;
 
-    /**
-     * @var Abp01_Transfer_Uploader_FileNameProvider
-     */
-    private $_fileNameProvider = null;
+	/**
+	 * @var Abp01_Transfer_Uploader_FileNameProvider
+	 */
+	private $_fileNameProvider = null;
 
-    /**
-     * The maximum allowed size for the uploaded file, in bytes
-     * 
-     * @var int
-     */
-    private $_maxFileSize = 0;
+	/**
+	 * The maximum allowed size for the uploaded file, in bytes
+	 * 
+	 * @var int
+	 */
+	private $_maxFileSize = 0;
 
-    /**
-     * The maximum size of the file chunk, 
-     * if chunked upload is enabled for the file
-     * 
-     * @var int
-     */
-    private $_chunkSize = 0;
+	/**
+	 * The maximum size of the file chunk, 
+	 * if chunked upload is enabled for the file
+	 * 
+	 * @var int
+	 */
+	private $_chunkSize = 0;
 
-    /**
-     * The allowed file mime types
-     * 
-     * @var string[]
-     */
-    private $_allowedFileTypes = array();
+	/**
+	 * The allowed file mime types
+	 * 
+	 * @var string[]
+	 */
+	private $_allowedFileTypes = array();
 
-    /**
-     * The key that represents the uploaded file in the _FILES superglobal array
-     * 
-     * @var string
-     */
-    private $_key = null;
+	/**
+	 * The key that represents the uploaded file in the _FILES superglobal array
+	 * 
+	 * @var string
+	 */
+	private $_key = null;
 
-    /**
-     * The custom validation routine handler, called after 
-     *  the built-in validation takes place and only after 
-     * the entire file has been uploaded.
-     * 
-     * @var callable
-     */
-    private $_customValidator = null;
+	/**
+	 * The custom validation routine handler, called after 
+	 *  the built-in validation takes place and only after 
+	 * the entire file has been uploaded.
+	 * 
+	 * @var callable
+	 */
+	private $_customValidator = null;
 
-    /**
-     * Whether or not the entire file has been completely 
-     *  and successfully uploaded
-     * 
-     * @var boolean
-     */
-    private $_isReady = false;
+	/**
+	 * Whether or not the entire file has been completely 
+	 *  and successfully uploaded
+	 * 
+	 * @var boolean
+	 */
+	private $_isReady = false;
 
-    /**
-     * The detected mime type
-     * 
-     * @var string
-     */
-    private $_detectedType = null;
+	/**
+	 * The detected mime type
+	 * 
+	 * @var string
+	 */
+	private $_detectedType = null;
 
-    /**
-     * The file chunk currently being processed
-     * 
-     * @var int
-     */
-    private $_chunk = 0;
+	/**
+	 * The file chunk currently being processed
+	 * 
+	 * @var int
+	 */
+	private $_chunk = 0;
 
-    /**
-     * The number of chunks that the file has been split into
-     * 
-     * @var int
-     */
-    private $_chunkCount = 0;
+	/**
+	 * The number of chunks that the file has been split into
+	 * 
+	 * @var int
+	 */
+	private $_chunkCount = 0;
 
-    /**
-     * @var Abp01_Transfer_Uploader_FileValidatorProvider
-     */
-    private $_validatorProvider;
+	/**
+	 * @var Abp01_Transfer_Uploader_FileValidatorProvider
+	 */
+	private $_validatorProvider;
 
-    public function __construct(Abp01_Transfer_Uploader_Config $config) {
-        $this->_key = $config->getKey();
+	public function __construct(Abp01_Transfer_Uploader_Config $config) {
+		$this->_key = $config->getKey();
 
-        $this->_fileNameProvider = $config->getFileNameProvider();
-        $this->_validatorProvider = $config->getFileValidatorProvider();
-        $this->_allowedFileTypes = $this->_validatorProvider->getRecognizedDocumentMimeTypes();
+		$this->_fileNameProvider = $config->getFileNameProvider();
+		$this->_validatorProvider = $config->getFileValidatorProvider();
+		$this->_allowedFileTypes = $this->_validatorProvider->getRecognizedDocumentMimeTypes();
 
-        $this->_maxFileSize = $config->getMaxFileSize();
-        $this->_chunk = $config->getChunk();
-        $this->_chunkCount = $config->getChunkCount();
-        $this->_chunkSize = $config->getChunkSize();
-    }
+		$this->_maxFileSize = $config->getMaxFileSize();
+		$this->_chunk = $config->getChunk();
+		$this->_chunkCount = $config->getChunkCount();
+		$this->_chunkSize = $config->getChunkSize();
+	}
 
-    public function hasUploadedFile() {
-        return isset($_FILES[$this->_key]) && is_array($_FILES[$this->_key]) &&
-            !empty($_FILES[$this->_key]['size']) &&
-            !empty($_FILES[$this->_key]['tmp_name']);
-    }
+	public function hasUploadedFile() {
+		return isset($_FILES[$this->_key]) && is_array($_FILES[$this->_key]) &&
+			!empty($_FILES[$this->_key]['size']) &&
+			!empty($_FILES[$this->_key]['tmp_name']);
+	}
 
-    private function _getUploadedFileDeclaredMimeType() {
-        return $_FILES[$this->_key]['type'];
-    }
+	private function _getUploadedFileDeclaredMimeType() {
+		return $_FILES[$this->_key]['type'];
+	}
 
-    public function receive() {
-        $this->_detectedType = null;
+	public function receive() {
+		$this->_detectedType = null;
 
-        if (!$this->hasUploadedFile()) {
-            write_log('File upload failed because no file has been uploaded.');
-            return self::UPLOAD_NO_FILE;
-        }
+		if (!$this->hasUploadedFile()) {
+			write_log('File upload failed because no file has been uploaded.');
+			return self::UPLOAD_NO_FILE;
+		}
 
-        $this->_declaredFileMimeType = $this
-            ->_getUploadedFileDeclaredMimeType();
-        
-        write_log('Incoming file mime type is <' . $this->_declaredFileMimeType . '>');
+		$this->_declaredFileMimeType = $this
+			->_getUploadedFileDeclaredMimeType();
+		
+		$this->_destinationPath = $this->_fileNameProvider
+			->constructTempFilePath($this->_declaredFileMimeType);
 
-        $this->_destinationPath = $this->_fileNameProvider
-            ->constructFilePath($this->_declaredFileMimeType);
+		if ($this->_chunkSize > 0 && $this->_chunk > 0 && !file_exists($this->_destinationPath)) {
+			write_log('File upload failed because chunk configuration is not valid.');
+			return self::UPLOAD_INVALID_UPLOAD_PARAMS;
+		}
 
-        write_log('Destination file path is <' . $this->_destinationPath . '>');
+		if (($this->_chunkSize == 0 || $this->_chunk == 0) && file_exists($this->_destinationPath)) {
+			write_log('Chunk size=0 or first chunk - remove existing destination file.');
+			@unlink($this->_destinationPath);
+		}
 
-        if ($this->_chunkSize > 0 && $this->_chunk > 0 && !file_exists($this->_destinationPath)) {
-            write_log('File upload failed because chunk configuration is not valid.');
-            return self::UPLOAD_INVALID_UPLOAD_PARAMS;
-        }
+		$temp = $this->_getUploadedFileTmpPath();
+		if (!is_uploaded_file($temp)) {
+			write_log('File upload failed because temporary location does not contain a safe source file.');
+			return self::UPLOAD_NO_FILE;
+		}
 
-        if (($this->_chunkSize == 0 || $this->_chunk == 0) && file_exists($this->_destinationPath)) {
-            write_log('Chunk size=0 or first chunk - remove existing destination file.');
-            @unlink($this->_destinationPath);
-        }
+		if (!$this->_isFileSizeValid()) {
+			write_log('File upload failed because uploaded file is too large.');
+			return self::UPLOAD_TOO_LARGE;
+		}
 
-        $temp = $this->_getUploadedFileTmpPath();
-        if (!is_uploaded_file($temp)) {
-            write_log('File upload failed because temporary location does not contain a safe source file.');
-            return self::UPLOAD_NO_FILE;
-        }
+		if (!$this->_detectTypeAndValidate()) {
+			write_log('File upload failed because uploaded file does not have a valid mime type: "' . $this->_detectedType . '".');
+			return self::UPLOAD_INVALID_MIME_TYPE;
+		}
 
-        if (!$this->_isFileSizeValid()) {
-            write_log('File upload failed because uploaded file is too large.');
-            return self::UPLOAD_TOO_LARGE;
-        }
+		$out = @fopen($this->_destinationPath, $this->_chunkSize > 0 ? 'ab' : 'wb');
+		if (!$out) {
+			write_log('File upload failed because destination file could not be open.');
+			return self::UPLOAD_STORE_INITIALIZATION_FAILED;
+		}
 
-        if (!$this->_detectTypeAndValidate()) {
-            write_log('File upload failed because uploaded file does not have a valid mime type: "' . $this->_detectedType . '".');
-            return self::UPLOAD_INVALID_MIME_TYPE;
-        }
+		$in = @fopen($temp, 'rb');
+		if (!$in) {
+			@fclose($out);
+			write_log('File upload failed because source file could not be open.');
+			return self::UPLOAD_STORE_INITIALIZATION_FAILED;
+		}
 
-        $out = @fopen($this->_destinationPath, $this->_chunkSize > 0 ? 'ab' : 'wb');
-        if (!$out) {
-            write_log('File upload failed because destination file could not be open.');
-            return self::UPLOAD_STORE_INITIALIZATION_FAILED;
-        }
+		while ($buffer = fread($in, 4096)) {
+			fwrite($out, $buffer);
+		}
 
-        $in = @fopen($temp, 'rb');
-        if (!$in) {
-            @fclose($out);
-            write_log('File upload failed because source file could not be open.');
-            return self::UPLOAD_STORE_INITIALIZATION_FAILED;
-        }
+		@fclose($in);
+		@fclose($out);
 
-        while ($buffer = fread($in, 4096)) {
-            fwrite($out, $buffer);
-        }
+		$returnStatus = self::UPLOAD_OK;
+		$isReady = $this->_haveAllChunksBeenUploaded();
 
-        @fclose($in);
-        @fclose($out);
+		if ($isReady) {
+			if ($this->_passesFinalValidation()) {
+				$returnStatus = $this->_processFileUploadReady();
+			} else {
+				$returnStatus = $this->_processFileUploadFailed();
+			}			
+		}
 
-        $isReady = $this->_chunkSize == 0 || ($this->_chunk + 1 >= $this->_chunkCount);
-        if ($isReady && !$this->_passesFinalValidation()) {
-            @unlink($this->_destinationPath);
-            write_log('File upload failed because source file did not pass custom validation.');
-            return self::UPLOAD_NOT_VALID;
-        } else {
-            write_log('The file upload has been successfully processed and completed.');
-        }
+		$this->_isReady = $isReady;
+		return $returnStatus;
+	}
 
-        $this->_isReady = $isReady;
-        return self::UPLOAD_OK;
-    }
+	private function _haveAllChunksBeenUploaded() {
+		return $this->_chunkSize == 0 || ($this->_chunk + 1 >= $this->_chunkCount);
+	}
 
-    public function isReady() {
-        return $this->_isReady;
-    }
+	private function _processFileUploadReady() {
+		$finalDetinationPath = $this->_fileNameProvider
+			->constructFilePath($this->_detectedType);
+		
+		if ($finalDetinationPath != $this->_destinationPath) {
+			@rename($this->_destinationPath, $finalDetinationPath);
+			$this->_destinationPath = $finalDetinationPath;
+		}
 
-    public function setCustomValidator($customValidator) {
-        if (!empty($customValidator) && !is_callable($customValidator)) {
-            throw new InvalidArgumentException('The custom validator must be a valid callable');
-        }
-        $this->_customValidator = !empty($customValidator) ? $customValidator : null;
-    }
+		write_log('The file upload has been successfully processed and completed.');
+		return self::UPLOAD_OK;
+	}
 
-    private function _detectTypeAndValidate() {
-        if (count($this->_allowedFileTypes) == 0) {
-            return true;
-        }
+	private function _processFileUploadFailed() {
+		@unlink($this->_destinationPath);
+		write_log('File upload failed because source file did not pass custom validation.');
+		return self::UPLOAD_NOT_VALID;
+	}
 
-        $file = null;
-        if ($this->_chunkSize == 0 || !file_exists($this->_destinationPath)) {
-            $file = $this->_getUploadedFileTmpPath();
-        } else {
-            $file = $this->_destinationPath;
-        }
+	public function isReady() {
+		return $this->_isReady;
+	}
 
-        $sniffer = new MimeReader($file);
-        $this->_detectedType = $sniffer->getType();
+	public function setCustomValidator($customValidator) {
+		if (!empty($customValidator) && !is_callable($customValidator)) {
+			throw new InvalidArgumentException('The custom validator must be a valid callable');
+		}
+		$this->_customValidator = !empty($customValidator) ? $customValidator : null;
+	}
 
-        if (empty($this->_detectedType) || !in_array($this->_detectedType, $this->_allowedFileTypes)) {
-            return false;
-        }
+	private function _detectTypeAndValidate() {
+		if (count($this->_allowedFileTypes) == 0) {
+			return true;
+		}
 
-        return true;
-    }
+		$file = null;
+		if ($this->_chunkSize == 0 || !file_exists($this->_destinationPath)) {
+			$file = $this->_getUploadedFileTmpPath();
+		} else {
+			$file = $this->_destinationPath;
+		}
 
-    private function _isFileSizeValid() {
-        if ($this->_maxFileSize == 0) {
-            return true;
-        }
-        return $this->_calculateFileSize() <= $this->_maxFileSize;
-    }
+		$sniffer = new MimeReader($file);
+		$this->_detectedType = $sniffer->getType();
 
-    private function _calculateFileSize() {
-        $size = filesize($this->_getUploadedFileTmpPath());
-        if ($this->_chunkSize > 0) {
-            if (is_file($this->_destinationPath)) {
-                $size += filesize($this->_destinationPath);
-            }
-        }
-        return $size;
-    }
+		if (empty($this->_detectedType) || !in_array($this->_detectedType, $this->_allowedFileTypes)) {
+			return false;
+		}
 
-    private function _passesFinalValidation() {
-        return $this->_passesFileValidator() 
-            && $this->_passesCustomValidator();
-    }
+		return true;
+	}
 
-    private function _passesFileValidator() {
-        $fileValidator = $this->_validatorProvider
-            ->resolveValidator($this->_detectedType);
+	private function _isFileSizeValid() {
+		if ($this->_maxFileSize == 0) {
+			return true;
+		}
+		return $this->_calculateFileSize() <= $this->_maxFileSize;
+	}
 
-        return $fileValidator
-            ->validate($this->_destinationPath);
-    }
+	private function _calculateFileSize() {
+		$size = filesize($this->_getUploadedFileTmpPath());
+		if ($this->_chunkSize > 0) {
+			if (is_file($this->_destinationPath)) {
+				$size += filesize($this->_destinationPath);
+			}
+		}
+		return $size;
+	}
 
-    private function _passesCustomValidator() {
-        if (is_callable($this->_customValidator)) {
-            return call_user_func($this->_customValidator, $this->_destinationPath);
-        }
-        return true;
-    }
+	private function _passesFinalValidation() {
+		return $this->_passesFileValidator() 
+			&& $this->_passesCustomValidator();
+	}
 
-    private function _getUploadedFileTmpPath() {
-        return $_FILES[$this->_key]['tmp_name'];
-    }
+	private function _passesFileValidator() {
+		$fileValidator = $this->_validatorProvider
+			->resolveValidator($this->_detectedType);
 
-    public function getDetectedType() {
-        return $this->_detectedType;
-    }
+		return $fileValidator
+			->validate($this->_destinationPath);
+	}
 
-    public function getDestinationPath() {
-        return $this->_destinationPath;
-    }
+	private function _passesCustomValidator() {
+		if (is_callable($this->_customValidator)) {
+			return call_user_func($this->_customValidator, $this->_destinationPath);
+		}
+		return true;
+	}
+
+	private function _getUploadedFileTmpPath() {
+		return $_FILES[$this->_key]['tmp_name'];
+	}
+
+	public function getDetectedType() {
+		return $this->_detectedType;
+	}
+
+	public function getDestinationPath() {
+		return $this->_destinationPath;
+	}
 }

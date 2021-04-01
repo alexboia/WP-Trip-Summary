@@ -64,7 +64,7 @@ class Abp01_Transfer_Uploader_Config {
 
 		$this->_fileNameProvider = $fileNameProvider;
 		$this->_fileValidatorProvider = $validatorProvider;
-        $this->_key = $key;
+		$this->_key = $key;
 	}
 
 	public function setChunking($chunkSize, $chunk, $chunkCount) {

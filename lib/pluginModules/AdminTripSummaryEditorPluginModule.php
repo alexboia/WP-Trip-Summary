@@ -442,30 +442,9 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		//if the upload has completed, then process the newly 
 		//	uploaded file and save the track information
 		if ($response->ready) {
-			try {
-				$uploadedTrackFilePath = $uploader->getDestinationPath();
-				$uploadedTrackFileMimeType = $uploader->getDetectedType();
-
-				$sourceTrackFilePath = $this->_routeTrackProcessor->constructTrackFilePathForPostId($postId, 
-					$uploadedTrackFileMimeType);
-
-				if ($sourceTrackFilePath != $uploadedTrackFilePath) {
-					@rename($uploadedTrackFilePath, $sourceTrackFilePath);
-				}
-
-				$track = $this->_routeTrackProcessor->processInitialTrackSourceFile($postId, 
-					$sourceTrackFilePath,
-					$uploadedTrackFileMimeType);
-
-				$currentUserId = get_current_user_id();
-				if ($this->_routeManager->saveRouteTrack($track, $currentUserId)) {
-					$this->_viewerDataSourceCache->clearCachedPostTripSummaryViewerData($postId);						
-				} else {
-					$response->status = Abp01_Transfer_Uploader::UPLOAD_INTERNAL_ERROR;
-				}
-			} catch (Abp01_Route_Track_DocumentParser_Exception $exc) {
-				$response->status = Abp01_Transfer_Uploader::UPLOAD_DESTINATION_FILE_CORRUPT;
-			}
+			$response->status = $this->_processUploadedFile($postId, 
+				$uploader->getDestinationPath(), 
+				$uploader->getDetectedType());
 		}
 
 		return $response;
@@ -512,6 +491,27 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		return isset($_REQUEST['chunks']) 
 			? intval($_REQUEST['chunks']) 
 			: 0;
+	}
+
+	private function _processUploadedFile($postId, $uploadedTrackFilePath, $uploadedTrackFileMimeType) {
+		$status = Abp01_Transfer_Uploader::UPLOAD_OK;
+
+		try {
+			$track = $this->_routeTrackProcessor->processInitialTrackSourceFile($postId, 
+				$uploadedTrackFilePath,
+				$uploadedTrackFileMimeType);
+
+			$currentUserId = get_current_user_id();
+			if ($this->_routeManager->saveRouteTrack($track, $currentUserId)) {
+				$this->_viewerDataSourceCache->clearCachedPostTripSummaryViewerData($postId);						
+			} else {
+				$status = Abp01_Transfer_Uploader::UPLOAD_INTERNAL_ERROR;
+			}
+		} catch (Abp01_Route_Track_DocumentParser_Exception $exc) {
+			$status = Abp01_Transfer_Uploader::UPLOAD_DESTINATION_FILE_CORRUPT;
+		}
+
+		return $status;
 	}
 
 	public function removeRouteTrack() {

@@ -35,4 +35,6 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 
 interface Abp01_Transfer_Uploader_FileNameProvider {
 	function constructFilePath($fileMimeType);
+
+	function constructTempFilePath($fileMimeType);
 }

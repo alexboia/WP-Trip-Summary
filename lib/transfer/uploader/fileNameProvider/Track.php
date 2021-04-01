@@ -47,6 +47,12 @@ class Abp01_Transfer_Uploader_FileNameProvider_Track implements Abp01_Transfer_U
 	}
 	
 	public function constructFilePath($fileMimeType) { 
-		return $this->_trackFileNameProvider->constructTrackFilePathForPostId($this->_postId, $fileMimeType);
+		return $this->_trackFileNameProvider->constructTrackFilePathForPostId($this->_postId, 
+			$fileMimeType);
+	}
+
+	public function constructTempFilePath($fileMimeType) {
+		return $this->_trackFileNameProvider->constructTempTrackFilePathForPostId($this->_postId, 
+			$fileMimeType);
 	}
 }
