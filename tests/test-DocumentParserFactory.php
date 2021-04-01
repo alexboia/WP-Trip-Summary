@@ -121,7 +121,6 @@ class DocumentParserFactoryTests extends WP_UnitTestCase {
 			'application/xml' => Abp01_Route_Track_DocumentParser_Gpx::class,
 			'application/gpx+xml' => Abp01_Route_Track_DocumentParser_Gpx::class,
 			'text/xml' => Abp01_Route_Track_DocumentParser_Gpx::class,
-			'application/octet-stream' => Abp01_Route_Track_DocumentParser_Gpx::class,
 			'application/json' => Abp01_Route_Track_DocumentParser_GeoJson::class,
 			'application/geo+json' => Abp01_Route_Track_DocumentParser_GeoJson::class,
 			'application/vnd.geo+json' => Abp01_Route_Track_DocumentParser_GeoJson::class

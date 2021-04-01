@@ -109,7 +109,6 @@ class FileValidatorProviderTests extends WP_UnitTestCase {
 			'application/xml' => Abp01_Validate_GpxDocument::class,
 			'application/gpx+xml' => Abp01_Validate_GpxDocument::class,
 			'text/xml' => Abp01_Validate_GpxDocument::class,
-			'application/octet-stream' => Abp01_Validate_GpxDocument::class,
 			'application/json' => Abp01_Validate_GeoJsonDocument::class,
 			'application/geo+json' => Abp01_Validate_GeoJsonDocument::class,
 			'application/vnd.geo+json' => Abp01_Validate_GeoJsonDocument::class

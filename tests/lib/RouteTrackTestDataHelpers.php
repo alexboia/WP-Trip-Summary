@@ -81,9 +81,21 @@ trait RouteTrackTestDataHelpers {
 
         return new Abp01_Route_Track($postId, 
             $fileName, 
+            $faker->mimeType,
             $bbox, 
             $minAltitude, 
             $maxAltitude);
+    }
+
+    protected function _generateRandomRouteTrackWithMimeType($postId, $mimeType) {
+        $sourceTrack = $this->_generateRandomRouteTrack($postId);
+        $track = new Abp01_Route_Track($postId, 
+            $sourceTrack->getFileName(), 
+            $mimeType, 
+            $sourceTrack->getBounds(), 
+            $sourceTrack->getMinimumAltitude(), 
+            $sourceTrack->getMaximumAltitude());
+        return $track;
     }
 
     protected function _storeGpxDocument($postId, $gpxContent) {

@@ -181,6 +181,9 @@
 		}
 	}
 
+	/**
+	 * @expectedException Abp01_Route_Track_DocumentParser_Exception
+	 */
 	public function test_tryParse_incorrectDocument() {
 		$testFiles = $this->_getInvalidTestFilesSpec();
 		$parser = new Abp01_Route_Track_DocumentParser_Gpx();
@@ -189,8 +192,6 @@
 			$fileContents = $this->_readTestDataFileContents($fileName); 
 			$document = $parser->parse($fileContents);
 			$this->assertNull($document);
-			$this->assertTrue($parser->hasErrors());
-			$this->assertNotEmpty($parser->getLastErrors());
 		}
 	}
 

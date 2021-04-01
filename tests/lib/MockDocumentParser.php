@@ -34,11 +34,7 @@ class MockDocumentParser implements Abp01_Route_Track_DocumentParser {
 		return null;
 	}
 
-    public function hasErrors() { 
-		return false;
-	}
-
-    public function getLastErrors() { 
-		return array();
+	public function getDefaultMimeType() {
+		return null;
 	}
 }
