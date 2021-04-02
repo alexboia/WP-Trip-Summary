@@ -44,7 +44,7 @@ Do you think this would be right for you but there's that extra thing that's mis
 <a name="wpts-features"></a>  
 
 - attach technical information to a post (ex. how long was your trip, how much did you totally climb, where from and where to, how hard do you think it has been, what kind of roads or trails did you encounter etc.);
-- attach a GPS track to a post (GPX files are currently accepted) and display that track on a map;
+- attach a GPS track to a post ([see below for a detailed discussion on accepted file formats](#wpts-features-file-format)) and display that track on a map;
 - allows management of the look-up data used to populate the fields presented as single or multi-selection options list (ex. `Difficulty Level`, `Open During Seasons` etc.);
 - allows customization of the map layer:
    - map tile source (comes by default configured with [OpenStreetMap](https://www.openstreetmap.org/)); 
@@ -52,6 +52,68 @@ Do you think this would be right for you but there's that extra thing that's mis
    - customizing the visual representation of the track).
 - allows customization of the measurement unit system used to represent various values (ex. `Total distance`, `Total climb` etc.);
 - multi-language.
+
+### File formats accepted for import
+<a name="wpts-features-file-format"></a>  
+
+WP-Trip-Summary supports the following file formats when importing GPS track data that should be attached to a post:
+- GPX ([see more details here](https://en.wikipedia.org/wiki/GPS_Exchange_Format));
+- GeoJSON ([see more details here](https://en.wikipedia.org/wiki/GeoJSON)).
+
+#### GPX
+
+An uploaded file is assumed to be compliant with the GPX format (and validated as such) if it has any of the following mime types:
+
+- `application/gpx`;
+- `application/x-gpx+xml`;
+- `application/xml-gpx`;
+- `application/xml`;
+- `application/gpx+xml`;
+- `text/xml`.
+
+GPX documents are assumed to comply with the [GPX 1.1 schema] (https://www.topografix.com/GPX/1/1/gpx.xsd) and are parsed as follows:
+
+- Only document name, description and keywords metadata elements are read;
+- The following information is read for a point (`<wpt>` or `<trkpt>`), besides latitude and longitude:
+   - altitude/elevation (`<ele>` element);
+   - name (`<name>` element).
+- The following information is read for a track part (`<trk>` element), besides the list of track segments;
+   - name (`<name>` element).
+- For a track segment (`<trkseg>` elements), only its points are read.
+
+For the more technically inclined, [the parser can be consulted here](https://github.com/alexboia/WP-Trip-Summary/blob/master/lib/route/track/documentParser/Gpx.php).
+
+#### GeoJSON
+
+An uploaded file is assumed to be compliant with the GeoJSON format (and validated as such) if it has any of the following mime types:
+
+- `application/json`;
+- `application/geo+json`;
+- `application/vnd.geo+json`. 
+
+GeoJson documents are assumed to comply with [RFC 7946](https://tools.ietf.org/html/rfc7946) and are parsed as follows:
+- Document metadata is only searched for is the root object is a `FeatureCollection` and the first `Feature` of that collection:
+   - has a `properties` property;
+   - its `geometry` property is `null`.
+- A `LineString` is read as a track part with a single track segment;
+- If a `LineString` geometry is contained within a `Feature` object, then the resulting track part's name is searched for in the feature object's `properties` property.
+
+- A `MultiLineString` is read as a track part, and each comprising line string is added to the track part as a track segment;
+- If a `MultiLineString` geometry is contained within a `Feature` object, then the resulting track part's name is searched for in the feature object's `properties` property.
+
+- A `Point` is read as a document-level waypoint, regardless of where it is found in the geoJSON file;
+- If a `Point` geometry is contained within a `Feature` object, then the waypoint's name is searched for in the feature object's `properties` property.
+
+- All the points in a `MultiPoint` are each added as a document-level waypoint, regardless of where it is found in the geoJSON file;
+- If a `MultiPoint` geometry is contained within a `Feature` object, then a name is searched for in the feature object's `properties` property and assigned to each of the resulting waypoints;
+
+- A `Polygon` is read as a track part with a track segment for each of the polygon's contour lines;
+- If a `Polygon` geometry is contained within a `Feature` object, then the resulting track part's name is searched for in the feature object's `properties` property.
+
+- A `MultiPolygon` is read as multiple track parts, one for each comprising polygon; each track part is then comprised of the corresponding polygon's contour lines;
+- If a `MultiPolygon` geometry is contained within a `Feature` object, then a name is searched for in the feature object's `properties` property and assigned to each of the resulting track parts.
+
+For the more technically inclined, [the parser can be consulted here](https://github.com/alexboia/WP-Trip-Summary/blob/master/lib/route/track/documentParser/GeoJson.php).
 
 ## Downloading the plug-in
 <a name="wpts-get-it"></a>
@@ -114,7 +176,7 @@ Stucture of the project board:
 This plug-in provides two basic features:
 
 - allow some structured information to be filled in, according to a selected trip type;
-- allow some GPX track to be uploaded and then rendered on a map.
+- allow some GPS track to be uploaded and then rendered on a map.
 
 ### Structured technical information
 
@@ -168,7 +230,7 @@ I really wanted to host the GPS tracks myself for various reasons:
 - It was good fun writing this feature;
 - I want to use the resulting data in the near future to do some other stuff on my website.
 
-Thus, I developed a module to do just that: upload a GPS track (currently only GPX files can be uploaded), parse it and display it.
+Thus, I developed a module to do just that: upload a GPS track (currently only GPX and GeoJSON files can be uploaded), parse it and display it.
 
 ## Supported languages
 <a name="wpts-langs"></a>  
@@ -187,7 +249,9 @@ The following languages are supported:
 ### Version 0.2.7
 - Refactoring: the plug-in now has a more manageable and extensible structure, with the most important change being the splitting of all the code previously in `abp01-plugin-main.php`, into separate plugin modules;
 - Feature: Added an about page ([Issue 59](https://github.com/alexboia/WP-Trip-Summary/issues/59));
-- Feature: Enhanced display for the frontend viewer information items ([issue 75](https://github.com/alexboia/WP-Trip-Summary/issues/75));
+- Feature: Enhanced display for the frontend viewer information items ([Issue 75](https://github.com/alexboia/WP-Trip-Summary/issues/75));
+- Feature: Added support for GeoJSON file import ([Issue 76](https://github.com/alexboia/WP-Trip-Summary/issues/76));
+- Improved plug-in documentation;
 - Improved usability and UI for the settings page;
 - Improved usability and UI for the help page;
 - Updated help contents;
