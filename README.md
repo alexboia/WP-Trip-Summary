@@ -71,7 +71,7 @@ An uploaded file is assumed to be compliant with the GPX format (and validated a
 - `application/gpx+xml`;
 - `text/xml`.
 
-GPX documents are assumed to comply with the [GPX 1.1 schema] (https://www.topografix.com/GPX/1/1/gpx.xsd) and are parsed as follows:
+GPX documents are assumed to comply with the [GPX 1.1 schema](https://www.topografix.com/gpx/1/1/) and are parsed as follows:
 
 - Only document name, description and keywords metadata elements are read;
 - The following information is read for a point (`<wpt>` or `<trkpt>`), besides latitude and longitude:
