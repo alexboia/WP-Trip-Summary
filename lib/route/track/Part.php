@@ -70,16 +70,6 @@ class Abp01_Route_Track_Part {
         $this->maxLng = ~PHP_INT_MAX;
     }
 
-    public function countLines() {
-        return is_array($this->lines) 
-            ? count($this->lines) 
-            : 0;
-    }
-
-    public function isEmpty() {
-        return $this->countLines() == 0;
-    }
-
     public function addLine(Abp01_Route_Track_Line $line) {
         if ($line->minLat < $this->minLat) {
             $this->minLat = $line->minLat;
@@ -113,11 +103,29 @@ class Abp01_Route_Track_Part {
         return $this->lines;
     }
 
+    public function countLines() {
+        return is_array($this->lines) 
+            ? count($this->lines) 
+            : 0;
+    }
+
+    public function isEmpty() {
+        return $this->countLines() == 0;
+    }
+
     public function simplify($threshold) {
         $track = new Abp01_Route_Track_Part($this->name);
         foreach ($this->lines as $line) {
             $track->addLine($line->simplify($threshold));
         }
         return $track;
+    }
+
+    public function setName($name) {
+        $this->name = $name;
+    }
+
+    public function getName() {
+        return $this->name;
     }
 }

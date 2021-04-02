@@ -129,12 +129,8 @@ class Abp01_Route_Track_DocumentParser_Gpx implements Abp01_Route_Track_Document
 	}
 
 	private function _readTrack($trkNode) {
-		$track = new Abp01_Route_Track_Part();
 		$name = !empty($trkNode->name) ? (string)$trkNode->name : null;
-
-		if ($name) {
-			$track->name = $name;
-		}
+		$track = new Abp01_Route_Track_Part($name);
 
 		if (!empty($trkNode->trkseg)) {
 			foreach ($trkNode->trkseg as $trgSegNode) {
@@ -152,7 +148,7 @@ class Abp01_Route_Track_DocumentParser_Gpx implements Abp01_Route_Track_Document
 		$segment = new Abp01_Route_Track_Line();
 		if (!empty($trkSegNode->trkpt)) {
 			foreach ($trkSegNode->trkpt as $trkptNode) {
-				$trkpt = $this->_readWayPoint($trkptNode);
+				$trkpt = $this->_readPoint($trkptNode);
 				if ($trkpt) {
 					$segment->addPoint($trkpt);
 				}
@@ -166,14 +162,14 @@ class Abp01_Route_Track_DocumentParser_Gpx implements Abp01_Route_Track_Document
 			return;
 		}
 		foreach ($gpx->wpt as $wptNode) {
-			$wpt = $this->_readWayPoint($wptNode);
+			$wpt = $this->_readPoint($wptNode);
 			if ($wpt instanceof Abp01_Route_Track_Point) {
 				$doc->addWayPoint($wpt);
 			}
 		}
 	}
 
-	private function _readWayPoint($wptNode) {
+	private function _readPoint($wptNode) {
 		if (empty($wptNode['lat']) || empty($wptNode['lon'])) {
 			return null;
 		}
@@ -181,17 +177,18 @@ class Abp01_Route_Track_DocumentParser_Gpx implements Abp01_Route_Track_Document
 		$lat = floatval((string)$wptNode['lat']);
 		$lon = floatval((string)$wptNode['lon']);
 		$alt = !empty($wptNode->ele) ? floatval((string)$wptNode->ele) : 0;
+
 		$coordinate = new Abp01_Route_Track_Coordinate($lat, $lon, $alt);
-		$wpt = new Abp01_Route_Track_Point($coordinate);
+		$point = new Abp01_Route_Track_Point($coordinate);
 
 		if (!empty($wptNode->name)) {
-			$wpt->name = (string)$wptNode->name;
+			$point->setName((string)$wptNode->name);
 		}
 		if (!empty($wptNode->desc)) {
-			$wpt->description = (string)$wptNode->desc;
+			$point->setDescription((string)$wptNode->desc);
 		}
 
-		return $wpt;
+		return $point;
 	}
 
 	public function getDefaultMimeType() {

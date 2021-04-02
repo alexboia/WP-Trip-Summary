@@ -47,7 +47,9 @@ require_once 'lib/RouteTrackDocumentTestHelpers.php';
 require_once 'lib/ViewerTestDataHelpers.php';
 require_once 'lib/SettingsDataHelpers.php';
 require_once 'lib/AdminTestDataHelpers.php';
+require_once 'lib/GpsDocumentFakerDataProvider.php';
 require_once 'lib/GpxDocumentFakerDataProvider.php';
+require_once 'lib/GeoJsonDocumentFakerDataProvider.php';
 require_once 'lib/IntegerIdGenerator.php';
 
 $_tests_dir = getenv('WP_TESTS_DIR');

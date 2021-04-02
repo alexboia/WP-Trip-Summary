@@ -181,99 +181,131 @@ class Abp01_Route_Track_DocumentParser_GeoJson implements Abp01_Route_Track_Docu
 	private function _parseAndCollectFeature(Abp01_Route_Track_Document $document, $feature) {
 		$geometry = $this->_getFeatureGeometry($feature);
 		if (!empty($geometry)) {
-			$this->_parseAndCollectGeometry($document, $geometry);	
+			$metadata = $this->_readMetadataFromFeature($feature);
+			$this->_parseAndCollectGeometry($document, $geometry, $metadata);
 		}
 	}
 
-	private function _parseAndCollectGeometry(Abp01_Route_Track_Document $document, $geometry) {
+	private function _parseAndCollectGeometry(Abp01_Route_Track_Document $document, $geometry, $metadata) {
 		$geometryType = $this->_getGeoJsonObjectType($geometry);
 		switch ($geometryType) {
 			case self::GEOJSON_TYPE_POINT:
-				$this->_parseAndCollectSingleWayPoint($document, $geometry);
+				$this->_parseAndCollectSingleWayPoint($document, $geometry, $metadata);
 				break;
 			case self::GEOJSON_TYPE_MULTIPOINT:
-				$this->_parseAndCollectMultipleWayPoints($document, $geometry);
+				$this->_parseAndCollectMultipleWayPoints($document, $geometry, $metadata);
 				break;
 			case self::GEOJSON_TYPE_LINESTRING:
-				$this->_parseAndCollectSingleLineString($document, $geometry);
+				$this->_parseAndCollectSingleLineString($document, $geometry, $metadata);
 				break;
 			case self::GEOJSON_TYPE_MULTILINESTRING:
-				$this->_parseAndCollectMultipleLineStrings($document, $geometry);
+				$this->_parseAndCollectMultipleLineStrings($document, $geometry, $metadata);
 				break;
 			case self::GEOJSON_TYPE_POLYGON:
-				$this->_parseAndCollectSinglePolygon($document, $geometry);
+				$this->_parseAndCollectSinglePolygon($document, $geometry, $metadata);
 				break;
 			case self::GEOJSON_TYPE_MULTIPOLYGON:
-				$this->_parseAndCollectMultiplePolygons($document, $geometry);
+				$this->_parseAndCollectMultiplePolygons($document, $geometry, $metadata);
 				break;
 			case self::GEOJSON_TYPE_GEOMETRY_COLLECTION:
-				$this->_parseAndCollectGeometryCollection($document, $geometry);
+				$this->_parseAndCollectGeometryCollection($document, $geometry, $metadata);
 				break;
 		}
 	}
 
-	private function _parseAndCollectSingleWayPoint(Abp01_Route_Track_Document $document, $geometry) {
-		$document->addWayPoint($this->_readDocumentTrackPointFromGeoJsonPointGeometry($geometry));
+	private function _parseAndCollectSingleWayPoint(Abp01_Route_Track_Document $document, $geometry, $metadata) {
+		$point = $this->_readDocumentTrackPointFromGeoJsonPointGeometry($geometry);
+		$document->addWayPoint($this->_setPointMetadata($point, $metadata));
 	}
 
-	private function _parseAndCollectMultipleWayPoints(Abp01_Route_Track_Document $document, $geometry) {
+	private function _setPointMetadata(Abp01_Route_Track_Point $point, $metadata) {
+		if ($metadata != null) {
+			if (!empty($metadata->name)) {
+				$point->setName($metadata->name);
+			}
+			if (!empty($metadata->desc)) {
+				$point->setDescription($metadata->desc);
+			}
+		}
+		return $point;
+	}
+
+	private function _parseAndCollectMultipleWayPoints(Abp01_Route_Track_Document $document, $geometry, $metadata) {
 		$points = $this->_readDocumentTrackPointsFromGeoJsonMultiPointGeometry($geometry);
 		foreach ($points as $point) {
-			$document->addWayPoint($point);
+			$document->addWayPoint($this->_setPointMetadata($point, $metadata));
 		}
 	}
 
-	private function _parseAndCollectSingleLineString(Abp01_Route_Track_Document $document, $geometry) {
+	private function _parseAndCollectSingleLineString(Abp01_Route_Track_Document $document, $geometry, $metadata) {
 		$trackPart = $this->_readDocumentTrackPartFromGeoJsonLineStringGeometry($geometry);
 		if (!$trackPart->isEmpty()) {
-			$document->addTrackPart($trackPart);
+			$document->addTrackPart($this->_setTrackPartMetadata($trackPart, $metadata));
 		}
 	}
 
-	private function _parseAndCollectMultipleLineStrings(Abp01_Route_Track_Document $document, $geometry) {
+	private function _setTrackPartMetadata(Abp01_Route_Track_Part $trackPart, $metadata) {
+		if ($metadata != null && !empty($metadata->name)) {
+			$trackPart->setName($metadata->name);
+		}
+		return $trackPart;
+	}
+
+	private function _parseAndCollectMultipleLineStrings(Abp01_Route_Track_Document $document, $geometry, $metadata) {
 		$trackPart = $this->_readDocumentTrackPartFromGeoJsonMultiLineStringGeometry($geometry);
 		if (!$trackPart->isEmpty()) {
-			$document->addTrackPart($trackPart);
+			$document->addTrackPart($this->_setTrackPartMetadata($trackPart, $metadata));
 		}
 	}
 
-	private function _parseAndCollectSinglePolygon(Abp01_Route_Track_Document $document, $geometry) {
+	private function _parseAndCollectSinglePolygon(Abp01_Route_Track_Document $document, $geometry, $metadata) {
 		//polygons are treated as a set of lines 
 		//	(basically, as a multi line string)
 		//	so one polygon = one track part
 		$trackPart = $this->_readDocumentTrackPartFromGeoJsonPolygonGeometry($geometry);
 		if (!$trackPart->isEmpty()) {
-			$document->addTrackPart($trackPart);
+			$document->addTrackPart($this->_setTrackPartMetadata($trackPart, $metadata));
 		}
 	}
 
-	private function _parseAndCollectMultiplePolygons(Abp01_Route_Track_Document $document, $geometry) {
+	private function _parseAndCollectMultiplePolygons(Abp01_Route_Track_Document $document, $geometry, $metadata) {
 		//polygons are treated as a set of sets of lines 
 		//	(basically, as a set of multi line string)
 		//	so one multi-polygon = multiple track parts
 		$trackParts = $this->_readDocumentTrackPartsFromGeoJsonMultiPolygonGeometry($geometry);
 		foreach ($trackParts as $trackPart) {
 			if (!$trackPart->isEmpty()) {
-				$document->addTrackPart($trackPart);
+				$document->addTrackPart($this->_setTrackPartMetadata($trackPart, $metadata));
 			}	
 		}
 	}
 
-	private function _parseAndCollectGeometryCollection(Abp01_Route_Track_Document $document, $geometryCollection) {
+	private function _parseAndCollectGeometryCollection(Abp01_Route_Track_Document $document, $geometryCollection, $metadata) {
 		$geometries = $this->_getGeometries($geometryCollection);
 		foreach ($geometries as $geometry) {
-			$this->_parseAndCollectGeometry($document, $geometry);
+			$this->_parseAndCollectGeometry($document, $geometry, $metadata);
 		}
 	}
 
 	private function _readMetaData(array $features) {
-		if (count($features) == 1) {
+		$meta = null;
+		if ($this->_canCollectMetaDataFromFeatureCollection($features)) {
 			$meta = $this->_readMetadataFromFeature($features[0]);
-		} else {
+		}
+
+		if ($meta == null) {
 			$meta = $this->_createEmptyMetadata();
 		}
 
 		return $meta;
+	}
+
+	private function _canCollectMetaDataFromFeatureCollection(array &$features) {
+		return !empty($features) && $this->_isFeatureWithoutGeometry($features[0]);
+	}
+
+	private function _isFeatureWithoutGeometry($feature) {
+		return empty($this->_getFeatureGeometry($feature));
 	}
 
 	private function _createEmptyMetadata() {
@@ -288,31 +320,50 @@ class Abp01_Route_Track_DocumentParser_GeoJson implements Abp01_Route_Track_Docu
 		$meta = $this->_createEmptyMetadata();
 		$featureProperties = $this->_getFeatureProperties($feature);
 
-		$meta->name = $this->_scanFeatureAndPropsForAttribute('title', 
-			$feature, 
+		$meta->name = $this->_scanFeatureAndFeaturePropsForName($feature, 
 			$featureProperties);
 
-		if (empty($meta->name)) {
-			$meta->name = $this->_scanFeatureAndPropsForAttribute('name', 
-				$feature, 
-				$featureProperties);
-		}
-
-		$meta->desc = $this->_scanFeatureAndPropsForAttribute('desc', 
-			$feature, 
+		$meta->desc = $this->_scanFeatureAndFeaturePropsForDescription($feature, 
 			$featureProperties);
 
-		if (empty($meta->desc)) {
-			$meta->desc = $this->_scanFeatureAndPropsForAttribute('description', 
-				$feature, 
-				$featureProperties);
-		}
-
-		$meta->keywords = $this->_scanFeatureAndPropsForAttribute('keywords', 
-			$feature, 
+		$meta->keywords = $this->_scanFeatureAndFeaturePropsForKeywords($feature, 
 			$featureProperties);
 
 		return $meta;
+	}
+
+	private function _scanFeatureAndFeaturePropsForName($feature, $featureProperties) {
+		$name = $this->_scanFeatureAndPropsForAttribute('title', 
+			$feature, 
+			$featureProperties);
+
+		if (empty($name)) {
+			$name = $this->_scanFeatureAndPropsForAttribute('name', 
+				$feature, 
+				$featureProperties);
+		}
+
+		return $name;
+	}
+
+	private function _scanFeatureAndFeaturePropsForDescription($feature, $featureProperties) {
+		$desc = $this->_scanFeatureAndPropsForAttribute('desc', 
+			$feature, 
+			$featureProperties);
+
+		if (empty($desc)) {
+			$desc = $this->_scanFeatureAndPropsForAttribute('description', 
+				$feature, 
+				$featureProperties);
+		}
+
+		return $desc;
+	}
+
+	private function _scanFeatureAndFeaturePropsForKeywords($feature, $featureProperties) {
+		return $this->_scanFeatureAndPropsForAttribute('keywords', 
+			$feature, 
+			$featureProperties);
 	}
 
 	private function _scanFeatureAndPropsForAttribute($attribute, $feature, $featureProperties) {
@@ -520,7 +571,7 @@ class Abp01_Route_Track_DocumentParser_GeoJson implements Abp01_Route_Track_Docu
 
 	private function _parseGeoJsonGeometryCollectionAsDocument($geoJsonObject) {
 		$document = $this->_createDocumentWithEmptyMetadata($geoJsonObject);
-		$this->_parseAndCollectGeometryCollection($document, $geoJsonObject);
+		$this->_parseAndCollectGeometryCollection($document, $geoJsonObject, null);
 		return $document;
 	}
 
@@ -538,7 +589,7 @@ class Abp01_Route_Track_DocumentParser_GeoJson implements Abp01_Route_Track_Docu
 
 	private function _parseGeoJsonGeometryObjectAsDocument($geometry) {
 		$document = $this->_createDocumentWithEmptyMetadata();
-		$this->_parseAndCollectGeometry($document, $geometry);
+		$this->_parseAndCollectGeometry($document, $geometry, null);
 		return $document;
 	}
 

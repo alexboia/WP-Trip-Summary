@@ -3,6 +3,15 @@
 	"features": [
 		{
 			"type": "Feature",
+			"geometry": null,
+			"properties": {
+				"name": "PDM #4 - Meridionalii de Vest",
+				"description": "PDM #4 - Meridionalii de Vest - Description",
+				"keywords": "kw1,kw2,k23"
+			}
+		},
+		{
+			"type": "Feature",
 			"geometry": {
 				"type": "MultiLineString",
 				"coordinates": [
@@ -35586,9 +35595,7 @@
 				]
 			},
 			"properties": {
-				"name": "PDM #4 - Meridionalii de Vest",
-				"description": "PDM #4 - Meridionalii de Vest - Description",
-				"keywords": "kw1,kw2,k23"
+				"name": "PDM #4 - Meridionalii de Vest Track Part"
 			}
 		}
 	]

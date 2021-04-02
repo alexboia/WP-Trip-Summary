@@ -1,4 +1,5 @@
 *.gpx
+*.geojson
 *.cache
 build
 .vscode/launch.json

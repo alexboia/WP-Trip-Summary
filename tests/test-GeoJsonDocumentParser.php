@@ -34,6 +34,136 @@ class GeoJsonDocumentParserTests extends WP_UnitTestCase {
 	use TestDataFileHelpers;
 	use RouteTrackDocumentTestHelpers;
 
+	private static $_randomGeoJsonFilesTestInfo = array();
+
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+		foreach (self::_getRandomFileGenerationSpec() as $fileName => $options) {
+			self::_generateAndAddRandomGeoJsonFile($fileName, $options);
+		}
+	}
+
+	private static function _getRandomFileGenerationSpec() {
+		return array(
+			'geojson/test6-2tracks-4segments-4000points-nometa.geojson' => array(
+				'precision' => 4,
+				'tracks' => array(
+					'count' => 2
+				),
+				'segments' => array(
+					'count' => 4,
+				),
+				'points' => array(
+					'count' => 4000
+				),
+				'metadata' => false
+			),
+
+			'geojson/test6-2tracks-4segments-4000points-nowpt-nometa.geojson' => array(
+				'precision' => 4,
+				'tracks' => array(
+					'count' => 2
+				),
+				'segments' => array(
+					'count' => 4,
+				),
+				'points' => array(
+					'count' => 4000
+				),
+				'waypoints' => false,
+				'metadata' => false
+			),
+
+			'geojson/test7-1track-1segments-1000points-nowpt-wpartialmeta.geojson' => array(
+				'precision' => 4,
+				'tracks' => array(
+					'count' => 1
+				),
+				'segments' => array(
+					'count' => 1,
+				),
+				'points' => array(
+					'count' => 1000
+				),
+				'waypoints' => false,
+				'metadata' => array(
+					'name' => true,
+					'desc' => true,
+					'keywords' => false,
+					'author' => false,
+					'copyright' => false,
+					'link' => false,
+					'time' => false,
+					'bounds' => false
+				)
+			),
+
+			'geojson/test7-1track-1segments-1000points-wpartialmeta.geojson' => array(
+				'precision' => 4,
+				'tracks' => array(
+					'count' => 1
+				),
+				'segments' => array(
+					'count' => 1,
+				),
+				'points' => array(
+					'count' => 1000
+				),
+				'waypoints' => true,
+				'metadata' => array(
+					'name' => true,
+					'desc' => true,
+					'keywords' => false,
+					'author' => false,
+					'copyright' => false,
+					'link' => false,
+					'time' => false,
+					'bounds' => false
+				)
+			)
+		);
+	}
+
+	private static function _generateAndAddRandomGeoJsonFile($fileName, $options) {
+		$faker = self::_getFaker();
+		$geojonDocument = $faker->geoJson(array_merge($options, array(
+			'addNoPretty' => true
+		)));
+
+		$documentData = $geojonDocument['data'];
+		$unformatteGeoJsonFileName = self::_computeUnformattedGeoJsonFileName($fileName);
+
+		self::$_randomGeoJsonFilesTestInfo[$fileName] = array(
+			'expect' => self::_determineGeneratedDocumentExpectations($documentData, $options)
+		);
+
+		self::$_randomGeoJsonFilesTestInfo[$unformatteGeoJsonFileName] = array(
+			'expect' => $fileName
+		);
+
+		self::_writeTestDataFileContents($fileName, 
+			$geojonDocument['content']['text']);
+		self::_writeTestDataFileContents($unformatteGeoJsonFileName, 
+			$geojonDocument['content']['textNoPretty']);
+	}
+
+	private static function _computeUnformattedGeoJsonFileName($fileName) {
+		return str_ireplace('.geojson', '-unformatted.geojson', 
+			$fileName);
+	}
+
+	public static function tearDownAfterClass() {
+		parent::tearDownAfterClass();
+		self::_clearRandomGeoJsonFiles();
+	}
+
+	private static function _clearRandomGeoJsonFiles() {
+		foreach (array_keys(self::$_randomGeoJsonFilesTestInfo) as $fileName) {
+			unlink(self::_determineDataFilePath($fileName));
+		}
+		self::$_randomGeoJsonFilesTestInfo = array();
+	}
+
 	public function test_canCheckIfSupported() {
         $this->assertEquals(function_exists('json_decode'), 
             Abp01_Route_Track_DocumentParser_GeoJson::isSupported());
@@ -107,15 +237,23 @@ class GeoJsonDocumentParserTests extends WP_UnitTestCase {
 	}
 
 	private function _assertWaypointsCorrect(Abp01_Route_Track_Document $actualDocument, $expectWaypoints) {
-		$this->assertTrue($this->_areDocumentWayPointsCorrect($actualDocument, $expectWaypoints));
+		try {
+			$this->assertTrue($this->_areDocumentWayPointsCorrect($actualDocument, $expectWaypoints));
+		} catch (Exception $exc) {
+			$this->fail($exc->getMessage());
+		}
 	}
 
 	private function _assertTrackPartsCorrect(Abp01_Route_Track_Document $actualDocument, $expectTrackPartsSpec) {
-		$this->assertTrue($this->_areAllTrackPartsCorrect($actualDocument, $expectTrackPartsSpec));
+		try {
+			$this->assertTrue($this->_areAllTrackPartsCorrect($actualDocument, $expectTrackPartsSpec));
+		} catch (Exception $exc) {
+			$this->fail($exc->getMessage());
+		}
 	}
 
 	private function _getValidTestFilesSpec() {
-		return array(
+		return array_merge(array(
 			'geojson/test1-bikemap-utf8-bom.geojson' => array(
                 'expect' => array(
                     'document' => true,
@@ -126,7 +264,7 @@ class GeoJsonDocumentParserTests extends WP_UnitTestCase {
                     ),
                     'trackParts' => array(
                         array(
-                            'name' => null,
+                            'name' => 'PDM #4 - Meridionalii de Vest Track Part',
                             'trackLines' => array(
                                 array(
                                     'trackPointsCount' => 7115,
@@ -370,7 +508,7 @@ class GeoJsonDocumentParserTests extends WP_UnitTestCase {
 			'geojson/test4-empty-object-featurecollection-utf8-wo-bom.geojson' => array(
 				'expect' => 'geojson/test3-empty-object-featurecollection-utf8-bom.geojson'
 			),
-		);
+		), self::$_randomGeoJsonFilesTestInfo);
 	}
 
 	private function _getInvalidTestFilesSpec() {

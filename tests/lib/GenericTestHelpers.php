@@ -106,7 +106,9 @@ trait GenericTestHelpers {
     protected static function _getFaker() {
         if (self::$_faker == null) {
             self::$_faker = Faker\Factory::create();
-            self::$_faker->addProvider(new GpxDocumentFakerDataProvider(self::$_faker, 0.1));
+            self::$_faker->addProvider(new GpsDocumentFakerDataProvider(self::$_faker, 0.1));
+            self::$_faker->addProvider(new GpxDocumentFakerDataProvider(self::$_faker));
+            self::$_faker->addProvider(new GeoJsonDocumentFakerDataProvider(self::$_faker));
         }
 
         return self::$_faker;

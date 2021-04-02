@@ -43,33 +43,98 @@
 		}
 	}
 
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
-		self::_clearRandomGpxFiles();
+	private static function _getRandomFileGenerationSpec() {
+		return array(
+			'test6-2tracks-4segments-4000points-nometa.gpx' => array(
+				'precision' => 4,
+				'tracks' => array(
+					'count' => 2
+				),
+				'segments' => array(
+					'count' => 4,
+				),
+				'points' => array(
+					'count' => 4000
+				),
+				'metadata' => false
+			),
+
+			'test6-2tracks-4segments-4000points-nowpt-nometa.gpx' => array(
+				'precision' => 4,
+				'tracks' => array(
+					'count' => 2
+				),
+				'segments' => array(
+					'count' => 4,
+				),
+				'points' => array(
+					'count' => 4000
+				),
+				'waypoints' => false,
+				'metadata' => false
+			),
+
+			'test7-1track-1segments-1000points-nowpt-wpartialmeta.gpx' => array(
+				'precision' => 4,
+				'tracks' => array(
+					'count' => 1
+				),
+				'segments' => array(
+					'count' => 1,
+				),
+				'points' => array(
+					'count' => 1000
+				),
+				'waypoints' => false,
+				'metadata' => array(
+					'name' => true,
+					'desc' => true,
+					'keywords' => false,
+					'author' => false,
+					'copyright' => false,
+					'link' => false,
+					'time' => false,
+					'bounds' => false
+				)
+			),
+
+			'test7-1track-1segments-1000points-wpartialmeta.gpx' => array(
+				'precision' => 4,
+				'tracks' => array(
+					'count' => 1
+				),
+				'segments' => array(
+					'count' => 1,
+				),
+				'points' => array(
+					'count' => 1000
+				),
+				'waypoints' => true,
+				'metadata' => array(
+					'name' => true,
+					'desc' => true,
+					'keywords' => false,
+					'author' => false,
+					'copyright' => false,
+					'link' => false,
+					'time' => false,
+					'bounds' => false
+				)
+			)
+		);
 	}
 
 	private static function _generateAndAddRandomGpxFile($fileName, $options) {
 		$faker = self::_getFaker();
-		$gpx = $faker->gpx(array_merge($options, array(
+		$gpxDocument = $faker->gpx(array_merge($options, array(
 			'addNoPretty' => true
 		)));
 
-		$data = $gpx['data'];
-		$deltaPoint = self::_computeDeltaPoint($options);
-
-		$expectMetadata = self::_determineExpectedMetadataInfo($data);
-		$expectTrackParts = self::_determineExpectedTrackParts($data, $deltaPoint);
-		$expectSampleWaypoints = self::_determineExpectedWaypoints($data, $deltaPoint);
-
+		$documentData = $gpxDocument['data'];
 		$unformatteGpxFileName = self::_computeUnformattedGpxFileName($fileName);
 
 		self::$_randomGpxFilesTestInfo[$fileName] = array(
-			'expect' => array(
-				'document' => true,
-				'metadata' => $expectMetadata,
-				'trackParts' => $expectTrackParts,
-				'waypoints' => $expectSampleWaypoints
-			)
+			'expect' => self::_determineGeneratedDocumentExpectations($documentData, $options)
 		);
 
 		self::$_randomGpxFilesTestInfo[$unformatteGpxFileName] = array(
@@ -77,71 +142,19 @@
 		);
 
 		self::_writeTestDataFileContents($fileName, 
-			$gpx['content']['text']);
+			$gpxDocument['content']['text']);
 		self::_writeTestDataFileContents($unformatteGpxFileName, 
-			$gpx['content']['textNoPretty']);
-	}
-
-	private static function _computeDeltaPoint($options) {
-		return 1 / pow(10, $options['precision']);
-	}
-
-	private static function _determineExpectedMetadataInfo($generatedGpxData) {
-		return array(
-			'name' => !empty($generatedGpxData['metadata']['name']) 
-				? $generatedGpxData['metadata']['name'] 
-				: null,
-			'desc' => !empty($generatedGpxData['metadata']['desc']) 
-				? $generatedGpxData['metadata']['desc'] 
-				: null,
-			'keywords' => !empty($generatedGpxData['metadata']['keywords']) 
-				? $generatedGpxData['metadata']['keywords'] 
-				: null
-		);
-	}
-
-	private static function _determineExpectedTrackParts($generatedGpxData, $deltaPoint) {
-		$expectTrackParts = array();
-
-		foreach ($generatedGpxData['content']['tracks'] as $track) {
-			$expectTrackLines = array();
-			foreach ($track['segments'] as $segment) {
-				$samplePoints = array();
-				foreach ($segment['points'] as $point) {
-					$samplePoints[] = array_merge($point, array(
-						'delta' => $deltaPoint
-					));
-				}
-				$expectTrackLines[] = array(
-					'trackPointsCount' => count($segment['points']),
-					'sampleTrackPoints' => $samplePoints
-				);
-			}
-
-			$expectTrackParts[] = array(
-				'name' => !empty($track['name']) ? $track['name'] : null,
-				'trackLines' => $expectTrackLines
-			);
-		}
-
-		return $expectTrackParts;
-	}
-
-	private static function _determineExpectedWaypoints($generatedGpxData, $deltaPoint) {
-		$expectSampleWaypoints = array();
-
-		foreach ($generatedGpxData['content']['waypoints']['waypoints'] as $waypoint) {
-			$expectSampleWaypoints[] = array_merge($waypoint, array(
-				'delta' => $deltaPoint
-			));
-		}
-
-		return $expectSampleWaypoints;
+			$gpxDocument['content']['textNoPretty']);
 	}
 
 	private static function _computeUnformattedGpxFileName($fileName) {
 		return str_ireplace('.gpx', '-unformatted.gpx', 
 			$fileName);
+	}
+
+	public static function tearDownAfterClass() {
+		parent::tearDownAfterClass();
+		self::_clearRandomGpxFiles();
 	}
 
 	private static function _clearRandomGpxFiles() {
@@ -224,87 +237,6 @@
 
 	private function _assertTrackPartsCorrect(Abp01_Route_Track_Document $actualDocument, $expectTrackPartsSpec) {
 		$this->assertTrue($this->_areAllTrackPartsCorrect($actualDocument, $expectTrackPartsSpec));
-	}
-
-	private static function _getRandomFileGenerationSpec() {
-		return array(
-			'test6-2tracks-4segments-4000points-nometa.gpx' => array(
-				'precision' => 4,
-				'tracks' => array(
-					'count' => 2
-				),
-				'segments' => array(
-					'count' => 4,
-				),
-				'points' => array(
-					'count' => 4000
-				),
-				'metadata' => false
-			),
-
-			'test6-2tracks-4segments-4000points-nowpt-nometa.gpx' => array(
-				'precision' => 4,
-				'tracks' => array(
-					'count' => 2
-				),
-				'segments' => array(
-					'count' => 4,
-				),
-				'points' => array(
-					'count' => 4000
-				),
-				'waypoints' => false,
-				'metadata' => false
-			),
-
-			'test7-1track-1segments-1000points-nowpt-wpartialmeta.gpx' => array(
-				'precision' => 4,
-				'tracks' => array(
-					'count' => 1
-				),
-				'segments' => array(
-					'count' => 1,
-				),
-				'points' => array(
-					'count' => 1000
-				),
-				'waypoints' => false,
-				'metadata' => array(
-					'name' => true,
-					'desc' => true,
-					'keywords' => false,
-					'author' => false,
-					'copyright' => false,
-					'link' => false,
-					'time' => false,
-					'bounds' => false
-				)
-			),
-
-			'test7-1track-1segments-1000points-wpartialmeta.gpx' => array(
-				'precision' => 4,
-				'tracks' => array(
-					'count' => 1
-				),
-				'segments' => array(
-					'count' => 1,
-				),
-				'points' => array(
-					'count' => 1000
-				),
-				'waypoints' => true,
-				'metadata' => array(
-					'name' => true,
-					'desc' => true,
-					'keywords' => false,
-					'author' => false,
-					'copyright' => false,
-					'link' => false,
-					'time' => false,
-					'bounds' => false
-				)
-			)
-		);
 	}
 
 	private function _getValidTestFilesSpec() {

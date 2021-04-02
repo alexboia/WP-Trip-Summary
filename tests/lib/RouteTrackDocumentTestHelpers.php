@@ -30,6 +30,80 @@
  */
 
 trait RouteTrackDocumentTestHelpers {
+    protected static function _determineGeneratedDocumentExpectations($documentData, $generationOptions) {
+        $deltaPoint = self::_computeDeltaPoint($generationOptions);
+
+		$expectMetadata = self::_determineExpectedMetadataInfo($documentData);
+		$expectTrackParts = self::_determineExpectedTrackParts($documentData, 
+            $deltaPoint);
+		$expectSampleWaypoints = self::_determineExpectedWaypoints($documentData, 
+            $deltaPoint);
+
+        return array(
+            'document' => true,
+            'metadata' => $expectMetadata,
+            'trackParts' => $expectTrackParts,
+            'waypoints' => $expectSampleWaypoints
+        );
+    }
+
+    private static function _computeDeltaPoint($generationOptions) {
+		return 1 / pow(10, $generationOptions['precision']);
+	}
+
+    private static function _determineExpectedMetadataInfo($documentData) {
+		return array(
+			'name' => !empty($documentData['metadata']['name']) 
+				? $documentData['metadata']['name'] 
+				: null,
+			'desc' => !empty($documentData['metadata']['desc']) 
+				? $documentData['metadata']['desc'] 
+				: null,
+			'keywords' => !empty($documentData['metadata']['keywords']) 
+				? $documentData['metadata']['keywords'] 
+				: null
+		);
+	}
+
+    private static function _determineExpectedTrackParts($documentData, $deltaPoint) {
+		$expectTrackParts = array();
+
+		foreach ($documentData['content']['tracks'] as $track) {
+			$expectTrackLines = array();
+			foreach ($track['segments'] as $segment) {
+				$samplePoints = array();
+				foreach ($segment['points'] as $point) {
+					$samplePoints[] = array_merge($point, array(
+						'delta' => $deltaPoint
+					));
+				}
+				$expectTrackLines[] = array(
+					'trackPointsCount' => count($segment['points']),
+					'sampleTrackPoints' => $samplePoints
+				);
+			}
+
+			$expectTrackParts[] = array(
+				'name' => !empty($track['name']) ? $track['name'] : null,
+				'trackLines' => $expectTrackLines
+			);
+		}
+
+		return $expectTrackParts;
+	}
+
+    private static function _determineExpectedWaypoints($documentData, $deltaPoint) {
+		$expectSampleWaypoints = array();
+
+		foreach ($documentData['content']['waypoints']['waypoints'] as $waypoint) {
+			$expectSampleWaypoints[] = array_merge($waypoint, array(
+				'delta' => $deltaPoint
+			));
+		}
+
+		return $expectSampleWaypoints;
+	}
+
     protected function _isMetadataNameCorrect(Abp01_Route_Track_Document $actualDocument, array $expectMeta) {
         $isMetaNameCorrect = false;
         $actualMetadata = $actualDocument->getMetadata();
@@ -98,7 +172,8 @@ trait RouteTrackDocumentTestHelpers {
         $countExpectTrackParts = count($expectTrackPartsSpec);
 
         if ($actualDocument->parts !== null) {
-            if (count($actualDocument->parts) == $countExpectTrackParts) {
+            $countActualTrackParts = count($actualDocument->parts);
+            if ($countActualTrackParts == $countExpectTrackParts) {
                 $allTrackPartsCorrect = true;
                 for ($iPart = 0; $iPart < $countExpectTrackParts; $iPart++ ) {
                     $expectTrackPart = $expectTrackPartsSpec[$iPart];
@@ -144,10 +219,11 @@ trait RouteTrackDocumentTestHelpers {
     }
 
     protected function _doesTrackPartHaveCorrectName($actualTrackPart, $expectTrackPartSpec) {
+        $actualName = $actualTrackPart->getName();
         if (!empty($expectTrackPartSpec['name'])) {
-            return $expectTrackPartSpec['name'] == $actualTrackPart->name;
+            return $expectTrackPartSpec['name'] == $actualName;
         } else {
-            return empty($actualTrackPart->name);
+            return empty($actualName);
         }
     }
 
