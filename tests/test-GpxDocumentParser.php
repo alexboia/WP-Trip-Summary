@@ -130,26 +130,12 @@
 			'addNoPretty' => true
 		)));
 
-		$documentData = $gpxDocument['data'];
-		$unformatteGpxFileName = self::_computeUnformattedGpxFileName($fileName);
+		$expectations = self::_saveDocumentAndDetermineExpectations($fileName, 
+			$gpxDocument, 
+			$options);
 
-		self::$_randomGpxFilesTestInfo[$fileName] = array(
-			'expect' => self::_determineGeneratedDocumentExpectations($documentData, $options)
-		);
-
-		self::$_randomGpxFilesTestInfo[$unformatteGpxFileName] = array(
-			'expect' => $fileName
-		);
-
-		self::_writeTestDataFileContents($fileName, 
-			$gpxDocument['content']['text']);
-		self::_writeTestDataFileContents($unformatteGpxFileName, 
-			$gpxDocument['content']['textNoPretty']);
-	}
-
-	private static function _computeUnformattedGpxFileName($fileName) {
-		return str_ireplace('.gpx', '-unformatted.gpx', 
-			$fileName);
+		self::$_randomGpxFilesTestInfo = array_merge(self::$_randomGpxFilesTestInfo, 
+			$expectations);
 	}
 
 	public static function tearDownAfterClass() {
@@ -158,9 +144,8 @@
 	}
 
 	private static function _clearRandomGpxFiles() {
-		foreach (array_keys(self::$_randomGpxFilesTestInfo) as $fileName) {
-			unlink(self::_determineDataFilePath($fileName));
-		}
+		$fileNames = array_keys(self::$_randomGpxFilesTestInfo);
+		self::_deleteAllDataFiles($fileNames);
 		self::$_randomGpxFilesTestInfo = array();
 	}
 

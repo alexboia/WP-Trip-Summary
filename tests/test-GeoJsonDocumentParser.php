@@ -130,26 +130,12 @@ class GeoJsonDocumentParserTests extends WP_UnitTestCase {
 			'addNoPretty' => true
 		)));
 
-		$documentData = $geojonDocument['data'];
-		$unformatteGeoJsonFileName = self::_computeUnformattedGeoJsonFileName($fileName);
+		$expectations = self::_saveDocumentAndDetermineExpectations($fileName, 
+			$geojonDocument, 
+			$options);
 
-		self::$_randomGeoJsonFilesTestInfo[$fileName] = array(
-			'expect' => self::_determineGeneratedDocumentExpectations($documentData, $options)
-		);
-
-		self::$_randomGeoJsonFilesTestInfo[$unformatteGeoJsonFileName] = array(
-			'expect' => $fileName
-		);
-
-		self::_writeTestDataFileContents($fileName, 
-			$geojonDocument['content']['text']);
-		self::_writeTestDataFileContents($unformatteGeoJsonFileName, 
-			$geojonDocument['content']['textNoPretty']);
-	}
-
-	private static function _computeUnformattedGeoJsonFileName($fileName) {
-		return str_ireplace('.geojson', '-unformatted.geojson', 
-			$fileName);
+		self::$_randomGeoJsonFilesTestInfo = array_merge(self::$_randomGeoJsonFilesTestInfo, 
+			$expectations);
 	}
 
 	public static function tearDownAfterClass() {
@@ -158,9 +144,8 @@ class GeoJsonDocumentParserTests extends WP_UnitTestCase {
 	}
 
 	private static function _clearRandomGeoJsonFiles() {
-		foreach (array_keys(self::$_randomGeoJsonFilesTestInfo) as $fileName) {
-			unlink(self::_determineDataFilePath($fileName));
-		}
+		$fileNames = array_keys(self::$_randomGeoJsonFilesTestInfo);
+		self::_deleteAllDataFiles($fileNames);
 		self::$_randomGeoJsonFilesTestInfo = array();
 	}
 

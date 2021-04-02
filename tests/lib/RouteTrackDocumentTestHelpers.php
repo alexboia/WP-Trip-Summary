@@ -30,6 +30,36 @@
  */
 
 trait RouteTrackDocumentTestHelpers {
+    use TestDataFileHelpers;
+
+    protected static function _saveDocumentAndDetermineExpectations($fileName, $document, $generationOptions) {
+        $expectations = array();
+        $documentData = $document['data'];
+		$unformattedFileName = self::_computeUnformattedFileName($fileName);
+
+		$expectations[$fileName] = array(
+			'expect' => self::_determineGeneratedDocumentExpectations($documentData, $generationOptions)
+		);
+
+		$expectations[$unformattedFileName] = array(
+			'expect' => $fileName
+		);
+
+		self::_writeTestDataFileContents($fileName, 
+			$document['content']['text']);
+		self::_writeTestDataFileContents($unformattedFileName, 
+			$document['content']['textNoPretty']);
+
+        return $expectations;
+    }
+
+    private static function _computeUnformattedFileName($fileName) {
+        $extensionStartPos = strrpos($fileName, '.');
+        $extension = substr($fileName, $extensionStartPos);
+		return str_ireplace($extension, '-unformatted' . $extension, 
+			$fileName);
+	}
+
     protected static function _determineGeneratedDocumentExpectations($documentData, $generationOptions) {
         $deltaPoint = self::_computeDeltaPoint($generationOptions);
 

@@ -30,6 +30,16 @@
  */
 
  trait TestDataFileHelpers {
+    protected static function _deleteAllDataFiles($fileNames) {
+        foreach ($fileNames as $fileName) {
+            self::_deleteDataFile($fileName);
+        }
+    }
+
+    protected static function _deleteDataFile($fileName) {
+        unlink(self::_determineDataFilePath($fileName));
+    }
+
     protected static function _writeTestDataFileContents($fileName, $contents) {
         file_put_contents(self::_determineDataFilePath($fileName), $contents);
     }
