@@ -122,7 +122,7 @@ class GpsDocumentFakerDataProvider extends \Faker\Provider\Base {
 	private function _generateMetaData($args) {
         return array(
             'name' => $args['name'] 
-                ? $this->generator->numerify('GPX Document ####') 
+                ? $this->generator->numerify('GPS Data Document ####') 
                 : null,
             'desc' => $args['desc'] 
                 ? $this->generator->sentence($this->generator->numberBetween(3, 10)) 
