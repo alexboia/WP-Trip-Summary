@@ -71,26 +71,14 @@ class Abp01_Route_Track_Part {
     }
 
     public function addLine(Abp01_Route_Track_Line $line) {
-        if ($line->minLat < $this->minLat) {
-            $this->minLat = $line->minLat;
-        }
-        if ($line->maxLat > $this->maxLat) {
-            $this->maxLat = $line->maxLat;
-        }
+        $this->minLat = min($this->minLat, $line->minLat);
+        $this->minLng = min($this->minLng, $line->minLng);
 
-        if ($line->minLng < $this->minLng) {
-            $this->minLng = $line->minLng;
-        }
-        if ($line->maxLng > $this->maxLng) {
-            $this->maxLng = $line->maxLng;
-        }
+        $this->maxLat = max($this->maxLat, $line->maxLat);
+        $this->maxLng = max($this->maxLng, $line->maxLng);
 
-        if ($line->minAlt < $this->minAlt) {
-            $this->minAlt = $line->minAlt;
-        }
-        if ($line->maxAlt > $this->maxAlt) {
-            $this->maxAlt = $line->maxAlt;
-        }
+        $this->minAlt = min($this->minAlt, $line->minAlt);
+        $this->maxAlt = max($this->maxAlt, $line->maxAlt);
 
         if (!is_array($this->lines)) {
             $this->lines = array();

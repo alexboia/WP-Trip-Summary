@@ -44,7 +44,7 @@ Do you think this would be right for you but there's that extra thing that's mis
 <a name="wpts-features"></a>  
 
 - attach technical information to a post (ex. how long was your trip, how much did you totally climb, where from and where to, how hard do you think it has been, what kind of roads or trails did you encounter etc.);
-- attach a GPS track to a post ([see below for a detailed discussion on accepted file formats](#wpts-features-file-format)) and display that track on a map;
+- attach some GPS to a post ([see below for a detailed discussion on accepted file formats](#wpts-features-file-format)) and display that track on a map;
 - allows management of the look-up data used to populate the fields presented as single or multi-selection options list (ex. `Difficulty Level`, `Open During Seasons` etc.);
 - allows customization of the map layer:
    - map tile source (comes by default configured with [OpenStreetMap](https://www.openstreetmap.org/)); 
@@ -62,7 +62,7 @@ WP-Trip-Summary supports the following file formats when importing GPS track dat
 
 #### GPX
 
-An uploaded file is assumed to be compliant with the GPX format (and validated as such) if it has any of the following mime types:
+An uploaded file is processed as a GPX file (and validated as such) if it has any of the following mime types:
 
 - `application/gpx`;
 - `application/x-gpx+xml`;
@@ -71,7 +71,7 @@ An uploaded file is assumed to be compliant with the GPX format (and validated a
 - `application/gpx+xml`;
 - `text/xml`.
 
-GPX documents are assumed to comply with the [GPX 1.1 schema](https://www.topografix.com/gpx/1/1/) and are parsed as follows:
+GPX documents are expected to comply with the [GPX 1.1 schema](https://www.topografix.com/gpx/1/1/) and are parsed as follows:
 
 - Only document name, description and keywords metadata elements are read;
 - The following information is read for a point (`<wpt>` or `<trkpt>`), besides latitude and longitude:
@@ -85,7 +85,7 @@ For the more technically inclined, [the parser can be consulted here](https://gi
 
 #### GeoJSON
 
-An uploaded file is assumed to be compliant with the GeoJSON format (and validated as such) if it has any of the following mime types:
+An uploaded file is processed as a GeoJSON file (and validated as such) if it has any of the following mime types:
 
 - `application/json`;
 - `application/geo+json`;

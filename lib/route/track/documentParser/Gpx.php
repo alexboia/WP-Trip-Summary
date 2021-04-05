@@ -129,7 +129,10 @@ class Abp01_Route_Track_DocumentParser_Gpx implements Abp01_Route_Track_Document
 	}
 
 	private function _readTrack($trkNode) {
-		$name = !empty($trkNode->name) ? (string)$trkNode->name : null;
+		$name = !empty($trkNode->name) 
+			? (string)$trkNode->name 
+			: null;
+
 		$track = new Abp01_Route_Track_Part($name);
 
 		if (!empty($trkNode->trkseg)) {

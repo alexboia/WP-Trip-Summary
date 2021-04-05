@@ -155,6 +155,10 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
 		return $this->_documentParserFactory->resolveDocumentParser($trackFileMimeType);
 	}
 
+	/**
+	 * @return Abp01_Route_Track_AltitudeProfile
+	 * @throws InvalidArgumentException 
+	 */
 	public function getOrCreateDisplayableAltitudeProfile(Abp01_Route_Track $track, $targetSystem, $stepPoints = 10) {
 		if ($stepPoints <= 0) {
 			throw new InvalidArgumentException('Number of points to step over must be greater than 0');

@@ -57,7 +57,7 @@ class Abp01_Route_Track_Line {
 
         $this->minLng = PHP_INT_MAX;
         $this->maxLng = ~PHP_INT_MAX;
-        ;
+        
         $this->minAlt = PHP_INT_MAX;
         $this->maxAlt = ~PHP_INT_MAX;
 
@@ -69,27 +69,14 @@ class Abp01_Route_Track_Line {
     }
 
     public function addPoint(Abp01_Route_Track_Point $point) {
+        $this->maxLat = max($this->maxLat, $point->coordinate->lat);
+        $this->maxLng = max($this->maxLng, $point->coordinate->lng);
 
-        if ($point->coordinate->lat > $this->maxLat) {
-            $this->maxLat = $point->coordinate->lat;
-        }
-        if ($point->coordinate->lng > $this->maxLng) {
-            $this->maxLng = $point->coordinate->lng;
-        }
+        $this->minLat = min($this->minLat, $point->coordinate->lat);
+        $this->minLng = min($this->minLng, $point->coordinate->lng);
 
-        if ($point->coordinate->lat < $this->minLat) {
-            $this->minLat = $point->coordinate->lat;
-        }
-        if ($point->coordinate->lng < $this->minLng) {
-            $this->minLng = $point->coordinate->lng;
-        }
-
-        if ($point->coordinate->alt > $this->maxAlt) {
-            $this->maxAlt = $point->coordinate->alt;
-        }
-        if ($point->coordinate->alt < $this->minAlt) {
-            $this->minAlt = $point->coordinate->alt;
-        }
+        $this->maxAlt = max($this->maxAlt, $point->coordinate->alt);
+        $this->minAlt = min($this->minAlt, $point->coordinate->alt);
 
         if (!is_array($this->trackPoints)) {
             $this->trackPoints = array();

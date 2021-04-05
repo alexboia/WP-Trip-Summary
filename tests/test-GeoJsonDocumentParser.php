@@ -150,9 +150,9 @@ class GeoJsonDocumentParserTests extends WP_UnitTestCase {
 	}
 
 	public function test_canCheckIfSupported() {
-        $this->assertEquals(function_exists('json_decode'), 
-            Abp01_Route_Track_DocumentParser_GeoJson::isSupported());
-    }
+		$this->assertEquals(function_exists('json_decode'), 
+			Abp01_Route_Track_DocumentParser_GeoJson::isSupported());
+	}
 
 	public function test_canParse_correctDocument() {
 		$testFiles = $this->_getValidTestFilesSpec();
@@ -240,68 +240,68 @@ class GeoJsonDocumentParserTests extends WP_UnitTestCase {
 	private function _getValidTestFilesSpec() {
 		return array_merge(array(
 			'geojson/test1-bikemap-utf8-bom.geojson' => array(
-                'expect' => array(
-                    'document' => true,
-                    'metadata' => array(
-                        'name' => 'PDM #4 - Meridionalii de Vest',
-                        'desc' => 'PDM #4 - Meridionalii de Vest - Description',
-                        'keywords' => 'kw1,kw2,k23'
-                    ),
-                    'trackParts' => array(
-                        array(
-                            'name' => 'PDM #4 - Meridionalii de Vest Track Part',
-                            'trackLines' => array(
-                                array(
-                                    'trackPointsCount' => 7115,
-                                    'sampleTrackPoints' => array(
-                                        //Pick some points at the start of the line
-                                        array(
-                                            'lat' => 45.0391,
-                                            'lon' => 23.26416,
-                                            'ele' => 201,
-                                            'delta' => 0.00
-                                        ),
-                                        array(
-                                            'lat' => 45.03761,
-                                            'lon' => 23.25927,
-                                            'ele' => 200,
-                                            'delta' => 0.00
-                                        ),
+				'expect' => array(
+					'document' => true,
+					'metadata' => array(
+						'name' => 'PDM #4 - Meridionalii de Vest',
+						'desc' => 'PDM #4 - Meridionalii de Vest - Description',
+						'keywords' => 'kw1,kw2,k23'
+					),
+					'trackParts' => array(
+						array(
+							'name' => 'PDM #4 - Meridionalii de Vest Track Part',
+							'trackLines' => array(
+								array(
+									'trackPointsCount' => 7115,
+									'sampleTrackPoints' => array(
+										//Pick some points at the start of the line
+										array(
+											'lat' => 45.0391,
+											'lon' => 23.26416,
+											'ele' => 201,
+											'delta' => 0.00
+										),
+										array(
+											'lat' => 45.03761,
+											'lon' => 23.25927,
+											'ele' => 200,
+											'delta' => 0.00
+										),
 
-                                        //Pick some points somewhere in the middle of the line
-                                        array(
-                                            'lat' => 45.04968,
-                                            'lon' => 23.22269,
-                                            'ele' => 217,
-                                            'delta' => 0.00
-                                        ),
-                                        array(
-                                            'lat' => 45.04986,
-                                            'lon' => 23.22244,
-                                            'ele' => 218,
-                                            'delta' => 0.00
-                                        ),
+										//Pick some points somewhere in the middle of the line
+										array(
+											'lat' => 45.04968,
+											'lon' => 23.22269,
+											'ele' => 217,
+											'delta' => 0.00
+										),
+										array(
+											'lat' => 45.04986,
+											'lon' => 23.22244,
+											'ele' => 218,
+											'delta' => 0.00
+										),
 
-                                        //Pick some points at the end of the line
-                                        array(
-                                            'lat' => 44.85752,
-                                            'lon' => 22.38765,
-                                            'ele' => 139,
-                                            'delta' => 0.00
-                                        ),
-                                        array(
-                                            'lat' => 44.85767,
-                                            'lon' => 22.38772,
-                                            'ele' => 140,
-                                            'delta' => 0.00
-                                        ),
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            ),
+										//Pick some points at the end of the line
+										array(
+											'lat' => 44.85752,
+											'lon' => 22.38765,
+											'ele' => 139,
+											'delta' => 0.00
+										),
+										array(
+											'lat' => 44.85767,
+											'lon' => 22.38772,
+											'ele' => 140,
+											'delta' => 0.00
+										),
+									)
+								)
+							)
+						)
+					)
+				)
+			),
 			'geojson/test2-bikemap-utf8-no-bom.geojson' => array(
 				'expect' => 'geojson/test1-bikemap-utf8-bom.geojson'
 			),
@@ -493,6 +493,46 @@ class GeoJsonDocumentParserTests extends WP_UnitTestCase {
 			'geojson/test4-empty-object-featurecollection-utf8-wo-bom.geojson' => array(
 				'expect' => 'geojson/test3-empty-object-featurecollection-utf8-bom.geojson'
 			),
+			'geojson/test7-only-points-utf8-bom.geojson' => array(
+				'expect' => array(
+					'document' => true,
+					'metadata' => array(
+						'name' => null,
+						'desc' => null,
+						'keywords' => null
+					),
+					'waypoints' => array(
+						array(
+							'lat' => 45.81803291052889,
+							'lon' => 23.88153076171875,
+							'ele' => 0,
+							'delta' => 0.00
+						),
+						array(
+							'lat' => 45.80606786701775,
+							'lon' => 23.91345977783203,
+							'ele' => 0,
+							'delta' => 0.00
+						),
+						array(
+							'lat' => 45.78787607781522,
+							'lon' => 23.99585723876953,
+							'ele' => 0,
+							'delta' => 0.00
+						),
+						array(
+							'lat' => 45.77877795608451,
+							'lon' => 23.955345153808594,
+							'ele' => 0,
+							'delta' => 0.00
+						)
+					),
+					'trackParts' => array()
+				)
+			),
+			'geojson/test8-only-points-utf8-wo-bom.geojson' => array(
+				'expect' => 'geojson/test7-only-points-utf8-bom.geojson'
+			)
 		), self::$_randomGeoJsonFilesTestInfo);
 	}
 

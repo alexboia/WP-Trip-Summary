@@ -29,29 +29,22 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
-}
+class GeoJsonDocumentFormatTestInfo implements GpsDocumentFormatTestInfo {
+	use GenericTestHelpers;
 
-/**
- * @package WP-Trip-Summary
- */
-class Abp01_UnitSystem_Value_Height extends Abp01_UnitSystem_Value {
-    public function __construct($value, $unitSystem = null) {
-        parent::__construct($value, $unitSystem);
-    }
+	public function getExtension() {
+		return 'geojson';
+	}
 
-    public static function convertHeightTo($height, $unitSystem) {
-        return (new self($height))
-            ->convertTo($unitSystem)
-            ->getValue();
-    }
+	public function getDefaultMimeType() {
+		return 'application/geo+json';
+	}
 
-    protected function convertValueTo(Abp01_UnitSystem $otherSystem) {
-        return $this->_unitSystem->convertHeightTo($this->_value, $otherSystem);
-    }
+	public function createParserInstance() {
+		return new Abp01_Route_Track_DocumentParser_GeoJson();
+	}
 
-    protected function getUnit() {
-        return $this->_unitSystem->getHeightUnit();
-    }
+	public function generateDocument() {
+		return $this->_getFaker()->geoJson();
+	} 
 }

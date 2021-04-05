@@ -56,6 +56,26 @@ class Abp01_Route_Track_AltitudeProfile {
         return unserialize($serialized);
     }
 
+    public function getProfilePoints() {
+        return $this->profile;
+    }
+
+    public function getProfilePointCount() {
+        return count($this->profile);
+    }
+
+    public function getStepPoints() {
+        return $this->stepPoints;
+    }
+
+    public function getDistanceUnit() {
+        return $this->distanceUnit;
+    }
+
+    public function getHeightUnit() {
+        return $this->heightUnit;
+    }
+
     public function toPlainObject() {
         $data = new stdClass();
         $data->profile = &$this->profile;

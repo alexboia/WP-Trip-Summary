@@ -30,296 +30,296 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
 class Abp01_Route_Track_Document {
-    /**
-     * @var Abp01_Route_Track_Part[] Array of track segments
-     */
-    public $parts;
+	/**
+	 * @var Abp01_Route_Track_Part[] Array of track segments
+	 */
+	public $parts;
 
-    /**
-     * @var Abp01_Route_Track_Point[] Array of waypoints
-     */
-    public $waypoints;
+	/**
+	 * @var Abp01_Route_Track_Point[] Array of waypoints
+	 */
+	public $waypoints;
 
-    public $metadata;
+	public $metadata;
 
-    public $maxLat;
+	public $maxLat;
 
-    public $maxLng;
+	public $maxLng;
 
-    public $minLat;
+	public $minLat;
 
-    public $minLng;
+	public $minLng;
 
-    public $maxAlt;
+	public $maxAlt;
 
-    public $minAlt;
+	public $minAlt;
 
-    public function __construct($metadata = null) {
-        $this->parts = array();
-        $this->waypoints = array();
-        $this->metadata = $metadata;
+	public function __construct($metadata = null) {
+		$this->parts = array();
+		$this->waypoints = array();
+		$this->metadata = $metadata;
 
-        $this->minLat = PHP_INT_MAX;
-        $this->maxLat = ~PHP_INT_MAX;
+		$this->minLat = PHP_INT_MAX;
+		$this->maxLat = ~PHP_INT_MAX;
 
-        $this->minLng = PHP_INT_MAX;
-        $this->maxLng = ~PHP_INT_MAX;
+		$this->minLng = PHP_INT_MAX;
+		$this->maxLng = ~PHP_INT_MAX;
 
-        $this->minAlt = PHP_INT_MAX;
-        $this->maxAlt = ~PHP_INT_MAX;
-    }
+		$this->minAlt = PHP_INT_MAX;
+		$this->maxAlt = ~PHP_INT_MAX;
+	}
 
-    public static function fromSerializedDocument($serialized) {
-        if (!$serialized || empty($serialized)) {
-            return null;
-        }
-        return unserialize($serialized);
-    }
+	public static function fromSerializedDocument($serialized) {
+		if (!$serialized || empty($serialized)) {
+			return null;
+		}
+		return unserialize($serialized);
+	}
 
-    public function isEmpty() {
-        return empty($this->parts);
-    }
+	public function isEmpty() {
+		return empty($this->parts);
+	}
 
-    public function setMedata($metadata) {
-        $this->metadata = $metadata;
-    }
+	public function setMedata($metadata) {
+		$this->metadata = $metadata;
+	}
 
-    public function getMetadata() {
-        return $this->metadata;
-    }
+	public function getMetadata() {
+		return $this->metadata;
+	}
 
-    public function addTrackPart(Abp01_Route_Track_Part $track) {
-        if ($track->minLat < $this->minLat) {
-            $this->minLat = $track->minLat;
-        }
-        if ($track->maxLat > $this->maxLat) {
-            $this->maxLat = $track->maxLat;
-        }
+	public function addTrackPart(Abp01_Route_Track_Part $track) {
+		$this->minLat = min($this->minLat, $track->minLat);
+		$this->maxLat = max($this->maxLat, $track->maxLat);
 
-        if ($track->minLng < $this->minLng) {
-            $this->minLng = $track->minLng;
-        }
-        if ($track->maxLng > $this->maxLng) {
-            $this->maxLng = $track->maxLng;
-        }
+		$this->minLng = min($this->minLng, $track->minLng);
+		$this->maxLng = max($this->maxLng, $track->maxLng);
 
-        if ($track->minAlt < $this->minAlt) {
-            $this->minAlt = $track->minAlt;
-        }
-        if ($track->maxAlt > $this->maxAlt) {
-            $this->maxAlt = $track->maxAlt;
-        }
+		$this->minAlt = min($this->minAlt, $track->minAlt);
+		$this->maxAlt = max($this->maxAlt, $track->maxAlt);
 
-        if (!is_array($this->parts)) {
-            $this->parts = array();
-        }
+		if (!is_array($this->parts)) {
+			$this->parts = array();
+		}
 
-        $this->parts[] = $track;
-    }
+		$this->parts[] = $track;
+	}
 
-    public function getTrackParts() {
-        return $this->parts;
-    }
+	public function getTrackParts() {
+		return $this->parts;
+	}
 
-    public function addWayPoint(Abp01_Route_Track_Point $wpt) {
-        if ($wpt->coordinate->lat > $this->maxLat) {
-            $this->maxLat = $wpt->coordinate->lat;
-        }
-        if ($wpt->coordinate->lng > $this->maxLng) {
-            $this->maxLng = $wpt->coordinate->lng;
-        }
-        if ($wpt->coordinate->lat < $this->minLat) {
-            $this->minLat = $wpt->coordinate->lat;
-        }
-        if ($wpt->coordinate->lng < $this->minLng) {
-            $this->minLng = $wpt->coordinate->lng;
-        }
-        if ($wpt->coordinate->alt > $this->maxAlt) {
-            $this->maxAlt = $wpt->coordinate->alt;
-        }
-        if ($wpt->coordinate->alt < $this->minAlt) {
-            $this->minAlt = $wpt->coordinate->alt;
-        }
+	public function addWayPoint(Abp01_Route_Track_Point $wpt) {
+		if ($wpt->coordinate->lat > $this->maxLat) {
+			$this->maxLat = $wpt->coordinate->lat;
+		}
+		if ($wpt->coordinate->lng > $this->maxLng) {
+			$this->maxLng = $wpt->coordinate->lng;
+		}
+		if ($wpt->coordinate->lat < $this->minLat) {
+			$this->minLat = $wpt->coordinate->lat;
+		}
+		if ($wpt->coordinate->lng < $this->minLng) {
+			$this->minLng = $wpt->coordinate->lng;
+		}
+		if ($wpt->coordinate->alt > $this->maxAlt) {
+			$this->maxAlt = $wpt->coordinate->alt;
+		}
+		if ($wpt->coordinate->alt < $this->minAlt) {
+			$this->minAlt = $wpt->coordinate->alt;
+		}
 
-        if (!is_array($this->waypoints)) {
-            $this->waypoints = array();
-        }
+		if (!is_array($this->waypoints)) {
+			$this->waypoints = array();
+		}
 
-        $this->waypoints[] = $wpt;
-    }
+		$this->waypoints[] = $wpt;
+	}
 
-    public function getWaypoints() {
-        return $this->waypoints;
-    }
+	public function getWaypoints() {
+		return $this->waypoints;
+	}
 
-    /**
-     * @return Abp01_Route_Track_Document
-     */
-    public function simplify($threshold) {
-        $document = new Abp01_Route_Track_Document($this->metadata);
+	/**
+	 * @return Abp01_Route_Track_Document
+	 */
+	public function simplify($threshold) {
+		$document = new Abp01_Route_Track_Document($this->metadata);
 
-        foreach ($this->waypoints as $wpt) {
-            $document->addWayPoint($wpt);
-        }
-        foreach ($this->parts as $trk) {
-            $document->addTrackPart($trk->simplify($threshold));
-        }
+		foreach ($this->waypoints as $wpt) {
+			$document->addWayPoint($wpt);
+		}
+		foreach ($this->parts as $trk) {
+			$document->addTrackPart($trk->simplify($threshold));
+		}
 
-        return $document;
-    }
+		return $document;
+	}
 
-    /**
-     * @return Abp01_Route_Track_AltitudeProfile
-     */
-    public function computeAltitudeProfile($targetSystem, $stepPoints) {
-        $distance = 0;
-        $lastPoint = null;
-        $sampleIndex = 0;
-        $profile = array();
+	/**
+	 * @return Abp01_Route_Track_AltitudeProfile
+	 */
+	public function computeAltitudeProfile($targetSystem, $stepPoints) {
+		$distance = 0;
+		$lastPoint = null;
+		$sampleIndex = 0;
+		$profile = array();
 
-        foreach ($this->parts as $part) {
-            foreach ($part->lines as $line) {
-                foreach ($line->trackPoints as $point) {
-                    if ($lastPoint != null) {
-                        $distance += round($point->distanceToPoint($lastPoint), 2);
-                    }
+		foreach ($this->parts as $part) {
+			foreach ($part->lines as $line) {
+				foreach ($line->trackPoints as $point) {
+					if ($lastPoint != null) {
+						$distance += round($point->distanceToPoint($lastPoint), 2);
+					}
 
-                    if (!is_null($point->coordinate->alt) && $sampleIndex++ % $stepPoints == 0) {
-                        $altitude = round($point->coordinate->alt, 2);
-                        $displayDistance = new Abp01_UnitSystem_Value_Distance($distance);
-                        $displayAltitude = new Abp01_UnitSystem_Value_Height($altitude);
+					if (!is_null($point->coordinate->alt) && $sampleIndex++ % $stepPoints == 0) {
+						$altitude = round($point->coordinate->alt, 2);
+						$displayDistance = new Abp01_UnitSystem_Value_Distance($distance);
+						$displayAltitude = new Abp01_UnitSystem_Value_Height($altitude);
 
-                        $profile[] = array(
-                            'displayDistance' => $displayDistance
-                                ->convertTo($targetSystem)
-                                ->getValue(),
-                            
-                            'displayAlt' => $displayAltitude
-                                ->convertTo($targetSystem)
-                                ->getValue(),
+						$profile[] = array(
+							'displayDistance' => $displayDistance
+								->convertTo($targetSystem)
+								->getValue(),
 
-                            'coord' => array(
-                                'lat' => $point->coordinate->lat,
-                                'lng' => $point->coordinate->lng
-                            )
-                        );
-                    }
+							'displayAlt' => $displayAltitude
+								->convertTo($targetSystem)
+								->getValue(),
 
-                    $lastPoint = $point;
-                }
-            }
-        }
+							'coord' => array(
+								'lat' => $point->coordinate->lat,
+								'lng' => $point->coordinate->lng
+							)
+						);
+					}
 
-        return new Abp01_Route_Track_AltitudeProfile($profile, 
-            $targetSystem->getDistanceUnit(), 
-            $targetSystem->getHeightUnit(),
-            $stepPoints);
-    }
+					$lastPoint = $point;
+				}
+			}
+		}
 
-    /**
-     * @return Abp01_Route_Track_Info
-     */
-    public function getDisplayableTrackInfo($targetSystem) {
-        $minAlt = new Abp01_UnitSystem_Value_Height($this->minAlt);
-        $maxAlt = new Abp01_UnitSystem_Value_Height($this->maxAlt);
+		return new Abp01_Route_Track_AltitudeProfile($profile, 
+			$targetSystem->getDistanceUnit(), 
+			$targetSystem->getHeightUnit(),
+			$stepPoints);
+	}
 
-        $minAlt = $minAlt->convertTo($targetSystem);
-        $maxAlt = $maxAlt->convertTo($targetSystem);
+	public function computeTotalPointsCount() {
+		$total = 0;
 
-        return new Abp01_Route_Track_Info($minAlt, $maxAlt);
-    }
+		foreach ($this->parts as $part) {
+			foreach ($part->lines as $line) {
+				$total += count($line->trackPoints);
+			}
+		}
 
-    /**
-     * @return stdClass
-     */
-    public function toPlainObject() {
-        $data = new stdClass();
-        $data->route = $this;
+		return $total;
+	}
+
+	/**
+	 * @return Abp01_Route_Track_Info
+	 */
+	public function getDisplayableTrackInfo($targetSystem) {
+		$minAlt = new Abp01_UnitSystem_Value_Height($this->minAlt);
+		$maxAlt = new Abp01_UnitSystem_Value_Height($this->maxAlt);
+
+		$minAlt = $minAlt->convertTo($targetSystem);
+		$maxAlt = $maxAlt->convertTo($targetSystem);
+
+		return new Abp01_Route_Track_Info($minAlt, $maxAlt);
+	}
+
+	/**
+	 * @return stdClass
+	 */
+	public function toPlainObject() {
+		$data = new stdClass();
+		$data->route = $this;
 		$data->bounds = $this->getBounds();
 		$data->start = $this->getStartPoint();
 		$data->end = $this->getEndPoint();
 		$data->minAltitude = $this->getMinAlt();
-        $data->maxAltitude = $this->getMaxAlt();
-        return $data;
-    }
+		$data->maxAltitude = $this->getMaxAlt();
+		return $data;
+	}
 
-    /**
-     * @return Abp01_Route_Track_Bbox
-     */
-    public function getBounds() {
-        $bounds = new Abp01_Route_Track_Bbox($this->minLat,
-            $this->minLng,
-            $this->maxLat,
-            $this->maxLng);
-        return $bounds;
-    }
+	/**
+	 * @return Abp01_Route_Track_Bbox
+	 */
+	public function getBounds() {
+		$bounds = new Abp01_Route_Track_Bbox($this->minLat,
+			$this->minLng,
+			$this->maxLat,
+			$this->maxLng);
+		return $bounds;
+	}
 
-    public function getMinAlt() {
-        return $this->minAlt;
-    }
+	public function getMinAlt() {
+		return $this->minAlt;
+	}
 
-    public function getMaxAlt() {
-        return $this->maxAlt;
-    }
+	public function getMaxAlt() {
+		return $this->maxAlt;
+	}
 
-    /**
-     * @return Abp01_Route_Track_Point|null
-     */
-    function getStartPoint() {
-        $part = reset($this->parts);
-        if (!$part) {
-            return null;
-        }
+	/**
+	 * @return Abp01_Route_Track_Point|null
+	 */
+	function getStartPoint() {
+		$part = reset($this->parts);
+		if (!$part) {
+			return null;
+		}
 
-        $line = reset($part->lines);
-        if (!$line) {
-            return null;
-        }
+		$line = reset($part->lines);
+		if (!$line) {
+			return null;
+		}
 
-        $trackPoint = reset($line->trackPoints);
-        return $trackPoint instanceof Abp01_Route_Track_Point
-            ? $trackPoint 
-            : null;
-    }
+		$trackPoint = reset($line->trackPoints);
+		return $trackPoint instanceof Abp01_Route_Track_Point
+			? $trackPoint 
+			: null;
+	}
 
-    /**
-     * @return Abp01_Route_Track_Point|null
-     */
-    function getEndPoint() {
-        $part = end($this->parts);
-        reset($this->parts);
-        if (!$part) {
-            return null;
-        }
+	/**
+	 * @return Abp01_Route_Track_Point|null
+	 */
+	function getEndPoint() {
+		$part = end($this->parts);
+		reset($this->parts);
+		if (!$part) {
+			return null;
+		}
 
-        $line = end($part->lines);
-        reset($part->lines);
-        if (!$line) {
-            return null;
-        }
+		$line = end($part->lines);
+		reset($part->lines);
+		if (!$line) {
+			return null;
+		}
 
-        $trackPoint = end($line->trackPoints);
-        reset($line->trackPoints);
-        return $trackPoint instanceof Abp01_Route_Track_Point
-            ? $trackPoint 
-            : null;
-    }
+		$trackPoint = end($line->trackPoints);
+		reset($line->trackPoints);
+		return $trackPoint instanceof Abp01_Route_Track_Point
+			? $trackPoint 
+			: null;
+	}
 
-    /**
-     * @return string
-     */
-    public function serializeDocument() {
-        return serialize($this);
-    }
+	/**
+	 * @return string
+	 */
+	public function serializeDocument() {
+		return serialize($this);
+	}
 
-    /**
-     * @return string
-     */
-    public function toJson() {
-        return json_encode($this);
-    }
+	/**
+	 * @return string
+	 */
+	public function toJson() {
+		return json_encode($this);
+	}
 }

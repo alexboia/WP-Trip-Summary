@@ -120,6 +120,9 @@ function _include_plugin_dependent_test_classes() {
 	require_once 'lib/sampleModuleClasses/RequiresOnlyUnsupportedDependenciesSamplePluginModule.php';
 	require_once 'lib/sampleModuleClasses/NotAValidModuleClassSamplePluginModule.php';
 	require_once 'lib/sampleModuleClasses/HasOnlyCustomAvailableDependenciesPluginModule.php';
+	require_once 'lib/GpsDocumentFormatTestInfo.php';
+	require_once 'lib/GpxDocumentFormatTestInfo.php';
+	require_once 'lib/GeoJsonDocumentFormatTestInfo.php';
 }
 
 function _sync_wp_tests_config($testsDir) {

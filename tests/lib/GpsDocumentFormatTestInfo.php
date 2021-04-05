@@ -29,29 +29,12 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
-}
+interface GpsDocumentFormatTestInfo {
+	function getExtension();
 
-/**
- * @package WP-Trip-Summary
- */
-class Abp01_UnitSystem_Value_Height extends Abp01_UnitSystem_Value {
-    public function __construct($value, $unitSystem = null) {
-        parent::__construct($value, $unitSystem);
-    }
+	function getDefaultMimeType();
 
-    public static function convertHeightTo($height, $unitSystem) {
-        return (new self($height))
-            ->convertTo($unitSystem)
-            ->getValue();
-    }
+	function createParserInstance();
 
-    protected function convertValueTo(Abp01_UnitSystem $otherSystem) {
-        return $this->_unitSystem->convertHeightTo($this->_value, $otherSystem);
-    }
-
-    protected function getUnit() {
-        return $this->_unitSystem->getHeightUnit();
-    }
+	function generateDocument();
 }
