@@ -48,6 +48,9 @@ Depending on the various functions performed by various plug-in components, we c
 #### The configuration page  {.abp01-gallery-item-header}
 ![The configuration page]($helpDataDirUrl$/screenshots/admin-settings.png "The configuration page")
 
+#### The configuration page - pre-defined tyle layer selection {.abp01-gallery-item-header}
+![The configuration page - pre-defined tyle layer selection]($helpDataDirUrl$/screenshots/admin-settings-predefined-tile-layer.png "The configuration page - pre-defined tyle layer selection")
+
 #### Edit post - Trip summary editor launcher {.abp01-gallery-item-header}
 ![Edit post - Trip summary editor launcher]($helpDataDirUrl$/screenshots/admin-edit-launcher.png "Edit post - Trip summary editor launcher")
 
@@ -68,6 +71,9 @@ Depending on the various functions performed by various plug-in components, we c
 
 #### Post view - Technical summary  {.abp01-gallery-item-header}
 ![Post view - Technical summary]($helpDataDirUrl$/screenshots/viewer-summary.png "Post view - Technical summary")
+
+#### Post view - Map With Altitude Profile {.abp01-gallery-item-header}
+![Post view - Map With Altitude Profile]($helpDataDirUrl$/screenshots/viewer-map-alt-profile.png "Post view - Map With Altitude Profile")
 
 #### Post view - Map  {.abp01-gallery-item-header}
 ![Post view - Map]($helpDataDirUrl$/screenshots/viewer-map.png "Post view - Map")
@@ -183,11 +189,11 @@ If there is not any kind of information for any of these tabs, then the entire c
 # The Editor Component {#editor-component}
 
 <div class="abp01-help-section" markdown="1">
-The editing component allows editing the trip's technical summary, as well as uploading the GPX track.
+The editing component allows editing the trip's technical summary, as well as uploading the GPS track.
 Thus, it to is organized in two tabs, one for each category of information:
 
 - the technical summary details editing form;
-- the GPX track upload & preview area.
+- the GPS track upload & preview area.
 </div>
 
 ## The Editor Launcher
@@ -235,9 +241,9 @@ Besides the form, on the bottom side of the screen two additional control button
 
 <div class="abp01-help-section" markdown="1">
 The corresponding tab is simply named "Map".
-If no track has been uploaded yet, then this screen only displays a button that allows browsing for a GPX track file on the local computer.
+If no track has been uploaded yet, then this screen only displays a button that allows browsing for a GPS track file on the local computer.
 
-Once the track has been uploaded, the map will be centered and the zoom level adjusted to the maximum value for which the entire track is displayed. GPX files that contain disconnected multiple segments are also supported.
+Once the track has been uploaded, the map will be centered and the zoom level adjusted to the maximum value for which the entire track is displayed. GPS files that contain disconnected multiple segments are also supported.
 
 Besides the form, on the bottom side of the screen two additional control buttons will be shown, right after a trip type has been selected:
 
@@ -287,6 +293,17 @@ The text shown in the bottom teaser (right below the technical summary box).
 
 This field allows setting the front-end viewer tab selected when the user visits the post page.
 Default value: Map.
+
+#### Chose how multi-value items are laid out
+
+This field allows specifying how multiple values of the same item are laid out in the front-end viewer:
+    - horizontally, one after another;
+    - vertically, one beneath another.
+
+#### Chose how many values of a multi-valued item are displayed
+
+This field allows setting how many values are displayed for items that have multiple values. 
+If an item has more values than the what is set in this field, then they are hidden and a `(show)` button is displayed.
 
 #### Map Tile URL Template
 
@@ -349,7 +366,7 @@ By default, this field is checked, so the button is displayed.
 
 This field allows setting the colour of the line used to plot the GPS track on the map. 
 Applies to both front-end viewer and back-end trip summary editor.
-The default value is the previously used colour: #0033ff.
+The default value is the previously used colour: `#0033ff`.
 
 #### Track line weight
 

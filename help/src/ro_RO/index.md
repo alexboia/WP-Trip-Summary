@@ -48,6 +48,9 @@ Cu alte cuvinte, vă puteți documenta (doar) aceste trei tipuri de plimbări.
 #### Pagina de configurare {.abp01-gallery-item-header}
 ![Pagina de configurare]($helpDataDirUrl$/screenshots/admin-settings.png "Pagina de configurare")
 
+#### Pagina de configurare - Alegere sursă de tile-uri de hartă predefinită {.abp01-gallery-item-header}
+![Pagina de configurare - Alegere sursă de tile-uri de hartă predefinită]($helpDataDirUrl$/screenshots/admin-settings-predefined-tile-layer.png "Pagina de configurare - Alegere sursă de tile-uri de hartă predefinită")
+
 #### Editare articol - Sumar tehnic - Selectare tip traseu {.abp01-gallery-item-header}
 ![Editare articol - Sumar tehnic - Selectare tip traseu]($helpDataDirUrl$/screenshots/admin-edit-summary-empty.png "Editare articol - Sumar tehnic - Selectare tip traseu")
 
@@ -65,6 +68,9 @@ Cu alte cuvinte, vă puteți documenta (doar) aceste trei tipuri de plimbări.
 
 #### Articol - Harta {.abp01-gallery-item-header}
 ![Articol - Harta]($helpDataDirUrl$/screenshots/viewer-map.png "Articol - Harta")
+
+#### Articol - Harta cu profil de altitudine {.abp01-gallery-item-header}
+![Articol - Harta cu profil de altitudine]($helpDataDirUrl$/screenshots/viewer-map-alt-profile.png "Articol - Harta cu profil de altitudine")
 
 #### Listare articole - Coloane informationale {.abp01-gallery-item-header}
 ![Listare articole - Coloane informationale]($helpDataDirUrl$/screenshots/post-listing-columns.png "Listare articole - Coloane informationale")
@@ -356,7 +362,7 @@ Implicit, câmpul este bifat, deci butonul este afișat.
 
 Acest câmp permite setarea culorii liniei cu care este reprezentat pe harta track-ul GPS.
 Se aplică atât la viewer-ul din front-end cat si la editorul din back-end.
-Valoarea implicita este: #0033ff (un soi de albastru).
+Valoarea implicita este: `#0033ff` (un soi de albastru).
 
 #### Grosimea liniei track-ului de pe harta
 

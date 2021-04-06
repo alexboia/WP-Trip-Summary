@@ -1,14 +1,17 @@
 # Table of Contents {#help-root}
 
+<div class="abp01-help-section" markdown="1">
 - [General Information](#general-information)
 - [The Viewer Component](#viewer-component)
 - [The Editor Component](#editor-component)
 - [Configuration & Management](#configuration-management)
+</div>
 
 # General Information {#general-information}
 
 ## About {#dg-about}
 
+<div class="abp01-help-section" markdown="1">
 ### Purpose of This Project {#dg-project-purpose}
 
 I initially started this project for my own personal use, as something to help me keep some structured information about my trips.
@@ -16,7 +19,7 @@ Along the way, though, I thought there might be a chance of it being of use to s
 By and large, this plug-in manages the following sections:
 
 - a technical summary - details such as: total distance, total climb, surface/terrain type etc.;
-- the GPX track for the trip, displayed on a map with no additional ceremony besides two marker that pinpoint the start (green marker) and the end (red marker).
+- the GPS track for the trip, displayed on a map with no additional ceremony besides two marker that pinpoint the start (green marker) and the end (red marker).
 
 ### Supported Trip Types {#dg-trip-types}
 
@@ -37,37 +40,47 @@ Depending on the various functions performed by various plug-in components, we c
 - The Configuration Component: handles plug-in option management, but also the look-up data management (various lists of values from which one can be selected when filling various selector fields in the trip data editor)([More details here](#configuration-component)).
 
 [Back to the Table of Contents](#help-root)
+</div>
 
 ## Screenshots {#dg-screenshots}
 
-#### The configuration page
+<div class="abp01-help-section abp01-help-image-slideshow" markdown="1">
+#### The configuration page {.abp01-gallery-item-header}
 ![The configuration page]($helpDataDirUrl$/screenshots/admin-settings.png "The configuration page")
 
-#### Edit post - Trip data - Select trip type
+#### The configuration page - pre-defined tyle layer selection {.abp01-gallery-item-header}
+![The configuration page - pre-defined tyle layer selection]($helpDataDirUrl$/screenshots/admin-settings-predefined-tile-layer.png "The configuration page - pre-defined tyle layer selection")
+
+#### Edit post - Trip data - Select trip type {.abp01-gallery-item-header}
 ![Edit post - Trip data - Select trip type]($helpDataDirUrl$/screenshots/admin-edit-summary-empty.png "Edit post - Trip data - Select trip type")
 
-#### Edit post - Trip data - Bike trip-related information
+#### Edit post - Trip data - Bike trip-related information {.abp01-gallery-item-header}
 ![Edit post - Trip data - Bike trip-related information]($helpDataDirUrl$/screenshots/admin-edit-summary-bike.png "Edit post - Trip data - Bike trip-related information")
 
-#### Edit post - Trip data - Map
+#### Edit post - Trip data - Map {.abp01-gallery-item-header}
 ![Edit post - Trip data - Map]($helpDataDirUrl$/screenshots/admin-edit-map.png "Edit post - Trip data - Map")
 
-#### Post view - Top teaser
+#### Post view - Top teaser {.abp01-gallery-item-header}
 ![Post view - Top teaser]($helpDataDirUrl$/screenshots/viewer-teaser-top.png "Post view - Top teaser")
 
-#### Post view - Technical summary
+#### Post view - Technical summary {.abp01-gallery-item-header}
 ![Post view - Technical summary]($helpDataDirUrl$/screenshots/viewer-summary.png "Post view - Technical summary")
 
-#### Post view - Map
+#### Post view - Map {.abp01-gallery-item-header}
 ![Post view - Map]($helpDataDirUrl$/screenshots/viewer-map.png "Post view - Map")
 
-#### Post listing - Additional info columns
+#### Post view - Map With Altitude Profile {.abp01-gallery-item-header}
+![Post view - Map With Altitude Profile]($helpDataDirUrl$/screenshots/viewer-map-alt-profile.png "Post view - Map With Altitude Profile")
+
+#### Post listing - Additional info columns {.abp01-gallery-item-header}
 ![Post listing - Additional info columns]($helpDataDirUrl$/screenshots/post-listing-columns.png "Post listing - Additional info columns")
 
 [Back to the Table of Contents](#help-root)
+</div>
 
 ## Technical Requirements {#dg-technical-requirements}
 
+<div class="abp01-help-section" markdown="1">
 To run this module, the following technical requirements must be met:
 
 - PHP version 5.6.2 or greater;
@@ -82,9 +95,11 @@ To run this module, the following technical requirements must be met:
 Basically all these requirements are checked upon installation and the process stops if they are not met.
 
 [Back to the Table of Contents](#help-root)
+</div>
 
 ## Licensing Terms {#dg-licensing-terms}
 
+<div class="abp01-help-section" markdown="1">
 This plug-in is distribute under the terms of the [BSD New License](https://opensource.org/licenses/BSD-3-Clause). What this means:
 
 - that you may use it free of charge and without any kind of royalty;
@@ -93,9 +108,11 @@ This plug-in is distribute under the terms of the [BSD New License](https://open
 - that there is no warranty whatsoever, neither explicit, nor implicit.
 
 [Back to the Table of Contents](#help-root)
+</div>
 
 ## Credits {#dg-credits}
 
+<div class="abp01-help-section" markdown="1">
 This plug-in would have required much more work on my said without the following awesome components:
 
 1. [PHP-MySQLi-Database-Class](https://github.com/joshcam/PHP-MySQLi-Database-Class) - small and practical mysqli wrapper; I use it instead of the awful wpdb;
@@ -112,34 +129,46 @@ This plug-in would have required much more work on my said without the following
 12. [kite](http://code.google.com/p/kite/) - small JavaScript template engine;
 13. [Leaflet.MagnifyingGlass](https://github.com/bbecquet/Leaflet.MagnifyingGlass) - magnifying glass plug-in for the LeafletJS map component;
 14. [Leaflet.fullscreen](https://github.com/Leaflet/Leaflet.fullscreen) - full-screen plug-in for the LeafletJS map component.
+15. [Tipped JS](https://github.com/staaky/tipped) - a Complete Javascript Tooltip Solution
+16. [PHPUnit](https://github.com/sebastianbergmann/phpunit) - the PHP Unit Testing framework
+17. [Parsedown](https://github.com/erusev/parsedown) - better Markdown Parser in PHP. [http://parsedown.org](http://parsedown.org)
+18. [Faker](https://github.com/fzaninotto/Faker) - faker is a PHP library that generates fake data for you
 
 [Back to the Table of Contents](#help-root)
+</div>
 
 # The Viewer Component {#viewer-component}
 
+<div class="abp01-help-section" markdown="1">
 The viewer component is comprised of three distinct areas:
 
 - the top teaser;
 - the bottom teaser;
 - the technical box itself.
+</div>
 
 ## The Top Teaser
 
+<div class="abp01-help-section" markdown="1">
 This is a small box (yellowish, by default) displayed above the post content, but below the post title.
 Its purpose is to guide the readers to the technical box. 
 The idea is to let everyone know that there such thing as a technical box and, if that's the only thing they're searching for, quickly take them there.
 
 [Back to the Table of Contents](#help-root)
+</div>
 
 ## The Bottom Teaser
 
+<div class="abp01-help-section" markdown="1">
 Yet another small box (also yellowish, by default), but displayed below the post content.
 It is not always displayed, but only when the system detects that the user might have skipped the content (i.e. scrolled too fast), in which case the reader is encouraged to jump back to the beginning of the post to read the post.
 
 [Back to the Table of Contents](#help-root)
+</div>
 
 ## The Technical Box
 
+<div class="abp01-help-section" markdown="1">
 This is the area where, each on a distinct tab, the following sections are displayed:
 
 - the map that displays the route;
@@ -149,17 +178,42 @@ Each tab is only displayed when the corresponding information has been provided 
 If there is not any kind of information for any of these tabs, then the entire component is hidden, including the teasers.
 
 [Back to the Table of Contents](#help-root)
+</div>
 
 # The Editor Component {#editor-component}
 
-The editing component allows editing the trip's technical summary, as well as uploading the GPX track.
+<div class="abp01-help-section" markdown="1">
+The editing component allows editing the trip's technical summary, as well as uploading the GPS track.
 Thus, it to is organized in two tabs, one for each category of information:
 
 - the technical summary details editing form;
-- the GPX track upload & preview area.
+- the GPS track upload & preview area.
+</div>
+
+## The Editor Launcher
+
+<div class="abp01-help-section" markdown="1">
+The editor launcher smoothly integrates the trip summary editing experience into WordPress post editing workflow.  
+It is presented as a metabox, rendered in the sidebar of the post editing screen, titled: `Trip summary`. 
+At a glance, it allows access to the following information and actions:
+
+- whether or not the current post has trip summary information:
+    - marked with a white check mark on a green round background if so;
+    - marked with a white X mark on a red round background if not.
+- whether or the the current post has a trip summary GPS track attached to it:
+    - marked with a white check mark on a green round background if so;
+    - marked with a white X mark on a red round background if not.
+- quickly remove the current post's trip summary information (via the `Quick actions` link button);
+- quickly remove the current post's trip summary GPS track (via the `Quick actions` link button);
+- download the current post's trip summary GPS track (via the `Quick actions` link button);
+- open the trip summary editor form for the current post (via the `Edit` button).
+
+[Back to the Table of Contents](#help-root)
+</div>
 
 ## The Technical Summary Details Editing Form
 
+<div class="abp01-help-section" markdown="1">
 The corresponding tab is simply named "Info".
 If no information has been filled in, the form only displays three buttons, one for each supported trip type:
 
@@ -173,15 +227,17 @@ Besides the form, on the bottom side of the screen two additional control button
 
 - "Save" - used to save the changes;
 - "Clear" - used to when the entire trip information set needs to be removed.
+</div>
 
 [Back to the Table of Contents](#help-root)
 
-## The GPX Track Upload & Preview Area
+## The GPS Track Upload & Preview Area
 
+<div class="abp01-help-section" markdown="1">
 The corresponding tab is simply named "Map".
-If no track has been uploaded yet, then this screen only displays a button that allows browsing for a GPX track file on the local computer.
+If no track has been uploaded yet, then this screen only displays a button that allows browsing for a GPS track file on the local computer.
 
-Once the track has been uploaded, the map will be centered and the zoom level adjusted to the maximum value for which the entire track is displayed. GPX files that contain disconnected multiple segments are also supported.
+Once the track has been uploaded, the map will be centered and the zoom level adjusted to the maximum value for which the entire track is displayed. GPS files that contain disconnected multiple segments are also supported.
 
 Besides the form, on the bottom side of the screen two additional control buttons will be shown, right after a trip type has been selected:
 
@@ -189,9 +245,11 @@ Besides the form, on the bottom side of the screen two additional control button
 - "Clear" - used to when the entire track needs to be removed.
 
 [Back to the Table of Contents](#help-root)
+</div>
 
 # Configuration & Management {#configuration-management}
 
+<div class="abp01-help-section" markdown="1">
 - [General Options](#configure-general-options)
 - [Lookup Data Management](#configure-lookup-data)
 
@@ -199,9 +257,11 @@ The configuration elements can be seen as forming two discrete sections:
 
 - general options - measurement units, enabling or disabling various interface elements etc.;
 - lookup data management - these are data sets of predefined options from which some fields are filled in, such as the Difficulty Level.
+</div>
 
 ## General Options {#configure-general-options}
 
+<div class="abp01-help-section" markdown="1">
 There is a dedicated page where these options may be modified to best suit your needs. One can get there by accessing Trip Summary -> Settings in the main menu.
 
 Once there, the following settings are made available.
@@ -222,6 +282,22 @@ The text shown in the top teaser (above the post content, but right below the ti
 #### The Bottom Teaser Text
 
 The text shown in the bottom teaser (right below the technical summary box).
+
+#### Initial viewer tab
+
+This field allows setting the front-end viewer tab selected when the user visits the post page.
+Default value: Map.
+
+#### Chose how multi-value items are laid out
+
+This field allows specifying how multiple values of the same item are laid out in the front-end viewer:
+    - horizontally, one after another;
+    - vertically, one beneath another.
+
+#### Chose how many values of a multi-valued item are displayed
+
+This field allows setting how many values are displayed for items that have multiple values. 
+If an item has more values than the what is set in this field, then they are hidden and a `(show)` button is displayed.
 
 #### Map Tile URL Template
 
@@ -277,19 +353,33 @@ By default, this field is checked, so the map scale is displayed.
 
 #### Allow Track Download?
 
-Once the field is unchecked and the changes are saved, the GPX track download button will no longer be displayed.
+Once the field is unchecked and the changes are saved, the GPS track download button will no longer be displayed.
 By default, this field is checked, so the button is displayed.
 
 #### Track line colour
 
-This field allows setting the colour used to plot the GPX track on the map. 
+This field allows setting the colour used to plot the GPS track on the map. 
 Applies to both front-end viewer and back-end trip summary editor.
-The default value is the previously used colour: #0033ff.
+The default value is the previously used colour: `#0033ff`.
+
+#### Track line weight
+
+This field allows setting the thickness, in pixels, of the line used to plot the GPS track on the map.
+Applies to both front-end viewer and back-end trip summary editor.
+The default value is the previously used thickness: 3 pixels.
+
+#### Map height
+
+This field allows setting the height, in pixels, of the actual map component. 
+Applies only to the front-end viewer.
+The default value is the former default map height: 350 pixels.
 
 [Back to the Table of Contents](#help-root)
+</div>
 
 ## Lookup Data Management {#configure-lookup-data}
 
+<div class="abp01-help-section" markdown="1">
 Lookup data represents a couple of sets of predefined options out of which some fields are filled in. Some fields only required one value, some multiple.
 The plug-in supports per-language values for each option in a data set. 
 Also, one can define said values for any WordPress-supported language.
@@ -432,3 +522,4 @@ The following should also be noted:
 - when adding a new option/item for a specific language, the systems asks requires the label for both that language and the default language.
 
 [Back to the Table of Contents](#help-root)
+</div>

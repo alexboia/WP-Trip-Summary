@@ -48,6 +48,9 @@ Selon les différentes fonctions exercées par les zones du module, nous pouvons
 #### Page de configuration {.abp01-gallery-item-header}
 ![Page de configuration]($helpDataDirUrl$/screenshots/admin-settings.png "Page de configuration")
 
+#### Page de configuration - Choisissez une source de couche de tuiles prédéfinie {.abp01-gallery-item-header}
+![Page de configuration - Choisissez une source de couche de tuiles prédéfinie]($helpDataDirUrl$/screenshots/admin-settings-predefined-tile-layer.png "Page de configuration - Choisissez une source de couche de tuiles prédéfinie")
+
 #### Édition d'article - Lanceur de l'éditeur de résumé de voyage {.abp01-gallery-item-header}
 ![Édition d'article - Lanceur de l'éditeur de résumé de voyage]($helpDataDirUrl$/screenshots/admin-edit-launcher.png "Édition d'article - Lanceur de l'éditeur de résumé de voyage")
 
@@ -71,6 +74,9 @@ Selon les différentes fonctions exercées par les zones du module, nous pouvons
 
 #### Article - Carte {.abp01-gallery-item-header}
 ![Article - Carte]($helpDataDirUrl$/screenshots/viewer-map.png "Article - Carte")
+
+#### Article - Carte avec profil d'altitude {.abp01-gallery-item-header}
+![Article - Carte avec profil d'altitude]($helpDataDirUrl$/screenshots/viewer-map-alt-profile.png "Article - Carte avec profil d'altitude")
 
 #### Liste des articles - Colonnes d'information {.abp01-gallery-item-header}
 ![Liste d'articles - Colonnes d'information]($helpDataDirUrl$/screenshots/post-listing-columns.png "Liste d'articles - Colonnes d'information")
@@ -179,7 +185,7 @@ La carte elle-même propose les outils suivants:
 - Zoom avant (zoom avant) - se concentrer sur une zone particulière;
 - Zoom arrière carte - aperçu;
 - Affichage de la carte en plein écran;
-- Téléchargement de piste GPX;
+- Téléchargement de piste GPS;
 - Loupe (zoom avant sur une zone discrète / limitée de la carte).
 
 Certaines de ces options peuvent être désactivées à l'aide du composant de gestion, comme décrit ci-dessous.
@@ -244,9 +250,9 @@ En plus du formulaire, en bas de l'écran, vous trouverez deux boutons de contr�
 
 <div class="abp01-help-section" markdown="1">
 L'onglet approprié est simplement appelé "Carte et trace GPS".
-Si aucune piste n'a encore été choisie, elle est remplie d'un seul bouton, ce qui vous permet de parcourir votre ordinateur personnel pour choisir le fichier GPX souhaité à joindre.
+Si aucune piste n'a encore été choisie, elle est remplie d'un seul bouton, ce qui vous permet de parcourir votre ordinateur personnel pour choisir le fichier GPS souhaité à joindre.
 
-Une fois la trace chargée, la carte sera centrée et son zoom ajusté pour que tout le circuit soit visible. Les fichiers GPX qui contiennent des segments hors ligne sont également pris en charge.
+Une fois la trace chargée, la carte sera centrée et son zoom ajusté pour que tout le circuit soit visible. Les fichiers GPS qui contiennent des segments hors ligne sont également pris en charge.
 
 En plus du formulaire, deux boutons de contrôle se trouvent en bas de l'écran:
 
@@ -296,6 +302,17 @@ Le texte du teaser s'affiche immédiatement sous la zone de résumé. Il y a dé
 
 Ce champ permet de définir l'étiquette du visualiseur frontal sélectionné lorsque l'utilisateur visite le poste.
 La valeur par défaut est: Carte et trace GPS.
+
+#### Choisissez comment les éléments à valeurs multiples sont disposés
+
+Ce champ permet de spécifier comment plusieurs valeurs d'un même élément sont disposées dans le visualiseur frontal: 
+	- horizontalement, l'un après l'autre;
+	- verticalement, l'un sous l'autre.
+
+#### Choisissez combien de valeurs d'un élément à valeurs multiples sont affichées
+
+Ce champ permet de définir le nombre de valeurs affichées pour les éléments qui ont plusieurs valeurs. 
+Si un élément a plus de valeurs que ce qui est défini dans ce champ, ils sont masqués et un bouton `(afficher)` s'affiche.
 
 #### Modèle d'URL source de tuile de carte
 
@@ -352,12 +369,12 @@ Par défaut, le champ est coché, donc l'échelle de la carte est affichée.
 
 #### Le téléchargement des morceaux est-il autorisé?
 
-Si vous effacez ce champ, le bouton qui vous permet de télécharger la piste GPX ne sera plus affiché dans la boîte technique de la page de l'article.
+Si vous effacez ce champ, le bouton qui vous permet de télécharger la piste GPS ne sera plus affiché dans la boîte technique de la page de l'article.
 Par défaut, le champ est coché, donc le bouton est affiché.
 
 #### La couleur de la ligne de trace sur la carte
 
-Ce champ vous permet de définir la couleur avec laquelle la trace GPX est dessinée sur la carte.
+Ce champ vous permet de définir la couleur avec laquelle la trace GPS est dessinée sur la carte.
 S'applique à la fois au visualiseur frontal et à l'éditeur principal.
 La valeur par défaut est: # 0033ff.
 

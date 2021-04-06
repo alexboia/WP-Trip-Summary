@@ -30,46 +30,46 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
 class Abp01_Route_Track_Bbox {
-    public $northWest;
+	public $northWest;
 
-    public $southWest;
+	public $southWest;
 
-    public $northEast;
+	public $northEast;
 
-    public $southEast;
+	public $southEast;
 
-    public function  __construct($minLat, $minLng, $maxLat, $maxLng) {
-        $this->northWest = new Abp01_Route_Track_Coordinate($maxLat, $minLng);
-        $this->southEast = new Abp01_Route_Track_Coordinate($minLat, $maxLng);
+	public function  __construct($minLat, $minLng, $maxLat, $maxLng) {
+		$this->northWest = new Abp01_Route_Track_Coordinate($maxLat, $minLng);
+		$this->southEast = new Abp01_Route_Track_Coordinate($minLat, $maxLng);
 
-        $this->southWest = new Abp01_Route_Track_Coordinate($minLat, $minLng);
-        $this->northEast = new Abp01_Route_Track_Coordinate($maxLat, $maxLng);
-    }
+		$this->southWest = new Abp01_Route_Track_Coordinate($minLat, $minLng);
+		$this->northEast = new Abp01_Route_Track_Coordinate($maxLat, $maxLng);
+	}
 
-    public function equals(Abp01_Route_Track_Bbox $other) {
-        return $other->northWest->equals($this->northWest)
-            && $other->southWest->equals($this->southWest)
-            && $other->northEast->equals($this->northEast)
-            && $other->southEast->equals($this->southEast);
-    }
+	public function equals(Abp01_Route_Track_Bbox $other) {
+		return $other->northWest->equals($this->northWest)
+			&& $other->southWest->equals($this->southWest)
+			&& $other->northEast->equals($this->northEast)
+			&& $other->southEast->equals($this->southEast);
+	}
 
-    public function getNorthWest() {
-        return $this->northWest;
-    }
+	public function getNorthWest() {
+		return $this->northWest;
+	}
 
-    public function getNorthEast() {
-        return $this->northEast;
-    }
+	public function getNorthEast() {
+		return $this->northEast;
+	}
 
-    public function getSouthWest() {
-        return $this->southWest;
-    }
+	public function getSouthWest() {
+		return $this->southWest;
+	}
 
-    public function getSouthEast() {
-        return $this->southEast;
-    }
+	public function getSouthEast() {
+		return $this->southEast;
+	}
 }
