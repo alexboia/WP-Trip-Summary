@@ -30,42 +30,48 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
 class Abp01_Route_Track_Info {
-    /**
-     * @var Abp01_UnitSystem_Value_Height
-     */
-    public $minAltitude;
+	/**
+	 * @var Abp01_UnitSystem_Value_Height
+	 */
+	public $minAltitude;
 
-    /**
-     * @var Abp01_UnitSystem_Value_Height
-     */
-    public $maxAltitude;
+	/**
+	 * @var Abp01_UnitSystem_Value_Height
+	 */
+	public $maxAltitude;
 
-    public function __construct(Abp01_UnitSystem_Value_Height $minAltitude, Abp01_UnitSystem_Value_Height $maxAltitude) {
-        $this->minAltitude = $minAltitude;
-        $this->maxAltitude = $maxAltitude;
-    }
+	public function __construct(Abp01_UnitSystem_Value_Height $minAltitude, Abp01_UnitSystem_Value_Height $maxAltitude) {
+		$this->minAltitude = $minAltitude;
+		$this->maxAltitude = $maxAltitude;
+	}
 
-    /**
-     * @return stdClass
-     */
-    public function toPlainObject() {
-        $data = new stdClass();
-        $data->minAltitude = $this->minAltitude
-            ->toPlainObject();
-        $data->maxAltitude = $this->maxAltitude
-            ->toPlainObject();
-        return $data;
-    }
+	/**
+	 * @return stdClass
+	 */
+	public function toPlainObject() {
+		$data = new stdClass();
+		$data->minAltitude = $this->minAltitude
+			->toPlainObject();
+		$data->maxAltitude = $this->maxAltitude
+			->toPlainObject();
+		return $data;
+	}
 
-    public function getMinAltitude() {
-        return $this->minAltitude;
-    }
+	/**
+	 * @return Abp01_UnitSystem_Value_Height 
+	 */
+	public function getMinAltitude() {
+		return $this->minAltitude;
+	}
 
-    public function getMaxAltitude() {
-        return $this->maxAltitude;
-    }
+	/**
+	 * @return Abp01_UnitSystem_Value_Height 
+	 */
+	public function getMaxAltitude() {
+		return $this->maxAltitude;
+	}
 }
