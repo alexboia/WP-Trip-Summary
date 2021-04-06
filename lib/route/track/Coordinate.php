@@ -47,8 +47,20 @@ class Abp01_Route_Track_Coordinate {
     }
 
     public function equals(Abp01_Route_Track_Coordinate $other) {
-        return abs($this->lat - $other->lat) < 0.00005
-            && abs($this->lng - $other->lng) < 0.00005
-            && abs($this->alt - $other->alt) < 0.1;
+        return abs($this->getLatitude() - $other->getLatitude()) < 0.00005
+            && abs($this->getLongitude() - $other->getLongitude()) < 0.00005
+            && abs($this->getAltitude() - $other->getAltitude()) < 0.1;
+    }
+
+    public function getLatitude() {
+        return $this->lat;
+    }
+
+    public function getLongitude() {
+        return $this->lng;
+    }
+
+    public function getAltitude() {
+        return $this->alt;
     }
 }

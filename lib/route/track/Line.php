@@ -30,96 +30,139 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
 class Abp01_Route_Track_Line {
-    public $minLat;
+	public $minLat;
 
-    public $minLng;
+	public $minLng;
 
-    public $maxLat;
+	public $maxLat;
 
-    public $maxLng;
+	public $maxLng;
 
-    public $maxAlt;
+	public $maxAlt;
 
-    public $minAlt;
+	public $minAlt;
 
-    /**
-     * @var Abp01_Route_Track_Point[] Array of track points for this line
-     */
-    public $trackPoints;
+	/**
+	 * @var Abp01_Route_Track_Point[] Array of track points for this line
+	 */
+	public $trackPoints;
 
-    public function __construct() {
-        $this->minLat = PHP_INT_MAX;
-        $this->maxLat = ~PHP_INT_MAX;
+	public function __construct() {
+		$this->minLat = PHP_INT_MAX;
+		$this->maxLat = ~PHP_INT_MAX;
 
-        $this->minLng = PHP_INT_MAX;
-        $this->maxLng = ~PHP_INT_MAX;
-        
-        $this->minAlt = PHP_INT_MAX;
-        $this->maxAlt = ~PHP_INT_MAX;
+		$this->minLng = PHP_INT_MAX;
+		$this->maxLng = ~PHP_INT_MAX;
+		
+		$this->minAlt = PHP_INT_MAX;
+		$this->maxAlt = ~PHP_INT_MAX;
 
-        $this->trackPoints = array();
-    }
+		$this->trackPoints = array();
+	}
 
-    public function isEmpty() {
-        return empty($this->trackPoints);
-    }
+	public function isEmpty() {
+		return empty($this->trackPoints);
+	}
 
-    public function addPoint(Abp01_Route_Track_Point $point) {
-        $this->maxLat = max($this->maxLat, $point->coordinate->lat);
-        $this->maxLng = max($this->maxLng, $point->coordinate->lng);
+	public function getTrackPoints() {
+		return $this->trackPoints;
+	}
 
-        $this->minLat = min($this->minLat, $point->coordinate->lat);
-        $this->minLng = min($this->minLng, $point->coordinate->lng);
+	public function getTrackPointsCount() {
+		return count($this->trackPoints);
+	}
 
-        $this->maxAlt = max($this->maxAlt, $point->coordinate->alt);
-        $this->minAlt = min($this->minAlt, $point->coordinate->alt);
+	public function addPoint(Abp01_Route_Track_Point $point) {
+		$this->maxLat = max($this->maxLat, $point->coordinate->getLatitude());
+		$this->maxLng = max($this->maxLng, $point->coordinate->getLongitude());
 
-        if (!is_array($this->trackPoints)) {
-            $this->trackPoints = array();
-        }
+		$this->minLat = min($this->minLat, $point->coordinate->getLatitude());
+		$this->minLng = min($this->minLng, $point->coordinate->getLongitude());
 
-        $this->trackPoints[] = $point;
-    }
+		$this->maxAlt = max($this->maxAlt, $point->coordinate->getAltitude());
+		$this->minAlt = min($this->minAlt, $point->coordinate->getAltitude());
 
-    public function simplify($threshold) {
-        $line = new Abp01_Route_Track_Line();
-        foreach ($this->_runDouglasPeucker($this->trackPoints, $threshold) as $p) {
-            $line->addPoint($p);
-        }
-        return $line;
-    }
+		if (!is_array($this->trackPoints)) {
+			$this->trackPoints = array();
+		}
 
-    private function _runDouglasPeucker(array $pointList, $threshold) {
-        $length = count($pointList);
+		$this->trackPoints[] = $point;
+	}
 
-        if ($length <= 2) {
-            return $pointList;
-        }
+	public function getMinimumLatitude() {
+		return $this->minLat;
+	}
 
-        $iMax = 0;
-        $dMax = 0;
+	public function getMinimumLongitude() {
+		return $this->minLng;
+	}
 
-        $first = isset($pointList[0]) ? $pointList[0] : null;
-        $last = isset($pointList[$length - 1]) ? $pointList[$length - 1] : 0;
+	public function getMaximumLatitude() {
+		return $this->maxLat;
+	}
 
-        for ($k = 1; $k < ($length - 1); $k ++) {
-            $d = $pointList[$k]->distanceToLine($first, $last);
-            if ($d > $dMax) {
-                $dMax = $d;
-                $iMax = $k;
-            }
-        }
+	public function getMaximumLongitude() {
+		return $this->maxLng;
+	}
 
-        if ($dMax > $threshold) {
-            $rFirstMax = $this->_runDouglasPeucker(array_slice($pointList, 0, $iMax + 1), $threshold);
-            $rMaxLast = $this->_runDouglasPeucker(array_slice($pointList, $iMax), $threshold);
-            return array_merge(array_slice($rFirstMax, 0, count($rFirstMax) - 1), $rMaxLast);
-        } else {
-            return array($first, $last);
-        }
-    }
+	public function getMinimumAltitude() {
+		return $this->minAlt;
+	}
+
+	public function getMaximumAltitude() {
+		return $this->maxAlt;
+	}
+
+	/**
+	 * @return Abp01_Route_Track_Bbox
+	 */
+	public function getBounds() {
+		$bounds = new Abp01_Route_Track_Bbox($this->minLat,
+			$this->minLng,
+			$this->maxLat,
+			$this->maxLng);
+		return $bounds;
+	}
+
+	public function simplify($threshold) {
+		$line = new Abp01_Route_Track_Line();
+		foreach ($this->_runDouglasPeucker($this->trackPoints, $threshold) as $p) {
+			$line->addPoint($p);
+		}
+		return $line;
+	}
+
+	private function _runDouglasPeucker(array $pointList, $threshold) {
+		$length = count($pointList);
+
+		if ($length <= 2) {
+			return $pointList;
+		}
+
+		$iMax = 0;
+		$dMax = 0;
+
+		$first = isset($pointList[0]) ? $pointList[0] : null;
+		$last = isset($pointList[$length - 1]) ? $pointList[$length - 1] : 0;
+
+		for ($k = 1; $k < ($length - 1); $k ++) {
+			$d = $pointList[$k]->distanceToLine($first, $last);
+			if ($d > $dMax) {
+				$dMax = $d;
+				$iMax = $k;
+			}
+		}
+
+		if ($dMax > $threshold) {
+			$rFirstMax = $this->_runDouglasPeucker(array_slice($pointList, 0, $iMax + 1), $threshold);
+			$rMaxLast = $this->_runDouglasPeucker(array_slice($pointList, $iMax), $threshold);
+			return array_merge(array_slice($rFirstMax, 0, count($rFirstMax) - 1), $rMaxLast);
+		} else {
+			return array($first, $last);
+		}
+	}
 }

@@ -56,4 +56,20 @@ class Abp01_Route_Track_Bbox {
             && $other->northEast->equals($this->northEast)
             && $other->southEast->equals($this->southEast);
     }
+
+    public function getNorthWest() {
+        return $this->northWest;
+    }
+
+    public function getNorthEast() {
+        return $this->northEast;
+    }
+
+    public function getSouthWest() {
+        return $this->southWest;
+    }
+
+    public function getSouthEast() {
+        return $this->southEast;
+    }
 }
