@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Trip Summary 0.2.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-trip-summary\n"
-"POT-Creation-Date: 2021-03-25 16:37+0200\n"
-"PO-Revision-Date: 2021-03-25 16:45+0200\n"
+"POT-Creation-Date: 2021-04-06 21:38+0300\n"
+"PO-Revision-Date: 2021-04-06 21:39+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -110,46 +110,46 @@ msgstr "Paramètres régionaux actuels"
 msgid "Default"
 msgstr "Défaut"
 
-#: lib/Plugin.php:111
+#: lib/Plugin.php:126
 msgid "Could not activate plug-in: activation failure."
 msgstr "Impossible d'activer le plug-in: échec de l'activation."
 
-#: lib/Plugin.php:134
+#: lib/Plugin.php:149
 msgid "Could not activate plug-in: requirements not met."
 msgstr ""
 "Impossible d'activer le plug-in: les conditions d'installation ne sont pas "
 "satisfaites. "
 
-#: lib/Plugin.php:141
+#: lib/Plugin.php:156
 msgid "Minimum required PHP version is %s"
 msgstr "La version PHP minimale requise est %s"
 
-#: lib/Plugin.php:143
+#: lib/Plugin.php:158
 msgid "Minimum required WP version is %s"
 msgstr "La version WP minimale requise est %s"
 
-#: lib/Plugin.php:145
+#: lib/Plugin.php:160
 msgid "LIBXML support was not found on your system"
 msgstr "L'extension LIBXML est introuvable sur votre système"
 
-#: lib/Plugin.php:147
+#: lib/Plugin.php:162
 msgid "Mysqli extension was not found on your system or is not fully compatible"
 msgstr ""
 "L'extension MySQLi est introuvable sur votre système ou n'est pas entièrement "
 "compatible"
 
-#: lib/Plugin.php:149
+#: lib/Plugin.php:164
 msgid "MySQL spatial support was not found on your system"
 msgstr ""
 "Les fonctionnalités spatiales de MySQL sont introuvables sur votre système"
 
-#: lib/Plugin.php:151
+#: lib/Plugin.php:166
 msgid "We could not check whether your system fully supports this plug-in."
 msgstr ""
 "Le plug-in n'a pas pu vérifier si votre système répond à toutes les exigences "
 "d'installation"
 
-#: lib/Plugin.php:159
+#: lib/Plugin.php:174
 msgid "Activation error"
 msgstr "Erreur d'activation"
 
@@ -161,25 +161,25 @@ msgstr "À propos de WP Trip Summary"
 msgid "About"
 msgstr "À propos"
 
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:278
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:285
 #: views/wpts-frontend.php:37
 msgid "Trip summary"
 msgstr "Résumé du voyage"
 
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:407
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:421
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:414
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:428
 msgid "The data could not be saved due to a possible database error"
 msgstr ""
 "Les données n'ont pas été enregistrées en raison d'une possible erreur de "
 "base de données"
 
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:530
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:526
 msgid "The data could not be updated due to a possible database error"
 msgstr ""
 "Les données n'ont pas été enregistrées en raison d'une possible erreur de "
 "base de données"
 
-#: lib/pluginModules/GetTrackDataPluginModule.php:97
+#: lib/pluginModules/GetTrackDataPluginModule.php:104
 msgid "Track file not found or is not readable"
 msgstr "Le fichier de la piste GPS est introuvable ou n'est pas lisible"
 
@@ -276,7 +276,7 @@ msgstr ""
 msgid "Tile layer API key is required"
 msgstr "La clé API de la couche de tuiles est requise"
 
-#: lib/Settings.php:270 tests/lib/SettingsDataHelpers.php:70
+#: lib/Settings.php:270 tests/lib/SettingsDataHelpers.php:71
 msgid ""
 "For the pragmatic sort, there is also a trip summary at the bottom of this "
 "page. Click here to consult it"
@@ -284,7 +284,7 @@ msgstr ""
 "Pour la personne pragmatique, il y a aussi un résumé du voyage au bas de "
 "cette page. Cliquez ici pour le consulter"
 
-#: lib/Settings.php:274 tests/lib/SettingsDataHelpers.php:66
+#: lib/Settings.php:274 tests/lib/SettingsDataHelpers.php:67
 msgid ""
 "It looks like you skipped the story. You should check it out. Click here to "
 "go back to beginning"
@@ -447,10 +447,11 @@ msgstr ""
 "de 10 MB"
 
 #: lib/TranslatedScriptMessages.php:61 lib/TranslatedScriptMessages.php:66
-msgid "The selected file type is not valid. Only GPX files are allowed"
+msgid ""
+"The selected file type is not valid. Only GPX and GeoJSON files are allowed"
 msgstr ""
-"Le type de fichier téléchargé n'est pas valide. Seuls les fichiers GPX sont "
-"autorisés"
+"Le type de fichier téléchargé n'est pas valide. Seuls les fichiers GPX et "
+"GeoJSON sont autorisés"
 
 #: lib/TranslatedScriptMessages.php:62 lib/TranslatedScriptMessages.php:63
 msgid "The file could not be read"
@@ -518,8 +519,8 @@ msgstr ""
 "moins probablement, un problème de serveur interne."
 
 #: lib/TranslatedScriptMessages.php:76
-msgid "The uploaded file was not a valid GPX file"
-msgstr "Le fichier téléchargé n'était pas un fichier GPX valide"
+msgid "The uploaded file was not a valid GPX or GeoJSON file"
+msgstr "Le fichier téléchargé n'était pas un fichier GPX ou GeoJSON valide"
 
 #: lib/TranslatedScriptMessages.php:77
 msgid "Choose options"
@@ -858,8 +859,8 @@ msgid "Line type"
 msgstr "Type de ligne de chemin de fer"
 
 #: views/wpts-editor.php:317
-msgid "Upload a GPX track file"
-msgstr "Téléchargez un fichier de piste GPX"
+msgid "Upload a GPX or GeoJSON track file"
+msgstr "Téléchargez un fichier de piste GPX ou GeoJSON"
 
 #: views/wpts-editor.php:320
 msgid "Chose file"
@@ -1096,6 +1097,17 @@ msgstr "Des détails"
 #: views/wpts-settings.php:394
 msgid "Use this tile layer"
 msgstr "Utilisez cette source"
+
+#~ msgid "The selected file type is not valid. Only GPX files are allowed"
+#~ msgstr ""
+#~ "Le type de fichier téléchargé n'est pas valide. Seuls les fichiers GPX "
+#~ "sont autorisés"
+
+#~ msgid "The uploaded file was not a valid GPX file"
+#~ msgstr "Le fichier téléchargé n'était pas un fichier GPX valide"
+
+#~ msgid "Upload a GPX track file"
+#~ msgstr "Téléchargez un fichier de piste GPX"
 
 #~ msgid "The plugin cannot be installed on your system"
 #~ msgstr "Ce plugin n'est pas compatible avec votre système"

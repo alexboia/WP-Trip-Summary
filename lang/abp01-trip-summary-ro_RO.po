@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Trip Summary 0.1.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-trip-summary\n"
-"POT-Creation-Date: 2021-03-25 16:27+0200\n"
-"PO-Revision-Date: 2021-03-25 16:37+0200\n"
+"POT-Creation-Date: 2021-04-06 21:36+0300\n"
+"PO-Revision-Date: 2021-04-06 21:37+0300\n"
 "Last-Translator: \n"
 "Language-Team: alexandru.boia [at] outlook [dot] com\n"
 "Language: ro_RO\n"
@@ -109,44 +109,44 @@ msgstr "Limba curentă"
 msgid "Default"
 msgstr "Implicit"
 
-#: lib/Plugin.php:111
+#: lib/Plugin.php:126
 msgid "Could not activate plug-in: activation failure."
 msgstr ""
 "Plug-in-ul nu a putut fi activat din cauza unei posibile probleme interne"
 
-#: lib/Plugin.php:134
+#: lib/Plugin.php:149
 msgid "Could not activate plug-in: requirements not met."
 msgstr ""
 "Plug-in-ul nu a putut fi activat din cauză că sistemul tău nu suportă toate "
 "cerințele necesare pentru instalare"
 
-#: lib/Plugin.php:141
+#: lib/Plugin.php:156
 msgid "Minimum required PHP version is %s"
 msgstr "Versiunea necesară minimă de PHP este %s"
 
-#: lib/Plugin.php:143
+#: lib/Plugin.php:158
 msgid "Minimum required WP version is %s"
 msgstr "Versiunea necesară minimă de WordPress este %s"
 
-#: lib/Plugin.php:145
+#: lib/Plugin.php:160
 msgid "LIBXML support was not found on your system"
 msgstr "Extensia LIBXML nu a fost găsită pe sistemul tău"
 
-#: lib/Plugin.php:147
+#: lib/Plugin.php:162
 msgid "Mysqli extension was not found on your system or is not fully compatible"
 msgstr "Extensia MySQLi nu a fost găsită pe sistemul tău"
 
-#: lib/Plugin.php:149
+#: lib/Plugin.php:164
 msgid "MySQL spatial support was not found on your system"
 msgstr "Server-ul MySQL nu are suport pentru date spațiale"
 
-#: lib/Plugin.php:151
+#: lib/Plugin.php:166
 msgid "We could not check whether your system fully supports this plug-in."
 msgstr ""
 "Plug-in-ul nu a putut verifica dacă sistemul tău suportă toate cerințele "
 "necesare pentru instalare"
 
-#: lib/Plugin.php:159
+#: lib/Plugin.php:174
 msgid "Activation error"
 msgstr "Eroare la activare"
 
@@ -158,21 +158,21 @@ msgstr "Despre WP Trip Summary"
 msgid "About"
 msgstr "Despre"
 
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:278
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:285
 #: views/wpts-frontend.php:37
 msgid "Trip summary"
 msgstr "Tura pe scurt"
 
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:407
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:421
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:414
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:428
 msgid "The data could not be saved due to a possible database error"
 msgstr "Datele nu au putut fi salvate din cauza unei posibile erori interne"
 
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:530
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:526
 msgid "The data could not be updated due to a possible database error"
 msgstr "Datele nu au putut fi actualizate din cauza unei posibile erori interne"
 
-#: lib/pluginModules/GetTrackDataPluginModule.php:97
+#: lib/pluginModules/GetTrackDataPluginModule.php:104
 msgid "Track file not found or is not readable"
 msgstr "Fișierul track-ului nu există sau nu a putut fi citit"
 
@@ -266,7 +266,7 @@ msgstr ""
 msgid "Tile layer API key is required"
 msgstr "Trebuie să completezi cheia API a sursei de tile-uri de hartă"
 
-#: lib/Settings.php:270 tests/lib/SettingsDataHelpers.php:70
+#: lib/Settings.php:270 tests/lib/SettingsDataHelpers.php:71
 msgid ""
 "For the pragmatic sort, there is also a trip summary at the bottom of this "
 "page. Click here to consult it"
@@ -274,7 +274,7 @@ msgstr ""
 "Pentru firi pragmatice sau curioase există și un sumar tehnic al turei în "
 "josul paginii. Click aici pentru a-l consulta."
 
-#: lib/Settings.php:274 tests/lib/SettingsDataHelpers.php:66
+#: lib/Settings.php:274 tests/lib/SettingsDataHelpers.php:67
 msgid ""
 "It looks like you skipped the story. You should check it out. Click here to go "
 "back to beginning"
@@ -435,8 +435,11 @@ msgid "The selected file is too large. Maximum allowed size is 10MB"
 msgstr "Fișierul selectat e prea mare. Dimensiunea maximă admisă e 10MB"
 
 #: lib/TranslatedScriptMessages.php:61 lib/TranslatedScriptMessages.php:66
-msgid "The selected file type is not valid. Only GPX files are allowed"
-msgstr "Tipul selectat de fișier nu este valid. Sunt permise doar fișierele GPX"
+msgid ""
+"The selected file type is not valid. Only GPX and GeoJSON files are allowed"
+msgstr ""
+"Tipul selectat de fișier nu este valid. Sunt permise doar fișierele GPX și "
+"GeoJSON"
 
 #: lib/TranslatedScriptMessages.php:62 lib/TranslatedScriptMessages.php:63
 msgid "The file could not be read"
@@ -502,8 +505,8 @@ msgstr ""
 "sine sau, mai rar, o problemă internă a server-ului."
 
 #: lib/TranslatedScriptMessages.php:76
-msgid "The uploaded file was not a valid GPX file"
-msgstr "Fișierul încărcat nu a fost un fișier GPX valid"
+msgid "The uploaded file was not a valid GPX or GeoJSON file"
+msgstr "Fișierul încărcat nu a fost un fișier GPX sau GeoJSON valid"
 
 #: lib/TranslatedScriptMessages.php:77
 msgid "Choose options"
@@ -831,8 +834,8 @@ msgid "Line type"
 msgstr "Tipul liniei"
 
 #: views/wpts-editor.php:317
-msgid "Upload a GPX track file"
-msgstr "Încarcă un fișier GPX"
+msgid "Upload a GPX or GeoJSON track file"
+msgstr "Încarcă un fișier GPX sau GeoJSON"
 
 #: views/wpts-editor.php:320
 msgid "Chose file"
@@ -1068,6 +1071,16 @@ msgstr "Detalii"
 #: views/wpts-settings.php:394
 msgid "Use this tile layer"
 msgstr "Folosește această sursă"
+
+#~ msgid "The selected file type is not valid. Only GPX files are allowed"
+#~ msgstr ""
+#~ "Tipul selectat de fișier nu este valid. Sunt permise doar fișierele GPX"
+
+#~ msgid "The uploaded file was not a valid GPX file"
+#~ msgstr "Fișierul încărcat nu a fost un fișier GPX valid"
+
+#~ msgid "Upload a GPX track file"
+#~ msgstr "Încarcă un fișier GPX"
 
 #~ msgid "The plugin cannot be installed on your system"
 #~ msgstr "Acest plug-in nu este compatibil cu sistemul tău"
