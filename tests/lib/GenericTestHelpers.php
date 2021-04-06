@@ -32,6 +32,16 @@
 trait GenericTestHelpers {
     private static $_faker = null;
 
+    protected function _randomFileName() {
+        $faker = self::_getFaker();
+        $extension = $faker->fileExtension;
+        $filenameWithoutExtension = $faker->uuid;
+
+        return sprintf('%s.%s', 
+            $filenameWithoutExtension, 
+            $extension);
+    }
+
     protected function _getEnqueuedStyleUrl($handle) {
         global $wp_styles;
         return $wp_styles->registered[$handle]->src;

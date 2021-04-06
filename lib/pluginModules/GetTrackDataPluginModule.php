@@ -117,7 +117,7 @@ class Abp01_PluginModules_GetTrackDataPluginModule extends Abp01_PluginModules_P
 			//	has opted to show min/max altitude information
 			if ($this->_settings->getShowMinMaxAltitude()) {
 				$response->info = $track
-					->getDisplayableInfo($targetUnitSystem)
+					->constructDisplayableInfo($targetUnitSystem)
 					->toPlainObject();
 			}
 

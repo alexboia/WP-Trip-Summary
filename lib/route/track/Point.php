@@ -40,6 +40,9 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 class Abp01_Route_Track_Point {
     public $name;
 
+    /**
+     * @var Abp01_Route_Track_Coordinate
+     */
     public $coordinate;
 
     public $description;
@@ -119,5 +122,9 @@ class Abp01_Route_Track_Point {
 
     public function getDescription() {
         return $this->description;
+    }
+
+    public function getCoordinate() {
+        return $this->coordinate;
     }
 }

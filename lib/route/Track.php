@@ -81,7 +81,11 @@ class Abp01_Route_Track {
             && abs($other->maxAlt - $this->maxAlt) < 0.1;
     }
 
-    public function getDisplayableInfo($targetSystem) {
+    /**
+     * @return Abp01_Route_Track_Info 
+     * @throws InvalidArgumentException 
+     */
+    public function constructDisplayableInfo($targetSystem) {
         $minAlt = new Abp01_UnitSystem_Value_Height($this->getMinimumAltitude());
         $maxAlt = new Abp01_UnitSystem_Value_Height($this->getMaximumAltitude());
 

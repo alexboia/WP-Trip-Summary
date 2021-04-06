@@ -30,71 +30,71 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
 class Abp01_Route_Track_AltitudeProfile {
-    public $profile;
+	public $profile;
 
-    public $distanceUnit;
+	public $distanceUnit;
 
-    public $heightUnit;
+	public $heightUnit;
 
-    public $stepPoints;
+	public $stepPoints;
 
-    public function __construct(array $profile, $distanceUnit, $heightUnit, $stepPoints) {
-        $this->profile = $profile;
-        $this->distanceUnit = $distanceUnit;
-        $this->heightUnit = $heightUnit;
-        $this->stepPoints = $stepPoints;
-    }
+	public function __construct(array $profile, $distanceUnit, $heightUnit, $stepPoints) {
+		$this->profile = $profile;
+		$this->distanceUnit = $distanceUnit;
+		$this->heightUnit = $heightUnit;
+		$this->stepPoints = $stepPoints;
+	}
 
-    public static function fromSerializedDocument($serialized) {
-        if (!$serialized || empty($serialized)) {
-            return null;
-        }
-        return unserialize($serialized);
-    }
+	public static function fromSerializedDocument($serialized) {
+		if (!$serialized || empty($serialized)) {
+			return null;
+		}
+		return unserialize($serialized);
+	}
 
-    public function getProfilePoints() {
-        return $this->profile;
-    }
+	public function getProfilePoints() {
+		return $this->profile;
+	}
 
-    public function getProfilePointCount() {
-        return count($this->profile);
-    }
+	public function getProfilePointCount() {
+		return count($this->profile);
+	}
 
-    public function getStepPoints() {
-        return $this->stepPoints;
-    }
+	public function getStepPoints() {
+		return $this->stepPoints;
+	}
 
-    public function getDistanceUnit() {
-        return $this->distanceUnit;
-    }
+	public function getDistanceUnit() {
+		return $this->distanceUnit;
+	}
 
-    public function getHeightUnit() {
-        return $this->heightUnit;
-    }
+	public function getHeightUnit() {
+		return $this->heightUnit;
+	}
 
-    public function toPlainObject() {
-        $data = new stdClass();
-        $data->profile = &$this->profile;
-        $data->distanceUnit = $this->distanceUnit;
-        $data->heightUnit = $this->heightUnit;
-        return $data;
-    }
+	public function hasBeenGeneratedFor(Abp01_UnitSystem $unitSystem, $stepPoints) {
+		return $this->distanceUnit === $unitSystem->getDistanceUnit()
+			&& $this->heightUnit === $unitSystem->getHeightUnit()
+			&& $this->stepPoints == $stepPoints;
+	}
 
-    public function matchesContext(Abp01_UnitSystem $unitSystem, $stepPoints) {
-        return $this->distanceUnit === $unitSystem->getDistanceUnit()
-            && $this->heightUnit === $unitSystem->getHeightUnit()
-            && $this->stepPoints == $stepPoints;
-    }
+	public function toPlainObject() {
+		$data = new stdClass();
+		$data->profile = &$this->profile;
+		$data->distanceUnit = $this->distanceUnit;
+		$data->heightUnit = $this->heightUnit;
+		return $data;
+	}
 
-    public function serializeDocument() {
-        return serialize($this);
-    }
+	public function serializeDocument() {
+		return serialize($this);
+	}
 
-    public function toJson() {
-        return json_encode($this);
-    }
+	public function toJson() {
+		return json_encode($this);
+	}
 }

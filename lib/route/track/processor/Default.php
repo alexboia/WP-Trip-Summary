@@ -185,7 +185,7 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
 
 	private function _isTrackProfileUseable($profileDocument, $targetSystemInstance, $stepPoints) {
 		return ($profileDocument instanceof Abp01_Route_Track_AltitudeProfile) 
-			&& $profileDocument->matchesContext($targetSystemInstance, $stepPoints);
+			&& $profileDocument->hasBeenGeneratedFor($targetSystemInstance, $stepPoints);
 	}
 
 	private function _getTrackProfileDocument($postId) {

@@ -29,43 +29,31 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
-}
+trait RouteTrackBboxTestDataHelpers {
+	use GenericTestHelpers;
+	
+	protected function _generateRandomRouteTrackBoundingBox() {
+		$faker = self::_getFaker();
+		
+		if (func_get_args() == 2) {
+			$deltaLat = func_get_arg(0);
+			$deltaLng = func_get_arg(1);
+		} else {
+			$deltaLat = $faker->numberBetween(2, 10);
+			$deltaLng = $faker->numberBetween(2, 10);
+		}
 
-class Abp01_Route_Track_Info {
-    /**
-     * @var Abp01_UnitSystem_Value_Height
-     */
-    public $minAltitude;
+		$minLat = $faker->randomFloat(5, -85, 85 - $deltaLat * 2);
+		$minLng = $faker->randomFloat(5, -180, 180 - $deltaLng * 2);
 
-    /**
-     * @var Abp01_UnitSystem_Value_Height
-     */
-    public $maxAltitude;
+		$maxLat = $minLat + $deltaLat;
+		$maxLng = $minLng + $deltaLng;
 
-    public function __construct(Abp01_UnitSystem_Value_Height $minAltitude, Abp01_UnitSystem_Value_Height $maxAltitude) {
-        $this->minAltitude = $minAltitude;
-        $this->maxAltitude = $maxAltitude;
-    }
+		$bbox = new Abp01_Route_Track_Bbox($minLat, 
+			$minLng, 
+			$maxLat, 
+			$maxLng);
 
-    /**
-     * @return stdClass
-     */
-    public function toPlainObject() {
-        $data = new stdClass();
-        $data->minAltitude = $this->minAltitude
-            ->toPlainObject();
-        $data->maxAltitude = $this->maxAltitude
-            ->toPlainObject();
-        return $data;
-    }
-
-    public function getMinAltitude() {
-        return $this->minAltitude;
-    }
-
-    public function getMaxAltitude() {
-        return $this->maxAltitude;
-    }
+		return $bbox;
+	}
 }

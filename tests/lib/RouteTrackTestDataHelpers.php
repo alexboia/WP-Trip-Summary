@@ -30,128 +30,122 @@
  */
 
 trait RouteTrackTestDataHelpers {
-    use GenericTestHelpers;
+	use GenericTestHelpers;
+	use RouteTrackBboxTestDataHelpers;
 
-    public function _generateRandomRouteTracks() {
-        $postIds = array();
-        $routeTracks = array();
-        $faker = self::_getFaker();
+	public function _generateRandomRouteTracks() {
+		$postIds = array();
+		$routeTracks = array();
+		$faker = self::_getFaker();
 
-        $deltaLat = $faker->numberBetween(2, 10);
-        $deltaLng = $faker->numberBetween(2, 10);
+		$deltaLat = $faker->numberBetween(2, 10);
+		$deltaLng = $faker->numberBetween(2, 10);
 
-        for ($i = 0; $i < 10; $i++) {
-            $postId = $this->_generatePostId($postIds);
-            $postIds[] = $postId;
+		for ($i = 0; $i < 10; $i++) {
+			$postId = $this->_generatePostId($postIds);
+			$postIds[] = $postId;
 
-            $routeTracks[] = array(
-                $this->_generateRandomRouteTrack($postId, $deltaLat, $deltaLng)
-            );
-        }
+			$routeTracks[] = array(
+				$this->_generateRandomRouteTrack($postId, $deltaLat, $deltaLng)
+			);
+		}
 
-        return $routeTracks;
-    }
+		return $routeTracks;
+	}
 
-    /**
-     * @return Abp01_Route_Track_Document
-     */
-    protected function _readDocumentFromCachedFile($postId) {
-        $filePath = $this->_getCachedTrackDocumentFilePath($postId);
-        return is_readable($filePath) 
-            ? Abp01_Route_Track_Document::fromSerializedDocument(file_get_contents($filePath)) 
-            : null;
-    }
+	/**
+	 * @return Abp01_Route_Track_Document
+	 */
+	protected function _readDocumentFromCachedFile($postId) {
+		$filePath = $this->_getCachedTrackDocumentFilePath($postId);
+		return is_readable($filePath) 
+			? Abp01_Route_Track_Document::fromSerializedDocument(file_get_contents($filePath)) 
+			: null;
+	}
 
-    protected function _generateRandomRouteTrack($postId, $fileNameExtension = null) {
-        $faker = self::_getFaker();
-        
-        if (func_get_args() == 3) {
-            $deltaLat = func_get_arg(1);
-            $deltaLng = func_get_arg(2);
-        } else {
-            $deltaLat = $faker->numberBetween(2, 10);
-            $deltaLng = $faker->numberBetween(2, 10);
-        }
+	protected function _generateRandomRouteTrack($postId, $fileNameExtension = null) {
+		$faker = self::_getFaker();
+		
+		if (func_get_args() == 3) {
+			$deltaLat = func_get_arg(1);
+			$deltaLng = func_get_arg(2);
+		} else {
+			$deltaLat = null;
+			$deltaLng = null;
+		}
 
-        $minLat = $faker->randomFloat(5, -85, 85 - $deltaLat * 2);
-        $minLng = $faker->randomFloat(5, -180, 180 - $deltaLng * 2);
+		$bbox = $deltaLat !== null && $deltaLng !== null
+			? $this->_generateRandomRouteTrackBoundingBox($deltaLat, $deltaLng)
+			: $this->_generateRandomRouteTrackBoundingBox();
 
-        $maxLat = $minLat + $deltaLat;
-        $maxLng = $minLng + $deltaLng;
-        
-        if ($fileNameExtension == null) {
-            $fileNameExtension = 'gpx';
-        }
+		if ($fileNameExtension == null) {
+			$fileNameExtension = 'gpx';
+		}
 
-        $fileName = $this->_getTrackDocumentFileName($postId, 
-            $fileNameExtension);
+		$fileName = $this->_getTrackDocumentFileName($postId, 
+			$fileNameExtension);
 
-        $minAltitude = $faker->randomFloat(3, 0, 4000);
-        $maxAltitude = $minAltitude + $faker->randomFloat(3, 0, 4000);
+		$minAltitude = $faker->randomFloat(3, 0, 4000);
+		$maxAltitude = $minAltitude + $faker->randomFloat(3, 0, 4000);
 
-        $bbox = new Abp01_Route_Track_Bbox($minLat, 
-            $minLng, 
-            $maxLat, 
-            $maxLng);
+		return new Abp01_Route_Track($postId, 
+			$fileName, 
+			$faker->mimeType,
+			$bbox, 
+			$minAltitude, 
+			$maxAltitude);
+	}
 
-        return new Abp01_Route_Track($postId, 
-            $fileName, 
-            $faker->mimeType,
-            $bbox, 
-            $minAltitude, 
-            $maxAltitude);
-    }
+	protected function _generateRandomRouteTrackWithMimeType($postId, $mimeType, $fileNameExtension) {
+		$sourceTrack = $this->_generateRandomRouteTrack($postId, $fileNameExtension);
+		$track = new Abp01_Route_Track($postId, 
+			$sourceTrack->getFileName(), 
+			$mimeType, 
+			$sourceTrack->getBounds(), 
+			$sourceTrack->getMinimumAltitude(), 
+			$sourceTrack->getMaximumAltitude());
+		return $track;
+	}
 
-    protected function _generateRandomRouteTrackWithMimeType($postId, $mimeType, $fileNameExtension) {
-        $sourceTrack = $this->_generateRandomRouteTrack($postId, $fileNameExtension);
-        $track = new Abp01_Route_Track($postId, 
-            $sourceTrack->getFileName(), 
-            $mimeType, 
-            $sourceTrack->getBounds(), 
-            $sourceTrack->getMinimumAltitude(), 
-            $sourceTrack->getMaximumAltitude());
-        return $track;
-    }
+	protected function _storeTrackDocument($postId, $documentContent, $extension) {
+		$path = $this->_getTrackDocumentFilePath($postId, $extension);
+		file_put_contents($path, $documentContent);
+	}
 
-    protected function _storeTrackDocument($postId, $documentContent, $extension) {
-        $path = $this->_getTrackDocumentFilePath($postId, $extension);
-        file_put_contents($path, $documentContent);
-    }
+	protected function _prepareAndStoreCachedTrackDocument($postId, $documentContent, Abp01_Route_Track_DocumentParser $parser) {
+		$path = $this->_getCachedOriginalTrackDocumentFilePath($postId);
+		$trackDocument = $parser->parse($documentContent);
+		file_put_contents($path, $trackDocument->serializeDocument());
+	}
 
-    protected function _prepareAndStoreCachedTrackDocument($postId, $documentContent, Abp01_Route_Track_DocumentParser $parser) {
-        $path = $this->_getCachedOriginalTrackDocumentFilePath($postId);
-        $trackDocument = $parser->parse($documentContent);
-        file_put_contents($path, $trackDocument->serializeDocument());
-    }
+	protected function _getTrackDocumentFilePath($postId, $extension) {
+		return wp_normalize_path($this->_getEnv()->getTracksStorageDir() . '/' 
+			. $this->_getTrackDocumentFileName($postId, $extension));
+	}
 
-    protected function _getTrackDocumentFilePath($postId, $extension) {
-        return wp_normalize_path($this->_getEnv()->getTracksStorageDir() . '/' 
-            . $this->_getTrackDocumentFileName($postId, $extension));
-    }
+	private function _getTrackDocumentFileName($postId, $extension) {
+		return sprintf('track-%s.%s', 
+			$postId, 
+			$extension);
+	}
+	
+	private function _getCachedOriginalTrackDocumentFileName($postId) {
+		return sprintf('track-original-%d.cache', $postId);
+	}
 
-    private function _getTrackDocumentFileName($postId, $extension) {
-        return sprintf('track-%s.%s', 
-            $postId, 
-            $extension);
-    }
-    
-    private function _getCachedOriginalTrackDocumentFileName($postId) {
-        return sprintf('track-original-%d.cache', $postId);
-    }
+	protected function _getCachedOriginalTrackDocumentFilePath($postId) {
+		return wp_normalize_path($this->_getEnv()->getCacheStorageDir() . '/' 
+			. $this->_getCachedOriginalTrackDocumentFileName($postId));
+	}
 
-    protected function _getCachedOriginalTrackDocumentFilePath($postId) {
-        return wp_normalize_path($this->_getEnv()->getCacheStorageDir() . '/' 
-            . $this->_getCachedOriginalTrackDocumentFileName($postId));
-    }
+	protected function _getCachedTrackDocumentFileName($postId) {
+		return sprintf('track-%d.cache', $postId);
+	}
 
-    protected function _getCachedTrackDocumentFileName($postId) {
-        return sprintf('track-%d.cache', $postId);
-    }
+	protected function _getCachedTrackDocumentFilePath($postId) {
+		return wp_normalize_path($this->_getEnv()->getCacheStorageDir() . '/' 
+			. $this->_getCachedTrackDocumentFileName($postId));
+	}
 
-    protected function _getCachedTrackDocumentFilePath($postId) {
-        return wp_normalize_path($this->_getEnv()->getCacheStorageDir() . '/' 
-            . $this->_getCachedTrackDocumentFileName($postId));
-    }
-
-    abstract protected function _generatePostId($excludeAdditionalIds = null);
+	abstract protected function _generatePostId($excludeAdditionalIds = null);
 }
