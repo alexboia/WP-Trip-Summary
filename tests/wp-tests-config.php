@@ -29,6 +29,7 @@ define( 'WP_DEFAULT_THEME', 'default' );
 
 // Test with WordPress debug mode (default).
 define( 'WP_DEBUG', true );
+define( 'WP_HTTP_BLOCK_EXTERNAL', false );
 
 // ** MySQL settings ** //
 

@@ -89,9 +89,9 @@ Selon les différentes fonctions exercées par les zones du module, nous pouvons
 <div class="abp01-help-section" markdown="1">
 Pour exécuter ce module, vous avez besoin des éléments suivants:
 
-- PHP version 5.6.2 ou ultérieure;
+- PHP version 7.0.2 ou ultérieure;
 - MySQL version 5.7 ou ultérieure (avec prise en charge des données SIG);
-- WordPress 5.0 ou version ultérieure;
+- WordPress 5.3.0 ou version ultérieure;
 - Extension PHP libxml;
 - Extension PHP SimpleXml;
 - extension PHP mysqli;

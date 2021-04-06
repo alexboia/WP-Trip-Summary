@@ -4,8 +4,8 @@ Donate link: https://ko-fi.com/alexandruboia
 Tags: trip, summary, map, gpx, travel
 Requires at least: 5.3.0
 Tested up to: 5.7.0
-Stable tag: 0.2.6
-Requires PHP: 5.6.2
+Stable tag: 0.2.7
+Requires PHP: 7.0.2
 License: BSD New License
 License URI: https://opensource.org/licenses/BSD-3-Clause
 
@@ -113,6 +113,8 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 5. Admin - Trip Editor - Trip information
 6. Admin - Trip Editor - No trip type selected yet
 7. Admin - Plug-in settings editor
+8. Admin - Plug-in settings editor - chose apre-defined tile configuration
+9. Frontend Viewer - Trip Map with altitude profile
 
 == Installation ==
 
@@ -124,15 +126,26 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 
 == Changelog ==
 
+= 0.2.7 =
+- Refactoring: the plug-in now has a more manageable and extensible structure;
+- Feature: Added an about page;
+- Feature: Enhanced display for the frontend viewer information items;
+- Feature: Added support for GeoJSON file import;
+- Improved plug-in documentation;
+- Improved usability and UI for the settings page;
+- Improved usability and UI for the help page;
+- Updated help contents;
+- Improved stability and various bug fixes.
+
 = 0.2.6 =
-- usability improvement: added a control to the front-end viewer map that allows one to re-center the map to the GPS track bounding area - basically the initial state of the map when it's first loaded.
-- usability improvement: within the WP-Trip-Summary, the "Clear Track" and "Clear Info" buttons have been grouped using a `Quick Actions` control, such as in the metabox used to display the summary in the post page.
-- usability improvement: added confirmation when attempting to remove trip summary information as well as when attempting to remove track data.
-- usability improvement: when removing a lookup data item with existing associations (that is, associated with at least a post), WP-Trip-Summary no longer issues a hard denial, but asks the user to confirm whether he/she wishes to proceed removing the item, as well as sever its associations with the posts.
-- feature: added an option (to the WP-Trip-Summary settings page) to specify the initially selected WP-Trip-Summary front-end viewer tab.
-- feature: added an option (to the WP-Trip-Summary settings page) to specify the front-end viewer map height.
-- improved stability;
-- improved documentation.
+- Usability improvement: added a control to the front-end viewer map that allows one to re-center the map to the GPS track bounding area - basically the initial state of the map when it's first loaded.
+- Usability improvement: within the WP-Trip-Summary, the "Clear Track" and "Clear Info" buttons have been grouped using a `Quick Actions` control, such as in the metabox used to display the summary in the post page.
+- Usability improvement: added confirmation when attempting to remove trip summary information as well as when attempting to remove track data.
+- Usability improvement: when removing a lookup data item with existing associations (that is, associated with at least a post), WP-Trip-Summary no longer issues a hard denial, but asks the user to confirm whether he/she wishes to proceed removing the item, as well as sever its associations with the posts.
+- Feature: added an option (to the WP-Trip-Summary settings page) to specify the initially selected WP-Trip-Summary front-end viewer tab.
+- Feature: added an option (to the WP-Trip-Summary settings page) to specify the front-end viewer map height.
+- Improved stability;
+- Improved documentation.
 
 = 0.2.5 =
 * Trip summary front-end viewer can now inserted at a custom location in the post content for which it has been defined using the [abp01_trip_summary_viewer] shortcode (or a special block, if you're using the block editor);

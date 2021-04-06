@@ -78,6 +78,8 @@ copy_asset_files() {
     cp ./assets/en_US/admin-edit-summary-bike.png	"$WPTS_EXPORT_ASSETS_DIR/screenshot-5.png" > /dev/null
     cp ./assets/en_US/admin-edit-summary-empty.png  "$WPTS_EXPORT_ASSETS_DIR/screenshot-6.png" > /dev/null
     cp ./assets/en_US/admin-settings.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-7.png" > /dev/null
+	cp ./assets/en_US/admin-settings-predefined-tile-layer.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-8.png" > /dev/null
+	cp ./assets/en_US/viewer-map-alt-profile.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-9.png" > /dev/null
 
     cp ./assets/banner-772x250.jpg    "$WPTS_EXPORT_ASSETS_DIR/banner-772x250.jpg" > /dev/null
     cp ./assets/banner-1544x500.jpg    "$WPTS_EXPORT_ASSETS_DIR/banner-1544x500.jpg" > /dev/null

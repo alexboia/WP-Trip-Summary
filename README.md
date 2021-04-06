@@ -360,9 +360,9 @@ However, there is no definitive plan for it, but, as a general rule, I would lik
 
 ### For running the plug-in itself
 
-1. PHP version 5.6.2 or greater;
+1. PHP version 7.0.2 or greater;
 2. MySQL version 5.7 or greater (with spatial support);
-3. WordPress 5.0 or greater;
+3. WordPress 5.3.0 or greater;
 4. libxml extension;
 5. SimpleXml extension;
 6. mysqli extension;
@@ -373,7 +373,7 @@ However, there is no definitive plan for it, but, as a general rule, I would lik
 
 All of the above, with the following amendments:
 
-1. PHP version 5.4.0 or greater is required;
+1. PHP version 7.0.2 or greater is required;
 2. xdebug extension is recommended;
 3. phpunit version 5.x installed and available in your $PATH, for running the tests;
 4. wp (wp-cli) version 2.x installed and available in your $PATH, for initializing the test environment, if needed

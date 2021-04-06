@@ -89,9 +89,9 @@ Depending on the various functions performed by various plug-in components, we c
 <div class="abp01-help-section" markdown="1">
 To run this module, the following technical requirements must be met:
 
-- PHP version 5.6.2 or greater;
+- PHP version 7.0.2 or greater;
 - MySQL version 5.7 or greater (with spatial support);
-- WordPress 5.0;
+- WordPress 5.3.0;
 - libxml extension;
 - SimpleXml extension;
 - mysqli extension;
