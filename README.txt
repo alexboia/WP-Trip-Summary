@@ -25,7 +25,7 @@ This plug-in is very good for you if:
 Features
 --------
 - attach technical information to a post (ex. how long was your trip, how much did you totally climb, where from and where to, how hard do you think it has been, what kind of roads or trails did you encounter etc.);
-- attach a GPS track to a post (GPX files are currently accepted) and display that track on a map;
+- attach GPS data to a post (GPX and GeoJSON files are currently accepted as data sources) and display that track on a map;
 - allows management of the look-up data used to populate the fields presented as single or multi-selection options list (ex. `Difficulty Level`, `Open During Seasons` etc.);
 - allows customization of the map layer:
    - map tile source (comes by default configured with [OpenStreetMap](https://www.openstreetmap.org/)); 
@@ -38,7 +38,7 @@ More details
 ------------
 This plug-in provides two basic features:
 - allow some structured information to be filled in, according to a selected trip type;
-- allow some GPX track to be uploaded and then rendered on a map.
+- allow some GPS track to be uploaded and then rendered on a map.
 
 Structured information is supported for the following types of trips:
 - Bike trips;
@@ -73,9 +73,9 @@ For train rides the following fields are available:
 - Line type.
 
 Requirements:
-- PHP version 5.6.2 or greater;
+- PHP version 7.0.2 or greater;
 - MySQL version 5.7 or greater (with spatial support);
-- Wordpress 5.0 or greater;
+- Wordpress 5.3.0 or greater;
 - libxml extension;
 - SimpleXml extension;
 - mysqli extension;
@@ -90,7 +90,7 @@ For those with plug-in versions older than 0.2.1, please see here notes on updat
 == Frequently Asked Questions ==
 
 = Does it support KML files? =
-The plug-in currently only supports GPX files as a way to upload GPS tracks. KML will be supported round about 0.3, maybe earlier.
+The plug-in currently only supports GPX and GeoJSON files as a way to upload GPS tracks. KML will be supported round about 0.3, maybe earlier.
 
 = Can I insert the trip summary front-end viewer at a custom location? =
 You can insert the trip summary viewer at a custom location *in the same post for which you have defined it* using the following shortcode: [abp01_trip_summary_viewer] (no parameters required). Only one such shortcode allowed and supported per post.
@@ -195,6 +195,9 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 First officially distributed version.
 
 == Upgrade Notice ==
+
+= 0.2.7 =
+Upgrade to this version for additional features, better user experience and improved plug-in stability
 
 = 0.2.6 =
 Upgrade to this version for additional features, better user experience and improved plug-in stability

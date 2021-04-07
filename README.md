@@ -44,7 +44,7 @@ Do you think this would be right for you but there's that extra thing that's mis
 <a name="wpts-features"></a>  
 
 - attach technical information to a post (ex. how long was your trip, how much did you totally climb, where from and where to, how hard do you think it has been, what kind of roads or trails did you encounter etc.);
-- attach some GPS to a post ([see below for a detailed discussion on accepted file formats](#wpts-features-file-format)) and display that track on a map;
+- attach some GPS data to a post ([see below for a detailed discussion on accepted file formats](#wpts-features-file-format)) and display that track on a map;
 - allows management of the look-up data used to populate the fields presented as single or multi-selection options list (ex. `Difficulty Level`, `Open During Seasons` etc.);
 - allows customization of the map layer:
    - map tile source (comes by default configured with [OpenStreetMap](https://www.openstreetmap.org/)); 
