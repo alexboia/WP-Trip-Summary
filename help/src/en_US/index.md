@@ -139,6 +139,8 @@ This plug-in would have required much more work on my said without the following
 16. [PHPUnit](https://github.com/sebastianbergmann/phpunit) - the PHP Unit Testing framework
 17. [Parsedown](https://github.com/erusev/parsedown) - better Markdown Parser in PHP. [http://parsedown.org](http://parsedown.org)
 18. [Faker](https://github.com/fzaninotto/Faker) - faker is a PHP library that generates fake data for you
+19. [Mockery](https://github.com/mockery/mockery) - A simple yet flexible PHP mock object framework for use in unit testing with PHPUnit
+20. [Parsedown Extra](https://github.com/erusev/parsedown-extra) - Markdown Extra Extension for Parsedown
 
 [Back to the Table of Contents](#help-root)
 </div>

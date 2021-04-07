@@ -133,6 +133,8 @@ Modulul WP-Trip-Summary folosește următoarele librării:
 16. [PHPUnit](https://github.com/sebastianbergmann/phpunit) - framework de unit-testing pentru PHP
 17. [Parsedown](https://github.com/erusev/parsedown) - interpretor Markdown scris in PHP. [http://parsedown.org](http://parsedown.org)
 18. [Faker](https://github.com/fzaninotto/Faker) - o librărie PHP ce generează date aleatorii ce pot fi folosite la testare
+19. [Mockery](https://github.com/mockery/mockery) - Un framework PHP pentru generarea de mock objects
+20. [Parsedown Extra](https://github.com/erusev/parsedown-extra) - Extensie pentru parsedown care suporta Markdown Extra
 
 [Înapoi la Cuprins](#help-root)
 </div>

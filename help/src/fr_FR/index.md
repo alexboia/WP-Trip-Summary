@@ -135,6 +135,12 @@ Le module WP-Trip-Summary utilise les bibliothèques suivantes:
 12. [kite](http://code.google.com/p/kite/) - moteur de modèle écrit en JavaScript, petit et simple
 13. [Leaflet.MagnifyingGlass](https://github.com/bbecquet/Leaflet.MagnifyingGlass) - plug-in Leaflet qui ajoute une loupe à la carte: agrandissement d'une zone individuelle sur la carte
 14. [Leaflet.fullscreen](https://github.com/Leaflet/Leaflet.fullscreen) - plug-in Leaflet qui permet d'afficher la carte en plein écran
+15. [Tipped JS](https://github.com/staaky/tipped) - une solution d'info-bulles complète pour Javascript
+16. [PHPUnit](https://github.com/sebastianbergmann/phpunit) - le framework PHP pour les tests unitaires 
+17. [Parsedown](https://github.com/erusev/parsedown) - meilleur analyseur de Markdown en PHP. [http://parsedown.org](http://parsedown.org)
+18. [Faker](https://github.com/fzaninotto/Faker) - faker est une bibliothèque PHP qui génère de fausses données pour vous 
+19. [Mockery](https://github.com/mockery/mockery) - Un framework d'objet simulé PHP simple mais flexible 
+20. [Parsedown Extra](https://github.com/erusev/parsedown-extra) - Extension Markdown Extra pour Parsedown
 
 [Retour au sommaire](#help-root)
 </div>

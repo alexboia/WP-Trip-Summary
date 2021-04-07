@@ -392,7 +392,7 @@ All of the above, with the following amendments:
 
 1. ~~Currently it only works with the classic WordPress Editor. An update is planned for 0.3.~~ (Now available since 0.2.4).
 2. Not designed for (and not tested with) multi-site installations. No update is currently planned.
-3. Currently only supports GPX files as a way to upload GPS tracks. KML will be supported round about 0.3, maybe earlier.
+3. Currently only supports GPX and GeoJSON files as a way to upload GPS tracks. KML will be supported round about 0.3, maybe earlier.
 
 ## Screenshots
 <a name="wpts-screenshots"></a>  
@@ -440,6 +440,8 @@ Despite my best intentions, it would be really hard to come up with a stellar pr
 16. [PHPUnit](https://github.com/sebastianbergmann/phpunit) - The PHP Unit Testing framework
 17. [Parsedown](https://github.com/erusev/parsedown) - Better Markdown Parser in PHP. [http://parsedown.org](http://parsedown.org)
 18. [Faker](https://github.com/fzaninotto/Faker) - Faker is a PHP library that generates fake data for you
+19. [Mockery](https://github.com/mockery/mockery) - A simple yet flexible PHP mock object framework for use in unit testing with PHPUnit
+20. [Parsedown Extra](https://github.com/erusev/parsedown-extra) - Markdown Extra Extension for Parsedown
 
 ## License
 <a name="wpts-license"></a> 
