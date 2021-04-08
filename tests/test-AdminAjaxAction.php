@@ -30,5 +30,146 @@
  */
 
 class AdminAjaxActionTests extends WP_UnitTestCase {
-	
+	use GenericTestHelpers;
+
+	public function setUp() {
+		parent::setUp();
+		Abp01DieState::resetDieCall();
+		Abp01SendHeaderState::clearSendHeaderCalls();
+	}
+
+	public function tearDown() {
+		parent::tearDown();
+		Abp01DieState::resetDieCall();
+		Abp01SendHeaderState::clearSendHeaderCalls();
+	}
+
+	public function test_canExecute_defaultSetup() {
+		$expectedResponse = $this->_constructExpectedAdminAjaxResponse();
+		$executorCallback = $this->_createAdminAjaxActionExecutor($expectedResponse);
+
+		$ajaxAction = Abp01_AdminAjaxAction::create('actioncode1', 
+			$executorCallback);
+
+		$this->_runAdminAjaxActionTest($ajaxAction, 
+			true, 
+			$expectedResponse);
+	}
+
+	private function _constructExpectedAdminAjaxResponse() {
+		$faker = $this->_getFaker();
+
+		$expectedResponse = abp01_get_ajax_response(array(
+			'prop1' => $faker->sentence(),
+			'prop2' => $faker->numberBetween()
+		));
+
+		return $expectedResponse;
+	}
+
+	private function _createAdminAjaxActionExecutor($expectedResponse) {
+		return function() use ($expectedResponse) {
+			return $expectedResponse;
+		};
+	}
+
+	private function _runAdminAjaxActionTest(Abp01_AdminAjaxAction $ajaxAction, $shouldExecute, $expectedResponse = null) {
+		Abp01DieState::resetDieCall();
+		$expectedSerializedResponse = json_encode($expectedResponse);
+
+		if ($shouldExecute) {
+			$actualResponse = $ajaxAction->execute();
+			$this->assertEquals($expectedResponse, $actualResponse);
+			$this->assertFalse(Abp01DieState::hasDieBeenCalled());
+
+			Abp01DieState::resetDieCall();
+			$ajaxAction->executeAndSendJsonThenExit();
+			$this->assertTrue(Abp01DieState::hasDieBeenCalledWithArgs($expectedSerializedResponse));
+		} else {
+			$actualResponse = $ajaxAction->execute();
+			$this->assertEmpty($actualResponse);
+			$this->assertTrue(Abp01DieState::hasDieBeenCalled());
+
+			Abp01DieState::resetDieCall();
+			$ajaxAction->executeAndSendJsonThenExit();
+			$this->assertTrue(Abp01DieState::hasDieBeenCalledWithArgs());
+		}
+	}
+
+	public function test_canExecute_defaultSetup_httpMethodRestriction() {
+		$expectedResponse = $this->_constructExpectedAdminAjaxResponse();
+		$executorCallback = $this->_createAdminAjaxActionExecutor($expectedResponse);
+
+		$ajaxAction = Abp01_AdminAjaxAction::create('actioncode1', 
+			$executorCallback);
+
+		foreach ($this->_getHttpMethods() as $methodAllowed) {
+			$ajaxAction->onlyForHttpMethod($methodAllowed);
+
+			$this->_setCurrentHttpMethod($methodAllowed);
+			$this->_runAdminAjaxActionTest($ajaxAction, 
+				true, 
+				$expectedResponse);
+
+			foreach ($this->_getHttpMethods($methodAllowed) as $notAllowedMethod) {
+				$this->_setCurrentHttpMethod($notAllowedMethod);
+				$this->_runAdminAjaxActionTest($ajaxAction, 
+					false);
+			}
+		}
+	}
+
+	public function test_canExecute_withCallbackAuthorization_isAuthorized_allHttpMethods() {
+		$this->_runAdminAjaxActionWithCallbackAuthorizationTest(true);
+	}
+
+	public function test_canExecute_withCallbackAuthorization_isNotAuthorized_allHttpMethods() {
+		$this->_runAdminAjaxActionWithCallbackAuthorizationTest(false);
+	}
+
+	private function _runAdminAjaxActionWithCallbackAuthorizationTest($isAuthorized) {
+		$expectedResponse = $this->_constructExpectedAdminAjaxResponse();
+		$executorCallback = $this->_createAdminAjaxActionExecutor($expectedResponse);
+		$authorizationCallback = $this->_createAuthorizationCallback($isAuthorized);
+
+		$ajaxAction = Abp01_AdminAjaxAction::create('actioncode1', $executorCallback)
+			->authorizeByCallback($authorizationCallback);
+
+		if ($isAuthorized) {
+			$this->_runAdminAjaxActionTest($ajaxAction, 
+				true, 
+				$expectedResponse);	
+		} else {
+			$this->_runAdminAjaxActionTest($ajaxAction, 
+				false);
+		}
+	}
+
+	private function _createAuthorizationCallback($isAuthorized) {
+		return function() use ($isAuthorized) {
+			return $isAuthorized;
+		};
+	}
+
+	private function _getHttpMethods($without = null) {
+		$methods = array(
+			Abp01_AdminAjaxAction::HTTP_DELETE,
+			Abp01_AdminAjaxAction::HTTP_GET,
+			Abp01_AdminAjaxAction::HTTP_PATCH,
+			Abp01_AdminAjaxAction::HTTP_POST,
+			Abp01_AdminAjaxAction::HTTP_PUT
+		);
+
+		if (!empty($without)) {
+			$methods = array_filter($methods, function($element) use ($without) {
+				return $element != $without;
+			});
+		}
+
+		return $methods;
+	}
+
+	private function _setCurrentHttpMethod($method) {
+		$_SERVER['REQUEST_METHOD'] = $method;
+	}
 }

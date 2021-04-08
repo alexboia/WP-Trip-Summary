@@ -217,7 +217,11 @@ class Abp01_AdminAjaxAction {
 
 	public function executeAndSendJsonThenExit() {
 		$executionResult = $this->execute();
-		$this->_sendJsonAndExit($executionResult);
+		if (isset($executionResult)) {
+			$this->_sendJsonAndExit($executionResult);
+		} else {
+			abp01_die();
+		}		
 	}
 
 	private function _sendJsonAndExit($data) {

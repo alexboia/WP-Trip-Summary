@@ -40,7 +40,8 @@ class Abp01DieState {
 		return self::$_lastDieCall !== null;
 	}
 
-	public static function hasDieBeenCalledWithArgs(array $args) {
+	public static function hasDieBeenCalledWithArgs() {
+		$args = func_get_args();
 		$hasBeenCalledWithArgs = false;
 
 		if (self::$_lastDieCall !== null) {
@@ -55,11 +56,11 @@ class Abp01DieState {
 				}
 			}
 		}
-		
+
 		return $hasBeenCalledWithArgs;
 	}
 
-	public function resetDieCall() {
+	public static function resetDieCall() {
 		self::$_lastDieCall = null;
 	}
 }

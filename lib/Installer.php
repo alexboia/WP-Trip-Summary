@@ -1107,6 +1107,7 @@ class Abp01_Installer {
 
         try {
             $db = $this->_env->getDb();
+            //TODO: only alter if column does no exist
             $db->rawQuery("ALTER TABLE `" . $this->_getRouteTrackTableName() .  "` 
                 ADD COLUMN route_track_file_mime_type VARCHAR(250) NOT NULL DEFAULT 'application/gpx' 
                 AFTER route_track_file");
