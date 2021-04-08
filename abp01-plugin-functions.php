@@ -32,6 +32,16 @@
  //Check that we're not being directly called
 defined('ABP01_LOADED') or die;
 
+if (!function_exists('abp01_die')) {
+	function abp01_die() {
+		if (func_num_args() == 1) {
+			die(func_get_arg(0));
+		} else {
+			die;
+		}
+	}
+}
+
 /**
  * Initializes the autoloading process
  * 
@@ -217,7 +227,7 @@ function abp01_send_json($data) {
 			$data = gzencode($data, 8, FORCE_GZIP);
 		}
 	}
-	die($data);
+	abp01_die($data);
 }
 
 /**

@@ -194,10 +194,10 @@ class Abp01_AdminAjaxAction {
 		if (!$this->isNonceValid() 
 			|| !$this->_isCurrentHttpMethodAllowed()
 			|| !$this->_currentUserCanExecute()) {
-			die;
+			abp01_die();
+		} else {
+			return call_user_func($this->_callback);
 		}
-
-		return call_user_func($this->_callback);
 	}
 
 	private function _isCurrentHttpMethodAllowed() {
