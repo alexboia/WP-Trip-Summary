@@ -413,6 +413,10 @@ All of the above, with the following amendments:
 
 ![Viewer - Map](/screenshots/V2.png?raw=true)
 
+##### Viewer - Map with altitude profile
+
+![Viewer - Map with altitude profile](/screenshots/V3.gif?raw=true)
+
 ## How can you help
 <a name="wpts-contributing"></a>  
 
