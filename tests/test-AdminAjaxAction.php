@@ -32,16 +32,74 @@
 class AdminAjaxActionTests extends WP_UnitTestCase {
 	use GenericTestHelpers;
 
+	private $_savedServerRequestMethod = null;
+
 	public function setUp() {
 		parent::setUp();
+		$this->_resetTestDoublesStates();
+		$this->_storeCurrentRequestMethod();
+	}
+
+	private function _resetTestDoublesStates() {
 		Abp01DieState::resetDieCall();
 		Abp01SendHeaderState::clearSendHeaderCalls();
 	}
 
+	private function _storeCurrentRequestMethod() {
+		$this->_savedServerRequestMethod = isset($_SERVER['REQUEST_METHOD'])
+			? $_SERVER['REQUEST_METHOD']
+			: null;
+	}
+
 	public function tearDown() {
 		parent::tearDown();
-		Abp01DieState::resetDieCall();
-		Abp01SendHeaderState::clearSendHeaderCalls();
+		$this->_resetTestDoublesStates();
+		$this->_restorePreviousRequestMethod();
+	}
+
+	private function _restorePreviousRequestMethod() {
+		if ($this->_savedServerRequestMethod !== null) {
+			$_SERVER['REQUEST_METHOD'] = $this->_savedServerRequestMethod;
+		} else {
+			unset($_SERVER['REQUEST_METHOD']);
+		}
+	}
+
+	public function test_canBeRegistered_withoutAuthenticationRequired() {
+		$this->_runAdminAjaxActionRegistrationTest(false);
+	}
+
+	private function _createAdminAjaxExecutorWithRandomResponse() {
+		return $this->_createAdminAjaxActionExecutor($this->_constructExpectedAdminAjaxResponse());
+	}
+
+	private function _runAdminAjaxActionRegistrationTest($requiresAuthentication) {
+		$executorCallback = $this->_createAdminAjaxExecutorWithRandomResponse();
+
+		$ajaxAction = Abp01_AdminAjaxAction::create('actioncode1', $executorCallback)
+			->setRequiresAuthentication($requiresAuthentication)
+			->register();
+
+		$expectedWpActionCallback = array($ajaxAction, 
+			'executeAndSendJsonThenExit');
+
+		$hasWpActionHook = has_action('wp_ajax_actioncode1', 
+			$expectedWpActionCallback);
+
+		$this->assertTrue(is_int($hasWpActionHook));
+
+		$hasNoProviWpActionHook = has_action('wp_ajax_nopriv_actioncode1', 
+			$expectedWpActionCallback);
+
+		if (!$requiresAuthentication) {
+			$this->assertTrue(is_int($hasNoProviWpActionHook));
+		} else {
+			$this->assertFalse($hasNoProviWpActionHook);
+		}
+	}
+
+	public function test_canBeRegistered_withAuthenticationRequired() {
+		$this->_runAdminAjaxActionRegistrationTest(true);
 	}
 
 	public function test_canExecute_defaultSetup() {
@@ -74,7 +132,7 @@ class AdminAjaxActionTests extends WP_UnitTestCase {
 	}
 
 	private function _runAdminAjaxActionTest(Abp01_AdminAjaxAction $ajaxAction, $shouldExecute, $expectedResponse = null) {
-		Abp01DieState::resetDieCall();
+		$this->_resetTestDoublesStates();
 		$expectedSerializedResponse = json_encode($expectedResponse);
 
 		if ($shouldExecute) {
@@ -82,7 +140,7 @@ class AdminAjaxActionTests extends WP_UnitTestCase {
 			$this->assertEquals($expectedResponse, $actualResponse);
 			$this->assertFalse(Abp01DieState::hasDieBeenCalled());
 
-			Abp01DieState::resetDieCall();
+			$this->_resetTestDoublesStates();
 			$ajaxAction->executeAndSendJsonThenExit();
 			$this->assertTrue(Abp01DieState::hasDieBeenCalledWithArgs($expectedSerializedResponse));
 		} else {
@@ -90,7 +148,7 @@ class AdminAjaxActionTests extends WP_UnitTestCase {
 			$this->assertEmpty($actualResponse);
 			$this->assertTrue(Abp01DieState::hasDieBeenCalled());
 
-			Abp01DieState::resetDieCall();
+			$this->_resetTestDoublesStates();
 			$ajaxAction->executeAndSendJsonThenExit();
 			$this->assertTrue(Abp01DieState::hasDieBeenCalledWithArgs());
 		}
@@ -103,13 +161,25 @@ class AdminAjaxActionTests extends WP_UnitTestCase {
 		$ajaxAction = Abp01_AdminAjaxAction::create('actioncode1', 
 			$executorCallback);
 
+		$this->_runAdminAjaxActionTestWithHttpMethodRestrictions($ajaxAction, 
+			true,
+			$expectedResponse);
+	}
+
+	private function _runAdminAjaxActionTestWithHttpMethodRestrictions(Abp01_AdminAjaxAction $ajaxAction, $shouldExecute, $expectedResponse = null) {
 		foreach ($this->_getHttpMethods() as $methodAllowed) {
 			$ajaxAction->onlyForHttpMethod($methodAllowed);
 
 			$this->_setCurrentHttpMethod($methodAllowed);
-			$this->_runAdminAjaxActionTest($ajaxAction, 
-				true, 
-				$expectedResponse);
+
+			if ($shouldExecute) {
+				$this->_runAdminAjaxActionTest($ajaxAction, 
+					true, 
+					$expectedResponse);
+			} else {
+				$this->_runAdminAjaxActionTest($ajaxAction, 
+					false);
+			}
 
 			foreach ($this->_getHttpMethods($methodAllowed) as $notAllowedMethod) {
 				$this->_setCurrentHttpMethod($notAllowedMethod);
@@ -141,6 +211,32 @@ class AdminAjaxActionTests extends WP_UnitTestCase {
 				$expectedResponse);	
 		} else {
 			$this->_runAdminAjaxActionTest($ajaxAction, 
+				false);
+		}
+	}
+
+	public function test_canExecute_withCallbackAuthorization_isAuthorized_httpMethodRestriction() {
+		$this->_runAdminAjaxActionWithCallbackAuthorizationTestWithHttpMethodRestrictions(true);
+	}
+
+	public function test_canExecute_withCallbackAuthorization_isNotAuthorized_httpMethodRestriction() {
+		$this->_runAdminAjaxActionWithCallbackAuthorizationTestWithHttpMethodRestrictions(false);
+	}
+
+	private function _runAdminAjaxActionWithCallbackAuthorizationTestWithHttpMethodRestrictions($isAuthorized) {
+		$expectedResponse = $this->_constructExpectedAdminAjaxResponse();
+		$executorCallback = $this->_createAdminAjaxActionExecutor($expectedResponse);
+		$authorizationCallback = $this->_createAuthorizationCallback($isAuthorized);
+
+		$ajaxAction = Abp01_AdminAjaxAction::create('actioncode1', $executorCallback)
+			->authorizeByCallback($authorizationCallback);
+
+		if ($isAuthorized) {
+			$this->_runAdminAjaxActionTestWithHttpMethodRestrictions($ajaxAction, 
+				true, 
+				$expectedResponse);
+		} else {
+			$this->_runAdminAjaxActionTestWithHttpMethodRestrictions($ajaxAction, 
 				false);
 		}
 	}
