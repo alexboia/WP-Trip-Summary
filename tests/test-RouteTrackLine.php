@@ -30,6 +30,16 @@
  */
 
 class RouteTrackLineTests extends WP_UnitTestCase {
+	use RouteTrackPointTestDataHelpers;
+
+	const MIN_GEN_LATLNG = 0;
+
+	const MAX_GEN_LATLNG = 10;
+
+	const MIN_GEN_ALT = 0;
+
+	const MAX_GEN_ALT = 10;
+
 	public function test_initialLineStateCorrect() {
 		$line = new Abp01_Route_Track_Line();
 		$this->_assertCorrectTrackPointsCount($line, 0);
@@ -39,24 +49,20 @@ class RouteTrackLineTests extends WP_UnitTestCase {
 	public function test_canAddPoint_withoutAltitude() {
 		$line = new Abp01_Route_Track_Line();
 
-		for ($iLatitude = 0; $iLatitude < 10; $iLatitude ++) {
-			for ($iLongitude = 0; $iLongitude < 10; $iLongitude ++) {
-				$coordinate = new Abp01_Route_Track_Coordinate($iLatitude, $iLongitude);
-				$point = new Abp01_Route_Track_Point($coordinate);
-				$line->addPoint($point);
-			}
+		foreach ($this->_generatePointsWithoutAltitude(self::MIN_GEN_LATLNG, self::MAX_GEN_LATLNG) as $point) {
+			$line->addPoint($point);
 		}
 
 		$this->_assertCorrectTrackPointsCount($line, 100);
 
-		$this->assertEquals(0, 
+		$this->assertEquals(self::MIN_GEN_LATLNG, 
 			$line->getMinimumLatitude());
-		$this->assertEquals(0, 
+		$this->assertEquals(self::MIN_GEN_LATLNG, 
 			$line->getMinimumLongitude());
 
-		$this->assertEquals($iLatitude - 1, 
+		$this->assertEquals(self::MAX_GEN_LATLNG - 1, 
 			$line->getMaximumLatitude());
-		$this->assertEquals($iLongitude - 1, 
+		$this->assertEquals(self::MAX_GEN_LATLNG - 1, 
 			$line->getMaximumLongitude());
 
 		$this->assertEquals(0, 
@@ -104,33 +110,25 @@ class RouteTrackLineTests extends WP_UnitTestCase {
 	public function test_canAddPoint_withAltitude() {
 		$line = new Abp01_Route_Track_Line();
 
-		for ($iLatitude = 0; $iLatitude < 10; $iLatitude ++) {
-			for ($iLongitude = 0; $iLongitude < 10; $iLongitude ++) {
-				for ($iAltitude = 0; $iAltitude < 10; $iAltitude ++) {
-					$coordinate = new Abp01_Route_Track_Coordinate($iLatitude, $iLongitude, $iAltitude);
-					$point = new Abp01_Route_Track_Point($coordinate);
-					$line->addPoint($point);
-				}
-			}
+		foreach ($this->_generatePointsWithAltitude(0, 10, 0, 10) as $point) {
+			$line->addPoint($point);
 		}
 
 		$this->_assertCorrectTrackPointsCount($line, 1000);
 
-		$bounds = $line->getBounds();
-		$this->assertNotNull($bounds);
-		$this->assertEquals(0, 
+		$this->assertEquals(self::MIN_GEN_LATLNG, 
 			$line->getMinimumLatitude());
-		$this->assertEquals(0, 
+		$this->assertEquals(self::MIN_GEN_LATLNG, 
 			$line->getMinimumLongitude());
 
-		$this->assertEquals($iLatitude - 1, 
+		$this->assertEquals(self::MAX_GEN_LATLNG - 1, 
 			$line->getMaximumLatitude());
-		$this->assertEquals($iLongitude - 1, 
+		$this->assertEquals(self::MAX_GEN_LATLNG - 1, 
 			$line->getMaximumLongitude());
 
-		$this->assertEquals(0, 
+		$this->assertEquals(self::MIN_GEN_ALT, 
 			$line->getMinimumAltitude());
-		$this->assertEquals($iAltitude - 1, 
+		$this->assertEquals(self::MAX_GEN_ALT - 1, 
 			$line->getMaximumAltitude());
 
 		$this->_assertCorrectBounds($line);

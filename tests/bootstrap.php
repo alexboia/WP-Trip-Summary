@@ -47,6 +47,7 @@ require_once 'lib/RouteInfoTestDataSets.php';
 require_once 'lib/RouteTrackBboxTestDataHelpers.php';
 require_once 'lib/RouteTrackTestDataHelpers.php';
 require_once 'lib/RouteTrackDocumentTestHelpers.php';
+require_once 'lib/RouteTrackPointTestDataHelpers.php';
 require_once 'lib/ViewerTestDataHelpers.php';
 require_once 'lib/SettingsDataHelpers.php';
 require_once 'lib/AdminTestDataHelpers.php';

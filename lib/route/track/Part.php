@@ -30,90 +30,125 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
 class Abp01_Route_Track_Part {
-    /**
-     * @var Abp01_Route_Track_Line[] Array of track lines for this track part.
-     */
-    public $lines;
+	/**
+	 * @var Abp01_Route_Track_Line[] Array of track lines for this track part.
+	 */
+	public $lines;
 
-    /**
-     * @var string The name of the track part
-     */
-    public $name;
+	/**
+	 * @var string The name of the track part
+	 */
+	public $name;
 
-    public $maxLat;
+	public $maxLat;
 
-    public $maxLng;
+	public $maxLng;
 
-    public $minLat;
+	public $minLat;
 
-    public $minLng;
+	public $minLng;
 
-    public $minAlt;
+	public $minAlt;
 
-    public $maxAlt;
+	public $maxAlt;
 
-    public function __construct($name = null) {
-        $this->lines = array();
-        $this->name = $name;
+	public function __construct($name = null) {
+		$this->lines = array();
+		$this->name = $name;
 
-        $this->minAlt = PHP_INT_MAX;
-        $this->maxAlt = ~PHP_INT_MAX;
+		$this->minAlt = PHP_INT_MAX;
+		$this->maxAlt = ~PHP_INT_MAX;
 
-        $this->minLat = PHP_INT_MAX;
-        $this->maxLat = ~PHP_INT_MAX;
+		$this->minLat = PHP_INT_MAX;
+		$this->maxLat = ~PHP_INT_MAX;
 
-        $this->minLng = PHP_INT_MAX;
-        $this->maxLng = ~PHP_INT_MAX;
-    }
+		$this->minLng = PHP_INT_MAX;
+		$this->maxLng = ~PHP_INT_MAX;
+	}
 
-    public function addLine(Abp01_Route_Track_Line $line) {
-        $this->minLat = min($this->minLat, $line->minLat);
-        $this->minLng = min($this->minLng, $line->minLng);
+	public function addLine(Abp01_Route_Track_Line $line) {
+		$this->minLat = min($this->minLat, $line->getMinimumLatitude());
+		$this->minLng = min($this->minLng, $line->getMinimumLongitude());
 
-        $this->maxLat = max($this->maxLat, $line->maxLat);
-        $this->maxLng = max($this->maxLng, $line->maxLng);
+		$this->maxLat = max($this->maxLat, $line->getMaximumLatitude());
+		$this->maxLng = max($this->maxLng, $line->getMaximumLongitude());
 
-        $this->minAlt = min($this->minAlt, $line->minAlt);
-        $this->maxAlt = max($this->maxAlt, $line->maxAlt);
+		$this->minAlt = min($this->minAlt, $line->getMinimumAltitude());
+		$this->maxAlt = max($this->maxAlt, $line->getMaximumAltitude());
 
-        if (!is_array($this->lines)) {
-            $this->lines = array();
-        }
+		if (!is_array($this->lines)) {
+			$this->lines = array();
+		}
 
-        $this->lines[] = $line;
-    }
+		$this->lines[] = $line;
+	}
 
-    public function getLines() {
-        return $this->lines;
-    }
+	public function getLines() {
+		return $this->lines;
+	}
 
-    public function countLines() {
-        return is_array($this->lines) 
-            ? count($this->lines) 
-            : 0;
-    }
+	public function getLinesCount() {
+		return is_array($this->lines) 
+			? count($this->lines) 
+			: 0;
+	}
 
-    public function isEmpty() {
-        return $this->countLines() == 0;
-    }
+	public function isEmpty() {
+		return $this->getLinesCount() == 0;
+	}
 
-    public function simplify($threshold) {
-        $track = new Abp01_Route_Track_Part($this->name);
-        foreach ($this->lines as $line) {
-            $track->addLine($line->simplify($threshold));
-        }
-        return $track;
-    }
+	/**
+	 * @return Abp01_Route_Track_Bbox
+	 */
+	public function getBounds() {
+		$bounds = new Abp01_Route_Track_Bbox($this->minLat,
+			$this->minLng,
+			$this->maxLat,
+			$this->maxLng);
+		return $bounds;
+	}
 
-    public function setName($name) {
-        $this->name = $name;
-    }
+	public function simplify($threshold) {
+		$track = new Abp01_Route_Track_Part($this->name);
+		foreach ($this->lines as $line) {
+			$track->addLine($line->simplify($threshold));
+		}
+		return $track;
+	}
 
-    public function getName() {
-        return $this->name;
-    }
+	public function setName($name) {
+		$this->name = $name;
+	}
+
+	public function getName() {
+		return $this->name;
+	}
+
+	public function getMinimumLatitude() {
+		return $this->minLat;
+	}
+
+	public function getMinimumLongitude() {
+		return $this->minLng;
+	}
+
+	public function getMaximumLatitude() {
+		return $this->maxLat;
+	}
+
+	public function getMaximumLongitude() {
+		return $this->maxLng;
+	}
+
+	public function getMinimumAltitude() {
+		return $this->minAlt;
+	}
+
+	public function getMaximumAltitude() {
+		return $this->maxAlt;
+	}
 }
