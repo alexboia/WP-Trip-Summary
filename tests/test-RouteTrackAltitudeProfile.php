@@ -30,23 +30,32 @@
  */
 
 class RouteTrackAltitudeProfileTests extends WP_UnitTestCase {
+	use GenericTestHelpers;
 	use RouteTrackAltitudeProfileTestDataHelpers;
 
 	public function test_correctlyCreated() {
+		$faker = $this->_getFaker();
 		foreach ($this->_getSupportedUnitSystems() as $unitSystemSymbol) {
+			$stepPoints = $faker->numberBetween(10, 20);
+			$pointCount = $faker->numberBetween(100, 200);
 			$unitSystem = Abp01_UnitSystem::create($unitSystemSymbol);
-			$profilePoints = $this->_generateRandomAltitudeProfilePoints(100);
+			$profilePoints = $this->_generateRandomAltitudeProfilePoints($pointCount);
 
 			$profile = new Abp01_Route_Track_AltitudeProfile($profilePoints, 
 				$unitSystem->getDistanceUnit(), 
 				$unitSystem->getHeightUnit(), 
-				100);
+				$stepPoints);
 
-			$this->assertEquals(count($profilePoints), $profile->getProfilePointCount());
-			$this->assertEquals($profilePoints, $profile->getProfilePoints());
-			$this->assertEquals($unitSystem->getHeightUnit(), $profile->getHeightUnit());
-			$this->assertEquals($unitSystem->getDistanceUnit(), $profile->getDistanceUnit());
-			$this->assertEquals(100, $profile->getStepPoints());
+			$this->assertEquals(count($profilePoints), 
+				$profile->getProfilePointCount());
+			$this->assertEquals($profilePoints, 
+				$profile->getProfilePoints());
+			$this->assertEquals($unitSystem->getHeightUnit(), 
+				$profile->getHeightUnit());
+			$this->assertEquals($unitSystem->getDistanceUnit(), 
+				$profile->getDistanceUnit());
+			$this->assertEquals($stepPoints, 
+				$profile->getStepPoints());
 		}
 	}
 
@@ -57,12 +66,7 @@ class RouteTrackAltitudeProfileTests extends WP_UnitTestCase {
 	public function test_canSerializeDeserialize() {
 		foreach ($this->_getSupportedUnitSystems() as $unitSystemSymbol) {
 			$unitSystem = Abp01_UnitSystem::create($unitSystemSymbol);
-			$profilePoints = $this->_generateRandomAltitudeProfilePoints(100);
-
-			$profile = new Abp01_Route_Track_AltitudeProfile($profilePoints, 
-				$unitSystem->getDistanceUnit(), 
-				$unitSystem->getHeightUnit(), 
-				100);
+			$profile = $this->_generateAltitudeProfile($unitSystem);
 
 			$serializedProfile = $profile->serializeDocument();
 			$this->assertNotNull($serializedProfile);
@@ -83,15 +87,25 @@ class RouteTrackAltitudeProfileTests extends WP_UnitTestCase {
 		}
 	}
 
+	private function _generateAltitudeProfile(Abp01_UnitSystem $unitSystem) {
+		$faker = $this->_getFaker();
+
+		$stepPoints = $faker->numberBetween(10, 20);
+		$pointCount = $faker->numberBetween(100, 200);
+		$profilePoints = $this->_generateRandomAltitudeProfilePoints($pointCount);
+
+		$profile = new Abp01_Route_Track_AltitudeProfile($profilePoints, 
+			$unitSystem->getDistanceUnit(), 
+			$unitSystem->getHeightUnit(), 
+			$stepPoints);
+
+		return $profile;
+	}
+
 	public function test_canConvertToPlainObject() {
 		foreach ($this->_getSupportedUnitSystems() as $unitSystemSymbol) {
 			$unitSystem = Abp01_UnitSystem::create($unitSystemSymbol);
-			$profilePoints = $this->_generateRandomAltitudeProfilePoints(100);
-
-			$profile = new Abp01_Route_Track_AltitudeProfile($profilePoints, 
-				$unitSystem->getDistanceUnit(), 
-				$unitSystem->getHeightUnit(), 
-				100);
+			$profile = $this->_generateAltitudeProfile($unitSystem);
 
 			$asPlainObject = $profile->toPlainObject();
 
@@ -101,6 +115,39 @@ class RouteTrackAltitudeProfileTests extends WP_UnitTestCase {
 				$asPlainObject->heightUnit);
 			$this->assertEquals($profile->getDistanceUnit(), 
 				$asPlainObject->distanceUnit);
+		}
+	}
+
+	public function test_canCheckIfHasBeenGeneratedFor_sameContext() {
+		foreach ($this->_getSupportedUnitSystems() as $unitSystemSymbol) {
+			$unitSystem = Abp01_UnitSystem::create($unitSystemSymbol);
+			$profile = $this->_generateAltitudeProfile($unitSystem);
+
+			$this->assertTrue($profile->hasBeenGeneratedFor($unitSystem, 
+				$profile->getStepPoints()));
+		}
+	}
+
+	public function test_canCheckIfHasBeenGeneratedFor_differentContext() {
+		$faker = $this->_getFaker();
+		foreach ($this->_getSupportedUnitSystems() as $unitSystemSymbol) {
+			$unitSystem = Abp01_UnitSystem::create($unitSystemSymbol);
+			$profile = $this->_generateAltitudeProfile($unitSystem);
+
+			$differentStepPoints = $faker->numberBetween($profile->getStepPoints() + 1, 
+				$profile->getStepPoints() + 20);
+			$this->assertFalse($profile->hasBeenGeneratedFor($unitSystem, 
+				$differentStepPoints));
+
+			foreach ($this->_getSupportedUnitSystems() as $differentUnitSystemSymbol) {
+				if ($differentUnitSystemSymbol != $unitSystemSymbol) {
+					$differentUnitSystem = Abp01_UnitSystem::create($differentUnitSystemSymbol);
+					$this->assertFalse($profile->hasBeenGeneratedFor($differentUnitSystem, 
+						$profile->getStepPoints()));
+					$this->assertFalse($profile->hasBeenGeneratedFor($differentUnitSystem, 
+						$differentStepPoints));
+				}
+			}
 		}
 	}
 }
