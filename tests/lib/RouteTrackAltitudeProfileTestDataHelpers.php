@@ -29,75 +29,24 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit;
-}
+trait RouteTrackAltitudeProfileTestDataHelpers {
+	use GenericTestHelpers;
 
-class Abp01_Route_Track_AltitudeProfile {
-	public $profile;
+	protected function _generateRandomAltitudeProfilePoints($count) {
+		$profilePoints = array();
+		$faker = $this->_getFaker();
 
-	public $distanceUnit;
-
-	public $heightUnit;
-
-	public $stepPoints;
-
-	public function __construct(array $profile, $distanceUnit, $heightUnit, $stepPoints) {
-		$this->profile = $profile;
-		$this->distanceUnit = $distanceUnit;
-		$this->heightUnit = $heightUnit;
-		$this->stepPoints = $stepPoints;
-	}
-
-	/**
-	 * @return Abp01_Route_Track_AltitudeProfile|null 
-	 */
-	public static function fromSerializedDocument($serialized) {
-		if (!$serialized || empty($serialized)) {
-			return null;
+		for ($i = 0; $i < $count; $i ++) {
+			$profilePoints[] = array(
+				'displayDistance' => $faker->randomFloat(2, 0, 100),
+				'displayAlt' => $faker->randomFloat(2, 0, 2000),
+				'coord' => array(
+					'lat' => $faker->randomFloat(4, 0, 85),
+					'lng' => $faker->randomFloat(4, 0, 180)
+				)
+			);
 		}
-		return unserialize($serialized);
-	}
 
-	public function getProfilePoints() {
-		return $this->profile;
-	}
-
-	public function getProfilePointCount() {
-		return count($this->profile);
-	}
-
-	public function getStepPoints() {
-		return $this->stepPoints;
-	}
-
-	public function getDistanceUnit() {
-		return $this->distanceUnit;
-	}
-
-	public function getHeightUnit() {
-		return $this->heightUnit;
-	}
-
-	public function hasBeenGeneratedFor(Abp01_UnitSystem $unitSystem, $stepPoints) {
-		return $this->distanceUnit === $unitSystem->getDistanceUnit()
-			&& $this->heightUnit === $unitSystem->getHeightUnit()
-			&& $this->stepPoints == $stepPoints;
-	}
-
-	public function toPlainObject() {
-		$data = new stdClass();
-		$data->profile = &$this->profile;
-		$data->distanceUnit = $this->distanceUnit;
-		$data->heightUnit = $this->heightUnit;
-		return $data;
-	}
-
-	public function serializeDocument() {
-		return serialize($this);
-	}
-
-	public function toJson() {
-		return json_encode($this->toPlainObject());
+		return $profilePoints;
 	}
 }

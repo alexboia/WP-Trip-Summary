@@ -177,7 +177,7 @@ class Abp01_Route_Track_Document {
 					}
 
 					if (!is_null($point->coordinate->alt) && $sampleIndex++ % $stepPoints == 0) {
-						$altitude = round($point->coordinate->alt, 2);
+						$altitude = round($point->coordinate->getAltitude(), 2);
 						$displayDistance = new Abp01_UnitSystem_Value_Distance($distance);
 						$displayAltitude = new Abp01_UnitSystem_Value_Height($altitude);
 
@@ -191,8 +191,8 @@ class Abp01_Route_Track_Document {
 								->getValue(),
 
 							'coord' => array(
-								'lat' => $point->coordinate->lat,
-								'lng' => $point->coordinate->lng
+								'lat' => $point->coordinate->getLatitude(),
+								'lng' => $point->coordinate->getLongitude()
 							)
 						);
 					}
