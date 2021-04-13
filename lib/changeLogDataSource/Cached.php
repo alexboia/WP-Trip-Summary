@@ -34,7 +34,7 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_ChangeLogDataSource_Cached implements Abp01_ChangeLogDataSource {
-	const CHANGELOG_CACHE_KEY = 'abp01.option.changeLogCache';
+	const OPT_CHANGELOG_CACHE_KEY = 'abp01.option.changeLogCache';
 	
 	/**
 	 * @var Abp01_ChangeLogDataSource
@@ -49,6 +49,10 @@ class Abp01_ChangeLogDataSource_Cached implements Abp01_ChangeLogDataSource {
 	public function __construct(Abp01_ChangeLogDataSource $dataSource, Abp01_Env $env) {
 		$this->_dataSource = $dataSource;
 		$this->_env = $env;
+	}
+
+	public static function clearCache() {
+		delete_option(self::OPT_CHANGELOG_CACHE_KEY);
 	}
 
 	public function getChangeLog() {
@@ -66,7 +70,7 @@ class Abp01_ChangeLogDataSource_Cached implements Abp01_ChangeLogDataSource {
 	}
 
 	private function _readCachedChangeLog() {
-		return get_option(self::CHANGELOG_CACHE_KEY, null);
+		return get_option(self::OPT_CHANGELOG_CACHE_KEY, null);
 	}
 
 	private function _isCachedChangeLogValid($cachedChangeLog) {
@@ -87,7 +91,7 @@ class Abp01_ChangeLogDataSource_Cached implements Abp01_ChangeLogDataSource {
 			'_data' => $changeLog
 		);
 
-		update_option(self::CHANGELOG_CACHE_KEY, 
+		update_option(self::OPT_CHANGELOG_CACHE_KEY, 
 			$changeLogCache, 
 			true);
 	}

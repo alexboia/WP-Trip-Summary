@@ -687,7 +687,8 @@ class Abp01_Installer {
         try {
             return $this->deactivate()
                 && $this->_uninstallSchema()
-                && $this->_uninstallSettings()
+                && $this->_purgeSettings()
+                && $this->_purgeChangeLogCache()
                 && $this->_removeStorageDirectories()
                 && $this->_uninstallVersion();
         } catch (Exception $e) {
@@ -932,13 +933,13 @@ class Abp01_Installer {
         return true;
     }
 
-    /**
-     * Deletes the plug-in settings.
-     * 
-     * @return true True if the operation succeeded, false othwerise
-     */
-    private function _uninstallSettings() {
-        Abp01_Settings::getInstance()->purgeAllSettings();
+    private function _purgeSettings() {
+        abp01_get_settings()->purgeAllSettings();
+        return true;
+    }
+
+    private function _purgeChangeLogCache() {
+        Abp01_ChangeLogDataSource_Cached::clearCache();
         return true;
     }
 
