@@ -34,6 +34,10 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Settings_PredefinedTileLayer {
+	const FILTER_HOOK_GET_DEFAULT_TILE_LAYER_ID = 'abp01_default_tile_layer_id';
+
+	const FILTER_HOOK_GET_PREDEFINED_TILE_LAYERS = 'abp01_predefined_tile_layers';
+
 	const TL_OPEN_STREET_MAP = 'open-street-map';
 
 	const TL_OPEN_STREET_MAP_HIKEBIKE = 'open-street-map-hikebike';
@@ -75,6 +79,18 @@ class Abp01_Settings_PredefinedTileLayer {
 	private static $_predefinedTileLayers = null;
 
 	public function __construct($id, $label, $url, $attributionTxt, $attributionUrl, $infoUrl = null) {
+		if (empty($id)) {
+			throw new InvalidArgumentException('Tile layer id may not be empty.');
+		}
+
+		if (empty($label)) {
+			throw new InvalidArgumentException('Tile layer label may not be empty.');
+		}
+		
+		if (empty($url)) {
+			throw new InvalidArgumentException('Tile layer url may not be empty.');
+		}
+
 		$this->_id = $id;
 		$this->_label = $label;
 		$this->_url = $url;
@@ -193,7 +209,7 @@ class Abp01_Settings_PredefinedTileLayer {
 					'https://www.thunderforest.com/maps/transport-dark/'),
 			);
 
-			$predefinedTileLayers = apply_filters('abp01_predefined_tile_layers', 
+			$predefinedTileLayers = apply_filters(self::FILTER_HOOK_GET_PREDEFINED_TILE_LAYERS, 
 				$predefinedTileLayers);
 
 			self::_validatePredefinedTileLayers($predefinedTileLayers);
@@ -201,6 +217,10 @@ class Abp01_Settings_PredefinedTileLayer {
 		}
 
 		return self::$_predefinedTileLayers;
+	}
+
+	public static function clearPredefinedTileLayersCache() {
+		self::$_predefinedTileLayers = null;
 	}
 
 	private static function _validatePredefinedTileLayers(array $predefinedTileLayers) {
@@ -218,7 +238,7 @@ class Abp01_Settings_PredefinedTileLayer {
 	public static function getDefaultTileLayer() {
 		$allTileLayerIds = array_keys(self::getPredefinedTileLayers());
 
-		$defaultTileLayeId = apply_filters('abp01_default_tile_layer_id', 
+		$defaultTileLayeId = apply_filters(self::FILTER_HOOK_GET_DEFAULT_TILE_LAYER_ID, 
 			self::TL_OPEN_STREET_MAP, 
 			$allTileLayerIds);
 
