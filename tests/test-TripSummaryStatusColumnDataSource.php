@@ -60,6 +60,7 @@ class TripSummaryStatusColumnDataSourceTests extends WP_UnitTestCase {
     public function tearDown() {
         parent::tearDown();
         $this->_restorePreviousWpQuery();
+		Mockery::close();
     }
 
     private function _restorePreviousWpQuery() {
@@ -73,7 +74,7 @@ class TripSummaryStatusColumnDataSourceTests extends WP_UnitTestCase {
         
         $this->_mockGlobalWpQueryForPostIdsWithRandomData($postIds);
 
-        $mock = $this->_getRouteManagerMockWithStatusInfoForPostIds($postIds, 
+        $mock = $this->_createRouteManagerMockWithStatusInfoForPostIds($postIds, 
             $allStatusInfo);
 
         $this->_runDataSourceGetExistingValueTestsForDataKey($mock, 
@@ -104,7 +105,7 @@ class TripSummaryStatusColumnDataSourceTests extends WP_UnitTestCase {
     /**
      * @return \Mockery\MockInterface|\Mockery\LegacyMockInterface|\Abp01_Route_Manager
      */
-    private function _getRouteManagerMockWithStatusInfoForPostIds($postIds, $allStatusInfo) {
+    private function _createRouteManagerMockWithStatusInfoForPostIds($postIds, $allStatusInfo) {
         $mock = Mockery::mock('Abp01_Route_Manager');
         $mock = $mock->shouldReceive('getTripSummaryStatusInfo')
             ->with($postIds)
@@ -158,7 +159,7 @@ class TripSummaryStatusColumnDataSourceTests extends WP_UnitTestCase {
         
         $this->_mockGlobalWpQueryForPostIdsWithRandomData($postIdsWithStatusInfo);
 
-        $mock = $this->_getRouteManagerMockWithStatusInfoForPostIds($postIdsWithStatusInfo, 
+        $mock = $this->_createRouteManagerMockWithStatusInfoForPostIds($postIdsWithStatusInfo, 
             $allStatusInfo);
 
         $this->_runDataSourceGetNonExistingValueTestsForDataKey($mock, 
