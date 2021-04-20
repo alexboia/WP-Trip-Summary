@@ -252,7 +252,16 @@
                 maxAltitude: opts.labels.maxAltitude
             });
 
+            if (recenterMapControl != null) {
+                map.removeControl(recenterMapControl);
+            }
+
             minMaxAltitudeBoxControl.addTo(map);
+
+            if (recenterMapControl != null) {
+                recenterMapControl.addTo(map);
+            }
+
             return minMaxAltitudeBoxControl;
         }
 
