@@ -29,40 +29,22 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit;
-}
+class UnconditionalDependencySelectorTests extends WP_UnitTestCase {
+	use IncludesDependencyTestDataHelpers;
 
-class Abp01_Includes_CallbackDependencySelector implements Abp01_Includes_DependencySelector {
-    public function selectDependencies(array $dependencyHandles) {
-		$env = $this->_getEnv();
-		$settings = $this->_getSettings();
-        $finalDepHandles = array();
+	public function test_canSelectDependencies_nonEmptyDepsList() {
+		$sampleDepsHandles = $this->_generateTestDependencyHandlesWithoutCallbackConditions();
+		$selector = new Abp01_Includes_UnconditionalDependencySelector();
+		$selectedSampleDepsHandles = $selector->selectDependencies($sampleDepsHandles);
 
-		foreach ($dependencyHandles as $depHandle) {
-			$includeIf = null;
-			$includeHandle = $depHandle;
-			
-			if (is_array($depHandle)) {
-				$includeHandle = $depHandle['handle'];
-				$includeIf = isset($depHandle['if']) && is_callable($depHandle['if']) 
-					? $depHandle['if'] 
-					: null;
-			}
-
-			if (empty($includeIf) || $includeIf($env, $settings)) {
-				$finalDepHandles[] = $includeHandle;
-			}
-		}
-
-		return $finalDepHandles;
-    }
-
-	private function _getSettings() {
-		return abp01_get_settings();
+		$this->assertEquals($sampleDepsHandles, 
+			$selectedSampleDepsHandles);
 	}
 
-    private function _getEnv() {
-		return abp01_get_env();
+	public function test_canSelectDependencies_emptyDepsList() {
+		$depsHandles = array();
+		$selector = new Abp01_Includes_UnconditionalDependencySelector();
+		$selectedSampleDepsHandles = $selector->selectDependencies($depsHandles);
+		$this->assertEquals($depsHandles, $selectedSampleDepsHandles);
 	}
 }
