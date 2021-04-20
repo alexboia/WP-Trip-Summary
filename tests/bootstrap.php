@@ -37,10 +37,11 @@ require_once 'lib/testDoubles/abp01Noop.php';
 require_once 'lib/testDoubles/abp01Die.php';
 require_once 'lib/testDoubles/abp01SendHeader.php';
 require_once 'lib/testDoubles/abp01SetHttpResonseCode.php';
+require_once 'lib/testDoubles/abp01IsUrlRewriteEnabled.php';
 
 require_once 'lib/DbTestHelpers.php';
 require_once 'lib/GenericTestHelpers.php';
-require_once 'lib/IncludesDependencyTestDataHelpers.php';
+require_once 'lib/IncludesTestDataHelpers.php';
 require_once 'lib/TestDataFileHelpers.php';
 require_once 'lib/TestAuthDataHelpers.php';
 require_once 'lib/LookupDataTestHelpers.php';

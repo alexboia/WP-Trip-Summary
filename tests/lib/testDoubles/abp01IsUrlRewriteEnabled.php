@@ -29,39 +29,22 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit ;
+class Abp01IsUrlRewriteEnabledState {
+	private static $_returnResult = false;
+
+	public static function getReturnResult() {
+		return self::$_returnResult;
+	}
+
+	public static function setReturnResult($value) {
+		self::$_returnResult = $value;
+	}
+	
+	public static function resetReturnResult() {
+		self::setReturnResult(false);
+	}
 }
 
-class Abp01_Includes_MaybeLeafletPluginScriptPathRewriter implements Abp01_Includes_PathRewriter {
-    public function needsRewriting(array $item) {
-        return $this->_isLeafletPluginItem($item) 
-            && $this->_rewriteRequested($item);
-    }
-
-    private function _isLeafletPluginItem(array $item) {
-        return isset($item['is-leaflet-plugin'])  
-            && $item['is-leaflet-plugin'] === true;
-    }
-
-    public function _rewriteRequested(array $item) {
-        return isset($item['needs-wrap']) 
-            && $item['needs-wrap'] === true;
-    }
-
-    public function rewritePath(array $item) {
-        if ($this->needsRewriting($item)) {
-            $scriptPath = self::_urlRewriteEnabled()
-                ? $item['path']
-                : 'abp01-plugin-leaflet-plugins-wrapper.php?load=' . $item['path'];
-        } else {
-            $scriptPath = $item['path'];
-        }
-
-        return $scriptPath;
-    }
-
-    private static function _urlRewriteEnabled() {
-		return abp01_is_url_rewrite_enabled();
-	}
+function abp01_is_url_rewrite_enabled() {
+	return Abp01IsUrlRewriteEnabledState::getReturnResult();
 }

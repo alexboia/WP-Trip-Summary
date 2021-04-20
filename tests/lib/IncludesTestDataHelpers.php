@@ -29,8 +29,53 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-trait IncludesDependencyTestDataHelpers {
+trait IncludesTestDataHelpers {
 	use GenericTestHelpers;
+
+	protected function _generateRandomIncludesItems() {
+		$faker = $this->_getFaker();
+		
+		$items = array();
+		$itemCount = $faker->numberBetween(10, 100);
+		
+		for ($iItem = 0; $iItem < $itemCount; $iItem ++) {
+			$items[] = array(
+				'path' => $faker->url,
+				'is-leaflet-plugin' => $faker->boolean(),
+				'needs-wrap' => $faker->boolean()
+			);
+		}
+
+		return $items;
+	}
+
+	protected function _generateRandomLeafletPluginIncludesItems() {
+		$randomItems = $this->_generateRandomIncludesItems();
+		$countRandomItems = count($randomItems);
+
+		for ($iItem = 0; $iItem < $countRandomItems; $iItem ++) {
+			$randomItems[$iItem] = array_merge($randomItems[$iItem], array(
+				'is-leaflet-plugin' => true,
+				'needs-wrap' => true
+			));
+		}
+
+		return $randomItems;
+	}
+
+	protected function _generateRandomNonLeafletPluginIncludesItems() {
+		$randomItems = $this->_generateRandomIncludesItems();
+		$countRandomItems = count($randomItems);
+
+		for ($iItem = 0; $iItem < $countRandomItems; $iItem ++) {
+			$randomItems[$iItem] = array_merge($randomItems[$iItem], array(
+				'is-leaflet-plugin' => false,
+				'needs-wrap' => false
+			));
+		}
+
+		return $randomItems;
+	}
 
 	protected function _generateTestDependencyHandlesWithCallbackSelectionFromList(array $sourceDepsHandlesIds) {
 		$faker = $this->_getFaker();

@@ -509,6 +509,21 @@ if (!function_exists('abp01_set_http_response_code')) {
 	}
 }
 
+if (!function_exists('abp01_is_url_rewrite_enabled')) {
+	function abp01_is_url_rewrite_enabled() {
+		static $enabled = null;
+
+		if ($enabled === null) {
+			if (!function_exists('got_url_rewrite')) {
+				require_once ABSPATH . 'wp-admin/includes/misc.php';
+			}
+			$enabled = got_url_rewrite();
+		}
+
+		return $enabled;
+	}
+}
+
 function abp01_run() {
 	abp01_get_plugin()->run();
 }

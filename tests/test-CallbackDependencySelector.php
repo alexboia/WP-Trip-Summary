@@ -30,7 +30,7 @@
  */
 
 class CallbackDependencySelectorTests extends WP_UnitTestCase {
-	use IncludesDependencyTestDataHelpers;
+	use IncludesTestDataHelpers;
 
 	public function test_canSelectDependencies_nonEmptyDepsList_withCustomCallbacks() {
 		$depsHandlesIds = $this->_generateRandomDepsHandlesIds();

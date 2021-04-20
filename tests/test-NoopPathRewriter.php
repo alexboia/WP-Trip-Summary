@@ -29,39 +29,32 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit ;
-}
+class NoopPathRewriterTests extends WP_UnitTestCase {
+	use IncludesTestDataHelpers;
 
-class Abp01_Includes_MaybeLeafletPluginScriptPathRewriter implements Abp01_Includes_PathRewriter {
-    public function needsRewriting(array $item) {
-        return $this->_isLeafletPluginItem($item) 
-            && $this->_rewriteRequested($item);
-    }
+	public function test_canCheckIfNeedsRewriting() {
+		$rewriter = new Abp01_Includes_NoopPathRewriter();
+		$items = $this->_generateRandomIncludesItems();
+		foreach ($items as $item) {
+			$this->assertFalse($rewriter->needsRewriting($item));
+		}
+	}
 
-    private function _isLeafletPluginItem(array $item) {
-        return isset($item['is-leaflet-plugin'])  
-            && $item['is-leaflet-plugin'] === true;
-    }
+	public function test_canRewritePath_itemWithPathKey() {
+		$items = $this->_generateRandomIncludesItems();
+		$rewriter = new Abp01_Includes_NoopPathRewriter();
 
-    public function _rewriteRequested(array $item) {
-        return isset($item['needs-wrap']) 
-            && $item['needs-wrap'] === true;
-    }
+		foreach ($items as $item) {
+			$rewrittenPath = $rewriter->rewritePath($item);
+			$this->assertEquals($item['path'], $rewrittenPath);
+		}
+	}
 
-    public function rewritePath(array $item) {
-        if ($this->needsRewriting($item)) {
-            $scriptPath = self::_urlRewriteEnabled()
-                ? $item['path']
-                : 'abp01-plugin-leaflet-plugins-wrapper.php?load=' . $item['path'];
-        } else {
-            $scriptPath = $item['path'];
-        }
-
-        return $scriptPath;
-    }
-
-    private static function _urlRewriteEnabled() {
-		return abp01_is_url_rewrite_enabled();
+	public function test_canRewritePath_itemWithoutPathKey() {
+		$rewriter = new Abp01_Includes_NoopPathRewriter();
+		$this->assertNull($rewriter->rewritePath(array()));
+		$this->assertNull($rewriter->rewritePath(array(
+			'path' => null
+		)));
 	}
 }

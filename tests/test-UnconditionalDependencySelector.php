@@ -30,7 +30,7 @@
  */
 
 class UnconditionalDependencySelectorTests extends WP_UnitTestCase {
-	use IncludesDependencyTestDataHelpers;
+	use IncludesTestDataHelpers;
 
 	public function test_canSelectDependencies_nonEmptyDepsList() {
 		$sampleDepsHandles = $this->_generateTestDependencyHandlesWithoutCallbackConditions();
