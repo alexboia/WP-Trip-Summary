@@ -11,7 +11,7 @@
  * Text Domain: abp01-trip-summary
  * Requires PHP: 7.0.2
  * Requires at least: 5.3.0
- * WPTS Version Name: Johannes Honterus
+ * WPTS Version Name: Eratosthenes
  */
 
 /**
