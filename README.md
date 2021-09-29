@@ -246,6 +246,12 @@ The following languages are supported:
 ## Changelog
 <a name="wpts-changelog"></a>  
 
+### Version 0.2.8
+- Fixed MysqliDb dependency -  The MysqliDb generates deprectation warnings and needs to be updated #79;
+- Fixed JS warnings caused by including editor scripts in non-editor pages #78;
+- Fixed trip summary shortcode block not rendering in post/page view;
+- Fixed trip summary shortcode block editor widget not showing up;
+
 ### Version 0.2.7
 - Refactoring: the plug-in now has a more manageable and extensible structure, with the most important change being the splitting of all the code previously in `abp01-plugin-main.php`, into separate plugin modules;
 - Feature: Added an about page ([Issue 59](https://github.com/alexboia/WP-Trip-Summary/issues/59));
