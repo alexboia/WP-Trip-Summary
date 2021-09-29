@@ -30,6 +30,10 @@
  */
 
 class EnvTests extends WP_UnitTestCase {
+	private $_oldPageNow = null;
+
+	private $_oldPost = null;
+
 	public function test_canGetInstance() {
 		$instance = Abp01_Env::getInstance();
 		$otherInstance = Abp01_Env::getInstance();
@@ -68,7 +72,7 @@ class EnvTests extends WP_UnitTestCase {
 		$this->assertEquals(get_bloginfo('version', 'raw'), $env->getWpVersion());
 		$this->assertEquals('7.0.2', $env->getRequiredPhpVersion());
 		$this->assertEquals('5.3.0', $env->getRequiredWpVersion());
-		$this->assertEquals('0.2.7', $env->getVersion());
+		$this->assertEquals('0.2.8', $env->getVersion());
 	}
 
 	public function test_canGetDirectories() {
@@ -97,5 +101,110 @@ class EnvTests extends WP_UnitTestCase {
 
 	public function test_canGetLang() {
 		$this->assertEquals(get_locale(), Abp01_Env::getInstance()->getLang());
+	}
+
+	public function test_canCheck_ifIsEditingWpPost_noSpecificPostTypes_validPostEditPage() {
+		foreach ($this->_getValidPostTypeEditPages() as $page) {
+			$this->_setupPageNow($page);
+			$this->assertTrue(Abp01_Env::getInstance()->isEditingWpPost());
+			$this->_restoreOldPageNow();
+		}
+	}
+
+	private function _getValidPostTypeEditPages() {
+		return array(
+			'post-new.php', 
+			'post.php'
+		);
+	}
+
+	public function test_canCheck_ifIsEditingWpPost_withSpecificPostTypes_validPostEditPage_validPostTypes() {
+		foreach ($this->_getValidPostTypeEditPages() as $page) {
+			$this->_setupPageNow($page);
+			foreach ($this->_getValidPostTypes() as $validPostType) {
+				$post = $this->_randomPostWithType($validPostType);
+				$this->_setupPost($post);
+				$this->assertTrue(Abp01_Env::getInstance()->isEditingWpPost($validPostType));
+				$this->_restoreOldPost();
+			}
+			$this->_restoreOldPageNow();
+		}
+	}
+
+	private function _getValidPostTypes() {
+		return array(
+			'post',
+			'page'
+		);
+	}
+
+	public function test_canCheck_ifIsEditingWpPost_withSpecificPostTypes_validPostEditPage_invalidPostTypes() {
+		foreach ($this->_getValidPostTypeEditPages() as $page) {
+			$this->_setupPageNow($page);
+			foreach ($this->_getInvalidPostTypes() as $invalidPostType) {
+				$post = $this->_randomPostWithType($invalidPostType);
+				$this->_setupPost($post);
+				foreach ($this->_getValidPostTypes() as $validPostType) {
+					$this->assertFalse(Abp01_Env::getInstance()->isEditingWpPost($validPostType));
+				}
+				$this->_restoreOldPost();
+			}
+			$this->_restoreOldPageNow();
+		}
+	}
+
+	private function _getInvalidPostTypes() {
+		return array(
+			'attachment',
+			'revision',
+			'nav_menu_item'
+		);
+	}
+
+	public function test_canCheck_ifIsEditingWpPost_noSpecificPostTypes_invalidPostEditPage() {
+		foreach ($this->_getInvalidPostTypeEditPages() as $page) {
+			$this->_setupPageNow($page);
+			$this->assertFalse(Abp01_Env::getInstance()->isEditingWpPost());
+			$this->_restoreOldPageNow();
+		}
+	}
+
+	private function _getInvalidPostTypeEditPages() {
+		return array(
+			'plugins.php', 
+			'options-general.php',
+			'media-new.php'
+		);
+	}
+
+	private function _setupPost($post) {
+		$this->_oldPost = isset($GLOBALS['post']) 
+			? $GLOBALS['post'] 
+			: null;
+
+		$GLOBALS['post'] = $post;
+	}
+
+	private function _randomPostWithType($postType) {
+		return $this->factory()->post->create_and_get(array(
+			'post_type' => $postType
+		));
+	}
+
+	private function _restoreOldPost() {
+		$GLOBALS['post'] = $this->_oldPost;
+	}
+
+	private function _setupPageNow($value) {
+		$this->_oldPageNow = isset($GLOBALS['pagenow']) 
+			? $GLOBALS['pagenow'] 
+			: null;
+
+		$GLOBALS['pagenow'] = $value;
+	}
+
+	private function _restoreOldPageNow() {
+		$GLOBALS['pagenow'] = $this->_oldPageNow;
+		$this->_oldPageNow = null;
 	}
 }
