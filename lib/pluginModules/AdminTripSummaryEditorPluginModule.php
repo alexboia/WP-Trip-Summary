@@ -37,6 +37,8 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 	const TRIP_SUMMARY_EDITOR_NONCE_ACTION = 'abp01_nonce_trip_summary_editor';
 	
 	const TRIP_SUMMARY_EDITOR_NONCE_URL_PARAM_NAME = 'abp01_nonce';
+
+	const CLASSIC_EDITOR_PLUGIN_SLUG = 'classic-editor/classic-editor.php';
 	
 	/**
 	 * @var Abp01_Route_Manager
@@ -93,6 +95,11 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 	 */
 	private $_fileValidatorProvider;
 
+	/**
+	 * @var Abp01_TripSummaryShortcodeBlockType
+	 */
+	private $_tripSummaryShortCodeBlockType;
+
 	public function __construct(Abp01_Route_Manager $routeManager,
 		Abp01_Route_Track_Processor $routeTrackProcessor,
 		Abp01_Transfer_Uploader_FileValidatorProvider $fileValidatorProvider,
@@ -111,6 +118,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		$this->_urlHelper = $urlHelper;
 		$this->_viewerDataSourceCache = $viewerDataSourceCache;
 		$this->_view = $view;
+		$this->_tripSummaryShortCodeBlockType = new Abp01_TripSummaryShortcodeBlockType();
 
 		$this->_initAjaxActions();
 	}
@@ -151,7 +159,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 	public function load() {
 		$this->_ensureStorageDirectory();
 		$this->_registerAjaxActions();
-		$this->_registerBlockEditorComponents();
+		$this->_registerCustomBlockTypesEditors();
 		$this->_registerWebPageAssets();
 		$this->_registerEditorControls();
 	}
@@ -171,17 +179,30 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 			->register();
 	}
 
-	private function _registerBlockEditorComponents() {
-		add_action('init', array($this, 'onPluginInitSetupBlockEditorBlocks'));
+	private function _registerCustomBlockTypesEditors() {
+		add_action('init', array($this, 'onPluginInitSetupCustomBlockTypesEditors'));
 	}
 
-	public function onPluginInitSetupBlockEditorBlocks() {
-		if (!$this->_isClassicEditorActive()) {
-			$this->_registerBlockTypes();
+	public function onPluginInitSetupCustomBlockTypesEditors() {
+		if ($this->_shouldEnqueueWebPageAssets(false) && !$this->_isClassicEditorActive()) {
+			$this->_registerCustomBlockTypes();
 		}
 	}
 
-	private function _registerBlockTypes() {
+	private function _shouldEnqueueWebPageAssets($strictPostTypeCheck) {
+		$isEditingPost = $strictPostTypeCheck
+			? $this->_env->isEditingWpPost('post', 'page') 
+			: $this->_env->isEditingWpPost();
+
+		return $isEditingPost
+			&& $this->_canEditCurrentPostTripSummary();
+	}
+
+	private function _isClassicEditorActive() {
+		return $this->_env->isPluginActive(self::CLASSIC_EDITOR_PLUGIN_SLUG);
+	}
+
+	private function _registerCustomBlockTypes() {
 		if ($this->_canRegisterWpBlockTypes()) {
 			$this->_registerTripSummaryShortCodeBlock();
 		}
@@ -192,23 +213,8 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 	}
 
 	private function _registerTripSummaryShortCodeBlock() {
-		Abp01_Includes::includeScriptBlockEditorViewerShortCodeBlock();
-		register_block_type('abp01/block-editor-shortcode', array(
-			'editor_script' => 'abp01-viewer-short-code-block',
-			//we need server side rendering to account for 
-			//	potential changes of the configured shortcode tag name
-			'render_callback' => array($this, 'renderTripSummaryShortcodeBlock')
-		));
-	}
-
-	public function renderTripSummaryShortCodeBlock($attributes, $content) {
-		static $rendered = false;
-		if ($rendered === false || !doing_filter('the_content')) {
-			$rendered = true;
-			return '<div class="abp01-viewer-shortcode-block">' . ('[' . ABP01_VIEWER_SHORTCODE . ']') . '</div>';
-		} else {
-			return '';
-		}
+		$this->_tripSummaryShortCodeBlockType
+			->registerWithEditorScripts();
 	}
 
 	private function _registerWebPageAssets() {
@@ -219,18 +225,13 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 	}
 
 	public function onAdminEnqueueStyles() {
-		if ($this->_shouldEnqueueWebPageAssets()) {
+		if ($this->_shouldEnqueueWebPageAssets(true)) {
 			Abp01_Includes::includeStyleAdminMain();
 		}
 	}
 
-	private function _shouldEnqueueWebPageAssets() {
-		return $this->_env->isEditingWpPost('post', 'page') 
-			&& $this->_canEditCurrentPostTripSummary();
-	}
-
 	public function onAdminEnqueueScripts() {
-		if ($this->_shouldEnqueueWebPageAssets()) {
+		if ($this->_shouldEnqueueWebPageAssets(true)) {
 			Abp01_Includes::includeScriptAdminEditorMain(true, $this->_getAdminTripSummaryEditorScriptTranslations());
 		}
 	}
@@ -259,10 +260,6 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		}
 
 		return $buttons;
-	}
-
-	private function _isClassicEditorActive() {
-		return $this->_env->isPluginActive('classic-editor/classic-editor.php');
 	}
 
 	public function registerClassicEditorPlugins($plugins) {

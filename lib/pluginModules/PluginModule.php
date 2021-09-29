@@ -30,81 +30,81 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
 abstract class Abp01_PluginModules_PluginModule {
-    /**
-     * @var Abp01_Auth
-     */
-    protected $_auth;
+	/**
+	 * @var Abp01_Auth
+	 */
+	protected $_auth;
 
-    /**
-     * @var Abp01_Env
-     */
-    protected $_env;
+	/**
+	 * @var Abp01_Env
+	 */
+	protected $_env;
 
-    public function __construct(Abp01_Env $env, Abp01_Auth $auth) {
-        $this->_env = $env;
-        $this->_auth = $auth;
-    }
+	public function __construct(Abp01_Env $env, Abp01_Auth $auth) {
+		$this->_env = $env;
+		$this->_auth = $auth;
+	}
 
-    protected function _cantEditPostTripSummary($post) {
-        if (empty($post)) {
-            throw new InvalidArgumentException('Post information may not be empty!');
-        }
+	protected function _cantEditPostTripSummary($post) {
+		if (empty($post)) {
+			throw new InvalidArgumentException('Post information may not be empty!');
+		}
 
-        if ($post && is_object($post)) {
-            $postId = intval($post->ID);
-        } else if ($post && is_numeric($post)) {
-            $postId = $post;
-        } else {
-            $postId = 0;
-        }
+		if ($post && is_object($post)) {
+			$postId = intval($post->ID);
+		} else if ($post && is_numeric($post)) {
+			$postId = $post;
+		} else {
+			$postId = 0;
+		}
 
-        if ($postId <= 0) {
-            throw new InvalidArgumentException('Invalid post information specified!');
-        }
+		if ($postId <= 0) {
+			throw new InvalidArgumentException('Invalid post information specified!');
+		}
 
-        return $this->_auth->canEditPostTripSummary($postId);
-    }
+		return $this->_auth->canEditPostTripSummary($postId);
+	}
 
-    protected function _createEditCurrentPostTripSummaryAuthCallback() {
-        return function() {
-            return $this->_canEditCurrentPostTripSummary();
-        };
-    }
+	protected function _createEditCurrentPostTripSummaryAuthCallback() {
+		return function() {
+			return $this->_canEditCurrentPostTripSummary();
+		};
+	}
 
-    protected function _canEditCurrentPostTripSummary() {
-        $postId = $this->_getCurrentPostId();
-        return $this->_auth->canEditPostTripSummary($postId);
-    }
+	protected function _canEditCurrentPostTripSummary() {
+		$postId = $this->_getCurrentPostId();
+		return $this->_auth->canEditPostTripSummary($postId);
+	}
 
-    protected function _createManagePluginSettingsAuthCallback() {
-        return function() {
-            return $this->_currentUserCanManagePluginSettings();
-        };
-    }
+	protected function _createManagePluginSettingsAuthCallback() {
+		return function() {
+			return $this->_currentUserCanManagePluginSettings();
+		};
+	}
 
-    protected function _getCurrentPostId() {
-        return $this->_env->getCurrentPostId('abp01_postId');
-    }
+	protected function _getCurrentPostId() {
+		return $this->_env->getCurrentPostId('abp01_postId');
+	}
 
-    protected function _currentUserCanManagePluginSettings() {
-        return $this->_auth->canManagePluginSettings();
-    }
+	protected function _currentUserCanManagePluginSettings() {
+		return $this->_auth->canManagePluginSettings();
+	}
 
-    protected function _getAjaxBaseUrl() {
-        return $this->_env->getAjaxBaseUrl();
-    }
+	protected function _getAjaxBaseUrl() {
+		return $this->_env->getAjaxBaseUrl();
+	}
 
-    protected function _getPluginMediaImgBaseUrl() {
-        return $this->_env->getPluginAssetUrl('media/img');
-    }
+	protected function _getPluginMediaImgBaseUrl() {
+		return $this->_env->getPluginAssetUrl('media/img');
+	}
 
-    public function getMenuItems() {
-        return array();
-    }
+	public function getMenuItems() {
+		return array();
+	}
 
-    abstract public function load();
+	abstract public function load();
 }

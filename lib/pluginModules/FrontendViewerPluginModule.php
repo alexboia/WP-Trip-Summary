@@ -61,6 +61,11 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 	 */
 	private $_viewerDataSource;
 
+	/**
+	 * @var Abp01_TripSummaryShortcodeBlockType
+	 */
+	private $_tripSummaryShortCodeBlockType;
+
 	public function __construct(Abp01_Viewer_DataSource $viewerDataSource, 
 		Abp01_Viewer $viewer, 
 		Abp01_Settings $settings, 
@@ -76,12 +81,33 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 		$this->_settings = $settings;
 		$this->_readTrackDataNonceProvider = $readTrackDataNonceProvider;
 		$this->_downloadTrackDataNonceProvider = $downloadTrackDataNonceProvider;
+		$this->_tripSummaryShortCodeBlockType = new Abp01_TripSummaryShortcodeBlockType();
 	}
 
 	public function load() {
+		$this->_registerCustomBlockTypes();
 		$this->_registerWebPageAssets();
 		$this->_initViewerContentHooks();
 		$this->_registerViewerShortCode();
+	}
+
+	private function _registerCustomBlockTypes() {
+		add_action('wp', array($this, 'onPluginInitSetupCustomBlockTypes'));
+	}
+
+	public function onPluginInitSetupCustomBlockTypes() {
+		if ($this->_shouldRegisterCustomBlockTypes()) {
+			$this->_registerTripSummaryShortCodeBlock();
+		}
+	}
+
+	private function _shouldRegisterCustomBlockTypes() {
+		return $this->_shouldAddViewer();
+	}
+
+	private function _registerTripSummaryShortCodeBlock() {
+		$this->_tripSummaryShortCodeBlockType
+			->register();
 	}
 
 	private function _registerWebPageAssets() {
@@ -109,6 +135,10 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 		}
 	
 		return $addViewerScripts;
+	}
+
+	private function _shouldAddViewer() {
+		return is_single() || is_page();
 	}
 
 	private function _postHasAnyTripSummaryData($postId) {
@@ -167,10 +197,6 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 		}
 
 		return $postContent;
-	}
-
-	private function _shouldAddViewer() {
-		return is_single() || is_page();
 	}
 
 	private function _getViewerData($postId) {

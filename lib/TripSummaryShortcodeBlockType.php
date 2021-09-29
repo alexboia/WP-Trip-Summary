@@ -1,3 +1,4 @@
+<?php
 /**
  * Copyright (c) 2014-2021 Alexandru Boia
  *
@@ -28,75 +29,52 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-(function(wp) {
-	"use strict";
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+    exit;
+}
 
-	var wpElement = wp.element;
-	var wpBlocks = wp.blocks;
-	var wpData = wp.data;
-
-	var createElement = wpElement
-		.createElement;
-
-	wpBlocks.registerBlockType('abp01/block-editor-shortcode', {
-		title: 'WP Trip Summary Viewer Shortcode',
-		icon: 'chart-area',
-		category: 'widgets',
-		example: {},
-		supports: {
-			multiple: false,
-			reusable: false
-		},
-		edit: function(props) {
-			var tagName = window
-				.abp01ViewerShortCodeBlockSettings
-				.tagName;
-
-			return createElement(
-				'div',
-				{ style: {}, className: 'abp01-viewer-shortcode-block-editor' },
-				('[' + tagName + ']')
-			);
-		},
-		save: function(props) {
-			return null;
-		},
-	});
-
-	function getCurrentPostData() {
-		return wpData
-			.select('core/editor')
-			.getCurrentPost();
+class Abp01_TripSummaryShortcodeBlockType {
+	public function isAvailable() {
+		return $this->_canRegisterWpBlockTypes();
 	}
 
-	function getCurrentPostType() {
-		return wpData
-			.select('core/editor')
-			.getCurrentPostType();
+	private function _canRegisterWpBlockTypes() {
+		return function_exists('register_block_type');
 	}
 
-	function getCurrentPost(onReady) {
-		var currentPost = getCurrentPostData();
-		wpData.subscribe(function() {
-			currentPost = getCurrentPostData();
-			onReady(currentPost);
-		});
+	public function registerWithEditorScripts() {
+		$this->registerEditorScripts();
+		$this->register();
 	}
 
-	wp.domReady(function() {      
-		var setup = false;
-		var currentPostType = getCurrentPostType();
+	public function registerEditorScripts() {
+		if ($this->isAvailable()) {
+			Abp01_Includes::includeScriptBlockEditorViewerShortCodeBlock();
+		}
+	}
 
-		wpData.subscribe(function() {
-			currentPostType = getCurrentPostType();
-			if (!!currentPostType) {
-				if (!setup) {
-					setup = true;
-					if ((currentPostType != 'page' && currentPostType != 'post') ) {
-						wpBlocks.unregisterBlockType('abp01/block-editor-shortcode');
-					}
-				}
-			}
-		});
-	});
-})(window.wp);
+	public function register() {
+		if ($this->isAvailable()) {
+			register_block_type('abp01/block-editor-shortcode', array(
+				'editor_script' => 'abp01-viewer-short-code-block',
+				//we need server side rendering to account for 
+				//	potential changes of the configured shortcode tag name
+				'render_callback' => array($this, 'render')
+			));
+		}
+	}
+
+	public function render($attributes, $content) {
+		static $rendered = false;
+		if ($rendered === false || !doing_filter('the_content')) {
+			$rendered = true;
+			return '<div class="abp01-viewer-shortcode-block">' . $this->_renderTripSummaryShortCode() . '</div>';
+		} else {
+			return '';
+		}
+	}
+
+	private function _renderTripSummaryShortCode() {
+		return '[' . ABP01_VIEWER_SHORTCODE . ']';
+	}
+} 

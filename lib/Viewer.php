@@ -34,91 +34,91 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Viewer {
-    const TAB_INFO = 'abp01-tab-info';
+	const TAB_INFO = 'abp01-tab-info';
 
-    const TAB_MAP = 'abp01-tab-map';
+	const TAB_MAP = 'abp01-tab-map';
 
-    const ITEM_LAYOUT_HORIZONTAL = 'abp01-item-layout-horizontal';
+	const ITEM_LAYOUT_HORIZONTAL = 'abp01-item-layout-horizontal';
 
-    const ITEM_LAYOUT_VERTICAL = 'abp01-item-layout-vertical';
+	const ITEM_LAYOUT_VERTICAL = 'abp01-item-layout-vertical';
 
-    /**
-     * @var Abp01_View
-     */
-    private $_view;
+	/**
+	 * @var Abp01_View
+	 */
+	private $_view;
 
-    /**
-     * @var array
-     */
-    private $_contentCache = array();
+	/**
+	 * @var array
+	 */
+	private $_contentCache = array();
 
-    public function __construct(Abp01_View $view) {
-        $this->_view = $view;
-    }
+	public function __construct(Abp01_View $view) {
+		$this->_view = $view;
+	}
 
-    public static function getAvailableTabs() {
-        return array(
-            self::TAB_INFO => __('Prosaic details', 'abp01-trip-summary'), 
-            self::TAB_MAP => __('Map', 'abp01-trip-summary')
-        );
-    }
+	public static function getAvailableTabs() {
+		return array(
+			self::TAB_INFO => __('Prosaic details', 'abp01-trip-summary'), 
+			self::TAB_MAP => __('Map', 'abp01-trip-summary')
+		);
+	}
 
-    public static function isTabSupported($tab) {
-        return in_array($tab, array_keys(self::getAvailableTabs()));
-    }
+	public static function isTabSupported($tab) {
+		return in_array($tab, array_keys(self::getAvailableTabs()));
+	}
 
-    public static function getAvailableItemLayouts() {
-        return array(
-            self::ITEM_LAYOUT_HORIZONTAL => __('Horizontally', 'abp01-trip-summary'), 
-            self::ITEM_LAYOUT_VERTICAL => __('Vertically', 'abp01-trip-summary')
-        );
-    }
+	public static function getAvailableItemLayouts() {
+		return array(
+			self::ITEM_LAYOUT_HORIZONTAL => __('Horizontally', 'abp01-trip-summary'), 
+			self::ITEM_LAYOUT_VERTICAL => __('Vertically', 'abp01-trip-summary')
+		);
+	}
 
-    public static function isItemLayoutSupported($itemLayout) {
-        return in_array($itemLayout, array_keys(self::getAvailableItemLayouts()));
-    }
+	public static function isItemLayoutSupported($itemLayout) {
+		return in_array($itemLayout, array_keys(self::getAvailableItemLayouts()));
+	}
 
-    public function render(stdClass $data) {
-        $viewerContent = array(
-            'teaserHtml' => null,
-            'viewerHtml' => null
-        );
+	public function render(stdClass $data) {
+		$viewerContent = array(
+			'teaserHtml' => null,
+			'viewerHtml' => null
+		);
 
-        if ($this->_canBeRendered($data)) {
-            $viewerContent = $this->_readCachedViewerContent($data->postId);
-            if ($viewerContent === null) {
-                $viewerContent = array(
-                    'teaserHtml' => $this->_view->renderFrontendTeaser($data),
-                    'viewerHtml' => $this->_view->renderFrontendViewer($data)
-                );
+		if ($this->_canBeRendered($data)) {
+			$viewerContent = $this->_readCachedViewerContent($data->postId);
+			if ($viewerContent === null) {
+				$viewerContent = array(
+					'teaserHtml' => $this->_view->renderFrontendTeaser($data),
+					'viewerHtml' => $this->_view->renderFrontendViewer($data)
+				);
 
-                $this->_cacheViewerContent($data->postId, 
-                    $viewerContent);
-            }
-        }
+				$this->_cacheViewerContent($data->postId, 
+					$viewerContent);
+			}
+		}
 
-        return $viewerContent;
-    }
+		return $viewerContent;
+	}
 
-    private function _canBeRendered(stdClass $data) {
-        return !empty($data->postId) 
-            && ($data->info->exists || $data->track->exists);
-    }
+	private function _canBeRendered(stdClass $data) {
+		return !empty($data->postId) 
+			&& ($data->info->exists || $data->track->exists);
+	}
 
-    private function _readCachedViewerContent($postId) {
-        return isset($this->_contentCache[$postId]) 
-            ? $this->_contentCache[$postId] 
-            : null;
-    }
+	private function _readCachedViewerContent($postId) {
+		return isset($this->_contentCache[$postId]) 
+			? $this->_contentCache[$postId] 
+			: null;
+	}
 
-    private function _cacheViewerContent($postId, array $viewerContent) {
-        $this->_contentCache[$postId] = $viewerContent;
-    }
+	private function _cacheViewerContent($postId, array $viewerContent) {
+		$this->_contentCache[$postId] = $viewerContent;
+	}
 
-    public function renderAndAttachToContent(stdClass $data, $postContent) {
-        $viewerContentParts = $this->render($data);
-        $postContent = $viewerContentParts['teaserHtml'] . $postContent;
-	
+	public function renderAndAttachToContent(stdClass $data, $postContent) {
+		$viewerContentParts = $this->render($data);
+		$postContent = $viewerContentParts['teaserHtml'] . $postContent;
+
 		if (!$this->_contentHasAnyTypeOfShortCode($postContent)) {
 			$postContent = $postContent . $viewerContentParts['viewerHtml'];
 		} elseif ($this->_contentHasViewerShortcode($postContent)) {
@@ -127,14 +127,14 @@ class Abp01_Viewer {
 		}
 	
 		return $postContent;
-    }
+	}
 
-    private function _contentHasAnyTypeOfShortCode(&$postContent) {
-        return $this->_contentHasViewerShortcode($postContent) 
-            || $this->_contentHasViewerShortCodeBlock($postContent);
-    }
+	private function _contentHasAnyTypeOfShortCode(&$postContent) {
+		return $this->_contentHasViewerShortcode($postContent) 
+			|| $this->_contentHasViewerShortCodeBlock($postContent);
+	}
 
-    private function _contentHasViewerShortcode(&$postContent) {
+	private function _contentHasViewerShortcode(&$postContent) {
 		return preg_match($this->_getViewerShortcodeRegexp(), $postContent);
 	}
 
@@ -160,15 +160,15 @@ class Abp01_Viewer {
 			}, $postContent);
 	}
 
-    private function _getViewerShortcode() {
-        return '[' . ABP01_VIEWER_SHORTCODE . ']';
-    }
+	private function _getViewerShortcode() {
+		return '[' . ABP01_VIEWER_SHORTCODE . ']';
+	}
 
-    public function includeFrontendViewerStyles() {
-        $this->_view->includeFrontendViewerStyles();
-    }
+	public function includeFrontendViewerStyles() {
+		$this->_view->includeFrontendViewerStyles();
+	}
 
-    public function includeFrontendViewerScripts(array $translations) {
-        $this->_view->includeFrontendViewerScripts($translations);
-    }
+	public function includeFrontendViewerScripts(array $translations) {
+		$this->_view->includeFrontendViewerScripts($translations);
+	}
 }

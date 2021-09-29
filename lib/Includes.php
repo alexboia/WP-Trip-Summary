@@ -473,7 +473,14 @@ class Abp01_Includes {
 		),
 		self::JS_ABP01_VIEWER_SHORTCODE_BLOCK => array(
 			'path' => 'media/js/abp01-block-editor-shortcode/block.js',
-			'version' => ABP01_VERSION
+			'version' => ABP01_VERSION,
+			'deps' => array(
+				'wp-blocks', 
+				'wp-element',
+				'wp-data',
+				'wp-dom-ready',
+				'wp-edit-post'
+			)
 		),
 		self::JS_ABP01_CLASSIC_EDITOR_VIEWER_SHORTCODE_PLUGIN => array(
 			'path' => 'media/js/abp01-classic-editor-shortcode/plugin.js',
