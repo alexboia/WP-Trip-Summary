@@ -75,6 +75,11 @@ class Abp01_Plugin {
 	private $_changeLogDataSource;
 
 	/**
+	 * @var Abp01_AuditLog_Provider
+	 */
+	private $_auditLogProvider;
+
+	/**
 	 * @var Abp01_Viewer
 	 */
 	private $_viewer;
@@ -252,7 +257,8 @@ class Abp01_Plugin {
 			Abp01_PluginModules_GetTrackDataPluginModule::class,
 			Abp01_PluginModules_AdminTripSummaryEditorPluginModule::class,
 			Abp01_PluginModules_FrontendViewerPluginModule::class,
-			Abp01_PluginModules_TeaserTextsSyncPluginModule::class
+			Abp01_PluginModules_TeaserTextsSyncPluginModule::class,
+			Abp01_PluginModules_AdminTripSummaryAuditLogPluginModule::class
 		));
 	}
 
@@ -332,6 +338,13 @@ class Abp01_Plugin {
 			);
 		}
 		return $this->_changeLogDataSource;
+	}
+
+	public function getAuditLogProvider() {
+		if ($this->_auditLogProvider === null) {
+			$this->_auditLogProvider = new Abp01_AuditLog_Provider_Default($this->getEnv());
+		}
+		return $this->_auditLogProvider;
 	}
 
 	private function _determineReadmeTxtFilePath() {

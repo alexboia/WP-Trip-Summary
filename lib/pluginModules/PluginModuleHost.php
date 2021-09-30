@@ -115,6 +115,9 @@ class Abp01_PluginModules_PluginModuleHost {
             Abp01_ChangeLogDataSource::class => function() {
                 return $this->getChangeLogDataSource();
             },
+            Abp01_AuditLog_Provider::class => function() {
+                return $this->getAuditLogProvider();
+            },
             Abp01_UrlHelper::class => function() {
                 return $this->getUrlHelper();
             },
@@ -220,6 +223,10 @@ class Abp01_PluginModules_PluginModuleHost {
 
     public function getRouteManager() {
         return $this->_plugin->getRouteManager();
+    }
+
+    public function getAuditLogProvider() {
+        return $this->_plugin->getAuditLogProvider();
     }
 
     public function getHelp() {

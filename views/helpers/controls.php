@@ -102,3 +102,15 @@ if (!function_exists('abp01_render_select_options')) {
 		}
 	}
 }
+
+if (!function_exists('abp01_format_date')) {
+    function abp01_format_date($dateTime) {
+        $format = sprintf('%s %s', 
+            get_option('date_format'), 
+            get_option('time_format'));
+
+        return date_i18n($format, 
+            $dateTime, 
+            false);
+    }
+}

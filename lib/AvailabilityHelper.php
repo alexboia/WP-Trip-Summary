@@ -1,3 +1,4 @@
+<?php
 /**
  * Copyright (c) 2014-2021 Alexandru Boia
  *
@@ -28,56 +29,19 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.abp01-status-text {
-    border-radius: 4px;
-    padding: 10px;
-    background-color: #e5e5e5;
-    color: #2e4453;
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+	exit;
 }
 
-.abp01-status-ok {
-    background-color: #c6e1c6;
-    color: #5b841b;
-}
+class Abp01_AvailabilityHelper {
+	const POST_TYPE_POST = 'post';
 
-.abp01-status-err {
-    background-color: #eba3a3;
-    color: #761919;
-}
+	const POST_TYPE_PAGE = 'page';
 
-.abp01-status-warn {
-    background-color: #f3e9cd;
-    color: #ffba00;
-}
-
-.abp01-stop-scrolling {
-    height: 100%;
-    overflow: hidden;
-}
-
-.abp01-progress-container {
-    width: 400px;
-    height: 45px;
-}
-
-.abp01-progress-label {
-    width: 400px;
-    height: 25px;
-    text-align: center;
-    line-height: 25px;
-    vertical-align: middle;
-    font-size: 13px;
-    color: #fff;
-    font-weight: bold;
-}
-
-.abp01-progress-bar {
-    width: 400px;
-    height: 20px;
-}
-
-.abp01-clear {
-    clear: both;
-    width: 0;
-    height: 0
+	public static function isEditorAvailableForPostType($postType) {
+		return in_array($postType, array(
+			self::POST_TYPE_POST, 
+			self::POST_TYPE_PAGE
+		));
+	}
 }

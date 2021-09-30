@@ -143,6 +143,13 @@ class Abp01_Env {
 	private $_routeDetailsLookupTableName;
 
 	/**
+	 * The name of the wordpress users table
+	 * 
+	 * @var string
+	 */
+	private $_wpUsersTableName;
+
+	/**
 	 * The current database object instance
 	 * 
 	 * @var MysqliDb
@@ -319,6 +326,8 @@ class Abp01_Env {
 			. 'abp01_techbox_lookup_lang';
 		$this->_routeDetailsLookupTableName = $this->_dbTablePrefix
 			. 'abp01_techbox_route_details_lookup';
+		$this->_wpUsersTableName = $this->_dbTablePrefix
+			. 'users';
 	}
 
 	private function _getCurrentAdminPageSlug() {
@@ -553,6 +562,10 @@ class Abp01_Env {
 
 	public function getRouteDetailsLookupTableName() {
 		return $this->_routeDetailsLookupTableName;
+	}
+
+	public function getWpUsersTableName() {
+		return $this->_wpUsersTableName;
 	}
 
 	public function getDataDir() {

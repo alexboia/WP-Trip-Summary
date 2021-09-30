@@ -39,6 +39,12 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 	const TRIP_SUMMARY_EDITOR_NONCE_URL_PARAM_NAME = 'abp01_nonce';
 
 	const CLASSIC_EDITOR_PLUGIN_SLUG = 'classic-editor/classic-editor.php';
+
+	const LAUNCHER_METABOX_REGISTRATION_HOOK_PRIORITY = 10;
+
+	const LAUNCHER_METABOX_POSITION = 'side';
+
+	const LAUNCHER_METABOX_PRIORITY = 'high';
 	
 	/**
 	 * @var Abp01_Route_Manager
@@ -248,7 +254,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		add_filter('tiny_mce_before_init', 
 			array($this, 'registerClassicEditorSettings'));
 		add_action('add_meta_boxes', array($this, 'registerAdminEditorLauncherMetaboxes'), 
-			10, 
+			self::LAUNCHER_METABOX_REGISTRATION_HOOK_PRIORITY, 
 			2);
 	}
 
@@ -282,17 +288,18 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 				__('Trip summary', 'abp01-trip-summary'),
 				array($this, 'addAdminEditor'), 
 				$postType, 
-				'side', 
-				'high', 
+				self::LAUNCHER_METABOX_POSITION, 
+				self::LAUNCHER_METABOX_PRIORITY, 
 				array(
 					'postType' => $postType,
 					'post' => $post
-				));
+				)
+			);
 		}
 	}
 
 	private function _shouldRegisterAdminEditorLauncherMetaboxes($postType, $post) {
-		return in_array($postType, array('post', 'page')) 
+		return Abp01_AvailabilityHelper::isEditorAvailableForPostType($postType) 
 			&& $this->_cantEditPostTripSummary($post);
 	}
 
