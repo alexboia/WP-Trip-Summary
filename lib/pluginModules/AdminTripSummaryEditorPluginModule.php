@@ -34,8 +34,6 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_PluginModules_PluginModule {
-	const TRIP_SUMMARY_EDITOR_NONCE_ACTION = 'abp01_nonce_trip_summary_editor';
-	
 	const TRIP_SUMMARY_EDITOR_NONCE_URL_PARAM_NAME = 'abp01_nonce';
 
 	const CLASSIC_EDITOR_PLUGIN_SLUG = 'classic-editor/classic-editor.php';
@@ -197,7 +195,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 
 	private function _shouldEnqueueWebPageAssets($strictPostTypeCheck) {
 		$isEditingPost = $strictPostTypeCheck
-			? $this->_env->isEditingWpPost('post', 'page') 
+			? $this->_env->isEditingWpPost(Abp01_AvailabilityHelper::getTripSummaryAvailableForPostTypes()) 
 			: $this->_env->isEditingWpPost();
 
 		return $isEditingPost

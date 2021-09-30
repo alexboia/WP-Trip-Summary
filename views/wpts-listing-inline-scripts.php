@@ -28,24 +28,31 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+	defined('ABP01_LOADED') or die;
+?>
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit;
-}
-
-class Abp01_AvailabilityHelper {
-	const POST_TYPE_POST = 'post';
-
-	const POST_TYPE_PAGE = 'page';
-
-	public static function isEditorAvailableForPostType($postType) {
-		return in_array($postType, self::getTripSummaryAvailableForPostTypes());
-	}
-
-	public static function getTripSummaryAvailableForPostTypes() {
-		return array(
-			self::POST_TYPE_POST, 
-			self::POST_TYPE_PAGE
-		);
-	}
-}
+<script type="text/javascript">
+	var abp01_auditLogNonce = '<?php echo $data->nonce; ?>';
+	var abp01_auditLogAjaxAction = '<?php echo $data->ajaxAction; ?>';
+	var abp01_auditLogAjaxBaseUrl = '<?php echo $data->ajaxBaseUrl; ?>';
+</script>
+<script id="tpl-abp01-progress-container" type="text/x-kite">
+	<div id="abp01-progress-container" class="abp01-progress-container">
+		<div data-role="progressLabel" id="abp01-progress-label" class="abp01-progress-label"></div>
+		<div data-role="progressParent" id="abp01-progress-bar" class="abp01-progress-bar"></div>
+	</div>
+</script>
+<script id="tpl-abp01-audit-log-container" type="text/x-kite">
+	<div id="abp01-audit-log-container" class="abp01-window-container">
+		<div id="abp01-audit-log-container-header" class="abp01-window-container-header">
+			<h3><?php echo __('Audit log', 'abp01-trip-summary'); ?></h3>
+			<a href="javascript:void(0)" class="abp01-close-window abp01-close-tile-layer-selector">
+				<span class="dashicons dashicons-dismiss"></span>
+			</a>
+			<div class="abp01-clear"></div>
+		</div>
+		<div id="abp01-audit-log-container-inner" class="abp01-window-container-inner">
+			{{auditLogContent}}
+		</div>
+	</div>
+</script>

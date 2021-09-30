@@ -129,6 +129,11 @@ class Abp01_View {
         return $this->_renderCoreView('wpts-audit-log.php', $data);
     }
 
+    public function renderAdminTripSummaryListingInlineScripts(stdClass $data) {
+        $this->_registerAdminHelpers();
+        return $this->_renderCoreView('wpts-listing-inline-scripts.php', $data);
+    }
+
     public function renderFrontendTeaser(stdClass $data) {
         $this->_registerFrontendHelpers();
         return $this->_frontendTheme->renderTeaser($data);

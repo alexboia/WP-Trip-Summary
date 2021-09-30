@@ -130,4 +130,10 @@ class Abp01_TranslatedScriptMessages {
             'errLoadHelpContentsGeneric' => esc_html__('The help contents could not be loaded.', 'abp01-trip-summary')
         );
     }
+
+    public static function getAdminListingAuditLogScriptTranslations() {
+        return array(
+            'msgWorking' => esc_html__('Loading audit log. Please wait...', 'abp01-trip-summary'),
+        );
+    }
 }

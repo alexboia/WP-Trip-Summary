@@ -470,7 +470,7 @@ class Abp01_Env {
 	}
 
 	public function isListingWpPosts() {
-		$requiredPostTypes = func_get_args();
+		$requiredPostTypes = $this->_parseArgsAsPostTypesArray(func_get_args());
 
 		$postType = isset($_GET['post_type']) 
 			? $_GET['post_type'] 
@@ -480,6 +480,16 @@ class Abp01_Env {
 			&& (empty($requiredPostTypes) || in_array($postType, $requiredPostTypes));
 	}
 
+	private function _parseArgsAsPostTypesArray($args) {
+		$requiredPostTypes = $args;
+		if (!empty($requiredPostTypes) 
+			&& isset($requiredPostTypes[0]) 
+			&& is_array($requiredPostTypes[0])) {
+			$requiredPostTypes = $requiredPostTypes[0];
+		}
+		return $requiredPostTypes;
+	}
+
 	public function isEditingWpPost() {      
 		$isEditingPost = in_array($this->getCurrentAdminPage(), array(
 			'post-new.php', 
@@ -487,15 +497,15 @@ class Abp01_Env {
 		));
 
 		if ($isEditingPost) {
-			$args = func_num_args();
-			if ($args > 0) {
+			$requiredPostTypes = $this->_parseArgsAsPostTypesArray(func_get_args());
+			if (!empty($requiredPostTypes)) {
 				$post = isset($GLOBALS['post']) 
 					? $GLOBALS['post'] 
 					: null;
 
 				$isEditingPost = ($post != null 
 					&& !empty($post->post_type) 
-					&& in_array($post->post_type, func_get_args()));
+					&& in_array($post->post_type, $requiredPostTypes));
 			}
 		}
 

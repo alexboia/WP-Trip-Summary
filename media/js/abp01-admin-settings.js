@@ -67,12 +67,12 @@
 	}
 
 	function disableWindowScroll() {
-        window.abp01.disableWindowScroll();
-    }
+		window.abp01.disableWindowScroll();
+	}
 
-    function enableWindowScroll() {
-        window.abp01.enableWindowScroll();
-    }
+	function enableWindowScroll() {
+		window.abp01.enableWindowScroll();
+	}
 
 	function displaySuccessfulOperationMessage(message) {
 		$ctrlSettingsSaveResult.abp01OperationMessage('success', message);
@@ -196,13 +196,13 @@
 			css: {
 				width: '620px',
 				height: '300px',
-                top: 'calc(50% - 310px)',
-                left: 'calc(50% - 150px)',
+				top: 'calc(50% - 250px)',
+				left: 'calc(50% - 320px)',
 				padding: '10px',
 				borderRadius: '5px',
 				backgroundColor: '#fff',
-                boxShadow: '0 5px 15px rgba(0, 0, 0, 0.7)'
-            },
+				boxShadow: '0 5px 15px rgba(0, 0, 0, 0.7)'
+			},
 			onBlock: function() {
 				disableWindowScroll();
 			},

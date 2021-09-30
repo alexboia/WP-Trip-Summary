@@ -223,6 +223,13 @@ define('ABP01_ACTION_EDIT_LOOKUP', 'abp01_edit_lookup');
 define('ABP01_ACTION_GET_HELP_FOR_LOCALE', 'abp01_get_help_for_locale');
 
 /**
+ * The action name used with admin-ajax.php when retrieving audi tlog contents for a given post
+ * 
+ * @var string
+ */
+define('ABP01_ACTION_GET_AUDIT_LOG_FOR_POST', 'abp01_get_audit_log_for_post');
+
+/**
  * The name of the file upload file that, 
  *  albeit hidden from view, is used to 
  *  upload the track file to the server

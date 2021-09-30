@@ -110,6 +110,8 @@ class Abp01_Includes {
 
 	const JS_ABP01_CLASSIC_EDITOR_VIEWER_SHORTCODE_PLUGIN = 'abp01-classic-editor-viewer-shortcode-plugin';
 	
+	const JS_ABP01_LISTING_AUDIT_LOG = 'abp01-listing-audit-log';
+
 	const JS_SYSTEM_THICKBOX = 'thickbox';
 
 	const JS_SELECT2 = 'select2-js';
@@ -155,6 +157,10 @@ class Abp01_Includes {
 	const STYLE_ADMIN_ABOUT = 'abp01-about-css';
 
 	const STYLE_ADMIN_POSTS_LISTING = 'abp01-admin-posts-listing-css';
+
+	const STYLE_ADMIN_AUDIT_LOG = 'abp01-admin-audit-log-css';
+
+	const STYLE_ADMIN_LISTING_AUDIT_LOG = 'abp01-admin-listing-audit-log-css';
 
 	const STYLE_SYSTEM_THICKBOX = 'thickbox';
 
@@ -471,6 +477,17 @@ class Abp01_Includes {
 				self::JS_ABP01_OPERATION_MESSAGE
 			)
 		),
+		self::JS_ABP01_LISTING_AUDIT_LOG => array(
+			'path' => 'media/js/abp01-admin-listing-audit-log.js',
+			'version' => ABP01_VERSION,
+			'deps' => array(
+				self::JS_JQUERY,
+				self::JS_JQUERY_BLOCKUI,
+				self::JS_URI_JS,
+				self::JS_ABP01_COMMON,
+				self::JS_ABP01_PROGRESS_OVERLAY
+			)
+		),
 		self::JS_ABP01_VIEWER_SHORTCODE_BLOCK => array(
 			'path' => 'media/js/abp01-block-editor-shortcode/block.js',
 			'version' => ABP01_VERSION,
@@ -672,6 +689,16 @@ class Abp01_Includes {
 			'deps' => array(
 				self::STYLE_ADMIN_COMMON
 			)
+		),
+		self::STYLE_ADMIN_AUDIT_LOG => array(
+			'alias' => self::STYLE_ADMIN_COMMON
+		),
+		self::STYLE_ADMIN_LISTING_AUDIT_LOG => array(
+			'alias' => self::STYLE_ADMIN_MAIN,
+			'deps' => array(
+				self::STYLE_ADMIN_AUDIT_LOG,
+				self::STYLE_NPROGRESS
+			)
 		)
 	);
 
@@ -808,6 +835,15 @@ class Abp01_Includes {
 		}
 	}
 
+	public static function includeScriptAdminListingAuditLog($localization) {
+		self::_includeScript(self::JS_ABP01_LISTING_AUDIT_LOG);
+		if (!empty($localization)) {
+			wp_localize_script(self::JS_ABP01_LISTING_AUDIT_LOG, 
+				'abp01ListingAuditLogL10n', 
+				$localization);
+		}
+	}
+
 	public static function includeScriptBlockEditorViewerShortCodeBlock() {	
 		self::_includeScript(self::JS_ABP01_VIEWER_SHORTCODE_BLOCK, 'registered');
 		wp_localize_script(self::JS_ABP01_VIEWER_SHORTCODE_BLOCK, 
@@ -865,5 +901,13 @@ class Abp01_Includes {
 
 	public static function includeStyleAdminPostsListing() {
 		self::_includeStyle(self::STYLE_ADMIN_POSTS_LISTING);
+	}
+
+	public static function includeStyleAdminAuditLog() {
+		self::_includeStyle(self::STYLE_ADMIN_AUDIT_LOG);
+	}
+
+	public static function includeStyleAdminListingAuditLog() {
+		self::_includeStyle(self::STYLE_ADMIN_LISTING_AUDIT_LOG);
 	}
 }

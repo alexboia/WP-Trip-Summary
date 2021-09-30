@@ -390,6 +390,7 @@ a.abp01-close-editor:hover {
 	margin-right: 0px !important;
 }
 
+.abp01-window-container,
 #abp01-predefined-tile-layers-container {
 	background-color: #fff;
 	border: 0px none;
@@ -398,6 +399,7 @@ a.abp01-close-editor:hover {
 	display: block;
 }
 
+.abp01-window-container-inner,
 #abp01-predefined-tile-layers-container-inner {
 	width: 100%;
 	height: calc(100% - 40px);
@@ -405,12 +407,14 @@ a.abp01-close-editor:hover {
 	overflow-y: auto;
 }
 
+.abp01-window-container-header,
 #abp01-predefined-tile-layers-container-header {
 	padding-bottom: 10px;
 	height: 30px;
 	text-align: center;
 }
 
+.abp01-window-container-header h3,
 #abp01-predefined-tile-layers-container-header h3 {
 	float: left;
 	margin: 0;
@@ -420,6 +424,7 @@ a.abp01-close-editor:hover {
 	vertical-align: middle;
 }
 
+.abp01-window-container-header .abp01-close-window,
 #abp01-predefined-tile-layers-container-header .abp01-close-tile-layer-selector {
 	float: right;
 	text-decoration: none;
@@ -752,62 +757,4 @@ a.abp01-close-editor:hover {
 	padding-right: 0px;
 	margin-right: 0px;
 	border-right: 0px none;
-}
-
-/* Trip summary audit log */
-#abp01-trip-summary-audit-log .inside {
-	padding-left: 4px;
-	padding-right: 4px;
-	padding-bottom: 4px;
-}
-
-table.abp01-admin-trip-summary-audit-log {
-	width: 100%;
-	table-layout: fixed;
-}
-
-table.abp01-admin-trip-summary-audit-log h4 {
-	margin: 0;
-	padding: 0;
-	text-align: center;
-}
-
-table.abp01-admin-trip-summary-audit-log th {
-	text-align: left;
-	width: calc(30% - 16px);
- }
-
- table.abp01-admin-trip-summary-audit-log td {
-	width: calc(70% - 16px);
- }
-
- table.abp01-admin-trip-summary-audit-log th, 
- table.abp01-admin-trip-summary-audit-log td {
-	padding: 8px;
-	word-wrap: break-word;
-	text-align: left;
- }
-
- table.abp01-admin-trip-summary-audit-log tr:nth-child(2n+1) {
-	background-color: #f8f8f8;
- }
-
- table.abp01-admin-trip-summary-audit-log tr:hover {
-	background-color: #a7cedc;
-	color: #fff;
- }
-
- 
-table.abp01-admin-trip-summary-audit-log tr.abp01-trip-summary-audit-log-section-title,
-table.abp01-admin-trip-summary-audit-log tr.abp01-trip-summary-audit-log-section-title:nth-child(2n+1),
-table.abp01-admin-trip-summary-audit-log tr.abp01-trip-summary-audit-log-section-title:hover {
-	background-color: #fff;
-}
-
-table.abp01-admin-trip-summary-audit-log h4 {
-	padding: 8px;
-	background-color: #a7cedc;
-	color: #fff;
-	border-radius: 5px;
-	font-weight: bold;
 }

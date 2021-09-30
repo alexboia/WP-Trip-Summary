@@ -361,15 +361,15 @@
 		</script>
 
 		<script id="tpl-abp01-predefined-tile-layers-container" type="text/x-kite">
-			<div id="abp01-predefined-tile-layers-container">
-				<div id="abp01-predefined-tile-layers-container-header">
+			<div id="abp01-predefined-tile-layers-container" class="abp01-window-container">
+				<div id="abp01-predefined-tile-layers-container-header" class="abp01-window-container-header">
 					<h3><?php echo __('Chose a pre-defined tile layer service', 'abp01-trip-summary'); ?></h3>
-					<a href="javascript:void(0)" class="abp01-close-tile-layer-selector">
+					<a href="javascript:void(0)" class="abp01-close-window abp01-close-tile-layer-selector">
 						<span class="dashicons dashicons-dismiss"></span>
 					</a>
 					<div class="abp01-clear"></div>
 				</div>
-				<div id="abp01-predefined-tile-layers-container-inner">
+				<div id="abp01-predefined-tile-layers-container-inner" class="abp01-window-container-inner">
 					{{#predefinedTileLayers}}
 						<div class="abp01-predefined-tile-layer">
 							<h4>{{label}}</h4>

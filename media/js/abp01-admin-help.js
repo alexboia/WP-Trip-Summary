@@ -42,34 +42,34 @@
 
 	function getContext() {
 		return {
-            ajaxBaseUrl: window['abp01_ajaxUrl'] || null,
-            getHelpNonce: window['abp01_getHelpNonce'] || null,
-            ajaxGetHelpAction: window['abp01_getHelpAction'] || null
-        };
+			ajaxBaseUrl: window['abp01_ajaxUrl'] || null,
+			getHelpNonce: window['abp01_getHelpNonce'] || null,
+			ajaxGetHelpAction: window['abp01_getHelpAction'] || null
+		};
 	}
 
 	function getHelpForLocaleUrl() {
-        return URI(context.ajaxBaseUrl)
-            .addSearch('action', context.ajaxGetHelpAction)
-            .addSearch('abp01_help_nonce', context.getHelpNonce)
-            .toString();
-    }
+		return URI(context.ajaxBaseUrl)
+			.addSearch('action', context.ajaxGetHelpAction)
+			.addSearch('abp01_help_nonce', context.getHelpNonce)
+			.toString();
+	}
 
 	function toggleBusy(show) {
-        if (show) {
-            if (progressBar == null) {
-                progressBar = $('#tpl-abp01-progress-container').progressOverlay({
-                    $target: $('#wpwrap'),
-                    message: abp01HelpL10n.msgWorking
-                });
-            }
-        } else {
-            if (progressBar != null) {
-                progressBar.destroy();
-                progressBar = null;
-            }
-        }
-    }
+		if (show) {
+			if (progressBar == null) {
+				progressBar = $('#tpl-abp01-progress-container').progressOverlay({
+					$target: $('#wpwrap'),
+					message: abp01HelpL10n.msgWorking
+				});
+			}
+		} else {
+			if (progressBar != null) {
+				progressBar.destroy();
+				progressBar = null;
+			}
+		}
+	}
 
 	function refreshHelpContentsForLocale(locale) {
 		toggleBusy(true);
@@ -103,8 +103,8 @@
 	}
 
 	function initContext() {
-        context = getContext();
-    }
+		context = getContext();
+	}
 
 	function initControls() {
 		$ctlLanguageSelector = $('#abp01-help-contents-lang');
