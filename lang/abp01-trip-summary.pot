@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the WP Trip Summary plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Trip Summary 0.2.7\n"
+"Project-Id-Version: WP Trip Summary 0.2.8\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-trip-summary\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-04-07T09:02:48+00:00\n"
+"POT-Creation-Date: 2021-10-01T11:35:02+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.3.0\n"
 "X-Domain: abp01-trip-summary\n"
@@ -34,12 +34,12 @@ msgstr ""
 msgid "http://alexboia.net"
 msgstr ""
 
-#: abp01-plugin-functions.php:420
+#: abp01-plugin-functions.php:432
 #: views/wpts-editor.php:177
 msgid "Bike type"
 msgstr ""
 
-#: abp01-plugin-functions.php:421
+#: abp01-plugin-functions.php:433
 #: views/wpts-editor.php:136
 #: views/wpts-editor.php:202
 #: views/wpts-frontend.php:58
@@ -47,7 +47,7 @@ msgstr ""
 msgid "Difficulty level"
 msgstr ""
 
-#: abp01-plugin-functions.php:422
+#: abp01-plugin-functions.php:434
 #: views/wpts-editor.php:165
 #: views/wpts-editor.php:231
 #: views/wpts-frontend.php:61
@@ -55,25 +55,25 @@ msgstr ""
 msgid "Path surface type"
 msgstr ""
 
-#: abp01-plugin-functions.php:423
+#: abp01-plugin-functions.php:435
 msgid "Railroad electrification status"
 msgstr ""
 
-#: abp01-plugin-functions.php:424
+#: abp01-plugin-functions.php:436
 msgid "Railroad line status"
 msgstr ""
 
-#: abp01-plugin-functions.php:425
+#: abp01-plugin-functions.php:437
 msgid "Railroad line type"
 msgstr ""
 
-#: abp01-plugin-functions.php:426
+#: abp01-plugin-functions.php:438
 #: views/wpts-editor.php:264
 #: views/wpts-frontend.php:75
 msgid "Railroad operators"
 msgstr ""
 
-#: abp01-plugin-functions.php:427
+#: abp01-plugin-functions.php:439
 msgid "Recommended seasons"
 msgstr ""
 
@@ -93,11 +93,13 @@ msgid "Not available"
 msgstr ""
 
 #: lib/display/postListing/TripSummaryStatusColumnsDecorator.php:46
+#: views/wpts-audit-log.php:37
 #: views/wpts-editor-launcher-metabox.php:46
 msgid "Trip summary info"
 msgstr ""
 
 #: lib/display/postListing/TripSummaryStatusColumnsDecorator.php:55
+#: views/wpts-audit-log.php:65
 #: views/wpts-editor-launcher-metabox.php:58
 msgid "Trip summary track"
 msgstr ""
@@ -110,39 +112,39 @@ msgstr ""
 msgid "Default"
 msgstr ""
 
-#: lib/Plugin.php:126
+#: lib/Plugin.php:131
 msgid "Could not activate plug-in: activation failure."
 msgstr ""
 
-#: lib/Plugin.php:149
+#: lib/Plugin.php:154
 msgid "Could not activate plug-in: requirements not met."
 msgstr ""
 
-#: lib/Plugin.php:156
+#: lib/Plugin.php:161
 msgid "Minimum required PHP version is %s"
 msgstr ""
 
-#: lib/Plugin.php:158
+#: lib/Plugin.php:163
 msgid "Minimum required WP version is %s"
 msgstr ""
 
-#: lib/Plugin.php:160
+#: lib/Plugin.php:165
 msgid "LIBXML support was not found on your system"
 msgstr ""
 
-#: lib/Plugin.php:162
+#: lib/Plugin.php:167
 msgid "Mysqli extension was not found on your system or is not fully compatible"
 msgstr ""
 
-#: lib/Plugin.php:164
+#: lib/Plugin.php:169
 msgid "MySQL spatial support was not found on your system"
 msgstr ""
 
-#: lib/Plugin.php:166
+#: lib/Plugin.php:171
 msgid "We could not check whether your system fully supports this plug-in."
 msgstr ""
 
-#: lib/Plugin.php:174
+#: lib/Plugin.php:179
 msgid "Activation error"
 msgstr ""
 
@@ -155,17 +157,22 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:285
+#: lib/pluginModules/AdminTripSummaryAuditLogPluginModule.php:149
+#: lib/pluginModules/AdminTripSummaryAuditLogPluginModule.php:216
+msgid "Trip summary audit log"
+msgstr ""
+
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:286
 #: views/wpts-frontend.php:37
 msgid "Trip summary"
 msgstr ""
 
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:414
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:428
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:416
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:430
 msgid "The data could not be saved due to a possible database error"
 msgstr ""
 
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:526
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:528
 msgid "The data could not be updated due to a possible database error"
 msgstr ""
 
@@ -272,51 +279,51 @@ msgstr ""
 msgid "It looks like you skipped the story. You should check it out. Click here to go back to beginning"
 msgstr ""
 
-#: lib/settings/PredefinedTileLayer.php:120
+#: lib/settings/PredefinedTileLayer.php:136
 msgid "Basic Open Street Map Style"
 msgstr ""
 
-#: lib/settings/PredefinedTileLayer.php:126
+#: lib/settings/PredefinedTileLayer.php:142
 msgid "Open Street Map, Hike & Bike Map"
 msgstr ""
 
-#: lib/settings/PredefinedTileLayer.php:135
+#: lib/settings/PredefinedTileLayer.php:151
 msgid "Thunderforest Atlas Map"
 msgstr ""
 
-#: lib/settings/PredefinedTileLayer.php:141
+#: lib/settings/PredefinedTileLayer.php:157
 msgid "Thunderforest Landscape Map"
 msgstr ""
 
-#: lib/settings/PredefinedTileLayer.php:147
+#: lib/settings/PredefinedTileLayer.php:163
 msgid "Thunderforest Mobile Atlas Map"
 msgstr ""
 
-#: lib/settings/PredefinedTileLayer.php:153
+#: lib/settings/PredefinedTileLayer.php:169
 msgid "Thunderforest Neighbourhood Map"
 msgstr ""
 
-#: lib/settings/PredefinedTileLayer.php:159
+#: lib/settings/PredefinedTileLayer.php:175
 msgid "Thunderforest Open Cycle Map"
 msgstr ""
 
-#: lib/settings/PredefinedTileLayer.php:165
+#: lib/settings/PredefinedTileLayer.php:181
 msgid "Thunderforest Outdoors Map"
 msgstr ""
 
-#: lib/settings/PredefinedTileLayer.php:171
+#: lib/settings/PredefinedTileLayer.php:187
 msgid "Thunderforest Pioneer Map"
 msgstr ""
 
-#: lib/settings/PredefinedTileLayer.php:177
+#: lib/settings/PredefinedTileLayer.php:193
 msgid "Thunderforest Spinal Map"
 msgstr ""
 
-#: lib/settings/PredefinedTileLayer.php:183
+#: lib/settings/PredefinedTileLayer.php:199
 msgid "Thunderforest Transport Map"
 msgstr ""
 
-#: lib/settings/PredefinedTileLayer.php:189
+#: lib/settings/PredefinedTileLayer.php:205
 msgid "Thunderforest Transport Dark Map"
 msgstr ""
 
@@ -609,6 +616,14 @@ msgstr ""
 msgid "The help contents could not be loaded."
 msgstr ""
 
+#: lib/TranslatedScriptMessages.php:136
+msgid "Loading audit log. Please wait..."
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:137
+msgid "The audit log could not be loaded!"
+msgstr ""
+
 #: lib/Viewer.php:61
 #: views/wpts-frontend.php:43
 msgid "Prosaic details"
@@ -678,6 +693,21 @@ msgstr ""
 
 #: views/wpts-about.php:95
 msgid "Changelog"
+msgstr ""
+
+#: views/wpts-audit-log.php:40
+#: views/wpts-audit-log.php:68
+msgid "Date created"
+msgstr ""
+
+#: views/wpts-audit-log.php:48
+#: views/wpts-audit-log.php:76
+msgid "Date last updated"
+msgstr ""
+
+#: views/wpts-audit-log.php:56
+#: views/wpts-audit-log.php:84
+msgid "Last updated by"
 msgstr ""
 
 #: views/wpts-button.php:35
@@ -835,6 +865,10 @@ msgstr ""
 
 #: views/wpts-help.php:61
 msgid "No help contents has been found. This usually indicates some problems with the help content files that have been distributed with the plug-in. Please check your website file structure."
+msgstr ""
+
+#: views/wpts-listing-inline-scripts.php:48
+msgid "Audit log"
 msgstr ""
 
 #: views/wpts-lookup-data-management.php:54

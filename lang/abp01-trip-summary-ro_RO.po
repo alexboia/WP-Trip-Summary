@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Trip Summary 0.1.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-trip-summary\n"
-"POT-Creation-Date: 2021-04-06 21:36+0300\n"
-"PO-Revision-Date: 2021-04-06 21:37+0300\n"
+"POT-Creation-Date: 2021-10-01 14:44+0300\n"
+"PO-Revision-Date: 2021-10-01 14:47+0300\n"
 "Last-Translator: \n"
 "Language-Team: alexandru.boia [at] outlook [dot] com\n"
 "Language: ro_RO\n"
@@ -39,40 +39,40 @@ msgstr "Alexandru Boia"
 msgid "http://alexboia.net"
 msgstr "http://alexboia.net"
 
-#: abp01-plugin-functions.php:420 views/wpts-editor.php:177
+#: abp01-plugin-functions.php:432 views/wpts-editor.php:177
 msgid "Bike type"
 msgstr "Tip recomandat de bicicletă"
 
-#: abp01-plugin-functions.php:421 views/wpts-editor.php:136
+#: abp01-plugin-functions.php:433 views/wpts-editor.php:136
 #: views/wpts-editor.php:202 views/wpts-frontend.php:58
 #: views/wpts-frontend.php:66
 msgid "Difficulty level"
 msgstr "Nivelul de dificultate"
 
-#: abp01-plugin-functions.php:422 views/wpts-editor.php:165
+#: abp01-plugin-functions.php:434 views/wpts-editor.php:165
 #: views/wpts-editor.php:231 views/wpts-frontend.php:61
 #: views/wpts-frontend.php:69
 msgid "Path surface type"
 msgstr "Suprafața drumului/potecii"
 
-#: abp01-plugin-functions.php:423
+#: abp01-plugin-functions.php:435
 msgid "Railroad electrification status"
 msgstr "Status electrificare linie de cale ferată"
 
-#: abp01-plugin-functions.php:424
+#: abp01-plugin-functions.php:436
 msgid "Railroad line status"
 msgstr "Starea liniei de cale ferată"
 
-#: abp01-plugin-functions.php:425
+#: abp01-plugin-functions.php:437
 msgid "Railroad line type"
 msgstr "Tipul liniei de cale ferată"
 
-#: abp01-plugin-functions.php:426 views/wpts-editor.php:264
+#: abp01-plugin-functions.php:438 views/wpts-editor.php:264
 #: views/wpts-frontend.php:75
 msgid "Railroad operators"
 msgstr "Operatori feroviari"
 
-#: abp01-plugin-functions.php:427
+#: abp01-plugin-functions.php:439
 msgid "Recommended seasons"
 msgstr "Practicabil în anotimpurile"
 
@@ -92,12 +92,12 @@ msgid "Not available"
 msgstr "Indisponibil"
 
 #: lib/display/postListing/TripSummaryStatusColumnsDecorator.php:46
-#: views/wpts-editor-launcher-metabox.php:46
+#: views/wpts-audit-log.php:37 views/wpts-editor-launcher-metabox.php:46
 msgid "Trip summary info"
 msgstr "Info traseu"
 
 #: lib/display/postListing/TripSummaryStatusColumnsDecorator.php:55
-#: views/wpts-editor-launcher-metabox.php:58
+#: views/wpts-audit-log.php:65 views/wpts-editor-launcher-metabox.php:58
 msgid "Trip summary track"
 msgstr "Track traseu"
 
@@ -109,44 +109,44 @@ msgstr "Limba curentă"
 msgid "Default"
 msgstr "Implicit"
 
-#: lib/Plugin.php:126
+#: lib/Plugin.php:131
 msgid "Could not activate plug-in: activation failure."
 msgstr ""
 "Plug-in-ul nu a putut fi activat din cauza unei posibile probleme interne"
 
-#: lib/Plugin.php:149
+#: lib/Plugin.php:154
 msgid "Could not activate plug-in: requirements not met."
 msgstr ""
 "Plug-in-ul nu a putut fi activat din cauză că sistemul tău nu suportă toate "
 "cerințele necesare pentru instalare"
 
-#: lib/Plugin.php:156
+#: lib/Plugin.php:161
 msgid "Minimum required PHP version is %s"
 msgstr "Versiunea necesară minimă de PHP este %s"
 
-#: lib/Plugin.php:158
+#: lib/Plugin.php:163
 msgid "Minimum required WP version is %s"
 msgstr "Versiunea necesară minimă de WordPress este %s"
 
-#: lib/Plugin.php:160
+#: lib/Plugin.php:165
 msgid "LIBXML support was not found on your system"
 msgstr "Extensia LIBXML nu a fost găsită pe sistemul tău"
 
-#: lib/Plugin.php:162
+#: lib/Plugin.php:167
 msgid "Mysqli extension was not found on your system or is not fully compatible"
 msgstr "Extensia MySQLi nu a fost găsită pe sistemul tău"
 
-#: lib/Plugin.php:164
+#: lib/Plugin.php:169
 msgid "MySQL spatial support was not found on your system"
 msgstr "Server-ul MySQL nu are suport pentru date spațiale"
 
-#: lib/Plugin.php:166
+#: lib/Plugin.php:171
 msgid "We could not check whether your system fully supports this plug-in."
 msgstr ""
 "Plug-in-ul nu a putut verifica dacă sistemul tău suportă toate cerințele "
 "necesare pentru instalare"
 
-#: lib/Plugin.php:174
+#: lib/Plugin.php:179
 msgid "Activation error"
 msgstr "Eroare la activare"
 
@@ -158,17 +158,22 @@ msgstr "Despre WP Trip Summary"
 msgid "About"
 msgstr "Despre"
 
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:285
+#: lib/pluginModules/AdminTripSummaryAuditLogPluginModule.php:149
+#: lib/pluginModules/AdminTripSummaryAuditLogPluginModule.php:216
+msgid "Trip summary audit log"
+msgstr "Auditare jurnal de tură"
+
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:286
 #: views/wpts-frontend.php:37
 msgid "Trip summary"
 msgstr "Tura pe scurt"
 
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:414
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:428
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:416
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:430
 msgid "The data could not be saved due to a possible database error"
 msgstr "Datele nu au putut fi salvate din cauza unei posibile erori interne"
 
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:526
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:528
 msgid "The data could not be updated due to a possible database error"
 msgstr "Datele nu au putut fi actualizate din cauza unei posibile erori interne"
 
@@ -282,51 +287,51 @@ msgstr ""
 "Se pare că ai sărit peste poveste. E păcat să o ratezi. Nu ai vrea să o "
 "citești? Click aici pentru început!"
 
-#: lib/settings/PredefinedTileLayer.php:120
+#: lib/settings/PredefinedTileLayer.php:136
 msgid "Basic Open Street Map Style"
 msgstr "Harta clasică Open Street Map"
 
-#: lib/settings/PredefinedTileLayer.php:126
+#: lib/settings/PredefinedTileLayer.php:142
 msgid "Open Street Map, Hike & Bike Map"
 msgstr "Harta pentru Drumeții și Ciclism bazată pe Open Street Map"
 
-#: lib/settings/PredefinedTileLayer.php:135
+#: lib/settings/PredefinedTileLayer.php:151
 msgid "Thunderforest Atlas Map"
 msgstr "Harta Thunderforest Atlas"
 
-#: lib/settings/PredefinedTileLayer.php:141
+#: lib/settings/PredefinedTileLayer.php:157
 msgid "Thunderforest Landscape Map"
 msgstr "Harta Thunderforest Landscape"
 
-#: lib/settings/PredefinedTileLayer.php:147
+#: lib/settings/PredefinedTileLayer.php:163
 msgid "Thunderforest Mobile Atlas Map"
 msgstr "Harta Thunderforest Mobile Atlas"
 
-#: lib/settings/PredefinedTileLayer.php:153
+#: lib/settings/PredefinedTileLayer.php:169
 msgid "Thunderforest Neighbourhood Map"
 msgstr "Harta Thunderforest Neighbourhood"
 
-#: lib/settings/PredefinedTileLayer.php:159
+#: lib/settings/PredefinedTileLayer.php:175
 msgid "Thunderforest Open Cycle Map"
 msgstr "Thunderforest Open Cycle Map"
 
-#: lib/settings/PredefinedTileLayer.php:165
+#: lib/settings/PredefinedTileLayer.php:181
 msgid "Thunderforest Outdoors Map"
 msgstr "Harta Thunderforest Outdoors"
 
-#: lib/settings/PredefinedTileLayer.php:171
+#: lib/settings/PredefinedTileLayer.php:187
 msgid "Thunderforest Pioneer Map"
 msgstr "Harta Thunderforest Pioneer"
 
-#: lib/settings/PredefinedTileLayer.php:177
+#: lib/settings/PredefinedTileLayer.php:193
 msgid "Thunderforest Spinal Map"
 msgstr "Harta Thunderforest Spinal"
 
-#: lib/settings/PredefinedTileLayer.php:183
+#: lib/settings/PredefinedTileLayer.php:199
 msgid "Thunderforest Transport Map"
 msgstr "Harta Thunderforest Transport"
 
-#: lib/settings/PredefinedTileLayer.php:189
+#: lib/settings/PredefinedTileLayer.php:205
 msgid "Thunderforest Transport Dark Map"
 msgstr "Harta Thunderforest Transport Dark"
 
@@ -668,6 +673,14 @@ msgstr ""
 msgid "The help contents could not be loaded."
 msgstr "Conținutul nu a putut fi încărcat"
 
+#: lib/TranslatedScriptMessages.php:136
+msgid "Loading audit log. Please wait..."
+msgstr "Se încarcă datele de auditare. Te rugăm să aștepți..."
+
+#: lib/TranslatedScriptMessages.php:137
+msgid "The audit log could not be loaded!"
+msgstr "Datele de auditare nu au putut fi încărcate!"
+
 #: lib/Viewer.php:61 views/wpts-frontend.php:43
 msgid "Prosaic details"
 msgstr "Detalii prozaice"
@@ -735,6 +748,18 @@ msgstr "Vreau să-ți iau o cafea"
 #: views/wpts-about.php:95
 msgid "Changelog"
 msgstr "Jurnal de modificări"
+
+#: views/wpts-audit-log.php:40 views/wpts-audit-log.php:68
+msgid "Date created"
+msgstr "Data creării"
+
+#: views/wpts-audit-log.php:48 views/wpts-audit-log.php:76
+msgid "Date last updated"
+msgstr "Data ultimei modificări"
+
+#: views/wpts-audit-log.php:56 views/wpts-audit-log.php:84
+msgid "Last updated by"
+msgstr "Modificat ultima oară de"
 
 #: views/wpts-button.php:35 views/wpts-editor.php:57 views/wpts-editor.php:64
 msgid "Edit trip summary"
@@ -881,6 +906,10 @@ msgstr ""
 "Conținutul nu a putut fi găsit. Acest lucru indică de obicei o problemă cu "
 "fișierul în care e stocat, distribuit cu acest plug-in. Îți recomandă să "
 "verifici structura de fișiere a site-ului tău"
+
+#: views/wpts-listing-inline-scripts.php:48
+msgid "Audit log"
+msgstr "Auditare"
 
 #: views/wpts-lookup-data-management.php:54
 msgid "Lookup type:"
