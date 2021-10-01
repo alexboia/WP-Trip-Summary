@@ -134,6 +134,7 @@ class Abp01_TranslatedScriptMessages {
     public static function getAdminListingAuditLogScriptTranslations() {
         return array(
             'msgWorking' => esc_html__('Loading audit log. Please wait...', 'abp01-trip-summary'),
+            'errFailedToLoadAuditLog' => esc_html__('The audit log could not be loaded!', 'abp01-trip-summary')
         );
     }
 }

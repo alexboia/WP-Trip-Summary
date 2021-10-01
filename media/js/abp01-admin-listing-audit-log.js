@@ -111,7 +111,7 @@
 				var windowContents = renderAuditLogWindowContents(contents);
 				openAuditLogViewerOverlayDelayed(windowContents);
 			} else {
-				alert('The audit log could not be loaded!');
+				alert(abp01ListingAuditLogL10n.errFailedToLoadAuditLog);
 			}
 		});
 	}
@@ -170,8 +170,10 @@
 	}
 
 	function initEvents() {
-		$('a.abp01-admin-listing-audit-log-link').on('click', handleAuditLogLinkClicked);
-		$(document).on('click', '.abp01-close-window', closeAuditLogViewerOverlay);
+		$('a.abp01-admin-listing-audit-log-link').on('click', 
+			handleAuditLogLinkClicked);
+		$(document).on('click', '.abp01-close-window', 
+			closeAuditLogViewerOverlay);
 	}
 
 	$(document).ready(function() {

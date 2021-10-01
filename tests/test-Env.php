@@ -32,8 +32,12 @@
 class EnvTests extends WP_UnitTestCase {
 	private $_oldPageNow = null;
 
+	private $_oldGetVals = null;
+
 	private $_oldPost = null;
 
+	private $_oldHttpMethod = null;
+	
 	public function test_canGetInstance() {
 		$instance = Abp01_Env::getInstance();
 		$otherInstance = Abp01_Env::getInstance();
@@ -103,15 +107,60 @@ class EnvTests extends WP_UnitTestCase {
 		$this->assertEquals(get_locale(), Abp01_Env::getInstance()->getLang());
 	}
 
+	public function test_canGetCurrentHttpMethod() {
+		foreach ($this->_getSampleHttpMethods() as $method) {
+			$this->_runCurrentHttpMethodCheckTests($method);
+			$this->_runCurrentHttpMethodCheckTests(strtoupper($method));
+		}
+	}
+
+	private function _runCurrentHttpMethodCheckTests($method) {
+		$this->_setupHttpMethdod($method);
+		$this->assertEquals(strtolower($method), Abp01_Env::getInstance()->getHttpMethod());
+		$this->_restoreOldHttpMethod();
+	}
+
+	private function _getSampleHttpMethods() {
+		return array(
+			'post',
+			'put',
+			'get',
+			'head',
+			'patch'
+		);
+	}
+
+	public function test_canGetCurrentAdminPage() {
+		foreach ($this->_getSampleWpAdminPages() as $page) {
+			$this->_runGetCurrentAdminPageCheckTest($page);
+			$this->_runGetCurrentAdminPageCheckTest(strtoupper($page));
+		}
+	}
+
+	private function _getSampleWpAdminPages() {
+		$allPages = array_merge($this->_getValidPostEditPages(), 
+			$this->_getValidPostListingPages(), 
+			$this->_getInvalidPostEditPages(), 
+			$this->_getInvalidPostListingPages());
+
+		return array_unique($allPages);
+	}
+
+	private function _runGetCurrentAdminPageCheckTest($page) {
+		$this->_setupPageNow($page);
+		$this->assertEquals(strtolower($page), Abp01_Env::getInstance()->getCurrentAdminPage());
+		$this->_restoreOldPageNow();
+	}
+
 	public function test_canCheck_ifIsEditingWpPost_noSpecificPostTypes_validPostEditPage() {
-		foreach ($this->_getValidPostTypeEditPages() as $page) {
+		foreach ($this->_getValidPostEditPages() as $page) {
 			$this->_setupPageNow($page);
 			$this->assertTrue(Abp01_Env::getInstance()->isEditingWpPost());
 			$this->_restoreOldPageNow();
 		}
 	}
 
-	private function _getValidPostTypeEditPages() {
+	private function _getValidPostEditPages() {
 		return array(
 			'post-new.php', 
 			'post.php'
@@ -119,7 +168,7 @@ class EnvTests extends WP_UnitTestCase {
 	}
 
 	public function test_canCheck_ifIsEditingWpPost_withSpecificPostTypes_validPostEditPage_validPostTypes() {
-		foreach ($this->_getValidPostTypeEditPages() as $page) {
+		foreach ($this->_getValidPostEditPages() as $page) {
 			$this->_setupPageNow($page);
 			foreach ($this->_getValidPostTypes() as $validPostType) {
 				$post = $this->_randomPostWithType($validPostType);
@@ -139,7 +188,7 @@ class EnvTests extends WP_UnitTestCase {
 	}
 
 	public function test_canCheck_ifIsEditingWpPost_withSpecificPostTypes_validPostEditPage_invalidPostTypes() {
-		foreach ($this->_getValidPostTypeEditPages() as $page) {
+		foreach ($this->_getValidPostEditPages() as $page) {
 			$this->_setupPageNow($page);
 			foreach ($this->_getInvalidPostTypes() as $invalidPostType) {
 				$post = $this->_randomPostWithType($invalidPostType);
@@ -162,18 +211,74 @@ class EnvTests extends WP_UnitTestCase {
 	}
 
 	public function test_canCheck_ifIsEditingWpPost_noSpecificPostTypes_invalidPostEditPage() {
-		foreach ($this->_getInvalidPostTypeEditPages() as $page) {
+		foreach ($this->_getInvalidPostEditPages() as $page) {
 			$this->_setupPageNow($page);
 			$this->assertFalse(Abp01_Env::getInstance()->isEditingWpPost());
 			$this->_restoreOldPageNow();
 		}
 	}
 
-	private function _getInvalidPostTypeEditPages() {
+	private function _getInvalidPostEditPages() {
 		return array(
 			'plugins.php', 
 			'options-general.php',
-			'media-new.php'
+			'media-new.php',
+			'tools.php',
+			'users.php'
+		);
+	}
+
+	public function test_canCheck_ifIsListingWpPosts_noSpecificPostTypes_validPostListingPage() {
+		foreach ($this->_getValidPostListingPages() as $page) {
+			$this->_setupPageNow($page);
+			$this->assertTrue(Abp01_Env::getInstance()->isListingWpPosts());
+			$this->_restoreOldPageNow();
+		}
+	}
+
+	private function _getValidPostListingPages() {
+		return array(
+			'edit.php'
+		);
+	}
+
+	public function test_canCheckifListingWpPosts_withSpecificPostTypes_validPostListingPage_validPostTypes() {
+		foreach ($this->_getValidPostListingPages() as $page) {
+			foreach ($this->_getValidPostTypes() as $validPostType) {
+				$this->_setupPageNow($page, array('post_type' => $validPostType));
+				$this->assertTrue(Abp01_Env::getInstance()->isListingWpPosts($validPostType));
+				$this->_restoreOldPageNow();
+			}
+		}
+	}
+
+	public function test_canCheckifListingWpPosts_withSpecificPostTypes_validPostListingPage_invalidPostTypes() {
+		foreach ($this->_getValidPostListingPages() as $page) {
+			foreach ($this->_getInvalidPostTypes() as $invalidPostType) {
+				$this->_setupPageNow($page, array('post_type' => $invalidPostType));
+				foreach ($this->_getValidPostTypes() as $validPostType) {
+					$this->assertFalse(Abp01_Env::getInstance()->isListingWpPosts($validPostType));
+				}
+				$this->_restoreOldPageNow();
+			}
+		}
+	}
+
+	public function test_canCheck_ifIsListingWpPosts_noSpecificPostTypes_invalidPostListingPage() {
+		foreach ($this->_getInvalidPostListingPages() as $page) {
+			$this->_setupPageNow($page);
+			$this->assertFalse(Abp01_Env::getInstance()->isListingWpPosts());
+			$this->_restoreOldPageNow();
+		}
+	}
+
+	private function _getInvalidPostListingPages() {
+		return array(
+			'plugins.php', 
+			'options-general.php',
+			'media-new.php',
+			'edit-comments.php',
+			'options-discussion.php'
 		);
 	}
 
@@ -195,16 +300,43 @@ class EnvTests extends WP_UnitTestCase {
 		$GLOBALS['post'] = $this->_oldPost;
 	}
 
-	private function _setupPageNow($value) {
+	private function _setupPageNow($value, $args = array()) {
+		$this->_oldGetVals = $_GET;
 		$this->_oldPageNow = isset($GLOBALS['pagenow']) 
 			? $GLOBALS['pagenow'] 
 			: null;
+
+		if (!empty($args)) {
+			foreach ($args as $aKey => $aVal) {
+				$_GET[$aKey] = $aVal;
+			}
+		}
 
 		$GLOBALS['pagenow'] = $value;
 	}
 
 	private function _restoreOldPageNow() {
 		$GLOBALS['pagenow'] = $this->_oldPageNow;
+		
+		if ($this->_oldGetVals != null) {
+			foreach ($this->_oldGetVals as $key => $val) {
+				$_GET[$key] = $val;
+			}
+		}
+
 		$this->_oldPageNow = null;
+		$this->_oldGetVals = null;
+	}
+
+	private function _setupHttpMethdod($value) {
+		$this->_oldHttpMethod = isset($_SERVER['REQUEST_METHOD'])
+			? $_SERVER['REQUEST_METHOD']
+			: null;
+
+		$_SERVER['REQUEST_METHOD'] = $value;
+	}
+
+	private function _restoreOldHttpMethod() {
+		$_SERVER['REQUEST_METHOD'] = $this->_oldHttpMethod;
 	}
 }

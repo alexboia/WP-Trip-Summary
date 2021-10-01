@@ -58,6 +58,7 @@ require_once 'lib/GpsDocumentFakerDataProvider.php';
 require_once 'lib/GpxDocumentFakerDataProvider.php';
 require_once 'lib/GeoJsonDocumentFakerDataProvider.php';
 require_once 'lib/IntegerIdGenerator.php';
+require_once 'lib/AuditLogDataHelpers.php';
 
 $_tests_dir = getenv('WP_TESTS_DIR');
 if (!$_tests_dir) {

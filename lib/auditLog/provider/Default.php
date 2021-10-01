@@ -48,7 +48,7 @@ class Abp01_AuditLog_Provider_Default implements Abp01_AuditLog_Provider {
 	 * @param int $postId 
 	 * @return Abp01_AuditLog_Data 
 	 */
-    public function getAuditLogForPostId($postId) { 
+	public function getAuditLogForPostId($postId) { 
 		if (empty($postId)) {
 			throw new InvalidArgumentException('Post ID may not be empty.');
 		}
@@ -57,14 +57,14 @@ class Abp01_AuditLog_Provider_Default implements Abp01_AuditLog_Provider {
 			throw new InvalidArgumentException('Post ID may not be less than 0.');
 		}
 
-		$infoAuditLogData = $this->_getInfoAuditLogData($postId);
-		$trackAuditLogData = $this->_getTrackAuditLogData($postId);
+		$infoAuditLogData = $this->_retrieveInfoAuditLogData($postId);
+		$trackAuditLogData = $this->_retrieveTrackAuditLogData($postId);
 
 		return new Abp01_AuditLog_Data($infoAuditLogData, 
 			$trackAuditLogData);
 	}
 
-	private function _getInfoAuditLogData($postId) {
+	private function _retrieveInfoAuditLogData($postId) {
 		$db = $this->_env->getDb();
 
 		$infoTable = $this->_env
@@ -86,10 +86,17 @@ class Abp01_AuditLog_Provider_Default implements Abp01_AuditLog_Provider {
 			'usr.user_login route_data_last_modified_by_name'
 		));
 
+		return $this->_coalesceAuditLogData($auditLogData);
+	}
+
+	private function _coalesceAuditLogData($auditLogData) {
+		if ($auditLogData == null) {
+			$auditLogData = array();
+		}
 		return $auditLogData;
 	}
 
-	private function _getTrackAuditLogData($postId) {
+	private function _retrieveTrackAuditLogData($postId) {
 		$db = $this->_env->getDb();
 
 		$trackTable = $this->_env
@@ -111,6 +118,6 @@ class Abp01_AuditLog_Provider_Default implements Abp01_AuditLog_Provider {
 			'usr.user_login route_track_modified_by_name'
 		));
 
-		return $auditLogData;
+		return $this->_coalesceAuditLogData($auditLogData);
 	}
 }

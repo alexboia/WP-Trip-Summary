@@ -38,15 +38,27 @@
 		</tr>
 		<tr>
 			<th scope="row"><?php echo esc_html__('Date created', 'abp01-trip-summary'); ?></th>
-			<td><?php echo esc_html(abp01_format_timestamp($data->auditLogData->infoCreatedAt)); ?></td>
+			<td><?php 
+				echo !empty($data->auditLogData->infoCreatedAt) 
+					? esc_html(abp01_format_timestamp($data->auditLogData->infoCreatedAt))
+					: '-'; ?>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php echo esc_html__('Date last updated', 'abp01-trip-summary'); ?></th>
-			<td><?php echo esc_html(abp01_format_timestamp($data->auditLogData->infoLastModifiedAt)); ?></td>
+			<td><?php 
+				echo !empty($data->auditLogData->infoLastModifiedAt) 
+					? esc_html(abp01_format_timestamp($data->auditLogData->infoLastModifiedAt))
+					: '-'; ?>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php echo esc_html__('Last updated by', 'abp01-trip-summary'); ?></th>
-			<td><?php echo esc_html($data->auditLogData->infoLastModifiedByUserName); ?></td>
+			<td><?php 
+				echo !empty($data->auditLogData->infoLastModifiedByUserName) 
+					? esc_html($data->auditLogData->infoLastModifiedByUserName)
+					: '-'; ?>
+			</td>
 		</tr>
 
 		<tr class="abp01-trip-summary-audit-log-section-title">
@@ -54,15 +66,27 @@
 		</tr>
 		<tr>
 			<th scope="row"><?php echo esc_html__('Date created', 'abp01-trip-summary'); ?></th>
-			<td><?php echo esc_html(abp01_format_timestamp($data->auditLogData->trackCreatedAt)); ?></td>
+			<td><?php 
+				echo !empty($data->auditLogData->trackCreatedAt) 
+					? esc_html(abp01_format_timestamp($data->auditLogData->trackCreatedAt))
+					: '-'; ?>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php echo esc_html__('Date last updated', 'abp01-trip-summary'); ?></th>
-			<td><?php echo esc_html(abp01_format_timestamp($data->auditLogData->trackLastModifiedAt)); ?></td>
+			<td><?php 
+				echo !empty($data->auditLogData->trackLastModifiedAt) 
+					? esc_html(abp01_format_timestamp($data->auditLogData->trackLastModifiedAt))
+					: '-'; ?>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php echo esc_html__('Last updated by', 'abp01-trip-summary'); ?></th>
-			<td><?php echo esc_html($data->auditLogData->trackLastModifiedByUserName); ?></td>
+			<td><?php 
+				echo !empty($data->auditLogData->trackLastModifiedByUserName) 
+					? esc_html($data->auditLogData->trackLastModifiedByUserName)
+					: '-'; ?>
+			</td>
 		</tr>
 	</tbody>
 </table>

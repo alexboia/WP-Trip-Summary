@@ -68,7 +68,7 @@ class Abp01_PluginModules_AdminTripSummaryAuditLogPluginModule extends Abp01_Plu
 
 	private function _initAjaxActions() {
 		$authCallback = $this->_createEditCurrentPostTripSummaryAuthCallback();
-		$currentResourceProvider = new Abp01_AdminAjaxAction_CurrentResourceProvider_CurrentPostId();
+		$currentResourceProvider = new Abp01_AdminAjaxAction_CurrentResourceProvider_None();
 
 		$this->_getAuditLogContentByPostIdAjaxAction = 
 			Abp01_AdminAjaxAction::create(ABP01_ACTION_GET_AUDIT_LOG_FOR_POST, array($this, 'getAuditLogContents'))
@@ -190,7 +190,7 @@ class Abp01_PluginModules_AdminTripSummaryAuditLogPluginModule extends Abp01_Plu
 	}
 
 	private function _getEmptyAuditLogData() {
-		$emptyAuditLog = new Abp01_AuditLog_Data(array(), array());
+		$emptyAuditLog = Abp01_AuditLog_Data::empty();
 		return $emptyAuditLog->asPlainObject();
 	}
 

@@ -123,19 +123,19 @@ table.abp01-admin-trip-summary-audit-log th {
  table.abp01-admin-trip-summary-audit-log tr:hover {
 	background-color: #e14d43;
 	color: #fff;
- }
+}
 
  
 table.abp01-admin-trip-summary-audit-log tr.abp01-trip-summary-audit-log-section-title,
 table.abp01-admin-trip-summary-audit-log tr.abp01-trip-summary-audit-log-section-title:nth-child(2n+1),
 table.abp01-admin-trip-summary-audit-log tr.abp01-trip-summary-audit-log-section-title:hover {
 	background-color: #fff;
+    color: rgb(60, 67, 74);
 }
 
 table.abp01-admin-trip-summary-audit-log h4 {
 	padding: 8px;
-	background-color: #e14d43;
-	color: #fff;
+	background-color: #f8f8f8;
 	border-radius: 5px;
 	font-weight: bold;
 }

@@ -55,6 +55,10 @@ class Abp01_AuditLog_Data {
 		$this->_initTrackAuditLog($trackAuditLogData);
 	}
 
+	public static function empty() {
+		return new self(array(), array());
+	}
+
 	private function _initInfoAuditLog(array $infoAuditLogData) {
 		$this->_infoCreatedAt = isset($infoAuditLogData['route_data_created_at'])
 			? $infoAuditLogData['route_data_created_at']
