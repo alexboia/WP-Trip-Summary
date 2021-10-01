@@ -29,57 +29,57 @@
  */
 
 .abp01-status-text {
-    border-radius: 4px;
-    padding: 10px;
-    background-color: #e5e5e5;
-    color: #2e4453;
+	border-radius: 4px;
+	padding: 10px;
+	background-color: #e5e5e5;
+	color: #2e4453;
 }
 
 .abp01-status-ok {
-    background-color: #c6e1c6;
-    color: #5b841b;
+	background-color: #c6e1c6;
+	color: #5b841b;
 }
 
 .abp01-status-err {
-    background-color: #eba3a3;
-    color: #761919;
+	background-color: #eba3a3;
+	color: #761919;
 }
 
 .abp01-status-warn {
-    background-color: #f3e9cd;
-    color: #ffba00;
+	background-color: #f3e9cd;
+	color: #ffba00;
 }
 
 .abp01-stop-scrolling {
-    height: 100%;
-    overflow: hidden;
+	height: 100%;
+	overflow: hidden;
 }
 
 .abp01-progress-container {
-    width: 400px;
-    height: 45px;
+	width: 400px;
+	height: 45px;
 }
 
 .abp01-progress-label {
-    width: 400px;
-    height: 25px;
-    text-align: center;
-    line-height: 25px;
-    vertical-align: middle;
-    font-size: 13px;
-    color: #fff;
-    font-weight: bold;
+	width: 400px;
+	height: 25px;
+	text-align: center;
+	line-height: 25px;
+	vertical-align: middle;
+	font-size: 13px;
+	color: #fff;
+	font-weight: bold;
 }
 
 .abp01-progress-bar {
-    width: 400px;
-    height: 20px;
+	width: 400px;
+	height: 20px;
 }
 
 .abp01-clear {
-    clear: both;
-    width: 0;
-    height: 0
+	clear: both;
+	width: 0;
+	height: 0
 }
 
 /* Trip summary audit log */
@@ -130,7 +130,7 @@ table.abp01-admin-trip-summary-audit-log tr.abp01-trip-summary-audit-log-section
 table.abp01-admin-trip-summary-audit-log tr.abp01-trip-summary-audit-log-section-title:nth-child(2n+1),
 table.abp01-admin-trip-summary-audit-log tr.abp01-trip-summary-audit-log-section-title:hover {
 	background-color: #fff;
-    color: rgb(60, 67, 74);
+	color: rgb(60, 67, 74);
 }
 
 table.abp01-admin-trip-summary-audit-log h4 {
@@ -138,4 +138,16 @@ table.abp01-admin-trip-summary-audit-log h4 {
 	background-color: #f8f8f8;
 	border-radius: 5px;
 	font-weight: bold;
+}
+
+@media (min-width: 782px) {
+	/* integrate fix from: https://github.com/WordPress/gutenberg/issues/31165 */
+	.interface-complementary-area {
+		 /* width: 280px; */
+		width: 100%;
+	}
+
+	.is-sidebar-opened .interface-interface-skeleton__sidebar {
+		width: 280px;
+	}
 }
