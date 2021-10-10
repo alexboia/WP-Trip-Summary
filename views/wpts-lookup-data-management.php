@@ -50,6 +50,9 @@
 	<div id="abp01-lookup-listing-result" class="abp01-lookup-listing-result notice" style="display:none"></div>
 	<div id="abp01-admin-lookup-container">
 		<div id="abp01-admin-lookup-control-container">
+			<div class="abp01-lookupControl-tagline">
+				<h3><?php echo esc_html__('Manage', 'abp01-trip-summary') ?></h3>
+			</div>
 			<div class="abp01-lookupControl-item">
 				<label for="abp01-lookupTypeSelect"><?php echo esc_html__('Lookup type:', 'abp01-trip-summary'); ?></label>
 				<select id="abp01-lookupTypeSelect" class="abp01-lookupControl">

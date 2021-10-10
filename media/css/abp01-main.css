@@ -508,10 +508,32 @@ a.abp01-close-editor:hover {
 
 #abp01-admin-lookup-control-container {
 	margin: 0 10px 20px 0px;
+	width: 733px;
+	border-radius: 5px;
+	box-shadow: 0 1px 1px rgba(0,0,0,.04);
+	padding: 10px;
+	background-color: #fff;
+}
+
+.abp01-lookupControl-tagline {
+	margin-bottom: 10px;
+	clear: both;
+}
+
+.abp01-lookupControl-tagline h3 {
+	margin: 0;
+	padding: 0;
+	font-size: 14px;
 }
 
 #abp01-admin-lookup-listing-container {
 	margin-right: 10px;
+	width: 753px;
+}
+
+#abp01-admin-lookup-listing-container table {
+	border-radius: 5px;
+	box-shadow: 0 1px 1px rgba(0,0,0,.04);
 }
 
 #abp01-admin-lookup-listing thead th {
