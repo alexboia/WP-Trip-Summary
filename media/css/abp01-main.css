@@ -506,9 +506,18 @@ a.abp01-close-editor:hover {
 	font-weight: bold;
 }
 
+.abp01-lookupControl-item-link {
+	margin-right: 10px;
+	vertical-align: middle;
+	font-weight: bold;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+}
+
 #abp01-admin-lookup-control-container {
 	margin: 0 10px 20px 0px;
-	width: 733px;
+	width: 763px;
 	border-radius: 5px;
 	box-shadow: 0 1px 1px rgba(0,0,0,.04);
 	padding: 10px;
@@ -528,7 +537,7 @@ a.abp01-close-editor:hover {
 
 #abp01-admin-lookup-listing-container {
 	margin-right: 10px;
-	width: 753px;
+	width: 783px;
 }
 
 #abp01-admin-lookup-listing-container table {

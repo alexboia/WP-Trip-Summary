@@ -61,6 +61,9 @@
 					<?php endforeach; ?>
 				</select>
 			</div>
+			<div class="abp01-lookupControl-item abp01-lookupControl-item-link">
+				<?php echo esc_html__('for', 'abp01-trip-summary'); ?>
+			</div>
 			<div class="abp01-lookupControl-item">
 				<label for="abp01-lookupLangSelect"><?php echo esc_html__('Language:', 'abp01-trip-summary'); ?></label>
 				<select id="abp01-lookupLangSelect" class="abp01-lookupControl">
