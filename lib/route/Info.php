@@ -353,6 +353,16 @@ class Abp01_Route_Info {
         return $this->_data;
     }
 
+    public function getLookupData() {
+        $lookupData = array();
+        foreach ($this->getData() as $field => $value) {
+            if ($this->isLookupKey($field)) {
+				$lookupData[$field] = $value;
+			}
+        }
+        return $lookupData;
+    }
+
     public function isBikingTour() {
         return $this->_type == self::BIKE;
     }

@@ -127,4 +127,16 @@ class WP_UnitTestCase extends PHPUnit_Framework_TestCase {
      * @return int|boolean The number of rows updated, or false on error.
 	 */
     protected function update_post_modified($post_id, $date) {}
+
+    /**
+	 * Starts a database transaction.
+	 */
+	public function start_transaction() {}
+
+    /**
+	 * Commit the queries in a transaction.
+	 *
+	 * @since 4.1.0
+	 */
+	public static function commit_transaction() {}
 }

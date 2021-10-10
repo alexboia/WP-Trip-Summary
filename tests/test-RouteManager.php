@@ -35,6 +35,11 @@
 	use RouteTrackTestDataHelpers;
 	use DbTestHelpers;
 
+	const TEST_RECORD_COUNT = 5;
+
+	/**
+	 * @var array
+	 */
 	private $_testPostRouteData = array();
 
 	/**
@@ -42,9 +47,15 @@
 	 */
 	private $_postIdGenerator;
 
+	/**
+	 * @var TestRouteDataProvider
+	 */
+	private $_testRouteDataProvider;
+
 	public function __construct($name = null, array $data = array(), $dataName = '') {
-		$this->_postIdGenerator = new IntegerIdGenerator();
 		parent::__construct($name, $data, $dataName);
+		$this->_postIdGenerator = new IntegerIdGenerator();
+		$this->_testRouteDataProvider = new TestRouteDataProvider();
 	}
 
 	public function setUp() {
@@ -62,7 +73,7 @@
 
 		$db->startTransaction();
 
-		for ($i = 0; $i < 5; $i ++) {
+		for ($i = 0; $i < self::TEST_RECORD_COUNT; $i ++) {
 			$postId = $this->_generatePostId();
 			$routeInfoData = $this->_generateRandomRouteInfoWithType();
 			$currentUserId = $this->_generateCurrentUserId();
@@ -92,7 +103,6 @@
 		}
 
 		$db->commit();
-
 		return $testPostRouteData;
 	}
 
@@ -113,57 +123,23 @@
 	}
 
 	private function _saveRouteInfo($postId, $currentUserId, Abp01_Route_Info $routeInfo) {
-		$db = $this->_getDb();
-		$routeDetailsTable = $this->_getEnv()
-			->getRouteDetailsTableName();
-
-		$db->rawQuery('INSERT INTO `' . $routeDetailsTable . '` (
-			post_ID, 
-			route_type, 
-			route_data_serialized, 
-			route_data_last_modified_at,
-			route_data_last_modified_by
-		) VALUES (
-			?, ?, ?, CURRENT_TIMESTAMP, ?
-		)', array(
-			$postId,
-			$routeInfo->getType(), 
-			$routeInfo->toJson(),
-			$currentUserId
-		));
+		$this->_testRouteDataProvider
+			->saveRouteInfo(array(
+				'post_id' => $postId,
+				'route_type' => $routeInfo->getType(),
+				'route_data_serialized' => $routeInfo->toJson(),
+				'route_data_last_modified_at' => $this->_testRouteDataProvider->nowTimestamp(),
+				'route_data_last_modified_by' => $currentUserId
+			));
 	}
 
 	private function _saveRouteInfoLookupAssociations($postId, Abp01_Route_Info $routeInfo) {
-		$db = $this->_getDb();
-		$lookupDetailsTableName = $this->_getEnv()
-			->getRouteDetailsLookupTableName();
-
-		foreach ($routeInfo->getData() as $field => $value) {
-			if (!$routeInfo->isLookupKey($field)) {
-				continue;
-			}
-
-			if (!is_array($value)) {
-				$value = array($value);
-			}
-
-			foreach ($value as $valueItem) {
-				$db->rawQuery('INSERT INTO `' . $lookupDetailsTableName . '` (
-					post_ID, lookup_ID
-				) VALUES (
-					?, ?
-				)', array(
-					$postId, $valueItem
-				));
-			}
-		}
+		$this->_testRouteDataProvider->saveRouteInfoLookupAssociations($postId, 
+			$routeInfo->getLookupData());
 	}
 
 	private function _saveRouteTrackData($postId, $currentUserId, Abp01_Route_Track $track) {
-		$db = $this->_getDb();
 		$proj = $this->_getProjSphericalMercator();
-		$routeTrackTableName = $this->_getEnv()
-			->getRouteTrackTableName();
 
 		$bounds = $track->getBounds();
 		$minCoord = $proj->forward($bounds->southWest->lat, 
@@ -171,36 +147,20 @@
 		$maxCoord = $proj->forward($bounds->northEast->lat, 
 			$bounds->northEast->lng);
 
-		$db->rawQuery('INSERT INTO `' . $routeTrackTableName . '` (
-			post_ID, 
-			route_track_file, 
-			route_track_file_mime_type,
-			route_bbox,
-			route_min_coord,
-			route_max_coord,
-			route_min_alt,
-			route_max_alt,
-			route_track_modified_at,
-			route_track_modified_by
-		) VALUES (
-			?, ?, ?,
-			ST_Envelope(LINESTRING(ST_GeomFromText(ST_AsText(POINT(?, ?)), 3857), ST_GeomFromText(ST_AsText(POINT(?, ?)), 3857))),
-			ST_GeomFromText(ST_AsText(POINT(?, ?)), 3857),
-			ST_GeomFromText(ST_AsText(POINT(?, ?)), 3857),
-			?, ?,
-			CURRENT_TIMESTAMP,
-			?
-		)', array(
-			$postId, 
-			$track->getFileName(),
-			$track->getFileMimeType(),
-			$minCoord['mercX'], $minCoord['mercY'], $maxCoord['mercX'], $maxCoord['mercY'],
-			$minCoord['mercX'], $minCoord['mercY'],
-			$maxCoord['mercX'], $maxCoord['mercY'],
-			$track->minAlt,
-			$track->maxAlt,
-			$currentUserId
-		));
+		$this->_testRouteDataProvider
+			->saveRouteTrack(array(
+				'post_id' => $postId,
+				'route_file_name' => $track->getFileName(),
+				'route_file_mime_type' => $track->getFileMimeType(),
+				'route_min_x' => $minCoord['mercX'],
+				'route_min_y' => $minCoord['mercY'],
+				'route_max_x' => $maxCoord['mercX'],
+				'route_max_y' => $maxCoord['mercY'],
+				'route_min_alt' => $track->minAlt,
+				'route_max_alt' => $track->maxAlt,
+				'route_track_modified_at' => $this->_testRouteDataProvider->nowTimestamp(),
+				'route_track_modified_by' => $currentUserId
+			));
 	}
 
 	protected function _generatePostId($excludeAdditionalIds = null) {
@@ -227,19 +187,8 @@
 	}
 
 	private function _clearAllRouteInfo() {
-		$env = $this->_getEnv();
-		$db = $this->_getDb();
-
-		$routeDetailsTableName = $env->getRouteDetailsTableName();
-		$lookupDetailsTableName = $env->getRouteDetailsLookupTableName();
-		$routeTrackTableName = $env->getRouteTrackTableName();
-		$postsTableName = $env->getWpPostsTableName();
-
-		$this->_truncateTables($db, 
-			$lookupDetailsTableName, 
-			$routeDetailsTableName, 
-			$routeTrackTableName, 
-			$postsTableName);
+		$this->_testRouteDataProvider
+			->clearAll();
 	}
 
 	/**
