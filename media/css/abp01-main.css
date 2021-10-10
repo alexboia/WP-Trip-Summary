@@ -517,7 +517,7 @@ a.abp01-close-editor:hover {
 
 #abp01-admin-lookup-control-container {
 	margin: 0 10px 20px 0px;
-	width: 763px;
+	width: 783px;
 	border-radius: 5px;
 	box-shadow: 0 1px 1px rgba(0,0,0,.04);
 	padding: 10px;
@@ -537,7 +537,7 @@ a.abp01-close-editor:hover {
 
 #abp01-admin-lookup-listing-container {
 	margin-right: 10px;
-	width: 783px;
+	width: 803px;
 }
 
 #abp01-admin-lookup-listing-container table {

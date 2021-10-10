@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Trip Summary 0.1.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-trip-summary\n"
-"POT-Creation-Date: 2021-10-01 14:44+0300\n"
-"PO-Revision-Date: 2021-10-01 14:47+0300\n"
+"POT-Creation-Date: 2021-10-10 21:09+0300\n"
+"PO-Revision-Date: 2021-10-10 21:09+0300\n"
 "Last-Translator: \n"
 "Language-Team: alexandru.boia [at] outlook [dot] com\n"
 "Language: ro_RO\n"
@@ -585,8 +585,8 @@ msgstr "Lucrez. Așteaptă puțin..."
 msgid "Item successfully saved"
 msgstr "Itemul a fost salvat cu succes"
 
-#: lib/TranslatedScriptMessages.php:102 views/wpts-lookup-data-management.php:75
-#: views/wpts-lookup-data-management.php:89
+#: lib/TranslatedScriptMessages.php:102 views/wpts-lookup-data-management.php:81
+#: views/wpts-lookup-data-management.php:95
 msgid "Add new item"
 msgstr "Adaugă item"
 
@@ -774,7 +774,7 @@ msgid "Click here to edit trip summary information and/or track"
 msgstr "Click aici pentru a modifica sumarul turei și/sau track-ul GPS"
 
 #: views/wpts-editor-launcher-metabox.php:73
-#: views/wpts-lookup-data-management.php:145
+#: views/wpts-lookup-data-management.php:151
 msgid "Edit"
 msgstr "Modifică"
 
@@ -912,57 +912,65 @@ msgid "Audit log"
 msgstr "Auditare"
 
 #: views/wpts-lookup-data-management.php:54
+msgid "Manage"
+msgstr "Gestionează"
+
+#: views/wpts-lookup-data-management.php:57
 msgid "Lookup type:"
 msgstr "Tip item nomenclator:"
 
-#: views/wpts-lookup-data-management.php:62
+#: views/wpts-lookup-data-management.php:65
+msgid "for"
+msgstr "pentru"
+
+#: views/wpts-lookup-data-management.php:68
 msgid "Language:"
 msgstr "Limba:"
 
-#: views/wpts-lookup-data-management.php:74
-#: views/wpts-lookup-data-management.php:88
+#: views/wpts-lookup-data-management.php:80
+#: views/wpts-lookup-data-management.php:94
 msgid "Reload list"
 msgstr "Reîncarcă lista"
 
-#: views/wpts-lookup-data-management.php:80
-#: views/wpts-lookup-data-management.php:99
+#: views/wpts-lookup-data-management.php:86
+#: views/wpts-lookup-data-management.php:105
 msgid "Default label"
 msgstr "Eticheta implicită"
 
-#: views/wpts-lookup-data-management.php:81
+#: views/wpts-lookup-data-management.php:87
 msgid "Label"
 msgstr "Eticheta"
 
-#: views/wpts-lookup-data-management.php:82
+#: views/wpts-lookup-data-management.php:88
 msgid "Actions"
 msgstr "Acțiuni"
 
-#: views/wpts-lookup-data-management.php:103
+#: views/wpts-lookup-data-management.php:109
 msgid "Translated label"
 msgstr "Eticheta tradusă"
 
-#: views/wpts-lookup-data-management.php:108
+#: views/wpts-lookup-data-management.php:114
 msgid "Save item"
 msgstr "Salvează"
 
-#: views/wpts-lookup-data-management.php:109
-#: views/wpts-lookup-data-management.php:128
+#: views/wpts-lookup-data-management.php:115
+#: views/wpts-lookup-data-management.php:134
 msgid "Cancel"
 msgstr "Anulează"
 
-#: views/wpts-lookup-data-management.php:119
+#: views/wpts-lookup-data-management.php:125
 msgid "Are you sure you want to delete this item? This action cannot be undone"
 msgstr "Sigur ștergi acest item? Datele nu vor putea fi recuperate"
 
-#: views/wpts-lookup-data-management.php:122
+#: views/wpts-lookup-data-management.php:128
 msgid "Only delete item translation"
 msgstr "Șterge doar varianta tradusă a itemului"
 
-#: views/wpts-lookup-data-management.php:127
+#: views/wpts-lookup-data-management.php:133
 msgid "Confirm delete"
 msgstr "Confirmă ștergerea"
 
-#: views/wpts-lookup-data-management.php:146
+#: views/wpts-lookup-data-management.php:152
 msgid "Delete"
 msgstr "Șterge"
 
