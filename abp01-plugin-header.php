@@ -111,25 +111,25 @@ define('ABP01_LANG_DIR', ABP01_PLUGIN_ROOT . '/lang');
 define('ABP01_VERSION', '0.2.8');
 
 if (!defined('ABP01_MAX_EXECUTION_TIME_MINUTES')) {
-    /**
-     * The maximum time to which the execution time limit can be raised when required.
-     *  For instance, when uploading and processing a track.
-     *  Defaults to 10 minutes.
-     * 
-     * @var int
-     */
-    define('ABP01_MAX_EXECUTION_TIME_MINUTES', 10);
+	/**
+	 * The maximum time to which the execution time limit can be raised when required.
+	 *  For instance, when uploading and processing a track.
+	 *  Defaults to 10 minutes.
+	 * 
+	 * @var int
+	 */
+	define('ABP01_MAX_EXECUTION_TIME_MINUTES', 10);
 }
 
 if (!defined('ABP01_DISABLE_MINIFIED')) {
-    /**
-     * Whether or not to disabled script and style minification. 
-     *  This is not yet used.
-     *  Defaults to false.
-     * 
-     * @var boolean
-     */
-    define('ABP01_DISABLE_MINIFIED', false);
+	/**
+	 * Whether or not to disabled script and style minification. 
+	 *  This is not yet used.
+	 *  Defaults to false.
+	 * 
+	 * @var boolean
+	 */
+	define('ABP01_DISABLE_MINIFIED', false);
 }
 
 /**
@@ -239,27 +239,27 @@ define('ABP01_ACTION_GET_AUDIT_LOG_FOR_POST', 'abp01_get_audit_log_for_post');
 define('ABP01_TRACK_UPLOAD_KEY', 'abp01_track_file');
 
 if (!defined('ABP01_TRACK_UPLOAD_CHUNK_SIZE')) {
-    /**
-     * The chunk size is the maxim file chunk, expressed in bytes, 
-     *      that can be uploaded in one sitting.
-     *  If a file is larger than this size, it will be split in multiple chunks, 
-     *      which will be uploaded in sequence.
-     * Can be overridden in wp-config.php.
-     * 
-     * @var int
-     */
-    define('ABP01_TRACK_UPLOAD_CHUNK_SIZE', 102400);
+	/**
+	 * The chunk size is the maxim file chunk, expressed in bytes, 
+	 *      that can be uploaded in one sitting.
+	 *  If a file is larger than this size, it will be split in multiple chunks, 
+	 *      which will be uploaded in sequence.
+	 * Can be overridden in wp-config.php.
+	 * 
+	 * @var int
+	 */
+	define('ABP01_TRACK_UPLOAD_CHUNK_SIZE', 102400);
 }
 
 if (!defined('ABP01_TRACK_UPLOAD_MAX_FILE_SIZE')) {
-    /**
-     * The maximum size, in bytes, the the plug-in allows for the track file. 
-     * That is, track files larger than this are rejected.
-     * Defaults to 10485760 or wp_max_upload_size(), whichever is larger.
-     * 
-     * @var int
-     */
-    define('ABP01_TRACK_UPLOAD_MAX_FILE_SIZE', max(wp_max_upload_size(), 10485760));
+	/**
+	 * The maximum size, in bytes, the the plug-in allows for the track file. 
+	 * That is, track files larger than this are rejected.
+	 * Defaults to 10485760 or wp_max_upload_size(), whichever is larger.
+	 * 
+	 * @var int
+	 */
+	define('ABP01_TRACK_UPLOAD_MAX_FILE_SIZE', max(wp_max_upload_size(), 10485760));
 }
 
 /**
@@ -313,13 +313,13 @@ define('ABP01_STATUS_ERR', 1);
 define('ABP01_STATUS_WARN', 2);
 
 if (!defined('ABP01_POST_TRIP_SUMMARY_DATA_CACHE_EXPIRATION_SECONDS')) {
-    /**
-     * The number of seconds that trip summary data is cached. 
-     *  Defaults to 600 (10 minutes).
-     * 
-     * @var int
-     */
-    define('ABP01_POST_TRIP_SUMMARY_DATA_CACHE_EXPIRATION_SECONDS', 600);
+	/**
+	 * The number of seconds that trip summary data is cached. 
+	 *  Defaults to 600 (10 minutes).
+	 * 
+	 * @var int
+	 */
+	define('ABP01_POST_TRIP_SUMMARY_DATA_CACHE_EXPIRATION_SECONDS', 600);
 }
 
 /**
@@ -331,51 +331,51 @@ if (!defined('ABP01_POST_TRIP_SUMMARY_DATA_CACHE_EXPIRATION_SECONDS')) {
 define('ABP01_WRAPPED_LEAFLET_CONTEXT', 'abp01Leaflet');
 
 if (!defined('ABP01_WRAPPED_SCRIPT_MAX_AGE')) {
-    /**
-     * The maximum age, in seconds, used to compute the HTTP cache headers
-     *  when sending the contents of the wrapped leaflet plug-in scripts.
-     * Defauls to 31 days, in seconds: 44640.
-     * 
-     * @var int
-     */
-    define('ABP01_WRAPPED_SCRIPT_MAX_AGE', 31 * 24 * 60);
+	/**
+	 * The maximum age, in seconds, used to compute the HTTP cache headers
+	 *  when sending the contents of the wrapped leaflet plug-in scripts.
+	 * Defauls to 31 days, in seconds: 44640.
+	 * 
+	 * @var int
+	 */
+	define('ABP01_WRAPPED_SCRIPT_MAX_AGE', 31 * 24 * 60);
 }
 
 if (!defined('ABP01_WRAPPED_SCRIPT_MAX_MEMORY')) {
-    /**
-     * The memory limit thay may pe consumed by the leaflet plug-in script wrapper, 
-     *  abp01-plugin-leaflet-plugins-wrapper.php.
-     * Before running, the script wrapper attempts to set 
-     *  the memory limit to this value.
-     * Value may be expressed as integers (in which case they express bytes), 
-     *  or as shorthand values, as described here: https://www.php.net/manual/en/faq.using.php#faq.using.shorthandbytes
-     * Defaults to '256M'.
-     * 
-     * @var int|string
-     */
-    define('ABP01_WRAPPED_SCRIPT_MAX_MEMORY', '256M');
+	/**
+	 * The memory limit thay may pe consumed by the leaflet plug-in script wrapper, 
+	 *  abp01-plugin-leaflet-plugins-wrapper.php.
+	 * Before running, the script wrapper attempts to set 
+	 *  the memory limit to this value.
+	 * Value may be expressed as integers (in which case they express bytes), 
+	 *  or as shorthand values, as described here: https://www.php.net/manual/en/faq.using.php#faq.using.shorthandbytes
+	 * Defaults to '256M'.
+	 * 
+	 * @var int|string
+	 */
+	define('ABP01_WRAPPED_SCRIPT_MAX_MEMORY', '256M');
 }
 
 if (!defined('ABP01_WRAPPED_SCRIPT_MAX_EXECUTION_TIME_MINUTES')) {
-    /**
-     * The maximum time to which the execution time limit for the leaflet plug-in script wrapper,
-     *  abp01-plugin-leaflet-plugins-wrapper.php.
-     * Before running, the script wrapper attempts to set 
-     *  the execution time limit to this value.
-     * Defaults to 1 minute.
-     * 
-     * @var int
-     */
-    define('ABP01_WRAPPED_SCRIPT_MAX_EXECUTION_TIME_MINUTES', 1);
+	/**
+	 * The maximum time to which the execution time limit for the leaflet plug-in script wrapper,
+	 *  abp01-plugin-leaflet-plugins-wrapper.php.
+	 * Before running, the script wrapper attempts to set 
+	 *  the execution time limit to this value.
+	 * Defaults to 1 minute.
+	 * 
+	 * @var int
+	 */
+	define('ABP01_WRAPPED_SCRIPT_MAX_EXECUTION_TIME_MINUTES', 1);
 }
 
 if (!defined('ABP01_VIEWER_SHORTCODE')) {
-    /**
-     * The shortcode used to include the viewer at any point in the blog post contents.
-     * Can be set in wp-config.php.
-     * Default is 'abp01_trip_summary_viewer'.
-     * 
-     * @var string
-     */
-    define('ABP01_VIEWER_SHORTCODE', 'abp01_trip_summary_viewer');
+	/**
+	 * The shortcode used to include the viewer at any point in the blog post contents.
+	 * Can be set in wp-config.php.
+	 * Default is 'abp01_trip_summary_viewer'.
+	 * 
+	 * @var string
+	 */
+	define('ABP01_VIEWER_SHORTCODE', 'abp01_trip_summary_viewer');
 }

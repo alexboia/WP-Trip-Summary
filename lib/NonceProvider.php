@@ -30,13 +30,13 @@
  */
 
  if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
 interface Abp01_NonceProvider {
-    function generateNonce($resourceId = null);
+	function generateNonce($resourceId = null);
 
-    function validateNonce($resourceId = null);
+	function validateNonce($resourceId = null);
 
-    function hasNonceInCurrentContext();
+	function hasNonceInCurrentContext();
 }

@@ -29,8 +29,21 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class Abp01_Exception extends Exception {
-	public function __construct($message, $code = 0, Throwable $previous = null) {
-		parent::__construct($message, $code, $previous);
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+	exit ;
+}
+
+class Abp01_MaintenanceTool_ClearCache implements Abp01_MaintenanceTool {
+
+	public function __construct() {
+		
+	}
+
+    public function execute(array $parameters = array()) { 
+		//dispatch to route track processor
+	}
+
+    public function getName() { 
+		return __('Clear track data cache', 'abp01-trip-summary');
 	}
 }

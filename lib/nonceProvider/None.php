@@ -30,19 +30,19 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
 class Abp01_NonceProvider_None implements Abp01_NonceProvider {
-    public function generateNonce($resourceId = null) {
-        return '';
-    }
+	public function generateNonce($resourceId = null) {
+		return '';
+	}
 
-    public function validateNonce($resourceId = null) {
-        return true;
-    }
+	public function validateNonce($resourceId = null) {
+		return true;
+	}
 
-    public function hasNonceInCurrentContext() {
-        return true;
-    }
+	public function hasNonceInCurrentContext() {
+		return true;
+	}
 }

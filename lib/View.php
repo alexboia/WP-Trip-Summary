@@ -30,119 +30,119 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
 class Abp01_View {
-    /**
-     * @var Abp01_FrontendTheme
-     */
-    private $_frontendTheme;
+	/**
+	 * @var Abp01_FrontendTheme
+	 */
+	private $_frontendTheme;
 
-    /**
-     * @var Abp01_Env
-     */
-    private $_env;
+	/**
+	 * @var Abp01_Env
+	 */
+	private $_env;
 
-    public function __construct() {
-        $this->_env = Abp01_Env::getInstance();
-    }
+	public function __construct() {
+		$this->_env = Abp01_Env::getInstance();
+	}
 
-    private function _registerAdminHelpers() {
-        require_once $this->_env->getViewHelpersFilePath('controls.php');
-    }
+	private function _registerAdminHelpers() {
+		require_once $this->_env->getViewHelpersFilePath('controls.php');
+	}
 
-    private function _registerFrontendHelpers() {
-        $this->_frontendTheme->registerFrontendViewerHelpers();
-    }
+	private function _registerFrontendHelpers() {
+		$this->_frontendTheme->registerFrontendViewerHelpers();
+	}
 
-    private function _renderFrontendViewerJsVars(stdClass $data) {
-        return $this->_renderCoreView('wpts-frontend-jsvars.php', $data);
-    }
+	private function _renderFrontendViewerJsVars(stdClass $data) {
+		return $this->_renderCoreView('wpts-frontend-jsvars.php', $data);
+	}
 
-    private function _renderCoreView($file, stdClass $data) {
-        ob_start();
-	    require $this->_env->getViewFilePath($file);
-	    return ob_get_clean();
-    }
+	private function _renderCoreView($file, stdClass $data) {
+		ob_start();
+		require $this->_env->getViewFilePath($file);
+		return ob_get_clean();
+	}
 
-    public function isUsingTheme($wptsThemeClass) {
-        return !empty($this->_frontendTheme) 
-            && get_class($this->_frontendTheme) == $wptsThemeClass;
-    }
+	public function isUsingTheme($wptsThemeClass) {
+		return !empty($this->_frontendTheme) 
+			&& get_class($this->_frontendTheme) == $wptsThemeClass;
+	}
 
-    public function initView() {
-        $frontendThemeClass = $this->_determineThemeClass();
-        $this->_frontendTheme = new $frontendThemeClass($this->_env);
-    }
+	public function initView() {
+		$frontendThemeClass = $this->_determineThemeClass();
+		$this->_frontendTheme = new $frontendThemeClass($this->_env);
+	}
 
-    private function _determineThemeClass() {
-        $frontendThemeClass = apply_filters('abp01_get_frotend_theme_class', 'Abp01_FrontendTheme_Decorator');
-        if (!$this->_isThemeClassValid($frontendThemeClass)) {
-            $frontendThemeClass = 'Abp01_FrontendTheme_Decorator';
-        }
-        return $frontendThemeClass;
-    }
+	private function _determineThemeClass() {
+		$frontendThemeClass = apply_filters('abp01_get_frotend_theme_class', 'Abp01_FrontendTheme_Decorator');
+		if (!$this->_isThemeClassValid($frontendThemeClass)) {
+			$frontendThemeClass = 'Abp01_FrontendTheme_Decorator';
+		}
+		return $frontendThemeClass;
+	}
 
-    private function _isThemeClassValid($frontendThemeClass) {
-        return !empty($frontendThemeClass) 
-            && class_exists($frontendThemeClass)
-            && in_array('Abp01_FrontendTheme', class_implements($frontendThemeClass, true));
-    }
+	private function _isThemeClassValid($frontendThemeClass) {
+		return !empty($frontendThemeClass) 
+			&& class_exists($frontendThemeClass)
+			&& in_array('Abp01_FrontendTheme', class_implements($frontendThemeClass, true));
+	}
 
-    public function includeFrontendViewerScripts($translations) {
-        Abp01_Includes::includeScriptFrontendMain(true, $translations);
-    }
+	public function includeFrontendViewerScripts($translations) {
+		Abp01_Includes::includeScriptFrontendMain(true, $translations);
+	}
 
-    public function includeFrontendViewerStyles() {
-        $this->_frontendTheme->includeFrontendViewerStyles();
-    }
+	public function includeFrontendViewerStyles() {
+		$this->_frontendTheme->includeFrontendViewerStyles();
+	}
 
-    public function renderAdminSettingsPage(stdClass $data) {
-	    return $this->_renderCoreView('wpts-settings.php', $data);
-    }
+	public function renderAdminSettingsPage(stdClass $data) {
+		return $this->_renderCoreView('wpts-settings.php', $data);
+	}
 
-    public function renderAdminHelpPage(stdClass $data) {
-        return $this->_renderCoreView('wpts-help.php', $data);
-    }
+	public function renderAdminHelpPage(stdClass $data) {
+		return $this->_renderCoreView('wpts-help.php', $data);
+	}
 
+	public function renderAdminAboutPage(stdClass $data) {
+		return $this->_renderCoreView('wpts-about.php', $data);
+	}
+	
+	public function renderAdminLookupPage(stdClass $data) {
+		return $this->_renderCoreView('wpts-lookup-data-management.php', $data);
+	}
 
-    public function renderAdminAboutPage(stdClass $data) {
-        return $this->_renderCoreView('wpts-about.php', $data);
-    }
-    public function renderAdminLookupPage(stdClass $data) {
-        return $this->_renderCoreView('wpts-lookup-data-management.php', $data);
-    }
+	public function renderAdminTripSummaryEditor(stdClass $data) {
+		$this->_registerAdminHelpers();
+		return $this->_renderCoreView('wpts-editor.php', $data);
+	}
 
-    public function renderAdminTripSummaryEditor(stdClass $data) {
-        $this->_registerAdminHelpers();
-        return $this->_renderCoreView('wpts-editor.php', $data);
-    }
+	public function renderAdminTripSummaryEditorLauncherMetabox(stdClass $data) {
+		$this->_registerAdminHelpers();
+		return $this->_renderCoreView('wpts-editor-launcher-metabox.php', $data);
+	}
 
-    public function renderAdminTripSummaryEditorLauncherMetabox(stdClass $data) {
-        $this->_registerAdminHelpers();
-        return $this->_renderCoreView('wpts-editor-launcher-metabox.php', $data);
-    }
+	public function renderAdminTripSummaryAuditLogContent(stdClass $data) {
+		$this->_registerAdminHelpers();
+		return $this->_renderCoreView('wpts-audit-log.php', $data);
+	}
 
-    public function renderAdminTripSummaryAuditLogContent(stdClass $data) {
-        $this->_registerAdminHelpers();
-        return $this->_renderCoreView('wpts-audit-log.php', $data);
-    }
+	public function renderAdminTripSummaryListingInlineScripts(stdClass $data) {
+		$this->_registerAdminHelpers();
+		return $this->_renderCoreView('wpts-listing-inline-scripts.php', $data);
+	}
 
-    public function renderAdminTripSummaryListingInlineScripts(stdClass $data) {
-        $this->_registerAdminHelpers();
-        return $this->_renderCoreView('wpts-listing-inline-scripts.php', $data);
-    }
+	public function renderFrontendTeaser(stdClass $data) {
+		$this->_registerFrontendHelpers();
+		return $this->_frontendTheme->renderTeaser($data);
+	}
 
-    public function renderFrontendTeaser(stdClass $data) {
-        $this->_registerFrontendHelpers();
-        return $this->_frontendTheme->renderTeaser($data);
-    }
-
-    public function renderFrontendViewer(stdClass $data) {
-        $this->_registerFrontendHelpers();
-        return $this->_renderFrontendViewerJsVars($data) 
-            . PHP_EOL 
-            . $this->_frontendTheme->renderViewer($data);
-    }
+	public function renderFrontendViewer(stdClass $data) {
+		$this->_registerFrontendHelpers();
+		return $this->_renderFrontendViewerJsVars($data) 
+			. PHP_EOL 
+			. $this->_frontendTheme->renderViewer($data);
+	}
 }

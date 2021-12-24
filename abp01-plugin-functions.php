@@ -169,7 +169,7 @@ if (!function_exists('write_log')) {
 			error_log($message);
 	   }
 	}
- }
+}
 
 /**
  * Increase script execution time limit and maximum memory limit

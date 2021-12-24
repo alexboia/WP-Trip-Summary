@@ -34,13 +34,13 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Includes_NoopPathRewriter implements Abp01_Includes_PathRewriter {
-    public function needsRewriting(array $item) {
-        return false;
-    }
+	public function needsRewriting(array $item) {
+		return false;
+	}
 
-    public function rewritePath(array $item) {
-        return isset($item['path']) 
-            ? $item['path'] 
-            : null;
-    }
+	public function rewritePath(array $item) {
+		return isset($item['path']) 
+			? $item['path'] 
+			: null;
+	}
 }

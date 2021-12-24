@@ -34,7 +34,7 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 interface Abp01_Includes_PathRewriter {
-    function needsRewriting(array $item);
+	function needsRewriting(array $item);
 
-    function rewritePath(array $item);
+	function rewritePath(array $item);
 }

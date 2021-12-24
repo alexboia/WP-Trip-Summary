@@ -726,7 +726,7 @@ class Abp01_Includes {
 		self::$_includesManager = $includesManager;
 	}
 
-	public function isConfigured() {
+	public static function isConfigured() {
 		return self::$_includesManager instanceof Abp01_Includes_Manager;
 	}
 

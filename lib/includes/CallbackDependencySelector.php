@@ -34,10 +34,10 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Includes_CallbackDependencySelector implements Abp01_Includes_DependencySelector {
-    public function selectDependencies(array $dependencyHandles) {
+	public function selectDependencies(array $dependencyHandles) {
 		$env = $this->_getEnv();
 		$settings = $this->_getSettings();
-        $finalDepHandles = array();
+		$finalDepHandles = array();
 
 		foreach ($dependencyHandles as $depHandle) {
 			$includeIf = null;
@@ -56,13 +56,13 @@ class Abp01_Includes_CallbackDependencySelector implements Abp01_Includes_Depend
 		}
 
 		return $finalDepHandles;
-    }
+	}
 
 	private function _getSettings() {
 		return abp01_get_settings();
 	}
 
-    private function _getEnv() {
+	private function _getEnv() {
 		return abp01_get_env();
 	}
 }

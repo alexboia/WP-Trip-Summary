@@ -30,98 +30,98 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
 class Abp01_PluginModules_PluginModuleActivator {
-    private $_injectableServiceFactories = array();
+	private $_injectableServiceFactories = array();
 
-    public function __construct(array $injectableServiceFactories) {
-        $this->_injectableServiceFactories = $injectableServiceFactories;
-    }
+	public function __construct(array $injectableServiceFactories) {
+		$this->_injectableServiceFactories = $injectableServiceFactories;
+	}
 
-    public function isValidModuleClass($moduleClassName) {
-        return !empty($moduleClassName) 
-            && $this->_moduleClassExtendsBaseModuleClass($moduleClassName);
-    }
+	public function isValidModuleClass($moduleClassName) {
+		return !empty($moduleClassName) 
+			&& $this->_moduleClassExtendsBaseModuleClass($moduleClassName);
+	}
 
-    private function _moduleClassExtendsBaseModuleClass($moduleClassName) {
-        $parents = class_parents($moduleClassName, true);
-        return $parents !== false 
-            && in_array('Abp01_PluginModules_PluginModule', $parents);
-    }
+	private function _moduleClassExtendsBaseModuleClass($moduleClassName) {
+		$parents = class_parents($moduleClassName, true);
+		return $parents !== false 
+			&& in_array('Abp01_PluginModules_PluginModule', $parents);
+	}
 
-    public function createModuleInstance($moduleClassName) {
-        if (empty($moduleClassName)) {
-            throw new InvalidArgumentException('Module class name may not be empty.');
-        }
+	public function createModuleInstance($moduleClassName) {
+		if (empty($moduleClassName)) {
+			throw new InvalidArgumentException('Module class name may not be empty.');
+		}
 
-        if (!$this->isValidModuleClass($moduleClassName)) {
-            throw new InvalidArgumentException('Module class <' . $moduleClassName . '> is not a valid module class.');
-        }
+		if (!$this->isValidModuleClass($moduleClassName)) {
+			throw new InvalidArgumentException('Module class <' . $moduleClassName . '> is not a valid module class.');
+		}
 
-        $moduleClass = new ReflectionClass($moduleClassName);
-        $moduleDependencyClassNames = $this->_determineModuleDependencyClassNames($moduleClass);
-        $moduleDependencyInstances = $this->_createModuleDependencyInstances($moduleDependencyClassNames);
+		$moduleClass = new ReflectionClass($moduleClassName);
+		$moduleDependencyClassNames = $this->_determineModuleDependencyClassNames($moduleClass);
+		$moduleDependencyInstances = $this->_createModuleDependencyInstances($moduleDependencyClassNames);
 
-        $moduleInstance = $moduleClass->newInstanceArgs($moduleDependencyInstances);
-        return $moduleInstance;
-    }
+		$moduleInstance = $moduleClass->newInstanceArgs($moduleDependencyInstances);
+		return $moduleInstance;
+	}
 
-    private function _determineModuleDependencyClassNames(ReflectionClass $moduleClass) {
-        $dependencyClassNames = array();
-        $moduleClassConstructorParams = $this->_determineModuleClassConstructorParameters($moduleClass);
+	private function _determineModuleDependencyClassNames(ReflectionClass $moduleClass) {
+		$dependencyClassNames = array();
+		$moduleClassConstructorParams = $this->_determineModuleClassConstructorParameters($moduleClass);
 
-        foreach ($moduleClassConstructorParams as $constructorParamInfo) {
-            $parameterType = $constructorParamInfo->getType();
-            if ($parameterType != null) {
-                $dependencyClassNames[] = $this->_determineDependencyClassName($parameterType);
-            } else {
-                throw new Abp01_PluginModules_Exception('Not all parameters of module class <' . $moduleClass->getName() . '> constructor have type information');
-            }
-        }
+		foreach ($moduleClassConstructorParams as $constructorParamInfo) {
+			$parameterType = $constructorParamInfo->getType();
+			if ($parameterType != null) {
+				$dependencyClassNames[] = $this->_determineDependencyClassName($parameterType);
+			} else {
+				throw new Abp01_PluginModules_Exception('Not all parameters of module class <' . $moduleClass->getName() . '> constructor have type information');
+			}
+		}
 
-        return $dependencyClassNames;
-    }
+		return $dependencyClassNames;
+	}
 
-    private function _determineModuleClassConstructorParameters(ReflectionClass $moduleClass) {
-        $constructorParams = array();
-        $constructorInfo = $moduleClass->getConstructor();
+	private function _determineModuleClassConstructorParameters(ReflectionClass $moduleClass) {
+		$constructorParams = array();
+		$constructorInfo = $moduleClass->getConstructor();
 
-        if ($constructorInfo != null) {
-            $constructorParams = $constructorInfo->getParameters();    
-        }
+		if ($constructorInfo != null) {
+			$constructorParams = $constructorInfo->getParameters();    
+		}
 
-        return $constructorParams;
-    }
+		return $constructorParams;
+	}
 
-    private function _determineDependencyClassName(ReflectionType $type) {
-        return ($type instanceof ReflectionNamedType) 
-            ? $type->getName()
-            : $type->__toString();
-    }
+	private function _determineDependencyClassName(ReflectionType $type) {
+		return ($type instanceof ReflectionNamedType) 
+			? $type->getName()
+			: $type->__toString();
+	}
 
-    private function _createModuleDependencyInstances($dependencyClassNames) {
-        $dependencyInstances = array();
+	private function _createModuleDependencyInstances($dependencyClassNames) {
+		$dependencyInstances = array();
 
-        foreach ($dependencyClassNames as $dependencyClassName) {
-            if ($this->_isClassDependencyInjectable($dependencyClassName)) {
-                $dependencyInstances[] = $this->_createDependencyInstance($dependencyClassName);
-            } else {
-                throw new Abp01_PluginModules_Exception('Module dependency <' . $dependencyClassName . '> could not be resolved.');
-            }
-        }
+		foreach ($dependencyClassNames as $dependencyClassName) {
+			if ($this->_isClassDependencyInjectable($dependencyClassName)) {
+				$dependencyInstances[] = $this->_createDependencyInstance($dependencyClassName);
+			} else {
+				throw new Abp01_PluginModules_Exception('Module dependency <' . $dependencyClassName . '> could not be resolved.');
+			}
+		}
 
-        return $dependencyInstances;
-    }
+		return $dependencyInstances;
+	}
 
-    private function _isClassDependencyInjectable($dependencyClassName) {
-        return !empty($dependencyClassName) 
-            && isset($this->_injectableServiceFactories[$dependencyClassName]);
-    }
+	private function _isClassDependencyInjectable($dependencyClassName) {
+		return !empty($dependencyClassName) 
+			&& isset($this->_injectableServiceFactories[$dependencyClassName]);
+	}
 
-    private function _createDependencyInstance($dependencyClassName) {
-        $dependencyFactory = $this->_injectableServiceFactories[$dependencyClassName];
-        return $dependencyFactory();
-    }
+	private function _createDependencyInstance($dependencyClassName) {
+		$dependencyFactory = $this->_injectableServiceFactories[$dependencyClassName];
+		return $dependencyFactory();
+	}
 }

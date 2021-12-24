@@ -248,7 +248,6 @@ class Abp01_Env {
 		$this->_initFromWpConfig();
 		$this->_initTableNames();
 		$this->_initVersions();
-		$this->_initDataDir();
 		$this->_initDirs();
 	}
 
@@ -288,11 +287,6 @@ class Abp01_Env {
 		$this->_wpVersion = get_bloginfo('version', 'raw');
 	}
 
-	private function _initDataDir() {
-		$pluginRoot = dirname(dirname(__FILE__));
-		
-	}
-
 	private function _initDirs() {
 		if (defined('ABP01_PLUGIN_ROOT')) {
 			$this->_pluginRootDir = ABP01_PLUGIN_ROOT;
@@ -328,12 +322,6 @@ class Abp01_Env {
 			. 'abp01_techbox_route_details_lookup';
 		$this->_wpUsersTableName = $this->_dbTablePrefix
 			. 'users';
-	}
-
-	private function _getCurrentAdminPageSlug() {
-		return isset($_GET['page']) 
-			? strtolower($_GET['page']) 
-			: null;
 	}
 
 	public function overrideDataDir($dataDir) {
@@ -400,6 +388,14 @@ class Abp01_Env {
 		return $this->_db;
 	}
 
+	private function _initDriverIfNeeded() {
+		if (!$this->_driverInitialized) {
+			$driver = new mysqli_driver();
+			$driver->report_mode =  MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT;
+			$this->_driverInitialized = true;
+		}
+	}
+
 	public function getMetaDb() {
 		if ($this->_metaDb == null) {
 			$this->_metaDb = new MysqliDb($this->_dbHost,
@@ -411,14 +407,6 @@ class Abp01_Env {
 		}
 
 		return $this->_metaDb;
-	}
-
-	private function _initDriverIfNeeded() {
-		if (!$this->_driverInitialized) {
-			$driver = new mysqli_driver();
-			$driver->report_mode =  MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT;
-			$this->_driverInitialized = true;
-		}
 	}
 	
 	public function getCurrentThemeId() {
@@ -461,6 +449,12 @@ class Abp01_Env {
 	public function isAdminPage($slug) {
 		return $this->getCurrentAdminPage() == 'admin.php' 
 			&& $this->_getCurrentAdminPageSlug() == strtolower($slug);
+	}
+
+	private function _getCurrentAdminPageSlug() {
+		return isset($_GET['page']) 
+			? strtolower($_GET['page']) 
+			: null;
 	}
 
 	public function isSavingWpOptions() {

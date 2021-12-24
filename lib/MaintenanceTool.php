@@ -29,8 +29,12 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class Abp01_Exception extends Exception {
-	public function __construct($message, $code = 0, Throwable $previous = null) {
-		parent::__construct($message, $code, $previous);
-	}
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+	exit ;
+}
+
+interface Abp01_MaintenanceTool {
+	function execute(array $parameters = array());
+
+	function getName();
 }
