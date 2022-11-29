@@ -127,7 +127,10 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 == Changelog ==
 
 = 0.2.8. =
+- Added trip summary audit log to post edit and post listing pages;
 - Added maintenance page with the following tools: clear cached track data, clear all trip summary info, detect posts that have missing track files;
+- Added shortcuts to plug-in's entry from the plug-in listing page;
+- Updated UI + UX of the lookup data management editor page;
 - Usability improvements;
 - Updated help contents.
 

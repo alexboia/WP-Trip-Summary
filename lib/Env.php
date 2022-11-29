@@ -451,6 +451,10 @@ class Abp01_Env {
 			&& $this->_getCurrentAdminPageSlug() == strtolower($slug);
 	}
 
+	public function getAdminPageUrl($slug) {
+		return admin_url('admin.php?page=' . $slug);
+	}
+
 	private function _getCurrentAdminPageSlug() {
 		return isset($_GET['page']) 
 			? strtolower($_GET['page']) 

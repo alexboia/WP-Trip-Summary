@@ -247,6 +247,8 @@ The following languages are supported:
 <a name="wpts-changelog"></a>  
 
 ### Version 0.2.8
+- Added shortcuts to plug-in's entry from the plug-in listing page;
+- Added maintenance page with the following tools: clear cached track data, clear all trip summary info, detect posts that have missing track files;
 - Fixed MysqliDb dependency -  The MysqliDb generates deprectation warnings and needs to be updated ([Issue #79](https://github.com/alexboia/WP-Trip-Summary/issues/79));
 - Fixed JS warnings caused by including editor scripts in non-editor pages ([Issue #78](https://github.com/alexboia/WP-Trip-Summary/issues/78));
 - Added trip summary audit log to post edit and post listing pages ([Issue #80](https://github.com/alexboia/WP-Trip-Summary/issues/80));
