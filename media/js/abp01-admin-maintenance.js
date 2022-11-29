@@ -63,7 +63,7 @@
 			if (progressBar == null) {
 				progressBar = $('#tpl-abp01-progress-container').progressOverlay({
 					$target: $('#wpwrap'),
-					message: 'Working...'
+					message: abp01MaintenanceL10n.msgWorking
 				});
 			}
 		} else {
@@ -94,7 +94,7 @@
 	}
 
 	function handleExecuteButtonClicked() {
-		if (confirm('Are you sure you want to execute the selected tool?')) {
+		if (confirm(abp01MaintenanceL10n.msgConfirmExecute)) {
 			executeSelectedTool();
 		}
 	}
@@ -121,16 +121,16 @@
 		}).done(function (data, status, xhr) {
 			toggleBusy(false);
 			if (data && data.success) {
-				displaySuccessfulOperationMessage('The selected maintenance tool successfully executed.');
+				displaySuccessfulOperationMessage(abp01MaintenanceL10n.msgExecutedOk);
 				if (!!data.content) {
 					showExecutionResultContent(data.content);
 				}
 			} else {
-				displayFailedOperationMessage(data.message || 'The selected maintenance tool could not be executed.');
+				displayFailedOperationMessage(data.message || abp01MaintenanceL10n.msgExecutedFailGeneric);
 			}
 		}).fail(function (xhr, status, error) {
 			toggleBusy(false);
-			displayFailedOperationMessage('The selected maintenance tool could not be executed due to a possible network issue. Please check your internet connection and try again.');
+			displayFailedOperationMessage(abp01MaintenanceL10n.msgExecutedFailNetwork);
 		});
 	}
 

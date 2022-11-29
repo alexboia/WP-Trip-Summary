@@ -114,7 +114,11 @@ class Abp01_TranslatedScriptMessages {
 
 	public static function getAdminMaintenanceScriptTranslations() {
 		return array(
-			
+			'msgWorking' => esc_html__('Working. Please wait...', 'abp01-trip-summary'),
+			'msgConfirmExecute' => esc_html__('Are you sure you want to execute the selected tool?', 'abp01-trip-summary'),
+			'msgExecutedOk' => esc_html__('The selected maintenance tool successfully executed.', 'abp01-trip-summary'),
+			'msgExecutedFailGeneric' => esc_html__('The selected maintenance tool could not be executed.', 'abp01-trip-summary'),
+			'msgExecutedFailNetwork' => esc_html__('The selected maintenance tool could not be executed due to a possible network issue. Please check your internet connection and try again.', 'abp01-trip-summary')
 		);
 	}
 

@@ -1,5 +1,5 @@
-# Copyright (C) 2021 Alexandru Boia
-# This file is distributed under the same license as the WP Trip Summary plugin.
+# Copyright (C) 2022 Alexandru Boia
+# This file is distributed under the New BSD License.
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Trip Summary 0.2.8\n"
@@ -9,9 +9,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-10-10T18:07:31+00:00\n"
+"POT-Creation-Date: 2022-11-29T23:34:49+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.3.0\n"
+"X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: abp01-trip-summary\n"
 
 #. Plugin Name of the plugin
@@ -112,39 +112,51 @@ msgstr ""
 msgid "Default"
 msgstr ""
 
-#: lib/Plugin.php:131
+#: lib/maintenanceTool/ClearAllData.php:68
+msgid "Clear all trip summary related data (cannot be undone)"
+msgstr ""
+
+#: lib/maintenanceTool/ClearCache.php:54
+msgid "Clear track data cache"
+msgstr ""
+
+#: lib/maintenanceTool/DetectMissingTracks.php:113
+msgid "Detect missing track files"
+msgstr ""
+
+#: lib/Plugin.php:136
 msgid "Could not activate plug-in: activation failure."
 msgstr ""
 
-#: lib/Plugin.php:154
+#: lib/Plugin.php:159
 msgid "Could not activate plug-in: requirements not met."
 msgstr ""
 
-#: lib/Plugin.php:161
+#: lib/Plugin.php:166
 msgid "Minimum required PHP version is %s"
 msgstr ""
 
-#: lib/Plugin.php:163
+#: lib/Plugin.php:168
 msgid "Minimum required WP version is %s"
 msgstr ""
 
-#: lib/Plugin.php:165
+#: lib/Plugin.php:170
 msgid "LIBXML support was not found on your system"
 msgstr ""
 
-#: lib/Plugin.php:167
+#: lib/Plugin.php:172
 msgid "Mysqli extension was not found on your system or is not fully compatible"
 msgstr ""
 
-#: lib/Plugin.php:169
+#: lib/Plugin.php:174
 msgid "MySQL spatial support was not found on your system"
 msgstr ""
 
-#: lib/Plugin.php:171
+#: lib/Plugin.php:176
 msgid "We could not check whether your system fully supports this plug-in."
 msgstr ""
 
-#: lib/Plugin.php:179
+#: lib/Plugin.php:184
 msgid "Activation error"
 msgstr ""
 
@@ -220,6 +232,18 @@ msgstr ""
 msgid "The item is still associated with %d post(s). Do you wish to proceed?"
 msgstr ""
 
+#: lib/pluginModules/MaintenancePluginModule.php:118
+#: lib/pluginModules/MaintenancePluginModule.php:119
+#: lib/pluginModules/PluginListingPageCustomizationPluginModule.php:56
+#: views/wpts-maintenance.php:42
+msgid "Maintenance"
+msgstr ""
+
+#: lib/pluginModules/PluginListingPageCustomizationPluginModule.php:52
+#: lib/pluginModules/SettingsPluginModule.php:101
+msgid "Settings"
+msgstr ""
+
 #: lib/pluginModules/SettingsPluginModule.php:95
 #: views/wpts-settings.php:43
 msgid "Trip Summary Settings"
@@ -227,10 +251,6 @@ msgstr ""
 
 #: lib/pluginModules/SettingsPluginModule.php:96
 msgid "Trip Summary"
-msgstr ""
-
-#: lib/pluginModules/SettingsPluginModule.php:101
-msgid "Settings"
 msgstr ""
 
 #: lib/pluginModules/SettingsPluginModule.php:216
@@ -530,6 +550,7 @@ msgid "Saving settings. Please wait..."
 msgstr ""
 
 #: lib/TranslatedScriptMessages.php:100
+#: lib/TranslatedScriptMessages.php:117
 msgid "Working. Please wait..."
 msgstr ""
 
@@ -579,48 +600,64 @@ msgstr ""
 msgid "The lookup items could not be loaded"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:117
-msgid "Minimum altitude:"
-msgstr ""
-
 #: lib/TranslatedScriptMessages.php:118
-msgid "Maximum altitude:"
+msgid "Are you sure you want to execute the selected tool?"
 msgstr ""
 
 #: lib/TranslatedScriptMessages.php:119
-msgid "Altitude:"
+msgid "The selected maintenance tool successfully executed."
 msgstr ""
 
 #: lib/TranslatedScriptMessages.php:120
-msgid "Distance:"
+msgid "The selected maintenance tool could not be executed."
 msgstr ""
 
 #: lib/TranslatedScriptMessages.php:121
+msgid "The selected maintenance tool could not be executed due to a possible network issue. Please check your internet connection and try again."
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:127
+msgid "Minimum altitude:"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:128
+msgid "Maximum altitude:"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:129
+msgid "Altitude:"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:130
+msgid "Distance:"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:131
 #: views/helpers/controls.frontend.php:92
 msgid "(show)"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:122
+#: lib/TranslatedScriptMessages.php:132
 msgid "(hide)"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:128
+#: lib/TranslatedScriptMessages.php:138
 msgid "Loading help contents. Please wait..."
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:129
+#: lib/TranslatedScriptMessages.php:139
 msgid "The help contents could not be loaded due to a possible network error or an internal server issue."
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:130
+#: lib/TranslatedScriptMessages.php:140
 msgid "The help contents could not be loaded."
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:136
+#: lib/TranslatedScriptMessages.php:146
 msgid "Loading audit log. Please wait..."
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:137
+#: lib/TranslatedScriptMessages.php:147
 msgid "The audit log could not be loaded!"
 msgstr ""
 
@@ -645,6 +682,31 @@ msgstr ""
 
 #: views/helpers/controls.frontend.php:91
 msgid "and %d more"
+msgstr ""
+
+#: views/maintenance/wpts-detect-missing-track-files-result.php:38
+msgid "ID"
+msgstr ""
+
+#: views/maintenance/wpts-detect-missing-track-files-result.php:39
+msgid "Title"
+msgstr ""
+
+#: views/maintenance/wpts-detect-missing-track-files-result.php:40
+#: views/wpts-lookup-data-management.php:88
+msgid "Actions"
+msgstr ""
+
+#: views/maintenance/wpts-detect-missing-track-files-result.php:49
+msgid "[View]"
+msgstr ""
+
+#: views/maintenance/wpts-detect-missing-track-files-result.php:50
+msgid "[Edit]"
+msgstr ""
+
+#: views/maintenance/wpts-detect-missing-track-files-result.php:57
+msgid "No posts with missing track files found!"
 msgstr ""
 
 #: views/wpts-about.php:47
@@ -901,10 +963,6 @@ msgstr ""
 msgid "Label"
 msgstr ""
 
-#: views/wpts-lookup-data-management.php:88
-msgid "Actions"
-msgstr ""
-
 #: views/wpts-lookup-data-management.php:109
 msgid "Translated label"
 msgstr ""
@@ -934,6 +992,22 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
+#: views/wpts-maintenance.php:47
+msgid "Available tools"
+msgstr ""
+
+#: views/wpts-maintenance.php:52
+msgid "Select one"
+msgstr ""
+
+#: views/wpts-maintenance.php:64
+msgid "Execute"
+msgstr ""
+
+#: views/wpts-maintenance.php:74
+msgid "Execution result"
+msgstr ""
+
 #: views/wpts-settings.php:46
 msgid "General Settings"
 msgstr ""
@@ -948,7 +1022,7 @@ msgstr ""
 
 #: views/wpts-settings.php:76
 #: views/wpts-settings.php:169
-#: views/wpts-settings.php:352
+#: views/wpts-settings.php:353
 msgid "Save settings"
 msgstr ""
 
@@ -984,83 +1058,83 @@ msgstr ""
 msgid "Chose how many values of a multi-valued item are displayed"
 msgstr ""
 
-#: views/wpts-settings.php:172
+#: views/wpts-settings.php:173
 msgid "Map Settings"
 msgstr ""
 
-#: views/wpts-settings.php:174
+#: views/wpts-settings.php:175
 msgid "These settings configure the map component"
 msgstr ""
 
-#: views/wpts-settings.php:180
+#: views/wpts-settings.php:181
 msgid "Tile layer URL template"
 msgstr ""
 
-#: views/wpts-settings.php:192
+#: views/wpts-settings.php:193
 msgid "... or chose pre-defined"
 msgstr ""
 
-#: views/wpts-settings.php:197
+#: views/wpts-settings.php:198
 msgid "Tile layer attribution URL"
 msgstr ""
 
-#: views/wpts-settings.php:209
+#: views/wpts-settings.php:210
 msgid "Tile layer attribution text"
 msgstr ""
 
-#: views/wpts-settings.php:221
+#: views/wpts-settings.php:222
 msgid "Tile layer API key"
 msgstr ""
 
-#: views/wpts-settings.php:233
-#: views/wpts-settings.php:384
+#: views/wpts-settings.php:234
+#: views/wpts-settings.php:382
 msgid "This tile layer requires an API key from the service provider"
 msgstr ""
 
-#: views/wpts-settings.php:238
+#: views/wpts-settings.php:239
 msgid "Enable map fullscreen mode?"
 msgstr ""
 
-#: views/wpts-settings.php:250
+#: views/wpts-settings.php:251
 msgid "Show magnifying glass?"
 msgstr ""
 
-#: views/wpts-settings.php:262
+#: views/wpts-settings.php:263
 msgid "Show map scale?"
 msgstr ""
 
-#: views/wpts-settings.php:274
+#: views/wpts-settings.php:275
 msgid "Show minimum & maximum altitude?"
 msgstr ""
 
-#: views/wpts-settings.php:286
+#: views/wpts-settings.php:287
 msgid "Show altitude profile?"
 msgstr ""
 
-#: views/wpts-settings.php:298
+#: views/wpts-settings.php:299
 msgid "Allow track download?"
 msgstr ""
 
-#: views/wpts-settings.php:310
+#: views/wpts-settings.php:311
 msgid "Track line colour"
 msgstr ""
 
-#: views/wpts-settings.php:322
+#: views/wpts-settings.php:323
 msgid "Track line weight"
 msgstr ""
 
-#: views/wpts-settings.php:334
+#: views/wpts-settings.php:335
 msgid "Map height"
 msgstr ""
 
-#: views/wpts-settings.php:366
+#: views/wpts-settings.php:364
 msgid "Chose a pre-defined tile layer service"
 msgstr ""
 
-#: views/wpts-settings.php:391
+#: views/wpts-settings.php:389
 msgid "View details"
 msgstr ""
 
-#: views/wpts-settings.php:394
+#: views/wpts-settings.php:392
 msgid "Use this tile layer"
 msgstr ""
