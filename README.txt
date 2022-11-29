@@ -73,9 +73,9 @@ For train rides the following fields are available:
 - Line type.
 
 Requirements:
-- PHP version 7.0.2 or greater;
+- PHP version 7.4.0 or greater;
 - MySQL version 5.7 or greater (with spatial support);
-- Wordpress 5.3.0 or greater;
+- Wordpress 6.0.0 or greater;
 - libxml extension;
 - SimpleXml extension;
 - mysqli extension;
@@ -125,6 +125,11 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 5. For those with plug-in versions older than 0.2.1, please see here notes on updating to plug-in version 0.2.1: https://github.com/alexboia/WP-Trip-Summary/blob/master/README-UPDATE-021.md
 
 == Changelog ==
+
+= 0.2.8. =
+- Added maintenance page with the following tools: clear cached track data, clear all trip summary info, detect posts that have missing track files;
+- Usability improvements;
+- Updated help contents.
 
 = 0.2.7 =
 - Refactoring: the plug-in now has a more manageable and extensible structure;
@@ -195,6 +200,9 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 First officially distributed version.
 
 == Upgrade Notice ==
+
+= 0.2.8. = 
+Upgrade to this version for additional features, better user experience and improved plug-in stability
 
 = 0.2.7 =
 Upgrade to this version for additional features, better user experience and improved plug-in stability
