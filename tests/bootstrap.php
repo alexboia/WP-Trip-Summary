@@ -32,6 +32,7 @@
 require_once 'faker/autoload.php';
 require_once 'mockery/helpers.php';
 require_once 'mockery/autoload.php';
+require_once 'polyfills/phpunitpolyfills-autoload.php';
 
 require_once 'lib/testDoubles/abp01Noop.php';
 require_once 'lib/testDoubles/abp01Die.php';

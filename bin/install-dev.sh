@@ -70,7 +70,7 @@ check_and_install_tooling() {
 }
 
 setup_unit_testing() {
-    wp scaffold plugin-tests wp-trip-summary
+    wp scaffold plugin-tests abp01-travel-tech-box
     if [[ -f "./bin/install-wp-tests.sh" ]] 
     then
         ./bin/install-wp-tests.sh "$DB_NAME" "$DB_USER" "$DB_PASS" "$DB_HOST" "$WP_VERSION" "$SKIP_DB_CREATE"
