@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014-2021 Alexandru Boia
+ * Copyright (c) 2014-2023 Alexandru Boia
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -34,16 +34,41 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_MaintenanceTool_ClearAllData implements Abp01_MaintenanceTool {
+	/**
+	 * @var Abp01_MaintenanceTool_Helper_Files
+	 */
+	private $_filesHelper;
 
-	public function __construct() {
-		
+	/**
+	 * @var Abp01_Route_Manager
+	 */
+	private $_routeManager;
+
+	public function __construct(Abp01_Route_Manager $routeManager, Abp01_Env $env) {
+		$this->_routeManager = $routeManager;
+		$this->_filesHelper = new Abp01_MaintenanceTool_Helper_Files($env);
 	}
 
     public function execute(array $parameters = array()) { 
+		$this->_clearDbData();
+		$this->_clearAllFiles();
+		return new Abp01_MaintenanceTool_Result(true);
+	}
 
+	private function _clearDbData() {
+		$this->_routeManager->clearAll();
+	}
+
+	private function _clearAllFiles() {
+		$this->_filesHelper->clearCacheFiles();
+		$this->_filesHelper->clearTrackFiles();
 	}
 
     public function getName() { 
-		return __('Clear all trip summary related data', 'abp01-trip-summary');
+		return __('Clear all trip summary related data (cannot be undone)', 'abp01-trip-summary');
+	}
+
+	public function getId() {
+		return 'clear-all-data';
 	}
 }

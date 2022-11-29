@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014-2021 Alexandru Boia
+ * Copyright (c) 2014-2023 Alexandru Boia
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -180,6 +180,13 @@ define('ABP01_ACTION_GET_TRACK', 'abp01_get_track');
 define('ABP01_ACTION_SAVE_SETTINGS', 'abp01_save_settings');
 
 /**
+ * The action name used with admin-ajax.php when executing maintenance tools. 
+ * 
+ * @var string
+ */
+define('ABP01_ACTION_EXEC_MAINTENANCE_TOOL', 'abp01_exec_maintenance_tool');
+
+/**
  * The action name used with admin-ajax.php when downloading the GPS track.
  * 
  * @var string
@@ -289,6 +296,13 @@ define('ABP01_HELP_SUBMENU_SLUG', 'abp01-trip-summary-help');
  * @var string
  */
 define('ABP01_ABOUT_SUBMENU_SLUG', 'abp01-trip-summary-about');
+
+/**
+ * Slug used for maintenance page sub-menu mentry.
+ * 
+ * @var string
+ */
+define('ABP01_MAINTENANCE_SUBMENU_SLUG', 'abp01-trip-summary-maintenance');
 
 /**
  * Value used to signify a successful/OK/all-good situation.

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014-2021 Alexandru Boia
+ * Copyright (c) 2014-2023 Alexandru Boia
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -439,6 +439,19 @@ function abp01_get_lookup_type_label($type) {
 		Abp01_Lookup::RECOMMEND_SEASONS => esc_html__('Recommended seasons', 'abp01-trip-summary')
 	);
 	return isset($translations[$type]) ? $translations[$type] : null;
+}
+
+function abp01_delete_files_by_glob_pattern($globPathPattern) {
+	$files = glob($globPathPattern, GLOB_NOESCAPE);
+	if (is_array($files)) {
+		foreach ($files as $file) {
+			@unlink($file);
+		}
+		
+		return $files;
+	} else {
+		return null;
+	}
 }
 
 if (!function_exists('wp_script_get_data')) {

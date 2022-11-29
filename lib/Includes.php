@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014-2021 Alexandru Boia
+ * Copyright (c) 2014-2023 Alexandru Boia
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -104,6 +104,8 @@ class Abp01_Includes {
 
 	const JS_ABP01_ADMIN_LOOKUP_MGMT = 'abp01-admin-lookup-management';
 
+	const JS_ABP01_ADMIN_MAINTENANCE = 'abp01-admin-maintenance';
+
 	const JS_ABP01_ADMIN_HELP = 'abp01-admin-help';
 
 	const JS_ABP01_VIEWER_SHORTCODE_BLOCK = 'abp01-viewer-short-code-block';
@@ -155,6 +157,8 @@ class Abp01_Includes {
 	const STYLE_ADMIN_HELP = 'abp01-help-css';
 
 	const STYLE_ADMIN_ABOUT = 'abp01-about-css';
+
+	const STYLE_ADMIN_MAINTENANCE = 'abp01-maintenance-css';
 
 	const STYLE_ADMIN_POSTS_LISTING = 'abp01-admin-posts-listing-css';
 
@@ -464,6 +468,19 @@ class Abp01_Includes {
 				self::JS_ABP01_OPERATION_MESSAGE
 			)
 		),
+		self::JS_ABP01_ADMIN_MAINTENANCE => array(
+			'path' => 'media/js/abp01-admin-maintenance.js',
+			'version' => ABP01_VERSION,
+			'deps' => array(
+				self::JS_JQUERY,
+				self::JS_JQUERY_BLOCKUI,
+				self::JS_KITE_JS,
+				self::JS_URI_JS,
+				self::JS_ABP01_COMMON,
+				self::JS_ABP01_PROGRESS_OVERLAY,
+				self::JS_ABP01_OPERATION_MESSAGE
+			)
+		),
 		self::JS_ABP01_ADMIN_HELP => array(
 			'path' => 'media/js/abp01-admin-help.js',
 			'version' => ABP01_VERSION,
@@ -667,6 +684,15 @@ class Abp01_Includes {
 				self::STYLE_ADMIN_COMMON
 			)
 		),
+		self::STYLE_ADMIN_MAINTENANCE => array(
+			'alias' => self::STYLE_ADMIN_MAIN,
+			'deps' => array(
+				self::STYLE_SYSTEM_THICKBOX,
+				self::STYLE_NPROGRESS,
+				self::STYLE_JQUERY_TOASTR,
+				self::STYLE_ADMIN_COMMON
+			)
+		),
 		self::STYLE_ADMIN_HELP => array(
 			'path' => 'media/css/abp01-help.css', 
 			'version' => ABP01_VERSION,
@@ -826,6 +852,15 @@ class Abp01_Includes {
 		}
 	}
 
+	public static function includeScriptAdminMaintenance($localization) {
+		self::_includeScript(self::JS_ABP01_ADMIN_MAINTENANCE);
+		if (!empty($localization)) {
+			wp_localize_script(self::JS_ABP01_ADMIN_MAINTENANCE, 
+				'abp01MaintenanceL10n', 
+				$localization);
+		}
+	}
+
 	public static function includeScriptAdminHelp($localization) {
 		self::_includeScript(self::JS_ABP01_ADMIN_HELP);
 		if (!empty($localization)) {
@@ -897,6 +932,10 @@ class Abp01_Includes {
 
 	public static function includeStyleAdminAbout() {
 		self::_includeStyle(self::STYLE_ADMIN_ABOUT);
+	}
+
+	public static function includeStyleAdminMaintenance() {
+		self::_includeStyle(self::STYLE_ADMIN_MAINTENANCE);
 	}
 
 	public static function includeStyleAdminPostsListing() {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014-2021 Alexandru Boia
+ * Copyright (c) 2014-2023 Alexandru Boia
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -92,7 +92,7 @@
 			</table>
 			<div class="abp01-lookup-general-buttons-bottom">
 				<a id="abp01-reload-list-bottom" href="javascript:void(0)" class="button button-large"><?php echo esc_html__('Reload list', 'abp01-trip-summary'); ?></a>
-				<a id="abp01-add-lookup-bottom" href="javascript:void(0)" class="button button-primary button-large"><?php echo esc_html__('Add new item', 'abp01-trip-summary'); ?></a>				
+				<a id="abp01-add-lookup-bottom" href="javascript:void(0)" class="button button-primary button-large"><?php echo esc_html__('Add new item', 'abp01-trip-summary'); ?></a>
 			</div>
 		</div>
 	</div>
@@ -154,10 +154,7 @@
 			</tr>
 		{{/lookupItems}}
 	</script>
-	<script id="tpl-abp01-progress-container" type="text/x-kite">
-		<div id="abp01-progress-container" class="abp01-progress-container">
-			<div data-role="progressLabel" id="abp01-progress-label" class="abp01-progress-label"></div>
-			<div data-role="progressParent" id="abp01-progress-bar" class="abp01-progress-bar"></div>
-		</div>
-	</script>
+	
+	<?php echo abp01_render_partial_view('common/wpts-progress-container.php', 
+		new stdClass()); ?>
 </div>

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014-2021 Alexandru Boia
+ * Copyright (c) 2014-2023 Alexandru Boia
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -68,7 +68,7 @@ class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_Plug
 	}
 
 	public function getMenuItems() {
-        return array(
+		return array(
 			array(
 				'slug' => ABP01_ABOUT_SUBMENU_SLUG,
 				'parent' => ABP01_MAIN_MENU_SLUG,
@@ -78,7 +78,7 @@ class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_Plug
 				'callback' => array($this, 'displayAdminAboutPage')
 			)
 		);
-    }
+	}
 
 	public function displayAdminAboutPage() {
 		$data = new stdClass();

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014-2021 Alexandru Boia
+ * Copyright (c) 2014-2023 Alexandru Boia
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -99,18 +99,38 @@ class Abp01_View {
 	}
 
 	public function renderAdminSettingsPage(stdClass $data) {
+		$this->_registerAdminHelpers();
 		return $this->_renderCoreView('wpts-settings.php', $data);
 	}
 
 	public function renderAdminHelpPage(stdClass $data) {
+		$this->_registerAdminHelpers();
 		return $this->_renderCoreView('wpts-help.php', $data);
 	}
 
 	public function renderAdminAboutPage(stdClass $data) {
+		$this->_registerAdminHelpers();
 		return $this->_renderCoreView('wpts-about.php', $data);
 	}
+
+	public function renderAdminMaintenancePage(stdClass $data) {
+		$this->_registerAdminHelpers();
+		return $this->_renderCoreView('wpts-maintenance.php', $data);
+	}
+
+	public function renderAdminMaintenanceToolResult($toolId, stdClass $data) {
+		$viewFileName = sprintf('maintenance/wpts-%s-result.php', $toolId);
+		return $this->_viewFileExists($viewFileName)
+			? $this->_renderCoreView($viewFileName, $data)
+			: '';
+	}
 	
+	private function _viewFileExists($viewFileName) {
+		return is_readable($this->_env->getViewFilePath($viewFileName));
+	}
+
 	public function renderAdminLookupPage(stdClass $data) {
+		$this->_registerAdminHelpers();
 		return $this->_renderCoreView('wpts-lookup-data-management.php', $data);
 	}
 

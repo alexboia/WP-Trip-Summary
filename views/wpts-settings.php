@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014-2021 Alexandru Boia
+ * Copyright (c) 2014-2023 Alexandru Boia
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -166,7 +166,8 @@
 					id="abp01-submit-settings-interim-viewer" 
 					name="abp01-submit-settings" 
 					class="button button-primary abp01-form-submit-btn apb01-settings-save-btn" 
-					value="<?php echo esc_html__('Save settings', 'abp01-trip-summary'); ?>" />
+					value="<?php echo esc_html__('Save settings', 'abp01-trip-summary'); ?>" 
+				/>
 			</div>
 
 			<h3><?php echo esc_html__('Map Settings', 'abp01-trip-summary'); ?></h3>
@@ -349,16 +350,13 @@
 					id="abp01-submit-settings" 
 					name="abp01-submit-settings" 
 					class="button button-primary abp01-form-submit-btn apb01-settings-save-btn" 
-					value="<?php echo esc_html__('Save settings', 'abp01-trip-summary'); ?>" />
+					value="<?php echo esc_html__('Save settings', 'abp01-trip-summary'); ?>" 
+				/>
 			</div>
 		</div>
 
-		<script id="tpl-abp01-progress-container" type="text/x-kite">
-			<div id="abp01-progress-container" class="abp01-progress-container">
-				<div data-role="progressLabel" id="abp01-progress-label" class="abp01-progress-label"></div>
-				<div data-role="progressParent" id="abp01-progress-bar" class="abp01-progress-bar"></div>
-			</div>
-		</script>
+		<?php echo abp01_render_partial_view('common/wpts-progress-container.php', 
+			new stdClass()); ?>
 
 		<script id="tpl-abp01-predefined-tile-layers-container" type="text/x-kite">
 			<div id="abp01-predefined-tile-layers-container" class="abp01-window-container">

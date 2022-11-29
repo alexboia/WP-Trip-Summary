@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014-2021 Alexandru Boia
+ * Copyright (c) 2014-2023 Alexandru Boia
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -34,7 +34,12 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 interface Abp01_MaintenanceTool {
+	/**
+	 * @return Abp01_MaintenanceTool_Result
+	 */
 	function execute(array $parameters = array());
+
+	function getId();
 
 	function getName();
 }

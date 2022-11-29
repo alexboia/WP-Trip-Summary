@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014-2021 Alexandru Boia
+ * Copyright (c) 2014-2023 Alexandru Boia
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -433,6 +433,37 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 			'has_route_track'
 				=> intval($row['has_route_track']) === 1
 		);
+	}
+
+	public function getAllPostsWithRouteTracks() {
+		$postIds = array();
+
+		$db = $this->_env->getDb();
+		$trackTable = $this->_env->getRouteTrackTableName();
+
+		$rows = $db->get($trackTable, null, 'post_ID');
+		if (!empty($rows)) {
+			foreach ($rows as $row) {
+				$postId = intval($row['post_ID']);
+				$postIds[] = $postId;
+			}
+		}
+
+		return $postIds;
+	}
+
+	public function clearAll() {
+		$db = $this->_env->getDb();
+
+		$trackTable = $this->_env
+			->getRouteTrackTableName();
+		$infoTable = $this->_env
+			->getRouteDetailsTableName();
+
+		$db->rawQuery('TRUNCATE TABLE `' . $trackTable . '`', 
+			null);
+		$db->rawQuery('TRUNCATE TABLE `' . $infoTable . '`', 
+			null);
 	}
 
 	public function getLastError() {

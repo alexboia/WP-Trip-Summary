@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014-2021 Alexandru Boia
+ * Copyright (c) 2014-2023 Alexandru Boia
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -124,6 +124,9 @@ class Abp01_PluginModules_PluginModuleHost {
 			Abp01_Viewer::class => function() {
 				return $this->getViewer();
 			},
+			Abp01_MaintenanceTool_Registry::class => function() {
+				return $this->getMaintenanceToolRegistry();
+			},
 			Abp01_Settings::class => function() {
 				return $this->getSettings();
 			},
@@ -239,6 +242,10 @@ class Abp01_PluginModules_PluginModuleHost {
 
 	public function getSettings() {
 		return $this->_plugin->getSettings();
+	}
+
+	public function getMaintenanceToolRegistry() {
+		return $this->_plugin->getMaintenanceToolRegistry();
 	}
 
 	public function getEnv() {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014-2021 Alexandru Boia
+ * Copyright (c) 2014-2023 Alexandru Boia
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -373,13 +373,20 @@ a.abp01-close-editor:hover {
 
 .abp01-settings-save-result, 
 .abp01-lookup-listing-result, 
-.abp01-lookup-operation-result {
+.abp01-lookup-operation-result,
+.abp01-tool-execution-result {
 	margin-left: 0px !important;
 	margin-right: 10px !important;
 }
 
 .abp01-settings-save-result {
 	width: 729px;
+}
+
+.abp01-tool-execution-result,
+.abp01-tool-execution-result {
+	margin-bottom: 10px;
+	width: 774px;
 }
 
 .abp01-lookup-listing-result {
@@ -616,6 +623,46 @@ a.abp01-close-editor:hover {
 	padding-bottom: 10px !important;
 }
 /* END Lookup data management section */
+
+/* START maintenance section */
+.abp01-admin-maintenance-container {
+	margin: 0 10px 20px 0px;
+	width: 783px;
+	border-radius: 5px;
+	box-shadow: 0 1px 1px rgba(0,0,0,.04);
+	padding: 10px;
+	background-color: #fff;
+} 
+
+.abp01-admin-maintenance-tagline {
+	margin-bottom: 10px;
+	clear: both;
+}
+
+.abp01-admin-maintenance-tagline h3 {
+	margin: 0;
+	padding: 0;
+	font-size: 14px;
+}
+
+.abp01-maintenance-tool-select {
+	width: 100%;
+	max-width: 780px !important;
+}
+
+.abp01-maintenance-tool-action-container {
+	margin-top: 10px;
+}
+
+.abp01-admin-maintenance-result-container-inner {
+	margin-top: 10px;
+}
+
+.abp01-admin-maintenance-container table {
+	border-radius: 5px;
+}
+
+/* END maintenance section */
 
 /* START Sumo Select overrides */
 .SelectBox { 

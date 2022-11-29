@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014-2021 Alexandru Boia
+ * Copyright (c) 2014-2023 Alexandru Boia
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -63,10 +63,6 @@
 		<?php endif; ?>
 	</div>
 
-	<script id="tpl-abp01-progress-container" type="text/x-kite">
-		<div id="abp01-progress-container" class="abp01-progress-container">
-			<div data-role="progressLabel" id="abp01-progress-label" class="abp01-progress-label"></div>
-			<div data-role="progressParent" id="abp01-progress-bar" class="abp01-progress-bar"></div>
-		</div>
-	</script>
+	<?php echo abp01_render_partial_view('common/wpts-progress-container.php', 
+		new stdClass()); ?>
 </div>

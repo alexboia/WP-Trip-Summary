@@ -9,13 +9,13 @@
  * License URI: https://github.com/alexboia/WP-Trip-Summary/blob/master/LICENSE.md
  * Plugin URI: https://github.com/alexboia/WP-Trip-Summary
  * Text Domain: abp01-trip-summary
- * Requires PHP: 7.0.2
- * Requires at least: 5.3.0
+ * Requires PHP: 7.4.0
+ * Requires at least: 6.0.0
  * WPTS Version Name: Emil Racovita
  */
 
 /**
- * Copyright (c) 2014-2021 Alexandru Boia
+ * Copyright (c) 2014-2023 Alexandru Boia
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:

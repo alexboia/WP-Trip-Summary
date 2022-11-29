@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014-2021 Alexandru Boia
+ * Copyright (c) 2014-2023 Alexandru Boia
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -34,16 +34,27 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_MaintenanceTool_ClearCache implements Abp01_MaintenanceTool {
+	const CLEAR_CACHE_FILES_GLOB_PATTERN = 'track*.cache';
 
-	public function __construct() {
-		
+	/**
+	 * @var Abp01_MaintenanceTool_Helper_Files
+	 */
+	private $_filesHelper;
+	
+	public function __construct(Abp01_Env $env) {
+		$this->_filesHelper = new Abp01_MaintenanceTool_Helper_Files($env);
 	}
 
-    public function execute(array $parameters = array()) { 
-		//dispatch to route track processor
+	public function execute(array $parameters = array()) { 
+		$this->_filesHelper->clearCacheFiles();
+		return new Abp01_MaintenanceTool_Result(true);
 	}
 
-    public function getName() { 
+	public function getName() { 
 		return __('Clear track data cache', 'abp01-trip-summary');
+	}
+
+	public function getId() {
+		return 'clear-cache';
 	}
 }

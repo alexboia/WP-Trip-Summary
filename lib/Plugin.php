@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014-2021 Alexandru Boia
+ * Copyright (c) 2014-2023 Alexandru Boia
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -98,6 +98,11 @@ class Abp01_Plugin {
 	 * @var Abp01_PluginMenu
 	 */
 	private $_pluginMenu;
+
+	/**
+	 * @var Abp01_MaintenanceTool_Registry
+	 */
+	private $_maintenanceToolRegistry;
 
 	public function __construct() {
 		return;
@@ -229,9 +234,11 @@ class Abp01_Plugin {
 	}
 
 	private function _loadTextDomain() {
-		load_plugin_textdomain('abp01-trip-summary', 
+		load_plugin_textdomain(
+			'abp01-trip-summary', 
 			false, 
-			plugin_basename(ABP01_LANG_DIR));
+			plugin_basename(ABP01_LANG_DIR)
+		);
 	}
 
 	private function _initView() {
@@ -250,6 +257,7 @@ class Abp01_Plugin {
 		$this->_pluginModuleHost = new Abp01_PluginModules_PluginModuleHost($this, array(
 			Abp01_PluginModules_SettingsPluginModule::class,
 			Abp01_PluginModules_LookupDataManagementPluginModule::class,
+			Abp01_PluginModules_MaintenancePluginModule::class,
 			Abp01_PluginModules_HelpPluginModule::class,
 			Abp01_PluginModules_AboutPagePluginModule::class,
 			Abp01_PluginModules_PostListingCustomizationPluginModule::class,
@@ -356,6 +364,21 @@ class Abp01_Plugin {
 			$this->_viewerDataSourceCache = new Abp01_Viewer_DataSource_Cache_WpTransients();
 		}
 		return $this->_viewerDataSourceCache;
+	}
+
+	public function getMaintenanceToolRegistry() {
+		if ($this->_maintenanceToolRegistry === null) {
+			$registry = new Abp01_MaintenanceTool_Registry();
+			$registry->registerTool(new Abp01_MaintenanceTool_ClearCache($this->getEnv()));
+			$registry->registerTool(new Abp01_MaintenanceTool_ClearAllData($this->getRouteManager(), 
+				$this->getEnv()));
+			$registry->registerTool(new Abp01_MaintenanceTool_DetectMissingTracks($this->getRouteManager(), 
+				$this->getRouteTrackProcessor()));
+
+			$this->_maintenanceToolRegistry = 
+				$registry;
+		}
+		return $this->_maintenanceToolRegistry;
 	}
 
 	public function getLookupForCurrentLang() {

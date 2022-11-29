@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014-2021 Alexandru Boia
+ * Copyright (c) 2014-2023 Alexandru Boia
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -34,107 +34,113 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_TranslatedScriptMessages {
-    public static function getAdminTripSummaryEditorScriptTranslations() {
-        return array(
-            'btnClearInfo' => esc_html__('Clear info', 'abp01-trip-summary'), 
-            'btnClearTrack' => esc_html__('Clear track', 'abp01-trip-summary'), 
-            'lblPluploadFileTypeSelector' => esc_html__('GPX files', 'abp01-trip-summary'), 
-            'lblGeneratingPreview' => esc_html__('Generating preview. Please wait...', 'abp01-trip-summary'), 
-            'lblTrackUploadingWait' => esc_html__('Uploading track', 'abp01-trip-summary'), 
-            'lblTrackUploaded' => esc_html__('The track has been uploaded and saved successfully', 'abp01-trip-summary'), 
-            'lblTypeBiking' => esc_html__('Biking', 'abp01-trip-summary'), 
-            'lblTypeHiking' => esc_html__('Hiking', 'abp01-trip-summary'), 
-            'lblTypeTrainRide' => esc_html__('Train ride', 'abp01-trip-summary'), 
-            'lblClearingTrackWait' => esc_html__('Clearing track. Please wait...', 'abp01-trip-summary'), 
-            'lblTrackClearOk' => esc_html__('The track has been successfully cleared', 'abp01-trip-summary'), 
-            'lblTrackClearFail' => esc_html__('The data could not be updated', 'abp01-trip-summary'), 
-            'lblTrackClearFailNetwork' => esc_html__('The data could not be updated due to a possible network error or an internal server issue', 'abp01-trip-summary'), 
-            'lblSavingDataWait' => esc_html__('Saving data. Please wait...', 'abp01-trip-summary'), 
-            'lblDataSaveOk' => esc_html__('The data has been saved', 'abp01-trip-summary'), 
-            'lblDataSaveFail' => esc_html__('The data could not be saved', 'abp01-trip-summary'), 
-            'lblDataSaveFailNetwork' => esc_html__('The data could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'), 
-            'lblClearingInfoWait' => esc_html__('Clearing trip info. Please wait...', 'abp01-trip-summary'), 
-            'lblClearInfoOk' => esc_html__('The trip info has been cleared', 'abp01-trip-summary'), 
-            'lblClearInfoFail' => esc_html__('The trip info could not be cleared', 'abp01-trip-summary'), 
-            'lblClearInfoFailNetwork' => esc_html__('The trip info could not be cleared due to a possible network error or an internal server issue', 'abp01-trip-summary'), 
-            'errPluploadTooLarge' => esc_html__('The selected file is too large. Maximum allowed size is 10MB', 'abp01-trip-summary'), 
-            'errPluploadFileType' => esc_html__('The selected file type is not valid. Only GPX and GeoJSON files are allowed', 'abp01-trip-summary'), 
-            'errPluploadIoError' => esc_html__('The file could not be read', 'abp01-trip-summary'), 
-            'errPluploadSecurityError' => esc_html__('The file could not be read', 'abp01-trip-summary'), 
-            'errPluploadInitError' => esc_html__('The uploader could not be initialized', 'abp01-trip-summary'), 
-            'errPluploadHttp' =>  esc_html__('The file could not be uploaded', 'abp01-trip-summary'), 
-            'errServerUploadFileType' =>  esc_html__('The selected file type is not valid. Only GPX and GeoJSON files are allowed', 'abp01-trip-summary'), 
-            'errServerUploadTooLarge' =>  esc_html__('The selected file is too large. Maximum allowed size is 10MB', 'abp01-trip-summary'), 
-            'errServerUploadNoFile' =>  esc_html__('No file was uploaded', 'abp01-trip-summary'), 
-            'errServerUploadInternal' =>  esc_html__('The file could not be uploaded due to a possible internal server issue', 'abp01-trip-summary'), 
-            'errServerUploadStoreFailed' => esc_html__('The file could not be stored on the server (#2). This usually indicates an internal server issue.', 'abp01-trip-summary'),
-            'errServerUploadStoreInitiationFailed' => esc_html__('The file could not be stored on the server (#1). This usually indicates an internal server issue.', 'abp01-trip-summary'),
-            'errServerUploadInvalidUploadParams' => esc_html__('The upload request contains some invalid parameters. This might indicate an error within the plug-in itself or an attempt to forge the request.', 'abp01-trip-summary'),
-            'errServerUploadDestinationFileNotFound' => esc_html__('The destination were the track file was uploaded cannot be found. This usually indicates an internal server issue.', 'abp01-trip-summary'),
-            'errServerUploadDestinationFileCorrupt' => esc_html__('The destination were the track file was uploaded has been found, but is corrupt. This usually indicates a problem with the file itself or, less likely, an internal server issue.', 'abp01-trip-summary'),
-            'errServerUploadFail' =>  esc_html__('The file could not be uploaded', 'abp01-trip-summary'),
-            'errServerCustomValidationFail' => esc_html__('The uploaded file was not a valid GPX or GeoJSON file', 'abp01-trip-summary'), 
-            'selectBoxPlaceholder' => esc_html__('Choose options', 'abp01-trip-summary'),
-            'selectBoxCaptionFormat' => esc_html__('{0} selected', 'abp01-trip-summary'),
-            'selectBoxSelectAllText' => esc_html__('Select all', 'abp01-trip-summary'),
-            'lblStatusTextTripSummaryInfoPresent' => esc_html__('Trip summary information is present for this post', 'abp01-trip-summary'),
-            'lblStatusTextTripSummaryInfoNotPresent' => esc_html__('Trip summary information is not present for this post', 'abp01-trip-summary'),
-            'lblStatusTextTripSummaryTrackPresent' => esc_html__('Trip summary track is present for this post', 'abp01-trip-summary'),
-            'lblStatusTextTripSummaryTrackNotPresent' => esc_html__('Trip summary track is not present for this post', 'abp01-trip-summary'),
-            'lblWarnRemoveTripSummaryInfo' => esc_html__('Are you sure you want to remove the trip summary information? This action cannot be undone!', 'abp01-trip-summary'),
-            'lblWarnRemoveTripSummaryTrack' => esc_html__('Are you sure you want to remove the trip summary track? This action cannot be undone!', 'abp01-trip-summary')
-        );
-    }
+	public static function getAdminTripSummaryEditorScriptTranslations() {
+		return array(
+			'btnClearInfo' => esc_html__('Clear info', 'abp01-trip-summary'), 
+			'btnClearTrack' => esc_html__('Clear track', 'abp01-trip-summary'), 
+			'lblPluploadFileTypeSelector' => esc_html__('GPX files', 'abp01-trip-summary'), 
+			'lblGeneratingPreview' => esc_html__('Generating preview. Please wait...', 'abp01-trip-summary'), 
+			'lblTrackUploadingWait' => esc_html__('Uploading track', 'abp01-trip-summary'), 
+			'lblTrackUploaded' => esc_html__('The track has been uploaded and saved successfully', 'abp01-trip-summary'), 
+			'lblTypeBiking' => esc_html__('Biking', 'abp01-trip-summary'), 
+			'lblTypeHiking' => esc_html__('Hiking', 'abp01-trip-summary'), 
+			'lblTypeTrainRide' => esc_html__('Train ride', 'abp01-trip-summary'), 
+			'lblClearingTrackWait' => esc_html__('Clearing track. Please wait...', 'abp01-trip-summary'), 
+			'lblTrackClearOk' => esc_html__('The track has been successfully cleared', 'abp01-trip-summary'), 
+			'lblTrackClearFail' => esc_html__('The data could not be updated', 'abp01-trip-summary'), 
+			'lblTrackClearFailNetwork' => esc_html__('The data could not be updated due to a possible network error or an internal server issue', 'abp01-trip-summary'), 
+			'lblSavingDataWait' => esc_html__('Saving data. Please wait...', 'abp01-trip-summary'), 
+			'lblDataSaveOk' => esc_html__('The data has been saved', 'abp01-trip-summary'), 
+			'lblDataSaveFail' => esc_html__('The data could not be saved', 'abp01-trip-summary'), 
+			'lblDataSaveFailNetwork' => esc_html__('The data could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'), 
+			'lblClearingInfoWait' => esc_html__('Clearing trip info. Please wait...', 'abp01-trip-summary'), 
+			'lblClearInfoOk' => esc_html__('The trip info has been cleared', 'abp01-trip-summary'), 
+			'lblClearInfoFail' => esc_html__('The trip info could not be cleared', 'abp01-trip-summary'), 
+			'lblClearInfoFailNetwork' => esc_html__('The trip info could not be cleared due to a possible network error or an internal server issue', 'abp01-trip-summary'), 
+			'errPluploadTooLarge' => esc_html__('The selected file is too large. Maximum allowed size is 10MB', 'abp01-trip-summary'), 
+			'errPluploadFileType' => esc_html__('The selected file type is not valid. Only GPX and GeoJSON files are allowed', 'abp01-trip-summary'), 
+			'errPluploadIoError' => esc_html__('The file could not be read', 'abp01-trip-summary'), 
+			'errPluploadSecurityError' => esc_html__('The file could not be read', 'abp01-trip-summary'), 
+			'errPluploadInitError' => esc_html__('The uploader could not be initialized', 'abp01-trip-summary'), 
+			'errPluploadHttp' =>  esc_html__('The file could not be uploaded', 'abp01-trip-summary'), 
+			'errServerUploadFileType' =>  esc_html__('The selected file type is not valid. Only GPX and GeoJSON files are allowed', 'abp01-trip-summary'), 
+			'errServerUploadTooLarge' =>  esc_html__('The selected file is too large. Maximum allowed size is 10MB', 'abp01-trip-summary'), 
+			'errServerUploadNoFile' =>  esc_html__('No file was uploaded', 'abp01-trip-summary'), 
+			'errServerUploadInternal' =>  esc_html__('The file could not be uploaded due to a possible internal server issue', 'abp01-trip-summary'), 
+			'errServerUploadStoreFailed' => esc_html__('The file could not be stored on the server (#2). This usually indicates an internal server issue.', 'abp01-trip-summary'),
+			'errServerUploadStoreInitiationFailed' => esc_html__('The file could not be stored on the server (#1). This usually indicates an internal server issue.', 'abp01-trip-summary'),
+			'errServerUploadInvalidUploadParams' => esc_html__('The upload request contains some invalid parameters. This might indicate an error within the plug-in itself or an attempt to forge the request.', 'abp01-trip-summary'),
+			'errServerUploadDestinationFileNotFound' => esc_html__('The destination were the track file was uploaded cannot be found. This usually indicates an internal server issue.', 'abp01-trip-summary'),
+			'errServerUploadDestinationFileCorrupt' => esc_html__('The destination were the track file was uploaded has been found, but is corrupt. This usually indicates a problem with the file itself or, less likely, an internal server issue.', 'abp01-trip-summary'),
+			'errServerUploadFail' =>  esc_html__('The file could not be uploaded', 'abp01-trip-summary'),
+			'errServerCustomValidationFail' => esc_html__('The uploaded file was not a valid GPX or GeoJSON file', 'abp01-trip-summary'), 
+			'selectBoxPlaceholder' => esc_html__('Choose options', 'abp01-trip-summary'),
+			'selectBoxCaptionFormat' => esc_html__('{0} selected', 'abp01-trip-summary'),
+			'selectBoxSelectAllText' => esc_html__('Select all', 'abp01-trip-summary'),
+			'lblStatusTextTripSummaryInfoPresent' => esc_html__('Trip summary information is present for this post', 'abp01-trip-summary'),
+			'lblStatusTextTripSummaryInfoNotPresent' => esc_html__('Trip summary information is not present for this post', 'abp01-trip-summary'),
+			'lblStatusTextTripSummaryTrackPresent' => esc_html__('Trip summary track is present for this post', 'abp01-trip-summary'),
+			'lblStatusTextTripSummaryTrackNotPresent' => esc_html__('Trip summary track is not present for this post', 'abp01-trip-summary'),
+			'lblWarnRemoveTripSummaryInfo' => esc_html__('Are you sure you want to remove the trip summary information? This action cannot be undone!', 'abp01-trip-summary'),
+			'lblWarnRemoveTripSummaryTrack' => esc_html__('Are you sure you want to remove the trip summary track? This action cannot be undone!', 'abp01-trip-summary')
+		);
+	}
 
-    public static function getAdminSettingsScriptTranslations() {
-        return array(
-            'errSaveFailNetwork' => esc_html__('The settings could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'), 
-            'errSaveFailGeneric' => esc_html__('The settings could not be saved due to a possible internal server issue', 'abp01-trip-summary'), 
-            'msgSaveOk' => esc_html__('Settings successfully saved', 'abp01-trip-summary'), 
-            'msgSaveWorking' => esc_html__('Saving settings. Please wait...', 'abp01-trip-summary')
-        );
-    }
+	public static function getAdminSettingsScriptTranslations() {
+		return array(
+			'errSaveFailNetwork' => esc_html__('The settings could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'), 
+			'errSaveFailGeneric' => esc_html__('The settings could not be saved due to a possible internal server issue', 'abp01-trip-summary'), 
+			'msgSaveOk' => esc_html__('Settings successfully saved', 'abp01-trip-summary'), 
+			'msgSaveWorking' => esc_html__('Saving settings. Please wait...', 'abp01-trip-summary')
+		);
+	}
 
-    public static function getAdminLookupScriptTranslations() {
-        return array(
-            'msgWorking' => esc_html__('Working. Please wait...', 'abp01-trip-summary'),
-            'msgSaveOk' => esc_html__('Item successfully saved', 'abp01-trip-summary'),
-            'addItemTitle' => esc_html__('Add new item', 'abp01-trip-summary'),
-            'editItemTitle' => esc_html__('Modify item', 'abp01-trip-summary'),
-            'errFailNetwork' => esc_html__('The item could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'),
-            'errFailGeneric' => esc_html__('The item could not be saved due to a possible internal server issue', 'abp01-trip-summary'),
-            'ttlConfirmDelete' => esc_html__('Confirm item removal', 'abp01-trip-summary'),
-            'errDeleteFailedNetwork' => esc_html__('The item could not be deleted due to a possible network error or an internal server issue', 'abp01-trip-summary'),
-            'errDeleteFailedGeneric' => esc_html__('The item could not be deleted due to a possible internal server issue', 'abp01-trip-summary'),
-            'msgDeleteOk' => esc_html__('The item has been successfully deleted', 'abp01-trip-summary'),
-            'errListingFailNetwork' => esc_html__('The lookup items could not be loaded due to a possible network error or an internal server issue', 'abp01-trip-summary'),
-            'errListingFailGeneric' => esc_html__('The lookup items could not be loaded', 'abp01-trip-summary')
-        );
-    }
+	public static function getAdminLookupScriptTranslations() {
+		return array(
+			'msgWorking' => esc_html__('Working. Please wait...', 'abp01-trip-summary'),
+			'msgSaveOk' => esc_html__('Item successfully saved', 'abp01-trip-summary'),
+			'addItemTitle' => esc_html__('Add new item', 'abp01-trip-summary'),
+			'editItemTitle' => esc_html__('Modify item', 'abp01-trip-summary'),
+			'errFailNetwork' => esc_html__('The item could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'),
+			'errFailGeneric' => esc_html__('The item could not be saved due to a possible internal server issue', 'abp01-trip-summary'),
+			'ttlConfirmDelete' => esc_html__('Confirm item removal', 'abp01-trip-summary'),
+			'errDeleteFailedNetwork' => esc_html__('The item could not be deleted due to a possible network error or an internal server issue', 'abp01-trip-summary'),
+			'errDeleteFailedGeneric' => esc_html__('The item could not be deleted due to a possible internal server issue', 'abp01-trip-summary'),
+			'msgDeleteOk' => esc_html__('The item has been successfully deleted', 'abp01-trip-summary'),
+			'errListingFailNetwork' => esc_html__('The lookup items could not be loaded due to a possible network error or an internal server issue', 'abp01-trip-summary'),
+			'errListingFailGeneric' => esc_html__('The lookup items could not be loaded', 'abp01-trip-summary')
+		);
+	}
 
-    public static function getFrontendViewerScriptTranslations() {
-        return array(
-            'lblMinAltitude' => esc_html__('Minimum altitude:', 'abp01-trip-summary'),
-            'lblMaxAltitude' => esc_html__('Maximum altitude:', 'abp01-trip-summary'),
-            'lblAltitude' => esc_html__('Altitude:', 'abp01-trip-summary'),
-            'lblDistance' => esc_html__('Distance:', 'abp01-trip-summary'),
-            'lblItemValuesShow' => esc_html__('(show)', 'abp01-trip-summary'),
-            'lblItemValuesHide' => esc_html__('(hide)', 'abp01-trip-summary')
-        );
-    }
+	public static function getAdminMaintenanceScriptTranslations() {
+		return array(
+			
+		);
+	}
 
-    public static function getAdminHelpScriptTranslations() {
-        return array(
-            'msgWorking' => esc_html__('Loading help contents. Please wait...', 'abp01-trip-summary'),
-            'errLoadHelpContentsFailNetwork' => esc_html__('The help contents could not be loaded due to a possible network error or an internal server issue.', 'abp01-trip-summary'),
-            'errLoadHelpContentsGeneric' => esc_html__('The help contents could not be loaded.', 'abp01-trip-summary')
-        );
-    }
+	public static function getFrontendViewerScriptTranslations() {
+		return array(
+			'lblMinAltitude' => esc_html__('Minimum altitude:', 'abp01-trip-summary'),
+			'lblMaxAltitude' => esc_html__('Maximum altitude:', 'abp01-trip-summary'),
+			'lblAltitude' => esc_html__('Altitude:', 'abp01-trip-summary'),
+			'lblDistance' => esc_html__('Distance:', 'abp01-trip-summary'),
+			'lblItemValuesShow' => esc_html__('(show)', 'abp01-trip-summary'),
+			'lblItemValuesHide' => esc_html__('(hide)', 'abp01-trip-summary')
+		);
+	}
 
-    public static function getAdminListingAuditLogScriptTranslations() {
-        return array(
-            'msgWorking' => esc_html__('Loading audit log. Please wait...', 'abp01-trip-summary'),
-            'errFailedToLoadAuditLog' => esc_html__('The audit log could not be loaded!', 'abp01-trip-summary')
-        );
-    }
+	public static function getAdminHelpScriptTranslations() {
+		return array(
+			'msgWorking' => esc_html__('Loading help contents. Please wait...', 'abp01-trip-summary'),
+			'errLoadHelpContentsFailNetwork' => esc_html__('The help contents could not be loaded due to a possible network error or an internal server issue.', 'abp01-trip-summary'),
+			'errLoadHelpContentsGeneric' => esc_html__('The help contents could not be loaded.', 'abp01-trip-summary')
+		);
+	}
+
+	public static function getAdminListingAuditLogScriptTranslations() {
+		return array(
+			'msgWorking' => esc_html__('Loading audit log. Please wait...', 'abp01-trip-summary'),
+			'errFailedToLoadAuditLog' => esc_html__('The audit log could not be loaded!', 'abp01-trip-summary')
+		);
+	}
 }

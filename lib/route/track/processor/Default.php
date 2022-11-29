@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014-2021 Alexandru Boia
+ * Copyright (c) 2014-2023 Alexandru Boia
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -310,10 +310,12 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
 	}
 
 	private function _constructTrackFilePath($trackFileName) {
-		$tracksStorageDir = $this->_env
-			->getTracksStorageDir();
-
+		$tracksStorageDir = $this->_getTracksStorageDir();
 		return wp_normalize_path($tracksStorageDir . '/' . $trackFileName);
+	}
+
+	private function _getTracksStorageDir() {
+		return $this->_env->getTracksStorageDir();
 	}
 
 	private function _constructGlobTrackCacheFilePath($postId) {
@@ -322,10 +324,12 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
 	}
 
 	private function _constructTrackCacheFilePath($fileName) {
-		$cacheStorageDir = $this->_env
-			->getCacheStorageDir();
-
+		$cacheStorageDir = $this->_getCacheStorageDir();
 		return wp_normalize_path($cacheStorageDir . '/' . $fileName);
+	}
+
+	private function _getCacheStorageDir() {
+		return $this->_env->getCacheStorageDir();
 	}
 
 	private function _constructGlobTrackCacheFileName($postId) {
@@ -333,12 +337,7 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
 	}
 
 	private function _deleteFilesByGlobPattern($globPathPattern) {
-		$files = glob($globPathPattern, GLOB_NOESCAPE);
-		if (is_array($files)) {
-			foreach ($files as $file) {
-				@unlink($file);
-			}
-		}
+		abp01_delete_files_by_glob_pattern($globPathPattern);
 	}
 
 	private function _constructTrackDocumentCacheFilePath($postId) {
