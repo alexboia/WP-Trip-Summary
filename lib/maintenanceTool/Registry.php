@@ -55,6 +55,11 @@ class Abp01_MaintenanceTool_Registry {
 		return $info;
 	}
 
+	/**
+	 * @param string $id 
+	 * @param array $parameters 
+	 * @return Abp01_MaintenanceTool_Result 
+	 */
 	public function executeTool($id, array $parameters = array()) {
 		if (empty($id)) {
 			throw new InvalidArgumentException('Tool ID may not be empty.');
