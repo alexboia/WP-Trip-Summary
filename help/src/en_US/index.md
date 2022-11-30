@@ -89,9 +89,9 @@ Depending on the various functions performed by various plug-in components, we c
 <div class="abp01-help-section" markdown="1">
 To run this module, the following technical requirements must be met:
 
-- PHP version 7.0.2 or greater;
+- PHP version 7.4.0 or greater;
 - MySQL version 5.7 or greater (with spatial support);
-- WordPress 5.3.0;
+- WordPress 6.0.0;
 - libxml extension;
 - SimpleXml extension;
 - mysqli extension;
@@ -306,6 +306,11 @@ This field allows specifying how multiple values of the same item are laid out i
 
 This field allows setting how many values are displayed for items that have multiple values. 
 If an item has more values than the what is set in this field, then they are hidden and a `(show)` button is displayed.
+
+#### Enable JSON-LD frontend data
+
+If enabled, the plug-in inserts structured JSON-LD data in the post and page details page, 
+if there is track data attached to that post or page.
 
 #### Map Tile URL Template
 

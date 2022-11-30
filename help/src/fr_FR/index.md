@@ -89,9 +89,9 @@ Selon les différentes fonctions exercées par les zones du module, nous pouvons
 <div class="abp01-help-section" markdown="1">
 Pour exécuter ce module, vous avez besoin des éléments suivants:
 
-- PHP version 7.0.2 ou ultérieure;
+- PHP version 7.4.0 ou ultérieure;
 - MySQL version 5.7 ou ultérieure (avec prise en charge des données SIG);
-- WordPress 5.3.0 ou version ultérieure;
+- WordPress 6.0.0 ou version ultérieure;
 - Extension PHP libxml;
 - Extension PHP SimpleXml;
 - extension PHP mysqli;
@@ -319,6 +319,11 @@ Ce champ permet de spécifier comment plusieurs valeurs d'un même élément son
 
 Ce champ permet de définir le nombre de valeurs affichées pour les éléments qui ont plusieurs valeurs. 
 Si un élément a plus de valeurs que ce qui est défini dans ce champ, ils sont masqués et un bouton `(afficher)` s'affiche.
+
+#### Activer les données frontales JSON-LD
+
+S'il est activé, le plug-in insère des données JSON-LD structurées dans la page de détails de la publication et de la page,
+s'il y a des données de suivi attachées à ce message ou à cette page.
 
 #### Modèle d'URL source de tuile de carte
 

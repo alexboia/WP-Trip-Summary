@@ -546,7 +546,7 @@ class Abp01_Settings {
 	}
 
 	public function getEnableJsonLdFrontenData() {
-		return $this->_getOption(self::OPT_JSONLD_ENABLED, 'boolean', true);
+		return $this->_getOption(self::OPT_JSONLD_ENABLED, 'boolean', false);
 	}
 
 	public function getMinimumAllowedMapHeight() {

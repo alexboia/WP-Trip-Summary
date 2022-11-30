@@ -83,9 +83,9 @@ Cu alte cuvinte, vă puteți documenta (doar) aceste trei tipuri de plimbări.
 <div class="abp01-help-section" markdown="1">
 Pentru a rula acest modul, aveți nevoie de următoarele:
 
-- PHP versiunea 5.6.2 sau mai recenta;
+- PHP versiunea 7.4.0 sau mai recenta;
 - MySQL versiunea 5.7 sau mai recenta (cu suport pentru date GIS);
-- WordPress 5.0 sau mai recenta;
+- WordPress 6.0.0 sau mai recenta;
 - extensia PHP libxml;
 - extensia PHP SimpleXml;
 - extensia PHP mysqli;
@@ -301,6 +301,16 @@ Textul teaser-ului afișat imediat sub caseta de sumar. Există deja o valoare p
 
 Acest câmp permite controlarea filei încărcate inițial în viewer-ul din fron-end atunci când utilizatorul deschide pagina unui post.
 Valoarea implicită este: Hartă & Track GPS.
+
+#### Alege câte valori sunt afișate pentru itemii cu mai multe valori
+
+Acest câmp permite stabilirea numărului de valori care sunt afișate pentru câmpurile multi-valoare.
+Dacă un astfel de câmp are mai multe valori decât numărul stabilit aici, atunci valorile rămase sunt ascunse și un buton este afișat pentru arătarea acestor valori.
+
+#### Insearază date JSON-LD în front-end
+
+Dacă această opțiune este activată, plug-in-ul inserează o structură de date JSON-LD în pagina de detalii a post-ului, 
+dacă acelui post i-a fost atașat un track. 
 
 #### Șablonul URL-ului sursei de tile-uri de hartă
 
