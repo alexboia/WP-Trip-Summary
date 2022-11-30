@@ -84,24 +84,20 @@ class Abp01_Viewer_DataSource_Default implements Abp01_Viewer_DataSource {
 			$routeInfoData->isHikingTour = $routeInfo->isHikingTour();
 			$routeInfoData->isTrainRideTour = $routeInfo->isTrainRideTour();
 
+			$valueTranslator = $this->_getRouteInfoValueTranslator();
 			foreach ($routeInfo->getData() as $field => $value) {
-				$lookupKey = $routeInfo->getLookupKey($field);
-				if ($lookupKey) {
-					if (is_array($value)) {
-						foreach ($value as $k => $v) {
-							$value[$k] = $this->_lookup->lookup($lookupKey, $v);
-						}
-						$value = array_filter($value, 'abp01_is_not_empty');
-					} else {
-						$value = $this->_lookup->lookup($lookupKey, $value);
-					}
-				}
-			
-				$routeInfoData->$field = $value;
+				$routeInfoData->$field = $valueTranslator
+					->translateFieldValue($routeInfo, 
+						$field, 
+						$value);
 			}
 		}
 
 		return $routeInfoData;
+	}
+
+	private function _getRouteInfoValueTranslator() {
+		return new Abp01_Route_Info_ValueTranslator($this->_lookup);
 	}
 
 	private function _getRouteTrackData($postId) {

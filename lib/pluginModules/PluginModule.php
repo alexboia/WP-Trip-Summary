@@ -102,6 +102,10 @@ abstract class Abp01_PluginModules_PluginModule {
 		return $this->_env->getPluginAssetUrl('media/img');
 	}
 
+	protected function _getLookupForCurrentLang() {
+		return abp01_get_plugin()->getLookupForCurrentLang();
+	}
+
 	public function getMenuItems() {
 		return array();
 	}

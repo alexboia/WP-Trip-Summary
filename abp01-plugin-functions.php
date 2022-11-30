@@ -312,6 +312,22 @@ function abp01_get_status_text($text, $status) {
 	return '<span class="abp01-status-text ' . $cssClass . '">' . $text . '</span>';
 }
 
+function abp01_underscorize($value) {
+	if (empty($value)) {
+		return $value;
+	}
+
+	$returnParts = array();
+	$parts = preg_split('/([A-Z]{1}[^A-Z]*)/', $value, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+
+	foreach ($parts as $p) {
+		$returnParts[] = strtolower($p);
+	}
+
+	$returnValue = join('_', $returnParts);
+	return $returnValue;
+}
+
 /**
  * Reads the public instance variables of the source object,
  * 	escapes their values and adds them to a result that 

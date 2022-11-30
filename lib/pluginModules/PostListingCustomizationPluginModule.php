@@ -30,42 +30,42 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
 class Abp01_PluginModules_PostListingCustomizationPluginModule extends Abp01_PluginModules_PluginModule {
-    public function __construct(Abp01_Env $env, Abp01_Auth $auth) {
-        parent::__construct($env, $auth);
-    }
+	public function __construct(Abp01_Env $env, Abp01_Auth $auth) {
+		parent::__construct($env, $auth);
+	}
 
-    public function load() {
-        $this->_registerWebPageAssets();
-        $this->_registerPostListingCustomizations();
-    }
+	public function load() {
+		$this->_registerWebPageAssets();
+		$this->_registerPostListingCustomizations();
+	}
 
-    private function _registerWebPageAssets() {
-        add_action('admin_enqueue_scripts', array($this, 'onAdminEnqueueStyles'));
-    }
+	private function _registerWebPageAssets() {
+		add_action('admin_enqueue_scripts', array($this, 'onAdminEnqueueStyles'));
+	}
 
-    public function onAdminEnqueueStyles() {
-        if ($this->_shouldAddPostListingStyles()) {
-            Abp01_Includes::includeStyleAdminPostsListing();
-        }
-    }
+	public function onAdminEnqueueStyles() {
+		if ($this->_shouldAddPostListingStyles()) {
+			Abp01_Includes::includeStyleAdminPostsListing();
+		}
+	}
 
-    private function _shouldAddPostListingStyles() {
-        return $this->_env->isListingWpPosts();
-    }
+	private function _shouldAddPostListingStyles() {
+		return $this->_env->isListingWpPosts();
+	}
 
-    private function _registerPostListingCustomizations() {
-        foreach ($this->_getPostListingCustomizations() as $customization) {
-            $customization->apply();
-        }
-    }
+	private function _registerPostListingCustomizations() {
+		foreach ($this->_getPostListingCustomizations() as $customization) {
+			$customization->apply();
+		}
+	}
 
-    private function _getPostListingCustomizations() {
-        return array(
-            new Abp01_Display_PostListing_TripSummaryStatusColumnsDecorator()
-        );
-    }
+	private function _getPostListingCustomizations() {
+		return array(
+			new Abp01_Display_PostListing_TripSummaryStatusColumnsDecorator()
+		);
+	}
 }

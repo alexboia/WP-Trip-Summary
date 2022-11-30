@@ -255,6 +255,7 @@ class Abp01_Plugin {
 
 	private function _setupPluginModules() {
 		$this->_pluginModuleHost = new Abp01_PluginModules_PluginModuleHost($this, array(
+			Abp01_PluginModules_RestApiEnhancementsPluginModule::class,
 			Abp01_PluginModules_PluginListingPageCustomizationPluginModule::class,
 			Abp01_PluginModules_SettingsPluginModule::class,
 			Abp01_PluginModules_LookupDataManagementPluginModule::class,
