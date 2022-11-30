@@ -17,7 +17,7 @@ There two main types of assets that need translation:
 
 ### Translating user interface strings
 
-Usually, the way you translate user interface strings is by installing [POEdit](https://poedit.net/), loading the provide .pot file and, on that basis, provide the translation for the language you want.
+The way you translate user interface strings is by installing [POEdit](https://poedit.net/), loading the provide .pot file and, on that basis, provide the translation for the language you want.
 [See this guide for an example](https://wplang.org/translate-theme-plugin/).  
 The result is a .mo file and a .po file, which you then commit and create a pull request.
 
