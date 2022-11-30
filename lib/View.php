@@ -165,4 +165,9 @@ class Abp01_View {
 			. PHP_EOL 
 			. $this->_frontendTheme->renderViewer($data);
 	}
+
+	public function renderJsonLdFrontendData(stdClass $data) {
+		$this->_registerFrontendHelpers();
+		return $this->_renderCoreView('wpts-jsonld-frontend-data.php', $data);
+	}
 }

@@ -30,44 +30,72 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit;
+    exit;
 }
 
-class Abp01_PluginModules_PluginListingPageCustomizationPluginModule extends Abp01_PluginModules_PluginModule {
-	public function __construct(Abp01_Env $env, Abp01_Auth $auth) {
+class Abp01_PluginModules_JsonLdFrontendDataPluginModule extends Abp01_PluginModules_PluginModule {
+	/**
+	 * @var Abp01_Settings
+	 */
+	private $_settings;
+
+	/**
+	 * @var Abp01_Viewer_DataSource
+	 */
+	private $_viewerDataSource;
+
+	/**
+	 * @var Abp01_View
+	 */
+	private $_view;
+	
+	public function __construct(Abp01_Settings $settings, 
+		Abp01_Viewer_DataSource $viewerDataSource, 
+		Abp01_View $view, 
+		Abp01_Env $env, 
+		Abp01_Auth $auth) {
 		parent::__construct($env, $auth);
+
+		$this->_settings = $settings;
+		$this->_viewerDataSource = $viewerDataSource;
+		$this->_view = $view;
 	}
 
 	public function load() {
-		add_filter('plugin_row_meta', 
-			array($this, 'registerPluginRowMeta'), 
-			10, 
-			2);
-	}
-
-	public function registerPluginRowMeta($links, $file) {
-		if ($this->_isThisPlugin($file)) {
-			$links[] = 
-				'<a href="' . esc_attr($this->_getSettingsPageUrl()) . '" target="_blank">' 
-					. esc_html__('Settings', 'abp01-trip-summary') 
-				. '</a>';
-			$links[] = 
-				'<a href="' . esc_attr($this->_getMaintenancePageUrl()) . '" target="_blank">' 
-					. esc_html__('Maintenance', 'abp01-trip-summary') 
-				. '</a>';
+		if ($this->_jsonLdFrontendDataEnabled()) {
+			add_action('wp_head', array($this, 'includeJsonLdFrontendData'));
 		}
-		return $links;
 	}
 
-	private function _isThisPlugin($file) {
-		return $file === plugin_basename(ABP01_PLUGIN_MAIN);
+	private function _jsonLdFrontendDataEnabled() {
+		return $this->_settings->getEnableJsonLdFrontenData();
 	}
 
-	private function _getSettingsPageUrl() {
-		return $this->_env->getAdminPageUrl(ABP01_MAIN_MENU_SLUG);
-	}
-
-	private function _getMaintenancePageUrl() {
-		return $this->_env->getAdminPageUrl(ABP01_MAINTENANCE_SUBMENU_SLUG);
+	public function includeJsonLdFrontendData() {
+		if (is_single() || is_page()) {
+			$postId = $this->_getCurrentPostId();
+			if ($postId > 0) {
+				$viewerData = $this->_viewerDataSource
+					->getTripSummaryViewerData($postId);
+					is_single();
+					
+				if (!empty($viewerData) 
+					&& !empty($viewerData->track) 
+					&& $viewerData->track->exists) {
+					/** @var WP_Post $post */
+					$post = get_post($postId);
+	
+					/** @var Abp01_Route_Track_Bbox $bounds */
+					$bounds = $viewerData->track->summary->getBounds();
+					
+					$jsonLdData = new stdClass();
+					$jsonLdData->name = $post->post_title;
+					$jsonLdData->southWest = $bounds->getSouthWest();
+					$jsonLdData->northEast = $bounds->getNorthEast();
+	
+					echo $this->_view->renderJsonLdFrontendData($jsonLdData);
+				}
+			}
+		}
 	}
 }

@@ -259,6 +259,7 @@ class Abp01_Plugin {
 			Abp01_PluginModules_SettingsPluginModule::class,
 			Abp01_PluginModules_LookupDataManagementPluginModule::class,
 			Abp01_PluginModules_MaintenancePluginModule::class,
+			Abp01_PluginModules_JsonLdFrontendDataPluginModule::class,
 			Abp01_PluginModules_HelpPluginModule::class,
 			Abp01_PluginModules_AboutPagePluginModule::class,
 			Abp01_PluginModules_PostListingCustomizationPluginModule::class,

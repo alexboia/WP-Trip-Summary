@@ -91,7 +91,8 @@
 								id="abp01-showTeaser" 
 								type="checkbox" 
 								class="abp01-checkbox" 
-								value="true" <?php echo $data->settings->showTeaser ? 'checked="checked"' : ''; ?>/>
+								value="true" <?php echo $data->settings->showTeaser ? 'checked="checked"' : ''; ?>
+							/>
 						</td>
 					</tr>
 					<tr>
@@ -156,6 +157,19 @@
 								name="viewerItemValueDisplayCount" 
 								type="text" 
 								value="<?php echo esc_attr($data->settings->viewerItemValueDisplayCount); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="abp01-jsonLdEnabled"><?php echo esc_html__('Enable JSON-LD frontend data', 'abp01-trip-summary'); ?></label>
+						</th>
+						<td>
+							<input name="jsonLdEnabled" 
+								id="abp01-jsonLdEnabled" 
+								type="checkbox" 
+								class="abp01-checkbox" 
+								value="true" <?php echo $data->settings->jsonLdEnabled ? 'checked="checked"' : ''; ?>
+							/>
 						</td>
 					</tr>
 				</table>

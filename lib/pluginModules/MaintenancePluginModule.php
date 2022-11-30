@@ -145,15 +145,13 @@ class Abp01_PluginModules_MaintenancePluginModule extends Abp01_PluginModules_Pl
 	}
 
 	public function executeTool() {
-		$response = abp01_get_ajax_response();
 		$toolId = $this->_getToolIdFromHttpGet();
-
 		if (!$this->_registry->isToolRegistered($toolId)) {
 			die;
 		}
 
-		$result = $this->_registry
-			->executeTool($toolId);
+		$response = abp01_get_ajax_response();
+		$result = $this->_registry->executeTool($toolId);
 
 		$response->success = $result->wasSuccessful();
 		$response->content = $this->_renderToolResult($toolId, 
@@ -163,9 +161,7 @@ class Abp01_PluginModules_MaintenancePluginModule extends Abp01_PluginModules_Pl
 	}
 
 	private function _getToolIdFromHttpGet() {
-		return !empty($_GET['abp01_tool_id'])
-			? trim($_GET['abp01_tool_id'])
-			: '';
+		return Abp01_InputFiltering::getFilteredGETValue('abp01_tool_id');
 	}
 
 	private function _renderToolResult($toolId, Abp01_MaintenanceTool_Result $result) {

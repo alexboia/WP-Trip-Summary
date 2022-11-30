@@ -198,6 +198,7 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
 		$this->_settings->setInitialViewerTab($initialViewerTab);
 		$this->_settings->setViewerItemLayout($viewerItemLayout);
 		$this->_settings->setViewerItemValueDisplayCount($viewerItemDisplayCount);
+		$this->_settings->setEnableJsonLdFrontendData(Abp01_InputFiltering::getPOSTValueAsBoolean('jsonLdEnabled'));
 
 		$this->_settings->setTileLayers($tileLayer);
 		$this->_settings->setShowFullScreen(Abp01_InputFiltering::getPOSTValueAsBoolean('showFullScreen'));

@@ -171,6 +171,13 @@ class Abp01_Settings {
 	const OPT_MAP_HEIGHT = 'mapHeight';
 
 	/**
+	 * Key for "json ld enabled" setting
+	 * 
+	 * @var string
+	 */
+	const OPT_JSONLD_ENABLED = 'jsonLdEnabled';
+
+	/**
 	 * The key used to store the serialized settings, using the WP options API
 	 * 
 	 * @var string
@@ -296,6 +303,7 @@ class Abp01_Settings {
 		$data->initialViewerTab = $this->getInitialViewerTab();
 		$data->viewerItemLayout = $this->getViewerItemLayout();
 		$data->viewerItemValueDisplayCount = $this->getViewerItemValueDisplayCount();
+		$data->jsonLdEnabled = $this->getEnableJsonLdFrontenData();
 
 		//TODO: these should not be part of the plain settings object
 		$data->allowedUnitSystems = self::getAllowedUnitSystems();
@@ -531,6 +539,14 @@ class Abp01_Settings {
 		$mapHeight = max(intval($mapHeight), $this->getMinimumAllowedMapHeight());
 		$this->_setOption(self::OPT_MAP_HEIGHT, 'integer', $mapHeight);
 		return $this;
+	}
+
+	public function setEnableJsonLdFrontendData($enable) {
+		$this->_setOption(self::OPT_JSONLD_ENABLED, 'boolean', $enable === true);
+	}
+
+	public function getEnableJsonLdFrontenData() {
+		return $this->_getOption(self::OPT_JSONLD_ENABLED, 'boolean', true);
 	}
 
 	public function getMinimumAllowedMapHeight() {

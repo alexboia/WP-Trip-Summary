@@ -106,7 +106,8 @@ class Abp01_Viewer_DataSource_Default implements Abp01_Viewer_DataSource {
 
 	private function _getRouteTrackData($postId) {
 		$routeTrackData = new stdClass();
-		$routeTrackData->exists = $this->_routeManager->hasRouteTrack($postId);
+		$routeTrackData->summary = $this->_routeManager->getRouteTrack($postId);
+		$routeTrackData->exists = !empty($routeTrackData->summary);
 		return $routeTrackData;
 	}
 
