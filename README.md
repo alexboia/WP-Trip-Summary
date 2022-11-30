@@ -256,6 +256,13 @@ Here is a sample JSON-LD data set inserted by this plug-in:
 </script>
 ```
 
+### Maintenance
+
+As of version `0.2.8`, there is a new `Maintenance` section, which allows you to carry out various maintenance tasks:
+- Clear all cached track data information;
+- Clear all plug-in related information (all post trip summary, all cached data and all stored track files);
+- Detect which posts that should have track data information are actually missing track files.
+
 The box is described by the south-west and north-east points, in lat-lng format: `Lat1 Lng1 Lat2 Lng2`.
 
 ## Supported languages
@@ -397,9 +404,9 @@ However, there is no definitive plan for it, but, as a general rule, I would lik
 
 ### For running the plug-in itself
 
-1. PHP version 7.0.2 or greater;
+1. PHP version 7.4.0 or greater;
 2. MySQL version 5.7 or greater (with spatial support);
-3. WordPress 5.3.0 or greater;
+3. WordPress 6.0.0 or greater;
 4. libxml extension;
 5. SimpleXml extension;
 6. mysqli extension;
@@ -410,12 +417,11 @@ However, there is no definitive plan for it, but, as a general rule, I would lik
 
 All of the above, with the following amendments:
 
-1. PHP version 7.0.2 or greater is required;
-2. xdebug extension is recommended;
-3. phpunit version 5.x installed and available in your $PATH, for running the tests;
-4. wp (wp-cli) version 2.x installed and available in your $PATH, for initializing the test environment, if needed
-5. phpcompatinfo version 5.x installed and available in your $PATH, for generating the compatibility information files
-6. cygwin, for Windows users, such as myself, for setting up the development environment, running unit tests and the build scripts, with the following requirements itself:
+1. xdebug extension is recommended;
+2. phpunit version 5.x installed and available in your $PATH, for running the tests;
+3. wp (wp-cli) version 2.x installed and available in your $PATH, for initializing the test environment, if needed
+4. phpcompatinfo version 5.x installed and available in your $PATH, for generating the compatibility information files
+5. cygwin, for Windows users, such as myself, for setting up the development environment, running unit tests and the build scripts, with the following requirements itself:
    - wget command;
    - curl command;
    - gettext libraries;
@@ -458,7 +464,7 @@ All of the above, with the following amendments:
 <a name="wpts-contributing"></a>  
 
 Despite my best intentions, it would be really hard to come up with a stellar product without any help from those who would either be really interested in using it or would like to work on such a product.  
-[I welcome all, I thank you all.](https://github.com/alexboia/WP-Trip-Summary/blob/master/CONTRIBUTING.md)
+[See here how one can contribute.](https://github.com/alexboia/WP-Trip-Summary/blob/master/CONTRIBUTING.md)
 
 ## Credits
 <a name="wpts-credits"></a>  

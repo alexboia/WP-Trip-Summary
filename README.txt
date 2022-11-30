@@ -115,6 +115,7 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 7. Admin - Plug-in settings editor
 8. Admin - Plug-in settings editor - chose apre-defined tile configuration
 9. Frontend Viewer - Trip Map with altitude profile
+10. Maintenance page
 
 == Installation ==
 
