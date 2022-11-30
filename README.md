@@ -232,18 +232,7 @@ I really wanted to host the GPS tracks myself for various reasons:
 
 Thus, I developed a module to do just that: upload a GPS track (currently only GPX and GeoJSON files can be uploaded), parse it and display it.
 
-## Supported languages
-<a name="wpts-langs"></a>  
-
-The following languages are supported:
-
-| Language | Code | Notes |
-| --- | --- | --- |
-| English | en_US | Also serves as default language |
-| French | fr_FR | - |
-| Romanian | ro_RO | - |
-
-## JSON-LD front-end data
+### JSON-LD front-end data
 
 The plug-in, as of version `0.2.8` inserts structured JSON-LD data in the post and page details page, 
 if there is track data attached to that post or page.
@@ -268,6 +257,17 @@ Here is a sample JSON-LD data set inserted by this plug-in:
 ```
 
 The box is described by the south-west and north-east points, in lat-lng format: `Lat1 Lng1 Lat2 Lng2`.
+
+## Supported languages
+<a name="wpts-langs"></a>  
+
+The following languages are supported:
+
+| Language | Code | Notes |
+| --- | --- | --- |
+| English | en_US | Also serves as default language |
+| French | fr_FR | - |
+| Romanian | ro_RO | - |
 
 ## Changelog
 <a name="wpts-changelog"></a>  
