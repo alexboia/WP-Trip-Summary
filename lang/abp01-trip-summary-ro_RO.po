@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Trip Summary 0.1.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-trip-summary\n"
-"POT-Creation-Date: 2022-11-29T23:34:49+00:00\n"
-"PO-Revision-Date: 2022-11-30 01:36+0200\n"
+"POT-Creation-Date: 2022-11-30T16:24:11+00:00\n"
+"PO-Revision-Date: 2022-11-30 18:26+0200\n"
 "Last-Translator: \n"
 "Language-Team: alexandru.boia [at] outlook [dot] com\n"
 "Language: ro_RO\n"
@@ -257,45 +257,45 @@ msgstr "Setări WP Trip Summary"
 msgid "Trip Summary"
 msgstr "WP Trip Summary"
 
-#: lib/pluginModules/SettingsPluginModule.php:216
+#: lib/pluginModules/SettingsPluginModule.php:217
 msgid "The settings could not be saved. Please try again."
 msgstr "Opțiunile nu au putut fi salvate. Te rog să reîncerci."
 
-#: lib/pluginModules/SettingsPluginModule.php:234
+#: lib/pluginModules/SettingsPluginModule.php:235
 msgid "Unsupported unit system"
 msgstr "Sistemul de unități de măsură ales nu este suportat"
 
-#: lib/pluginModules/SettingsPluginModule.php:241
+#: lib/pluginModules/SettingsPluginModule.php:242
 msgid "Unsupported viewer tab"
 msgstr "Tab-ul selectat nu este suportat"
 
-#: lib/pluginModules/SettingsPluginModule.php:248
+#: lib/pluginModules/SettingsPluginModule.php:249
 msgid "Unsupported viewer item layout"
 msgstr "Valoare invalidă pentru layout-ul itemilor din viewer"
 
-#: lib/pluginModules/SettingsPluginModule.php:255
+#: lib/pluginModules/SettingsPluginModule.php:256
 msgid "The track line colour is not a valid HEX colour code"
 msgstr "Culoarea track-ului nu este un cod de culoare HEX valid"
 
-#: lib/pluginModules/SettingsPluginModule.php:264
+#: lib/pluginModules/SettingsPluginModule.php:265
 msgid "Tile layer URL is required"
 msgstr "Trebuie să completezi URL-ul sursei de tile-uri de hartă"
 
-#: lib/pluginModules/SettingsPluginModule.php:268
+#: lib/pluginModules/SettingsPluginModule.php:269
 msgid "Tile layer URL does not have a valid format"
 msgstr "URL-ul sursei de tile-uri de hartă nu are un format valid"
 
-#: lib/pluginModules/SettingsPluginModule.php:274
+#: lib/pluginModules/SettingsPluginModule.php:275
 msgid "Tile layer attribution URL does not have a valid format"
 msgstr ""
 "URL-ul către pagina de copyright a sursei de tile-uri de hartă nu are un "
 "format valid"
 
-#: lib/pluginModules/SettingsPluginModule.php:282
+#: lib/pluginModules/SettingsPluginModule.php:283
 msgid "Tile layer API key is required"
 msgstr "Trebuie să completezi cheia API a sursei de tile-uri de hartă"
 
-#: lib/Settings.php:270 tests/lib/SettingsDataHelpers.php:71
+#: lib/Settings.php:277 tests/lib/SettingsDataHelpers.php:71
 msgid ""
 "For the pragmatic sort, there is also a trip summary at the bottom of this "
 "page. Click here to consult it"
@@ -303,7 +303,7 @@ msgstr ""
 "Pentru firi pragmatice sau curioase există și un sumar tehnic al turei în "
 "josul paginii. Click aici pentru a-l consulta."
 
-#: lib/Settings.php:274 tests/lib/SettingsDataHelpers.php:67
+#: lib/Settings.php:281 tests/lib/SettingsDataHelpers.php:67
 msgid ""
 "It looks like you skipped the story. You should check it out. Click here to "
 "go back to beginning"
@@ -1079,8 +1079,8 @@ msgstr ""
 msgid "Unit system"
 msgstr "Sistemul de unități măsură"
 
-#: views/wpts-settings.php:76 views/wpts-settings.php:169
-#: views/wpts-settings.php:353
+#: views/wpts-settings.php:76 views/wpts-settings.php:183
+#: views/wpts-settings.php:367
 msgid "Save settings"
 msgstr "Salvează opțiunile"
 
@@ -1098,105 +1098,109 @@ msgstr ""
 msgid "Show teaser?"
 msgstr "Se afișează teaser-ul?"
 
-#: views/wpts-settings.php:99
+#: views/wpts-settings.php:100
 msgid "Top teaser text"
 msgstr "Textul teaser-ului din partea de sus"
 
-#: views/wpts-settings.php:109
+#: views/wpts-settings.php:110
 msgid "Bottom teaser text"
 msgstr "Textul teaser-ului din partea de jos"
 
-#: views/wpts-settings.php:119
+#: views/wpts-settings.php:120
 msgid "Initial viewer tab"
 msgstr "Fila inițial selectată"
 
-#: views/wpts-settings.php:135
+#: views/wpts-settings.php:136
 msgid "Chose how multi-value items are laid out"
 msgstr "Alege layout-ul itemilor cu  mai multe valori"
 
-#: views/wpts-settings.php:151
+#: views/wpts-settings.php:152
 msgid "Chose how many values of a multi-valued item are displayed"
 msgstr "Alege câte valori sunt afișate pentru itemii cu mai multe valori"
 
-#: views/wpts-settings.php:173
+#: views/wpts-settings.php:164
+msgid "Enable JSON-LD frontend data"
+msgstr "Insearază date JSON-LD în front-end"
+
+#: views/wpts-settings.php:187
 msgid "Map Settings"
 msgstr "Opțiuni de hartă"
 
-#: views/wpts-settings.php:175
+#: views/wpts-settings.php:189
 msgid "These settings configure the map component"
 msgstr "Aceste opțiuni controlează cum este afișată harta traseului"
 
-#: views/wpts-settings.php:181
+#: views/wpts-settings.php:195
 msgid "Tile layer URL template"
 msgstr "Șablonul URL-ului sursei de tile-uri de hartă"
 
-#: views/wpts-settings.php:193
+#: views/wpts-settings.php:207
 msgid "... or chose pre-defined"
 msgstr "... sau alege unul predefinit"
 
-#: views/wpts-settings.php:198
+#: views/wpts-settings.php:212
 msgid "Tile layer attribution URL"
 msgstr "URL-ul paginii de copyright a sursei de tile-uri de hartă"
 
-#: views/wpts-settings.php:210
+#: views/wpts-settings.php:224
 msgid "Tile layer attribution text"
 msgstr "Nota de copyright a sursei de tile-uri de hartă"
 
-#: views/wpts-settings.php:222
+#: views/wpts-settings.php:236
 msgid "Tile layer API key"
 msgstr "Cheia API a sursei de tile-uri de hartă"
 
-#: views/wpts-settings.php:234 views/wpts-settings.php:382
+#: views/wpts-settings.php:248 views/wpts-settings.php:396
 msgid "This tile layer requires an API key from the service provider"
 msgstr ""
 "Această sursă de tile-uri de hartă necesită o cheie API, care se poate "
 "obține de la furnizor"
 
-#: views/wpts-settings.php:239
+#: views/wpts-settings.php:253
 msgid "Enable map fullscreen mode?"
 msgstr "Se permite comutarea hărții pe întreg ecranul?"
 
-#: views/wpts-settings.php:251
+#: views/wpts-settings.php:265
 msgid "Show magnifying glass?"
 msgstr "Se activează lupa?"
 
-#: views/wpts-settings.php:263
+#: views/wpts-settings.php:277
 msgid "Show map scale?"
 msgstr "Se afișează scara hărții"
 
-#: views/wpts-settings.php:275
+#: views/wpts-settings.php:289
 msgid "Show minimum & maximum altitude?"
 msgstr "Se afișează altitudinea minimă și maximă?"
 
-#: views/wpts-settings.php:287
+#: views/wpts-settings.php:301
 msgid "Show altitude profile?"
 msgstr "Se arată profilul de altitudine?"
 
-#: views/wpts-settings.php:299
+#: views/wpts-settings.php:313
 msgid "Allow track download?"
 msgstr "Se permite descărcarea track-ului?"
 
-#: views/wpts-settings.php:311
+#: views/wpts-settings.php:325
 msgid "Track line colour"
 msgstr "Culoarea liniei track-ului de pe harta"
 
-#: views/wpts-settings.php:323
+#: views/wpts-settings.php:337
 msgid "Track line weight"
 msgstr "Grosimea liniei track-ului de pe harta"
 
-#: views/wpts-settings.php:335
+#: views/wpts-settings.php:349
 msgid "Map height"
 msgstr "Înălțimea hărții"
 
-#: views/wpts-settings.php:364
+#: views/wpts-settings.php:378
 msgid "Chose a pre-defined tile layer service"
 msgstr "Alege o sursă de tile-uri de hartă predefinită"
 
-#: views/wpts-settings.php:389
+#: views/wpts-settings.php:403
 msgid "View details"
 msgstr "Detalii"
 
-#: views/wpts-settings.php:392
+#: views/wpts-settings.php:406
 msgid "Use this tile layer"
 msgstr "Folosește această sursă"
 
