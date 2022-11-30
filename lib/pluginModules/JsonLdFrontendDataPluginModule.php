@@ -72,30 +72,48 @@ class Abp01_PluginModules_JsonLdFrontendDataPluginModule extends Abp01_PluginMod
 	}
 
 	public function includeJsonLdFrontendData() {
-		if (is_single() || is_page()) {
+		if ($this->_isPostDetailsPage()) {
 			$postId = $this->_getCurrentPostId();
 			if ($postId > 0) {
-				$viewerData = $this->_viewerDataSource
-					->getTripSummaryViewerData($postId);
-					is_single();
-					
-				if (!empty($viewerData) 
-					&& !empty($viewerData->track) 
-					&& $viewerData->track->exists) {
-					/** @var WP_Post $post */
-					$post = get_post($postId);
-	
-					/** @var Abp01_Route_Track_Bbox $bounds */
-					$bounds = $viewerData->track->summary->getBounds();
-					
-					$jsonLdData = new stdClass();
-					$jsonLdData->name = $post->post_title;
-					$jsonLdData->southWest = $bounds->getSouthWest();
-					$jsonLdData->northEast = $bounds->getNorthEast();
-	
-					echo $this->_view->renderJsonLdFrontendData($jsonLdData);
-				}
+				$this->_includeJsonLdFrontendData($postId);
 			}
 		}
+	}
+
+	private function _isPostDetailsPage() {
+		return is_single() || is_page();
+	}
+
+	private function _includeJsonLdFrontendData($postId) {
+		$viewerData = $this->_getTripSummaryViewerData($postId);
+		if ($this->_hasTrackData($viewerData)) {
+			/** @var WP_Post $post */
+			$post = get_post($postId);
+
+			/** @var Abp01_Route_Track_Bbox $bounds */
+			$bounds = $viewerData->track->summary
+				->getBounds();
+			
+			$data = new stdClass();
+			$data->name = $post->post_title;
+			$data->southWest = $bounds->getSouthWest();
+			$data->northEast = $bounds->getNorthEast();
+
+			echo $this->_renderJsonLdFrontendData($data);
+		}
+	}
+
+	private function _getTripSummaryViewerData($postId) {
+		return  $this->_viewerDataSource->getTripSummaryViewerData($postId);
+	}
+
+	private function _hasTrackData($viewerData) {
+		return !empty($viewerData) 
+			&& !empty($viewerData->track) 
+			&& $viewerData->track->exists;
+	}
+
+	private function _renderJsonLdFrontendData(stdClass $data) {
+		return $this->_view->renderJsonLdFrontendData($data);
 	}
 }
