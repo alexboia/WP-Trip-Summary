@@ -459,10 +459,14 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 			->getRouteTrackTableName();
 		$infoTable = $this->_env
 			->getRouteDetailsTableName();
+		$infoLookupTable = $this->_env
+			->getRouteDetailsLookupTableName();
 
 		$db->rawQuery('TRUNCATE TABLE `' . $trackTable . '`', 
 			null);
 		$db->rawQuery('TRUNCATE TABLE `' . $infoTable . '`', 
+			null);
+		$db->rawQuery('TRUNCATE TABLE `' . $infoLookupTable . '`', 
 			null);
 	}
 
