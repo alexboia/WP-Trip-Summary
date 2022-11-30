@@ -305,7 +305,7 @@
 
 	public function test_canRemoveRouteInfo() {
 		$routeManager = $this->_getRouteManager();
-		$postIds = array_keys($this->_testPostRouteData);
+		$postIds = $this->_getGeneatedTestPostIds();
 
 		foreach ($postIds as $postId) {
 			$routeManager->deleteRouteInfo($postId);
@@ -320,7 +320,7 @@
 
 	public function test_canCheckIfHasRouteInfo_postsWithRouteInfo() {
 		$routeManager = $this->_getRouteManager();
-		$postIds = array_keys($this->_testPostRouteData);
+		$postIds = $this->_getGeneatedTestPostIds();
 
 		foreach ($postIds as $postId) {
 			$this->assertTrue($routeManager->hasRouteInfo($postId));
@@ -412,7 +412,7 @@
 
 	public function test_canRemoveRouteTrack() {
 		$routeManager = $this->_getRouteManager();
-		$postIds = array_keys($this->_testPostRouteData);
+		$postIds = $this->_getGeneatedTestPostIds();
 
 		foreach ($postIds as $postId) {
 			$routeManager->deleteRouteTrack($postId);
@@ -427,7 +427,7 @@
 
 	public function test_canCheckIfHasRouteTrack_postsWithRouteTrack() {
 		$routeManager = $this->_getRouteManager();
-		$postIds = array_keys($this->_testPostRouteData);
+		$postIds = $this->_getGeneatedTestPostIds();
 
 		foreach ($postIds as $postId) {
 			$this->assertTrue($routeManager->hasRouteTrack($postId));
@@ -445,7 +445,7 @@
 
 	public function test_canCheckIfCanGetTripSummaryStatus_postsWithRouteInfoANDRouteTrack() {
 		$routeManager = $this->_getRouteManager();
-		$postIds = array_keys($this->_testPostRouteData);
+		$postIds = $this->_getGeneatedTestPostIds();
 
 		$tripSummaryInfo = $routeManager->getTripSummaryStatusInfo($postIds);
 
@@ -503,6 +503,14 @@
 			$routeManager->hasRouteTrack($postId));
 	}
 
+	public function test_canClearAllData() {
+		$routeManager = $this->_getRouteManager();
+		$routeManager->clearAll();
+
+		$postIds = $this->_getGeneatedTestPostIds();
+		$this->_assertMissingRouteInfo($postIds);
+	}
+
 	private function _assertRouteInfoInstancesMatch(Abp01_Route_Info $expected, Abp01_Route_Info $actual) {      
 		$this->_assertRouteInfoInstancesDataMatches($expected, 
 			$actual);
@@ -558,5 +566,9 @@
 			$this->_getEnv()->getRouteTrackTableName(), 
 			'post_ID', 
 			$postIds);
+	}
+
+	private function _getGeneatedTestPostIds() {
+		return array_keys($this->_testPostRouteData);
 	}
  }

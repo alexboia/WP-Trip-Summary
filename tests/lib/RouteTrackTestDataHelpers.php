@@ -32,6 +32,7 @@
 trait RouteTrackTestDataHelpers {
 	use GenericTestHelpers;
 	use RouteTrackBboxTestDataHelpers;
+	use RouteTrackPathHelpers;
 
 	public function _generateRandomRouteTracks() {
 		$postIds = array();
@@ -116,35 +117,6 @@ trait RouteTrackTestDataHelpers {
 		$path = $this->_getCachedOriginalTrackDocumentFilePath($postId);
 		$trackDocument = $parser->parse($documentContent);
 		file_put_contents($path, $trackDocument->serializeDocument());
-	}
-
-	protected function _getTrackDocumentFilePath($postId, $extension) {
-		return wp_normalize_path($this->_getEnv()->getTracksStorageDir() . '/' 
-			. $this->_getTrackDocumentFileName($postId, $extension));
-	}
-
-	private function _getTrackDocumentFileName($postId, $extension) {
-		return sprintf('track-%s.%s', 
-			$postId, 
-			$extension);
-	}
-	
-	private function _getCachedOriginalTrackDocumentFileName($postId) {
-		return sprintf('track-original-%d.cache', $postId);
-	}
-
-	protected function _getCachedOriginalTrackDocumentFilePath($postId) {
-		return wp_normalize_path($this->_getEnv()->getCacheStorageDir() . '/' 
-			. $this->_getCachedOriginalTrackDocumentFileName($postId));
-	}
-
-	protected function _getCachedTrackDocumentFileName($postId) {
-		return sprintf('track-%d.cache', $postId);
-	}
-
-	protected function _getCachedTrackDocumentFilePath($postId) {
-		return wp_normalize_path($this->_getEnv()->getCacheStorageDir() . '/' 
-			. $this->_getCachedTrackDocumentFileName($postId));
 	}
 
 	abstract protected function _generatePostId($excludeAdditionalIds = null);

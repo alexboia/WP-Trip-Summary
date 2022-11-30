@@ -51,6 +51,7 @@ trait SettingsDataHelpers {
         $defaults->mapHeight = 350;
         $defaults->showMinMaxAltitude = true;
 		$defaults->showAltitudeProfile = true;
+        $defaults->jsonLdEnabled = false;
         return $defaults;
     }
 
@@ -98,6 +99,7 @@ trait SettingsDataHelpers {
 		$settings->showAltitudeProfile = false;
         $settings->viewerItemLayout = $faker->randomElement(array_keys(Abp01_Viewer::getAvailableItemLayouts()));
         $settings->viewerItemValueDisplayCount = $faker->numberBetween(0, 5);
+        $settings->jsonLdEnabled = ($faker->numberBetween(0, 100) % 2 == 0);
 
         return $settings;
     }
