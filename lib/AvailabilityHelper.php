@@ -43,9 +43,14 @@ class Abp01_AvailabilityHelper {
 	}
 
 	public static function getTripSummaryAvailableForPostTypes() {
-		return array(
+		$postTypes = array(
 			self::POST_TYPE_POST, 
 			self::POST_TYPE_PAGE
 		);
+
+		$filteredPostTypes = apply_filters('abp01_trip_summary_available_for_post_types', 
+			$postTypes);
+
+		return $filteredPostTypes;
 	}
 }

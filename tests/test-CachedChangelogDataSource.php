@@ -74,6 +74,9 @@ class CachedChangelogDataSourceTests extends WP_UnitTestCase {
 		return $changeLogData;
 	}
 
+	/**
+	 * @return Abp01_ChangeLogDataSource
+	 */
 	private function _createDataSourceMock(array $changeLog, $expectedCallCount) {
 		$mock = Mockery::mock('Abp01_ChangeLogDataSource');
         $mock = $mock->shouldReceive('getChangeLog')
