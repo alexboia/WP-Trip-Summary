@@ -81,6 +81,9 @@ Selon les différentes fonctions exercées par les zones du module, nous pouvons
 #### Liste des articles - Colonnes d'information {.abp01-gallery-item-header}
 ![Liste d'articles - Colonnes d'information]($helpDataDirUrl$/screenshots/post-listing-columns.png "Liste d'articles - Colonnes d'information")
 
+#### Page d'entretien {.abp01-gallery-item-header}
+![Page d'entretien]($helpDataDirUrl$/screenshots/maintenance.png "Page d'entretien")
+
 [Retour au sommaire](#help-root)
 </div>
 

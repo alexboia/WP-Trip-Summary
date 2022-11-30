@@ -81,6 +81,9 @@ Depending on the various functions performed by various plug-in components, we c
 #### Post listing - Additional info columns  {.abp01-gallery-item-header}
 ![Post listing - Additional info columns]($helpDataDirUrl$/screenshots/post-listing-columns.png "Post listing - Additional info columns")
 
+#### The maintenance page {.abp01-gallery-item-header}
+![The maintenance page]($helpDataDirUrl$/screenshots/maintenance.png "The maintenance page")
+
 [Back to the Table of Contents](#help-root)
 </div>
 

@@ -75,6 +75,9 @@ Cu alte cuvinte, vă puteți documenta (doar) aceste trei tipuri de plimbări.
 #### Listare articole - Coloane informationale {.abp01-gallery-item-header}
 ![Listare articole - Coloane informationale]($helpDataDirUrl$/screenshots/post-listing-columns.png "Listare articole - Coloane informationale")
 
+#### Pagina de mentenanță {.abp01-gallery-item-header}
+![Pagina de mentenanță]($helpDataDirUrl$/screenshots/maintenance.png "Pagina de mentenanță")
+
 [Înapoi la Cuprins](#help-root)
 </div>
 
