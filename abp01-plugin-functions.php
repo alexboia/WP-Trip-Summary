@@ -428,19 +428,39 @@ function abp01_ensure_storage_directory() {
  * @return string The translated label
  */
 function abp01_get_lookup_type_label($type) {
-	$translations = array(
-		Abp01_Lookup::BIKE_TYPE => esc_html__('Bike type', 'abp01-trip-summary'),
-		Abp01_Lookup::DIFFICULTY_LEVEL => esc_html__('Difficulty level', 'abp01-trip-summary'),
-		Abp01_Lookup::PATH_SURFACE_TYPE => esc_html__('Path surface type', 'abp01-trip-summary'),
-		Abp01_Lookup::RAILROAD_ELECTRIFICATION => esc_html__('Railroad electrification status', 'abp01-trip-summary'),
-		Abp01_Lookup::RAILROAD_LINE_STATUS => esc_html__('Railroad line status', 'abp01-trip-summary'),
-		Abp01_Lookup::RAILROAD_LINE_TYPE => esc_html__('Railroad line type', 'abp01-trip-summary'),
-		Abp01_Lookup::RAILROAD_OPERATOR => esc_html__('Railroad operators', 'abp01-trip-summary'),
-		Abp01_Lookup::RECOMMEND_SEASONS => esc_html__('Recommended seasons', 'abp01-trip-summary')
-	);
-	return isset($translations[$type]) ? $translations[$type] : null;
+	static $translations = null; 
+	
+	if ($translations === null) {
+		$translations = array(
+			Abp01_Lookup::BIKE_TYPE => esc_html__('Bike type', 'abp01-trip-summary'),
+			Abp01_Lookup::DIFFICULTY_LEVEL => esc_html__('Difficulty level', 'abp01-trip-summary'),
+			Abp01_Lookup::PATH_SURFACE_TYPE => esc_html__('Path surface type', 'abp01-trip-summary'),
+			Abp01_Lookup::RAILROAD_ELECTRIFICATION => esc_html__('Railroad electrification status', 'abp01-trip-summary'),
+			Abp01_Lookup::RAILROAD_LINE_STATUS => esc_html__('Railroad line status', 'abp01-trip-summary'),
+			Abp01_Lookup::RAILROAD_LINE_TYPE => esc_html__('Railroad line type', 'abp01-trip-summary'),
+			Abp01_Lookup::RAILROAD_OPERATOR => esc_html__('Railroad operators', 'abp01-trip-summary'),
+			Abp01_Lookup::RECOMMEND_SEASONS => esc_html__('Recommended seasons', 'abp01-trip-summary')
+		);
+	}
+
+	$translatedLabel = isset($translations[$type]) 
+		? $translations[$type] 
+		: null;
+
+	$filteredTranslatedLabel = apply_filters('abp01_get_lookup_type_label', 
+		$translatedLabel, 
+		$type);
+
+	return $filteredTranslatedLabel;
 }
 
+/**
+ * Remove all files that match the given absolute glob path pattern
+ * 	and returns the removed files or null if no matched file found
+ * 
+ * @param string $globPathPattern 
+ * @return array|null 
+ */
 function abp01_delete_files_by_glob_pattern($globPathPattern) {
 	$files = glob($globPathPattern, GLOB_NOESCAPE);
 	if (is_array($files)) {
