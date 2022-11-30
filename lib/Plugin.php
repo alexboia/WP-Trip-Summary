@@ -371,16 +371,48 @@ class Abp01_Plugin {
 	public function getMaintenanceToolRegistry() {
 		if ($this->_maintenanceToolRegistry === null) {
 			$registry = new Abp01_MaintenanceTool_Registry();
-			$registry->registerTool(new Abp01_MaintenanceTool_ClearCache($this->getEnv()));
-			$registry->registerTool(new Abp01_MaintenanceTool_ClearAllData($this->getRouteManager(), 
-				$this->getEnv()));
-			$registry->registerTool(new Abp01_MaintenanceTool_DetectMissingTracks($this->getRouteManager(), 
-				$this->getRouteTrackProcessor()));
+			
+			if ($this->_shouldAddClearCacheTool()) {
+				$registry->registerTool(new Abp01_MaintenanceTool_ClearCache($this->getEnv()));
+			}
+			
+			if ($this->_shouldAddClearAllDataTool()) {
+				$registry->registerTool(new Abp01_MaintenanceTool_ClearAllData($this->getRouteManager(), 
+					$this->getEnv()));
+			}
+			
+			if ($this->_shouldAddDetectMissingTracksTool()) {
+				$registry->registerTool(new Abp01_MaintenanceTool_DetectMissingTracks($this->getRouteManager(), 
+					$this->getRouteTrackProcessor()));
+			}
+
+			$additionalTools = $this->_getAdditionalMaintenanceTools();
+			foreach ($additionalTools as $t) {
+				if ($t instanceof Abp01_MaintenanceTool) {
+					$registry->registerTool($t);
+				}
+			}
 
 			$this->_maintenanceToolRegistry = 
 				$registry;
 		}
 		return $this->_maintenanceToolRegistry;
+	}
+
+	private function _shouldAddClearCacheTool() {
+		return apply_filters('abp01_enable_clear_cache_maintenance_tool', true);
+	}
+
+	private function _shouldAddClearAllDataTool() {
+		return apply_filters('abp01_enable_clear_all_data_maintenance_tool', true);
+	}
+
+	private function _shouldAddDetectMissingTracksTool() {
+		return apply_filters('abp01_enable_detect_missing_tracks_maintenance_tool', true);
+	}
+
+	private function _getAdditionalMaintenanceTools() {
+		return apply_filters('abp01_get_additional_maintenance_tools', array());
 	}
 
 	public function getLookupForCurrentLang() {

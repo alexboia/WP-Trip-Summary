@@ -167,7 +167,14 @@ class Abp01_PluginModules_MaintenancePluginModule extends Abp01_PluginModules_Pl
 	private function _renderToolResult($toolId, Abp01_MaintenanceTool_Result $result) {
 		$data = new stdClass();
 		$data->result = $result->getData();
-		return $this->_view->renderAdminMaintenanceToolResult($toolId, 
+		$renderedResult = $this->_view->renderAdminMaintenanceToolResult($toolId, 
 			$data);
+
+		$filteredRenderedResult = apply_filters('abp01_render_maintenance_tool_result', 
+			$renderedResult, 
+			$toolId, 
+			$result);
+
+		return $filteredRenderedResult;
 	}
 }
