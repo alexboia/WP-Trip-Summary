@@ -243,12 +243,39 @@ The following languages are supported:
 | French | fr_FR | - |
 | Romanian | ro_RO | - |
 
+## JSON-LD front-end data
+
+The plug-in, as of version `0.2.8` inserts structured JSON-LD data in the post and page details page, 
+if there is track data attached to that post or page.
+
+This behaviour is configurable and can be disabled or enabled in the plug-in's configuration page.
+By default, it is disabled.
+
+Here is a sample JSON-LD data set inserted by this plug-in:
+
+```javascript
+<script type="application/ld+json">
+{
+	"@context": "https://schema.org",
+	"@type": "Place",
+	"geo": {
+		"@type": "GeoShape",
+		"box": "45.69152 23.72547 46.01246 25.27592"
+	},
+	"name": "Towards Eagle's lake"
+}
+</script>
+```
+
+The box is described by the south-west and north-east points, in lat-lng format: `Lat1 Lng1 Lat2 Lng2`.
+
 ## Changelog
 <a name="wpts-changelog"></a>  
 
 ### Version 0.2.8
 - Added shortcuts to plug-in's entry from the plug-in listing page;
 - Added maintenance page with the following tools: clear cached track data, clear all trip summary info, detect posts that have missing track files;
+- Added JSON-LD structured data to posts or pages that have trip summary track data (type Place, with box GeoShape);
 - Fixed MysqliDb dependency -  The MysqliDb generates deprectation warnings and needs to be updated ([Issue #79](https://github.com/alexboia/WP-Trip-Summary/issues/79));
 - Fixed JS warnings caused by including editor scripts in non-editor pages ([Issue #78](https://github.com/alexboia/WP-Trip-Summary/issues/78));
 - Added trip summary audit log to post edit and post listing pages ([Issue #80](https://github.com/alexboia/WP-Trip-Summary/issues/80));
