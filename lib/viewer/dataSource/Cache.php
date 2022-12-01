@@ -33,6 +33,9 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
+/**
+ * @package WP-Trip-Summary
+ */
 interface Abp01_Viewer_DataSource_Cache {
 	function clearCachedPostTripSummaryViewerData($postId);
 

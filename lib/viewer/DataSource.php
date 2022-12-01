@@ -33,8 +33,19 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
+/**
+ * @package WP-Trip-Summary
+ */
 interface Abp01_Viewer_DataSource {
+	/**
+	 * @param int $postId 
+	 * @return stdClass
+	 */
 	function getTripSummaryViewerData($postId);
 
+	/**
+	 * @param int $postId 
+	 * @return array
+	 */
 	function getTripSummaryStatusInfo($postId);
 }

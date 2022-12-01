@@ -33,6 +33,9 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
+/**
+ * @package WP-Trip-Summary
+ */
 class Abp01_Viewer_DataSource_Cache_WpTransients implements Abp01_Viewer_DataSource_Cache {
 	public function clearCachedPostTripSummaryViewerData($postId) {
 		$cacheKey = $this->_computePostViewerDataCacheKey($postId);

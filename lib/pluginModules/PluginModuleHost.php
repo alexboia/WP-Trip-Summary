@@ -112,6 +112,9 @@ class Abp01_PluginModules_PluginModuleHost {
 			Abp01_Viewer_DataSource::class => function() {
 				return $this->getViewerDataSource();
 			},
+			Abp01_Rest_DataSource::class => function() {
+				return $this->getRestDataSource();
+			},
 			Abp01_ChangeLogDataSource::class => function() {
 				return $this->getChangeLogDataSource();
 			},
@@ -210,6 +213,10 @@ class Abp01_PluginModules_PluginModuleHost {
 
 	public function getViewerDataSource() {
 		return $this->_plugin->getViewerDataSource();
+	}
+
+	public function getRestDataSource() {
+		return $this->_plugin->getRestDataSource();
 	}
 
 	public function getChangeLogDataSource() {

@@ -33,24 +33,21 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
+/**
+ * @package WP-Trip-Summary
+ */
 class Abp01_PluginModules_RestApiEnhancementsPluginModule extends Abp01_PluginModules_PluginModule {
 	/**
-	 * @var Abp01_Route_Manager
+	 * @var Abp01_Rest_DataSource
 	 */
-	private $_routeManager;
-
-	/**
-	 * @var Abp01_Route_Info_ValueTranslator
-	 */
-	private $_routeInfoValueTranslator;
+	private $_restDataSource;
 	
-	public function __construct(Abp01_Route_Manager $routeManager, 
+	public function __construct(Abp01_Rest_DataSource $restDataSource, 
 			Abp01_Env $env, 
 			Abp01_Auth $auth) {
 		parent::__construct($env, $auth);
 		
-		$this->_routeManager = $routeManager;
-		$this->_routeInfoValueTranslator = new Abp01_Route_Info_ValueTranslator($this->_getLookupForCurrentLang());
+		$this->_restDataSource = $restDataSource;
 	}
 
 	public function load() {
@@ -65,7 +62,8 @@ class Abp01_PluginModules_RestApiEnhancementsPluginModule extends Abp01_PluginMo
 	}
 
 	private function _shouldAddTripSummaryToRestApi() {
-		return apply_filters('abp01_add_trip_summary_to_rest_api', true);
+		return apply_filters('abp01_add_trip_summary_to_rest_api', 
+			true);
 	}
 
 	private function _registerTripSummaryRestApiFields() {
@@ -97,7 +95,7 @@ class Abp01_PluginModules_RestApiEnhancementsPluginModule extends Abp01_PluginMo
 			return null;
 		}
 
-		return $this->_prepareTripSummaryData($postId);
+		return $this->_getTripSummaryData($postId);
 	}
 
 	private function _getObjectId($object) {
@@ -107,104 +105,12 @@ class Abp01_PluginModules_RestApiEnhancementsPluginModule extends Abp01_PluginMo
 	}
 
 	private function _shouldAddTripSummaryToRestApiListing() {
-		return apply_filters('abp01_add_trip_summary_to_rest_api_listing', false);
+		return apply_filters('abp01_add_trip_summary_to_rest_api_listing', 
+			false);
 	}
 
-	//TODO: Extract to separate data source
-	private function _prepareTripSummaryData($postId) {
-		/** @var Abp01_Route_Info $routeInfo */
-		$routeInfo = $this->_routeManager
-			->getRouteInfo($postId);
-
-		/** @var Abp01_Route_Track $routeTrack */
-		$routeTrack = $this->_routeManager
-			->getRouteTrack($postId);
-
-		$data = array(
-			'status' => array(
-				'has_route_track' => !empty($routeTrack),
-				'has_route_info' => !empty($routeInfo)
-			),
-			'route_info' => null,
-			'route_track' => null
-		);
-
-		if (!empty($routeInfo)) {
-			$data['route_info'] = $this->_prepareRouteInfoData($routeInfo);
-		}
-
-		if (!empty($routeTrack)) {
-			$data['route_track'] = $this->_prepareRouteTrackData($routeTrack);
-		}
-
-		return $data;
-	}
-
-	private function _prepareRouteInfoData(Abp01_Route_Info $routeInfo) {
-		$routeInfoData = array();
-		foreach ($routeInfo->getData() as $field => $value) {
-			$restFieldName = $this->_prepareRestFieldName($field);
-			$translatedValue = $this->_translateRouteInfoFieldValue($routeInfo, 
-				$field, 
-				$value);
-
-				if (is_object($translatedValue)) {
-					$routeInfoData[$restFieldName] = $this->_prepareRouteInfoObjectValue($translatedValue);
-				} else if (is_array($translatedValue)) {
-					$routeInfoData[$restFieldName] = array();
-					foreach ($translatedValue as $tvItem) {
-						$routeInfoData[$restFieldName][] = $this->_prepareRouteInfoObjectValue($tvItem);
-					}						
-				} else {
-					$routeInfoData[$restFieldName] = $translatedValue;
-				}
-		}
-
-		return array(
-			'type' => $routeInfo->getType(),
-			'data' => $routeInfoData
-		);
-	}
-
-	private function _prepareRestFieldName($fieldName) {
-		return abp01_underscorize($fieldName);
-	}
-
-	private function _translateRouteInfoFieldValue(Abp01_Route_Info $routeInfo, $field, $value) {
-		return $this->_routeInfoValueTranslator->translateFieldValue($routeInfo, 
-			$field, 
-			$value);
-	}
-
-	private function _prepareRouteInfoObjectValue($translatedValue){
-		return array(
-			'id' => $translatedValue->id,
-			'label' => $translatedValue->label,
-			'default_label' => $translatedValue->defaultLabel
-		);
-	}
-
-	private function _prepareRouteTrackData(Abp01_Route_Track $routeTrack) {
-		$sw = $routeTrack->getBounds()
-			->getSouthWest();
-		$ne = $routeTrack->getBounds()
-			->getNorthEast();
-
-		return array(
-			'min_alt' => $routeTrack->getMinimumAltitude(),
-			'max_alt' => $routeTrack->getMaximumAltitude(),
-			'bounds' => array(
-				'south_west' => $this->_prepareCoordinateValue($sw),
-				'north_east' => $this->_prepareCoordinateValue($ne)
-			)
-		);
-	}
-
-	private function _prepareCoordinateValue(Abp01_Route_Track_Coordinate $coord) {
-		return array(
-			'lat' => $coord->lat,
-			'lng' => $coord->lng,
-			'alt' => $coord->alt
-		);
+	private function _getTripSummaryData($postId) {
+		return $this->_restDataSource
+			->getPostTripSummaryData($postId);
 	}
 }

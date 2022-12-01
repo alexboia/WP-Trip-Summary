@@ -70,6 +70,11 @@ class Abp01_Plugin {
 	private $_viewerDataSource;
 
 	/**
+	 * @var Abp01_Rest_DataSource
+	 */
+	private $_restDataSource;
+
+	/**
 	 * @var Abp01_ChangeLogDataSource
 	 */
 	private $_changeLogDataSource;
@@ -339,6 +344,14 @@ class Abp01_Plugin {
 				$this->getViewerDataSourceCache());
 		}
 		return $this->_viewerDataSource;
+	}
+
+	public function getRestDataSource() {
+		if ($this->_restDataSource === null) {
+			$this->_restDataSource = new Abp01_Rest_DataSource_Default($this->getRouteManager(), 
+				$this->getLookupForCurrentLang());
+		}
+		return $this->_restDataSource;
 	}
 
 	public function getChangeLogDataSource() {
