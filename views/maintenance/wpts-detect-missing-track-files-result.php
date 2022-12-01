@@ -35,9 +35,9 @@
 	<table id="abp01-admin-missing-tracks-posts" class="wp-list-table widefat fixed striped">
 		<thead>
 			<tr>
-				<th width="40%"><?php echo esc_html__('ID', 'abp01-trip-summary'); ?></th>
-				<th width="40%"><?php echo esc_html__('Title', 'abp01-trip-summary'); ?></th>
-				<th width="20%"><?php echo esc_html__('Actions', 'abp01-trip-summary'); ?></th>
+				<th width="20%"><?php echo esc_html__('ID', 'abp01-trip-summary'); ?></th>
+				<th width="50%"><?php echo esc_html__('Title', 'abp01-trip-summary'); ?></th>
+				<th width="30%"><?php echo esc_html__('Actions', 'abp01-trip-summary'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
