@@ -33,6 +33,9 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
+/**
+ * @package WP-Trip-Summary
+ */
 class Abp01_PluginModules_DownloadTrackDataPluginModule extends Abp01_PluginModules_PluginModule {
 	/**
 	 * @var Abp01_Settings

@@ -33,6 +33,9 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
+/**
+ * @package WP-Trip-Summary
+ */
 class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_PluginModules_PluginModule {
 	const TRIP_SUMMARY_EDITOR_NONCE_URL_PARAM_NAME = 'abp01_nonce';
 

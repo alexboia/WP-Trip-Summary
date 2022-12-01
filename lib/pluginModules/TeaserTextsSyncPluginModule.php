@@ -33,6 +33,9 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
+/**
+ * @package WP-Trip-Summary
+ */
 class Abp01_PluginModules_TeaserTextsSyncPluginModule extends Abp01_PluginModules_PluginModule {
 	const RESET_TEASER_TEXT_MARKER_TRANSIENT_KEY = 'abp01_reset_teaser_text_required';
 

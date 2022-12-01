@@ -33,6 +33,9 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
+/**
+ * @package WP-Trip-Summary
+ */
 class Abp01_PluginModules_PluginModuleHost {
 	/**
 	 * @var Abp01_Plugin

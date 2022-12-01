@@ -33,6 +33,9 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
+/**
+ * @package WP-Trip-Summary
+ */
 class Abp01_PluginModules_PluginListingPageCustomizationPluginModule extends Abp01_PluginModules_PluginModule {
 	public function __construct(Abp01_Env $env, Abp01_Auth $auth) {
 		parent::__construct($env, $auth);

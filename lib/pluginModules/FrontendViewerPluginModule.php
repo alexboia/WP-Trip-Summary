@@ -33,6 +33,9 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
+/**
+ * @package WP-Trip-Summary
+ */
 class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules_PluginModule {
 	const FRONTEND_VIEWER_CONTENT_HOOK_PRIORITY = 0;
 	

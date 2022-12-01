@@ -33,6 +33,9 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
+/**
+ * @package WP-Trip-Summary
+ */
 class Abp01_PluginModules_AdminTripSummaryAuditLogPluginModule extends Abp01_PluginModules_PluginModule {
 	const AUDIT_LOG_METABOX_REGISTRATION_HOOK_PRIORITY = 10;
 

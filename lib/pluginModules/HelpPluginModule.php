@@ -33,6 +33,9 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
+/**
+ * @package WP-Trip-Summary
+ */
 class Abp01_PluginModules_HelpPluginModule extends Abp01_PluginModules_PluginModule {
     const ADMIN_ENQUEUE_ASSETS_HOOK_PRIORITY = 10;
     
