@@ -127,11 +127,12 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 
 == Changelog ==
 
-= 0.2.8. =
+= 0.2.8 =
 - Added trip summary audit log to post edit and post listing pages;
 - Added maintenance page with the following tools: clear cached track data, clear all trip summary info, detect posts that have missing track files;
 - Added JSON-LD structured data to posts or pages that have trip summary track data (type Place, with box GeoShape);
 - Added shortcuts to plug-in's entry from the plug-in listing page;
+- Added additional REST API field to WP-JSON post endpoint to return trip summary data;
 - Updated UI + UX of the lookup data management editor page;
 - Usability improvements;
 - Updated help contents.
