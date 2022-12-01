@@ -110,6 +110,7 @@ class Abp01_PluginModules_RestApiEnhancementsPluginModule extends Abp01_PluginMo
 		return apply_filters('abp01_add_trip_summary_to_rest_api_listing', false);
 	}
 
+	//TODO: Extract to separate data source
 	private function _prepareTripSummaryData($postId) {
 		/** @var Abp01_Route_Info $routeInfo */
 		$routeInfo = $this->_routeManager
@@ -184,8 +185,10 @@ class Abp01_PluginModules_RestApiEnhancementsPluginModule extends Abp01_PluginMo
 	}
 
 	private function _prepareRouteTrackData(Abp01_Route_Track $routeTrack) {
-		$sw = $routeTrack->getBounds()->getSouthWest();
-		$ne = $routeTrack->getBounds()->getNorthEast();
+		$sw = $routeTrack->getBounds()
+			->getSouthWest();
+		$ne = $routeTrack->getBounds()
+			->getNorthEast();
 
 		return array(
 			'min_alt' => $routeTrack->getMinimumAltitude(),

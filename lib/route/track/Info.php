@@ -33,6 +33,9 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
+/**
+ * @package WP-Trip-Summary
+ */
 class Abp01_Route_Track_Info {
 	/**
 	 * @var Abp01_UnitSystem_Value_Height

@@ -33,6 +33,9 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
+/**
+ * @package WP-Trip-Summary
+ */
 class Abp01_Route_Track_Bbox {
 	public $northWest;
 
@@ -71,5 +74,14 @@ class Abp01_Route_Track_Bbox {
 
 	public function getSouthEast() {
 		return $this->southEast;
+	}
+
+	public function toPlainObject() {
+		$box = new stdClass();
+		$box->northWest = $this->northWest->toPlainObject();
+		$box->northEast = $this->northEast->toPlainObject();
+		$box->southWest = $this->southWest->toPlainObject();
+		$box->southEast = $this->southEast->toPlainObject();
+		return $box;
 	}
 }

@@ -33,6 +33,9 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
+/**
+ * @package WP-Trip-Summary
+ */
 class Abp01_Viewer_DataSource_Default implements Abp01_Viewer_DataSource {
 	/**
 	 * @var Abp01_Lookup
@@ -49,7 +52,9 @@ class Abp01_Viewer_DataSource_Default implements Abp01_Viewer_DataSource {
 	 */
 	private $_cache;
 
-	public function __construct(Abp01_Route_Manager $routeManager, Abp01_Lookup $lookup, Abp01_Viewer_DataSource_Cache $cache) {
+	public function __construct(Abp01_Route_Manager $routeManager, 
+			Abp01_Lookup $lookup, 
+			Abp01_Viewer_DataSource_Cache $cache) {
 		$this->_routeManager = $routeManager;
 		$this->_lookup = $lookup;
 		$this->_cache = $cache;
@@ -102,8 +107,13 @@ class Abp01_Viewer_DataSource_Default implements Abp01_Viewer_DataSource {
 
 	private function _getRouteTrackData($postId) {
 		$routeTrackData = new stdClass();
-		$routeTrackData->summary = $this->_routeManager->getRouteTrack($postId);
-		$routeTrackData->exists = !empty($routeTrackData->summary);
+		$track = $this->_routeManager->getRouteTrack($postId);
+
+		$routeTrackData->exists = !empty($track);
+		$routeTrackData->summary = !empty($track) 
+			? $track->toPlainObject() 
+			: null;
+
 		return $routeTrackData;
 	}
 

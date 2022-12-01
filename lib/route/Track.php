@@ -30,93 +30,105 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
+/**
+ * @package WP-Trip-Summary
+ */
 class Abp01_Route_Track {
-    private $_postId;
+	private $_postId;
 
-    private $_bounds;
+	private $_bounds;
 
-    private $_fileName;
+	private $_fileName;
 
-    private $_fileMimeType;
+	private $_fileMimeType;
 
-    public $maxAlt;
+	public $maxAlt;
 
-    public $minAlt;
+	public $minAlt;
 
-    public function __construct($postId, $fileName, $fileMimeType, Abp01_Route_Track_Bbox $bounds, $minAlt = 0, $maxAlt = 0) {
-        if (empty($postId)) {
-            throw new InvalidArgumentException('Post ID cannot be empty');
-        }
+	public function __construct($postId, $fileName, $fileMimeType, Abp01_Route_Track_Bbox $bounds, $minAlt = 0, $maxAlt = 0) {
+		if (empty($postId)) {
+			throw new InvalidArgumentException('Post ID cannot be empty');
+		}
 
-        if (empty($fileName)) {
-            throw new InvalidArgumentException('File cannot be empty');
-        }
+		if (empty($fileName)) {
+			throw new InvalidArgumentException('File cannot be empty');
+		}
 
-        if (empty($fileMimeType)) {
-            throw new InvalidArgumentException('File mime type cannot be empty');
-        }
+		if (empty($fileMimeType)) {
+			throw new InvalidArgumentException('File mime type cannot be empty');
+		}
 
-        if ($bounds == null) {
-            throw new InvalidArgumentException('The bounds cannot be empty');
-        }
+		if ($bounds == null) {
+			throw new InvalidArgumentException('The bounds cannot be empty');
+		}
 
-        $this->_postId = $postId;
-        $this->_fileName = $fileName;
-        $this->_fileMimeType = $fileMimeType;
-        $this->_bounds = $bounds;
+		$this->_postId = $postId;
+		$this->_fileName = $fileName;
+		$this->_fileMimeType = $fileMimeType;
+		$this->_bounds = $bounds;
 
-        $this->minAlt = $minAlt;
-        $this->maxAlt = $maxAlt;
-    }
+		$this->minAlt = $minAlt;
+		$this->maxAlt = $maxAlt;
+	}
 
-    public function equals(Abp01_Route_Track $other) {
-        return $other->_postId == $this->_postId
-            && $other->_bounds->equals($this->_bounds)
-            && $other->_fileName === $this->_fileName
-            && $other->_fileMimeType === $this->_fileMimeType
-            && abs($other->minAlt - $this->minAlt) < 0.1
-            && abs($other->maxAlt - $this->maxAlt) < 0.1;
-    }
+	public function equals(Abp01_Route_Track $other) {
+		return $other->_postId == $this->_postId
+			&& $other->_bounds->equals($this->_bounds)
+			&& $other->_fileName === $this->_fileName
+			&& $other->_fileMimeType === $this->_fileMimeType
+			&& abs($other->minAlt - $this->minAlt) < 0.1
+			&& abs($other->maxAlt - $this->maxAlt) < 0.1;
+	}
 
-    /**
-     * @return Abp01_Route_Track_Info 
-     * @throws InvalidArgumentException 
-     */
-    public function constructDisplayableInfo($targetSystem) {
-        $minAlt = new Abp01_UnitSystem_Value_Height($this->getMinimumAltitude());
-        $maxAlt = new Abp01_UnitSystem_Value_Height($this->getMaximumAltitude());
+	/**
+	 * @return Abp01_Route_Track_Info 
+	 * @throws InvalidArgumentException 
+	 */
+	public function constructDisplayableInfo($targetSystem) {
+		$minAlt = new Abp01_UnitSystem_Value_Height($this->getMinimumAltitude());
+		$maxAlt = new Abp01_UnitSystem_Value_Height($this->getMaximumAltitude());
 
-        $minAlt = $minAlt->convertTo($targetSystem);
-        $maxAlt = $maxAlt->convertTo($targetSystem);
+		$minAlt = $minAlt->convertTo($targetSystem);
+		$maxAlt = $maxAlt->convertTo($targetSystem);
 
-        return new Abp01_Route_Track_Info($minAlt, 
-            $maxAlt);
-    }
+		return new Abp01_Route_Track_Info($minAlt, 
+			$maxAlt);
+	}
 
-    public function getMinimumAltitude() {
-        return $this->minAlt;
-    }
+	public function getMinimumAltitude() {
+		return $this->minAlt;
+	}
 
-    public function getMaximumAltitude() {
-        return $this->maxAlt;
-    }
+	public function getMaximumAltitude() {
+		return $this->maxAlt;
+	}
 
-    public function getBounds() {
-        return $this->_bounds;
-    }
+	public function getBounds() {
+		return $this->_bounds;
+	}
 
-    public function getFileName() {
-        return $this->_fileName;
-    }
+	public function getFileName() {
+		return $this->_fileName;
+	}
 
-    public function getFileMimeType() {
-        return $this->_fileMimeType;
-    }
+	public function getFileMimeType() {
+		return $this->_fileMimeType;
+	}
 
-    public function getPostId() {
-        return $this->_postId;
-    }
+	public function getPostId() {
+		return $this->_postId;
+	}
+
+	public function toPlainObject() {
+		$track = new stdClass();
+		$track->minAlt = $this->minAlt;
+		$track->maxAlt = $this->maxAlt;
+		$track->bounds = $this->_bounds->toPlainObject();
+		$track->postId = $this->_postId;
+		return $track;
+	}
 }

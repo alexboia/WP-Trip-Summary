@@ -30,37 +30,48 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
+/**
+ * @package WP-Trip-Summary
+ */
 class Abp01_Route_Track_Coordinate {
-    public $lat;
+	public $lat;
 
-    public $lng;
+	public $lng;
 
-    public $alt;
+	public $alt;
 
-    public function __construct($lat, $lng, $alt = 0) {
-        $this->lat = $lat;
-        $this->lng = $lng;
-        $this->alt = $alt;
-    }
+	public function __construct($lat, $lng, $alt = 0) {
+		$this->lat = $lat;
+		$this->lng = $lng;
+		$this->alt = $alt;
+	}
 
-    public function equals(Abp01_Route_Track_Coordinate $other) {
-        return abs($this->getLatitude() - $other->getLatitude()) < 0.00005
-            && abs($this->getLongitude() - $other->getLongitude()) < 0.00005
-            && abs($this->getAltitude() - $other->getAltitude()) < 0.1;
-    }
+	public function equals(Abp01_Route_Track_Coordinate $other) {
+		return abs($this->getLatitude() - $other->getLatitude()) < 0.00005
+			&& abs($this->getLongitude() - $other->getLongitude()) < 0.00005
+			&& abs($this->getAltitude() - $other->getAltitude()) < 0.1;
+	}
 
-    public function getLatitude() {
-        return $this->lat;
-    }
+	public function getLatitude() {
+		return $this->lat;
+	}
 
-    public function getLongitude() {
-        return $this->lng;
-    }
+	public function getLongitude() {
+		return $this->lng;
+	}
 
-    public function getAltitude() {
-        return $this->alt;
-    }
+	public function getAltitude() {
+		return $this->alt;
+	}
+
+	public function toPlainObject() {
+		$coord = new stdClass();
+		$coord->lat = $this->lat;
+		$coord->lng = $this->lng;
+		$coord->alt = $this->alt;
+		return $coord;
+	}
 }

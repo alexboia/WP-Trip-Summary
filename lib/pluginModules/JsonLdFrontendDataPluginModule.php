@@ -89,15 +89,12 @@ class Abp01_PluginModules_JsonLdFrontendDataPluginModule extends Abp01_PluginMod
 		if ($this->_hasTrackData($viewerData)) {
 			/** @var WP_Post $post */
 			$post = get_post($postId);
-
-			/** @var Abp01_Route_Track_Bbox $bounds */
-			$bounds = $viewerData->track->summary
-				->getBounds();
+			$bounds = $viewerData->track->summary->bounds;
 			
 			$data = new stdClass();
 			$data->name = $post->post_title;
-			$data->southWest = $bounds->getSouthWest();
-			$data->northEast = $bounds->getNorthEast();
+			$data->southWest = $bounds->southWest;
+			$data->northEast = $bounds->northEast;
 
 			echo $this->_renderJsonLdFrontendData($data);
 		}
