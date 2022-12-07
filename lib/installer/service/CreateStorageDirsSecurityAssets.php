@@ -124,6 +124,10 @@ class Abp01_Installer_Service_CreateStorageDirsSecurityAssets {
 			'<FilesMatch "\.geojson">',
 				"\t" . 'order allow,deny',
 				"\t" . 'deny from all',
+			'</FilesMatch>',
+			'<FilesMatch "\.kml">',
+				"\t" . 'order allow,deny',
+				"\t" . 'deny from all',
 			'</FilesMatch>'
 		));
 	}
