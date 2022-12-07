@@ -65,11 +65,7 @@ abstract class Abp01_PluginModules_PluginModule {
 			$postId = 0;
 		}
 
-		if ($postId <= 0) {
-			throw new InvalidArgumentException('Invalid post information specified!');
-		}
-
-		return $this->_auth->canEditPostTripSummary($postId);
+		return !empty($postId) && $this->_auth->canEditPostTripSummary($postId);
 	}
 
 	protected function _createEditCurrentPostTripSummaryAuthCallback() {
@@ -80,7 +76,7 @@ abstract class Abp01_PluginModules_PluginModule {
 
 	protected function _canEditCurrentPostTripSummary() {
 		$postId = $this->_getCurrentPostId();
-		return $this->_auth->canEditPostTripSummary($postId);
+		return !empty($postId) && $this->_auth->canEditPostTripSummary($postId);
 	}
 
 	protected function _createManagePluginSettingsAuthCallback() {

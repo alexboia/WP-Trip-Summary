@@ -393,3 +393,21 @@ if (!defined('ABP01_VIEWER_SHORTCODE')) {
 	 */
 	define('ABP01_VIEWER_SHORTCODE', 'abp01_trip_summary_viewer');
 }
+
+if (!defined('ABP01_TRIP_TYPE_STATS_SHORTCODE')) {
+	/**
+	 * Default is 'abp01_trip_stats'
+	 * 
+	 * @var string
+	 */
+	define('ABP01_TRIP_TYPE_STATS_SHORTCODE', 'abp01_trip_type_stats');
+}
+
+if (!defined('ABP01_TRIP_STATS_SHORTCODE')) {
+	/**
+	 * Default is 'abp01_trip_stats'
+	 * 
+	 * @var string
+	 */
+	define('ABP01_TRIP_STATS_SHORTCODE', 'abp01_trip_stats');
+}

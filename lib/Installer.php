@@ -513,6 +513,10 @@ class Abp01_Installer {
 			'<FilesMatch "\.gpx">',
 				"\t" . 'order allow,deny',
 				"\t" . 'deny from all',
+			'</FilesMatch>',
+			'<FilesMatch "\.geojson">',
+				"\t" . 'order allow,deny',
+				"\t" . 'deny from all',
 			'</FilesMatch>'
 		));
 	}

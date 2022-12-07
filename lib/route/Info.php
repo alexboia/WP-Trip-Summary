@@ -33,6 +33,7 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
+//TODO: also add post id
 class Abp01_Route_Info {
     const BIKE = 'bike';
 
@@ -44,6 +45,7 @@ class Abp01_Route_Info {
 
     private $_type;
 
+    //TODO: extract to separate class (eg. Abp01_Route_Info_Fields)
     private static $_fields = array(
         self::BIKE => array(
             'bikeDistance' => array(

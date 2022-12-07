@@ -30,137 +30,139 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
 class Abp01_Auth {
-    const CAP_WP_UPLOAD_FILES = 'upload_files';
+	const CAP_WP_UPLOAD_FILES = 'upload_files';
 
-    const CAP_MANAGE_TRIP_SUMMARY = 'abp01.cap.manageTourSummary';
+	const CAP_MANAGE_TRIP_SUMMARY = 'abp01.cap.manageTourSummary';
 
-    const CAP_EDIT_TRIP_SUMMARY = 'abp01.cap.editTourSummary';
+	const CAP_EDIT_TRIP_SUMMARY = 'abp01.cap.editTourSummary';
 
-    private $_capabilities = array();
+	private $_capabilities = array();
 
-    private $_requiredCapabilities = array();
+	private $_requiredCapabilities = array();
 
-    private static $_instance = null;
+	private static $_instance = null;
 
-    /**
-     * @return Abp01_Auth
-     */
-    public static function getInstance() {
-        if (self::$_instance == null) {
-            self::$_instance = new self();
-        }
-        return self::$_instance;
-    }
+	/**
+	 * @return Abp01_Auth
+	 */
+	public static function getInstance() {
+		if (self::$_instance == null) {
+			self::$_instance = new self();
+		}
+		return self::$_instance;
+	}
 
-    private function __construct() {
-        $this->_capabilities = array(
-            'administrator' => array(
-                self::CAP_MANAGE_TRIP_SUMMARY,
-                self::CAP_EDIT_TRIP_SUMMARY
-            ),
-            'editor' => array(
-                self::CAP_EDIT_TRIP_SUMMARY
-            ),
-            'author' => array(
-                self::CAP_EDIT_TRIP_SUMMARY
-            ),
-            'contributor' => array(
-                self::CAP_EDIT_TRIP_SUMMARY
-            )
-        );
+	private function __construct() {
+		$this->_capabilities = array(
+			'administrator' => array(
+				self::CAP_MANAGE_TRIP_SUMMARY,
+				self::CAP_EDIT_TRIP_SUMMARY
+			),
+			'editor' => array(
+				self::CAP_EDIT_TRIP_SUMMARY
+			),
+			'author' => array(
+				self::CAP_EDIT_TRIP_SUMMARY
+			),
+			'contributor' => array(
+				self::CAP_EDIT_TRIP_SUMMARY
+			)
+		);
 
-        //A role it is being assigned the edit trip summary capability 
-        //  if it can upload files as well (has the capability 'upload_files'), since
-        //      a) the media buttons are not being added 
-        //      if the role does not have 'upload_files' (hence no 'media_buttons' hook)
-        //      b) we cannot forcibly add the 'upload_files' capability to the role, 
-        //      since it might break the way the site is expected to work
-        $this->_requiredCapabilities = array(
-            self::CAP_EDIT_TRIP_SUMMARY => array(
-                self::CAP_WP_UPLOAD_FILES
-            )
-        );
-    }
+		//A role it is being assigned the edit trip summary capability 
+		//  if it can upload files as well (has the capability 'upload_files'), since
+		//      a) the media buttons are not being added 
+		//      if the role does not have 'upload_files' (hence no 'media_buttons' hook)
+		//      b) we cannot forcibly add the 'upload_files' capability to the role, 
+		//      since it might break the way the site is expected to work
+		$this->_requiredCapabilities = array(
+			self::CAP_EDIT_TRIP_SUMMARY => array(
+				self::CAP_WP_UPLOAD_FILES
+			)
+		);
+	}
 
-    public function installCapabilities() {
-        foreach ($this->_capabilities as $roleName => $caps) {
-            $role = get_role($roleName);
-            if ($role) {
-                foreach ($caps as $capCode) {
-                    //Check if the capability can be installed for the role...
-                    $capCanBeInstalled = $this->capCanBeInstalledForRole($capCode, $roleName);
-                    if (!$role->has_cap($capCode)) {
-                        //...if so, add the capability
-                        if ($capCanBeInstalled) {
-                            $role->add_cap($capCode);
-                        }
-                    } else if (!$capCanBeInstalled) {
-                        //...if not, but the role does have the capability, remove it, 
-                        //  since it's pointless to have it assigned
-                        $role->remove_cap($capCode);
-                    }
-                }
-            }
-        }
-    }
+	public function installCapabilities() {
+		foreach ($this->_capabilities as $roleName => $caps) {
+			$role = get_role($roleName);
+			if ($role) {
+				foreach ($caps as $capCode) {
+					//Check if the capability can be installed for the role...
+					$capCanBeInstalled = $this->capCanBeInstalledForRole($capCode, $roleName);
+					if (!$role->has_cap($capCode)) {
+						//...if so, add the capability
+						if ($capCanBeInstalled) {
+							$role->add_cap($capCode);
+						}
+					} else if (!$capCanBeInstalled) {
+						//...if not, but the role does have the capability, remove it, 
+						//  since it's pointless to have it assigned
+						$role->remove_cap($capCode);
+					}
+				}
+			}
+		}
+	}
 
-    public function removeCapabilities() {
-        foreach ($this->_capabilities as $roleName => $caps) {
-            $role = get_role($roleName);
-            if ($role) {
-                foreach ($caps as $cap) {
-                    if ($role->has_cap($cap)) {
-                        $role->remove_cap($cap);
-                    }
-                }
-            }
-        }
-    }
+	public function removeCapabilities() {
+		foreach ($this->_capabilities as $roleName => $caps) {
+			$role = get_role($roleName);
+			if ($role) {
+				foreach ($caps as $cap) {
+					if ($role->has_cap($cap)) {
+						$role->remove_cap($cap);
+					}
+				}
+			}
+		}
+	}
 
-    public function capCanBeInstalledForRole($capCode, $roleName) {
-        $allowed = true;
+	public function capCanBeInstalledForRole($capCode, $roleName) {
+		$allowed = true;
 
-        if (in_array($capCode, array(self::CAP_EDIT_TRIP_SUMMARY, self::CAP_MANAGE_TRIP_SUMMARY), true)) {
-            $requiredCaps = $this->getRequiredCapabilities($capCode);
-            if (!empty($requiredCaps)) {
-                $role = get_role($roleName);
-                foreach ($requiredCaps as $requiredCapCode) {
-                    if (!$role->has_cap($requiredCapCode)) {
-                        $allowed = false;
-                        break;
-                    }
-                }
-            }
-        } else {
-            $allowed = false;
-        }
+		if (in_array($capCode, array(self::CAP_EDIT_TRIP_SUMMARY, self::CAP_MANAGE_TRIP_SUMMARY), true)) {
+			$requiredCaps = $this->getRequiredCapabilities($capCode);
+			if (!empty($requiredCaps)) {
+				$role = get_role($roleName);
+				foreach ($requiredCaps as $requiredCapCode) {
+					if (!$role->has_cap($requiredCapCode)) {
+						$allowed = false;
+						break;
+					}
+				}
+			}
+		} else {
+			$allowed = false;
+		}
 
-        return $allowed;
-    }
+		return $allowed;
+	}
 
-    public function canEditPostTripSummary($postId) {
-        return $this->currentUserCan(self::CAP_EDIT_TRIP_SUMMARY) && $this->currentUserCan('edit_post', $postId);
-    }
+	public function canEditPostTripSummary($postId) {
+		return !empty($postId) 
+			&& current_user_can(self::CAP_EDIT_TRIP_SUMMARY) 
+			&& current_user_can('edit_post', $postId);
+	}
 
-    public function canManagePluginSettings() {
-        return $this->currentUserCan(self::CAP_MANAGE_TRIP_SUMMARY);
-    }
+	public function canManagePluginSettings() {
+		return current_user_can(self::CAP_MANAGE_TRIP_SUMMARY);
+	}
 
-    public function currentUserCan($capability) {
-        return call_user_func_array('current_user_can', func_get_args());
-    }
+	public function currentUserCan($capability) {
+		return call_user_func_array('current_user_can', func_get_args());
+	}
 
-    public function getRequiredCapabilities($capCode) {
-        return isset($this->_requiredCapabilities[$capCode])
-            ? $this->_requiredCapabilities[$capCode]
-            : array();
-    }
+	public function getRequiredCapabilities($capCode) {
+		return isset($this->_requiredCapabilities[$capCode])
+			? $this->_requiredCapabilities[$capCode]
+			: array();
+	}
 
-    public function getCapabilities() {
-        return $this->_capabilities;
-    }
+	public function getCapabilities() {
+		return $this->_capabilities;
+	}
 }
