@@ -291,7 +291,7 @@ The following languages are supported:
 - Fixed trip summary shortcode block not rendering in post/page view;
 - Fixed trip summary shortcode block editor widget not showing up.
 
-[See the entire changelog rest here](https://github.com/alexboia/WP-Trip-Summary/blob/master/CHANGELOG.md)
+[See the entire changelog here](https://github.com/alexboia/WP-Trip-Summary/blob/master/CHANGELOG.md)
 
 ## Roadmap
 <a name="wpts-roadmap"></a>  
