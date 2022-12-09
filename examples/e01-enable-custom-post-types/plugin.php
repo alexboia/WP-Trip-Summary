@@ -28,10 +28,10 @@ function e01_register_sample_custom_post_type() {
 }
 
 function e01_get_trip_summary_available_for_post_types($postTypes) {
-	//Of course, you could also remove an existing post type over here
+	//Of course, you could also remove 
+	//	an existing post type over here
 
 	$newPostTypes = $postTypes;
-
 	if (!in_array('e01_sample_post_type', $newPostTypes)) {
 		$newPostTypes[] = 'e01_sample_post_type';
 	}
