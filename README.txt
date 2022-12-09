@@ -89,6 +89,9 @@ For those with plug-in versions older than 0.2.1, please see here notes on updat
 
 == Frequently Asked Questions ==
 
+= How can it be displayed for other post types than page and post? =
+Out of the box this is not possible, but, as of 0.2.8 you can customize it using a filter hook. Please see this wiki page for an example: https://github.com/alexboia/WP-Trip-Summary/wiki/Changing-the-editor-availability-per-post-type.
+
 = Does it support KML files? =
 The plug-in currently only supports GPX and GeoJSON files as a way to upload GPS tracks. KML will be supported round about 0.3, maybe earlier.
 
