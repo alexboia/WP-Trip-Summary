@@ -48,4 +48,8 @@ class Abp01_Installer_Requirement_RequiredWpVersion implements Abp01_Installer_R
 		$required = $this->_env->getRequiredWpVersion();
 		return version_compare($current, $required, '>=');
 	}	
+
+	public function getLastError() {
+		return null;
+	}
 }

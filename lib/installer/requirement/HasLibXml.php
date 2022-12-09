@@ -38,4 +38,8 @@ class Abp01_Installer_Requirement_HasLibXml implements Abp01_Installer_Requireme
 		return function_exists('simplexml_load_string') &&
 			function_exists('simplexml_load_file');
 	}
+
+	public function getLastError() {
+		return null;
+	}
 }

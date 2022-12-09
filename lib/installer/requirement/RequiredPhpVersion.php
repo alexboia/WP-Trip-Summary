@@ -48,4 +48,8 @@ class Abp01_Installer_Requirement_RequiredPhpVersion implements Abp01_Installer_
 		$required = $this->_env->getRequiredPhpVersion();
 		return version_compare($current, $required, '>=');
 	}	
+
+	public function getLastError() {
+		return null;
+	}
 }

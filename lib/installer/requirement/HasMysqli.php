@@ -39,4 +39,8 @@ class Abp01_Installer_Requirement_HasMysqli implements Abp01_Installer_Requireme
 			class_exists('mysqli_driver') &&
 			class_exists('mysqli');
 	}
+
+	public function getLastError() {
+		return null;
+	}
 }

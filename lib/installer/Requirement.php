@@ -35,4 +35,6 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 
 interface Abp01_Installer_Requirement {
 	function isSatisfied();
+
+	function getLastError();
 }

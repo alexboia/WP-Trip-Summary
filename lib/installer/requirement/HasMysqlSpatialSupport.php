@@ -39,6 +39,11 @@ class Abp01_Installer_Requirement_HasMysqlSpatialSupport implements Abp01_Instal
 	 */
 	private $_env;
 
+	/**
+	 * @var \Exception|null
+	 */
+	private $_lastError;
+
 	public function __construct(Abp01_Env $env) {
 		$this->_env = $env;
 	}
@@ -65,5 +70,9 @@ class Abp01_Installer_Requirement_HasMysqlSpatialSupport implements Abp01_Instal
 		}
 
 		return $result;
+	}
+
+	public function getLastError() {
+		return $this->_lastError;
 	}
 }
