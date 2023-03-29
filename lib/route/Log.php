@@ -50,6 +50,25 @@ class Abp01_Route_Log {
 		$this->setLogEntries($entries);
 	}
 
+	public static function fromJson($postId, $logEntriesJson) {
+		if (empty($postId) || empty($logEntriesJson)) {
+            throw new InvalidArgumentException();
+        }
+
+		$logEntriesData = json_decode($logEntriesJson, true);
+		if ($logEntriesData === null || !is_array($logEntriesData)) {
+			return null;
+		}
+
+		$logEntries = array();
+		foreach ($logEntriesData as $data) {
+			$logEntries[] = Abp01_Route_Log_Entry::fromArray($data);
+		}
+
+		return new self($postId, 
+			$logEntries);
+	}
+
 	public function addLogEntry(Abp01_Route_Log_Entry $entry) {
 		$fastestRun = $this->getFastestRun();
 		$slowestRun = $this->getSlowestRun();
@@ -150,10 +169,18 @@ class Abp01_Route_Log {
 			: null;
 
 		$fastestRun = $this->getFastestRun();
-		$this->fastestRun = $fastestRun != null
+		$data->fastestRun = $fastestRun != null
 			? $fastestRun->toPlainObject()
 			: null;
 
 		return $data;
+	}
+
+	public function getLogEntriesAsJson() {
+		$logEntriesData = array();
+		foreach ($this->_logEntries as $e) {
+			$logEntriesData[] = $e->toArray();
+		}
+		return json_encode($logEntriesData);
 	}
 }

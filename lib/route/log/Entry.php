@@ -60,6 +60,21 @@ class Abp01_Route_Log_Entry {
 		$this->identity = $identity;
 	}
 
+	public static function fromArray(array $data) {
+		if (empty($data)) {
+			return null;
+		}
+
+		return new self(
+			isset($data['date']) ? $data['date'] : null,
+			isset($data['vehicle']) ? $data['vehicle'] : null,
+			isset($data['gear']) ? $data['gear'] : null,
+			isset($data['notes']) ? $data['notes'] : null,
+			isset($data['timeInMinutes']) ? $data['timeInMinutes'] : 0,
+			isset($data['identity']) ? $data['identity'] : null
+		);
+	}
+
 	public function fasterThan(Abp01_Route_Log_Entry $entry) {
 		return $this->timeInMinutes < $entry->timeInMinutes;
 	}
@@ -77,5 +92,9 @@ class Abp01_Route_Log_Entry {
 		$data->timeInMinutes = $this->timeInMinutes;
 		$data->identity = $this->identity;
 		return $data;
+	}
+
+	public function toArray() {
+		return (array)$this->toPlainObject();
 	}
 }

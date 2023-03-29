@@ -278,8 +278,13 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 			return null;
 		}
 
-		$type = isset($row['route_type']) ? $row['route_type'] : null;
-		$json = isset($row['route_data_serialized']) ? $row['route_data_serialized']: null;
+		$type = isset($row['route_type']) 
+			? $row['route_type'] 
+			: null;
+
+		$json = isset($row['route_data_serialized']) 
+			? $row['route_data_serialized'] 
+			: null;
 
 		if (!$type || !$json) {
 			return null;

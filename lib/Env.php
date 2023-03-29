@@ -143,6 +143,11 @@ class Abp01_Env {
 	private $_routeDetailsLookupTableName;
 
 	/**
+	 * @var string
+	 */
+	private $_routeLogTableName;
+
+	/**
 	 * The name of the wordpress users table
 	 * 
 	 * @var string
@@ -320,6 +325,8 @@ class Abp01_Env {
 			. 'abp01_techbox_lookup_lang';
 		$this->_routeDetailsLookupTableName = $this->_dbTablePrefix
 			. 'abp01_techbox_route_details_lookup';
+		$this->_routeLogTableName = $this->_dbTablePrefix
+			. 'abp01_techbox_route_log';
 		$this->_wpUsersTableName = $this->_dbTablePrefix
 			. 'users';
 	}
@@ -570,6 +577,10 @@ class Abp01_Env {
 
 	public function getRouteDetailsLookupTableName() {
 		return $this->_routeDetailsLookupTableName;
+	}
+ 
+	public function getRouteLogTableName() {
+		return $this->_routeLogTableName;
 	}
 
 	public function getWpUsersTableName() {

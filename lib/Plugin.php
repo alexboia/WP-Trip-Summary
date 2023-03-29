@@ -183,8 +183,9 @@ class Abp01_Plugin {
 	}
 
 	private function _displayActivationErrrorMessage($message) {
+		$installer = self::_getInstaller();
 		$displayMessage = abp01_append_error($message, 
-			$this->_installer->getLastError());
+			$installer->getLastError());
 			
 		$displayTitle = __('Activation error', 
 			'abp01-trip-summary');
