@@ -45,7 +45,7 @@ define( 'WP_HTTP_BLOCK_EXTERNAL', false );
 define( 'DB_NAME', 'rlived89_abnet_test' );
 define( 'DB_USER', 'root' );
 define( 'DB_PASSWORD', '' );
-define( 'DB_HOST', '127.0.0.1' );
+define( 'DB_HOST', '172.29.0.1' );
 define( 'DB_CHARSET', 'utf8' );
 define( 'DB_COLLATE', '' );
 

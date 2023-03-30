@@ -32,7 +32,7 @@
 class PredefinedTileLayerTests extends WP_UnitTestCase {
 	use GenericTestHelpers;
 
-	public function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		Abp01_Settings_PredefinedTileLayer::clearPredefinedTileLayersCache();
 		$this->_removeAllFilterHooks();
@@ -43,7 +43,7 @@ class PredefinedTileLayerTests extends WP_UnitTestCase {
 		remove_all_filters(Abp01_Settings_PredefinedTileLayer::FILTER_HOOK_GET_DEFAULT_TILE_LAYER_ID);
 	}
 
-	public function tearDown() {
+	protected function tearDown(): void {
 		parent::tearDown();
 		Abp01_Settings_PredefinedTileLayer::clearPredefinedTileLayersCache();
 		$this->_removeAllFilterHooks();

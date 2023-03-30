@@ -84,6 +84,10 @@ class Abp01_Validate_Url implements Abp01_Validate {
 	 * @return boolean True if it's valid, false otherwise
 	 * */
 	public function validate($url) {
+		if (!$url) {
+			$url = '';
+		}
+		
 		$url = trim($url);
 		if (empty($url)) {
 			return $this->_allowEmpty;

@@ -60,6 +60,10 @@ class Abp01_Validate_TileLayerUrl extends Abp01_Validate_Url {
 	 * @return string The prepared URl
 	 * */
 	private function _prepareForValidation($tileLayerUrl) {
+		if (!$tileLayerUrl) {
+			$tileLayerUrl = '';
+		}
+		
 		return preg_replace('/(\{([a-zA-z0-9]+)\})/','$2', $tileLayerUrl);
 	}
 

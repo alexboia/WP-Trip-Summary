@@ -1,4 +1,7 @@
-<?php 
+<?php
+
+use Yoast\PHPUnitPolyfills\Polyfills\AssertEqualsSpecializations;
+
 /**
  * Copyright (c) 2014-2023 Alexandru Boia
  *
@@ -30,60 +33,62 @@
  */
 
 class RouteSphericalMercator extends WP_UnitTestCase {
+    use AssertEqualsSpecializations;
+
     public function test_forwardProjection_specificCoords() {
         $merc = $this->_getProjSphericalMercator();
 
         $merc_45_45 = $merc->forward(45, 45);
-        $this->assertEquals(5009377.09, $merc_45_45['mercX'], '', 0.05);
-        $this->assertEquals(5621521.49, $merc_45_45['mercY'], '', 0.05);
+        $this->assertEqualsWithDelta(5009377.09, $merc_45_45['mercX'],  0.05);
+        $this->assertEqualsWithDelta(5621521.49, $merc_45_45['mercY'], 0.05);
 
         $merc_0_0 = $merc->forward(0, 0);
-        $this->assertEquals(0.00, $merc_0_0['mercX'], '', 0.05);
-        $this->assertEquals(0.00, $merc_0_0['mercY'], '', 0.05);
+        $this->assertEqualsWithDelta(0.00, $merc_0_0['mercX'], 0.05);
+        $this->assertEqualsWithDelta(0.00, $merc_0_0['mercY'], 0.05);
 
         $merc_85_180 = $merc->forward(85, 180);
-        $this->assertEquals(20037508.34, $merc_85_180['mercX'], '', 0.05);
-        $this->assertEquals(19971868.88, $merc_85_180['mercY'], '', 0.05);
+        $this->assertEqualsWithDelta(20037508.34, $merc_85_180['mercX'], 0.05);
+        $this->assertEqualsWithDelta(19971868.88, $merc_85_180['mercY'], 0.05);
 
         $merc_85_180_neg = $merc->forward(-85, -180);
-        $this->assertEquals(-20037508.34, $merc_85_180_neg['mercX'], '', 0.05);
-        $this->assertEquals(-19971868.88, $merc_85_180_neg['mercY'], '', 0.05);
+        $this->assertEqualsWithDelta(-20037508.34, $merc_85_180_neg['mercX'], 0.05);
+        $this->assertEqualsWithDelta(-19971868.88, $merc_85_180_neg['mercY'], 0.05);
 
         $merc_bucharest = $merc->forward(44.426165, 26.1023329);
-        $this->assertEquals(2905698.41, $merc_bucharest['mercX'], '', 0.05);
-        $this->assertEquals(5531630.80, $merc_bucharest['mercY'], '', 0.05);
+        $this->assertEqualsWithDelta(2905698.41, $merc_bucharest['mercX'], 0.05);
+        $this->assertEqualsWithDelta(5531630.80, $merc_bucharest['mercY'], 0.05);
 
         $merc_gw = $merc->forward(51.4825766, -0.0076589);
-        $this->assertEquals(-852.58, $merc_gw['mercX'], '', 0.05);
-        $this->assertEquals(6707103.99, $merc_gw['mercY'], '', 0.05);
+        $this->assertEqualsWithDelta(-852.58, $merc_gw['mercX'], 0.05);
+        $this->assertEqualsWithDelta(6707103.99, $merc_gw['mercY'], 0.05);
     }
 
     public function test_reverseProjection_specificCoords() {
         $merc = $this->_getProjSphericalMercator();
 
         $inv_45_45 = $merc->inverse(5009377.09, 5621521.49);
-        $this->assertEquals(45, $inv_45_45['lat'], '', 0.01);
-        $this->assertEquals(45, $inv_45_45['lng'], '', 0.01);
+        $this->assertEqualsWithDelta(45, $inv_45_45['lat'],  0.01);
+        $this->assertEqualsWithDelta(45, $inv_45_45['lng'],  0.01);
 
         $inv_0_0 = $merc->inverse(0.00, 0.00);
-        $this->assertEquals(0.00, $inv_0_0['lat'], '', 0.01);
-        $this->assertEquals(0.00, $inv_0_0['lng'], '', 0.01);
+        $this->assertEqualsWithDelta(0.00, $inv_0_0['lat'], 0.01);
+        $this->assertEqualsWithDelta(0.00, $inv_0_0['lng'], 0.01);
 
         $inv_85_180 = $merc->inverse(20037508.34, 19971868.88);
-        $this->assertEquals(85, $inv_85_180['lat'], '', 0.05);
-        $this->assertEquals(180, $inv_85_180['lng'], '', 0.05);
+        $this->assertEqualsWithDelta(85, $inv_85_180['lat'], 0.05);
+        $this->assertEqualsWithDelta(180, $inv_85_180['lng'], 0.05);
 
         $inv_85_180_neg = $merc->inverse(-20037508.34, -19971868.88);
-        $this->assertEquals(-85, $inv_85_180_neg['lat'], '', 0.05);
-        $this->assertEquals(-180, $inv_85_180_neg['lng'], '', 0.05);
+        $this->assertEqualsWithDelta(-85, $inv_85_180_neg['lat'], 0.05);
+        $this->assertEqualsWithDelta(-180, $inv_85_180_neg['lng'], 0.05);
 
         $inv_bucharest = $merc->inverse(2905698.41, 5531630.80);
-        $this->assertEquals(44.426165, $inv_bucharest['lat'], '', 0.05);
-        $this->assertEquals(26.1023329, $inv_bucharest['lng'], '', 0.05);
+        $this->assertEqualsWithDelta(44.426165, $inv_bucharest['lat'], 0.05);
+        $this->assertEqualsWithDelta(26.1023329, $inv_bucharest['lng'], 0.05);
 
         $inv_gw = $merc->inverse(-852.58, 6707103.99);
-        $this->assertEquals(51.4825766, $inv_gw['lat'], '', 0.05);
-        $this->assertEquals(-0.0076589, $inv_gw['lng'], '', 0.05);
+        $this->assertEqualsWithDelta(51.4825766, $inv_gw['lat'], 0.05);
+        $this->assertEqualsWithDelta(-0.0076589, $inv_gw['lng'], 0.05);
     }
 
     public function test_inverseMatchesForward() {
@@ -93,8 +98,8 @@ class RouteSphericalMercator extends WP_UnitTestCase {
             for ($lat = -85; $lat <= 85; $lat ++) {
                 $mercVal = $merc->forward($lat, $lng);
                 $invVal = $merc->inverse($mercVal['mercX'], $mercVal['mercY']);
-                $this->assertEquals($lng, $invVal['lng'], 0.05);
-                $this->assertEquals($lat, $invVal['lat'], 0.05);
+                $this->assertEqualsWithDelta($lng, $invVal['lng'], 0.05);
+                $this->assertEqualsWithDelta($lat, $invVal['lat'], 0.05);
             }
         }
     }

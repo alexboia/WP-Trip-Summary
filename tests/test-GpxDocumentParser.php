@@ -1,4 +1,7 @@
 <?php
+
+use Yoast\PHPUnitPolyfills\Polyfills\ExpectException;
+
 /**
  * Copyright (c) 2014-2023 Alexandru Boia
  *
@@ -30,13 +33,14 @@
  */
 
  class GpxDocumentParserTests extends WP_UnitTestCase {
+	use ExpectException;
 	use GenericTestHelpers;
 	use TestDataFileHelpers;
 	use RouteTrackDocumentTestHelpers;
 
 	private static $_randomGpxFilesTestInfo = array();
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 		foreach (self::_getRandomFileGenerationSpec() as $fileName => $options) {
 			self::_generateAndAddRandomGpxFile($fileName, $options);
@@ -138,7 +142,7 @@
 			$expectations);
 	}
 
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass(): void {
 		parent::tearDownAfterClass();
 		self::_clearRandomGpxFiles();
 	}
@@ -183,6 +187,8 @@
 	 * @expectedException Abp01_Route_Track_DocumentParser_Exception
 	 */
 	public function test_tryParse_incorrectDocument() {
+		$this->expectException(Abp01_Route_Track_DocumentParser_Exception::class);
+
 		$testFiles = $this->_getInvalidTestFilesSpec();
 		$parser = new Abp01_Route_Track_DocumentParser_Gpx();
 
@@ -197,6 +203,7 @@
 	 * @expectedException InvalidArgumentException
 	 */
 	public function test_tryParse_nullData() {
+		$this->expectException(InvalidArgumentException::class);
 		$parser = new Abp01_Route_Track_DocumentParser_Gpx();
 		$parser->parse(null);
 	}
@@ -205,6 +212,7 @@
 	 * @expectedException InvalidArgumentException
 	 */
 	public function test_tryParse_emptyData() {
+		$this->expectException(InvalidArgumentException::class);
 		$parser = new Abp01_Route_Track_DocumentParser_Gpx();
 		$parser->parse('');
 	}

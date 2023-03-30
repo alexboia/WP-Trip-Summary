@@ -1,4 +1,7 @@
 <?php
+
+use Yoast\PHPUnitPolyfills\Polyfills\ExpectException;
+
 /**
  * Copyright (c) 2014-2023 Alexandru Boia
  *
@@ -30,6 +33,7 @@
  */
 
 class GeoJsonDocumentValidatorTests extends WP_UnitTestCase {
+	use ExpectException;
 	use TestDataFileHelpers;
 
 	public function test_canValidate_validFile() {
@@ -52,6 +56,7 @@ class GeoJsonDocumentValidatorTests extends WP_UnitTestCase {
 	 * @expectedException \InvalidArgumentException 
 	 */
 	public function test_tryValidate_emptyFilePath() {
+		$this->expectException(InvalidArgumentException::class);
 		$validator = new Abp01_Validate_GeoJsonDocument();
 		$validator->validate('');
 	}
@@ -60,6 +65,7 @@ class GeoJsonDocumentValidatorTests extends WP_UnitTestCase {
 	 * @expectedException \InvalidArgumentException 
 	 */
 	public function test_tryValidate_nullFilePath() {
+		$this->expectException(InvalidArgumentException::class);
 		$validator = new Abp01_Validate_GeoJsonDocument();
 		$validator->validate(null);
 	}

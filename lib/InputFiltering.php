@@ -54,6 +54,10 @@ class Abp01_InputFiltering {
 		//https://codex.wordpress.org/Function_Reference/stripslashes_deep
 		//	via
 		//https://wpartisan.me/tutorials/wordpress-auto-adds-slashes-post-get-request-cookie
+		if (!$input) {
+			$input = '';
+		}
+		
 		$input = stripslashes($input);
 
 		if (!is_numeric($input)) {

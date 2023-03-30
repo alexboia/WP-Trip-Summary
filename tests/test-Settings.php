@@ -32,7 +32,7 @@
 class SettingsTests extends WP_UnitTestCase {
 	use SettingsDataHelpers;
 
-	public function tearDown() {
+	protected function tearDown(): void {
 		parent::tearDown();
 		delete_option(Abp01_Settings::OPT_SETTINGS_KEY);
 	}

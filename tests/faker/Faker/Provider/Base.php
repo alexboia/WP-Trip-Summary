@@ -116,7 +116,7 @@ class Base
      */
     public static function numberBetween($min = 0, $max = 2147483647)
     {
-        return mt_rand($min, $max);
+        return (int)mt_rand((int)$min, (int)$max);
     }
 
     /**
@@ -251,7 +251,7 @@ class Base
         $shuffledArray = array();
         $i = 0;
         reset($array);
-        while (list($key, $value) = each($array)) {
+        foreach ($array as $key => $value) {
             if ($i == 0) {
                 $j = 0;
             } else {
@@ -426,7 +426,7 @@ class Base
         // All A-F inside of [] become ABCDEF
         $regex = preg_replace_callback('/\[([^\]]+)\]/', function ($matches) {
             return '[' . preg_replace_callback('/(\w|\d)\-(\w|\d)/', function ($range) {
-                return join(range($range[1], $range[2]), '');
+                return join('', range($range[1], $range[2]));
             }, $matches[1]) . ']';
         }, $regex);
         // All [ABC] become B (or A or C)

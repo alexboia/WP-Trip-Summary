@@ -32,12 +32,12 @@
 class MaybeLeafletPluginScriptPathRewriterTests extends WP_UnitTestCase {
 	use IncludesTestDataHelpers;
 
-	public function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		Abp01IsUrlRewriteEnabledState::resetReturnResult();
 	}
 
-	public function tearDown() {
+	protected function tearDown(): void {
 		parent::tearDown();
 		Abp01IsUrlRewriteEnabledState::resetReturnResult();
 	}

@@ -44,7 +44,7 @@ class TripSummaryStatusColumnDataSourceTests extends WP_UnitTestCase {
         parent::__construct($name, $data, $dataName);
     }
 
-    public function setUp() {
+    protected function setUp(): void {
         parent::setUp();
         $this->_storeCurrentWpQuery();
     }
@@ -57,7 +57,7 @@ class TripSummaryStatusColumnDataSourceTests extends WP_UnitTestCase {
         }
     }
 
-    public function tearDown() {
+    protected function tearDown(): void {
         parent::tearDown();
         $this->_restorePreviousWpQuery();
 		Mockery::close();

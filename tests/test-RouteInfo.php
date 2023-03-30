@@ -1,4 +1,7 @@
 <?php
+
+use Yoast\PHPUnitPolyfills\Polyfills\ExpectException;
+
 /**
  * Copyright (c) 2014-2023 Alexandru Boia
  *
@@ -30,6 +33,7 @@
  */
 
 class RouteInfoTests extends WP_UnitTestCase {
+	use ExpectException;
 	use GenericTestHelpers;
 	use RouteInfoTestDataSets;
 
@@ -45,6 +49,7 @@ class RouteInfoTests extends WP_UnitTestCase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function test_tryCreate_invalidType($type) {
+		$this->expectException(InvalidArgumentException::class);
 		new Abp01_Route_Info($type);
 	}
 
@@ -62,6 +67,7 @@ class RouteInfoTests extends WP_UnitTestCase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function test_canSet_invalidKey($type, $key, $value) {
+		$this->expectException(InvalidArgumentException::class);
 		$info = new Abp01_Route_Info($type);
 		$info->$key = $value;
 	}
@@ -137,6 +143,7 @@ class RouteInfoTests extends WP_UnitTestCase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function test_tryCreateFromJson_emptyJsonInput($type) {
+		$this->expectException(InvalidArgumentException::class);
 		Abp01_Route_Info::fromJson($type, '');
 	}
 

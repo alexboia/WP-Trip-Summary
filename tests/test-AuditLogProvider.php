@@ -74,7 +74,7 @@ class AuditLogProviderTests extends WP_UnitTestCase {
 		$this->_testRouteDataProvider = new TestRouteDataProvider();
 	}
 
-	public function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->_installTestData();
 		self::commit_transaction();
@@ -190,14 +190,13 @@ class AuditLogProviderTests extends WP_UnitTestCase {
 			->saveRouteTrack($routeTrack);
 	}
 
-	public function tearDown() {
+	protected function tearDown(): void {
 		parent::tearDown();
 		$this->_clearTestData();
 	}
 
 	public function _clearTestData() {
 		$this->_clearAllRouteInfo();
-		$this->_testPostRouteData = array();
 	}
 
 	private function _clearAllRouteInfo() {

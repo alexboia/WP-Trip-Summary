@@ -1,4 +1,7 @@
 <?php
+
+use Yoast\PHPUnitPolyfills\Polyfills\ExpectException;
+
 /**
  * Copyright (c) 2014-2023 Alexandru Boia
  *
@@ -30,13 +33,14 @@
  */
 
 class GeoJsonDocumentParserTests extends WP_UnitTestCase {
+	use ExpectException;
 	use GenericTestHelpers;
 	use TestDataFileHelpers;
 	use RouteTrackDocumentTestHelpers;
 
 	private static $_randomGeoJsonFilesTestInfo = array();
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 		foreach (self::_getRandomFileGenerationSpec() as $fileName => $options) {
 			self::_generateAndAddRandomGeoJsonFile($fileName, $options);
@@ -138,7 +142,7 @@ class GeoJsonDocumentParserTests extends WP_UnitTestCase {
 			$expectations);
 	}
 
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass(): void {
 		parent::tearDownAfterClass();
 		self::_clearRandomGeoJsonFiles();
 	}
@@ -202,6 +206,7 @@ class GeoJsonDocumentParserTests extends WP_UnitTestCase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function test_tryParse_nullData() {
+		$this->expectException(InvalidArgumentException::class);
 		$parser = new Abp01_Route_Track_DocumentParser_GeoJson();
 		$parser->parse(null);
 	}
@@ -210,6 +215,7 @@ class GeoJsonDocumentParserTests extends WP_UnitTestCase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function test_tryParse_emptyData() {
+		$this->expectException(InvalidArgumentException::class);
 		$parser = new Abp01_Route_Track_DocumentParser_GeoJson();
 		$parser->parse('');
 	}

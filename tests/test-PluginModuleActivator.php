@@ -1,4 +1,7 @@
 <?php
+
+use Yoast\PHPUnitPolyfills\Polyfills\ExpectException;
+
 /**
  * Copyright (c) 2014-2023 Alexandru Boia
  *
@@ -30,138 +33,145 @@
  */
 
 class PluginModuleActivatorTests extends WP_UnitTestCase {
-    public function setUp() {
-        parent::setUp();
-        SamplePluginModuleCreationState::reset();
-    }
+	use ExpectException;
 
-    public function tearDown() {
-        parent::tearDown();
-        SamplePluginModuleCreationState::reset();
-    }
+	protected function setUp(): void {
+		parent::setUp();
+		SamplePluginModuleCreationState::reset();
+	}
 
-    public function test_canCheckIfModuleClassValid_validModuleClasses() {
-        $validModuleClasses = array(
-            NoDependenciesSamplePluginModule::class,
-            RequiresOnlyUnsupportedDependenciesSamplePluginModule::class,
-            RequiresSupportedDependenciesSamplePluginModule::class,
-            RequiresSomeUnsupportedDependenciesSamplePluginModule::class,
-            RequiresOneSupportedDependencySamplePluginModule::class
-        );
+	protected function tearDown(): void {
+		parent::tearDown();
+		SamplePluginModuleCreationState::reset();
+	}
 
-        $activator = $this->_getPluginModuleActivator();
-        foreach ($validModuleClasses as $className)  {
-            $this->assertTrue($activator->isValidModuleClass($className));
-        }
-    }
+	public function test_canCheckIfModuleClassValid_validModuleClasses() {
+		$validModuleClasses = array(
+			NoDependenciesSamplePluginModule::class,
+			RequiresOnlyUnsupportedDependenciesSamplePluginModule::class,
+			RequiresSupportedDependenciesSamplePluginModule::class,
+			RequiresSomeUnsupportedDependenciesSamplePluginModule::class,
+			RequiresOneSupportedDependencySamplePluginModule::class
+		);
 
-    public function test_canCheckIfModuleClassValid_invalidModuleClasses() {
-        $invalidModuleClasses = array(
-            NotAValidModuleClassSamplePluginModule::class
-        );
+		$activator = $this->_getPluginModuleActivator();
+		foreach ($validModuleClasses as $className)  {
+			$this->assertTrue($activator->isValidModuleClass($className));
+		}
+	}
 
-        $activator = $this->_getPluginModuleActivator();
-        foreach ($invalidModuleClasses as $className)  {
-            $this->assertFalse($activator->isValidModuleClass($className));
-        }
-    }
+	public function test_canCheckIfModuleClassValid_invalidModuleClasses() {
+		$invalidModuleClasses = array(
+			NotAValidModuleClassSamplePluginModule::class
+		);
 
-    public function test_canCreateModuleInstance_validModuleClass_noDependencies() {
-        $activator = $this->_getPluginModuleActivator();
-        $moduleInstance = $activator->createModuleInstance(NoDependenciesSamplePluginModule::class);
+		$activator = $this->_getPluginModuleActivator();
+		foreach ($invalidModuleClasses as $className)  {
+			$this->assertFalse($activator->isValidModuleClass($className));
+		}
+	}
 
-        $this->assertNotNull($moduleInstance);
-        $this->assertTrue($moduleInstance instanceof NoDependenciesSamplePluginModule);
-    }
+	public function test_canCreateModuleInstance_validModuleClass_noDependencies() {
+		$activator = $this->_getPluginModuleActivator();
+		$moduleInstance = $activator->createModuleInstance(NoDependenciesSamplePluginModule::class);
 
-    public function test_canCreateModuleInstance_validModuleClass_allSupportedDependencies() {
-        $activator = $this->_getPluginModuleActivator();
-        $moduleInstance = $activator->createModuleInstance(RequiresSupportedDependenciesSamplePluginModule::class);
+		$this->assertNotNull($moduleInstance);
+		$this->assertTrue($moduleInstance instanceof NoDependenciesSamplePluginModule);
+	}
 
-        $this->assertNotNull($moduleInstance);
-        $this->assertTrue($moduleInstance instanceof RequiresSupportedDependenciesSamplePluginModule);
+	public function test_canCreateModuleInstance_validModuleClass_allSupportedDependencies() {
+		$activator = $this->_getPluginModuleActivator();
+		$moduleInstance = $activator->createModuleInstance(RequiresSupportedDependenciesSamplePluginModule::class);
 
-        $this->assertTrue($moduleInstance->hasView());
-        $this->assertTrue($moduleInstance->hasSettings());
-        $this->assertTrue($moduleInstance->hasRouteManager());
-        $this->assertTrue($moduleInstance->hasEnv());
-        $this->assertTrue($moduleInstance->hasHelp());
-    }
+		$this->assertNotNull($moduleInstance);
+		$this->assertTrue($moduleInstance instanceof RequiresSupportedDependenciesSamplePluginModule);
 
-    public function test_canCreateModuleInstance_validModuleClass_someSupportedDependencies() {
-        $activator = $this->_getPluginModuleActivator();
-        $moduleInstance = $activator->createModuleInstance(RequiresOneSupportedDependencySamplePluginModule::class);
+		$this->assertTrue($moduleInstance->hasView());
+		$this->assertTrue($moduleInstance->hasSettings());
+		$this->assertTrue($moduleInstance->hasRouteManager());
+		$this->assertTrue($moduleInstance->hasEnv());
+		$this->assertTrue($moduleInstance->hasHelp());
+	}
 
-        $this->assertNotNull($moduleInstance);
-        $this->assertTrue($moduleInstance instanceof RequiresOneSupportedDependencySamplePluginModule);
+	public function test_canCreateModuleInstance_validModuleClass_someSupportedDependencies() {
+		$activator = $this->_getPluginModuleActivator();
+		$moduleInstance = $activator->createModuleInstance(RequiresOneSupportedDependencySamplePluginModule::class);
 
-        $this->assertTrue($moduleInstance->hasHelp());
-    }
+		$this->assertNotNull($moduleInstance);
+		$this->assertTrue($moduleInstance instanceof RequiresOneSupportedDependencySamplePluginModule);
 
-    /**
-     * @expectedException Abp01_PluginModules_Exception
-     */
-    public function test_tryCreateModuleInstance_validModuleClass_someUnsupportedDependencies() {
-        $activator = $this->_getPluginModuleActivator();
-        $activator->createModuleInstance(RequiresSomeUnsupportedDependenciesSamplePluginModule::class);
-    }
+		$this->assertTrue($moduleInstance->hasHelp());
+	}
 
-    /**
-     * @expectedException Abp01_PluginModules_Exception
-     */
-    public function test_tryCreateModuleInstance_validModuleClass_onlyUnsupportedDependencies() {
-        $activator = $this->_getPluginModuleActivator();
-        $activator->createModuleInstance(RequiresOnlyUnsupportedDependenciesSamplePluginModule::class);
-    }
+	/**
+	 * @expectedException Abp01_PluginModules_Exception
+	 */
+	public function test_tryCreateModuleInstance_validModuleClass_someUnsupportedDependencies() {
+		$this->expectException(Abp01_PluginModules_Exception::class);
+		$activator = $this->_getPluginModuleActivator();
+		$activator->createModuleInstance(RequiresSomeUnsupportedDependenciesSamplePluginModule::class);
+	}
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
-    public function test_tryCreateModuleInstance_invalidModuleClass() {
-        $activator = $this->_getPluginModuleActivator();
-        $activator->createModuleInstance(NotAValidModuleClassSamplePluginModule::class);
-    }
+	/**
+	 * @expectedException Abp01_PluginModules_Exception
+	 */
+	public function test_tryCreateModuleInstance_validModuleClass_onlyUnsupportedDependencies() {
+		$this->expectException(Abp01_PluginModules_Exception::class);
+		$activator = $this->_getPluginModuleActivator();
+		$activator->createModuleInstance(RequiresOnlyUnsupportedDependenciesSamplePluginModule::class);
+	}
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
-    public function test_tryCreateModuleInstance_nullModuleClassName() {
-        $activator = $this->_getPluginModuleActivator();
-        $activator->createModuleInstance(null);
-    }
+	/**
+	 * @expectedException InvalidArgumentException
+	 */
+	public function test_tryCreateModuleInstance_invalidModuleClass() {
+		$this->expectException(InvalidArgumentException::class);
+		$activator = $this->_getPluginModuleActivator();
+		$activator->createModuleInstance(NotAValidModuleClassSamplePluginModule::class);
+	}
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
-    public function test_tryCreateModuleInstance_emptyModuleClassName() {
-        $activator = $this->_getPluginModuleActivator();
-        $activator->createModuleInstance('');
-    }
+	/**
+	 * @expectedException InvalidArgumentException
+	 */
+	public function test_tryCreateModuleInstance_nullModuleClassName() {
+		$this->expectException(InvalidArgumentException::class);
+		$activator = $this->_getPluginModuleActivator();
+		$activator->createModuleInstance(null);
+	}
 
-    private function _getPluginModuleActivator() {
-        return new Abp01_PluginModules_PluginModuleActivator($this->_getInjectableServiceFactories());
-    }
+	/**
+	 * @expectedException InvalidArgumentException
+	 */
+	public function test_tryCreateModuleInstance_emptyModuleClassName() {
+		$this->expectException(InvalidArgumentException::class);
+		$activator = $this->_getPluginModuleActivator();
+		$activator->createModuleInstance('');
+	}
 
-    private function _getInjectableServiceFactories() {
-        return array(
-            Abp01_Settings::class => function() {
-                return abp01_get_settings();
-            },
-            Abp01_Env::class => function() { 
-                return abp01_get_env();
-            },
-            Abp01_Auth::class => function() {
-                return abp01_get_auth();
-            },
-            Abp01_View::class => function() {
-                return abp01_get_view();
-            },
-            Abp01_Route_Manager::class => function() {
-                return abp01_get_route_manager();
-            },
-            Abp01_Help::class => function() {
-                return abp01_get_help();
-            }
-        );
-    }
+	private function _getPluginModuleActivator() {
+		return new Abp01_PluginModules_PluginModuleActivator($this->_getInjectableServiceFactories());
+	}
+
+	private function _getInjectableServiceFactories() {
+		return array(
+			Abp01_Settings::class => function() {
+				return abp01_get_settings();
+			},
+			Abp01_Env::class => function() { 
+				return abp01_get_env();
+			},
+			Abp01_Auth::class => function() {
+				return abp01_get_auth();
+			},
+			Abp01_View::class => function() {
+				return abp01_get_view();
+			},
+			Abp01_Route_Manager::class => function() {
+				return abp01_get_route_manager();
+			},
+			Abp01_Help::class => function() {
+				return abp01_get_help();
+			}
+		);
+	}
 }

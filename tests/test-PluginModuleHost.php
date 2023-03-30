@@ -30,13 +30,13 @@
  */
 
 class PluginModuleHostTests extends WP_UnitTestCase {
-    public function setUp() {
+    protected function setUp(): void {
         parent::setUp();
         SamplePluginModuleCallState::reset();
         SamplePluginModuleCreationState::reset();
     }
 
-    public function tearDown() {
+    protected function tearDown(): void {
         parent::tearDown();
         SamplePluginModuleCallState::reset();
         SamplePluginModuleCreationState::reset();

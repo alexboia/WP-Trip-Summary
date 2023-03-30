@@ -280,7 +280,7 @@ class Internet extends \Faker\Provider\Base
         }
         $words = $this->generator->words($nbWords);
 
-        return join($words, '-');
+        return join('-', $words);
     }
 
     /**

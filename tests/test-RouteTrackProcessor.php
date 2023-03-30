@@ -1,4 +1,7 @@
 <?php
+
+use Yoast\PHPUnitPolyfills\Polyfills\AssertionRenames;
+
 /**
  * Copyright (c) 2014-2023 Alexandru Boia
  *
@@ -30,6 +33,7 @@
  */
 
 class RouteTrackProcessorTests extends WP_UnitTestCase {
+	use AssertionRenames;
 	use RouteTrackTestDataHelpers;
 
 	private $_testPostRouteTrackData = array();
@@ -44,7 +48,7 @@ class RouteTrackProcessorTests extends WP_UnitTestCase {
 		parent::__construct($name, $data, $dataName);
 	}
 
-	public function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->_installTestData();
 	}
@@ -117,7 +121,7 @@ class RouteTrackProcessorTests extends WP_UnitTestCase {
 			$bounds['maxAlt']);
 	}
 
-	public function tearDown() {
+	protected function tearDown(): void {
 		parent::tearDown();
 		$this->_clearTestData();
 	}
@@ -293,14 +297,14 @@ class RouteTrackProcessorTests extends WP_UnitTestCase {
 	}
 
 	private function _assertTrackFilesDoNotExist($trackProcessor, $postId, GpsDocumentFormatTestInfo $formatInfo) {
-		$this->assertFileNotExists($trackProcessor->constructTrackFilePathForPostId($postId, 
+		$this->assertFileDoesNotExist($trackProcessor->constructTrackFilePathForPostId($postId, 
 			$formatInfo->getDefaultMimeType()));
 
-		$this->assertFileNotExists($this->_getTrackDocumentFilePath($postId, 
+		$this->assertFileDoesNotExist($this->_getTrackDocumentFilePath($postId, 
 			$formatInfo->getExtension()));
 
-		$this->assertFileNotExists($this->_getCachedOriginalTrackDocumentFilePath($postId));
-		$this->assertFileNotExists($this->_getCachedTrackDocumentFilePath($postId));
+		$this->assertFileDoesNotExist($this->_getCachedOriginalTrackDocumentFilePath($postId));
+		$this->assertFileDoesNotExist($this->_getCachedTrackDocumentFilePath($postId));
 	}
 
 	public function test_canDeleteTrackFiles_postWithTrackFiles() {

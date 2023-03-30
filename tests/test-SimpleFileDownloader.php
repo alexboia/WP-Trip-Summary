@@ -33,13 +33,13 @@ class SimpleFileDownloaderTests extends WP_UnitTestCase {
     use GenericTestHelpers;
     use TestDataFileHelpers;
 
-    public function setUp() {
+    protected function setUp(): void {
         parent::setUp();
         Abp01SendHeaderState::clearSendHeaderCalls();
         Abp01SetHttpResponseCodeState::clearCurrentResponseCode();
     }
 
-    public function tearDown() {
+    protected function tearDown(): void {
         parent::tearDown();
         Abp01SendHeaderState::clearSendHeaderCalls();
         Abp01SetHttpResponseCodeState::clearCurrentResponseCode();

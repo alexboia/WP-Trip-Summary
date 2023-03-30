@@ -43,10 +43,18 @@ class GeoJsonDocumentFakerDataProvider extends \Faker\Provider\Base {
 
 	private function _disableUnsupportedOpts($opts) {
 		if (isset($opts['tracks'])) {
+			if (!is_array($opts['tracks'])) {
+				$opts['tracks'] = array();
+			}
+			
 			$opts['tracks']['name'] = false;
 		}
 
 		if (isset($opts['metadata'])) {
+			if (!is_array($opts['metadata'])) {
+				$opts['metadata'] = array();
+			}
+
 			$opts['metadata']['author'] = false;
 			$opts['metadata']['copyright'] = false;
 			$opts['metadata']['link'] = false;

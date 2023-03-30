@@ -34,7 +34,7 @@ class AdminAjaxActionTests extends WP_UnitTestCase {
 
 	private $_savedServerRequestMethod = null;
 
-	public function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->_resetTestDoublesStates();
 		$this->_storeCurrentRequestMethod();
@@ -51,7 +51,7 @@ class AdminAjaxActionTests extends WP_UnitTestCase {
 			: null;
 	}
 
-	public function tearDown() {
+	protected function tearDown(): void {
 		parent::tearDown();
 		$this->_resetTestDoublesStates();
 		$this->_restorePreviousRequestMethod();

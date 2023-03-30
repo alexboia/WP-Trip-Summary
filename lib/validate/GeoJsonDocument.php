@@ -126,10 +126,10 @@ class Abp01_Validate_GeoJsonDocument implements Abp01_Validate_File {
 		$endBuffer = trim($endBuffer);
 
 		if ($this->_multiByteSearchEnabled) {
-			$jsonEndPos = mb_strripos($endBuffer, '}', null, 'UTF-8');
+			$jsonEndPos = mb_strripos($endBuffer, '}', 0, 'UTF-8');
 			$endBufferLength = mb_strlen($endBuffer, 'UTF-8');
 		} else {
-			$jsonEndPos = strripos($endBuffer, '}', null);
+			$jsonEndPos = strripos($endBuffer, '}', 0);
 			$endBufferLength = strlen($endBuffer);
 		}
 

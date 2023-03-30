@@ -41,7 +41,8 @@ class AuthTests extends WP_UnitTestCase {
 	private $_testUsers = array();
 
 	private $_testRoleData = array();
-	public function setUp() {
+
+	protected function setUp(): void {
 		parent::setUp();
 		$this->_testRoleData = $this->_getTestRoleData();
 		$this->_storeBuiltInRoleData();
@@ -115,7 +116,7 @@ class AuthTests extends WP_UnitTestCase {
 		return $this->_capabilitiesExistsInRoleData($capCodes, $this->_testRoleData[$roleName]);
 	}
 
-	public function tearDown() {
+	protected function tearDown(): void {
 		parent::tearDown();
 		$this->_restoreBuiltInRolesData();
 		$this->_clearTestData();

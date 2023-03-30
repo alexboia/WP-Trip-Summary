@@ -58,7 +58,7 @@
 		$this->_testRouteDataProvider = new TestRouteDataProvider();
 	}
 
-	public function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->_installTestData();
 	}
@@ -176,7 +176,7 @@
 		return self::_getFaker()->numberBetween(1, PHP_INT_MAX);
 	}
 
-	public function tearDown() {
+	protected function tearDown(): void {
 		parent::tearDown();
 		$this->_clearTestData();
 	}

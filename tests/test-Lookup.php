@@ -42,14 +42,14 @@ class LookupTests extends WP_UnitTestCase {
 
 	private $_sampleLookupData = array();
 
-	public function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->_initialLookupData = $this->_readAllLookupData();
 		$this->_clearTestData();
 		$this->_installTestData();
 	}
 
-	public function tearDown() {
+	protected function tearDown(): void {
 		parent::tearDown();
 		$this->_clearTestData();
 		$this->_restoreAllLookupData($this->_initialLookupData);

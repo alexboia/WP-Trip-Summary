@@ -1,4 +1,7 @@
 <?php
+
+use Yoast\PHPUnitPolyfills\Polyfills\AssertStringContains;
+
 /**
  * Copyright (c) 2014-2023 Alexandru Boia
  *
@@ -32,13 +35,14 @@
 class ViewTests extends WP_UnitTestCase {
     use ViewerTestDataHelpers;
     use AdminTestDataHelpers;
+    use AssertStringContains;
 
-    public function setUp() {
+    protected function setUp(): void {
         parent::setUp();
         TestFrontendTheme::reset();
     }
 
-    public function tearDown() {
+    protected function tearDown(): void {
         parent::tearDown();
         TestFrontendTheme::reset();
     }
@@ -135,17 +139,17 @@ class ViewTests extends WP_UnitTestCase {
     }
 
     private function _assertViewerCodeHasViewerJsVars($viewer) {
-        $this->assertContains('<script type="text/javascript">', $viewer);
-        $this->assertContains('var abp01_imgBase', $viewer);
-        $this->assertContains('var abp01_ajaxUrl', $viewer);
-        $this->assertContains('var abp01_ajaxGetTrackAction', $viewer);
-        $this->assertContains('var abp01_downloadTrackAction', $viewer);
-        $this->assertContains('var abp01_hasInfo', $viewer);
-        $this->assertContains('var abp01_hasTrack', $viewer);
-        $this->assertContains('var abp01_postId', $viewer);
-        $this->assertContains('var abp01_nonceGet', $viewer);
-        $this->assertContains('var abp01_nonceDownload', $viewer);
-        $this->assertContains('</script>', $viewer);
+        $this->assertStringContainsString('<script type="text/javascript">', $viewer);
+        $this->assertStringContainsString('var abp01_imgBase', $viewer);
+        $this->assertStringContainsString('var abp01_ajaxUrl', $viewer);
+        $this->assertStringContainsString('var abp01_ajaxGetTrackAction', $viewer);
+        $this->assertStringContainsString('var abp01_downloadTrackAction', $viewer);
+        $this->assertStringContainsString('var abp01_hasInfo', $viewer);
+        $this->assertStringContainsString('var abp01_hasTrack', $viewer);
+        $this->assertStringContainsString('var abp01_postId', $viewer);
+        $this->assertStringContainsString('var abp01_nonceGet', $viewer);
+        $this->assertStringContainsString('var abp01_nonceDownload', $viewer);
+        $this->assertStringContainsString('</script>', $viewer);
     }
 
     public function test_canRenderAdminSettingsPage() {
@@ -160,19 +164,19 @@ class ViewTests extends WP_UnitTestCase {
     }
 
     private function _assertAdminSettingsPageHasScriptVars($settingsPage) {
-        $this->assertContains('<script type="text/javascript">', $settingsPage);
-        $this->assertContains('var abp01_nonce', $settingsPage);
-        $this->assertContains('var abp01_ajaxSaveAction', $settingsPage);
-        $this->assertContains('var abp01_ajaxBaseUrl', $settingsPage);
-        $this->assertContains('</script>', $settingsPage);
+        $this->assertStringContainsString('<script type="text/javascript">', $settingsPage);
+        $this->assertStringContainsString('var abp01_nonce', $settingsPage);
+        $this->assertStringContainsString('var abp01_ajaxSaveAction', $settingsPage);
+        $this->assertStringContainsString('var abp01_ajaxBaseUrl', $settingsPage);
+        $this->assertStringContainsString('</script>', $settingsPage);
     }
 
     private function _assertAdminSettingsPageBasicStructureCorrect($settingsPage) {
-        $this->assertContains('<div id="abp01-settings-page">', $settingsPage);
-        $this->assertContains('<form id="abp01-settings-form" method="post">', $settingsPage);
-        $this->assertContains('<div class="abp01-settings-info description">', $settingsPage);
-        $this->assertContains('<div class="apb01-settings-save">', $settingsPage);
-        $this->assertContains('<script id="tpl-abp01-progress-container" type="text/x-kite">', $settingsPage);
+        $this->assertStringContainsString('<div id="abp01-settings-page">', $settingsPage);
+        $this->assertStringContainsString('<form id="abp01-settings-form" method="post">', $settingsPage);
+        $this->assertStringContainsString('<div class="abp01-settings-info description">', $settingsPage);
+        $this->assertStringContainsString('<div class="apb01-settings-save">', $settingsPage);
+        $this->assertStringContainsString('<script id="tpl-abp01-progress-container" type="text/x-kite">', $settingsPage);
     }
 
     public function test_canRenderAdminHelpPage_nonEmptyHelpContents() {
@@ -182,24 +186,24 @@ class ViewTests extends WP_UnitTestCase {
         $helpPage = $view->renderAdminHelpPage($data);
         
         $this->assertNotEmpty($helpPage);
-        $this->assertContains($data->helpContents, $helpPage);
+        $this->assertStringContainsString($data->helpContents, $helpPage);
         $this->_assertAdminHelpPageHasScriptVars($helpPage);
         $this->_assertAdminHelpPageBasicStructureCorrect($helpPage);
     }
 
     private function _assertAdminHelpPageHasScriptVars($helpPage) {
-        $this->assertContains('<script type="text/javascript">', $helpPage);
-        $this->assertContains('var abp01_ajaxUrl', $helpPage);
-        $this->assertContains('var abp01_getHelpAction', $helpPage);
-        $this->assertContains('var abp01_getHelpNonce', $helpPage);
-        $this->assertContains('</script>', $helpPage);
+        $this->assertStringContainsString('<script type="text/javascript">', $helpPage);
+        $this->assertStringContainsString('var abp01_ajaxUrl', $helpPage);
+        $this->assertStringContainsString('var abp01_getHelpAction', $helpPage);
+        $this->assertStringContainsString('var abp01_getHelpNonce', $helpPage);
+        $this->assertStringContainsString('</script>', $helpPage);
     }
 
     private function _assertAdminHelpPageBasicStructureCorrect($helpPage) {
-        $this->assertContains('<div id="abp01-help-page">', $helpPage);
-        $this->assertContains('<div id="abp01-help-contents">', $helpPage);
-        $this->assertContains('<select id="abp01-help-contents-lang" name="abp01-help-contents-lang">', $helpPage);
-        $this->assertContains('</select>', $helpPage);
+        $this->assertStringContainsString('<div id="abp01-help-page">', $helpPage);
+        $this->assertStringContainsString('<div id="abp01-help-contents">', $helpPage);
+        $this->assertStringContainsString('<select id="abp01-help-contents-lang" name="abp01-help-contents-lang">', $helpPage);
+        $this->assertStringContainsString('</select>', $helpPage);
     }
 
     public function test_canRenderAdminHelpPage_emptyHelpContents() {
@@ -214,9 +218,9 @@ class ViewTests extends WP_UnitTestCase {
     }
 
     private function _assertEmptyAdminHelpPageBasicStructureCorrect($helpPage) {
-        $this->assertContains('<div id="abp01-help-page">', $helpPage);
-        $this->assertContains('<div id="abp01-help-contents">', $helpPage);
-        $this->assertContains('<div id="abp01-help-result" class="error settings-error abp01-help-result">', $helpPage);
+        $this->assertStringContainsString('<div id="abp01-help-page">', $helpPage);
+        $this->assertStringContainsString('<div id="abp01-help-contents">', $helpPage);
+        $this->assertStringContainsString('<div id="abp01-help-result" class="error settings-error abp01-help-result">', $helpPage);
     }
 
     public function test_canRenderAdminAboutPage() {
@@ -230,12 +234,12 @@ class ViewTests extends WP_UnitTestCase {
     }
 
     private function _assertAdminAboutPageBasicStructureCorrect($aboutPage) {
-        $this->assertContains('<div id="abp01-about-page">', $aboutPage);
-        $this->assertContains('<div id="abp01-about-summary">', $aboutPage);
-        $this->assertContains('<div id="abp01-about-logo">', $aboutPage);
-        $this->assertContains('<div id="abp01-about-info">', $aboutPage);
-        $this->assertContains('<div id="abp01-about-actions">', $aboutPage);
-        $this->assertContains('<div id="abp01-about-changelog">', $aboutPage);
+        $this->assertStringContainsString('<div id="abp01-about-page">', $aboutPage);
+        $this->assertStringContainsString('<div id="abp01-about-summary">', $aboutPage);
+        $this->assertStringContainsString('<div id="abp01-about-logo">', $aboutPage);
+        $this->assertStringContainsString('<div id="abp01-about-info">', $aboutPage);
+        $this->assertStringContainsString('<div id="abp01-about-actions">', $aboutPage);
+        $this->assertStringContainsString('<div id="abp01-about-changelog">', $aboutPage);
     }
 
     public function test_canRenderAdminLookupPage() {
@@ -250,28 +254,28 @@ class ViewTests extends WP_UnitTestCase {
     }
 
     private function _assertAdminLookupPageHasScriptVars($lookupPage) {
-        $this->assertContains('<script type="text/javascript">', $lookupPage);
-        $this->assertContains('var abp01_getLookupNonce', $lookupPage);
-        $this->assertContains('var abp01_addLookupNonce', $lookupPage);
-        $this->assertContains('var abp01_editLookupNonce', $lookupPage);
-        $this->assertContains('var abp01_deleteLookupNonce', $lookupPage);
-        $this->assertContains('var abp01_ajaxUrl', $lookupPage);
-        $this->assertContains('var abp01_ajaxGetLookupAction', $lookupPage);
-        $this->assertContains('var abp01_ajaxAddLookupAction', $lookupPage);
-        $this->assertContains('var abp01_ajaxEditLookupAction', $lookupPage);
-        $this->assertContains('var abp01_ajaxDeleteLookupAction', $lookupPage);
-        $this->assertContains('</script>', $lookupPage);
+        $this->assertStringContainsString('<script type="text/javascript">', $lookupPage);
+        $this->assertStringContainsString('var abp01_getLookupNonce', $lookupPage);
+        $this->assertStringContainsString('var abp01_addLookupNonce', $lookupPage);
+        $this->assertStringContainsString('var abp01_editLookupNonce', $lookupPage);
+        $this->assertStringContainsString('var abp01_deleteLookupNonce', $lookupPage);
+        $this->assertStringContainsString('var abp01_ajaxUrl', $lookupPage);
+        $this->assertStringContainsString('var abp01_ajaxGetLookupAction', $lookupPage);
+        $this->assertStringContainsString('var abp01_ajaxAddLookupAction', $lookupPage);
+        $this->assertStringContainsString('var abp01_ajaxEditLookupAction', $lookupPage);
+        $this->assertStringContainsString('var abp01_ajaxDeleteLookupAction', $lookupPage);
+        $this->assertStringContainsString('</script>', $lookupPage);
     }
 
     private function _assertAdminLookupPageBasicStructureCorrect($lookupPage) {
-        $this->assertContains('<div id="abp01-admin-lookup-page">', $lookupPage);
-        $this->assertContains('<div id="abp01-admin-lookup-container">', $lookupPage);
-        $this->assertContains('<div id="abp01-admin-lookup-control-container">', $lookupPage);
-        $this->assertContains('<div id="abp01-lookup-item-form" style="display: none;">', $lookupPage);
-        $this->assertContains('<div id="abp01-lookup-item-form" style="display: none;">', $lookupPage); 
-        $this->assertContains('<div id="abp01-lookup-item-delete-form" style="display: none;">', $lookupPage);
-        $this->assertContains('<div id="abp01-admin-lookup-listing-container">', $lookupPage);
-        $this->assertContains('<script id="tpl-abp01-progress-container" type="text/x-kite">', $lookupPage);
+        $this->assertStringContainsString('<div id="abp01-admin-lookup-page">', $lookupPage);
+        $this->assertStringContainsString('<div id="abp01-admin-lookup-container">', $lookupPage);
+        $this->assertStringContainsString('<div id="abp01-admin-lookup-control-container">', $lookupPage);
+        $this->assertStringContainsString('<div id="abp01-lookup-item-form" style="display: none;">', $lookupPage);
+        $this->assertStringContainsString('<div id="abp01-lookup-item-form" style="display: none;">', $lookupPage); 
+        $this->assertStringContainsString('<div id="abp01-lookup-item-delete-form" style="display: none;">', $lookupPage);
+        $this->assertStringContainsString('<div id="abp01-admin-lookup-listing-container">', $lookupPage);
+        $this->assertStringContainsString('<script id="tpl-abp01-progress-container" type="text/x-kite">', $lookupPage);
     }
 
     public function test_canRenderAdminTripSummaryEditor() {
@@ -303,39 +307,39 @@ class ViewTests extends WP_UnitTestCase {
     }
 
     private function _assertAdminEditorHasScriptVars($editor) {
-        $this->assertContains('<script type="text/javascript">', $editor);
-        $this->assertContains('var abp01_imgBase', $editor);
-        $this->assertContains('var abp01_ajaxUrl', $editor);
-        $this->assertContains('var abp01_editInfoNonce', $editor);
-        $this->assertContains('var abp01_ajaxEditInfoAction', $editor);
-        $this->assertContains('var abp01_uploadTrackNonce', $editor);
-        $this->assertContains('var abp01_ajaxUploadTrackAction', $editor);
-        $this->assertContains('var abp01_ajaxGetTrackAction', $editor);
-        $this->assertContains('var abp01_clearTrackNonce', $editor);
-        $this->assertContains('var abp01_ajaxClearTrackAction', $editor);
-        $this->assertContains('var abp01_clearInfoNonce', $editor);
-        $this->assertContains('var abp01_ajaxClearInfoAction', $editor);
-        $this->assertContains('var abp01_tourType', $editor);
-        $this->assertContains('var abp01_uploadMaxFileSize', $editor);
-        $this->assertContains('var abp01_uploadChunkSize', $editor);
-        $this->assertContains('var abp01_uploadKey', $editor);
-        $this->assertContains('var abp01_postId', $editor);
-        $this->assertContains('var abp01_hasTrack', $editor);
-        $this->assertContains('var abp01_hasInfo', $editor);
-        $this->assertContains('var abp01_baseTitle', $editor);
-        $this->assertContains('</script>', $editor);
+        $this->assertStringContainsString('<script type="text/javascript">', $editor);
+        $this->assertStringContainsString('var abp01_imgBase', $editor);
+        $this->assertStringContainsString('var abp01_ajaxUrl', $editor);
+        $this->assertStringContainsString('var abp01_editInfoNonce', $editor);
+        $this->assertStringContainsString('var abp01_ajaxEditInfoAction', $editor);
+        $this->assertStringContainsString('var abp01_uploadTrackNonce', $editor);
+        $this->assertStringContainsString('var abp01_ajaxUploadTrackAction', $editor);
+        $this->assertStringContainsString('var abp01_ajaxGetTrackAction', $editor);
+        $this->assertStringContainsString('var abp01_clearTrackNonce', $editor);
+        $this->assertStringContainsString('var abp01_ajaxClearTrackAction', $editor);
+        $this->assertStringContainsString('var abp01_clearInfoNonce', $editor);
+        $this->assertStringContainsString('var abp01_ajaxClearInfoAction', $editor);
+        $this->assertStringContainsString('var abp01_tourType', $editor);
+        $this->assertStringContainsString('var abp01_uploadMaxFileSize', $editor);
+        $this->assertStringContainsString('var abp01_uploadChunkSize', $editor);
+        $this->assertStringContainsString('var abp01_uploadKey', $editor);
+        $this->assertStringContainsString('var abp01_postId', $editor);
+        $this->assertStringContainsString('var abp01_hasTrack', $editor);
+        $this->assertStringContainsString('var abp01_hasInfo', $editor);
+        $this->assertStringContainsString('var abp01_baseTitle', $editor);
+        $this->assertStringContainsString('</script>', $editor);
     }
 
     private function _assertAdminEditorBasicStructureCorrect($editor) {
-        $this->assertContains('<div id="abp01-techbox-editor" style="display:none;">', $editor);
-        $this->assertContains('<div id="abp01-editor-wrapper" class="abp01-editor-wrapper">', $editor);
-        $this->assertContains('<script id="tpl-abp01-formInfo-unselected" type="text/x-kite">', $editor);
-        $this->assertContains('<script id="tpl-abp01-formInfo-bikeTour" type="text/x-kite">', $editor);
-        $this->assertContains('<script id="tpl-abp01-formInfo-hikingTour" type="text/x-kite">', $editor);
-        $this->assertContains('<script id="tpl-abp01-formInfo-trainRide" type="text/x-kite">', $editor);
-        $this->assertContains('<script id="tpl-abp01-formMap-unselected" type="text/x-kite">', $editor);
-        $this->assertContains('<script id="tpl-abp01-progress-container" type="text/x-kite">', $editor);
-        $this->assertContains('<script id="tpl-abp01-formMap-uploaded" type="text/x-kite">', $editor);
+        $this->assertStringContainsString('<div id="abp01-techbox-editor" style="display:none;">', $editor);
+        $this->assertStringContainsString('<div id="abp01-editor-wrapper" class="abp01-editor-wrapper">', $editor);
+        $this->assertStringContainsString('<script id="tpl-abp01-formInfo-unselected" type="text/x-kite">', $editor);
+        $this->assertStringContainsString('<script id="tpl-abp01-formInfo-bikeTour" type="text/x-kite">', $editor);
+        $this->assertStringContainsString('<script id="tpl-abp01-formInfo-hikingTour" type="text/x-kite">', $editor);
+        $this->assertStringContainsString('<script id="tpl-abp01-formInfo-trainRide" type="text/x-kite">', $editor);
+        $this->assertStringContainsString('<script id="tpl-abp01-formMap-unselected" type="text/x-kite">', $editor);
+        $this->assertStringContainsString('<script id="tpl-abp01-progress-container" type="text/x-kite">', $editor);
+        $this->assertStringContainsString('<script id="tpl-abp01-formMap-uploaded" type="text/x-kite">', $editor);
     }
 
     public function test_canRenderAdminTripSummaryEditorLauncherMetabox() {
@@ -350,9 +354,9 @@ class ViewTests extends WP_UnitTestCase {
     }
 
     private function _assertAdminEditorLauncherMetaboxBasicStructureCorrect($launcherMetabox) {
-        $this->assertContains('<div id="abp01-editor-launcher-root">', $launcherMetabox);
-        $this->assertContains('<div id="abp01-editor-launcher-status">', $launcherMetabox);
-        $this->assertContains('<div id="abp01-editor-launcher-actions">', $launcherMetabox);
+        $this->assertStringContainsString('<div id="abp01-editor-launcher-root">', $launcherMetabox);
+        $this->assertStringContainsString('<div id="abp01-editor-launcher-status">', $launcherMetabox);
+        $this->assertStringContainsString('<div id="abp01-editor-launcher-actions">', $launcherMetabox);
     }
 
     private function _getInitializedView() {

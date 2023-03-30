@@ -34,7 +34,7 @@ class SimpleAuthorizationProviderTests extends WP_UnitTestCase {
 	
 	private $_testUsers = array();
 
-	public function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->_initRolesForCurrentSite();
 		$this->_creatTestUsersForTestRoles();
@@ -60,7 +60,7 @@ class SimpleAuthorizationProviderTests extends WP_UnitTestCase {
 		));
 	}
 
-	public function tearDown() {
+	protected function tearDown(): void {
 		parent::tearDown();
 		$this->_clearTestUsersForTestRoles();
 	}

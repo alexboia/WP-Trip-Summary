@@ -1,4 +1,7 @@
 <?Php
+
+use Yoast\PHPUnitPolyfills\Polyfills\AssertEqualsSpecializations;
+
 /**
  * Copyright (c) 2014-2023 Alexandru Boia
  *
@@ -30,19 +33,21 @@
  */
 
 class RouteTrackPointTests extends WP_UnitTestCase {
+    use AssertEqualsSpecializations;
+
     public function test_canCompute_distanceToPoint() {
         $pointBucharest = new Abp01_Route_Track_Point(new Abp01_Route_Track_Coordinate(44.4268, 26.1025));
         $pointRomCenter = new Abp01_Route_Track_Point(new Abp01_Route_Track_Coordinate(45.9432, 24.9668));
         $pointAlbaIulia = new Abp01_Route_Track_Point(new Abp01_Route_Track_Coordinate(46.0733, 23.5805));
 
-        $this->assertEquals(190.7, $pointBucharest->distanceToPoint($pointRomCenter), null, 0.1);
-        $this->assertEquals(190.7, $pointRomCenter->distanceToPoint($pointBucharest), null, 0.1);
+        $this->assertEqualsWithDelta(190.7, $pointBucharest->distanceToPoint($pointRomCenter), 0.1);
+        $this->assertEqualsWithDelta(190.7, $pointRomCenter->distanceToPoint($pointBucharest), 0.1);
 
-        $this->assertEquals(269.2, $pointBucharest->distanceToPoint($pointAlbaIulia), null, 0.1);
-        $this->assertEquals(269.2, $pointAlbaIulia->distanceToPoint($pointBucharest), null, 0.1);
+        $this->assertEqualsWithDelta(269.2, $pointBucharest->distanceToPoint($pointAlbaIulia), 0.1);
+        $this->assertEqualsWithDelta(269.2, $pointAlbaIulia->distanceToPoint($pointBucharest), 0.1);
 
-        $this->assertEquals(108, $pointRomCenter->distanceToPoint($pointAlbaIulia), null, 0.1);
-        $this->assertEquals(108, $pointAlbaIulia->distanceToPoint($pointRomCenter), null, 0.1);
+        $this->assertEqualsWithDelta(108, $pointRomCenter->distanceToPoint($pointAlbaIulia), 0.1);
+        $this->assertEqualsWithDelta(108, $pointAlbaIulia->distanceToPoint($pointRomCenter), 0.1);
     }
 
     public function test_canCompute_distanceToLine() {
@@ -50,27 +55,27 @@ class RouteTrackPointTests extends WP_UnitTestCase {
         $pointAlbaIulia = new Abp01_Route_Track_Point(new Abp01_Route_Track_Coordinate(46.0733, 23.5805));
         $pointRomCenter = new Abp01_Route_Track_Point(new Abp01_Route_Track_Coordinate(45.9432, 24.9668));
 
-        $this->assertEquals(153.4, $pointBucharest->distanceToLine($pointAlbaIulia, $pointRomCenter), null, 0.1);
+        $this->assertEqualsWithDelta(153.4, $pointBucharest->distanceToLine($pointAlbaIulia, $pointRomCenter), 0.1);
 
         $pointCurrent = new Abp01_Route_Track_Point(new Abp01_Route_Track_Coordinate(53.2611, -0.7972));
         $pointA = new Abp01_Route_Track_Point(new Abp01_Route_Track_Coordinate(53.3206, -1.7297));
         $pointB = new Abp01_Route_Track_Point(new Abp01_Route_Track_Coordinate(53.1887, 0.1334));
 
-        $this->assertEquals(0.31, $pointCurrent->distanceToLine($pointA, $pointB), null, 0.1);
+        $this->assertEqualsWithDelta(0.31, $pointCurrent->distanceToLine($pointA, $pointB), 0.1);
     }
 
     public function test_canComputeBearingToPoint() {
         $pointA = new Abp01_Route_Track_Point(new Abp01_Route_Track_Coordinate(52.205, 0.119));
         $pointB = new Abp01_Route_Track_Point(new Abp01_Route_Track_Coordinate(48.857, 2.351));
 
-        $this->assertEquals(156.2, $pointA->bearingToPoint($pointB), null, 0.1);
+        $this->assertEqualsWithDelta(156.2, $pointA->bearingToPoint($pointB), 0.1);
 
         $pointBucharest = new Abp01_Route_Track_Point(new Abp01_Route_Track_Coordinate(44.4268, 26.1025));
         $pointRomCenter = new Abp01_Route_Track_Point(new Abp01_Route_Track_Coordinate(45.9432, 24.9668));
         $pointAlbaIulia = new Abp01_Route_Track_Point(new Abp01_Route_Track_Coordinate(46.0733, 23.5805));
 
-        $this->assertEquals(332.57305556, $pointBucharest->bearingToPoint($pointRomCenter), null, 0.1);
-        $this->assertEquals(313.73083333, $pointBucharest->bearingToPoint($pointAlbaIulia), null, 0.1);
-        $this->assertEquals(278.19333333, $pointRomCenter->bearingToPoint($pointAlbaIulia), null, 0.1);
+        $this->assertEqualsWithDelta(332.57305556, $pointBucharest->bearingToPoint($pointRomCenter), 0.1);
+        $this->assertEqualsWithDelta(313.73083333, $pointBucharest->bearingToPoint($pointAlbaIulia), 0.1);
+        $this->assertEqualsWithDelta(278.19333333, $pointRomCenter->bearingToPoint($pointAlbaIulia), 0.1);
     }
 }

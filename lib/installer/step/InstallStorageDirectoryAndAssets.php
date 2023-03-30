@@ -33,8 +33,17 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
-interface Abp01_Installer_Step {
-	function execute();
+class Abp01_Installer_Step_InstallStorageDirectoryAndAssets implements Abp01_Installer_Step {
 
-	function getLastError();
+	public function __construct() {
+		
+	}
+
+    public function execute() { 
+
+	}
+
+    public function getLastError() { 
+
+	}
 }

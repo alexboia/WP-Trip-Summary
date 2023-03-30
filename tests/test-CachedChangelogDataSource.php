@@ -32,7 +32,7 @@
 class CachedChangelogDataSourceTests extends WP_UnitTestCase {
 	use GenericTestHelpers;
 
-	public function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->_purgeCache();
 	}
@@ -41,7 +41,7 @@ class CachedChangelogDataSourceTests extends WP_UnitTestCase {
 		delete_option(Abp01_ChangeLogDataSource_Cached::OPT_CHANGELOG_CACHE_KEY);
 	}
 
-	public function tearDown() {
+	protected function tearDown(): void {
 		parent::tearDown();
 		$this->_purgeCache();
 		Mockery::close();
@@ -78,6 +78,7 @@ class CachedChangelogDataSourceTests extends WP_UnitTestCase {
 	 * @return Abp01_ChangeLogDataSource
 	 */
 	private function _createDataSourceMock(array $changeLog, $expectedCallCount) {
+		/** @var \Mockery\MockInterface|\Mockery\LegacyMockInterface|Abp01_ChangeLogDataSource $mock */
 		$mock = Mockery::mock('Abp01_ChangeLogDataSource');
         $mock = $mock->shouldReceive('getChangeLog')
 			->times($expectedCallCount)

@@ -33,7 +33,7 @@ class FrontendThemeDecoratorTests extends WP_UnitTestCase {
     use GenericTestHelpers;
     use ViewerTestDataHelpers;
 
-    public function setUp() {
+    protected function setUp(): void {
         parent::setUp();
         $this->_setupPluginViewerTestTheme();
     }
@@ -56,7 +56,7 @@ class FrontendThemeDecoratorTests extends WP_UnitTestCase {
             $pluginViewerTemplateDir);
     }
 
-    public function tearDown() {
+    protected function tearDown(): void {
         parent::tearDown();
         $this->_cleanupPluginViewerTestTheme();
     }

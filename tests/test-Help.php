@@ -1,4 +1,8 @@
 <?php
+
+use Yoast\PHPUnitPolyfills\Polyfills\AssertStringContains;
+use Yoast\PHPUnitPolyfills\Polyfills\ExpectException;
+
 /**
  * Copyright (c) 2014-2023 Alexandru Boia
  *
@@ -30,7 +34,9 @@
  */
 
 class HelpTests extends WP_UnitTestCase {
+    use ExpectException;
     use GenericTestHelpers;
+    use AssertStringContains;
 
     private static $_knownLocales = array(
         'en_US' => array(
@@ -53,7 +59,7 @@ class HelpTests extends WP_UnitTestCase {
 
     private static $_unknownLocales = array();
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         parent::setUpBeforeClass();
         foreach (self::_getAvailableTranslationCodes() as $code) {
             if (!isset(self::$_knownLocales[$code])) {
@@ -62,7 +68,7 @@ class HelpTests extends WP_UnitTestCase {
         }
     }
 
-    public static function tearDownAfterClass() {
+    public static function tearDownAfterClass(): void {
         parent::tearDownAfterClass();
         self::$_knownLocales = array();
         self::$_unknownLocales = array();
@@ -129,6 +135,7 @@ class HelpTests extends WP_UnitTestCase {
      * @expectedException InvalidArgumentException
      */
     public function test_tryGetHelpForLocale_emptyLocale($locale) {
+        $this->expectException(InvalidArgumentException::class);
         $help = new Abp01_Help();
         $help->getHelpContentForLocale($locale);
     }
@@ -136,7 +143,7 @@ class HelpTests extends WP_UnitTestCase {
     private function _assertContentMatchesSpec($content, $spec) {
         $this->assertNotEmpty($content);
         $this->assertGreaterThan($spec['minLength'], strlen($content));
-        $this->assertContains($spec['test'], $content);
+        $this->assertStringContainsString($spec['test'], $content);
     }
 
     private static function _getAvailableTranslationCodes() {
