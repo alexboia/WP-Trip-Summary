@@ -30,12 +30,12 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit;
+    exit;
 }
 
-interface Abp01_Installer_Requirement_Provider {
-	/**
-	 * @return Abp01_Installer_Requirement_Descriptor[] 
-	 */
-	function getRequirements();
+class Abp01_Installer_Service_ClearChangeLogCache {
+	public function execute() {
+		Abp01_ChangeLogDataSource_Cached::clearCache();
+		return true;
+	}
 }

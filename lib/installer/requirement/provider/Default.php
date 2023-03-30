@@ -33,9 +33,45 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
-interface Abp01_Installer_Requirement_Provider {
+class Abp01_Installer_Requirement_Provider_Default implements Abp01_Installer_Requirement_Provider {
+	/**
+	 * @var Abp01_Env
+	 */
+	private $_env;
+
+	public function __construct(Abp01_Env $env) {
+		$this->_env = $env;
+	}
+
 	/**
 	 * @return Abp01_Installer_Requirement_Descriptor[] 
 	 */
-	function getRequirements();
+	public function getRequirements() {
+		return array(
+			new Abp01_Installer_Requirement_Descriptor(
+				new Abp01_Installer_Requirement_RequiredPhpVersion($this->_env),
+				Abp01_Installer_RequirementStatusCode::INCOMPATIBLE_PHP_VERSION
+			),
+			new Abp01_Installer_Requirement_Descriptor(
+				new Abp01_Installer_Requirement_RequiredWpVersion($this->_env),
+				Abp01_Installer_RequirementStatusCode::INCOMPATIBLE_WP_VERSION
+			),
+			new Abp01_Installer_Requirement_Descriptor(
+				new Abp01_Installer_Requirement_HasLibXml(),
+				Abp01_Installer_RequirementStatusCode::SUPPORT_LIBXML_NOT_FOUND
+			),
+			new Abp01_Installer_Requirement_Descriptor(
+				new Abp01_Installer_Requirement_HasMysqli(),
+				Abp01_Installer_RequirementStatusCode::SUPPORT_MYSQLI_NOT_FOUND
+			),
+			new Abp01_Installer_Requirement_Descriptor(
+				new Abp01_Installer_Requirement_HasMysqlSpatialSupport($this->_env),
+				Abp01_Installer_RequirementStatusCode::SUPPORT_MYSQL_SPATIAL_NOT_FOUND
+			),
+			new Abp01_Installer_Requirement_Descriptor(
+				new Abp01_Installer_Requirement_HasRequiredMysqlSpatialFunctions($this->_env),
+				Abp01_Installer_RequirementStatusCode::SUPPORT_MYSQL_SPATIAL_NOT_FOUND
+			)
+		);
+	}
 }

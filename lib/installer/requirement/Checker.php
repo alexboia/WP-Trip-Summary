@@ -33,9 +33,54 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
-interface Abp01_Installer_Requirement_Provider {
+class Abp01_Installer_Requirement_Checker {
 	/**
-	 * @return Abp01_Installer_Requirement_Descriptor[] 
+	 * @var Abp01_Installer_Requirement_Provider
 	 */
-	function getRequirements();
+	private $_requirementsProvider;
+
+	/**
+	 * @var \Exception|null
+	 */
+	private $_lastError;
+
+	public function __construct(Abp01_Installer_Requirement_Provider $requirementsProvider) {
+		$this->_requirementsProvider = $requirementsProvider;
+	}
+
+	public function check() {
+		$this->_reset();
+
+		try {
+			$result = $this->_doCheck();
+		} catch (Exception $exc) {
+			$result = Abp01_Installer_RequirementStatusCode::COULD_NOT_DETECT_INSTALLATION_CAPABILITIES;
+			$this->_lastError = $exc;
+		}
+
+		return $result;
+	}
+
+	private function _doCheck() {
+		$result = Abp01_Installer_RequirementStatusCode::ALL_REQUIREMENTS_MET;
+		$requirementsInfo = $this->_requirementsProvider
+			->getRequirements();
+
+		foreach ($requirementsInfo as $ri) {
+			if (!$ri->getRequirement()->isSatisfied()) {
+				$result = $ri->getUnsatisfiedStatusCode();
+				break;
+			}
+		}
+
+		return $result;
+	}
+
+	private function _reset() {
+		$this->_lastError = null;
+	}
+
+	public function getLastError() {
+		return $this->_lastError;
+	}
 }

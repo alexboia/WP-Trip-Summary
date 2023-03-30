@@ -33,9 +33,21 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
-interface Abp01_Installer_Requirement_Provider {
-	/**
-	 * @return Abp01_Installer_Requirement_Descriptor[] 
-	 */
-	function getRequirements();
+class Abp01_Installer_Requirement_Descriptor {
+	private $_requirement;
+
+	private $_unsatisfiedStatusCode;
+
+	public function __construct(Abp01_Installer_Requirement $requirement, $unsatisfiedStatusCode) {
+		$this->_requirement = $requirement;
+		$this->_unsatisfiedStatusCode = $unsatisfiedStatusCode;
+	}
+
+	public function getRequirement() {
+		return $this->_requirement;
+	}
+
+	public function getUnsatisfiedStatusCode() {
+		return $this->_unsatisfiedStatusCode;
+	}
 }

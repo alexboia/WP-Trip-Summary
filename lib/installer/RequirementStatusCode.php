@@ -33,9 +33,43 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
-interface Abp01_Installer_Requirement_Provider {
+class Abp01_Installer_RequirementStatusCode {
 	/**
-	 * @return Abp01_Installer_Requirement_Descriptor[] 
+	 * @var int Status code returned when all installation requirements have been met
 	 */
-	function getRequirements();
+	const ALL_REQUIREMENTS_MET = 0;
+
+	/**
+	 * @var int Error code returned when an incompatible PHP version is detected upon installation
+	 */
+	const INCOMPATIBLE_PHP_VERSION = 1;
+
+	/**
+	 * @var int Error code returned when an incompatible WordPress version is detected upon installation
+	 */
+	const INCOMPATIBLE_WP_VERSION = 2;
+
+	/**
+	 * @var int Error code returned when LIBXML is not found
+	 */
+	const SUPPORT_LIBXML_NOT_FOUND = 3;
+
+	/**
+	 * @var int Error code returned when MySQL Spatial extension is not found
+	 */
+	const SUPPORT_MYSQL_SPATIAL_NOT_FOUND = 4;
+
+	/**
+	 * @var int Error code returned when MySqli extension is not found
+	 */
+	const SUPPORT_MYSQLI_NOT_FOUND = 5;
+
+	/**
+	 * @var int Error code returned when the installation capabilities cannot be detected
+	 */
+	const COULD_NOT_DETECT_INSTALLATION_CAPABILITIES = 255;
+
+	public static function areAllRequirementsMet($statusCode) {
+		return $statusCode === self::ALL_REQUIREMENTS_MET;
+	}
 }
