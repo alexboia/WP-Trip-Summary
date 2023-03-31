@@ -120,12 +120,22 @@ class RequirementCheckerTests extends WP_UnitTestCase {
 	}
 
 	public function test_someRequirementsFailed_someInTheMiddle_noLastError() {
-		$provider = new Abp01_Installer_Requirement_Provider_Collection($this->_generateOneFailedThenSuccessfulRequirements(5, 2));	
+		$provider = new Abp01_Installer_Requirement_Provider_Collection($this->_generateOneFailedThenSuccessfulRequirements(5, 2));
 		$checker = new Abp01_Installer_Requirement_Checker($provider);
 
 		$result = $checker->check();
 		$this->assertEquals(self::FAILED_REQUIREMENT_STATUS_CODE_BASE + 2, $result);
 		$this->assertNull($checker->getLastError());
+	}
+
+	public function test_someRequirementsFailed_someInTheMiddle_withLastError() {
+		$expectedExc = $this->_generateException();
+		$provider = new Abp01_Installer_Requirement_Provider_Collection($this->_generateOneFailedThenSuccessfulRequirements(5, 2, $expectedExc));
+		$checker = new Abp01_Installer_Requirement_Checker($provider);
+
+		$result = $checker->check();
+		$this->assertEquals(self::FAILED_REQUIREMENT_STATUS_CODE_BASE + 2, $result);
+		$this->assertSame($expectedExc, $checker->getLastError());
 	}
 
 	public function test_someRequirementsFailed_last_noLastError() {
@@ -135,6 +145,16 @@ class RequirementCheckerTests extends WP_UnitTestCase {
 		$result = $checker->check();
 		$this->assertEquals(self::FAILED_REQUIREMENT_STATUS_CODE_BASE + 4, $result);
 		$this->assertNull($checker->getLastError());
+	}
+
+	public function test_someRequirementsFailed_last_withLastError() {
+		$expectedExc = $this->_generateException();
+		$provider = new Abp01_Installer_Requirement_Provider_Collection($this->_generateOneFailedThenSuccessfulRequirements(5, 4, $expectedExc));	
+		$checker = new Abp01_Installer_Requirement_Checker($provider);
+
+		$result = $checker->check();
+		$this->assertEquals(self::FAILED_REQUIREMENT_STATUS_CODE_BASE + 4, $result);
+		$this->assertSame($expectedExc, $checker->getLastError());
 	}
 
 	public function test_whenExceptionFailed() {
