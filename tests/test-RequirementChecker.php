@@ -33,9 +33,13 @@ use Mockery\LegacyMockInterface;
  */
 
 class RequirementCheckerTests extends WP_UnitTestCase {
+	use GenericTestHelpers;
+	
 	const FAILED_REQUIREMENT_STATUS_CODE_BASE = 1000;
 
 	const COULD_NOT_DETECT_REQUIREMENT_STATUS_CODE = Abp01_Installer_RequirementStatusCode::COULD_NOT_DETECT_INSTALLATION_CAPABILITIES;
+
+	const ALL_MET_REQUIREMENT_STATUS_CODE = Abp01_Installer_RequirementStatusCode::ALL_REQUIREMENTS_MET;
 
 	public function test_noRequirements() {
 		$provider = new Abp01_Installer_Requirement_Provider_Collection(array());
@@ -188,6 +192,16 @@ class RequirementCheckerTests extends WP_UnitTestCase {
 			->getMock();
 
 		return $reqMock;
+	}
+
+	public function test_canCheck_withDefaultRequirements() {
+		$checker = new Abp01_Installer_Requirement_Checker(
+			new Abp01_Installer_Requirement_Provider_Default($this->_getEnv())
+		);
+
+		$result = $checker->check();
+		$this->assertEquals(self::ALL_MET_REQUIREMENT_STATUS_CODE, $result);
+		$this->assertNull($checker->getLastError());
 	}
 
 	private function _generateException() {
