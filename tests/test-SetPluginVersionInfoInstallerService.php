@@ -29,19 +29,21 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit;
-}
-
-class Abp01_Installer_Service_SetPluginVersionInfo {
-	private $_version;
-
-	public function __construct($version) {
-		$this->_version = $version;
+class SetPluginVersionInfoInstallerServiceTests extends WP_UnitTestCase {
+	protected function setUp(): void {
+		delete_option(Abp01_PluginMeta::OPT_VERSION);
 	}
 
-	public function execute() {
-		update_option(Abp01_PluginMeta::OPT_VERSION, $this->_version);
-		return true;
+	protected function tearDown(): void {
+		update_option(Abp01_PluginMeta::OPT_VERSION, ABP01_VERSION);
+	}
+
+	public function test_canSetVersion() {
+		$version = '1.2.3.4';
+		$service = new Abp01_Installer_Service_SetPluginVersionInfo($version);
+		$service->execute();
+
+		$setVersion = get_option(Abp01_PluginMeta::OPT_VERSION);
+		$this->assertEquals($version, $setVersion);
 	}
 }
