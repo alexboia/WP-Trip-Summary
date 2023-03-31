@@ -63,7 +63,7 @@
 		$result = $db->rawQuery('SHOW TABLES');
 		if (is_array($result)) {
 			foreach ($result as $r) {
-				if (strcasecmp($r, $table) === 0) {
+				if (strcasecmp(current($r), $table) === 0) {
 					return true;
 				}
 			}
