@@ -80,6 +80,7 @@ class PostListingColumnTests extends WP_UnitTestCase {
      * @return \Mockery\MockInterface|\Mockery\LegacyMockInterface|\Abp01_Display_PostListing_ColumnDataSource
      */
     private function _getPostListingColumnDataSourceMock($postId, $withValue) {
+        /** @var \Mockery\MockInterface|\Mockery\LegacyMockInterface|\Abp01_Display_PostListing_ColumnDataSource $mock */
         $mock = Mockery::mock('Abp01_Display_PostListing_ColumnDataSource');
         $mock = $mock->shouldReceive('getValue')
             ->with($postId)
