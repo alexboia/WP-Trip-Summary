@@ -34,6 +34,8 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Installer_Requirement_HasRequiredMysqlSpatialFunctions implements Abp01_Installer_Requirement {
+	const EXPECTED_RESULT = 'POLYGON((1 2,3 2,3 4,1 4,1 2))';
+	
 	/**
 	 * @var Abp01_Env
 	 */
@@ -48,10 +50,15 @@ class Abp01_Installer_Requirement_HasRequiredMysqlSpatialFunctions implements Ab
 		$this->_env = $env;
 	}
 
+	/**
+	 * @return bool 
+	 */
 	public function isSatisfied() { 
+		$this->_reset();
+
 		$result = false;
 		$db = $this->_env->getDb();
-		$expected = 'POLYGON((1 2,3 2,3 4,1 4,1 2))';
+		$expected = self::EXPECTED_RESULT;
 
 		if (!$db) {
 			return false;
@@ -74,6 +81,13 @@ class Abp01_Installer_Requirement_HasRequiredMysqlSpatialFunctions implements Ab
 		return $result;
 	}
 
+	private function _reset() {
+		$this->_lastError = null;
+	}
+
+	/**
+	 * @return Exception|null 
+	 */
 	public function getLastError() {
 		return $this->_lastError;
 	}

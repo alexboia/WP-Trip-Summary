@@ -38,7 +38,7 @@ class MysqliDbTestWrapper extends MysqliDb {
 		}
 
 		$bindParams = null;
-		$query = strtolower(($spec['query']));		
+		$query = self::_normalizeQuery(($spec['query']));
 
 		if (!empty($spec['bindParams'])) {
 			$bindParams = $spec['bindParams'];
@@ -49,6 +49,11 @@ class MysqliDbTestWrapper extends MysqliDb {
 			'bindParams' => self::_encodeVariable($bindParams),
 			'return' => $spec['return']
 		);
+	}
+
+	private static function _normalizeQuery($query) {
+		$normalizedQuery = strtolower($query);
+		return preg_replace('/\s/', '', $normalizedQuery);
 	}
 
 	private static function _encodeVariable($var) {
@@ -71,7 +76,7 @@ class MysqliDbTestWrapper extends MysqliDb {
 	private static function _findRawQueryReturn($query, $bindParams) {
 		$found = false;
 		$return = null;
-		$searchQuery = strtolower($query);
+		$searchQuery = self::_normalizeQuery($query);
 		$searchBindParams = self::_encodeVariable($bindParams);
 
 		foreach (self::$_rawQueryFixtures as $f) {
