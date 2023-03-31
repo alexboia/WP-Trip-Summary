@@ -37,37 +37,37 @@ class Abp01_Installer {
 	/**
 	 * @var int Status code returned when all installation requirements have been met
 	 */
-	const ALL_REQUIREMENTS_MET = 0;
+	const ALL_REQUIREMENTS_MET = Abp01_Installer_RequirementStatusCode::ALL_REQUIREMENTS_MET;
 
 	/**
 	 * @var int Error code returned when an incompatible PHP version is detected upon installation
 	 */
-	const INCOMPATIBLE_PHP_VERSION = 1;
+	const INCOMPATIBLE_PHP_VERSION = Abp01_Installer_RequirementStatusCode::INCOMPATIBLE_PHP_VERSION;
 
 	/**
 	 * @var int Error code returned when an incompatible WordPress version is detected upon installation
 	 */
-	const INCOMPATIBLE_WP_VERSION = 2;
+	const INCOMPATIBLE_WP_VERSION = Abp01_Installer_RequirementStatusCode::INCOMPATIBLE_WP_VERSION;
 
 	/**
 	 * @var int Error code returned when LIBXML is not found
 	 */
-	const SUPPORT_LIBXML_NOT_FOUND = 3;
+	const SUPPORT_LIBXML_NOT_FOUND = Abp01_Installer_RequirementStatusCode::SUPPORT_LIBXML_NOT_FOUND;
 
 	/**
 	 * @var int Error code returned when MySQL Spatial extension is not found
 	 */
-	const SUPPORT_MYSQL_SPATIAL_NOT_FOUND = 4;
+	const SUPPORT_MYSQL_SPATIAL_NOT_FOUND = Abp01_Installer_RequirementStatusCode::SUPPORT_MYSQL_SPATIAL_NOT_FOUND;
 
 	/**
 	 * @var int Error code returned when MySqli extension is not found
 	 */
-	const SUPPORT_MYSQLI_NOT_FOUND = 5;
+	const SUPPORT_MYSQLI_NOT_FOUND = Abp01_Installer_RequirementStatusCode::SUPPORT_MYSQLI_NOT_FOUND;
 
 	/**
 	 * @var int Error code returned when the installation capabilities cannot be detected
 	 */
-	const COULD_NOT_DETECT_INSTALLATION_CAPABILITIES = 255;
+	const COULD_NOT_DETECT_INSTALLATION_CAPABILITIES = Abp01_Installer_RequirementStatusCode::COULD_NOT_DETECT_INSTALLATION_CAPABILITIES;
 
 	/**
 	 * @var string WP options key for current plug-in version
@@ -554,30 +554,25 @@ class Abp01_Installer {
 		$this->_reset();
 
 		try {
-			if (!$this->_isCompatPhpVersion()) {
-				return self::INCOMPATIBLE_PHP_VERSION;
+			$checker = $this->_getChecker();
+			$result = $checker->check();
+			if ($result !== self::ALL_REQUIREMENTS_MET) {
+				$this->_lastError = $checker->getLastError();
 			}
-			if (!$this->_isCompatWpVersion()) {
-				return self::INCOMPATIBLE_WP_VERSION;
-			}
-			if (!$this->_hasMysqli()) {
-				return self::SUPPORT_MYSQLI_NOT_FOUND;
-			}
-			if (!$this->_hasLibxml()) {
-				return self::SUPPORT_LIBXML_NOT_FOUND;
-			}
-			if (!$this->_hasMysqlSpatialSupport() ||
-				!$this->_hasRequiredMysqlSpatialFunctions()
-			) {
-				return self::SUPPORT_MYSQL_SPATIAL_NOT_FOUND;
-			}
+
+			return $result;
 		} catch (Exception $e) {
 			$this->_lastError = $e;
+			return self::COULD_NOT_DETECT_INSTALLATION_CAPABILITIES;
 		}
+	}
 
-		return empty($this->_lastError) 
-			? self::ALL_REQUIREMENTS_MET 
-			: self::COULD_NOT_DETECT_INSTALLATION_CAPABILITIES;
+	private function _getChecker() {
+		return new Abp01_Installer_Requirement_Checker(
+			new Abp01_Installer_Requirement_Provider_Default(
+				$this->_env
+			)
+		);
 	}
 
 	/**
@@ -783,79 +778,6 @@ class Abp01_Installer {
 
 		$filePath = sprintf('%s/%s/lookup-definitions.xml', $dataDir, $dirName);
 		return $filePath;
-	}
-
-	private function _isCompatPhpVersion() {
-		$current = $this->_env->getPhpVersion();
-		$required = $this->_env->getRequiredPhpVersion();
-		return version_compare($current, $required, '>=');
-	}
-
-	private function _isCompatWpVersion() {
-		$current = $this->_env->getWpVersion();
-		$required = $this->_env->getRequiredWpVersion();
-		return version_compare($current, $required, '>=');
-	}
-
-	private function _hasLibxml() {
-		return function_exists('simplexml_load_string') &&
-			function_exists('simplexml_load_file');
-	}
-
-	private function _hasMysqli() {
-		return extension_loaded('mysqli') &&
-			class_exists('mysqli_driver') &&
-			class_exists('mysqli');
-	}
-
-	private function _hasMysqlSpatialSupport() {
-		$result = false;
-		$db = $this->_env->getDb();
-
-		if (!$db) {
-			return false;
-		}
-
-		try {
-			$haveGeometry = $db->rawQuery("SHOW VARIABLES WHERE Variable_name = 'have_geometry'");
-		} catch (Exception $exc) {
-			$this->_lastError = $exc;
-			$haveGeometry = null;
-		}
-
-		if (!empty($haveGeometry) && is_array($haveGeometry)) {
-			$haveGeometry = $haveGeometry[0];
-			$result = !empty($haveGeometry['Value']) &&
-				strcasecmp($haveGeometry['Value'], 'YES') === 0;
-		}
-
-		return $result;
-	}
-
-	private function _hasRequiredMysqlSpatialFunctions() {
-		$result = false;
-		$db = $this->_env->getDb();
-		$expected = 'POLYGON((1 2,3 2,3 4,1 4,1 2))';
-
-		if (!$db) {
-			return false;
-		}
-
-		try {
-			$spatialTest = $db->rawQuery('SELECT ST_AsText(ST_Envelope(LINESTRING(
-				ST_GeomFromText(ST_AsText(POINT(1, 2)), 3857),
-				ST_GeomFromText(ST_AsText(POINT(3, 4)), 3857)
-			))) AS SPATIAL_TEST');
-		} catch (Exception $exc) {
-			$this->_lastError = $exc;
-			$spatialTest = null;
-		}
-
-		if (!empty($spatialTest) && is_array($spatialTest)) {
-			$result = strcasecmp($spatialTest[0]['SPATIAL_TEST'], $expected) === 0;
-		}
-
-		return $result;
 	}
 
 	private function _createCapabilities() {
