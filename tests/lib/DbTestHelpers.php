@@ -30,23 +30,45 @@
  */
 
  trait DbTestHelpers {
-    protected function _truncateTables(MysqliDb $db) {
-        $nArgs = func_num_args();
+	protected function _truncateTables(MysqliDb $db) {
+		$nArgs = func_num_args();
 
-        for ($iArg = 1; $iArg < $nArgs; $iArg ++) {
-            $table = func_get_arg($iArg);
-            $db->rawQuery('TRUNCATE TABLE `' . $table . '`', null, false);
-        }
-    }
+		for ($iArg = 1; $iArg < $nArgs; $iArg ++) {
+			$table = func_get_arg($iArg);
+			$db->rawQuery('TRUNCATE TABLE `' . $table . '`', null);
+		}
+	}
 
-    protected function _countRecordsByColumnInValueList(MysqliDb $db, $table, $column, $values) {
-        $db->where($column, 
-            $values, 
-            'IN');
+	protected function _countRecordsByColumnInValueList(MysqliDb $db, $table, $column, $values) {
+		$db->where($column, 
+			$values, 
+			'IN');
 
-        $result = $db->getOne($table, 
-            'COUNT(*) as cnt');
+		$result = $db->getOne($table, 
+			'COUNT(*) as cnt');
 
-        return $result['cnt'];
-    }
+		return $result['cnt'];
+	}
+
+	protected function _dropTables(MysqliDb $db) {
+		$nArgs = func_num_args();
+
+		for ($iArg = 1; $iArg < $nArgs; $iArg ++) {
+			$table = func_get_arg($iArg);
+			$db->rawQuery('DROP TABLE IF EXISTS  `' . $table . '`', null);
+		}
+	}
+
+	protected function _tableExists(MysqliDb $db, $table) {
+		$result = $db->rawQuery('SHOW TABLES');
+		if (is_array($result)) {
+			foreach ($result as $r) {
+				if (strcasecmp($r, $table) === 0) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
  }
