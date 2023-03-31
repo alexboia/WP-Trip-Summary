@@ -34,31 +34,34 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Installer_Service_CreateStorageDirectories {
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+	private $_rootStorageDir;
 
-	public function __construct(Abp01_Env $env) {
-		$this->_env = $env;
+	private $_tracksStorageDir;
+
+	private $_cacheStorageDir;
+
+	public function __construct($rootStorageDir, $tracksStorageDir, $cacheStorageDir) {
+		$this->_rootStorageDir = $rootStorageDir;
+		$this->_tracksStorageDir = $tracksStorageDir;
+		$this->_cacheStorageDir = $cacheStorageDir;
 	}
 	
 	public function execute() {
 		$result = true;
-		$rootStorageDir = $this->_env->getRootStorageDir();
+		$rootStorageDir = $this->_rootStorageDir;
 		
 		if (!is_dir($rootStorageDir)) {
 			@mkdir($rootStorageDir);
 		}
 
 		if (is_dir($rootStorageDir)) {
-			$tracksStorageDir = $this->_env->getTracksStorageDir();
+			$tracksStorageDir = $this->_tracksStorageDir;
 			if (!is_dir($tracksStorageDir)) {
 				@mkdir($tracksStorageDir);
 			}
 
 			if (is_dir($tracksStorageDir)) {
-				$cacheStorageDir = $this->_env->getCacheStorageDir();
+				$cacheStorageDir = $this->_cacheStorageDir;
 				if (!is_dir($cacheStorageDir)) {
 					@mkdir($cacheStorageDir);
 				}

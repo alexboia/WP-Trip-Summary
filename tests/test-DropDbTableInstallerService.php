@@ -60,7 +60,8 @@ class DropDbTableInstallerServiceTests extends WP_UnitTestCase {
 	}
 
 	private function _dropTestDbTable() {
-		$this->_dropTables($this->_getDb(), 'abp01_test_table');
+		$this->_dropTables($this->_getDb(), 
+			'abp01_test_table');
 	}
 
 	public function test_canDrop() {

@@ -29,39 +29,61 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class CreateDbTableInstallerServiceTests extends WP_UnitTestCase {
-	use GenericTestHelpers;
-	use DbTestHelpers;
+class CreateStorageDirectoriesInstallationServiceTests extends WP_UnitTestCase {
+	use TestDataFileHelpers;
 
-	protected function setUp(): void { 
-		$this->_dropTestDbTable();
+	protected function setUp(): void {
+		$this->_ensureTestDirectoriesRemoved();
 	}
 
-	private function _dropTestDbTable() {
-		$this->_dropTables($this->_getDb(), 
-			'abp01_test_table');
+	private function _ensureTestDirectoriesRemoved() {
+		list($rootStorageDir, $tracksStorageDir, $cacheStorageDir) = 
+			$this->_getTestStorageDirectories();
+
+		if (is_dir($cacheStorageDir)) {
+			@rmdir($cacheStorageDir);
+		}
+
+		if (is_dir($tracksStorageDir)) {
+			@rmdir($tracksStorageDir);
+		}
+
+		if (is_dir($rootStorageDir)) {
+			@rmdir($rootStorageDir);
+		}
 	}
 
-	protected function tearDown(): void { 
-		$this->_dropTestDbTable();
+	private function _getTestStorageDirectories() {
+		$rootTestDataDir = $this->_determineTestDataDir();
+		$rootStorageDir = $rootTestDataDir . '/storage';
+		$tracksStorageDir = $rootStorageDir . '/tracks';
+		$cacheStorageDir = $rootStorageDir . '/cache';
+
+		return array($rootStorageDir, 
+			$tracksStorageDir, 
+			$cacheStorageDir);
 	}
 
-	public function test_canCreate() {
-		$tableDefinition = "CREATE TABLE `abp01_test_table` (
-			`term_id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-			`name` VARCHAR(200) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_ci',
-			`slug` VARCHAR(200) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_ci',
-			`term_group` BIGINT(10) NOT NULL DEFAULT '0',
-			PRIMARY KEY (`term_id`) USING BTREE,
-			INDEX `name` (`name`(191)) USING BTREE,
-			INDEX `slug` (`slug`(191)) USING BTREE
-		)";
+	protected function tearDown(): void {
+		$this->_ensureTestDirectoriesRemoved();
+	}
 
-		$service = new Abp01_Installer_Service_CreateDbTable($this->_getEnv());
-		$service->execute('abp01_test_table', $tableDefinition);
+	public function test_canCreateDirectories() {
+		list($rootStorageDir, $tracksStorageDir, $cacheStorageDir) = 
+			$this->_getTestStorageDirectories();
 
-		//Summary existence check for now
-		$this->assertTrue($this->_tableExists($this->_getDb(), 
-			'abp01_test_table'));
+		$service = new Abp01_Installer_Service_CreateStorageDirectories($rootStorageDir, 
+			$tracksStorageDir, 
+			$cacheStorageDir);
+
+		$service->execute();
+
+		$this->assertDirectoryExists($rootStorageDir);
+		$this->assertDirectoryExists($tracksStorageDir);
+		$this->assertDirectoryExists($cacheStorageDir);
+	}
+
+	protected static function _getRootTestsDir() {
+		return __DIR__;
 	}
 }
