@@ -47,13 +47,14 @@ class Abp01_Installer_Requirement_Provider_Default implements Abp01_Installer_Re
 	 * @return Abp01_Installer_Requirement_Descriptor[] 
 	 */
 	public function getRequirements() {
+		$env = $this->_env;
 		return array(
 			new Abp01_Installer_Requirement_Descriptor(
-				new Abp01_Installer_Requirement_RequiredPhpVersion($this->_env),
+				new Abp01_Installer_Requirement_RequiredVersion($env->getPhpVersion(), $env->getRequiredPhpVersion()),
 				Abp01_Installer_RequirementStatusCode::INCOMPATIBLE_PHP_VERSION
 			),
 			new Abp01_Installer_Requirement_Descriptor(
-				new Abp01_Installer_Requirement_RequiredWpVersion($this->_env),
+				new Abp01_Installer_Requirement_RequiredVersion($env->getWpVersion(), $env->getRequiredWpVersion()),
 				Abp01_Installer_RequirementStatusCode::INCOMPATIBLE_WP_VERSION
 			),
 			new Abp01_Installer_Requirement_Descriptor(

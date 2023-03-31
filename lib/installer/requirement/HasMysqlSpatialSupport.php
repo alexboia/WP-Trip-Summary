@@ -48,7 +48,12 @@ class Abp01_Installer_Requirement_HasMysqlSpatialSupport implements Abp01_Instal
 		$this->_env = $env;
 	}
 	
+	/**
+	 * @return bool 
+	 */
 	public function isSatisfied() { 
+		$this->_reset();
+
 		$result = false;
 		$db = $this->_env->getDb();
 
@@ -72,6 +77,13 @@ class Abp01_Installer_Requirement_HasMysqlSpatialSupport implements Abp01_Instal
 		return $result;
 	}
 
+	private function _reset() {
+		$this->_lastError = null;
+	}
+
+	/**
+	 * @return Exception|null 
+	 */
 	public function getLastError() {
 		return $this->_lastError;
 	}

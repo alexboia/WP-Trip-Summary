@@ -239,6 +239,11 @@ class Abp01_Env {
 	private $_version = ABP01_VERSION;
 
 	/**
+	 * @var string
+	 */
+	private $_mysqliDbClass = MysqliDb::class;
+
+	/**
 	 * Gets or creates the singleton instance
 	 * @return Abp01_Env The singleton instance
 	 */
@@ -247,6 +252,18 @@ class Abp01_Env {
 			self::$_instance = new self();
 		}
 		return self::$_instance;
+	}
+
+	public function configureMysqliDbClass($className) {
+		if ($this->_db != null || $this->_metaDb != null) {
+			throw new Abp01_Exception('Cannot change database wrapper class: an instance has already been created!');
+		}
+
+		if (!is_a($className, MysqliDb::class, true)) {
+			throw new Abp01_Exception('Cannot change database wrapper class: Class is not an instance of <' . MysqliDb::class . '>!');
+		}
+
+		$this->_mysqliDbClass = $className;
 	}
 
 	private function __construct() {
@@ -382,9 +399,12 @@ class Abp01_Env {
 		return $this->_dbCharset;
 	}
 
+	/**
+	 * @return \MysqliDb
+	 */
 	public function getDb() {
 		if ($this->_db == null) {
-			$this->_db = new MysqliDb($this->_dbHost,
+			$this->_db = new ($this->_mysqliDbClass)($this->_dbHost,
 				$this->_dbUserName,
 				$this->_dbPassword,
 				$this->_dbName);
@@ -403,9 +423,12 @@ class Abp01_Env {
 		}
 	}
 
+	/**
+	 * @return \MysqliDb
+	 */
 	public function getMetaDb() {
 		if ($this->_metaDb == null) {
-			$this->_metaDb = new MysqliDb($this->_dbHost,
+			$this->_metaDb = new ($this->_mysqliDbClass)($this->_dbHost,
 				$this->_dbUserName,
 				$this->_dbPassword,
 				'information_schema');

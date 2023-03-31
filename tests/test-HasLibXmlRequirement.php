@@ -29,60 +29,21 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit;
-}
+class HasLibXmlRequirementTests extends WP_UnitTestCase {
+	use GenericTestHelpers;
 
-class Abp01_Installer_Requirement_Checker {
-	/**
-	 * @var Abp01_Installer_Requirement_Provider
-	 */
-	private $_requirementsProvider;
+	public function test_canCheck() {
+		$req = new Abp01_Installer_Requirement_HasLibXml();
+		$expected = $this->_extensionCorrectlyLoaded('libxml', 
+			array('simplexml_load_string', 
+				'simplexml_load_file')
+		);
 
-	/**
-	 * @var \Exception|null
-	 */
-	private $_lastError;
-
-	public function __construct(Abp01_Installer_Requirement_Provider $requirementsProvider) {
-		$this->_requirementsProvider = $requirementsProvider;
+		$this->assertEquals($expected, $req->isSatisfied());
 	}
 
-	public function check() {
-		$this->_reset();
-
-		try {
-			$result = $this->_doCheck();
-		} catch (Exception $exc) {
-			$result = Abp01_Installer_RequirementStatusCode::COULD_NOT_DETECT_INSTALLATION_CAPABILITIES;
-			$this->_lastError = $exc;
-		}
-
-		return $result;
-	}
-
-	private function _doCheck() {
-		$result = Abp01_Installer_RequirementStatusCode::ALL_REQUIREMENTS_MET;
-		$requirementsInfo = $this->_requirementsProvider
-			->getRequirements();
-
-		foreach ($requirementsInfo as $ri) {
-			$req = $ri->getRequirement();
-			if (!$req->isSatisfied()) {
-				$result = $ri->getUnsatisfiedStatusCode();
-				$this->_lastError = $req()->getLastError();
-				break;
-			}
-		}
-
-		return $result;
-	}
-
-	private function _reset() {
-		$this->_lastError = null;
-	}
-
-	public function getLastError() {
-		return $this->_lastError;
+	public function test_getLastError_alwaysReturnsNull() {
+		$req = new Abp01_Installer_Requirement_HasLibXml();
+		$this->assertNull($req->getLastError());
 	}
 }

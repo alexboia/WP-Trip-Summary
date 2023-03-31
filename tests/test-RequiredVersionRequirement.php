@@ -29,27 +29,36 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit;
-}
+class RequiredVersionRequirementTests extends WP_UnitTestCase {
+	use GenericTestHelpers;
 
-class Abp01_Installer_Requirement_RequiredPhpVersion implements Abp01_Installer_Requirement {
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
-	
-	public function __construct(Abp01_Env $env) {
-		$this->_env = $env;
+	public function test_canCheck_satisfied() {
+		$req = new Abp01_Installer_Requirement_RequiredVersion('8.0.0', '7.0.0');
+		$this->assertTrue($req->isSatisfied());
 	}
 
-	public function isSatisfied() { 
-		$current = $this->_env->getPhpVersion();
-		$required = $this->_env->getRequiredPhpVersion();
-		return version_compare($current, $required, '>=');
-	}	
+	public function test_canCheck_notSatisfied() {
+		$req = new Abp01_Installer_Requirement_RequiredVersion('6.1.1', '6.1.2');
+		$this->assertFalse($req->isSatisfied());
+	}
 
-	public function getLastError() {
-		return null;
+	public function test_canCheck_currentEnv() {
+		$req = new Abp01_Installer_Requirement_RequiredVersion(PHP_VERSION, $this->_getEnv()->getRequiredPhpVersion());
+		$this->assertNull($req->getLastError());
+	}
+
+	public function test_getLastError_returnsNull_satisfied() {
+		$req = new Abp01_Installer_Requirement_RequiredVersion('8.0.0', '7.0.0');
+		$this->assertNull($req->getLastError());
+	}
+
+	public function test_getLastError_returnsNull_notSatisfied() {
+		$req = new Abp01_Installer_Requirement_RequiredVersion('6.1.1', '6.1.2');
+		$this->assertNull($req->getLastError());
+	}
+
+	public function test_getLastError_returnsNull_currentEnv() {
+		$req = new Abp01_Installer_Requirement_RequiredVersion(PHP_VERSION, $this->_getEnv()->getRequiredPhpVersion());
+		$this->assertNull($req->getLastError());
 	}
 }

@@ -96,6 +96,12 @@ function _set_plugin_installed() {
 
 function _manually_load_plugin() {
 	require_once _get_plugin_base_dir() . '/abp01-plugin-main.php';
+	_override_plugin_db_wrapper();
+}
+
+function _override_plugin_db_wrapper() {
+	require_once 'lib/MysqliDbTestWrapper.php';
+	abp01_get_env()->configureMysqliDbClass(MysqliDbTestWrapper::class);
 }
 
 function _manually_install_plugin() {

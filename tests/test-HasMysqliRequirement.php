@@ -29,27 +29,22 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit;
-}
+class HasMysqliRequirementTests extends WP_UnitTestCase {
+	use GenericTestHelpers;
 
-class Abp01_Installer_Requirement_RequiredWpVersion implements Abp01_Installer_Requirement {
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
-	
-	public function __construct(Abp01_Env $env) {
-		$this->_env = $env;
+	public function test_canCheck() {
+		$req = new Abp01_Installer_Requirement_HasMysqli();
+		$expected = $this->_extensionCorrectlyLoaded('mysqli', 
+			array(),
+			array('mysqli_driver', 
+				'mysqli')
+		);
+
+		$this->assertEquals($expected, $req->isSatisfied());
 	}
 
-	public function isSatisfied() { 
-		$current = $this->_env->getWpVersion();
-		$required = $this->_env->getRequiredWpVersion();
-		return version_compare($current, $required, '>=');
-	}	
-
-	public function getLastError() {
-		return null;
+	public function test_getLastError_alwaysReturnsNull() {
+		$req = new Abp01_Installer_Requirement_HasMysqli();
+		$this->assertNull($req->getLastError());
 	}
 }

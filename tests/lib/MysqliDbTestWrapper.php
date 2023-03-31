@@ -29,60 +29,71 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit;
-}
-
-class Abp01_Installer_Requirement_Checker {
-	/**
-	 * @var Abp01_Installer_Requirement_Provider
-	 */
-	private $_requirementsProvider;
-
-	/**
-	 * @var \Exception|null
-	 */
-	private $_lastError;
-
-	public function __construct(Abp01_Installer_Requirement_Provider $requirementsProvider) {
-		$this->_requirementsProvider = $requirementsProvider;
-	}
-
-	public function check() {
-		$this->_reset();
-
-		try {
-			$result = $this->_doCheck();
-		} catch (Exception $exc) {
-			$result = Abp01_Installer_RequirementStatusCode::COULD_NOT_DETECT_INSTALLATION_CAPABILITIES;
-			$this->_lastError = $exc;
+class MysqliDbTestWrapper extends MysqliDb {
+	private static $_rawQueryFixtures = array();
+	
+	public static function setUpRawQueryFixtures(array $spec) {
+		if (empty($spec['query']) || empty($spec['return'])) {
+			return;
 		}
 
-		return $result;
+		$bindParams = null;
+		$query = strtolower(($spec['query']));		
+
+		if (!empty($spec['bindParams'])) {
+			$bindParams = $spec['bindParams'];
+		}
+
+		self::$_rawQueryFixtures[] = array(
+			'query' => $query,
+			'bindParams' => self::_encodeVariable($bindParams),
+			'return' => $spec['return']
+		);
 	}
 
-	private function _doCheck() {
-		$result = Abp01_Installer_RequirementStatusCode::ALL_REQUIREMENTS_MET;
-		$requirementsInfo = $this->_requirementsProvider
-			->getRequirements();
+	private static function _encodeVariable($var) {
+		return sha1(strtolower(serialize($var)));
+	}
 
-		foreach ($requirementsInfo as $ri) {
-			$req = $ri->getRequirement();
-			if (!$req->isSatisfied()) {
-				$result = $ri->getUnsatisfiedStatusCode();
-				$this->_lastError = $req()->getLastError();
+	public static function resetRawQueryFixtures() {
+		self::$_rawQueryFixtures = array();
+	}
+
+	public function rawQuery($query, $bindParams = null) {
+		$fixture = self::_findRawQueryReturn($query, $bindParams);
+		if ($fixture['found']) {
+			return self::_processReturnValue($fixture['return']);
+		}
+
+		return parent::rawQuery($query, $bindParams);
+	}
+
+	private static function _findRawQueryReturn($query, $bindParams) {
+		$found = false;
+		$return = null;
+		$searchQuery = strtolower($query);
+		$searchBindParams = self::_encodeVariable($bindParams);
+
+		foreach (self::$_rawQueryFixtures as $f) {
+			if ($f['query'] === $searchQuery 
+				&& $f['bindParams'] === $searchBindParams) {
+				$found = true;
+				$return = $f['return'];
 				break;
 			}
 		}
 
-		return $result;
+		return array(
+			'found' => $found,
+			'return' => $return
+		);
 	}
 
-	private function _reset() {
-		$this->_lastError = null;
-	}
+	private static function _processReturnValue($return) {
+		if (is_a($return, Exception::class)) {
+			throw $return;
+		}
 
-	public function getLastError() {
-		return $this->_lastError;
+		return $return;
 	}
 }
