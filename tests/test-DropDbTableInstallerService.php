@@ -29,7 +29,8 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class CreateDbTableInstallerServiceTests extends WP_UnitTestCase {
+
+class DropDbTableInstallerServiceTests extends WP_UnitTestCase {
 	use GenericTestHelpers;
 	use DbTestHelpers;
 
@@ -37,16 +38,8 @@ class CreateDbTableInstallerServiceTests extends WP_UnitTestCase {
 		$this->_dropTestDbTable();
 	}
 
-	private function _dropTestDbTable() {
-		$this->_dropTables($this->_getDb(), 'abp01_test_table');
-	}
-
-	protected function tearDown(): void { 
-		$this->_dropTestDbTable();
-	}
-
-	public function test_canCreate() {
-		$tableDefinition = "CREATE TABLE `abp01_test_table` (
+	private function _createTestTable() {
+		$createSql = "CREATE TABLE `abp01_test_table` (
 			`term_id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 			`name` VARCHAR(200) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_ci',
 			`slug` VARCHAR(200) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_ci',
@@ -54,13 +47,27 @@ class CreateDbTableInstallerServiceTests extends WP_UnitTestCase {
 			PRIMARY KEY (`term_id`) USING BTREE,
 			INDEX `name` (`name`(191)) USING BTREE,
 			INDEX `slug` (`slug`(191)) USING BTREE
-		)";
+		)
+		COLLATE='utf8mb4_unicode_ci'
+		ENGINE=MyISAM
+		AUTO_INCREMENT=290;";
 
-		$service = new Abp01_Installer_Service_CreateDbTable($this->_getEnv());
-		$service->execute('abp01_test_table', $tableDefinition);
+		$this->_getDb()->rawQuery($createSql);
+	}
 
-		//Summary existence check for now
-		$this->assertTrue($this->_tableExists($this->_getDb(), 
+	protected function tearDown(): void { 
+		$this->_dropTestDbTable();
+	}
+
+	private function _dropTestDbTable() {
+		$this->_dropTables($this->_getDb(), 'abp01_test_table');
+	}
+
+	public function test_canDrop() {
+		$service = new Abp01_Installer_Service_DropDbTable($this->_getEnv());
+		$service->execute('abp01_test_table');
+
+		$this->assertFalse($this->_tableExists($this->_getDb(), 
 			'abp01_test_table'));
 	}
 }

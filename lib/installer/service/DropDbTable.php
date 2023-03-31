@@ -46,7 +46,7 @@ class Abp01_Installer_Service_DropDbTable {
 	public function execute($tableName) {
 		$db = $this->_env->getDb();
 		return $db != null 
-			? $db->rawQuery('DROP TABLE IF EXISTS `' . $tableName . '`', null, false) 
+			? $db->rawQuery('DROP TABLE IF EXISTS `' . $tableName . '`', null) 
 			: false;
 	}
 }
