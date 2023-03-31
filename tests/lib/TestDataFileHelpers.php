@@ -30,31 +30,95 @@
  */
 
  trait TestDataFileHelpers {
-    protected static function _deleteAllDataFiles($fileNames) {
-        foreach ($fileNames as $fileName) {
-            self::_deleteDataFile($fileName);
-        }
-    }
+	protected static function _ensurePluginTestDirectoriesCreated() {
+		list($rootStorageDir, $tracksStorageDir, $cacheStorageDir) = 
+			self::_getTestPluginStorageDirectories();
 
-    protected static function _deleteDataFile($fileName) {
-        unlink(self::_determineDataFilePath($fileName));
-    }
+		if (!is_dir($rootStorageDir)) {
+			mkdir($rootStorageDir);
+		}
 
-    protected static function _writeTestDataFileContents($fileName, $contents) {
-        file_put_contents(self::_determineDataFilePath($fileName), $contents);
-    }
-    
-    protected static function _readTestDataFileContents($fileName) {
-        return file_get_contents(self::_determineDataFilePath($fileName));
-    }
+		if (!is_dir($tracksStorageDir)) {
+			mkdir($tracksStorageDir);
+		}
 
-    protected static function _determineDataFilePath($fileName) {
-        return wp_normalize_path(self::_determineTestDataDir() . '/' . $fileName);
-    }
+		if (!is_dir($cacheStorageDir)) {
+			mkdir($cacheStorageDir);
+		}
+	}
 
-    protected static function _determineTestDataDir() {
-        return wp_normalize_path(self::_getRootTestsDir() . '/' . 'assets');
-    }
+	protected static function _ensurePluginTestDirectoriesRemoved() {
+		list($rootStorageDir, $tracksStorageDir, $cacheStorageDir) = 
+			self::_getTestPluginStorageDirectories();
 
-    protected abstract static function _getRootTestsDir();
+		if (is_dir($cacheStorageDir)) {
+			self::_removeFiles($cacheStorageDir);
+			@rmdir($cacheStorageDir);
+		}
+
+		if (is_dir($tracksStorageDir)) {
+			self::_removeFiles($tracksStorageDir);
+			@rmdir($tracksStorageDir);
+		}
+
+		if (is_dir($rootStorageDir)) {
+			self::_removeFiles($rootStorageDir);
+			@rmdir($rootStorageDir);
+		}
+	}
+
+	protected static function _removeFiles($directory) {
+		$files = scandir($directory);
+		if (!empty($files)) {
+			foreach ($files as $f) {
+				if ($f != '.' && $f != '..') {
+					$path = $directory . '/' . $f;
+					if (is_file($path)) {
+						@unlink($path);
+					} else {
+						self::_removeFiles($path);
+					}
+				}
+			}
+		}
+	}
+
+	protected static function _getTestPluginStorageDirectories() {
+		$rootTestDataDir = self::_determineTestDataDir();
+		$rootStorageDir = $rootTestDataDir . '/storage';
+		$tracksStorageDir = $rootStorageDir . '/tracks';
+		$cacheStorageDir = $rootStorageDir . '/cache';
+
+		return array($rootStorageDir, 
+			$tracksStorageDir, 
+			$cacheStorageDir);
+	}
+
+	protected static function _deleteAllDataFiles($fileNames) {
+		foreach ($fileNames as $fileName) {
+			self::_deleteDataFile($fileName);
+		}
+	}
+
+	protected static function _deleteDataFile($fileName) {
+		unlink(self::_determineDataFilePath($fileName));
+	}
+
+	protected static function _writeTestDataFileContents($fileName, $contents) {
+		file_put_contents(self::_determineDataFilePath($fileName), $contents);
+	}
+	
+	protected static function _readTestDataFileContents($fileName) {
+		return file_get_contents(self::_determineDataFilePath($fileName));
+	}
+
+	protected static function _determineDataFilePath($fileName) {
+		return wp_normalize_path(self::_determineTestDataDir() . '/' . $fileName);
+	}
+
+	protected static function _determineTestDataDir() {
+		return wp_normalize_path(self::_getRootTestsDir() . '/' . 'assets');
+	}
+
+	protected abstract static function _getRootTestsDir();
  }

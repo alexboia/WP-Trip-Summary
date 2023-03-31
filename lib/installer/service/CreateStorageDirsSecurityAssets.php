@@ -34,19 +34,22 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Installer_Service_CreateStorageDirsSecurityAssets {
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+	private $_rootStorageDir;
 
-	public function __construct(Abp01_Env $env) {
-		$this->_env = $env;	
+	private $_tracksStorageDir;
+
+	private $_cacheStorageDir;
+
+	public function __construct($rootStorageDir, $tracksStorageDir, $cacheStorageDir) {
+		$this->_rootStorageDir = $rootStorageDir;
+		$this->_tracksStorageDir = $tracksStorageDir;
+		$this->_cacheStorageDir = $cacheStorageDir;
 	}
 
 	public function execute() {
-		$rootStorageDir = $this->_env->getRootStorageDir();
-		$tracksStorageDir = $this->_env->getTracksStorageDir();
-		$cacheStorageDir = $this->_env->getCacheStorageDir();
+		$rootStorageDir = $this->_rootStorageDir;
+		$tracksStorageDir = $this->_tracksStorageDir;
+		$cacheStorageDir = $this->_cacheStorageDir;
 
 		$rootAssets = array(
 			array(

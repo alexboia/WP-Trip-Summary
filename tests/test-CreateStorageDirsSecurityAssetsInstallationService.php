@@ -1,4 +1,7 @@
 <?php
+
+use Yoast\PHPUnitPolyfills\Polyfills\AssertStringContains;
+
 /**
  * Copyright (c) 2014-2023 Alexandru Boia
  *
@@ -29,30 +32,75 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class CreateStorageDirectoriesInstallationServiceTests extends WP_UnitTestCase {
+class CreateStorageDirsSecurityAssetsInstallationServiceTests extends WP_UnitTestCase {
 	use TestDataFileHelpers;
+	use AssertStringContains;
 
 	protected function setUp(): void {
 		$this->_ensurePluginTestDirectoriesRemoved();
+		$this->_ensurePluginTestDirectoriesCreated();
 	}
 
 	protected function tearDown(): void {
 		$this->_ensurePluginTestDirectoriesRemoved();
 	}
 
-	public function test_canCreateDirectories() {
+	public function test_canCreate() {
 		list($rootStorageDir, $tracksStorageDir, $cacheStorageDir) = 
 			$this->_getTestPluginStorageDirectories();
 
-		$service = new Abp01_Installer_Service_CreateStorageDirectories($rootStorageDir, 
+		$service = new Abp01_Installer_Service_CreateStorageDirsSecurityAssets($rootStorageDir, 
 			$tracksStorageDir, 
 			$cacheStorageDir);
 
 		$service->execute();
 
-		$this->assertDirectoryExists($rootStorageDir);
-		$this->assertDirectoryExists($tracksStorageDir);
-		$this->assertDirectoryExists($cacheStorageDir);
+		$this->_assertIndexPhpFile($rootStorageDir, '../../../index.php');
+		$this->_assertIndexPhpFile($tracksStorageDir, '../../../../index.php');
+		$this->_assertIndexPhpFile($cacheStorageDir, '../../../../index.php');
+
+		$this->_assertHtaccesFile($tracksStorageDir);
+		$this->_assertHtaccesFile($cacheStorageDir);
+	}
+
+	private function _assertIndexPhpFile($directory, $expectedRedirect) {
+		$file = $directory . '/index.php';
+		$this->assertFileExists($file);
+
+		$contents = file_get_contents($file);
+		$this->assertNotEmpty($contents);
+
+		$expectedContents = '<?php header("Location: ' . $expectedRedirect . '"); exit;';
+		$this->assertEquals($expectedContents, $contents);
+	}
+
+	private function _assertHtaccesFile($directory) {
+		$file = $directory . '/.htaccess';
+		$this->assertFileExists($file);
+
+		$contents = file_get_contents($file);
+		$this->assertNotEmpty($contents);
+
+		$expectedExcludedExtensions = array(
+			'.cache',
+			'.gpx',
+			'.geojson',
+			'.kml'
+		);
+
+		foreach ($expectedExcludedExtensions as $ee) {
+			$filesMatchRule = '<FilesMatch "\\' . $ee . '">';
+			$this->assertStringContainsString($filesMatchRule, $contents);
+		}
+
+		$this->assertEquals(count($expectedExcludedExtensions), 
+			substr_count($contents, '</FilesMatch>'));
+
+		$this->assertEquals(count($expectedExcludedExtensions), 
+			substr_count($contents, 'order allow,deny'));
+
+		$this->assertEquals(count($expectedExcludedExtensions), 
+			substr_count($contents, 'deny from all'));
 	}
 
 	protected static function _getRootTestsDir() {
