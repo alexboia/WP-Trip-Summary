@@ -40,6 +40,9 @@ require_once 'lib/testDoubles/abp01SendHeader.php';
 require_once 'lib/testDoubles/abp01SetHttpResonseCode.php';
 require_once 'lib/testDoubles/abp01IsUrlRewriteEnabled.php';
 
+require_once 'lib/data/ExpectedLookupData.php';
+require_once 'lib/data/GpxTestDataProvider.php';
+
 require_once 'lib/DbTestHelpers.php';
 require_once 'lib/GenericTestHelpers.php';
 require_once 'lib/IncludesTestDataHelpers.php';
@@ -120,6 +123,7 @@ function _manually_install_plugin() {
 
 	_set_plugin_installed();
 	_include_plugin_dependent_test_classes();
+	_include_asserts();
 }
 
 function _include_plugin_dependent_test_classes() {
@@ -140,6 +144,14 @@ function _include_plugin_dependent_test_classes() {
 	require_once 'lib/GpsDocumentFormatTestInfo.php';
 	require_once 'lib/GpxDocumentFormatTestInfo.php';
 	require_once 'lib/GeoJsonDocumentFormatTestInfo.php';
+}
+
+function _include_asserts() {
+	spl_autoload_register(function($className) {
+		if (strpos($className, 'Assert') === 0) {
+			require_once 'lib/assert/' . $className . '.php';
+		}
+	});
 }
 
 function _sync_wp_tests_config($testsDir) {

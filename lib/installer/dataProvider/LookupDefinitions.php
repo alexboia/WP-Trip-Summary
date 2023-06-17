@@ -57,7 +57,7 @@ class Abp01_Installer_DataProvider_LookupDefinitions {
 	}
 
 	private function _readLookupDefinitions() {
-		if ($this->_cachedDefinitions === null) {
+		if ($this->_cachedDefinitions === null) {			
 			$definitions = array();
 			$filePath = $this->_getLookupDefsFile();
 			$categories = array(
@@ -90,7 +90,8 @@ class Abp01_Installer_DataProvider_LookupDefinitions {
 			libxml_use_internal_errors($prevUseErrors);
 			$this->_cachedDefinitions = $definitions;
 		}
-		return $definitions;
+
+		return $this->_cachedDefinitions;
 	}
 
 	private function _getLookupDefsFile() {
