@@ -33,6 +33,18 @@
 	use DbTestHelpers;
 	use GenericTestHelpers;
 
+	protected function _clearLookupDataTablesOnly() {
+		$env = $this->_getEnv();
+		$clearTables = array(
+			$env->getLookupLangTableName(),
+			$env->getLookupTableName()
+		);
+
+		foreach ($clearTables as $tableName) {
+			$this->_truncateTables($this->_getDb(), $tableName);
+		}
+	}
+
     protected function _clearAllLookupData() {
 		$env = $this->_getEnv();
 		$db = $env->getDb();

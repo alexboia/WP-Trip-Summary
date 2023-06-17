@@ -32,27 +32,16 @@
 
 class InstallLookupDataInstallationServiceTests extends WP_UnitTestCase {
 	use GenericTestHelpers;
+	use LookupDataTestHelpers;
 	use DbTestHelpers;
 
 	protected function setUp(): void {
 		$this->_startTransactionalTest();
-		$this->_clearLookupData();
+		$this->_clearAllLookupData();
 	}
 
 	private function _startTransactionalTest() {
 		$this->_getDb()->startTransaction();
-	}
-
-	private function _clearLookupData() {
-		$env = $this->_getEnv();
-		$clearTables = array(
-			$env->getLookupLangTableName(),
-			$env->getLookupTableName()
-		);
-
-		foreach ($clearTables as $tableName) {
-			$this->_truncateTables($this->_getDb(), $tableName);
-		}
 	}
 
 	protected function tearDown(): void {
@@ -64,6 +53,9 @@ class InstallLookupDataInstallationServiceTests extends WP_UnitTestCase {
 	}
 
 	public function test_canInstallLookupData() {
+		$assertCleared = new AssertLookupDataEmpty();
+		$assertCleared->check();
+
 		$env = $this->_getEnv();
 		$installLookupData = new Abp01_Installer_Service_InstallLookupData($env);
 		$installLookupDataTranlations = new Abp01_Installer_Service_InstallLookupDataTranslationsForLanguage($env);

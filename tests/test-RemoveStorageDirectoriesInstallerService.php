@@ -32,35 +32,30 @@ use Yoast\PHPUnitPolyfills\Polyfills\AssertionRenames;
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class CreateStorageDirectoriesInstallationServiceTests extends WP_UnitTestCase {
-	use AssertionRenames;
+class RemoveStorageDirectoriesInstallerServiceTests extends WP_UnitTestCase {
+	use GenericTestHelpers;
 	use TestDataFileHelpers;
-
-	protected function setUp(): void {
-		$this->_ensurePluginTestDirectoriesRemoved();
-	}
+	use AssertionRenames;
 
 	protected function tearDown(): void {
-		$this->_ensurePluginTestDirectoriesRemoved();
+		$this->_ensureActualPluginDirectoriesAndAssetsCreated();
 	}
 
-	public function test_canCreateDirectories() {
+	public function test_canRemoveDirectories() {
 		list($rootStorageDir, $tracksStorageDir, $cacheStorageDir) = 
-			$this->_getTestPluginStorageDirectories();
-			
-		$this->assertDirectoryDoesNotExist($rootStorageDir);
-		$this->assertDirectoryDoesNotExist($tracksStorageDir);
-		$this->assertDirectoryDoesNotExist($cacheStorageDir);
-
-		$service = new Abp01_Installer_Service_CreateStorageDirectories($rootStorageDir, 
-			$tracksStorageDir, 
-			$cacheStorageDir);
-
-		$service->execute();
+			$this->_getActualPluginStorageDirectories();
 
 		$this->assertDirectoryExists($rootStorageDir);
 		$this->assertDirectoryExists($tracksStorageDir);
-		$this->assertDirectoryExists($cacheStorageDir);
+		$this->assertDirectoryExists($cacheStorageDir);	
+
+		$service = new Abp01_Installer_Service_RemoveStorageDirectories($this->_getEnv());
+		$result = $service->execute();
+		$this->assertTrue($result);
+
+		$this->assertDirectoryDoesNotExist($rootStorageDir);
+		$this->assertDirectoryDoesNotExist($tracksStorageDir);
+		$this->assertDirectoryDoesNotExist($cacheStorageDir);	
 	}
 
 	protected static function _getRootTestsDir() {

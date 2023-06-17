@@ -30,6 +30,21 @@
  */
 
  trait TestDataFileHelpers {
+	protected static function _ensureActualPluginDirectoriesAndAssetsCreated() {
+		$env = Abp01_Env::getInstance();
+		$directoriesService = new Abp01_Installer_Service_CreateStorageDirectories($env->getRootStorageDir(), 
+			$env->getTracksStorageDir(), 
+			$env->getCacheStorageDir());
+
+		$directoriesService->execute();
+
+		$securityAssetsService = new Abp01_Installer_Service_CreateStorageDirsSecurityAssets($env->getRootStorageDir(), 
+			$env->getTracksStorageDir(), 
+			$env->getCacheStorageDir());
+
+		$securityAssetsService->execute();
+	}
+
 	protected static function _ensurePluginTestDirectoriesCreated() {
 		list($rootStorageDir, $tracksStorageDir, $cacheStorageDir) = 
 			self::_getTestPluginStorageDirectories();
@@ -92,6 +107,15 @@
 		return array($rootStorageDir, 
 			$tracksStorageDir, 
 			$cacheStorageDir);
+	}
+
+	protected static function _getActualPluginStorageDirectories() {
+		$env = Abp01_Env::getInstance();
+		return array(
+			$env->getRootStorageDir(), 
+			$env->getTracksStorageDir(), 
+			$env->getCacheStorageDir()
+		);
 	}
 
 	protected static function _deleteAllDataFiles($fileNames) {

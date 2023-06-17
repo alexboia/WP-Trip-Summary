@@ -1,6 +1,7 @@
 <?php
-
+use Yoast\PHPUnitPolyfills\Polyfills\AssertFileDirectory;
 use Yoast\PHPUnitPolyfills\Polyfills\AssertStringContains;
+use Yoast\PHPUnitPolyfills\Polyfills\AssertionRenames;
 
 /**
  * Copyright (c) 2014-2023 Alexandru Boia
@@ -33,8 +34,9 @@ use Yoast\PHPUnitPolyfills\Polyfills\AssertStringContains;
  */
 
 class CreateStorageDirsSecurityAssetsInstallationServiceTests extends WP_UnitTestCase {
-	use TestDataFileHelpers;
+	use AssertionRenames;
 	use AssertStringContains;
+	use TestDataFileHelpers;
 
 	protected function setUp(): void {
 		$this->_ensurePluginTestDirectoriesRemoved();
@@ -49,6 +51,10 @@ class CreateStorageDirsSecurityAssetsInstallationServiceTests extends WP_UnitTes
 		list($rootStorageDir, $tracksStorageDir, $cacheStorageDir) = 
 			$this->_getTestPluginStorageDirectories();
 
+		$this->_assertMissingFiles($rootStorageDir);
+		$this->_assertMissingFiles($tracksStorageDir);
+		$this->_assertMissingFiles($cacheStorageDir);
+
 		$service = new Abp01_Installer_Service_CreateStorageDirsSecurityAssets($rootStorageDir, 
 			$tracksStorageDir, 
 			$cacheStorageDir);
@@ -61,6 +67,14 @@ class CreateStorageDirsSecurityAssetsInstallationServiceTests extends WP_UnitTes
 
 		$this->_assertHtaccesFile($tracksStorageDir);
 		$this->_assertHtaccesFile($cacheStorageDir);
+	}
+
+	private function _assertMissingFiles($directory) {
+		$indexPhpFile = $directory . '/index.php';
+		$this->assertFileDoesNotExist($indexPhpFile);
+
+		$htAccessFile = $directory . '/.htaccess';
+		$this->assertFileDoesNotExist($htAccessFile);
 	}
 
 	private function _assertIndexPhpFile($directory, $expectedRedirect) {

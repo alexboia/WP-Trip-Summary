@@ -1,7 +1,4 @@
 <?php
-
-use Yoast\PHPUnitPolyfills\Polyfills\AssertionRenames;
-
 /**
  * Copyright (c) 2014-2023 Alexandru Boia
  *
@@ -32,38 +29,21 @@ use Yoast\PHPUnitPolyfills\Polyfills\AssertionRenames;
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class CreateStorageDirectoriesInstallationServiceTests extends WP_UnitTestCase {
-	use AssertionRenames;
-	use TestDataFileHelpers;
+class AssertLookupDataEmpty extends WP_UnitTestCase {
+	use GenericTestHelpers;
 
-	protected function setUp(): void {
-		$this->_ensurePluginTestDirectoriesRemoved();
-	}
+	public function check() {
+		$env = $this->_getEnv();
+		$db = $env->getDb();
 
-	protected function tearDown(): void {
-		$this->_ensurePluginTestDirectoriesRemoved();
-	}
+		$tables = array(
+			$env->getLookupLangTableName(),
+			$env->getLookupTableName()
+		);
 
-	public function test_canCreateDirectories() {
-		list($rootStorageDir, $tracksStorageDir, $cacheStorageDir) = 
-			$this->_getTestPluginStorageDirectories();
-			
-		$this->assertDirectoryDoesNotExist($rootStorageDir);
-		$this->assertDirectoryDoesNotExist($tracksStorageDir);
-		$this->assertDirectoryDoesNotExist($cacheStorageDir);
-
-		$service = new Abp01_Installer_Service_CreateStorageDirectories($rootStorageDir, 
-			$tracksStorageDir, 
-			$cacheStorageDir);
-
-		$service->execute();
-
-		$this->assertDirectoryExists($rootStorageDir);
-		$this->assertDirectoryExists($tracksStorageDir);
-		$this->assertDirectoryExists($cacheStorageDir);
-	}
-
-	protected static function _getRootTestsDir() {
-		return __DIR__;
+		foreach ($tables as $table) {
+			$count = $db->getValue($table, 'COUNT(1)');
+			$this->assertEquals(0, $count);
+		}
 	}
 }

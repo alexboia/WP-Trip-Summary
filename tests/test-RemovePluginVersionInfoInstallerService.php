@@ -1,7 +1,4 @@
 <?php
-
-use Yoast\PHPUnitPolyfills\Polyfills\AssertionRenames;
-
 /**
  * Copyright (c) 2014-2023 Alexandru Boia
  *
@@ -32,38 +29,22 @@ use Yoast\PHPUnitPolyfills\Polyfills\AssertionRenames;
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class CreateStorageDirectoriesInstallationServiceTests extends WP_UnitTestCase {
-	use AssertionRenames;
-	use TestDataFileHelpers;
-
+class RemovePluginVersionInfoInstallerServiceTests extends WP_UnitTestCase {
 	protected function setUp(): void {
-		$this->_ensurePluginTestDirectoriesRemoved();
+		if (!get_option(Abp01_PluginMeta::OPT_VERSION, false)) {
+			update_option(Abp01_PluginMeta::OPT_VERSION, ABP01_VERSION);
+		}
 	}
 
 	protected function tearDown(): void {
-		$this->_ensurePluginTestDirectoriesRemoved();
+		update_option(Abp01_PluginMeta::OPT_VERSION, ABP01_VERSION);
 	}
 
-	public function test_canCreateDirectories() {
-		list($rootStorageDir, $tracksStorageDir, $cacheStorageDir) = 
-			$this->_getTestPluginStorageDirectories();
-			
-		$this->assertDirectoryDoesNotExist($rootStorageDir);
-		$this->assertDirectoryDoesNotExist($tracksStorageDir);
-		$this->assertDirectoryDoesNotExist($cacheStorageDir);
-
-		$service = new Abp01_Installer_Service_CreateStorageDirectories($rootStorageDir, 
-			$tracksStorageDir, 
-			$cacheStorageDir);
-
+	public function test_canRemoveVersion() {
+		$service = new Abp01_Installer_Service_RemovePluginVersionInfo();
 		$service->execute();
 
-		$this->assertDirectoryExists($rootStorageDir);
-		$this->assertDirectoryExists($tracksStorageDir);
-		$this->assertDirectoryExists($cacheStorageDir);
-	}
-
-	protected static function _getRootTestsDir() {
-		return __DIR__;
+		$checkVersion = get_option(Abp01_PluginMeta::OPT_VERSION, false);
+		$this->assertFalse($checkVersion);
 	}
 }
