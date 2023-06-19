@@ -41,7 +41,7 @@ class Abp01_Installer_Service_SetPluginVersionInfo {
 	}
 
 	public function execute() {
-		update_option(Abp01_PluginMeta::OPT_VERSION, $this->_version);
+		update_option(Abp01_Installer_Constants::OPT_VERSION, $this->_version);
 		return true;
 	}
 }

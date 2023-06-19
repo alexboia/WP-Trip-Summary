@@ -48,7 +48,7 @@ class Abp01_Installer_Step_InstallSchema implements Abp01_Installer_Step {
 		$this->_env = $env;
 	}
 
-    public function execute() { 
+	public function execute() { 
 		$this->_lastError = null;
 		return $this->_installSchema();
 	}
@@ -64,7 +64,7 @@ class Abp01_Installer_Step_InstallSchema implements Abp01_Installer_Step {
 		return $result;
 	}
 
-    public function getLastError() { 
+	public function getLastError() { 
 		return $this->_lastError;	
 	}
 

@@ -48,7 +48,7 @@ class Abp01_Install_Step_InstallData implements Abp01_Installer_Step {
 		$this->_env = $env;
 	}
 
-    public function execute() { 
+	public function execute() { 
 		$this->_lastError = null;
 		return $this->_installData();
 	}
@@ -66,7 +66,7 @@ class Abp01_Install_Step_InstallData implements Abp01_Installer_Step {
 		return $result;
 	}
 
-    public function getLastError() { 
+	public function getLastError() { 
 		return $this->_lastError;
 	}
 }

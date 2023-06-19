@@ -33,9 +33,24 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
-class Abp01_Installer_Service_RemovePluginVersionInfo {
-	public function execute() {
-		delete_option(Abp01_Installer_Constants::OPT_VERSION);
-		return true;
+class Abp01_Installer_Step_SetCurrentVersion implements Abp01_Installer_Step {
+	const OPT_VERSION = Abp01_Installer_Constants::OPT_VERSION;
+
+	/**
+	 * @var Abp01_Env
+	 */
+	private $_env;
+
+	public function __construct(Abp01_Env $env) {
+		$this->_env = $env;
+	}
+
+	public function execute() { 
+		$service = new Abp01_Installer_Service_SetPluginVersionInfo($this->_env->getVersion());
+		return $service->execute();
+	}
+
+	public function getLastError() { 
+		return null;
 	}
 }
