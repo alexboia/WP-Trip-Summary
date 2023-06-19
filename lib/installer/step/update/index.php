@@ -29,5 +29,5 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-header('Location: ../../../../../../index.php');
+header('Location: ../../../../../../../index.php');
 exit;
