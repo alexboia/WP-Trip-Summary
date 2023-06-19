@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright (c) 2014-2023 Alexandru Boia
  *
@@ -30,39 +29,55 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class InstallLookupDataInstallationServiceTests extends WP_UnitTestCase {
-	use GenericTestHelpers;
-	use LookupDataTestHelpers;
-	use DbTestHelpers;
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+	exit;
+}
 
-	protected function setUp(): void {
-		$this->_startTransactionalTest();
-		$this->_clearAllLookupData();
+class Abp01_Installer_Context {
+	private $_errors = array();
+
+	private $_hookErrors = array();
+
+	/**
+	 * @param string $key
+	 * @param \Exception|WP_Error $error 
+	 * @return void 
+	 */
+	public function pushError($key, $error) {
+		$this->_errors[$key] = $error;
 	}
 
-	private function _startTransactionalTest() {
-		$this->_getDb()->startTransaction();
+	public function getErrors() {
+		return $this->_errors;
 	}
 
-	protected function tearDown(): void {
-		$this->_endTransactionalTest();
+	public function hasErrors() {
+		return !empty($this->_errors);
 	}
 
-	private function _endTransactionalTest() {
-		$this->_getDb()->rollback();
+	/**
+	 * @param string $key
+	 * @param \Exception|WP_Error $error 
+	 * @return void 
+	 */
+	public function pushHookError($key, $error) {
+		$this->_hookErrors[$key] = $error;
 	}
 
-	public function test_canInstallLookupData() {
-		$assertCleared = new AssertLookupDataEmpty();
-		$assertCleared->check();
+	public function getHookErrors() {
+		return $this->_hookErrors;
+	}
 
-		$env = $this->_getEnv();
-		$installLookupData = new Abp01_Installer_Service_InstallLookupData($env);
+	public function hasHookErrors() {
+		return !empty($this->_hookErrors);
+	}
 
-		$result = $installLookupData->execute();
-		$this->assertTrue($result);
+	public function isSuccessful() {
+		return !$this->hasErrors();
+	}
 
-		$assertLookupDataExists = new AssertExpectedLookupDataInstalled();
-		$assertLookupDataExists->check();
+	public function reset() {
+		$this->_errors = array();
+		$this->_hookErrors = array();
 	}
 }

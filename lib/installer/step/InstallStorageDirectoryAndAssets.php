@@ -34,16 +34,44 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Installer_Step_InstallStorageDirectoryAndAssets implements Abp01_Installer_Step {
+	private $_lastError = null;
 
-	public function __construct() {
-		
+	private $_rootStorageDir;
+
+	private $_tracksStorageDir;
+
+	private $_cacheStorageDir;
+
+	public function __construct(Abp01_Env $env) {
+		$this->_rootStorageDir = $env->getRootStorageDir();
+		$this->_tracksStorageDir = $env->getTracksStorageDir();
+		$this->_cacheStorageDir = $env->getCacheStorageDir();
 	}
 
     public function execute() { 
+		$result = false;
+		if ($this->_ensureStorageDirectories()) {
+			$result = $this->_installStorageDirsSecurityAssets();
+		}
+		return $result;
+	}
 
+	private function _ensureStorageDirectories() {
+		$service = new Abp01_Installer_Service_CreateStorageDirectories($this->_rootStorageDir, 
+			$this->_tracksStorageDir, 
+			$this->_cacheStorageDir);
+		return $service->execute();
+	}
+
+	private function _installStorageDirsSecurityAssets() {
+		$service = new Abp01_Installer_Service_CreateStorageDirsSecurityAssets($this->_rootStorageDir, 
+			$this->_tracksStorageDir, 
+			$this->_cacheStorageDir);
+
+		return $service->execute();
 	}
 
     public function getLastError() { 
-
+		return $this->_lastError;
 	}
 }

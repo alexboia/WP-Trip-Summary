@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright (c) 2014-2023 Alexandru Boia
  *
@@ -30,39 +29,25 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class InstallLookupDataInstallationServiceTests extends WP_UnitTestCase {
-	use GenericTestHelpers;
-	use LookupDataTestHelpers;
-	use DbTestHelpers;
+if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+	exit;
+}
 
-	protected function setUp(): void {
-		$this->_startTransactionalTest();
-		$this->_clearAllLookupData();
+class Abp01_Installer_Step_RunPostUninstallHooks implements Abp01_Installer_Step {
+	/**
+	 * @var Abp01_Installer_Service_RunInstallHook
+	 */
+	private $_service;
+
+	public function __construct(Abp01_Installer_Context $context) {
+		$this->_service = new Abp01_Installer_Service_RunInstallHook('abp01_installer_do_post_uninstall', $context);
 	}
 
-	private function _startTransactionalTest() {
-		$this->_getDb()->startTransaction();
+    public function execute() { 
+		return $this->_service->execute();
 	}
 
-	protected function tearDown(): void {
-		$this->_endTransactionalTest();
-	}
-
-	private function _endTransactionalTest() {
-		$this->_getDb()->rollback();
-	}
-
-	public function test_canInstallLookupData() {
-		$assertCleared = new AssertLookupDataEmpty();
-		$assertCleared->check();
-
-		$env = $this->_getEnv();
-		$installLookupData = new Abp01_Installer_Service_InstallLookupData($env);
-
-		$result = $installLookupData->execute();
-		$this->assertTrue($result);
-
-		$assertLookupDataExists = new AssertExpectedLookupDataInstalled();
-		$assertLookupDataExists->check();
+    public function getLastError() { 
+		return $this->_service->getLastError();
 	}
 }

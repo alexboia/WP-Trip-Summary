@@ -36,5 +36,8 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 interface Abp01_Installer_Step {
 	function execute();
 
+	/**
+	 * @return \Exception|\WP_Error|null
+	 */
 	function getLastError();
 }
