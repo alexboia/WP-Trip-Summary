@@ -86,6 +86,10 @@ class Abp01_Installer_Step_InstallSchema implements Abp01_Installer_Step {
 			array(), 
 			$ownTables);
 
+		if (!is_array($customTables)) {
+			$customTables = array();
+		}
+
 		$finalTables = array_merge($customTables, $ownTables);		
 		return $finalTables;
 	}

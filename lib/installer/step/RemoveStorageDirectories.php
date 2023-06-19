@@ -33,13 +33,22 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
-class Abp01_Installer_Step_UnsetCurrentVersion implements Abp01_Installer_Step {
-	public function execute() { 
-		$service = new Abp01_Installer_Service_RemovePluginVersionInfo();
+class Abp01_Installer_Step_RemoveStorageDirectories implements Abp01_Installer_Step {
+	/**
+	 * @var Abp01_Env
+	 */
+	private $_env;
+
+	public function __construct(Abp01_Env $env) {
+		$this->_env = $env;
+	}
+
+    public function execute() { 
+		$service = new Abp01_Installer_Service_RemoveStorageDirectories($this->_env);
 		return $service->execute();
 	}
 
-	public function getLastError() { 
+    public function getLastError() { 
 		return null;
 	}
 }

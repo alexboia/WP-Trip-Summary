@@ -34,8 +34,6 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Installer_Step_SetCurrentVersion implements Abp01_Installer_Step {
-	const OPT_VERSION = Abp01_Installer_Constants::OPT_VERSION;
-
 	/**
 	 * @var Abp01_Env
 	 */
