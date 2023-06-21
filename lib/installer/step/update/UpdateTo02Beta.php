@@ -33,40 +33,56 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
-class Abp01_Installer_Step_InstallData implements Abp01_Installer_Step {
+class Abp01_Installer_Step_Update_UpdateTo02Beta implements Abp01_Installer_Step {
+
 	/**
 	 * @var Abp01_Env
 	 */
 	private $_env;
 
-	/**
-	 * @var \Exception|\WP_Error|null
-	 */
-	private $_lastError;
+	private $_lastError = null;
 
 	public function __construct(Abp01_Env $env) {
 		$this->_env = $env;
 	}
 
-	public function execute() { 
+    public function execute() { 
 		$this->_lastError = null;
-		return $this->_installData();
+		return $this->_updateTo02Beta();
 	}
 
-	private function _installData() {
-		$result = false;
-
+	private function _updateTo02Beta() {
 		try {
-			$service = new Abp01_Installer_Service_InstallLookupData($this->_env);
-			$result = $service->execute();
+			if ($this->_createRouteDetailsLookupTable()) {
+				return $this->_syncExistingLookupAssociations();
+			} else {
+				return false;
+			}
 		} catch (Exception $exc) {
 			$this->_lastError = $exc;
 		}
 
+		return false;
+	}
+
+	private function _createRouteDetailsLookupTable() {
+		$service = new Abp01_Installer_Step_InstallSchema($this->_env);
+		$service->onlyTables(array( $this->_getRouteDetailsLookupTableName() ));
+		$result = $service->execute();
+		$this->_lastError = $service->getLastError();
 		return $result;
 	}
 
-	public function getLastError() { 
+	private function _getRouteDetailsLookupTableName() {
+		return $this->_env->getRouteDetailsLookupTableName();
+	}
+
+	private function _syncExistingLookupAssociations() {
+		$service = new Abp01_Installer_Service_SyncExistingLookupAssociations($this->_env);
+		return $service->execute();
+	}
+
+    public function getLastError() { 
 		return $this->_lastError;
 	}
 }

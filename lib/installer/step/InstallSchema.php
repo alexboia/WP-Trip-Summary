@@ -44,6 +44,8 @@ class Abp01_Installer_Step_InstallSchema implements Abp01_Installer_Step {
 	 */
 	private $_lastError;
 
+	private $_onlyTables = array();
+
 	public function __construct(Abp01_Env $env) {
 		$this->_env = $env;
 	}
@@ -68,6 +70,11 @@ class Abp01_Installer_Step_InstallSchema implements Abp01_Installer_Step {
 		return $this->_lastError;	
 	}
 
+	public function onlyTables(array $tableNames) {
+		$this->_onlyTables = $tableNames;
+		return $this;
+	}
+
 	private function _getTablesToInstall() {
 		$ownTables = array(
 			$this->_getLookupTableName() 
@@ -90,7 +97,19 @@ class Abp01_Installer_Step_InstallSchema implements Abp01_Installer_Step {
 			$customTables = array();
 		}
 
-		$finalTables = array_merge($customTables, $ownTables);		
+		$finalTables = array_merge($customTables, 
+			$ownTables);
+
+		if (!empty($this->_onlyTables)) {
+			$finalTables = array_filter(
+				$finalTables, 
+				function($tableName) {
+					return in_array($tableName, $this->_onlyTables);
+				}, 
+				ARRAY_FILTER_USE_KEY
+			);
+		}
+
 		return $finalTables;
 	}
 
