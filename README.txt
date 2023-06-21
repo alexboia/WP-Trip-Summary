@@ -82,7 +82,12 @@ Requirements:
 - mbstring - not strictly required, but recommended;
 - zlib - not strictly required, but recommended.
 
-Available in English and Romanian.
+Available in English, Romanian and French.
+
+Helping out:
+- by contributing: head over tot he project's GitHub page: https://github.com/alexboia/WP-Trip-Summary;
+- by donating: https://ko-fi.com/alexandruboia;
+- support my paid work: https://alexboia.gumroad.com/.
 
 Important note:
 For those with plug-in versions older than 0.2.1, please see here notes on updating to plug-in version 0.2.1: https://github.com/alexboia/WP-Trip-Summary/blob/master/README-UPDATE-021.md
