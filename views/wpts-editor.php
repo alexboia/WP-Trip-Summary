@@ -133,7 +133,7 @@
             <input type="text" id="ctrl_abp01_bikeTotalClimb" name="ctrl_abp01_bikeTotalClimb" class="abp01-input-text" value="<?php echo esc_attr(abp01_extract_value_from_data($data, 'bikeTotalClimb')); ?>" />
         </div>
         <div class="abp01-form-line">
-            <label for="ctrl_abp01_bikeDifficultyLevel"><?php echo esc_html__('Difficulty level', 'abp01-trip-summary'); ?></label>
+            <label for="ctrl_abp01_bikeDifficultyLevel"><?php echo abp01_get_editor_difficulty_level_label(); ?></label>
 			<?php if (!empty($data->difficultyLevels) && is_array($data->difficultyLevels)): ?>
 				<select id="ctrl_abp01_bikeDifficultyLevel" name="ctrl_abp01_bikeDifficultyLevel" class="ab01-input-select">
 					<option value="0"><?php echo esc_html__('-- Choose an option --', 'abp01-trip-summary'); ?></option>
@@ -150,7 +150,7 @@
             <input type="text" id="ctrl_abp01_bikeAccess" name="ctrl_abp01_bikeAccess" class="abp01-input-text" value="<?php echo esc_attr(abp01_extract_value_from_data($data, 'bikeAccess')); ?>" />
         </div>
         <div class="abp01-form-line">
-            <label for="ctrl_abp01_bikeRecommendedSeasons"><?php echo esc_html__('Open during seasons', 'abp01-trip-summary'); ?></label>
+            <label for="ctrl_abp01_bikeRecommendedSeasons"><?php echo abp01_get_editor_recommended_seasons_label(); ?></label>
 			<?php if (!empty($data->recommendedSeasons) && is_array($data->recommendedSeasons)): ?>
 				<select name="bikeRecommendedSeasons" id="ctrl_abp01_bikeRecommendedSeasons" multiple="multiple">
 					<?php abp01_render_select_options($data->recommendedSeasons, 'bikeRecommendedSeasons', $data); ?>
@@ -162,7 +162,7 @@
 			<?php endif; ?>
         </div>
         <div class="abp01-form-line">
-            <label for="ctrl_abp01_bikePathSurfaceType"><?php echo esc_html__('Path surface type', 'abp01-trip-summary'); ?></label>
+            <label for="ctrl_abp01_bikePathSurfaceType"><?php echo abp01_get_editor_path_surface_type_label(); ?></label>
 			<?php if (!empty($data->pathSurfaceTypes) && is_array($data->pathSurfaceTypes)): ?>
 				<select name="bikePathSurfaceType" id="ctrl_abp01_bikePathSurfaceType" multiple="multiple">				
 					<?php abp01_render_select_options($data->pathSurfaceTypes, 'bikePathSurfaceType', $data); ?>				
@@ -174,7 +174,7 @@
 			<?php endif; ?>
         </div>
         <div class="abp01-form-line">
-            <label for="ctrl_abp01_bikeBikeType"><?php echo esc_html__('Bike type', 'abp01-trip-summary'); ?></label>
+            <label for="ctrl_abp01_bikeBikeType"><?php echo abp01_get_editor_bike_type_label(); ?></label>
 			<?php if (!empty($data->bikeTypes) && is_array($data->bikeTypes)): ?>
 				<select name="bikeBikeType" id="ctrl_abp01_bikeBikeType" multiple="multiple">				
 					<?php abp01_render_select_options($data->bikeTypes, 'bikeBikeType', $data); ?>				
@@ -199,7 +199,7 @@
             <input type="text" id="ctrl_abp01_hikingTotalClimb" name="ctrl_abp01_hikingTotalClimb" class="abp01-input-text" value="<?php echo esc_attr(abp01_extract_value_from_data($data, 'hikingTotalClimb')); ?>" />
         </div>
         <div class="abp01-form-line">
-            <label for="abp01_hikingDifficultyLevel"><?php echo esc_html__('Difficulty level', 'abp01-trip-summary'); ?></label>
+            <label for="abp01_hikingDifficultyLevel"><?php echo abp01_get_editor_difficulty_level_label(); ?></label>
 			<?php if (!empty($data->difficultyLevels) && is_array($data->difficultyLevels)): ?>
 				<select name="hikingDifficultyLevel" id="abp01_hikingDifficultyLevel" class="abp01-input-select">
 					<option value="0"><?php echo esc_html__('-- Choose an option --', 'abp01-trip-summary'); ?></option>
@@ -216,7 +216,7 @@
             <input type="text" id="ctrl_abp01_hikingAccess" name="ctrl_abp01_hikingAccess" class="abp01-input-text" value="<?php echo esc_attr(abp01_extract_value_from_data($data, 'hikingAccess')); ?>" />
         </div>
         <div class="abp01-form-line">
-            <label for="ctrl_abp01_hikingRecommendedSeasons"><?php echo esc_html__('Open during seasons', 'abp01-trip-summary'); ?></label>
+            <label for="ctrl_abp01_hikingRecommendedSeasons"><?php echo abp01_get_editor_recommended_seasons_label(); ?></label>
 			<?php if (!empty($data->recommendedSeasons) && is_array($data->recommendedSeasons)): ?>
 				<select name="hikingRecommendedSeasons" id="ctrl_abp01_hikingRecommendedSeasons" multiple="multiple">				
 					<?php abp01_render_select_options($data->recommendedSeasons, 'hikingRecommendedSeasons', $data); ?>
@@ -228,7 +228,7 @@
 			<?php endif; ?>
         </div>
         <div class="abp01-form-line">
-            <label for="ctrl_abp01_hikingSurfaceType"><?php echo esc_html__('Path surface type', 'abp01-trip-summary'); ?></label>
+            <label for="ctrl_abp01_hikingSurfaceType"><?php echo abp01_get_editor_path_surface_type_label(); ?></label>
 			<?php if (!empty($data->pathSurfaceTypes) && is_array($data->pathSurfaceTypes)): ?>
 				<select name="hikingSurfaceType" id="ctrl_abp01_hikingSurfaceType" multiple="multiple">				
 					<?php abp01_render_select_options($data->pathSurfaceTypes, 'hikingSurfaceType', $data); ?>
@@ -261,7 +261,7 @@
             <input type="text" id="ctrl_abp01_trainRideGauge" name="ctrl_abp01_trainRideGauge" class="abp01-input-text" value="<?php echo esc_attr(abp01_extract_value_from_data($data, 'trainRideGauge')); ?>" />
         </div>
         <div class="abp01-form-line">
-            <label for="ctrl_abp01_trainRideOperator"><?php echo esc_html__('Railroad operators', 'abp01-trip-summary'); ?></label>
+            <label for="ctrl_abp01_trainRideOperator"><?php echo abp01_get_editor_railroad_operator_label(); ?></label>
 			<?php if (!empty($data->railroadOperators) && is_array($data->railroadOperators)): ?>
 				<select name="trainRideOperator" id="ctrl_abp01_trainRideOperator" multiple="multiple">
 					<?php abp01_render_select_options($data->railroadOperators, 'trainRideOperator', $data); ?>
@@ -273,7 +273,7 @@
 			<?php endif; ?>
         </div>
         <div class="abp01-form-line">
-            <label for="ctrl_abp01_trainRideLineStatus"><?php echo esc_html__('Line status', 'abp01-trip-summary'); ?></label>
+            <label for="ctrl_abp01_trainRideLineStatus"><?php echo abp01_get_editor_railroad_line_status_label(); ?></label>
 			<?php if (!empty($data->railroadLineStatuses) && is_array($data->railroadLineStatuses)): ?>
 				<select name="trainRideLineStatus" id="ctrl_abp01_trainRideLineStatus" multiple="multiple">
 					<?php abp01_render_select_options($data->railroadLineStatuses, 'trainRideLineStatus', $data); ?>	
@@ -285,7 +285,7 @@
 			<?php endif; ?>
         </div>
         <div class="abp01-form-line">
-            <label for="trainRideElectrificationStatus"><?php echo esc_html__('Electrification status', 'abp01-trip-summary'); ?></label>
+            <label for="trainRideElectrificationStatus"><?php echo abp01_get_editor_railroad_electrification_status_label(); ?></label>
 			<?php if (!empty($data->railroadElectrification) && is_array($data->railroadElectrification)): ?>
 				<select name="trainRideElectrificationStatus" id="ctrl_abp01_trainRideElectrificationStatus" multiple="multiple">
 					<?php abp01_render_select_options($data->railroadElectrification, 'trainRideElectrificationStatus', $data); ?>
@@ -297,7 +297,7 @@
 			<?php endif; ?>
         </div>
         <div class="abp01-form-line">
-            <label for="ctrl_abp01_trainRideLineType"><?php echo esc_html__('Line type', 'abp01-trip-summary'); ?></label>
+            <label for="ctrl_abp01_trainRideLineType"><?php echo abp01_get_editor_railroad_line_type_label(); ?></label>
 			<?php if (!empty($data->railroadLineTypes) && is_array($data->railroadLineTypes)): ?>
 				<select name="trainRideLineType" id="ctrl_abp01_trainRideLineType" multiple="multiple">
 					<?php abp01_render_select_options($data->railroadLineTypes, 'trainRideLineType', $data); ?>
