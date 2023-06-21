@@ -30,7 +30,7 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
 class Abp01_Installer_Service_AddTableColumnIfNeeded {
@@ -48,7 +48,7 @@ class Abp01_Installer_Service_AddTableColumnIfNeeded {
 		$this->_env = $env;
 	}
 
-    public function execute($tableName, 
+	public function execute($tableName, 
 		$columnName, 
 		array $properties = array()) { 
 		$this->_lastError = null;
@@ -152,7 +152,7 @@ class Abp01_Installer_Service_AddTableColumnIfNeeded {
 		return $addColumnSql;
 	}
 
-    public function getLastError() { 
+	public function getLastError() { 
 		return $this->_lastError;
 	}
 }

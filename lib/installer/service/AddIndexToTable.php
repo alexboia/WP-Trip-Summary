@@ -30,42 +30,54 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit;
+    exit;
 }
 
-class Abp01_Installer_Step_Update_UpdateTo027 implements Abp01_Installer_Step {
-	/**
-	 * @var Abp01_Installer_Service_AddTableColumnIfNeeded
-	 */
-	private $_service;
-
+class Abp01_Installer_Service_AddIndexToTable {
 	/**
 	 * @var Abp01_Env
 	 */
 	private $_env;
 
+	/**
+	 * @var \Exception|\WP_Error|null
+	 */
+	private $_lastError;
+
 	public function __construct(Abp01_Env $env) {
-		$this->_service = new Abp01_Installer_Service_AddTableColumnIfNeeded($env);
 		$this->_env = $env;
 	}
 
-	public function execute() { 
-		return $this->_service->execute(
-			$this->_getRouteTrackTableName(), 
-			'route_track_file_mime_type', 
-			array(
-				'columnType' => 'VARCHAR(250)',
-				'notNull' => true,
-				'defaultValue' => 'application/gpx',
-				'afterColumn' => 'route_track_file'
-			));
+	public function execute($tableName, $indexName, array $onColumnNames) {
+		$result = false;
+		$this->_lastError = null;
+
+		try {
+			$db = $this->_env->getDb();
+			$db->rawQuery(
+				'ALTER TABLE `' . $tableName 
+					. '` ADD INDEX `' . $indexName 
+					. '` (`' . $this->_buildColumnNamesSql($onColumnNames) . '`)'
+			);
+
+			$result = empty(trim($db->getLastError()));
+		} catch (Exception $exc) {
+			$this->_lastError = $exc;
+			$result = false;
+		}
+
+		return $result;
 	}
 
-	private function _getRouteTrackTableName() {
-		return $this->_env->getRouteTrackTableName();
+	private function _buildColumnNamesSql(array $columnNames) {
+		$quotedColumnNames = array_map(function($columnName) {
+			return '`' . $columnName . '`';
+		}, $columnNames);
+
+		return join(',', $quotedColumnNames);
 	}
 
-	public function getLastError() { 
-		return $this->_service->getLastError();
+	public function getLastError() {
+		return $this->_lastError;
 	}
 }

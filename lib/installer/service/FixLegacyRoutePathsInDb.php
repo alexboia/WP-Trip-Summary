@@ -33,39 +33,30 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
-class Abp01_Installer_Step_Update_UpdateTo027 implements Abp01_Installer_Step {
-	/**
-	 * @var Abp01_Installer_Service_AddTableColumnIfNeeded
-	 */
-	private $_service;
-
+class Abp01_Installer_Service_FixLegacyRoutePathsInDb {
 	/**
 	 * @var Abp01_Env
 	 */
 	private $_env;
 
 	public function __construct(Abp01_Env $env) {
-		$this->_service = new Abp01_Installer_Service_AddTableColumnIfNeeded($env);
 		$this->_env = $env;
 	}
 
-	public function execute() { 
-		return $this->_service->execute(
-			$this->_getRouteTrackTableName(), 
-			'route_track_file_mime_type', 
-			array(
-				'columnType' => 'VARCHAR(250)',
-				'notNull' => true,
-				'defaultValue' => 'application/gpx',
-				'afterColumn' => 'route_track_file'
-			));
+	public function execute() {
+		$db = $this->_env->getDb();
+		$routesTable = $this->_getRouteTrackTableName();
+
+		//The route_track_file will only contain the file name
+		//  so discard the everything before the last "/"
+		$db->update($routesTable, array(
+			'route_track_file' => $db->func("SUBSTRING_INDEX(route_track_file, '/', -1)")
+		));
+
+		return empty(trim($db->getLastError()));
 	}
 
 	private function _getRouteTrackTableName() {
 		return $this->_env->getRouteTrackTableName();
-	}
-
-	public function getLastError() { 
-		return $this->_service->getLastError();
 	}
 }

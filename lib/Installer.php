@@ -177,106 +177,18 @@ class Abp01_Installer {
 	}
 	
 	private function _syncExistingLookupAssociations() {
-		$db = $this->_env->getDb();
-		if (!$db) {
-			return false;
-		}
-		
-		$tableName = $this->_getRouteDetailsLookupTableName();
-		$detailsTableName = $this->_getRouteDetailsTableName();
-
-		//remove all existing entries
-		if ($db->rawQuery('TRUNCATE TABLE `' . $tableName . '`', null, false) === false) {
-			return false;
-		}
-
-		//extract the current values
-		$data = $db->rawQuery('SELECT post_ID, route_data_serialized FROM `' . $detailsTableName . '`');
-		if (!is_array($data)) {
-			return false;
-		}
-
-		foreach ($data as $row) {
-			$postId = intval($row['post_ID']);
-			if (empty($row['route_data_serialized'])) {
-				continue;
-			}
-
-			$routeDetails = json_decode($row['route_data_serialized'], false);
-			if (!empty($routeDetails->bikeRecommendedSeasons)) {
-				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->bikeRecommendedSeasons);
-			}
-			if (!empty($routeDetails->bikePathSurfaceType)) {
-				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->bikePathSurfaceType);
-			}
-			if (!empty($routeDetails->bikeBikeType)) {
-				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->bikeBikeType);
-			}
-			if (!empty($routeDetails->bikeDifficultyLevel)) {
-				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->bikeDifficultyLevel);
-			}
-			if (!empty($routeDetails->hikingDifficultyLevel)) {
-				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->hikingDifficultyLevel);
-			}
-			if (!empty($routeDetails->hikingRecommendedSeasons)) {
-				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->hikingRecommendedSeasons);
-			}
-			if (!empty($routeDetails->hikingSurfaceType)) {
-				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->hikingSurfaceType);
-			}
-			if (!empty($routeDetails->trainRideOperator)) {
-				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->trainRideOperator);
-			}
-			if (!empty($routeDetails->trainRideLineStatus)) {
-				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->trainRideLineStatus);
-			}
-			if (!empty($routeDetails->trainRideElectrificationStatus)) {
-				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->trainRideElectrificationStatus);
-			}
-			if (!empty($routeDetails->trainRideLineType)) {
-				$this->_addLookupAssociation($db, $tableName, $postId, $routeDetails->trainRideLineType);
-			}
-		}
-
-		return true;
-	}
-
-	private function _addLookupAssociation($db, $tableName, $postId, $lookupId) {
-		if (is_array($lookupId)) {
-			foreach ($lookupId as $id) {
-				$this->_addLookupAssociation($db, $tableName, $postId, $id);
-			}
-		} else {
-			$db->insert($tableName, array(
-				'lookup_ID' => $lookupId,
-				'post_ID' => $postId
-			));
-		}
+		$service = new Abp01_Installer_Service_SyncExistingLookupAssociations($this->_env);
+		return $service->execute();
 	}
 
 	private function _updateTo021() {
-		$result = true;
+		$step = new Abp01_Installer_Step_Update_UpdateTo021($this->_env);
+		return $this->_executeStep($step);
+	}
 
-		//1. Ensure storage directories
-		if ($this->_ensureStorageDirectories()) {
-			//2. Copy files if needed
-			if (!$this->_moveTrackDataFiles()) {
-				$result = false;
-			}
-
-			//3. Update track file paths in db.
-			//  Since the plug-in update can be performed either via manual upload 
-			//  or through WP's interface, the files can be moved 
-			//  either by the plug-in or by the user.
-			// Thus, fixing the routes path in the database is actually 
-			//  independent of the process of moving the data files.
-			if (!$this->_fixRoutePathsInDb()) {
-				$result = false;
-			}
-		} else {
-			$result = false;
-		}
-
+	private function _executeStep(Abp01_Installer_Step $step) {
+		$result = $step->execute();
+		$this->_lastError = $step->getLastError();
 		return $result;
 	}
 
@@ -309,56 +221,6 @@ class Abp01_Installer {
 		}
 
 		return $result;
-	}
-
-	private function _moveTrackDataFiles() {
-		$result = true;
-		$legacyTracksStorageDir = wp_normalize_path(sprintf('%s/storage', 
-			$this->_env->getDataDir()));
-		$legacyCacheStorageDir = wp_normalize_path(sprintf('%s/cache', 
-			$this->_env->getDataDir()));
-
-		//1. Move GPX files
-		if (is_dir($legacyTracksStorageDir)) {
-			$result = $this->_cleanLegacyStorageDirectory($legacyTracksStorageDir, 
-				$this->_env->getTracksStorageDir(), 
-				'gpx');
-		}
-
-		//2. Move cache files
-		if (is_dir($legacyCacheStorageDir)) {
-			$result = $this->_cleanLegacyStorageDirectory($legacyCacheStorageDir, 
-				$this->_env->getCacheStorageDir(), 
-				'cache');
-		}
-
-		return $result;
-	}
-
-	private function _cleanLegacyStorageDirectory($legacyDirectoryPath, $newDirectoryPath, $searchExtension) {
-		$failedCount = 0;
-		$moveFiles = glob($legacyDirectoryPath . DIRECTORY_SEPARATOR . '*.' . $searchExtension);
-
-		//Move all files that match the given extension
-		if ($moveFiles !== false && !empty($moveFiles)) {
-			foreach ($moveFiles as $sourceFilePath) {
-				$destinationFilePath = wp_normalize_path(sprintf('%s/%s', 
-					$newDirectoryPath,
-					basename($sourceFilePath)));
-					
-				if (!@rename($sourceFilePath, $destinationFilePath)) {
-					$failedCount++;
-				}
-			}
-		}
-
-		//If no failures were registered whilst moving the files, 
-		//  remove the legacy directory
-		if ($failedCount == 0) {
-			return $this->_removeDirectoryAndContents($legacyDirectoryPath);
-		} else {
-			return false;
-		}
 	}
 
 	private function _removeStorageDirectories() {
@@ -406,34 +268,19 @@ class Abp01_Installer {
 		}
 	}
 
-	private function _fixRoutePathsInDb() {
-		$db = $this->_env->getDb();
-		$routesTable = $this->_getRouteTrackTableName();
-
-		//The route_track_file will only contain the file name
-		//  so discard the everything before the last "/"
-		$db->update($routesTable, array(
-			'route_track_file' => $db->func("SUBSTRING_INDEX(route_track_file, '/', -1)")
-		));
-
-		return empty(trim($db->getLastError()));
-	}
-
 	private function _updateTo022() {
-		return $this->_ensureStorageDirectories() 
-			&& $this->_installStorageDirsSecurityAssets()
-			&& $this->_createCapabilities();
+		$step = new Abp01_Installer_Step_Update_UpdateTo022($this->_env);
+		return $this->_executeStep($step);
 	}
 
 	private function _updateTo024() {
-		$this->_addLookupCategoryIndexToLookupTable();
-		$this->_installDataTranslationsForLanguage('fr_FR');
-		return true;
+		$step = new Abp01_Installer_Step_Update_UpdateTo024($this->_env);
+		return $this->_executeStep($step);
 	}
 
 	private function _updateTo027() {
-		$this->_addRouteTrackFileMimeTypeColumnToRouteTrackTable();
-		return true;
+		$step = new Abp01_Installer_Step_Update_UpdateTo027($this->_env);
+		return $this->_executeStep($step);
 	}
 
 	private function _installStorageDirsSecurityAssets() {

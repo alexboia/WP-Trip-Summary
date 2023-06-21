@@ -33,39 +33,65 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
-class Abp01_Installer_Step_Update_UpdateTo027 implements Abp01_Installer_Step {
-	/**
-	 * @var Abp01_Installer_Service_AddTableColumnIfNeeded
-	 */
-	private $_service;
-
+class Abp01_Installer_Step_Update_UpdateTo021 implements Abp01_Installer_Step {
 	/**
 	 * @var Abp01_Env
 	 */
 	private $_env;
 
 	public function __construct(Abp01_Env $env) {
-		$this->_service = new Abp01_Installer_Service_AddTableColumnIfNeeded($env);
 		$this->_env = $env;
 	}
 
 	public function execute() { 
-		return $this->_service->execute(
-			$this->_getRouteTrackTableName(), 
-			'route_track_file_mime_type', 
-			array(
-				'columnType' => 'VARCHAR(250)',
-				'notNull' => true,
-				'defaultValue' => 'application/gpx',
-				'afterColumn' => 'route_track_file'
-			));
+		$result = true;
+
+		//1. Ensure storage directories
+		if ($this->_ensureStorageDirectories()) {
+			//2. Copy files if needed
+			if (!$this->_moveTrackDataFiles()) {
+				$result = false;
+			}
+
+			//3. Update track file paths in db.
+			//  Since the plug-in update can be performed either via manual upload 
+			//  or through WP's interface, the files can be moved 
+			//  either by the plug-in or by the user.
+			// Thus, fixing the routes path in the database is actually 
+			//  independent of the process of moving the data files.
+			if (!$this->_fixRoutePathsInDb()) {
+				$result = false;
+			}
+		} else {
+			$result = false;
+		}
+
+		return $result;
 	}
 
-	private function _getRouteTrackTableName() {
-		return $this->_env->getRouteTrackTableName();
+	private function _ensureStorageDirectories() {
+		$rootStorageDir = $this->_env->getRootStorageDir();
+		$tracksStorageDir = $this->_env->getTracksStorageDir();
+		$cacheStorageDir = $this->_env->getCacheStorageDir();
+
+		$service = new Abp01_Installer_Service_CreateStorageDirectories($rootStorageDir, 
+			$tracksStorageDir, 
+			$cacheStorageDir);
+
+		return $service->execute();
+	}
+
+	private function _moveTrackDataFiles() {
+		$service = new Abp01_Installer_Service_MoveTrackDataFilesFromLegacyDirectories($this->_env);
+		return $service->execute();
+	}
+
+	private function _fixRoutePathsInDb() {
+		$service = new Abp01_Installer_Service_FixLegacyRoutePathsInDb($this->_env);
+		return $service->execute();
 	}
 
 	public function getLastError() { 
-		return $this->_service->getLastError();
+		return null;
 	}
 }
