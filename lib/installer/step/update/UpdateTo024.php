@@ -33,7 +33,7 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
-class Abp01_Installer_Step_Update_UpdateTo024 implements Abp01_Installer_Step {
+class Abp01_Installer_Step_Update_UpdateTo024 implements Abp01_Installer_Step_Update_Interface {
 
 	/**
 	 * @var Abp01_Env
@@ -69,5 +69,9 @@ class Abp01_Installer_Step_Update_UpdateTo024 implements Abp01_Installer_Step {
 
     public function getLastError() { 
 		return null;
+	}
+
+	public function getTargetVersion() {
+		return '0.2.4';
 	}
 }

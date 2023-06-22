@@ -33,57 +33,6 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
-class Abp01_Installer_Step_Update_UpdateTo022 implements Abp01_Installer_Step_Update_Interface {
-
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
-
-	public function __construct(Abp01_Env $env) {
-		$this->_env = $env;
-	}
-
-	public function execute() { 
-		return $this->_ensureStorageDirectories() 
-			&& $this->_installStorageDirsSecurityAssets()
-			&& $this->_createCapabilities();
-	}
-
-	private function _ensureStorageDirectories() {
-		$rootStorageDir = $this->_env->getRootStorageDir();
-		$tracksStorageDir = $this->_env->getTracksStorageDir();
-		$cacheStorageDir = $this->_env->getCacheStorageDir();
-
-		$service = new Abp01_Installer_Service_CreateStorageDirectories($rootStorageDir, 
-			$tracksStorageDir, 
-			$cacheStorageDir);
-
-		return $service->execute();
-	}
-
-	private function _installStorageDirsSecurityAssets() {
-		$rootStorageDir = $this->_env->getRootStorageDir();
-		$tracksStorageDir = $this->_env->getTracksStorageDir();
-		$cacheStorageDir = $this->_env->getCacheStorageDir();
-
-		$service = new Abp01_Installer_Service_CreateStorageDirsSecurityAssets($rootStorageDir, 
-			$tracksStorageDir, 
-			$cacheStorageDir);
-
-		return $service->execute();
-	}
-
-	private function _createCapabilities() {
-		$service = new Abp01_Installer_Service_CreateCapabilities();
-		return $service->execute();
-	}
-
-	public function getLastError() { 
-		return null;
-	}
-
-	public function getTargetVersion() {
-		return '0.2.2';
-	}
+interface Abp01_Installer_Step_Update_Interface extends Abp01_Installer_Step {
+	function getTargetVersion();
 }
