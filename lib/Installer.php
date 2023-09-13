@@ -109,44 +109,8 @@ class Abp01_Installer {
 		return $result;
 	}
 
-	private function _ensureStorageDirectories() {
-		$result = true;
-		$rootStorageDir = $this->_env->getRootStorageDir();
-		
-		if (!is_dir($rootStorageDir)) {
-			@mkdir($rootStorageDir);
-		}
-
-		if (is_dir($rootStorageDir)) {
-			$tracksStorageDir = $this->_env->getTracksStorageDir();
-			if (!is_dir($tracksStorageDir)) {
-				@mkdir($tracksStorageDir);
-			}
-
-			if (is_dir($tracksStorageDir)) {
-				$cacheStorageDir = $this->_env->getCacheStorageDir();
-				if (!is_dir($cacheStorageDir)) {
-					@mkdir($cacheStorageDir);
-				}
-
-				$result = is_dir($cacheStorageDir);
-			} else {
-				$result = false;
-			}
-		} else {
-			$result = false;
-		}
-
-		return $result;
-	}
-
 	private function _removeStorageDirectories() {
 		$step = new Abp01_Installer_Step_RemoveStorageDirectories($this->_env);
-		return $this->_executeStep($step);
-	}
-
-	private function _installStorageDirsSecurityAssets() {
-		$step = new Abp01_Installer_Step_InstallStorageDirectoryAndAssets($this->_env);
 		return $this->_executeStep($step);
 	}
 
@@ -222,12 +186,8 @@ class Abp01_Installer {
 	 */
 	public function deactivate() {
 		$this->_reset();
-		try {
-			return $this->_removeCapabilities();
-		} catch (Exception $e) {
-			$this->_lastError = $e;
-		}
-		return false;
+		$step = new Abp01_Installer_Step_Deactivate();
+		return $this->_executeStep($step);
 	}
 
 	public function uninstall() {
@@ -275,21 +235,9 @@ class Abp01_Installer {
 	}
 
 	private function _installStorageDirectoryAndAssets() {
-		$result = false;
-		if ($this->_ensureStorageDirectories()) {
-			$result = $this->_installStorageDirsSecurityAssets();
-		}
-		return $result;
-	}
-
-	private function _createCapabilities() {
-		Abp01_Auth::getInstance()->installCapabilities();
-		return true;
-	}
-
-	private function _removeCapabilities() {
-		Abp01_Auth::getInstance()->removeCapabilities();
-		return true;
+		$this->_reset();
+		$step = new Abp01_Installer_Step_InstallStorageDirectoryAndAssets($this->_env);
+		return $this->_executeStep($step);
 	}
 
 	private function _uninstallVersion() {
@@ -305,26 +253,6 @@ class Abp01_Installer {
 	private function _purgeChangeLogCache() {
 		Abp01_ChangeLogDataSource_Cached::clearCache();
 		return true;
-	}
-
-	private function _installData() {
-		if (!$this->_installLookupData) {
-			return true;
-		}
-
-		$step = new Abp01_Installer_Step_InstallData($this->_env);
-		return $this->_executeStep($step);
-	}
-
-	private function _installSchema() {
-		$step = new Abp01_Installer_Step_InstallSchema($this->_env);
-		$result = $this->_executeStep($step);
-
-		if (!$result) {
-			$this->_uninstallSchema();
-		}
-
-		return $result;
 	}
 
 	private function _uninstallSchema() {
