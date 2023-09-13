@@ -49,15 +49,10 @@ class Abp01_Installer_Step_Activate implements Abp01_Installer_Step {
 	 */
 	private $_installLookupData;
 
-	/**
-	 * @var string
-	 */
-	private $_versionOptionsKey;
-
-	public function __construct(Abp01_Env $env, string $versionOptionsKey, $installLookupData) {
+	public function __construct(Abp01_Env $env, $installLookupData) {
 		$this->_env = $env;
-		$this->_versionOptionsKey = $versionOptionsKey;
-		$this->_installLookupData = $installLookupData === true;
+		$this->_installLookupData = 
+			($installLookupData === true);
 	}
 
     public function execute() { 

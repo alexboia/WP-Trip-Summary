@@ -88,11 +88,6 @@ class Abp01_Installer {
 	 * @var bool Whether or not to install lookup data
 	 */
 	private $_installLookupData;
-	
-	/**
-	 * @var array An array of cached lookup data items definitions
-	 */
-	private $_cachedDefinitions = null;
 
 	/**
 	 * Creates a new installer instance
@@ -101,17 +96,6 @@ class Abp01_Installer {
 	public function __construct($installLookupData = true) {
 		$this->_env = Abp01_Env::getInstance();
 		$this->_installLookupData = $installLookupData;
-	}
-
-	private function _executeStep(Abp01_Installer_Step $step) {
-		$result = $step->execute();
-		$this->_lastError = $step->getLastError();
-		return $result;
-	}
-
-	private function _removeStorageDirectories() {
-		$step = new Abp01_Installer_Step_RemoveStorageDirectories($this->_env);
-		return $this->_executeStep($step);
 	}
 
 	/**
@@ -123,6 +107,12 @@ class Abp01_Installer {
 	public function updateIfNeeded() {
 		$step = new Abp01_Installer_Step_Update($this->_env);
 		return $this->_executeStep($step);
+	}
+
+	private function _executeStep(Abp01_Installer_Step $step) {
+		$result = $step->execute();
+		$this->_lastError = $step->getLastError();
+		return $result;
 	}
 
 	/**
@@ -170,7 +160,6 @@ class Abp01_Installer {
 		$this->_reset();
 		$step = new Abp01_Installer_Step_Activate(
 			$this->_env, 
-			self::OPT_VERSION, 
 			$this->_installLookupData
 		);
 		return $this->_executeStep($step);
@@ -192,17 +181,8 @@ class Abp01_Installer {
 
 	public function uninstall() {
 		$this->_reset();
-		try {
-			return $this->deactivate()
-				&& $this->_uninstallSchema()
-				&& $this->_purgeSettings()
-				&& $this->_purgeChangeLogCache()
-				&& $this->_removeStorageDirectories()
-				&& $this->_uninstallVersion();
-		} catch (Exception $e) {
-			$this->_lastError = $e;
-		}
-		return false;
+		$step = new Abp01_Installer_Step_Uninstall($this->_env);
+		return $this->_executeStep($step);
 	}
 
 	/**
@@ -237,26 +217,6 @@ class Abp01_Installer {
 	private function _installStorageDirectoryAndAssets() {
 		$this->_reset();
 		$step = new Abp01_Installer_Step_InstallStorageDirectoryAndAssets($this->_env);
-		return $this->_executeStep($step);
-	}
-
-	private function _uninstallVersion() {
-		delete_option(self::OPT_VERSION);
-		return true;
-	}
-
-	private function _purgeSettings() {
-		abp01_get_settings()->purgeAllSettings();
-		return true;
-	}
-
-	private function _purgeChangeLogCache() {
-		Abp01_ChangeLogDataSource_Cached::clearCache();
-		return true;
-	}
-
-	private function _uninstallSchema() {
-		$step = new Abp01_Installer_Step_UninstallSchema($this->_env);
 		return $this->_executeStep($step);
 	}
 
