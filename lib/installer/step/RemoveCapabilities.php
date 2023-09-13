@@ -33,22 +33,22 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
-class Abp01_Installer_Step_CreateCapabilities implements Abp01_Installer_Step {
+class Abp01_Installer_Step_RemoveCapabilities implements Abp01_Installer_Step {
 	/**
 	 * @var \Exception|\WP_Error|null
 	 */
 	private $_lastError;
 
-	public function execute() { 
+    public function execute() { 
 		$this->_lastError = null;
-		return $this->_createCapabilities();
+		return $this->_removeCapabilities();
 	}
 
-	private function _createCapabilities() {
+	private function _removeCapabilities() {
 		$result = false;
 
 		try {
-			$service = new Abp01_Installer_Service_CreateCapabilities();
+			$service = new Abp01_Installer_Service_RemoveCapabilities();
 			$result = $service->execute();
 		} catch (Exception $exc) {
 			$this->_lastError = $exc;

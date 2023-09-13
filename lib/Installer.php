@@ -103,76 +103,6 @@ class Abp01_Installer {
 		$this->_installLookupData = $installLookupData;
 	}
 
-	private function _getVersion() {
-		return $this->_env->getVersion();
-	}
-
-	private function _isUpdatedNeeded($version, $installedVersion) {
-		return $version != $installedVersion;
-	}
-
-	private function _getInstalledVersion() {
-		$version = null;
-		if (function_exists('get_option')) {
-			$version = get_option(self::OPT_VERSION, null);
-		}
-		return $version;
-	}
-
-	private function _update($version, $installedVersion) {
-		$this->_reset();
-		$result = true;
-
-		if (empty($installedVersion)) {
-			//If no installed version is set, this is the very first version, 
-			//  we need to run all updates in order
-			$result = $this->_updateTo02Beta() 
-				&& $this->_updateTo021() 
-				&& $this->_updateTo022()
-				&& $this->_updateTo024();
-		} else {
-			//...otherwise, we need to see 
-			//  which installed version this is
-			switch ($installedVersion) {
-				case '0.2b':
-					$result = $this->_updateTo021() 
-						&& $this->_updateTo022()
-						&& $this->_updateTo024();
-				break;
-				case '0.2.1':
-					$result = $this->_updateTo022() 
-						&& $this->_updateTo024();
-				break;
-				case '0.2.2':
-				case '0.2.3':
-					$result = $this->_updateTo024();
-					break;
-			}
-		}
-
-		//Finally, run the update to 0.2.7, 
-		//  if the pervious updates (if there were any), 
-		//  were successful
-		if ($result) {
-			$result = $this->_updateTo027();
-		}
-
-		if ($result) {
-			update_option(self::OPT_VERSION, $version);
-		}
-		return $result;
-	}
-
-	private function _updateTo02Beta() {
-		$step = new Abp01_Installer_Step_Update_UpdateTo02Beta($this->_env);
-		return $this->_executeStep($step);
-	}
-
-	private function _updateTo021() {
-		$step = new Abp01_Installer_Step_Update_UpdateTo021($this->_env);
-		return $this->_executeStep($step);
-	}
-
 	private function _executeStep(Abp01_Installer_Step $step) {
 		$result = $step->execute();
 		$this->_lastError = $step->getLastError();
@@ -215,21 +145,6 @@ class Abp01_Installer {
 		return $this->_executeStep($step);
 	}
 
-	private function _updateTo022() {
-		$step = new Abp01_Installer_Step_Update_UpdateTo022($this->_env);
-		return $this->_executeStep($step);
-	}
-
-	private function _updateTo024() {
-		$step = new Abp01_Installer_Step_Update_UpdateTo024($this->_env);
-		return $this->_executeStep($step);
-	}
-
-	private function _updateTo027() {
-		$step = new Abp01_Installer_Step_Update_UpdateTo027($this->_env);
-		return $this->_executeStep($step);
-	}
-
 	private function _installStorageDirsSecurityAssets() {
 		$step = new Abp01_Installer_Step_InstallStorageDirectoryAndAssets($this->_env);
 		return $this->_executeStep($step);
@@ -242,15 +157,8 @@ class Abp01_Installer {
 	 * @return bool The operation result: true if succeeded, false otherwise
 	 */
 	public function updateIfNeeded() {
-		$result = true;
-		$version = $this->_getVersion();
-		$installedVersion = $this->_getInstalledVersion();
-
-		if ($this->_isUpdatedNeeded($version, $installedVersion)) {
-			$result = $this->_update($version, $installedVersion);
-		}
-
-		return $result;
+		$step = new Abp01_Installer_Step_Update($this->_env);
+		return $this->_executeStep($step);
 	}
 
 	/**
@@ -296,37 +204,12 @@ class Abp01_Installer {
 	 */
 	public function activate() {
 		$this->_reset();
-		try {
-			if (!$this->_installStorageDirectoryAndAssets()) {
-				//Ensure no partial directory and file structure remains
-				$this->_removeStorageDirectories();
-				return false;
-			}
-
-			if (!$this->_installSchema()) {
-				//Ensure no partial directory and file structure remains
-				$this->_removeStorageDirectories();
-				return false;
-			}
-
-			if (!$this->_installData()) {
-				//Ensure no partial directory and file structure remains
-				$this->_removeStorageDirectories();
-				//Remove schema as well
-				$this->_uninstallSchema();
-				return false;
-			} else {
-				if ($this->_createCapabilities()) {
-					update_option(self::OPT_VERSION, $this->_getVersion());
-					return true;
-				} else {
-					return false;
-				}
-			}
-		} catch (Exception $e) {
-			$this->_lastError = $e;
-		}
-		return false;
+		$step = new Abp01_Installer_Step_Activate(
+			$this->_env, 
+			self::OPT_VERSION, 
+			$this->_installLookupData
+		);
+		return $this->_executeStep($step);
 	}
 
 	/**
