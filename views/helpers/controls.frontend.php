@@ -249,7 +249,7 @@ if (!function_exists('abp01_frontend_determine_viewer_tab_width')) {
 			$maxTabsPerRow = 3;
 		}
 
-		$tabWidth = 100 / min($totalTabCount, $maxTabsPerRow);
+		$tabWidth = 100 / max(1, min($totalTabCount, $maxTabsPerRow));
 		return 'calc(' . $tabWidth . '% - 1px)';
 	}
 }

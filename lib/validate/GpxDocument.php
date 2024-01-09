@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014-2023 Alexandru Boia
+ * Copyright (c) 2014-2024 Alexandru Boia
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -43,7 +43,6 @@ class Abp01_Validate_GpxDocument implements Abp01_Validate_File {
 		if ( ! is_readable( $input ) ) {
 			return false;
 		}
-
 
 		$fileContent = file_get_contents( $input );
 		if ( ! $fileContent ) {

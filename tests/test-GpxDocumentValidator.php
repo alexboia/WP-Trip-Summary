@@ -82,7 +82,9 @@ class GpxDocumentValidatorTests extends WP_UnitTestCase {
 			'test1-garmin-desktop-app-utf8-bom.gpx',
 			'test1-garmin-desktop-app-utf8-wo-bom.gpx',
 			'test3-bikemap-utf8-bom.gpx',
-			'test3-bikemap-utf8-wo-bom.gpx'
+			'test3-bikemap-utf8-wo-bom.gpx',
+			'test6-with-comments-after-xml-header-utf8-bom.gpx',
+			'test6-with-comments-after-xml-header-utf8-wo-bom.gpx'
 		);
 	}
 

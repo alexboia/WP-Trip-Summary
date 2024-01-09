@@ -44,6 +44,12 @@ trait ViewerTestDataHelpers {
         return $data;
     }
 
+    private function _getRandomViewerItemLayout() {
+        $faker = $this->_getFaker();
+        $items = Abp01_Viewer::getAvailableItemLayouts();
+        return $faker->randomElement($items);
+    }
+
     protected function _getTrackDataOnly($showTeaser) {
         $faker = $this->_getFaker();
         $data = $this->_createNewFrontendViewerData();
@@ -53,6 +59,8 @@ trait ViewerTestDataHelpers {
         $data->settings->bottomTeaserText = 'Bottom teaser text';
         $data->settings->showAltitudeProfile = $faker->boolean();
         $data->settings->mapHeight = $faker->numberBetween(450, 1111);
+        $data->settings->viewerItemValueDisplayCount = 3;
+        $data->settings->viewerItemLayout = $this->_getRandomViewerItemLayout();
 
         $data->info = new stdClass();
         $data->info->exists = false;
@@ -97,6 +105,8 @@ trait ViewerTestDataHelpers {
         $data->settings->measurementUnits = $faker->randomElement($this->_getAvailableMeasurementUnits());
         $data->settings->showAltitudeProfile = $faker->boolean();
         $data->settings->mapHeight = $faker->numberBetween(450, 1111);
+        $data->settings->viewerItemValueDisplayCount = 3;
+        $data->settings->viewerItemLayout = $this->_getRandomViewerItemLayout();
 
         $data->info = new stdClass();
         $data->info->exists = true;
@@ -148,6 +158,8 @@ trait ViewerTestDataHelpers {
         $data->settings->measurementUnits = $faker->randomElement($this->_getAvailableMeasurementUnits());
         $data->settings->showAltitudeProfile = $faker->boolean();
         $data->settings->mapHeight = $faker->numberBetween(450, 1111);
+        $data->settings->viewerItemValueDisplayCount = 3;
+        $data->settings->viewerItemLayout = $this->_getRandomViewerItemLayout();
 
         $data->info = new stdClass();
         $data->info->exists = true;
@@ -199,6 +211,8 @@ trait ViewerTestDataHelpers {
         $data->settings->measurementUnits = $faker->randomElement($this->_getAvailableMeasurementUnits());
         $data->settings->showAltitudeProfile = $faker->boolean();
         $data->settings->mapHeight = $faker->numberBetween(450, 1111);
+        $data->settings->viewerItemValueDisplayCount = 3;
+        $data->settings->viewerItemLayout = $this->_getRandomViewerItemLayout();
 
         $data->info = new stdClass();
         $data->info->exists = true;
