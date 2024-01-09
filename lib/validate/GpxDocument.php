@@ -34,48 +34,29 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Validate_GpxDocument implements Abp01_Validate_File {
-	const DEFAULT_TEST_BUFFER_LENGTH = 150;
 
-	private $_bufferLength;
-
-	public function __construct($bufferLength = self::DEFAULT_TEST_BUFFER_LENGTH) {
-		if ($bufferLength <= 0) {
-			throw new InvalidArgumentException('Buffer length must be greater than 0');
-		}
-		$this->_bufferLength = $bufferLength;
-	}
-
-	public function validate($filePath) {
-		if (empty($filePath)) {
+	public function validate($input) {
+		if (empty($input)) {
 			throw new InvalidArgumentException('File path may not be empty');
 		}
 
-		if (!is_readable($filePath)) {
+		if ( ! is_readable( $input ) ) {
 			return false;
 		}
 
-		$testFilePointer = @fopen($filePath, 'rb');
-		if (!$testFilePointer) {
+
+		$fileContent = file_get_contents( $input );
+		if ( ! $fileContent ) {
 			return false;
 		}
-
-		$isValid = false;
-		$buffer = @fread($testFilePointer, $this->_bufferLength);
-		
-		if ($buffer) {
-			if (function_exists('mb_stripos')) {
-				$xmlPos = mb_stripos($buffer, '<?xml', 0, 'UTF-8');
-				$gpxMarkerPos = mb_stripos($buffer, '<gpx', 0, 'UTF-8');
-			} else {
-				$xmlPos = stripos($buffer, '<?xml');
-				$gpxMarkerPos = stripos($buffer, '<gpx');
-			}
-			
-			$isValid = ($xmlPos >= 0 || $xmlPos <= 5)
-				&& $gpxMarkerPos > 0;
+		if ( function_exists( 'mb_stripos' ) ) {
+			$xmlPos       = mb_stripos( $fileContent, '<?xml', 0, 'UTF-8' );
+			$gpxMarkerPos = mb_stripos( $fileContent, '<gpx', 0, 'UTF-8' );
+		} else {
+			$xmlPos       = stripos( $fileContent, '<?xml' );
+			$gpxMarkerPos = stripos( $fileContent, '<gpx' );
 		}
 
-		@fclose($testFilePointer);
-		return $isValid;
+		return ( is_int( $xmlPos ) && is_int( $gpxMarkerPos ) ) && ( $xmlPos < $gpxMarkerPos );
 	}
 }
