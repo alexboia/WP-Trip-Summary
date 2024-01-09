@@ -136,7 +136,6 @@ ul.abp01-techbox-tabs {
 }
 
 .abp01-tab {
-    width: 50%;
     height: 40px;
     line-height: 40px;
     text-align: center;
@@ -178,9 +177,12 @@ ul.abp01-techbox-tabs {
     text-decoration: none !important;
 }
 
-.abp01-tab.abp01-tab-info {
-    width: calc(50% - 1px);
+.abp01-tab {
     border-right: 1px solid #e6e6e6;
+}
+
+.abp01-tab:last-of-type {
+    border-right: 0px none;
 }
 
 .abp01-tab-info.abp01-full-tab {
@@ -193,7 +195,7 @@ ul.abp01-techbox-tabs {
 }
 
 .abp01-tab-active {
-    height: 41px;
+    height: 40px;
     background-color: #fff;
 }
 

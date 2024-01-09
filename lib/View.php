@@ -170,4 +170,14 @@ class Abp01_View {
 		$this->_registerFrontendHelpers();
 		return $this->_renderCoreView('wpts-jsonld-frontend-data.php', $data);
 	}
+
+	public function renderCoreView($viewName, stdClass $data) {
+		$this->_registerFrontendHelpers();
+		return $this->_renderCoreView($viewName, $data);
+	}
+
+	public function renderRouteLogFrontendViewerTabContent(stdClass $data) {
+		$this->_registerFrontendHelpers();
+		return $this->_renderCoreView('wpts-frontend-route-log.php', $data);
+	}
 }

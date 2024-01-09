@@ -219,7 +219,16 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 		$viewerData->settings = $this->_settings
 			->asPlainObject();
 
+		$viewerData->additionalTabs = $this->_getAdditionalTabs($postId);
+
 		return $viewerData;
+	}
+
+	private function _getAdditionalTabs($postId) {
+		$additionalTabs = array();
+		return apply_filters('abp01_additional_frontend_viewer_tabs', 
+			$additionalTabs, 
+			$postId);
 	}
 
 	public function renderViewerShortCode($attributes) {
