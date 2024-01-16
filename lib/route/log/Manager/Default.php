@@ -15,58 +15,79 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 		return self::$_instance;
 	}
 
-    public function getLog($postId) { 
+	public function getAdminLog($postId) {
 		$postId = intval($postId);
 		if ($postId <= 0) {
 			throw new InvalidArgumentException();
 		}
 
 		$db = $this->_env->getDb();
-		$table = $this->_env->getRouteLogTableName();
+		$routeLogTable = $this->_env->getRouteLogTableName();
+		$usersTable = $this->_env->getWpUsersTableName();
 
-		$db->where('post_ID', $postId);
-		$row = $db->getOne($table);
-		if (!$row) {
-			return null;
+		$db->join($usersTable . ' c_wpu', 'wpu.ID = rl.log_created_by');
+		$db->join($usersTable . ' u_wpu', 'wpu.ID = rl.log_updated_by');
+
+		$db->where('rl.log_post_ID', $postId, '=');
+
+		$rawLogEntriesData = $db->get($routeLogTable  . ' rl', null, array(
+			'rl.*', 
+			'CONCAT(c_wpu.user_login, "(", c_wpu.display_name, ")") AS `log_created_by_user_desc`', 
+			'CONCAT(u_wpu.user_login, "(", u_wpu.display_name, ")") AS `log_updated_by_user_desc`'
+		));
+
+		if (!empty($rawLogEntriesData)) {
+			return $this->_toRouteLog($postId, $rawLogEntriesData);
+		} else {
+			return new Abp01_Route_Log($postId);
 		}
-
-		$logEntriesJson = isset($row['log_entries_serialized']) 
-			? $row['log_entries_serialized'] 
-			: null;
-
-		if (empty($logEntriesJson)) {
-			return null;
-		}
-
-		return Abp01_Route_Log::fromJson($postId, 
-			$logEntriesJson);
 	}
 
-    public function saveLog(Abp01_Route_Log $log, $currentUserId) { 
-		$postId = intval($log->getPostId());
+	private function _toRouteLog($postId, array $rawLogEntriesData) {
+		$logEntries = array();
+		foreach ($rawLogEntriesData as $rle) {
+			$logEntries[] = Abp01_Route_Log_Entry::fromDbArray($rle);
+		}
+
+		return new Abp01_Route_Log($postId, $logEntries);
+	}
+
+	public function getPublicLog($postId) {
+		$postId = intval($postId);
 		if ($postId <= 0) {
 			throw new InvalidArgumentException();
 		}
 
 		$db = $this->_env->getDb();
+		$routeLogTable = $this->_env->getRouteLogTableName();
+
+		$db->where('rl.log_post_ID', $postId, '=');
+		$db->where('rl.log_is_public', 1, '=');
+		$rawLogEntriesData = $db->get($routeLogTable  . ' rl', null, 'rl.*');
+
+		if (!empty($rawLogEntriesData)) {
+			return $this->_toRouteLog($postId, $rawLogEntriesData);
+		} else {
+			return new Abp01_Route_Log($postId);
+		}
+	}
+
+	public function saveLogEntry(Abp01_Route_Log_Entry $logEntry) {
+		$db = $this->_env->getDb();
 		$table = $this->_env->getRouteLogTableName();
 
-		$data = array(
-			'post_ID' => $log->getPostId(),
-			'log_entries_serialized' => $log->getLogEntriesAsJson(),
-			'log_modified_at' => $db->now(),
-			'log_modified_by' => $currentUserId
-		);
-
-		$db->where('post_ID', $postId);
-		if ($db->update($table, $data)) {
-			if ($db->count) {
+		$data = $logEntry->toDbArray();
+		if ($logEntry->id > 0) {
+			$db->where('log_ID', $logEntry->id);
+			$db->update($table, $data);
+			return !empty($db->count);
+		} else {
+			if ($db->insert($table, $data) !== false) {
+				$logEntry->id = $db->getInsertId();
 				return true;
 			} else {
-				return ($db->insert($table, $data) !== false);
+				return false;
 			}
-		} else {
-			return false;
 		}
 	}
 
@@ -83,7 +104,27 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 		return ($db->delete($table) !== false);
 	}
 
-	public function clearAllLogs() {
+	public function deleteLogEntry($postId, $logEntryId) {
+		$postId = intval($postId);
+		if ($postId <= 0) {
+			throw new InvalidArgumentException();
+		}
+
+		$logEntryId = intval($logEntryId);
+		if ($logEntryId <= 0) {
+			throw new InvalidArgumentException();
+		}
+
+		$db = $this->_env->getDb();
+		$table = $this->_env->getRouteLogTableName();
+
+		$db->where('post_ID', $postId);
+		$db->where('log_ID', $logEntryId);
+
+		return ($db->delete($table) !== false);
+	}
+
+	public function clearAllLogEntries() {
 		$db = $this->_env->getDb();
 		$table = $this->_env->getRouteLogTableName();
 

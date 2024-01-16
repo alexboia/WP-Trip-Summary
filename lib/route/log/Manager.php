@@ -4,14 +4,19 @@ interface Abp01_Route_Log_Manager {
 	 * @param int $postId 
 	 * @return Abp01_Route_Log
 	 */
-	function getLog($postId);
+	function getAdminLog($postId);
 
 	/**
-	 * @param Abp01_Route_Log $log 
-	 * @param int $currentUserId
+	 * @param int $postId 
+	 * @return Abp01_Route_Log
+	 */
+	function getPublicLog($postId);
+
+	/**
+	 * @param Abp01_Route_Log_Entry $logEntry 
 	 * @return bool
 	 */
-	function saveLog(Abp01_Route_Log $log, $currentUserId);
+	function saveLogEntry(Abp01_Route_Log_Entry $logEntry);
 
 	/**
 	 * @param int $postId 
@@ -20,7 +25,15 @@ interface Abp01_Route_Log_Manager {
 	function deleteLog($postId);
 
 	/**
+	 * @param Abp01_Route_Log_Entry $logEntry 
+	 * @param int $postId
+	 * @param int $logEntryId
+	 * @return bool
+	 */
+	function deleteLogEntry($postId, $logEntryId);
+
+	/**
 	 * @return void
 	 */
-	function clearAllLogs();
+	function clearAllLogEntries();
 }
