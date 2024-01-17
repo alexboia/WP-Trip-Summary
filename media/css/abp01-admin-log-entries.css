@@ -1,0 +1,7 @@
+#abp01-tripSummaryLog-formContainer .abp01-form-line {
+	margin-left: 0px;
+}
+
+.abp01-form-line input[type="text"]#abp01-log-time {
+	width: 610px;
+}

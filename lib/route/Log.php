@@ -183,4 +183,12 @@ class Abp01_Route_Log {
 		}
 		return json_encode($logEntriesData);
 	}
+
+	public function getLogEntryCount() {
+		return count($this->_logEntries);
+	}
+
+	public function hasLogEntries() {
+		return $this->getLogEntryCount() > 0;
+	}
 }

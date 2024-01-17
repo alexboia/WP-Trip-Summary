@@ -105,6 +105,10 @@ abstract class Abp01_PluginModules_PluginModule {
 		return abp01_get_plugin()->getLookupForCurrentLang();
 	}
 
+	protected function _formatDbDate($dbDate) {
+		return mysql2date(get_option('date_format'), $dbDate, true);
+	}
+
 	public function getMenuItems() {
 		return array();
 	}

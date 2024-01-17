@@ -439,6 +439,10 @@ class Abp01_Plugin {
 		return abp01_get_route_manager();
 	}
 
+	public function getRouteLogManager() {
+		return abp01_get_route_log_manager();
+	}
+
 	public function getHelp() {
 		return abp01_get_help();
 	}

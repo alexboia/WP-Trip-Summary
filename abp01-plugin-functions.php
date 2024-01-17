@@ -87,6 +87,13 @@ function abp01_get_route_manager() {
 }
 
 /**
+ * @return Abp01_Route_Log_Manager
+ */
+function abp01_get_route_log_manager() {
+	return Abp01_Route_Log_Manager_Default::getInstance();
+}
+
+/**
  * @return Abp01_Help
  */
 function abp01_get_help() {
@@ -571,6 +578,27 @@ if (!function_exists('abp01_is_url_rewrite_enabled')) {
 
 		return $enabled;
 	}
+}
+
+function abp01_format_timestamp($timestamp, $withTime = true) {
+	$format = abp01_determine_date_format($withTime);
+	return wp_date($format, $timestamp);
+}
+
+function abp01_format_db_date($dbDate, $withTime = true) {
+	$format = abp01_determine_date_format($withTime);
+	return mysql2date($format, $dbDate, true);
+}
+
+function abp01_determine_date_format($withTime) {
+	$format = get_option('date_format');
+	if ($withTime) {
+		$format .= ' ' . get_option('time_format');
+	}
+
+	return apply_filters('abp01_determine_date_format', 
+		$format, 
+		$withTime);
 }
 
 function abp01_run() {

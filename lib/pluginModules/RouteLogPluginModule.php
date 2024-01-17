@@ -37,18 +37,77 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
  * @package WP-Trip-Summary
  */
 class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_PluginModule {
+	const LOG_METABOX_REGISTRATION_HOOK_PRIORITY = 10;
+
+	const LOG_METABOX_POSITION = 'normal';
+
+	const LOG_METABOX_PRIORITY = 'high';
+	
+	/**
+	 * @var Abp01_Route_Log_Manager
+	 */
+	private $_routeLogManager;
+
 	/**
 	 * @var Abp01_View
 	 */
 	private $_view;
 
-	public function __construct(Abp01_View $view, Abp01_Env $env, Abp01_Auth $auth) {
+	public function __construct(Abp01_Route_Log_Manager $routeLogManager,
+			Abp01_View $view, 
+			Abp01_Env $env, 
+			Abp01_Auth $auth) {
 		parent::__construct($env, $auth);
+		$this->_routeLogManager = $routeLogManager;
 		$this->_view = $view;
 	}
 
 	public function load() {
-		$this->_setupViewer();
+		if ($this->_tripSummaryLogEnabled()) {
+			$this->_registerAdminWebPageAssets();
+			$this->_registerEditorControls();
+			$this->_setupViewer();
+		}
+	}
+
+	private function _registerAdminWebPageAssets() {
+		if (is_admin()) {
+			add_action('admin_enqueue_scripts', 
+				array($this, 'onAdminEnqueueStyles'));
+			add_action('admin_enqueue_scripts', 
+				array($this, 'onAdminEnqueueScripts'));
+		}		
+	}
+
+	public function onAdminEnqueueStyles() {
+		if ($this->_shouldEnqueueWebPageAssets(true)) {
+			Abp01_Includes::includeStyleAdminLogEntries();
+		}
+	}
+
+	private function _shouldEnqueueWebPageAssets() {
+		$isEditingPost = $this->_env->isEditingWpPost(Abp01_AvailabilityHelper::getTripSummaryAvailableForPostTypes());
+		return $isEditingPost
+			&& $this->_canEditCurrentPostTripSummary();
+	}
+
+	public function onAdminEnqueueScripts() {
+		if ($this->_shouldEnqueueWebPageAssets(true)) {
+			Abp01_Includes::includeScriptAdminLogEntries($this->_getAdminTripSummaryAdminLogEntriesTranslations());
+		}
+	}
+
+	private function _getAdminTripSummaryAdminLogEntriesTranslations() {
+		return Abp01_TranslatedScriptMessages::getAdminTripSummaryAdminLogEntriesTranslations();
+	}
+
+	private function _tripSummaryLogEnabled() {
+		$enabled = defined('ABP01_TRIP_SUMMARY_LOG_ENABLED')
+			? constant('ABP01_TRIP_SUMMARY_LOG_ENABLED') === true
+			: true;
+
+		return apply_filters('abp01_trip_summary_log_enabled', $enabled) 
+			=== true; 
 	}
 
 	private function _setupViewer() {
@@ -79,5 +138,52 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 
 		$data = new stdClass();
 		echo $this->_view->renderRouteLogFrontendViewerTabContent($data);
+	}
+
+	private function _registerEditorControls() {
+		add_action('add_meta_boxes', array($this, 'registerAdminEditorLogMetaboxes'), 
+			self::LOG_METABOX_REGISTRATION_HOOK_PRIORITY, 
+			2);
+	}
+
+	public function registerAdminEditorLogMetaboxes($postType, $post) { 
+		if ($this->_shouldRegisterAdminEditorLogMetaboxes($postType, $post)) {
+			add_meta_box('abp01-enhanced-editor-log-metabox', 
+				__('Trip summary log', 'abp01-trip-summary'),
+				array($this, 'addAdminLogEditor'), 
+				$postType, 
+				self::LOG_METABOX_POSITION, //TODO modifiable via hook, but no sidebar
+				self::LOG_METABOX_PRIORITY, //TODO modifiable via hook
+				array(
+					'postType' => $postType,
+					'post' => $post
+				)
+			);
+		}
+	}
+
+	private function _shouldRegisterAdminEditorLogMetaboxes($postType, $post) {
+		return Abp01_AvailabilityHelper::isEditorAvailableForPostType($postType) 
+			&& $this->_cantEditPostTripSummary($post);
+	}
+
+	public function addAdminLogEditor($post, $args) {
+		if ($this->_cantEditPostTripSummary($post)) {
+			$this->_addAdminLogEditorForm($post, $args);
+		}
+	}
+
+	private function _addAdminLogEditorForm($post, $args) {
+		$postId = intval($post->ID);
+		
+		$data = new stdClass();
+		$data->postId = $postId;
+		
+		$log = $this->_routeLogManager->getAdminLog($postId);
+		$data->log = $log->toPlainObject();
+		$data->hasLogEntries = $log->hasLogEntries();
+		$data->logEntryCount = $log->getLogEntryCount();
+
+		echo $this->_view->renderAdminTripSummaryLogEditor($data);
 	}
 }

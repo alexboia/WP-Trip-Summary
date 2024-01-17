@@ -114,6 +114,8 @@ class Abp01_Includes {
 	
 	const JS_ABP01_LISTING_AUDIT_LOG = 'abp01-listing-audit-log';
 
+	const JS_ABP01_ADMIN_LOG_ENTRIES = 'abp01-admin-log-entries';
+
 	const JS_SYSTEM_THICKBOX = 'thickbox';
 
 	const JS_SELECT2 = 'select2-js';
@@ -165,6 +167,8 @@ class Abp01_Includes {
 	const STYLE_ADMIN_AUDIT_LOG = 'abp01-admin-audit-log-css';
 
 	const STYLE_ADMIN_LISTING_AUDIT_LOG = 'abp01-admin-listing-audit-log-css';
+
+	const STYLE_ADMIN_LOG_ENTRIES = 'abp01-admin-log-entries-css';
 
 	const STYLE_SYSTEM_THICKBOX = 'thickbox';
 
@@ -411,6 +415,23 @@ class Abp01_Includes {
 				self::JS_ABP01_MAP
 			)
 		), 
+
+		self::JS_ABP01_ADMIN_LOG_ENTRIES => array(
+			'path' => 'media/js/abp01-admin-log-entries.js', 
+			'version' => ABP01_VERSION,
+			'deps' => array(
+				self::JS_JQUERY,
+				self::JS_JQUERY_BLOCKUI,
+				self::JS_JQUERY_TOASTR,
+				self::JS_URI_JS,
+				self::JS_TIPPED_JS,
+				self::JS_ABP01_COMMON,
+				self::JS_ABP01_PROGRESS_OVERLAY,
+				self::JS_ABP01_NUMERIC_STEPPER,
+				'jquery-ui-datepicker'
+			)
+		),
+
 		self::JS_ABP01_FRONTEND_MAIN => array(
 			'path' => 'media/js/abp01-frontend-main.js', 
 			'version' => ABP01_VERSION,
@@ -665,6 +686,17 @@ class Abp01_Includes {
 				self::STYLE_ADMIN_COMMON
 			)
 		),
+		self::STYLE_ADMIN_LOG_ENTRIES => array(
+			'path' => 'media/css/abp01-admin-log-entries.css', 
+			'version' => ABP01_VERSION,
+			'deps' => array(
+				self::STYLE_NPROGRESS,
+				self::STYLE_JQUERY_TOASTR,
+				self::STYLE_TIPPED_JS,
+				self::STYLE_ADMIN_COMMON,
+				self::STYLE_ABP01_NUMERIC_STEPPER
+			)
+		),
 		self::STYLE_ADMIN_SETTINGS => array(
 			'alias' => self::STYLE_ADMIN_MAIN,
 			'deps' => array(
@@ -888,6 +920,16 @@ class Abp01_Includes {
 			));
 	}
 
+	public static function includeScriptAdminLogEntries($localization) {
+		self::_includeScript(self::JS_ABP01_ADMIN_LOG_ENTRIES);
+
+		if (!empty($localization)) {
+			wp_localize_script(self::JS_ABP01_ADMIN_LOG_ENTRIES, 
+				'abp01AdminlogEntriesL10n', 
+				$localization);
+		}
+	}
+
 	public static function getClassicEditorViewerShortcodePluginUrl() {
 		return self::$_includesManager
 			->getScriptSrcUrl(self::JS_ABP01_CLASSIC_EDITOR_VIEWER_SHORTCODE_PLUGIN);
@@ -944,6 +986,10 @@ class Abp01_Includes {
 
 	public static function includeStyleAdminAuditLog() {
 		self::_includeStyle(self::STYLE_ADMIN_AUDIT_LOG);
+	}
+
+	public static function includeStyleAdminLogEntries() {
+		self::_includeStyle(self::STYLE_ADMIN_LOG_ENTRIES);
 	}
 
 	public static function includeStyleAdminListingAuditLog() {

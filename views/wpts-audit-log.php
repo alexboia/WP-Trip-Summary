@@ -40,7 +40,7 @@
 			<th scope="row"><?php echo esc_html__('Date created', 'abp01-trip-summary'); ?></th>
 			<td><?php 
 				echo !empty($data->auditLogData->infoCreatedAt) 
-					? esc_html(abp01_format_timestamp($data->auditLogData->infoCreatedAt))
+					? esc_html(abp01_format_db_date($data->auditLogData->infoCreatedAt))
 					: '-'; ?>
 			</td>
 		</tr>
@@ -48,7 +48,7 @@
 			<th scope="row"><?php echo esc_html__('Date last updated', 'abp01-trip-summary'); ?></th>
 			<td><?php 
 				echo !empty($data->auditLogData->infoLastModifiedAt) 
-					? esc_html(abp01_format_timestamp($data->auditLogData->infoLastModifiedAt))
+					? esc_html(abp01_format_db_date($data->auditLogData->infoLastModifiedAt))
 					: '-'; ?>
 			</td>
 		</tr>
@@ -68,7 +68,7 @@
 			<th scope="row"><?php echo esc_html__('Date created', 'abp01-trip-summary'); ?></th>
 			<td><?php 
 				echo !empty($data->auditLogData->trackCreatedAt) 
-					? esc_html(abp01_format_timestamp($data->auditLogData->trackCreatedAt))
+					? esc_html(abp01_format_db_date($data->auditLogData->trackCreatedAt))
 					: '-'; ?>
 			</td>
 		</tr>
@@ -76,7 +76,7 @@
 			<th scope="row"><?php echo esc_html__('Date last updated', 'abp01-trip-summary'); ?></th>
 			<td><?php 
 				echo !empty($data->auditLogData->trackLastModifiedAt) 
-					? esc_html(abp01_format_timestamp($data->auditLogData->trackLastModifiedAt))
+					? esc_html(abp01_format_db_date($data->auditLogData->trackLastModifiedAt))
 					: '-'; ?>
 			</td>
 		</tr>

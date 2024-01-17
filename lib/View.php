@@ -180,4 +180,9 @@ class Abp01_View {
 		$this->_registerFrontendHelpers();
 		return $this->_renderCoreView('wpts-frontend-route-log.php', $data);
 	}
+
+	public function renderAdminTripSummaryLogEditor(stdClass $data) {
+		$this->_registerAdminHelpers();
+		return $this->_renderCoreView('wpts-log-editor.php', $data);
+	}
 }

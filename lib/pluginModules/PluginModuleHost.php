@@ -145,6 +145,9 @@ class Abp01_PluginModules_PluginModuleHost {
 			Abp01_Route_Manager::class => function() {
 				return $this->getRouteManager();
 			},
+			Abp01_Route_Log_Manager::class => function() {
+				return $this->getRouteLogManager();
+			},
 			Abp01_Help::class => function() {
 				return $this->getHelp();
 			},
@@ -236,6 +239,10 @@ class Abp01_PluginModules_PluginModuleHost {
 
 	public function getRouteManager() {
 		return $this->_plugin->getRouteManager();
+	}
+
+	public function getRouteLogManager() {
+		return $this->_plugin->getRouteLogManager();
 	}
 
 	public function getAuditLogProvider() {

@@ -34,6 +34,10 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_TranslatedScriptMessages {
+	public static function getAdminTripSummaryAdminLogEntriesTranslations() {
+		return array();
+	}
+
 	public static function getAdminTripSummaryEditorScriptTranslations() {
 		return array(
 			'btnClearInfo' => esc_html__('Clear info', 'abp01-trip-summary'), 
