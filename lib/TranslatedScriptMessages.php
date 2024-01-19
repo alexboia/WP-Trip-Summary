@@ -35,7 +35,10 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 
 class Abp01_TranslatedScriptMessages {
 	public static function getAdminTripSummaryAdminLogEntriesTranslations() {
-		return array();
+		return array(
+			'msgSaveWorking' => esc_html__('Saving log entry. Please wait...', 'abp01-trip-summary'),
+			'errCouldNotSaveLogEntry' => esc_html__('The trip summary log entry could not be saved', 'abp01-trip-summary')
+		);
 	}
 
 	public static function getAdminTripSummaryEditorScriptTranslations() {

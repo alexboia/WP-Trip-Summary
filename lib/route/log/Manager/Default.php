@@ -100,7 +100,7 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 		$db = $this->_env->getDb();
 		$table = $this->_env->getRouteLogTableName();
 
-		$db->where('post_ID', $postId);
+		$db->where('log_post_ID', $postId);
 		return ($db->delete($table) !== false);
 	}
 
@@ -118,7 +118,7 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 		$db = $this->_env->getDb();
 		$table = $this->_env->getRouteLogTableName();
 
-		$db->where('post_ID', $postId);
+		$db->where('log_post_ID', $postId);
 		$db->where('log_ID', $logEntryId);
 
 		return ($db->delete($table) !== false);
@@ -130,5 +130,50 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 
 		$db->rawQuery('TRUNCATE TABLE `' . $table . '`', 
 			null);
+	}
+
+	public function getLogEntryById($postId, $logEntryId) {
+		$postId = intval($postId);
+		if ($postId <= 0) {
+			throw new InvalidArgumentException();
+		}
+
+		$logEntryId = intval($logEntryId);
+		if ($logEntryId <= 0) {
+			throw new InvalidArgumentException();
+		}
+
+		$db = $this->_env->getDb();
+		$table = $this->_env->getRouteLogTableName();
+
+		$db->where('log_post_ID', $postId);
+		$db->where('log_ID', $logEntryId);
+
+		$result = $db->getOne($table, '*');
+		if (empty($result)) {
+			return null;
+		}
+
+		return Abp01_Route_Log_Entry::fromDbArray($result);
+	}
+
+	public function getLastUsedVehicle($postId) {
+		$postId = intval($postId);
+		if ($postId <= 0) {
+			return '';
+		}
+
+		$db = $this->_env->getDb();
+		$table = $this->_env->getRouteLogTableName();
+
+		$db->where('log_post_ID', $postId);
+		$db->orderBy('log_date_updated', 'DESC');
+
+		$result = $db->getOne($table, 'log_vehicle');
+		if (!empty($result) && !empty($result['log_vehicle'])) {
+			return $result['log_vehicle'];
+		} else {
+			return '';
+		}
 	}
 }

@@ -42,6 +42,8 @@ class Abp01_Includes {
 
 	const JS_URI_JS = 'uri-js';
 
+	const JS_JQUERY_UI_DATEPICKER = 'jquery-ui-datepicker';
+
 	const JS_WP_COLOR_PICKER = 'wp-color-picker';
 
 	const JS_JQUERY_VISIBLE = 'jquery-visible';
@@ -423,12 +425,14 @@ class Abp01_Includes {
 				self::JS_JQUERY,
 				self::JS_JQUERY_BLOCKUI,
 				self::JS_JQUERY_TOASTR,
+				self::JS_JQUERY_UI_DATEPICKER,
 				self::JS_URI_JS,
 				self::JS_TIPPED_JS,
+				self::JS_KITE_JS,
+				self::JS_LODASH,
 				self::JS_ABP01_COMMON,
 				self::JS_ABP01_PROGRESS_OVERLAY,
-				self::JS_ABP01_NUMERIC_STEPPER,
-				'jquery-ui-datepicker'
+				self::JS_ABP01_NUMERIC_STEPPER
 			)
 		),
 

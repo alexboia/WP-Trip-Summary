@@ -37,6 +37,8 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
  * @package WP-Trip-Summary
  */
 class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_PluginModule {
+	const TRIP_SUMMARY_LOG_EDITOR_NONCE_URL_PARAM_NAME = 'abp01_nonce_log_entry';
+
 	const LOG_METABOX_REGISTRATION_HOOK_PRIORITY = 10;
 
 	const LOG_METABOX_POSITION = 'normal';
@@ -53,21 +55,47 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 	 */
 	private $_view;
 
+	/**
+	 * @var Abp01_AdminAjaxAction
+	 */
+	private $_saveRouteLogEntryAjaxAction;
+
 	public function __construct(Abp01_Route_Log_Manager $routeLogManager,
 			Abp01_View $view, 
 			Abp01_Env $env, 
 			Abp01_Auth $auth) {
 		parent::__construct($env, $auth);
+		
 		$this->_routeLogManager = $routeLogManager;
 		$this->_view = $view;
+
+		$this->_initAjaxActions();
+	}
+
+	private function _initAjaxActions() {
+		$authCallback = $this->_createEditCurrentPostTripSummaryAuthCallback();
+		$currentResourceProvider = new Abp01_AdminAjaxAction_CurrentResourceProvider_CurrentPostId();
+
+		$this->_saveRouteLogEntryAjaxAction = 
+			Abp01_AdminAjaxAction::create(ABP01_ACTION_SAVE_ROUTE_LOG_ENTRY_FOR_POST, array($this, 'saveRouteLogEntry'))
+					->useDefaultNonceProvider(self::TRIP_SUMMARY_LOG_EDITOR_NONCE_URL_PARAM_NAME)
+					->useCurrentResourceProvider($currentResourceProvider)
+					->authorizeByCallback($authCallback)
+					->onlyForHttpPost();
 	}
 
 	public function load() {
 		if ($this->_tripSummaryLogEnabled()) {
+			$this->_registerAjaxActions();
 			$this->_registerAdminWebPageAssets();
 			$this->_registerEditorControls();
 			$this->_setupViewer();
 		}
+	}
+
+	private function _registerAjaxActions() {
+		$this->_saveRouteLogEntryAjaxAction
+			->register();
 	}
 
 	private function _registerAdminWebPageAssets() {
@@ -102,12 +130,7 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 	}
 
 	private function _tripSummaryLogEnabled() {
-		$enabled = defined('ABP01_TRIP_SUMMARY_LOG_ENABLED')
-			? constant('ABP01_TRIP_SUMMARY_LOG_ENABLED') === true
-			: true;
-
-		return apply_filters('abp01_trip_summary_log_enabled', $enabled) 
-			=== true; 
+		return Abp01_FeatureStatus::tripSummaryLogEnabled();
 	}
 
 	private function _setupViewer() {
@@ -183,7 +206,136 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 		$data->log = $log->toPlainObject();
 		$data->hasLogEntries = $log->hasLogEntries();
 		$data->logEntryCount = $log->getLogEntryCount();
+		$data->defaultRider = $this->_getDefaultLogEntryRider($postId);
+		$data->defaultDate = $this->_getDefaultDate($postId);
+		$data->defaultVehicle = $this->_getDefaultVehicle($postId);
+
+		$data->saveRouteLogEntryNonce = $this->_saveRouteLogEntryAjaxAction->generateNonce($postId);
+		$data->ajaxSaveRouteLogEntryAction = ABP01_ACTION_SAVE_ROUTE_LOG_ENTRY_FOR_POST;
+
+		$data->ajaxUrl = $this->_getAjaxBaseUrl();
+		$data->imgBaseUrl = $this->_getPluginMediaImgBaseUrl();
 
 		echo $this->_view->renderAdminTripSummaryLogEditor($data);
+	}
+
+	private function _getDefaultLogEntryRider($postId) {
+		$user = wp_get_current_user();
+		$displayName = $user->display_name;
+		return apply_filters('abp01_trip_summary_route_log_default_entry_rider', 
+			$displayName, 
+			$postId);
+	}
+
+	private function _getDefaultDate($postId) {
+		$defaultDate = date('Y-m-d');
+		return apply_filters('abp01_trip_summary_route_log_default_entry_date', 
+			$defaultDate, 
+			$postId);
+	}
+
+	private function _getDefaultVehicle($postId) {
+		$defaultVehicle = $this->_routeLogManager
+			->getLastUsedVehicle($postId);
+
+		return apply_filters('abp01_trip_summary_route_log_default_entry_vehicle', 
+			$defaultVehicle, 
+			$postId);
+	}
+
+	public function saveRouteLogEntry() {
+		$postId = $this->_getCurrentPostId();
+		if (empty($postId)) {
+			die;
+		}
+
+		$logEntryId = Abp01_InputFiltering::getFilteredGETValue('abp01_route_log_entry_id', 'intval');
+		if ($logEntryId < 0) {
+			$logEntryId = 0;
+		}
+
+		$logEntry = null;
+		if ($logEntryId > 0) {
+			$logEntry = $this->_routeLogManager->getLogEntryById($postId, $logEntryId);
+		}
+
+		if ($logEntry === null) {
+			$logEntry = new Abp01_Route_Log_Entry();
+			$logEntry->id = $logEntryId = 0;
+			$logEntry->postId = $postId;
+			$logEntry->createdBy = get_current_user_id();
+		}
+
+		$logEntry->rider = Abp01_InputFiltering::getFilteredPOSTValue('abp01_log_rider', 'trim');
+		$logEntry->date = Abp01_InputFiltering::getFilteredPOSTValue('abp01_log_date', 'trim');
+		$logEntry->timeInHours = Abp01_InputFiltering::getFilteredPOSTValue('abp01_log_time', 'intval');
+
+		$logEntry->vehicle = Abp01_InputFiltering::getFilteredPOSTValue('abp01_log_vehicle', 'trim');
+		$logEntry->gear = Abp01_InputFiltering::getFilteredPOSTValue('abp01_log_gear', 'trim');
+		$logEntry->notes = Abp01_InputFiltering::getFilteredPOSTValue('abp01_log_notes', 'trim');
+		$logEntry->isPublic = Abp01_InputFiltering::getFilteredPOSTValue('abp01_log_ispublic', 'strtolower') 
+			=== 'yes';
+
+		$logEntry->lastUpdatedBy = get_current_user_id();
+		if ($logEntry->timeInHours < 0) {
+			$logEntry->timeInHours = 0;
+		}
+
+		$validationChain = new Abp01_Validation_Chain();
+		$validationChain->addInputValidationRule($logEntry->rider, 
+			$this->_getLogEntryRiderValidationRule());
+		$validationChain->addInputValidationRule($logEntry->date, 
+			$this->_getLogEntryDateValidationRule());
+		$validationChain->addInputValidationRule($logEntry->vehicle, 
+			$this->_getLogEntryVehicleValidationRule());
+
+		do_action('abp01_trip_summary_log_before_save_entry', 
+			$postId, 
+			$logEntry);
+
+		$response = abp01_get_ajax_response(array(
+			'logEntry' => null
+		));
+
+		if (!$validationChain->isInputValid()) {
+			$response->message = $validationChain->getLastValidationMessage();
+			return $response;
+		}
+
+		if ($this->_routeLogManager->saveLogEntry($logEntry)) {
+			$logEntry = $this->_routeLogManager->getLogEntryById($postId, $logEntry->id);
+			$response->logEntry = $logEntry->toPlainObject();
+			$response->success = true;
+		} else {
+			$response->message = __('The log entry could not be saved.', 'abp01-trip-summary');
+		}
+
+		do_action('abp01_trip_summary_log_after_save_entry', 
+			$postId, 
+			$logEntry, 
+			$response->success);
+
+		return $response;
+	}
+
+	private function _getLogEntryRiderValidationRule() {
+		return new Abp01_Validation_Rule_Simple(
+			new Abp01_Validate_NotEmpty(false),
+			esc_html__('The log entry rider is mandatory', 'abp01-trip-summary')
+		);
+	}
+
+	private function _getLogEntryDateValidationRule() {
+		return new Abp01_Validation_Rule_Simple(
+			new Abp01_Validate_Regex('/^([\\d]{4})-([\\d]{2})-([\\d]{2})$/', false),
+			esc_html__('A valid log entry date is mandatory', 'abp01-trip-summary')
+		);
+	}
+
+	private function _getLogEntryVehicleValidationRule() {
+		return new Abp01_Validation_Rule_Simple(
+			new Abp01_Validate_NotEmpty(false),
+			esc_html__('The log entry vehicle is mandatory', 'abp01-trip-summary')
+		);
 	}
 }

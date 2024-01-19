@@ -36,4 +36,17 @@ interface Abp01_Route_Log_Manager {
 	 * @return void
 	 */
 	function clearAllLogEntries();
+
+	/**
+	 * @param int $postId 
+	 * @param int $logEntryId 
+	 * @return Abp01_Route_Log_Entry
+	 */
+	function getLogEntryById($postId, $logEntryId);
+
+	/**
+	 * @param int $postId 
+	 * @return string
+	 */
+	function getLastUsedVehicle($postId);
 }

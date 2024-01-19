@@ -32,13 +32,31 @@
 ?>
 
 <script type="text/javascript">
+	if (window['abp01_postId']) {
+		window['abp01_postId'] = '<?php echo $data->postId; ?>';
+	}
+
+	if (!window['abp01_imgBase']) {
+		window['abp01_imgBase'] = '<?php echo esc_js($data->imgBaseUrl); ?>';
+	}
+
+	if (!window['abp01_ajaxUrl']) {
+		window['abp01_ajaxUrl'] = '<?php echo esc_js($data->ajaxUrl); ?>';
+	}
+	
+    var abp01_saveRouteLogEntryNonce = '<?php echo esc_js($data->saveRouteLogEntryNonce); ?>';
+	var abp01_ajaxSaveRouteLogEntryAction = '<?php echo esc_js($data->ajaxSaveRouteLogEntryAction); ?>';
+
+	if (!window['abp01_postId']) {
+		window['abp01_postId'] = '<?php echo $data->postId; ?>';
+	}
 </script>
 
 <div id="abp01-tripSummaryLog-adminRoot" class="hide-if-no-js">
 	<div class="wpts-trip-summary-log-listingContainer">
-		<table id="wpts-trip-summary-log-listingTable" 
+		<table id="abp01-trip-summary-log-listingTable" 
 				class="wp-list-table widefat fixed striped" 
-				style="display: <?php echo $data->hasLogEntries ? 'block' : 'none'; ?>;">
+				style="display: <?php echo $data->hasLogEntries ? 'table' : 'none'; ?>;">
 			<thead>
 				<tr>
 					<th><?php echo esc_html__('Who', 'abp01-trip-summary') ?></th>	
@@ -47,6 +65,7 @@
 					<th><?php echo esc_html__('Vehicle', 'abp01-trip-summary') ?></th>
 					<th><?php echo esc_html__('Gear', 'abp01-trip-summary') ?></th>
 					<th><?php echo esc_html__('Is public', 'abp01-trip-summary') ?></th>
+					<th>&nbsp;</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -57,10 +76,10 @@
 								? esc_html($logEntry->rider) 
 								: '-'; ?></td>
 							<td><?php echo !empty($logEntry->date) 
-								? esc_html(abp01_format_db_date($logEntry->date)) 
+								? esc_html(abp01_format_db_date($logEntry->date, false)) 
 								: '-'; ?></td>
 							<td><?php echo !empty($logEntry->timeInHours) 
-								? _n('hour', 'hours', $logEntry->timeInHours, 'abp01-trip-summary') 
+								? $logEntry->timeInHours . ' ' . _n('hour', 'hours', $logEntry->timeInHours, 'abp01-trip-summary') 
 								: '-'; ?></td>
 							<td><?php echo !empty($logEntry->vehicle) 
 								? esc_html($logEntry->vehicle) 
@@ -71,6 +90,10 @@
 							<td><?php echo $logEntry->isPublic 
 								? esc_html__('Yes', 'abp01-trip-summary') 
 								: esc_html__('No', 'abp01-trip-summary'); ?></td>
+							<td>
+								<a href="javascript:void(0)" rel="item-edit" data-logEntryId="<?php echo esc_attr($logEntry->id); ?>"><?php echo esc_html__('Edit', 'abp01-trip-summary'); ?></a> |
+								<a href="javascript:void(0)" rel="item-delete" data-logEntryId="<?php echo esc_attr($logEntry->id); ?>"><?php echo esc_html__('Delete', 'abp01-trip-summary'); ?></a>
+							</td>
 						</tr>
 					<?php endforeach; ?>
 				<?php endif; ?>
@@ -105,33 +128,36 @@
 		<div class="abp01-clear"></div>
 	</div>
 	<div id="abp01-tripSummaryLog-formContainer-inner" class="wpts-tripSummaryLog-form-fields">
-		<div class="abp01-form-line">
-			<label for="abp01-log-rider"><?php echo esc_html__('Who (rider)', 'abp01-trip-summary') ?>:</label>
-			<input type="text" id="abp01-log-rider" name="abp01_log_rider" class="abp01-input-text" />
-		</div>
-		<div class="abp01-form-line">
-			<label for="abp01-log-date"><?php echo esc_html__('When (date - yyyy-mm-dd)', 'abp01-trip-summary') ?>:</label>
-			<input type="text" id="abp01-log-date" name="abp01_log_date" class="abp01-input-text" />
-		</div>
-		<div class="abp01-form-line">
-			<label for="abp01-log-time"><?php echo esc_html__('Time (how many hours spent)', 'abp01-trip-summary') ?>:</label>
-			<input type="text" id="abp01-log-time" name="abp01_log_time" class="abp01-input-text" />
-		</div>
-		<div class="abp01-form-line">
-			<label for="abp01-log-vehicle"><?php echo esc_html__('Vehicle used (e.g. bike make and model)', 'abp01-trip-summary') ?>:</label>
-			<input type="text" id="abp01-log-vehicle" name="abp01_log_vehicle" class="abp01-input-text" />
-		</div>
-		<div class="abp01-form-line">
-			<label for="abp01-log-gear"><?php echo esc_html__('Gear (notes about what equipment was used)', 'abp01-trip-summary') ?>:</label>
-			<input type="text" id="abp01-log-gear" name="abp01_log_gear" class="abp01-input-text" />
-		</div>
-		<div class="abp01-form-line">
-			<label for="abp01-log-notes"><?php echo esc_html__('Other notes', 'abp01-trip-summary') ?>:</label>
-			<input type="text" id="abp01-log-notes" name="abp01_log_notes" class="abp01-input-text" />
-		</div>
-		<div class="abp01-form-line">
-			<label for="abp01-log-is-public"><?php echo esc_html__('Display publicly', 'abp01-trip-summary') ?>:</label>
-			<input type="checkbox" id="abp01-log-is-public" name="abp01_log_ispublic" />
+		<div id="abp01-tripSummaryLog-form">
+			<input type="hidden" id="abp01-route-log-entry-id" name="abp01_route_log_entry_id" value="0" />
+			<div class="abp01-form-line">
+				<label for="abp01-log-rider"><?php echo esc_html__('Who (rider)', 'abp01-trip-summary') ?>*:</label>
+				<input type="text" id="abp01-log-rider" name="abp01_log_rider" class="abp01-input-text" value="<?php echo esc_attr($data->defaultRider); ?>" />
+			</div>
+			<div class="abp01-form-line">
+				<label for="abp01-log-date"><?php echo esc_html__('When (date - yyyy-mm-dd)', 'abp01-trip-summary') ?>*:</label>
+				<input type="text" id="abp01-log-date" name="abp01_log_date" class="abp01-input-text" value="<?php echo esc_attr($data->defaultDate); ?>" />
+			</div>
+			<div class="abp01-form-line">
+				<label for="abp01-log-time"><?php echo esc_html__('Time (how many hours spent)', 'abp01-trip-summary') ?>:</label>
+				<input type="text" id="abp01-log-time" name="abp01_log_time" class="abp01-input-text" value="1" />
+			</div>
+			<div class="abp01-form-line">
+				<label for="abp01-log-vehicle"><?php echo esc_html__('Vehicle used (e.g. bike make and model)', 'abp01-trip-summary') ?>:</label>
+				<input type="text" id="abp01-log-vehicle" name="abp01_log_vehicle" class="abp01-input-text" value="<?php echo esc_attr($data->defaultVehicle); ?>" />
+			</div>
+			<div class="abp01-form-line">
+				<label for="abp01-log-gear"><?php echo esc_html__('Gear (notes about what equipment was used)', 'abp01-trip-summary') ?>:</label>
+				<input type="text" id="abp01-log-gear" name="abp01_log_gear" class="abp01-input-text" />
+			</div>
+			<div class="abp01-form-line">
+				<label for="abp01-log-notes"><?php echo esc_html__('Other notes', 'abp01-trip-summary') ?>:</label>
+				<input type="text" id="abp01-log-notes" name="abp01_log_notes" class="abp01-input-text" />
+			</div>
+			<div class="abp01-form-line">
+				<label for="abp01-log-is-public"><?php echo esc_html__('Display publicly', 'abp01-trip-summary') ?>:</label>
+				<input type="checkbox" id="abp01-log-is-public" name="abp01_log_ispublic" value="yes" />
+			</div>
 		</div>
 	</div>
 	<div class="abp01-tripSummaryLog-form-controls">
@@ -139,3 +165,54 @@
 		<a id="abp01-cancel-logEntry" href="javascript:void(0)" class="button button-large"><?php echo esc_html__('Cancel', 'abp01-trip-summary'); ?></a>
 	</div>
 </div>
+
+<script id="tpl-abp01-logEntryRow" type="text/x-kite">
+	<tr id="wpts-trip-summary-log-listingRow-{{id}}">
+		<td>
+			{{? rider }}
+				{{rider|esc-html}}
+			{{^?}}
+				-
+			{{/?}}
+		</td>
+		<td>
+			{{? date }}
+				{{date|esc-html}}
+			{{^?}}
+				-
+			{{/?}}
+		</td>
+		<td>
+			{{? timeInHours }}
+				{{timeInHours|esc-html}} <?php echo esc_html__('hours', 'abp01-trip-summary'); ?>
+			{{^?}}
+				-
+			{{/?}}
+		</td>
+		<td>
+			{{? vehicle }}
+				{{vehicle|esc-html}}
+			{{^?}}
+				-
+			{{/?}}
+		</td>
+		<td>
+			{{? gear }}
+				{{gear|esc-html}}
+			{{^?}}
+				-
+			{{/?}}
+		</td>
+		<td>
+			{{? isPublic }}
+				<?php echo esc_html__('Yes', 'abp01-trip-summary'); ?>
+			{{^?}}
+				<?php echo esc_html__('No', 'abp01-trip-summary'); ?>
+			{{/?}}
+		</td>
+		<td>
+			<a href="javascript:void(0)" rel="item-edit" data-logEntryId="{{id}}"><?php echo esc_html__('Edit', 'abp01-trip-summary'); ?></a> |
+			<a href="javascript:void(0)" rel="item-delete" data-logEntryId="{{id}}"><?php echo esc_html__('Delete', 'abp01-trip-summary'); ?></a>
+		</td>
+	</tr>
+</script>

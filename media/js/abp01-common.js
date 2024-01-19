@@ -43,6 +43,50 @@
         $('html').removeClass('abp01-stop-scrolling');
     }
 
+	function _hasToastr() {
+		return !!window['toastr'] && !!toastr.options;
+	}
+
+	function initToastMessages(target) {
+		if (!_hasToastr()) {
+			return;
+		}
+
+		$.extend(toastr.options, {
+			iconClasses: {
+				error: 'abp01-toast-error',
+				info: 'abp01-toast-info',
+				success: 'abp01-toast-success',
+				warning: 'abp01-toast-warning'
+			},
+			target: target,
+			positionClass: 'toast-bottom-right',
+			timeOut: 30000,
+			extendedTimeOut: 30000,
+			progressBar: true
+		});
+	}
+
+	function toastMessage(success, message) {
+		if (!_hasToastr()) {
+			return;
+		}
+
+		var toastrTarget =arguments.length == 3 
+			? arguments[2] 
+			: 'body';
+
+		if (success) {
+			toastr.success(message, null, {
+				target: toastrTarget
+			});
+		} else {
+			toastr.error(message, null, {
+				target: toastrTarget
+			});
+		}
+	}
+
 	if (window.abp01 == undefined) {
 		window.abp01 = {};
 	}
@@ -50,6 +94,8 @@
 	window.abp01 = $.extend(window.abp01, {
 		scrollToTop: scrollToTop,
         disableWindowScroll: disableWindowScroll,
-        enableWindowScroll: enableWindowScroll
+        enableWindowScroll: enableWindowScroll,
+		initToastMessages: initToastMessages,
+		toastMessage: toastMessage
 	});
 })(jQuery);
