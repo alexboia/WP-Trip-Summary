@@ -60,6 +60,11 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 	 */
 	private $_saveRouteLogEntryAjaxAction;
 
+	/**
+	 * @var Abp01_AdminAjaxAction
+	 */
+	private $_deleteRouteLogEntryAjaxAction;
+
 	public function __construct(Abp01_Route_Log_Manager $routeLogManager,
 			Abp01_View $view, 
 			Abp01_Env $env, 
@@ -82,6 +87,13 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 					->useCurrentResourceProvider($currentResourceProvider)
 					->authorizeByCallback($authCallback)
 					->onlyForHttpPost();
+
+		$this->_deleteRouteLogEntryAjaxAction = 
+			Abp01_AdminAjaxAction::create(ABP01_ACTION_DELETE_ROUTE_LOG_ENTRY_FOR_POST, array($this, 'deleteRouteLogEntry'))
+					->useDefaultNonceProvider(self::TRIP_SUMMARY_LOG_EDITOR_NONCE_URL_PARAM_NAME)
+					->useCurrentResourceProvider($currentResourceProvider)
+					->authorizeByCallback($authCallback)
+					->onlyForHttpPost();
 	}
 
 	public function load() {
@@ -95,6 +107,8 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 
 	private function _registerAjaxActions() {
 		$this->_saveRouteLogEntryAjaxAction
+			->register();
+		$this->_deleteRouteLogEntryAjaxAction
 			->register();
 	}
 
@@ -212,6 +226,9 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 
 		$data->saveRouteLogEntryNonce = $this->_saveRouteLogEntryAjaxAction->generateNonce($postId);
 		$data->ajaxSaveRouteLogEntryAction = ABP01_ACTION_SAVE_ROUTE_LOG_ENTRY_FOR_POST;
+
+		$data->deleteRouteLogEntryNonce = $this->_deleteRouteLogEntryAjaxAction->generateNonce($postId);
+		$data->ajaxDeleteRouteLogEntryAction = ABP01_ACTION_DELETE_ROUTE_LOG_ENTRY_FOR_POST;
 
 		$data->ajaxUrl = $this->_getAjaxBaseUrl();
 		$data->imgBaseUrl = $this->_getPluginMediaImgBaseUrl();
@@ -337,5 +354,26 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 			new Abp01_Validate_NotEmpty(false),
 			esc_html__('The log entry vehicle is mandatory', 'abp01-trip-summary')
 		);
+	}
+
+	public function deleteRouteLogEntry() {
+		$postId = $this->_getCurrentPostId();
+		if (empty($postId)) {
+			die;
+		}
+
+		$logEntryId = Abp01_InputFiltering::getFilteredGETValue('abp01_route_log_entry_id', 'intval');
+		if ($logEntryId <= 0) {
+			die;
+		}
+
+		$response = abp01_get_ajax_response();
+		if ($this->_routeLogManager->deleteLogEntry($postId, $logEntryId)) {
+			$response->success = true;
+		} else {
+			$response->message = __('The log entry could not be deleted.', 'abp01-trip-summary');
+		}
+
+		return $response;
 	}
 }

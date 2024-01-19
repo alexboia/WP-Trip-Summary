@@ -47,6 +47,9 @@
     var abp01_saveRouteLogEntryNonce = '<?php echo esc_js($data->saveRouteLogEntryNonce); ?>';
 	var abp01_ajaxSaveRouteLogEntryAction = '<?php echo esc_js($data->ajaxSaveRouteLogEntryAction); ?>';
 
+	var abp01_deleteRouteLogEntryNonce = '<?php echo esc_js($data->deleteRouteLogEntryNonce) ?>';
+	var abp01_ajaxDeleteRouteLogEntryAction = '<?php echo esc_js($data->ajaxDeleteRouteLogEntryAction); ?>';
+
 	if (!window['abp01_postId']) {
 		window['abp01_postId'] = '<?php echo $data->postId; ?>';
 	}
@@ -71,7 +74,7 @@
 			<tbody>
 				<?php if ($data->hasLogEntries): ?>
 					<?php foreach ($data->log->logEntries as $logEntry): ?>
-						<tr id="wpts-trip-summary-log-listingRow-<?php echo esc_attr($logEntry->id); ?>">
+						<tr id="abp01-trip-summary-log-listingRow-<?php echo esc_attr($logEntry->id); ?>">
 							<td><?php echo !empty($logEntry->rider) 
 								? esc_html($logEntry->rider) 
 								: '-'; ?></td>
@@ -91,8 +94,8 @@
 								? esc_html__('Yes', 'abp01-trip-summary') 
 								: esc_html__('No', 'abp01-trip-summary'); ?></td>
 							<td>
-								<a href="javascript:void(0)" rel="item-edit" data-logEntryId="<?php echo esc_attr($logEntry->id); ?>"><?php echo esc_html__('Edit', 'abp01-trip-summary'); ?></a> |
-								<a href="javascript:void(0)" rel="item-delete" data-logEntryId="<?php echo esc_attr($logEntry->id); ?>"><?php echo esc_html__('Delete', 'abp01-trip-summary'); ?></a>
+								<a href="javascript:void(0)" rel="logentry-item-edit" data-log-entry-id="<?php echo esc_attr($logEntry->id); ?>"><?php echo esc_html__('Edit', 'abp01-trip-summary'); ?></a> |
+								<a href="javascript:void(0)" rel="logentry-item-delete" data-log-entry-id="<?php echo esc_attr($logEntry->id); ?>"><?php echo esc_html__('Delete', 'abp01-trip-summary'); ?></a>
 							</td>
 						</tr>
 					<?php endforeach; ?>

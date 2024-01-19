@@ -33,6 +33,9 @@
 
 	var context = null;
 	var logEntryFormLastValues = null;
+	var logEntryFormState = {
+		isOpen: false
+	};
 
 	var progressBar = null;
 
@@ -59,21 +62,35 @@
 		$('#abp01-tripSummaryLog-noLogEntries').hide();
 	}
 
+	function removeLogEntryRow(logEntryId) {
+		var $row = $('#abp01-trip-summary-log-listingRow-' + logEntryId);
+		if ($row.length) {
+			$row.remove();
+		}
+	}
+
 	function getContext() {
 		return {
 			postId: window['abp01_postId'] || 0,
 			saveNonce: window['abp01_saveRouteLogEntryNonce'] || null,
+			deleteLogEntryNonce: window['abp01_deleteRouteLogEntryNonce'] || null,
+			
 			ajaxSaveAction: window['abp01_ajaxSaveRouteLogEntryAction'] || null,
-			ajaxBaseUrl: window['abp01_ajaxUrl'] || null
+			ajaxDeleteLogEntryAction: window['abp01_ajaxDeleteRouteLogEntryAction'] || null,
+			ajaxBaseUrl: window['abp01_ajaxUrl'] || null,
 		};
 	}
 
 	function toggleBusy(show) {
+		var $target = logEntryFormLastValues.isOpen 
+			? $('#abp01-tripSummaryLog-formContainer')
+			: $('#wpwrap');
+
 		if (show) {
 			if (progressBar == null) {
 				progressBar = $('#tpl-abp01-progress-container').progressOverlay({
-					$target: $('#abp01-tripSummaryLog-formContainer'),
-					message: abp01AdminlogEntriesL10n.msgSaveWorking
+					$target: $target,
+					message: arguments.length == 2 ? arguments[1] : 'Please wait...'
 				});
 			}
 		} else {
@@ -85,7 +102,9 @@
 	}
 
 	function toastMessage(success, message) {
-		window.abp01.toastMessage(success, message, '#abp01-tripSummaryLog-formContainer-inner');
+		window.abp01.toastMessage(success, message, logEntryFormState.isOpen 
+			? '#abp01-tripSummaryLog-formContainer-inner'
+			: '#abp01-enhanced-editor-log-metabox');
 	}
 
 	function disableWindowScroll() {
@@ -101,6 +120,15 @@
 			.addSearch('action', context.ajaxSaveAction)
 			.addSearch('abp01_postId', context.postId)
 			.addSearch('abp01_nonce_log_entry', context.saveNonce)
+			.toString();
+	}
+
+	function getLogEntryDeleteUrl(logEntryId) {
+		return URI(context.ajaxBaseUrl)
+			.addSearch('action', context.ajaxDeleteLogEntryAction)
+			.addSearch('abp01_postId', context.postId)
+			.addSearch('abp01_route_log_entry_id', logEntryId)
+			.addSearch('abp01_nonce_log_entry', context.deleteLogEntryNonce)
 			.toString();
 	}
 
@@ -126,7 +154,8 @@
 	function saveLogEntry() {
 		var formValues = collectLogEntryFormData();
 
-		toggleBusy(true);
+		toggleBusy(true, abp01AdminlogEntriesL10n.msgSaveWorking);
+		
 		$.ajax(getLogEntryFormSaveUrl(), {
 			type: 'POST',
 			dataType: 'json',
@@ -162,6 +191,7 @@
 				boxShadow: '0 5px 15px rgba(0, 0, 0, 0.7)'
 			},
 			onBlock: function() {
+				setLogEntryFormOpen();
 				disableWindowScroll();
 				initToastMessages();
 
@@ -170,9 +200,18 @@
 				}
 			},
 			onUnblock: function() {
+				setLogEntryFormClosed();
 				enableWindowScroll();
 			}
 		});
+	}
+
+	function setLogEntryFormOpen() {
+		logEntryFormState.isOpen = true;
+	}
+
+	function setLogEntryFormClosed() {
+		logEntryFormState.isOpen = false;
 	}
 
 	function closeAddLogEntryForm() {
@@ -184,6 +223,38 @@
 			width: '100%',
 			height: '100%'
 		};
+	}
+
+	function deleteLogEntry() {
+		var $me = $(this);
+		var logEntryId = $me.data('log-entry-id');
+
+		if (!logEntryId) {
+			return;
+		}
+		
+		if (!confirm(abp01AdminlogEntriesL10n.msgConfirmLogEntryRemoval)) {
+			return;
+		}
+
+		toggleBusy(true, abp01AdminlogEntriesL10n.msgDeleteLogEntryWorking);
+
+		$.ajax(getLogEntryDeleteUrl(logEntryId), {
+			type: 'POST',
+			dataType: 'json',
+			cache: false
+		}).done(function (data, status, xhr) {
+			toggleBusy(false);
+			if (!!data && !!data.success) {
+				toastMessage(true, data.message || abp01AdminlogEntriesL10n.msgLogEntryDeleted);
+				removeLogEntryRow(logEntryId);
+			} else {
+				toastMessage(false, (data || {}).message || abp01AdminlogEntriesL10n.errCouldNotDeleteLogEntry);
+			}
+		}).fail(function (xhr, status, error) {
+			toggleBusy(false);
+			toastMessage(false, abp01AdminlogEntriesL10n.errCouldNotDeleteLogEntry);
+		});
 	}
 
 	function setLogEntryFormValues(values) {
@@ -225,6 +296,10 @@
 		$(document).on('click', 
 			'#abp01-save-logEntry', 
 			saveLogEntry);
+
+		$(document).on('click', 
+			'a[rel="logentry-item-delete"]', 
+			deleteLogEntry);
 	}
 
 	function initForm() {

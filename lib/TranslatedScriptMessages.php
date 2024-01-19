@@ -37,7 +37,11 @@ class Abp01_TranslatedScriptMessages {
 	public static function getAdminTripSummaryAdminLogEntriesTranslations() {
 		return array(
 			'msgSaveWorking' => esc_html__('Saving log entry. Please wait...', 'abp01-trip-summary'),
-			'errCouldNotSaveLogEntry' => esc_html__('The trip summary log entry could not be saved', 'abp01-trip-summary')
+			'msgDeleteLogEntryWorking' => esc_html__('Deleting log entry. Please wait...', 'abp01-trip-summary'),
+			'msgConfirmLogEntryRemoval' => esc_html__('Remove selected log entry? This action cannot be undone!', 'abp01-trip-summary'),
+			'msgLogEntryDeleted' => esc_html__('The log entry has been successfully deleted', 'abp01-trip-summary'),
+			'errCouldNotSaveLogEntry' => esc_html__('The trip summary log entry could not be saved', 'abp01-trip-summary'),
+			'errCouldNotDeleteLogEntry' => esc_html__('The trip summary log entry could not be deleted', 'abp01-trip-summary')
 		);
 	}
 
