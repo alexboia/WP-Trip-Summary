@@ -50,6 +50,9 @@
 	var abp01_deleteRouteLogEntryNonce = '<?php echo esc_js($data->deleteRouteLogEntryNonce) ?>';
 	var abp01_ajaxDeleteRouteLogEntryAction = '<?php echo esc_js($data->ajaxDeleteRouteLogEntryAction); ?>';
 
+	var abp01_deleteAllRouteLogEntriesNonce = '<?php echo esc_js($data->deleteAllRouteLogEntriesNonce); ?>';
+	var abp01_deleteAllRouteLogEntriesAction = '<?php echo esc_js($data->ajaxDeleteAllRouteLogEntriesAction); ?>';
+
 	if (!window['abp01_postId']) {
 		window['abp01_postId'] = '<?php echo $data->postId; ?>';
 	}
@@ -81,9 +84,7 @@
 							<td><?php echo !empty($logEntry->date) 
 								? esc_html(abp01_format_db_date($logEntry->date, false)) 
 								: '-'; ?></td>
-							<td><?php echo !empty($logEntry->timeInHours) 
-								? $logEntry->timeInHours . ' ' . _n('hour', 'hours', $logEntry->timeInHours, 'abp01-trip-summary') 
-								: '-'; ?></td>
+							<td><?php echo abp01_format_time_in_hours($logEntry->timeInHours); ?></td>
 							<td><?php echo !empty($logEntry->vehicle) 
 								? esc_html($logEntry->vehicle) 
 								: '-'; ?></td>
@@ -114,11 +115,10 @@
 			class="button" 
 			type="button"><?php echo esc_html__('Add log entry', 'abp01-trip-summary'); ?></button>
 
-		<?php if ($data->hasLogEntries): ?>
-			<button id="abp01-clearTripSummary-log" 
-				class="button" 
-				type="button"><?php echo esc_html__('Clear all log entries', 'abp01-trip-summary'); ?></button>
-		<?php endif; ?>
+		<button id="abp01-clearTripSummary-log" 
+			class="button" 
+			type="button"
+			style="display: <?php echo $data->hasLogEntries ? 'inline' : 'none'; ?>;"><?php echo esc_html__('Clear all log entries', 'abp01-trip-summary'); ?></button>
 	</div>
 </div>
 

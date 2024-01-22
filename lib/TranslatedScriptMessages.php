@@ -36,12 +36,19 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 class Abp01_TranslatedScriptMessages {
 	public static function getAdminTripSummaryAdminLogEntriesTranslations() {
 		return array(
-			'msgSaveWorking' => esc_html__('Saving log entry. Please wait...', 'abp01-trip-summary'),
-			'msgDeleteLogEntryWorking' => esc_html__('Deleting log entry. Please wait...', 'abp01-trip-summary'),
+			'msgSaveWorking' => esc_html__('Saving trip summary log entry. Please wait...', 'abp01-trip-summary'),
+			'msgDeleteLogEntryWorking' => esc_html__('Deleting trip summary log entry. Please wait...', 'abp01-trip-summary'),
+			'msgDeleteAllLogEntriesWorking' => esc_html__('Deleting all trip summary log entries for this post. Please wait...', 'abp01-trip-summary'),
+			
 			'msgConfirmLogEntryRemoval' => esc_html__('Remove selected log entry? This action cannot be undone!', 'abp01-trip-summary'),
-			'msgLogEntryDeleted' => esc_html__('The log entry has been successfully deleted', 'abp01-trip-summary'),
+			'msgConfirmLogAllEntriesRemoval' => esc_html__('Remove all log entries for this post? This action cannot be undone!', 'abp01-trip-summary'),
+
+			'msgLogEntryDeleted' => esc_html__('The trip summary log entry has been successfully deleted', 'abp01-trip-summary'),
+			'msgLogAllEntriesDeleted' => esc_html__('All the trip summary log entries for this post have been successfully deleted', 'abp01-trip-summary'),
+			
 			'errCouldNotSaveLogEntry' => esc_html__('The trip summary log entry could not be saved', 'abp01-trip-summary'),
-			'errCouldNotDeleteLogEntry' => esc_html__('The trip summary log entry could not be deleted', 'abp01-trip-summary')
+			'errCouldNotDeleteLogEntry' => esc_html__('The trip summary log entry could not be deleted', 'abp01-trip-summary'),
+			'errCouldNotDeleteAllLogEntries' => esc_html__('The trip summary log entries for this post could not be deleted', 'abp01-trip-summary')
 		);
 	}
 

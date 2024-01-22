@@ -159,6 +159,7 @@ class Abp01_Route_Log_Entry {
 			'log_date' => $this->date,
 			'log_vehicle' => $this->vehicle,
 			'log_gear' => $this->gear,
+			'log_notes' => $this->notes,
 			'log_duration_hours' => $this->timeInHours,
 			'log_is_public' => $this->isPublic ? 1 : 0,
 			'log_created_by' => $this->createdBy,

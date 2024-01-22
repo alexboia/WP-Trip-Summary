@@ -590,6 +590,12 @@ function abp01_format_db_date($dbDate, $withTime = true) {
 	return mysql2date($format, $dbDate, true);
 }
 
+function abp01_format_time_in_hours($timeInHours) {
+	return !empty($timeInHours) 
+		? $timeInHours . ' ' . _n('hour', 'hours', $timeInHours, 'abp01-trip-summary') 
+		: '-';
+}
+
 function abp01_determine_date_format($withTime) {
 	$format = get_option('date_format');
 	if ($withTime) {

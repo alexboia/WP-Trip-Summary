@@ -52,20 +52,44 @@
 		return tplLogEntryRow;
 	}
 
-	function renderLogEntryRowAndAppendToTable(logEntry) {
-		var content = getLogEntryRowTemplate()(logEntry);
-		var $container = $('#abp01-trip-summary-log-listingTable').find('tbody');
+	function renderLogEntryRowAndAppendToTable(logEntry, formattedLogEntry) {
+		var templateData = $.extend(logEntry, formattedLogEntry || {});
+		var newRow = getLogEntryRowTemplate()(templateData);
+		var $listingTable =  $('#abp01-trip-summary-log-listingTable');
+		var $container = $listingTable.find('tbody');
 		
-		$container.append(content);
-
-		$('#abp01-trip-summary-log-listingTable').show();
-		$('#abp01-tripSummaryLog-noLogEntries').hide();
+		$container.append(newRow);
+		checkLogEntriesTableRowCountAndUpdateLayout($listingTable);
 	}
 
 	function removeLogEntryRow(logEntryId) {
+		var $listingTable = $('#abp01-trip-summary-log-listingTable');
 		var $row = $('#abp01-trip-summary-log-listingRow-' + logEntryId);
+
 		if ($row.length) {
 			$row.remove();
+			checkLogEntriesTableRowCountAndUpdateLayout($listingTable);
+		}
+	}
+
+	function removeAllLogEntriesRows() {
+		var $listingTable = $('#abp01-trip-summary-log-listingTable');
+		var $rows = $listingTable.find('tbody tr');
+		$rows.remove();
+
+		checkLogEntriesTableRowCountAndUpdateLayout($listingTable);
+	}
+
+	function checkLogEntriesTableRowCountAndUpdateLayout($listingTable)  {
+		var $rows = $listingTable.find('tbody tr');
+		if ($rows.size() > 0) {
+			$listingTable.show();
+			$('#abp01-tripSummaryLog-noLogEntries').hide();
+			$('#abp01-clearTripSummary-log').show();
+		} else {
+			$listingTable.hide();
+			$('#abp01-tripSummaryLog-noLogEntries').show();
+			$('#abp01-clearTripSummary-log').hide();
 		}
 	}
 
@@ -74,9 +98,11 @@
 			postId: window['abp01_postId'] || 0,
 			saveNonce: window['abp01_saveRouteLogEntryNonce'] || null,
 			deleteLogEntryNonce: window['abp01_deleteRouteLogEntryNonce'] || null,
+			deleteAllRouteLogEntriesNonce: window['abp01_deleteAllRouteLogEntriesNonce'] || null,
 			
 			ajaxSaveAction: window['abp01_ajaxSaveRouteLogEntryAction'] || null,
 			ajaxDeleteLogEntryAction: window['abp01_ajaxDeleteRouteLogEntryAction'] || null,
+			ajaxDeleteAllLogEntriesAction: window['abp01_deleteAllRouteLogEntriesAction'] || null,
 			ajaxBaseUrl: window['abp01_ajaxUrl'] || null,
 		};
 	}
@@ -132,6 +158,14 @@
 			.toString();
 	}
 
+	function getLogEntriesDeleteUrl() {
+		return URI(context.ajaxBaseUrl)
+			.addSearch('action', context.ajaxDeleteAllLogEntriesAction)
+			.addSearch('abp01_postId', context.postId)
+			.addSearch('abp01_nonce_log_entry', context.deleteAllRouteLogEntriesNonce)
+			.toString();
+	}
+
 	function collectLogEntryFormData() {
 		return {
 			abp01_route_log_entry_id: $('#abp01-route-log-entry-id').val(),
@@ -165,7 +199,7 @@
 			toggleBusy(false);
 			if (!!data && !!data.success && !!data.logEntry) {
 				closeAddLogEntryForm();
-				renderLogEntryRowAndAppendToTable(data.logEntry);
+				renderLogEntryRowAndAppendToTable(data.logEntry, data.formattedLogEntry);
 				logEntryFormLastValues = formValues;
 			} else {
 				toastMessage(false, (data || {}).message || abp01AdminlogEntriesL10n.errCouldNotSaveLogEntry);
@@ -271,6 +305,31 @@
 		$('#abp01-log-is-public').prop('checked', values.abp01_log_ispublic === 'yes');
 	}
 
+	function deleteAllLogEntries() {
+		if (!confirm(abp01AdminlogEntriesL10n.msgConfirmLogAllEntriesRemoval)) {
+			return;
+		}
+
+		toggleBusy(true, abp01AdminlogEntriesL10n.msgDeleteAllLogEntriesWorking);
+
+		$.ajax(getLogEntriesDeleteUrl(), {
+			type: 'POST',
+			dataType: 'json',
+			cache: false
+		}).done(function (data, status, xhr) {
+			toggleBusy(false);
+			if (!!data && !!data.success) {
+				toastMessage(true, data.message || abp01AdminlogEntriesL10n.msgLogAllEntriesDeleted);
+				removeAllLogEntriesRows();
+			} else {
+				toastMessage(false, (data || {}).message || abp01AdminlogEntriesL10n.errCouldNotDeleteAllLogEntries);
+			}
+		}).fail(function (xhr, status, error) {
+			toggleBusy(false);
+			toastMessage(false, abp01AdminlogEntriesL10n.errCouldNotDeleteAllLogEntries);
+		});
+	}
+
 	function initEvents() {
 		$(document).on('click', 
 			'#abp01-addTripSummary-logEntry', 
@@ -300,6 +359,10 @@
 		$(document).on('click', 
 			'a[rel="logentry-item-delete"]', 
 			deleteLogEntry);
+
+		$(document).on('click', 
+			'#abp01-clearTripSummary-log', 
+			deleteAllLogEntries);
 	}
 
 	function initForm() {
