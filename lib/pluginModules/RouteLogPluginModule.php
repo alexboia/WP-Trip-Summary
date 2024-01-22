@@ -70,6 +70,11 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 	 */
 	private $_deleteAllRouteLogEntriesAjaxAction;
 
+	/**
+	 * @var Abp01_AdminAjaxAction
+	 */
+	private $_getAdminRouteLogEntryByIdAjaxAction;
+
 	public function __construct(Abp01_Route_Log_Manager $routeLogManager,
 			Abp01_View $view, 
 			Abp01_Env $env, 
@@ -106,6 +111,13 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 					->useCurrentResourceProvider($currentResourceProvider)
 					->authorizeByCallback($authCallback)
 					->onlyForHttpPost();
+
+		$this->_getAdminRouteLogEntryByIdAjaxAction = 
+			Abp01_AdminAjaxAction::create(ABP01_ACTION_GET_ADMIN_LOG_ENTRY_FOR_POST, array($this, 'getAdminRouteLogEntryById'))
+					->useDefaultNonceProvider(self::TRIP_SUMMARY_LOG_EDITOR_NONCE_URL_PARAM_NAME)
+					->useCurrentResourceProvider($currentResourceProvider)
+					->authorizeByCallback($authCallback)
+					->onlyForHttpPost();
 	}
 
 	public function load() {
@@ -123,6 +135,8 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 		$this->_deleteRouteLogEntryAjaxAction
 			->register();
 		$this->_deleteAllRouteLogEntriesAjaxAction
+			->register();
+		$this->_getAdminRouteLogEntryByIdAjaxAction
 			->register();
 	}
 
@@ -328,7 +342,8 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 			$logEntry);
 
 		$response = abp01_get_ajax_response(array(
-			'logEntry' => null
+			'logEntry' => null,
+			'formattedLogEntry' => null
 		));
 
 		if (!$validationChain->isInputValid()) {
@@ -415,6 +430,32 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 			$response->message = __('The log entries could not be deleted.', 'abp01-trip-summary');
 		}
 
+		return $response;
+	}
+
+	public function getAdminRouteLogEntryById() {
+		$postId = $this->_getCurrentPostId();
+		if (empty($postId)) {
+			die;
+		}
+
+		$logEntryId = Abp01_InputFiltering::getFilteredGETValue('abp01_route_log_entry_id', 'intval');
+		if ($logEntryId <= 0) {
+			die;
+		}
+
+		$response = abp01_get_ajax_response(array(
+			'logEntry' => null,
+			'formattedLogEntry' => null
+		));
+
+		$logEntry = $this->_routeLogManager->getLogEntryById($postId, $logEntryId);
+		if ($logEntry != null) {
+			$response->logEntry = $logEntry->toPlainObject();
+			$response->formattedLogEntry = $this->_getFormattedLogEntryData($logEntry);
+		}
+
+		$response->success = true;
 		return $response;
 	}
 }

@@ -258,6 +258,13 @@ define('ABP01_ACTION_DELETE_ROUTE_LOG_ENTRY_FOR_POST', 'abp01_delete_route_log_e
 define('ABP01_ACTION_DELETE_ALL_ROUTE_LOG_ENTRIES_FOR_POST', 'abp01_delete_all_route_log_entrie_for_post');
 
 /**
+ * The action name used with admin-ajax.php when fetching a log entry's data from the admin panel
+ * 
+ * @var string
+ */
+define('ABP01_ACTION_GET_ADMIN_LOG_ENTRY_FOR_POST', 'abp01_get_admin_log_entry_for_post');
+
+/**
  * The name of the file upload file that, 
  *  albeit hidden from view, is used to 
  *  upload the track file to the server
