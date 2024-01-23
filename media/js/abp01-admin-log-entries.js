@@ -62,6 +62,20 @@
 		checkLogEntriesTableRowCountAndUpdateLayout($listingTable);
 	}
 
+	function updateLogEntryRow(logEntryId, logEntry, formattedLogEntry) {
+		var $listingTable = $('#abp01-trip-summary-log-listingTable');
+		var $row = $('#abp01-trip-summary-log-listingRow-' + logEntryId);
+
+		if ($row.length) {
+			$row.find('td.wpts-cell-rider').text(logEntry.rider);
+			$row.find('td.wpts-cell-date').text(formattedLogEntry.date);
+			$row.find('td.wpts-cell-timeInHours').text(formattedLogEntry.timeInHours);
+			$row.find('td.wpts-cell-vehicle').text(logEntry.vehicle);
+			$row.find('td.wpts-cell-gear').text(logEntry.gear);
+			$row.find('td.wpts-cell-isPublic').text(formattedLogEntry.isPublic);
+		}
+	}
+
 	function removeLogEntryRow(logEntryId) {
 		var $listingTable = $('#abp01-trip-summary-log-listingTable');
 		var $row = $('#abp01-trip-summary-log-listingRow-' + logEntryId);
@@ -99,10 +113,12 @@
 			saveNonce: window['abp01_saveRouteLogEntryNonce'] || null,
 			deleteLogEntryNonce: window['abp01_deleteRouteLogEntryNonce'] || null,
 			deleteAllRouteLogEntriesNonce: window['abp01_deleteAllRouteLogEntriesNonce'] || null,
-			
+			getAdminLogEntryByIdNonce: window['abp01_getAdminLogEntryByIdNonce'] || null,
+
 			ajaxSaveAction: window['abp01_ajaxSaveRouteLogEntryAction'] || null,
 			ajaxDeleteLogEntryAction: window['abp01_ajaxDeleteRouteLogEntryAction'] || null,
 			ajaxDeleteAllLogEntriesAction: window['abp01_deleteAllRouteLogEntriesAction'] || null,
+			ajaxGetAdminlogEntryByIdAction: window['abp01_getAdminlogEntryByIdAction'] || null,
 			ajaxBaseUrl: window['abp01_ajaxUrl'] || null,
 		};
 	}
@@ -166,6 +182,15 @@
 			.toString();
 	}
 
+	function getGetLogEntryByIdUrl(logEntryId) {
+		return URI(context.ajaxBaseUrl)
+			.addSearch('action', context.ajaxGetAdminlogEntryByIdAction)
+			.addSearch('abp01_postId', context.postId)
+			.addSearch('abp01_route_log_entry_id', logEntryId)
+			.addSearch('abp01_nonce_log_entry', context.getAdminLogEntryByIdNonce)
+			.toString();
+	}
+
 	function collectLogEntryFormData() {
 		return {
 			abp01_route_log_entry_id: $('#abp01-route-log-entry-id').val(),
@@ -187,6 +212,8 @@
 
 	function saveLogEntry() {
 		var formValues = collectLogEntryFormData();
+		var logEntryId = parseInt(formValues.abp01_route_log_entry_id);
+		var isEditing = !isNaN(logEntryId) && logEntryId > 0;
 
 		toggleBusy(true, abp01AdminlogEntriesL10n.msgSaveWorking);
 		
@@ -199,7 +226,15 @@
 			toggleBusy(false);
 			if (!!data && !!data.success && !!data.logEntry) {
 				closeAddLogEntryForm();
-				renderLogEntryRowAndAppendToTable(data.logEntry, data.formattedLogEntry);
+				if (!isEditing) {
+					renderLogEntryRowAndAppendToTable(data.logEntry, 
+						data.formattedLogEntry);
+				} else {
+					updateLogEntryRow(logEntryId, 
+						data.logEntry, 
+						data.formattedLogEntry);
+				}
+				
 				logEntryFormLastValues = formValues;
 			} else {
 				toastMessage(false, (data || {}).message || abp01AdminlogEntriesL10n.errCouldNotSaveLogEntry);
@@ -296,13 +331,25 @@
 			return;
 		}
 
+		setLogEntryFormTitle(values);
+
 		$('#abp01-route-log-entry-id').val(values.abp01_route_log_entry_id || 0);
 		$('#abp01-log-rider').val(values.abp01_log_rider || '');
+		$('#abp01-log-gear').val(values.abp01_log_gear || '');
 		$('#abp01-log-date').val(values.abp01_log_date || '');
 		$('#abp01-log-time').val(values.abp01_log_time || '');
 		$('#abp01-log-vehicle').val(values.abp01_log_vehicle || '');
 		$('#abp01-log-notes').val(values.abp01_log_notes || '');
 		$('#abp01-log-is-public').prop('checked', values.abp01_log_ispublic === 'yes');
+	}
+
+	function setLogEntryFormTitle(values) {
+		var $formTitle = $('#abp01-tripSummaryLog-formTitle');
+		if (parseInt(values.abp01_route_log_entry_id) <= 0) {
+			$formTitle.text(abp01AdminlogEntriesL10n.lblLogEntryAddFormTitle);
+		} else {
+			$formTitle.text(abp01AdminlogEntriesL10n.lblLogEntryEditFormTitle);
+		}
 	}
 
 	function deleteAllLogEntries() {
@@ -327,6 +374,46 @@
 		}).fail(function (xhr, status, error) {
 			toggleBusy(false);
 			toastMessage(false, abp01AdminlogEntriesL10n.errCouldNotDeleteAllLogEntries);
+		});
+	}
+
+	function openEditLogEntry() {
+		var $me = $(this);
+		var logEntryId = $me.data('log-entry-id');
+
+		if (!logEntryId) {
+			return;
+		}
+
+		toggleBusy(true, abp01AdminlogEntriesL10n.msgLoadAdminLogEntryByIdForEditing);
+
+		$.ajax(getGetLogEntryByIdUrl(logEntryId), {
+			type: 'GET',
+			dataType: 'json',
+			cache: false
+		}).done(function (data, status, xhr) {
+			toggleBusy(false);
+			if (!!data && !!data.success) {
+				openAddLogEntryForm(function() {
+					var newFormValues = $.extend(logEntryFormLastValues, {
+						abp01_route_log_entry_id: logEntryId,
+						abp01_log_rider: data.logEntry.rider,
+						abp01_log_date: data.logEntry.date,
+						abp01_log_time: data.logEntry.timeInHours,
+						abp01_log_vehicle: data.logEntry.vehicle,
+						abp01_log_gear: data.logEntry.gear,
+						abp01_log_notes: data.logEntry.notes,
+						abp01_log_ispublic: data.logEntry.isPublic ? 'yes' : 'no'
+					});
+
+					setLogEntryFormValues(newFormValues);
+				});
+			} else {
+				toastMessage(false, (data || {}).message || abp01AdminlogEntriesL10n.errCouldNotLoadAdminLogEntryDataById);
+			}
+		}).fail(function (xhr, status, error) {
+			toggleBusy(false);
+			toastMessage(false, abp01AdminlogEntriesL10n.errCouldNotLoadAdminLogEntryDataById);
 		});
 	}
 
@@ -359,6 +446,10 @@
 		$(document).on('click', 
 			'a[rel="logentry-item-delete"]', 
 			deleteLogEntry);
+
+		$(document).on('click', 
+			'a[rel="logentry-item-edit"]', 
+			openEditLogEntry);
 
 		$(document).on('click', 
 			'#abp01-clearTripSummary-log', 

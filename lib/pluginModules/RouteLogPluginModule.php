@@ -117,7 +117,7 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 					->useDefaultNonceProvider(self::TRIP_SUMMARY_LOG_EDITOR_NONCE_URL_PARAM_NAME)
 					->useCurrentResourceProvider($currentResourceProvider)
 					->authorizeByCallback($authCallback)
-					->onlyForHttpPost();
+					->onlyForHttpGet();
 	}
 
 	public function load() {
@@ -261,6 +261,9 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 		$data->deleteAllRouteLogEntriesNonce = $this->_deleteAllRouteLogEntriesAjaxAction->generateNonce($postId);
 		$data->ajaxDeleteAllRouteLogEntriesAction = ABP01_ACTION_DELETE_ALL_ROUTE_LOG_ENTRIES_FOR_POST;
 
+		$data->getAdminLogEntryByIdNonce = $this->_getAdminRouteLogEntryByIdAjaxAction->generateNonce($postId);
+		$data->ajaxGetAdminlogEntryByIdAction = ABP01_ACTION_GET_ADMIN_LOG_ENTRY_FOR_POST;
+
 		$data->ajaxUrl = $this->_getAjaxBaseUrl();
 		$data->imgBaseUrl = $this->_getPluginMediaImgBaseUrl();
 
@@ -297,7 +300,7 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 			die;
 		}
 
-		$logEntryId = Abp01_InputFiltering::getFilteredGETValue('abp01_route_log_entry_id', 'intval');
+		$logEntryId = Abp01_InputFiltering::getFilteredPOSTValue('abp01_route_log_entry_id', 'intval');
 		if ($logEntryId < 0) {
 			$logEntryId = 0;
 		}
@@ -370,8 +373,11 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 
 	private function _getFormattedLogEntryData(Abp01_Route_Log_Entry $logEntry) {
 		$formatted = new stdClass();
-		$formatted->date = abp01_format_db_date($logEntry->date);
+		$formatted->date = abp01_format_db_date($logEntry->date, false);
 		$formatted->timeInHours = abp01_format_time_in_hours($logEntry->timeInHours);
+		$formatted->isPublic = $logEntry->isPublic 
+			? __('Yes', 'abp01-trip-summary') 
+			: __('No', 'abp01-trip-summary');
 		return $formatted;
 	}
 

@@ -79,8 +79,7 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 		$data = $logEntry->toDbArray();
 		if ($logEntry->id > 0) {
 			$db->where('log_ID', $logEntry->id);
-			$db->update($table, $data);
-			return !empty($db->count);
+			return $db->update($table, $data);
 		} else {
 			if ($db->insert($table, $data) !== false) {
 				$logEntry->id = $db->getInsertId();

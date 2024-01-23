@@ -53,6 +53,9 @@
 	var abp01_deleteAllRouteLogEntriesNonce = '<?php echo esc_js($data->deleteAllRouteLogEntriesNonce); ?>';
 	var abp01_deleteAllRouteLogEntriesAction = '<?php echo esc_js($data->ajaxDeleteAllRouteLogEntriesAction); ?>';
 
+	var abp01_getAdminLogEntryByIdNonce = '<?php echo esc_js($data->getAdminLogEntryByIdNonce); ?>';
+	var abp01_getAdminlogEntryByIdAction = '<?php echo esc_js($data->ajaxGetAdminlogEntryByIdAction); ?>';
+
 	if (!window['abp01_postId']) {
 		window['abp01_postId'] = '<?php echo $data->postId; ?>';
 	}
@@ -78,20 +81,20 @@
 				<?php if ($data->hasLogEntries): ?>
 					<?php foreach ($data->log->logEntries as $logEntry): ?>
 						<tr id="abp01-trip-summary-log-listingRow-<?php echo esc_attr($logEntry->id); ?>">
-							<td><?php echo !empty($logEntry->rider) 
+							<td class="wpts-cell-rider"><?php echo !empty($logEntry->rider) 
 								? esc_html($logEntry->rider) 
 								: '-'; ?></td>
-							<td><?php echo !empty($logEntry->date) 
+							<td class="wpts-cell-date"><?php echo !empty($logEntry->date) 
 								? esc_html(abp01_format_db_date($logEntry->date, false)) 
 								: '-'; ?></td>
-							<td><?php echo abp01_format_time_in_hours($logEntry->timeInHours); ?></td>
-							<td><?php echo !empty($logEntry->vehicle) 
+							<td class="wpts-cell-timeInHours"><?php echo abp01_format_time_in_hours($logEntry->timeInHours); ?></td>
+							<td class="wpts-cell-vehicle"><?php echo !empty($logEntry->vehicle) 
 								? esc_html($logEntry->vehicle) 
 								: '-'; ?></td>
-							<td><?php echo !empty($logEntry->gear) 
+							<td class="wpts-cell-gear"><?php echo !empty($logEntry->gear) 
 								? esc_html($logEntry->gear) 
 								: '-'; ?></td>
-							<td><?php echo $logEntry->isPublic 
+							<td class="wpts-cell-isPublic"><?php echo $logEntry->isPublic 
 								? esc_html__('Yes', 'abp01-trip-summary') 
 								: esc_html__('No', 'abp01-trip-summary'); ?></td>
 							<td>
@@ -124,7 +127,7 @@
 
 <div id="abp01-tripSummaryLog-formContainer" class="abp01-window-container" style="display: none;">
 	<div id="abp01-tripSummaryLog-formContainer-header" class="abp01-window-container-header">
-		<h3><?php echo __('Add trip summary log entry', 'abp01-trip-summary'); ?></h3>
+		<h3 id="abp01-tripSummaryLog-formTitle"><?php echo __('Add trip summary log entry', 'abp01-trip-summary'); ?></h3>
 		<a href="javascript:void(0)" class="abp01-close-window abp01-close-tripSummaryLog-form">
 			<span class="dashicons dashicons-dismiss"></span>
 		</a>
@@ -171,42 +174,42 @@
 
 <script id="tpl-abp01-logEntryRow" type="text/x-kite">
 	<tr id="wpts-trip-summary-log-listingRow-{{id}}">
-		<td>
+		<td class="wpts-cell-rider">
 			{{? rider }}
 				{{rider|esc-html}}
 			{{^?}}
 				-
 			{{/?}}
 		</td>
-		<td>
+		<td class="wpts-cell-date">
 			{{? date }}
 				{{date|esc-html}}
 			{{^?}}
 				-
 			{{/?}}
 		</td>
-		<td>
+		<td class="wpts-cell-timeInHours">
 			{{? timeInHours }}
-				{{timeInHours|esc-html}} <?php echo esc_html__('hours', 'abp01-trip-summary'); ?>
+				{{timeInHours|esc-html}}
 			{{^?}}
 				-
 			{{/?}}
 		</td>
-		<td>
+		<td class="wpts-cell-vehicle">
 			{{? vehicle }}
 				{{vehicle|esc-html}}
 			{{^?}}
 				-
 			{{/?}}
 		</td>
-		<td>
+		<td class="wpts-cell-gear">
 			{{? gear }}
 				{{gear|esc-html}}
 			{{^?}}
 				-
 			{{/?}}
 		</td>
-		<td>
+		<td class="wpts-cell-isPublic">
 			{{? isPublic }}
 				<?php echo esc_html__('Yes', 'abp01-trip-summary'); ?>
 			{{^?}}
@@ -214,8 +217,8 @@
 			{{/?}}
 		</td>
 		<td>
-			<a href="javascript:void(0)" rel="item-edit" data-logEntryId="{{id}}"><?php echo esc_html__('Edit', 'abp01-trip-summary'); ?></a> |
-			<a href="javascript:void(0)" rel="item-delete" data-logEntryId="{{id}}"><?php echo esc_html__('Delete', 'abp01-trip-summary'); ?></a>
+			<a href="javascript:void(0)" rel="item-edit" data-log-entry-id="{{id}}"><?php echo esc_html__('Edit', 'abp01-trip-summary'); ?></a> |
+			<a href="javascript:void(0)" rel="item-delete" data-log-entry-id="{{id}}"><?php echo esc_html__('Delete', 'abp01-trip-summary'); ?></a>
 		</td>
 	</tr>
 </script>
