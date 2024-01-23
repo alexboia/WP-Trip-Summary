@@ -102,6 +102,11 @@
 								<a href="javascript:void(0)" rel="logentry-item-delete" data-log-entry-id="<?php echo esc_attr($logEntry->id); ?>"><?php echo esc_html__('Delete', 'abp01-trip-summary'); ?></a>
 							</td>
 						</tr>
+						<tr id="abp01-trip-summary-log-listingRowAux-<?php echo esc_attr($logEntry->id); ?>">
+							<td colspan="6" class="wpts-cell-notes">
+								<?php echo !empty($logEntry->notes) ? esc_html($logEntry->notes) : '-'; ?>
+							</td>
+						</tr>
 					<?php endforeach; ?>
 				<?php endif; ?>
 			</tbody>
@@ -219,6 +224,15 @@
 		<td>
 			<a href="javascript:void(0)" rel="item-edit" data-log-entry-id="{{id}}"><?php echo esc_html__('Edit', 'abp01-trip-summary'); ?></a> |
 			<a href="javascript:void(0)" rel="item-delete" data-log-entry-id="{{id}}"><?php echo esc_html__('Delete', 'abp01-trip-summary'); ?></a>
+		</td>
+	</tr>
+	<tr id="abp01-trip-summary-log-listingRowAux-{{id}}">
+		<td colspan="6" class="wpts-cell-notes">
+			{{? notes }}
+				{{notes|esc-html}}
+			{{^?}}
+				-
+			{{/?}}
 		</td>
 	</tr>
 </script>

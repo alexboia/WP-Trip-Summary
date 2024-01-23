@@ -9,3 +9,8 @@
 .abp01-form-line input[type="text"]#abp01-log-time {
 	width: 610px;
 }
+
+.widefat td.wpts-cell-notes {
+	color: #72777c;
+	padding-left: 16px;
+}

@@ -63,8 +63,8 @@
 	}
 
 	function updateLogEntryRow(logEntryId, logEntry, formattedLogEntry) {
-		var $listingTable = $('#abp01-trip-summary-log-listingTable');
 		var $row = $('#abp01-trip-summary-log-listingRow-' + logEntryId);
+		var $auxRow = $('#abp01-trip-summary-log-listingRowAux-' + logEntryId);
 
 		if ($row.length) {
 			$row.find('td.wpts-cell-rider').text(logEntry.rider);
@@ -74,11 +74,22 @@
 			$row.find('td.wpts-cell-gear').text(logEntry.gear);
 			$row.find('td.wpts-cell-isPublic').text(formattedLogEntry.isPublic);
 		}
+
+		if ($auxRow.length) {
+			$auxRow.find('td.wpts-cell-notes').text(!!logEntry.notes && !!logEntry.notes.length 
+				? logEntry.notes 
+				: '-');
+		}
 	}
 
 	function removeLogEntryRow(logEntryId) {
 		var $listingTable = $('#abp01-trip-summary-log-listingTable');
 		var $row = $('#abp01-trip-summary-log-listingRow-' + logEntryId);
+		var $auxRow = $('#abp01-trip-summary-log-listingRowAux-' + logEntryId);
+
+		if ($auxRow.length) {
+			$auxRow.remove();	
+		}
 
 		if ($row.length) {
 			$row.remove();
