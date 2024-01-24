@@ -222,8 +222,8 @@
 			{{/?}}
 		</td>
 		<td>
-			<a href="javascript:void(0)" rel="item-edit" data-log-entry-id="{{id}}"><?php echo esc_html__('Edit', 'abp01-trip-summary'); ?></a> |
-			<a href="javascript:void(0)" rel="item-delete" data-log-entry-id="{{id}}"><?php echo esc_html__('Delete', 'abp01-trip-summary'); ?></a>
+			<a href="javascript:void(0)" rel="logentry-item-edit" data-log-entry-id="{{id}}"><?php echo esc_html__('Edit', 'abp01-trip-summary'); ?></a> |
+			<a href="javascript:void(0)" rel="logentry-item-delete" data-log-entry-id="{{id}}"><?php echo esc_html__('Delete', 'abp01-trip-summary'); ?></a>
 		</td>
 	</tr>
 	<tr id="abp01-trip-summary-log-listingRowAux-{{id}}">

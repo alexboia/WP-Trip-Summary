@@ -202,8 +202,19 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 			return;
 		}
 
+		$postId = $viewerData->postId;
+		$log = $this->_routeLogManager->getPublicLog($postId);
+
 		$data = new stdClass();
+		$data->showStatistics = $this->_shouldRenderFrontendRouteLogStatistics($viewerData);
+
 		echo $this->_view->renderRouteLogFrontendViewerTabContent($data);
+	}
+
+	private function _shouldRenderFrontendRouteLogStatistics(stdClass $viewerData) {
+		return apply_filters('abp01_should_render_frontend_route_log_statistics', 
+			true, 
+			$viewerData);
 	}
 
 	private function _registerEditorControls() {

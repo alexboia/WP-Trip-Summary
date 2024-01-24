@@ -112,7 +112,9 @@
             return $.extend({
                 top: 280,
                 width: 400,
-                height: 20
+                height: 20,
+                border: '0px none',
+                background: 'transparent'
             }, spec.style || {});
         }
 

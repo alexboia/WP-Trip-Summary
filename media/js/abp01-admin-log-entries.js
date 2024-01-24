@@ -137,15 +137,20 @@
 	}
 
 	function toggleBusy(show) {
-		var $target = logEntryFormLastValues.isOpen 
+		var $target = logEntryFormState.isOpen 
 			? $('#abp01-tripSummaryLog-formContainer')
-			: $('#wpwrap');
+			: $('#abp01-tripSummaryLog-adminRoot');
 
 		if (show) {
 			if (progressBar == null) {
 				progressBar = $('#tpl-abp01-progress-container').progressOverlay({
 					$target: $target,
-					message: arguments.length == 2 ? arguments[1] : 'Please wait...'
+					message: arguments.length == 2 ? arguments[1] : 'Please wait...',
+					style: {
+						top: !logEntryFormState.isOpen 
+							? ($('#abp01-tripSummaryLog-adminRoot').height() - 20) / 2
+							: 280
+					}
 				});
 			}
 		} else {
@@ -330,8 +335,10 @@
 		}).done(function (data, status, xhr) {
 			toggleBusy(false);
 			if (!!data && !!data.success) {
-				toastMessage(true, data.message || abp01AdminlogEntriesL10n.msgLogEntryDeleted);
-				removeLogEntryRow(logEntryId);
+				window.setTimeout(function() {
+					toastMessage(true, data.message || abp01AdminlogEntriesL10n.msgLogEntryDeleted);
+					removeLogEntryRow(logEntryId);
+				}, 500);
 			} else {
 				toastMessage(false, (data || {}).message || abp01AdminlogEntriesL10n.errCouldNotDeleteLogEntry);
 			}
@@ -410,20 +417,22 @@
 		}).done(function (data, status, xhr) {
 			toggleBusy(false);
 			if (!!data && !!data.success) {
-				openAddLogEntryForm(function() {
-					var newFormValues = $.extend(logEntryFormLastValues, {
-						abp01_route_log_entry_id: logEntryId,
-						abp01_log_rider: data.logEntry.rider,
-						abp01_log_date: data.logEntry.date,
-						abp01_log_time: data.logEntry.timeInHours,
-						abp01_log_vehicle: data.logEntry.vehicle,
-						abp01_log_gear: data.logEntry.gear,
-						abp01_log_notes: data.logEntry.notes,
-						abp01_log_ispublic: data.logEntry.isPublic ? 'yes' : 'no'
+				window.setTimeout(function() {
+					openAddLogEntryForm(function() {
+						var newFormValues = $.extend(logEntryFormLastValues, {
+							abp01_route_log_entry_id: logEntryId,
+							abp01_log_rider: data.logEntry.rider,
+							abp01_log_date: data.logEntry.date,
+							abp01_log_time: data.logEntry.timeInHours,
+							abp01_log_vehicle: data.logEntry.vehicle,
+							abp01_log_gear: data.logEntry.gear,
+							abp01_log_notes: data.logEntry.notes,
+							abp01_log_ispublic: data.logEntry.isPublic ? 'yes' : 'no'
+						});
+	
+						setLogEntryFormValues(newFormValues);
 					});
-
-					setLogEntryFormValues(newFormValues);
-				});
+				}, 500);
 			} else {
 				toastMessage(false, (data || {}).message || abp01AdminlogEntriesL10n.errCouldNotLoadAdminLogEntryDataById);
 			}
