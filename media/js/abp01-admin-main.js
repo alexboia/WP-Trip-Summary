@@ -1417,4 +1417,16 @@
 		initRouteInfoForm();
 		initRouteTrackForm();
 	});
+
+	if (window.abp01 == undefined) {
+		window.abp01 = {};
+	}
+
+	window.abp01 = $.extend(window.abp01, {
+		addSimpleTooltip: addSimpleTooltip,
+		addControllerTooltip: addControllerTooltip,
+		cleanupTooltip: cleanupTooltip,
+		toggleEnhancedEditorStatusItemIcon: toggleEnhancedEditorStatusItemIcon,
+		toggleEnhancedEditorStatusItemText: toggleEnhancedEditorStatusItemText
+	});
 })(jQuery);

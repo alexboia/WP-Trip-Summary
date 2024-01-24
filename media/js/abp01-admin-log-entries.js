@@ -111,10 +111,12 @@
 			$listingTable.show();
 			$('#abp01-tripSummaryLog-noLogEntries').hide();
 			$('#abp01-clearTripSummary-log').show();
+			updateTripSummaryLogLauncherStatusItem(true);
 		} else {
 			$listingTable.hide();
 			$('#abp01-tripSummaryLog-noLogEntries').show();
 			$('#abp01-clearTripSummary-log').hide();
+			updateTripSummaryLogLauncherStatusItem(false);
 		}
 	}
 
@@ -237,6 +239,8 @@
 			toggleBusy(false);
 			if (!!data && !!data.success && !!data.logEntry) {
 				closeAddLogEntryForm();
+				updateTripSummaryLogLauncherStatusItem(true);
+
 				if (!isEditing) {
 					renderLogEntryRowAndAppendToTable(data.logEntry, 
 						data.formattedLogEntry);
@@ -379,6 +383,7 @@
 			if (!!data && !!data.success) {
 				toastMessage(true, data.message || abp01AdminlogEntriesL10n.msgLogAllEntriesDeleted);
 				removeAllLogEntriesRows();
+				updateTripSummaryLogLauncherStatusItem(false);
 			} else {
 				toastMessage(false, (data || {}).message || abp01AdminlogEntriesL10n.errCouldNotDeleteAllLogEntries);
 			}
@@ -465,6 +470,13 @@
 		$(document).on('click', 
 			'#abp01-clearTripSummary-log', 
 			deleteAllLogEntries);
+
+		$(document)
+			.on('click', 'a[data-action=abp01-goToLogEntries]', {}, function() {
+				$([document.documentElement, document.body]).animate({
+					scrollTop: $("#abp01-tripSummaryLog-adminRoot").offset().top
+				}, 1000);
+			});
 	}
 
 	function initForm() {
@@ -490,10 +502,48 @@
 		logEntryFormLastValues = collectLogEntryFormData();
 	}
 
+	function updateTripSummaryLogLauncherStatusItem(hasLogEntries) {
+		var $statusItem = $('#abp01-editor-launcher-status-trip-summary-logs');
+
+		if (!!window.abp01 && !!window.abp01.toggleEnhancedEditorStatusItemIcon) {
+			window.abp01.toggleEnhancedEditorStatusItemIcon($statusItem, hasLogEntries);
+		}
+
+		if (!!window.abp01 && !!window.abp01.toggleEnhancedEditorStatusItemText) {
+			window.abp01.toggleEnhancedEditorStatusItemText($statusItem, 
+				hasLogEntries, 
+				abp01AdminlogEntriesL10n.lblTripSummaryLogPresent, 
+				abp01AdminlogEntriesL10n.lblTripSummaryLogNotPresent);
+		}
+
+		refreshTooltips();
+	}
+
+	function initTooltips() {
+		if (!!window.abp01 && !!window.abp01.addSimpleTooltip) {
+			window.abp01.addSimpleTooltip('abp01-editor-launcher-status-trip-summary-logs a');
+		}
+	}
+
+	function cleanupTooltips() {
+		if (!!window.abp01 && !!window.abp01.cleanupTooltip) {
+			window.abp01.cleanupTooltip('abp01-editor-launcher-status-trip-summary-logs a');
+		}
+	}
+
+	function refreshTooltips() {
+		cleanupTooltips();
+		initTooltips();
+	}
+
 	$(document).ready(function() {
 		initFormState();
 		setupKiteFormatters();
 		initForm();
 		initEvents();
+
+		window.setTimeout(function() {
+			initTooltips();
+		}, 1000);
 	});
 })(jQuery);

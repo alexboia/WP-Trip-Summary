@@ -53,7 +53,10 @@ class Abp01_TranslatedScriptMessages {
 			'errCouldNotLoadAdminLogEntryDataById' => esc_html__('The log entry coult not be loaded.', 'abp01-trip-summary'),
 
 			'lblLogEntryAddFormTitle' => esc_html__('Add trip summary log entry', 'abp01-trip-summary'),
-			'lblLogEntryEditFormTitle' => esc_html__('Edit trip summary log entry', 'abp01-trip-summary')
+			'lblLogEntryEditFormTitle' => esc_html__('Edit trip summary log entry', 'abp01-trip-summary'),
+
+			'lblTripSummaryLogPresent' => esc_html__('Trip summary log is present for this post', 'abp01-trip-summary'),
+			'lblTripSummaryLogNotPresent' => esc_html__('Trip summary log is not present for this post', 'abp01-trip-summary')
 		);
 	}
 

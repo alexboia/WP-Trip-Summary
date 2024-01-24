@@ -28,50 +28,52 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-    defined('ABP01_LOADED') or die;
+		defined('ABP01_LOADED') or die;
 ?>
 
 <div id="abp01-editor-launcher-root">
-    <div id="abp01-editor-launcher-status">
-        <div id="abp01-editor-launcher-status-trip-summary-info" class="abp01-editor-launcher-status-item">
-            <span class="launcher-icon dashicons <?php echo $data->hasRouteInfo 
-                ? 'dashicons-yes-alt' 
-                : 'dashicons-dismiss'; ?>"></span>
-            <a data-status-text="<?php echo $data->hasRouteInfo
-                    ? esc_html__('Trip summary information is present for this post', 'abp01-trip-summary')
-                    : esc_html__('Trip summary information is not present for this post', 'abp01-trip-summary'); ?>"
-                href="javascript:void(0)" 
-                data-action="abp01-openTechBox"
-                data-select-tab="abp01-form-info"
-                class="status-text launch-editor-trigger"><?php echo esc_html__('Trip summary info', 'abp01-trip-summary'); ?></a>
-        </div>
-        <div id="abp01-editor-launcher-status-trip-summary-track" class="abp01-editor-launcher-status-item">
-            <span class="launcher-icon dashicons <?php echo $data->hasRouteTrack 
-                ? 'dashicons-yes-alt' 
-                : 'dashicons-dismiss'; ?>"></span>
-            <a data-status-text="<?php echo $data->hasRouteTrack 
-                    ? esc_html__('Trip summary track is present for this post', 'abp01-trip-summary') 
-                    : esc_html__('Trip summary track is not present for this post', 'abp01-trip-summary'); ?>"
-                data-action="abp01-openTechBox"
-                href="javascript:void(0)"
-                data-select-tab="abp01-form-map"
-                class="status-text launch-editor-trigger"><?php echo esc_html__('Trip summary track', 'abp01-trip-summary'); ?></a>
-        </div>
-    </div>
-    <div id="abp01-editor-launcher-actions">
-        <div class="quick-actions">
-            <a id="abp01-quick-actions-trigger" 
-                style="display: <?php echo ($data->hasRouteInfo || $data->hasRouteTrack) ? 'block' : 'none' ?>;"
-                data-controller-selector="abp01-quick-actions-tooltip" 
-                href="javascript:void(0)"><?php echo esc_html__('Quick actions', 'abp01-trip-summary'); ?></a>
-        </div>
-        <div class="launch-edit">
-            <a id="abp01-edit-trigger" 
-                data-status-text="<?php echo esc_html__('Click here to edit trip summary information and/or track', 'abp01-trip-summary'); ?>"
-                href="javascript:void(0)" 
-                data-action="abp01-openTechBox"
-                class="button launch-editor-trigger"><?php echo esc_html__('Edit', 'abp01-trip-summary'); ?></a>
-        </div>
-        <div class="clear"></div>
-    </div>
+	<div id="abp01-editor-launcher-status">
+		<?php do_action('abp01_editor_launcher_metabox_before_status', $data); ?>
+		<div id="abp01-editor-launcher-status-trip-summary-info" class="abp01-editor-launcher-status-item">
+			<span class="launcher-icon dashicons <?php echo $data->hasRouteInfo 
+					? 'dashicons-yes-alt' 
+					: 'dashicons-dismiss'; ?>"></span>
+			<a data-status-text="<?php echo $data->hasRouteInfo
+					? esc_html__('Trip summary information is present for this post', 'abp01-trip-summary')
+					: esc_html__('Trip summary information is not present for this post', 'abp01-trip-summary'); ?>"
+				href="javascript:void(0)" 
+				data-action="abp01-openTechBox"
+				data-select-tab="abp01-form-info"
+				class="status-text launch-editor-trigger"><?php echo esc_html__('Trip summary info', 'abp01-trip-summary'); ?></a>
+		</div>
+		<div id="abp01-editor-launcher-status-trip-summary-track" class="abp01-editor-launcher-status-item">
+			<span class="launcher-icon dashicons <?php echo $data->hasRouteTrack 
+				? 'dashicons-yes-alt' 
+				: 'dashicons-dismiss'; ?>"></span>
+			<a data-status-text="<?php echo $data->hasRouteTrack 
+						? esc_html__('Trip summary track is present for this post', 'abp01-trip-summary') 
+						: esc_html__('Trip summary track is not present for this post', 'abp01-trip-summary'); ?>"
+				data-action="abp01-openTechBox"
+				href="javascript:void(0)"
+				data-select-tab="abp01-form-map"
+				class="status-text launch-editor-trigger"><?php echo esc_html__('Trip summary track', 'abp01-trip-summary'); ?></a>
+		</div>
+		<?php do_action('abp01_editor_launcher_metabox_after_status', $data); ?>
+	</div>
+	<div id="abp01-editor-launcher-actions">
+		<div class="quick-actions">
+			<a id="abp01-quick-actions-trigger" 
+				style="display: <?php echo ($data->hasRouteInfo || $data->hasRouteTrack) ? 'block' : 'none' ?>;"
+				data-controller-selector="abp01-quick-actions-tooltip" 
+				href="javascript:void(0)"><?php echo esc_html__('Quick actions', 'abp01-trip-summary'); ?></a>
+		</div>
+		<div class="launch-edit">
+			<a id="abp01-edit-trigger" 
+				data-status-text="<?php echo esc_html__('Click here to edit trip summary information and/or track', 'abp01-trip-summary'); ?>"
+				href="javascript:void(0)" 
+				data-action="abp01-openTechBox"
+				class="button launch-editor-trigger"><?php echo esc_html__('Edit', 'abp01-trip-summary'); ?></a>
+		</div>
+		<div class="clear"></div>
+	</div>
 </div>

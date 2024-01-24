@@ -2,7 +2,12 @@
 class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 	private static $_instance = null;
 
+	/**
+	 * @var Abp01_Env
+	 */
 	private $_env;
+
+	private $_adminLogCache = array();
 
 	private function __construct() {
 		$this->_env = Abp01_Env::getInstance();
@@ -21,6 +26,10 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 			throw new InvalidArgumentException();
 		}
 
+		if (!empty($this->_adminLogCache[$postId])) {
+			return $this->_adminLogCache[$postId];
+		}
+
 		$db = $this->_env->getDb();
 		$routeLogTable = $this->_env->getRouteLogTableName();
 		$usersTable = $this->_env->getWpUsersTableName();
@@ -37,7 +46,9 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 		));
 
 		if (!empty($rawLogEntriesData)) {
-			return $this->_toRouteLog($postId, $rawLogEntriesData);
+			$log = $this->_toRouteLog($postId, $rawLogEntriesData);
+			$this->_adminLogCache[$postId] = $log;
+			return $log;
 		} else {
 			return new Abp01_Route_Log($postId);
 		}
@@ -76,6 +87,10 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 		$db = $this->_env->getDb();
 		$table = $this->_env->getRouteLogTableName();
 
+		if (!empty($this->_adminLogCache[$logEntry->postId])) {
+			unset($this->_adminLogCache[$logEntry->postId]);
+		}
+
 		$data = $logEntry->toDbArray();
 		if ($logEntry->id > 0) {
 			$db->where('log_ID', $logEntry->id);
@@ -96,6 +111,10 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 			throw new InvalidArgumentException();
 		}
 
+		if (!empty($this->_adminLogCache[$postId])) {
+			unset($this->_adminLogCache[$postId]);
+		}
+
 		$db = $this->_env->getDb();
 		$table = $this->_env->getRouteLogTableName();
 
@@ -114,6 +133,10 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 			throw new InvalidArgumentException();
 		}
 
+		if (!empty($this->_adminLogCache[$postId])) {
+			unset($this->_adminLogCache[$postId]);
+		}
+
 		$db = $this->_env->getDb();
 		$table = $this->_env->getRouteLogTableName();
 
@@ -127,8 +150,8 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 		$db = $this->_env->getDb();
 		$table = $this->_env->getRouteLogTableName();
 
-		$db->rawQuery('TRUNCATE TABLE `' . $table . '`', 
-			null);
+		$db->rawQuery('TRUNCATE TABLE `' . $table . '`', null);
+		$this->_adminLogCache = array();
 	}
 
 	public function getLogEntryById($postId, $logEntryId) {

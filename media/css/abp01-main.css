@@ -746,6 +746,11 @@ a.abp01-close-editor:hover {
 .abp01-editor-launcher-status-item {
 	padding: 10px;
 	box-sizing: border-box;
+	border-top: 1px solid #ddd;
+}
+
+.abp01-editor-launcher-status-item:first-of-type {
+	border-top: none;
 }
 
 .abp01-editor-launcher-status-item a {
@@ -772,10 +777,6 @@ a.abp01-close-editor:hover {
 	line-height: 30px;
 	vertical-align: middle;
 	opacity: 0.5;
-}
-
-#abp01-editor-launcher-status-trip-summary-track {
-	border-top: 1px solid #ddd;
 }
 
 .abp01-editor-launcher-status-item .status-text,

@@ -185,4 +185,9 @@ class Abp01_View {
 		$this->_registerAdminHelpers();
 		return $this->_renderCoreView('wpts-log-editor.php', $data);
 	}
+
+	public function renderAdminTripSummaryLogEditorMetaboxStatusItem(stdClass $data) {
+		$this->_registerAdminHelpers();
+		return $this->_renderCoreView('wpts-log-editor-launcher-status-item.php', $data);
+	}
 }

@@ -124,6 +124,7 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 		if ($this->_tripSummaryLogEnabled()) {
 			$this->_registerAjaxActions();
 			$this->_registerAdminWebPageAssets();
+			$this->_setupEditorLauncherStatusItem();
 			$this->_registerEditorControls();
 			$this->_setupViewer();
 		}
@@ -230,6 +231,25 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 	private function _shouldRegisterAdminEditorLogMetaboxes($postType, $post) {
 		return Abp01_AvailabilityHelper::isEditorAvailableForPostType($postType) 
 			&& $this->_cantEditPostTripSummary($post);
+	}
+
+	private function _setupEditorLauncherStatusItem() {
+		add_action('abp01_editor_launcher_metabox_after_status', 
+			array($this, 'addEditorLauncherStatusItem'), 
+			10, 
+			1);
+	}
+
+	public function addEditorLauncherStatusItem(stdClass $editorData) {
+		$postId = $this->_getCurrentPostId();
+		$log = $this->_routeLogManager->getAdminLog($postId);
+
+		$data = new stdClass();
+		$data->postId = $postId;
+		$data->hasLogEntries = $log->hasLogEntries();
+		$data->logEntryCount = $log->getLogEntryCount();
+
+		echo $this->_view->renderAdminTripSummaryLogEditorMetaboxStatusItem($data);
 	}
 
 	public function addAdminLogEditor($post, $args) {

@@ -32,16 +32,16 @@
 	"use strict";
 
 	function scrollToTop() {
-        $('body,html').scrollTop(0);
-    }
+		$('body,html').scrollTop(0);
+	}
 
 	function disableWindowScroll() {
-        $('html').addClass('abp01-stop-scrolling');
-    }
+		$('html').addClass('abp01-stop-scrolling');
+	}
 
-    function enableWindowScroll() {
-        $('html').removeClass('abp01-stop-scrolling');
-    }
+	function enableWindowScroll() {
+		$('html').removeClass('abp01-stop-scrolling');
+	}
 
 	function _hasToastr() {
 		return !!window['toastr'] && !!toastr.options;
@@ -93,8 +93,8 @@
 
 	window.abp01 = $.extend(window.abp01, {
 		scrollToTop: scrollToTop,
-        disableWindowScroll: disableWindowScroll,
-        enableWindowScroll: enableWindowScroll,
+		disableWindowScroll: disableWindowScroll,
+		enableWindowScroll: enableWindowScroll,
 		initToastMessages: initToastMessages,
 		toastMessage: toastMessage
 	});
