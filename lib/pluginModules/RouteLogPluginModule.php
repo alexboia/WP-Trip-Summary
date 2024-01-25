@@ -124,6 +124,7 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 		if ($this->_tripSummaryLogEnabled()) {
 			$this->_registerAjaxActions();
 			$this->_registerAdminWebPageAssets();
+			$this->_registerWebPageAssets();
 			$this->_setupEditorLauncherStatusItem();
 			$this->_registerEditorControls();
 			$this->_setupViewer();
@@ -141,29 +142,52 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 			->register();
 	}
 
+	private function _registerWebPageAssets() {
+		if (!is_admin()) {
+			add_action('wp_enqueue_scripts', 
+				array($this, 'onFrontendEnqueueStyles'));
+			add_action('wp_enqueue_scripts', 
+				array($this, 'onFrontendEnqueueScripts'));
+		}
+	}
+
+	public function onFrontendEnqueueStyles() {
+		if ($this->_shouldEnqueueWebPageAssets()) {
+			Abp01_Includes::includeStyleFrontendLogEntries();
+		}
+	}
+
+	private function _shouldEnqueueWebPageAssets() {
+		return is_single() || is_page();
+	}
+
+	public function onFrontendEnqueueScripts() {
+		return;
+	}
+
 	private function _registerAdminWebPageAssets() {
 		if (is_admin()) {
 			add_action('admin_enqueue_scripts', 
 				array($this, 'onAdminEnqueueStyles'));
 			add_action('admin_enqueue_scripts', 
 				array($this, 'onAdminEnqueueScripts'));
-		}		
+		}
 	}
 
 	public function onAdminEnqueueStyles() {
-		if ($this->_shouldEnqueueWebPageAssets(true)) {
+		if ($this->_shouldEnqueueAdminWebPageAssets(true)) {
 			Abp01_Includes::includeStyleAdminLogEntries();
 		}
 	}
 
-	private function _shouldEnqueueWebPageAssets() {
+	private function _shouldEnqueueAdminWebPageAssets() {
 		$isEditingPost = $this->_env->isEditingWpPost(Abp01_AvailabilityHelper::getTripSummaryAvailableForPostTypes());
 		return $isEditingPost
 			&& $this->_canEditCurrentPostTripSummary();
 	}
 
 	public function onAdminEnqueueScripts() {
-		if ($this->_shouldEnqueueWebPageAssets(true)) {
+		if ($this->_shouldEnqueueAdminWebPageAssets(true)) {
 			Abp01_Includes::includeScriptAdminLogEntries($this->_getAdminTripSummaryAdminLogEntriesTranslations());
 		}
 	}
@@ -207,6 +231,8 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 
 		$data = new stdClass();
 		$data->showStatistics = $this->_shouldRenderFrontendRouteLogStatistics($viewerData);
+		$data->hasLogEntries = $log->hasLogEntries();
+		$data->log = $log->toPlainObject();
 
 		echo $this->_view->renderRouteLogFrontendViewerTabContent($data);
 	}

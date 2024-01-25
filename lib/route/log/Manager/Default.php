@@ -74,6 +74,7 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 
 		$db->where('rl.log_post_ID', $postId, '=');
 		$db->where('rl.log_is_public', 1, '=');
+		$db->orderBy('rl.log_date', 'DESC');
 		$rawLogEntriesData = $db->get($routeLogTable  . ' rl', null, 'rl.*');
 
 		if (!empty($rawLogEntriesData)) {

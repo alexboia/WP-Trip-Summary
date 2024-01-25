@@ -33,3 +33,34 @@
 	/** @var stdClass $data */
 ?>
 
+<div class="wpts-log-container">
+	<?php if ($data->hasLogEntries): ?>
+		<div class="wpts-log-entries-container">
+			<?php $i = 1; ?>
+			<?php foreach ($data->log->logEntries as $logEntry): ?>
+				<div class="wpts-log-entry">
+					<h4 class="wpts-log-entry-title">#<?php echo $i ++ ?> - <?php echo abp01_format_db_date($logEntry->date, false); ?></h4>
+					<div class="wpts-log-entry-meta-container">
+						<span class="wpts-log-entry-meta wpts-log-entry-rider"><span class="dashicons dashicons-buddicons-activity"></span> <?php echo esc_html($logEntry->rider); ?></span>
+						<span class="wpts-log-entry-meta wpts-log-entry-vehicle"><span class="dashicons dashicons-share-alt"></span> <?php echo esc_html($logEntry->vehicle); ?></span>
+						<?php if (!empty($logEntry->timeInHours)): ?>
+							<span class="wpts-log-entry-meta wpts-log-entry-timeInHours"><span class="dashicons dashicons-clock"></span> <?php echo abp01_format_time_in_hours($logEntry->timeInHours); ?></span>
+						<?php endif; ?>
+						<?php if (!empty($logEntry->gear)): ?>
+							<span class="wpts-log-entry-meta wpts-log-entry-gear"><span class="dashicons dashicons-cart"></span> <?php echo esc_html($logEntry->gear); ?></span>
+						<?php endif; ?>
+					</div>
+					<?php if (!empty($logEntry->notes)): ?>
+						<div class="wpts-log-entry-notes">
+							<?php echo esc_html($logEntry->notes); ?>
+						</div>
+					<?php endif; ?>
+				</div>
+			<?php endforeach; ?>
+		</div>
+	<?php else: ?>
+		<div class="wpts-no-log-entries">
+			<?php echo esc_html__('There are no log entries yet', 'abp01-trip-summary'); ?>
+		</div>
+	<?php endif; ?>
+</div>

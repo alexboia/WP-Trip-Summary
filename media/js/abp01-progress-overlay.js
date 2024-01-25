@@ -110,6 +110,7 @@
 
         function getStyle() {
             return $.extend({
+                //TODO: better defaults for these... possibly based on container/$target size...
                 top: 280,
                 width: 400,
                 height: 20,

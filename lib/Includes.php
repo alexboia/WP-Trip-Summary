@@ -174,6 +174,8 @@ class Abp01_Includes {
 
 	const STYLE_SYSTEM_THICKBOX = 'thickbox';
 
+	const STYLE_FRONTEND_LOG_ENTRIES = 'abp01-frontend-log-entries-css';
+
 	const STYLE_FRONTEND_MAIN_TWENTY_TEN = 'abp01-frontend-main-twentyten-css';
 
 	const STYLE_FRONTEND_MAIN_TWENTY_ELEVEN = 'abp01-frontend-main-twentyeleven-css';
@@ -617,6 +619,13 @@ class Abp01_Includes {
 				)
 			)
 		), 
+		self::STYLE_FRONTEND_LOG_ENTRIES => array(
+			'path' => 'media/css/abp01-frontend-log-entries.css', 
+			'version' => ABP01_VERSION,
+			'deps' => array(
+				self::STYLE_FRONTEND_MAIN
+			)
+		),
 		self::STYLE_FRONTEND_MAIN_TWENTY_TEN => array(
 			'path' => 'media/css/twentyten/theme.css', 
 			'version' => ABP01_VERSION,
@@ -998,5 +1007,9 @@ class Abp01_Includes {
 
 	public static function includeStyleAdminListingAuditLog() {
 		self::_includeStyle(self::STYLE_ADMIN_LISTING_AUDIT_LOG);
+	}
+
+	public static function includeStyleFrontendLogEntries() {
+		self::_includeStyle(self::STYLE_FRONTEND_LOG_ENTRIES);
 	}
 }
