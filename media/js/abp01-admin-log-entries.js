@@ -66,7 +66,10 @@
 		var $row = $('#abp01-trip-summary-log-listingRow-' + logEntryId);
 		var $auxRow = $('#abp01-trip-summary-log-listingRowAux-' + logEntryId);
 
+		console.log($row);
+
 		if ($row.length) {
+			console.log($row.find('td.wpts-cell-rider'));
 			$row.find('td.wpts-cell-rider').text(logEntry.rider);
 			$row.find('td.wpts-cell-date').text(formattedLogEntry.date);
 			$row.find('td.wpts-cell-timeInHours').text(formattedLogEntry.timeInHours);

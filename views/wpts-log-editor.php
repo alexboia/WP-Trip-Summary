@@ -178,7 +178,7 @@
 </div>
 
 <script id="tpl-abp01-logEntryRow" type="text/x-kite">
-	<tr id="wpts-trip-summary-log-listingRow-{{id}}">
+	<tr id="abp01-trip-summary-log-listingRow-{{id}}">
 		<td class="wpts-cell-rider">
 			{{? rider }}
 				{{rider|esc-html}}
