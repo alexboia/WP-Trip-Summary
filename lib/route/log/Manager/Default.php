@@ -1,5 +1,8 @@
 <?php
 class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
+	/**
+	 * @var Abp01_Route_Log_Manager_Default
+	 */
 	private static $_instance = null;
 
 	/**
@@ -13,6 +16,9 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 		$this->_env = Abp01_Env::getInstance();
 	}
 
+	/**
+	 * @return Abp01_Route_Log_Manager_Default 
+	 */
 	public static function getInstance() {
 		if (self::$_instance == null) {
 			self::$_instance = new self();
@@ -190,7 +196,7 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 		$table = $this->_env->getRouteLogTableName();
 
 		$db->where('log_post_ID', $postId);
-		$db->orderBy('log_date_updated', 'DESC');
+		$db->orderBy('log_ID', 'DESC');
 
 		$result = $db->getOne($table, 'log_vehicle');
 		if (!empty($result) && !empty($result['log_vehicle'])) {
