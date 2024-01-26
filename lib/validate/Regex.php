@@ -50,7 +50,7 @@ class Abp01_Validate_Regex implements Abp01_Validate {
 		$this->_allowEmpty = ($allowEmpty === true);
 	}
 
-    public function validate($input) { 
+	public function validate($input) { 
 		if (empty($input)) {
 			return $this->_allowEmpty;
 		}

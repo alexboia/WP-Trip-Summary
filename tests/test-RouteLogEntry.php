@@ -44,11 +44,16 @@
 	}
 
 	public function test_canCreateFromDbArray() {
-		$postId = $this->_generatePostId();
-		$routeLogEntryData = $this->_generateRouteLogEntryData($postId);
-		$logEntry = Abp01_Route_Log_Entry::fromDbArray($routeLogEntryData);
-		$this->_assertRouteLogEntryMatchesDbData($routeLogEntryData, 
-			$logEntry);
+		$count = self::_getFaker()->numberBetween(1, 100);
+		for ($i = 0; $i < $count; $i ++) {
+			$postId = $this->_generatePostId();
+			$routeLogEntryData = $this->_generateRouteLogEntryData($postId);
+			$logEntry = Abp01_Route_Log_Entry::fromDbArray($routeLogEntryData);
+	
+			$this->assertNotNull($logEntry);
+			$this->_assertRouteLogEntryMatchesDbData($routeLogEntryData, 
+				$logEntry);
+		}
 	}
 
 	private function _assertRouteLogEntryMatchesDbData(array $data, Abp01_Route_Log_Entry $logEntry) {
@@ -77,5 +82,49 @@
 			$data['log_created_by']);
 		$this->assertEquals($logEntry->lastUpdatedBy, 
 			$data['log_updated_by']);
+	}
+
+	public function test_canConvertToDbArray() {
+		$count = self::_getFaker()->numberBetween(1, 100);
+		for ($i = 0; $i < $count; $i ++) {
+			$logEntry = $this->_generateRouteLogEntry();
+			$logEntryData = $logEntry->toDbArray();
+
+			$this->assertNotNull($logEntryData);
+			$this->assertNotEmpty($logEntryData);
+
+			$this->_assertRouteLogEntryMatchesDbData($logEntryData, 
+				$logEntry);
+		}
+	}
+
+	public function test_canConvertToPlainObject() {
+		$count = self::_getFaker()->numberBetween(1, 100);
+		for ($i = 0; $i < $count; $i ++) {
+			$logEntry = $this->_generateRouteLogEntry();
+			$logEntryData = $logEntry->toPlainObject();
+
+			$this->assertNotNull($logEntryData);
+			$this->assertNotEmpty($logEntryData);
+
+			$this->_assertRouteLogEntryMatchesPlainObject($logEntryData, 
+				$logEntry);
+		}
+	}
+
+	private function _assertRouteLogEntryMatchesPlainObject(stdClass $data, Abp01_Route_Log_Entry $logEntry) {
+		$this->assertEquals($logEntry->id, $data->id);
+		$this->assertEquals($logEntry->postId, $data->postId);
+		
+		$this->assertEquals($logEntry->rider, $data->rider);
+		$this->assertEquals($logEntry->date, $data->date);
+		$this->assertEquals($logEntry->vehicle, $data->vehicle);
+		$this->assertEquals($logEntry->gear, $data->gear);
+		$this->assertEquals($logEntry->timeInHours, $data->timeInHours);
+		$this->assertEquals($logEntry->notes, $data->notes);
+		$this->assertEquals($logEntry->isPublic, $data->isPublic);
+
+		$this->assertEquals($logEntry->createdBy, $data->createdBy);
+		$this->assertEquals($logEntry->lastUpdatedBy, $data->lastUpdatedBy);
 	}
  }

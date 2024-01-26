@@ -154,6 +154,7 @@ class Abp01_Route_Log_Entry {
 
 	public function toDbArray() {
 		return array(
+			'log_ID' => $this->id > 0 ? $this->id : null,
 			'log_post_ID' => $this->postId,
 			'log_rider' => $this->rider,
 			'log_date' => $this->date,
