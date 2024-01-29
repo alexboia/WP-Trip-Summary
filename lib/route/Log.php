@@ -176,14 +176,6 @@ class Abp01_Route_Log {
 		return $data;
 	}
 
-	public function getLogEntriesAsJson() {
-		$logEntriesData = array();
-		foreach ($this->_logEntries as $e) {
-			$logEntriesData[] = $e->toArray();
-		}
-		return json_encode($logEntriesData);
-	}
-
 	public function getLogEntryCount() {
 		return count($this->_logEntries);
 	}

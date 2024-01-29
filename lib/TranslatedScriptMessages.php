@@ -50,7 +50,7 @@ class Abp01_TranslatedScriptMessages {
 			'errCouldNotSaveLogEntry' => esc_html__('The trip summary log entry could not be saved', 'abp01-trip-summary'),
 			'errCouldNotDeleteLogEntry' => esc_html__('The trip summary log entry could not be deleted', 'abp01-trip-summary'),
 			'errCouldNotDeleteAllLogEntries' => esc_html__('The trip summary log entries for this post could not be deleted', 'abp01-trip-summary'),
-			'errCouldNotLoadAdminLogEntryDataById' => esc_html__('The log entry coult not be loaded.', 'abp01-trip-summary'),
+			'errCouldNotLoadAdminLogEntryDataById' => esc_html__('The log entry could not be loaded.', 'abp01-trip-summary'),
 
 			'lblLogEntryAddFormTitle' => esc_html__('Add trip summary log entry', 'abp01-trip-summary'),
 			'lblLogEntryEditFormTitle' => esc_html__('Edit trip summary log entry', 'abp01-trip-summary'),
