@@ -85,10 +85,14 @@
 
 			$logEntryId = $db->getInsertId();
 			$routeLogEntryData['log_ID'] = $logEntryId;
-			
+
 			$this->_testRouteLogEntryData[$logEntryId] = $routeLogEntryData;
-			if($routeLogEntryData['log_is_public'] === 1) {
-				$this->_testPublicRouteLogEntryIds[] = $logEntryId;
+			if ($routeLogEntryData['log_is_public'] === 1) {
+				if (!isset($this->_testPublicRouteLogEntryIds[$postId])) {
+					$this->_testPublicRouteLogEntryIds[$postId] = array();
+				}
+
+				$this->_testPublicRouteLogEntryIds[$postId][] = $logEntryId;
 			}
 
 			$this->_testLastUsedVehicles[$postId] = 
@@ -254,6 +258,67 @@
 
 			$readLogEntry = $mgr->getLogEntryById($postId, $logEntryId);
 			$this->assertNull($readLogEntry);
+		}
+	}
+
+	public function test_canDeleteLog() {
+		$mgr = Abp01_Route_Log_Manager_Default::getInstance();
+		foreach ($this->_testRouteLogEntryData as $logEntryId => $logEntryData) {
+			$postId = $logEntryData['log_post_ID'];
+			$mgr->deleteLog($postId);
+
+			$newLogEntryCount = $this->_countLogEntriesForPost($postId);
+			$this->assertEquals(0, $newLogEntryCount);
+
+			$readLogEntry = $mgr->getLogEntryById($postId, $logEntryId);
+			$this->assertNull($readLogEntry);
+		}
+	}
+
+	public function test_canClearAllLogEntries() {
+		$mgr = Abp01_Route_Log_Manager_Default::getInstance();
+		
+		$mgr->clearAllLogEntries();
+		$this->assertEquals(0, $this->_countAllLogEntries());
+
+		foreach ($this->_testRouteLogEntryData as $logEntryId => $logEntryData) {
+			$postId = $logEntryData['log_post_ID'];
+			$readLogEntry = $mgr->getLogEntryById($postId, $logEntryId);
+			$this->assertNull($readLogEntry);
+		}
+	}
+
+	private function _countAllLogEntries() {
+		$db = $this->_getDb();
+		return intval($db->getValue($this->_getEnv()->getRouteLogTableName(), 'COUNT(1)'));
+	}
+
+	public function test_canGetPublicLog_whenExists() {
+		$mgr = Abp01_Route_Log_Manager_Default::getInstance();
+
+		foreach ($this->_testPublicRouteLogEntryIds as $postId => $logEntryIds) {
+			$log = $mgr->getPublicLog($postId);
+			$this->assertNotNull($log);
+
+			$this->assertEquals(count($logEntryIds), $log->getLogEntryCount());
+			foreach ($log->getLogEntries() as $logEntry) {
+				$this->assertContains($logEntry->id, $logEntryIds);
+			}
+		}
+	}
+
+	public function test_canGetPublicLog_whenDoesNotExist() {
+		$faker = self::_getFaker();
+		$excludePostIds = array_keys($this->_testPublicRouteLogEntryIds);
+		$count = $faker->numberBetween(1, 10);
+		$mgr = Abp01_Route_Log_Manager_Default::getInstance();
+
+		for ($i = 0; $i < 10; $i ++) {
+			$postId = $this->_generatePostId($excludePostIds);
+			$log = $mgr->getPublicLog($postId);
+
+			$this->assertNotNull($log);
+			$this->assertEquals(0, $log->getLogEntryCount());
 		}
 	}
  }
