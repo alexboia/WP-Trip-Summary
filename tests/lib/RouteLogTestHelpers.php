@@ -45,6 +45,24 @@ trait RouteLogTestHelpers {
 		return self::_getFaker()->numberBetween(1, PHP_INT_MAX);
 	}
 
+	protected function _generateRouteLogEntries($postId = null, $count = null) {
+		if (empty($postId)) {
+			$postId = $this->_generatePostId();
+		}
+
+		if (empty($count)) {
+			$count = self::_getFaker()->numberBetween(1, 100);
+		}
+
+		$logEntries = array();
+
+		for ($i = 0; $i < $count; $i ++) {
+			$logEntries[] = $this->_generateRouteLogEntry($postId);
+		}
+
+		return $logEntries;
+	}
+
 	protected function _generateRouteLogEntry($postId = null, $logEntryId = null, $createdByUserId = null) {
 		if (empty($logEntryId)) {
 			$logEntryId = $this->_generateLogEntryId();
