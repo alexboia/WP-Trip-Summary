@@ -172,6 +172,36 @@
 	}
 
 	public function test_canConvertToPlainObject_whenNotEmpty() {
-		//TODO
+		$postId = $this->_generatePostId();
+		$logEntries = $this->_generateRouteLogEntries($postId);
+		$log = new Abp01_Route_Log($postId, $logEntries);
+
+		$asPlainObj = $log->toPlainObject();
+
+		$this->assertNotNull($asPlainObj);
+
+		$this->assertEquals($log->getSlowestRun()->toPlainObject(), 
+			$asPlainObj->slowestRun);
+		$this->assertEquals($log->getFastestRun()->toPlainObject(), 
+			$asPlainObj->fastestRun);
+
+		$this->assertNotNull($asPlainObj->logEntries);
+		$this->assertNotEmpty($asPlainObj->logEntries);
+
+		$this->assertEquals($log->getLogEntryCount(), 
+			count($asPlainObj->logEntries));
+
+		foreach ($log->getLogEntries() as $logEntry) {
+			$expectedLogEntryObj = $logEntry->toPlainObject();
+			$actualLogEntryObj = $this->_findFirst(
+				$asPlainObj->logEntries, 
+				function($leObj) use ($logEntry) {
+					return $logEntry->id === $leObj->id;
+				}, 
+				null);
+
+			$this->assertNotNull($actualLogEntryObj);
+			$this->assertEquals($expectedLogEntryObj, $actualLogEntryObj);
+		}
 	}
  }
