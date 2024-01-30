@@ -35,7 +35,7 @@
  h4.wpts-log-entry-title {
 	margin-top: 0px !important;
 	margin-bottom: 5px !important;
-	font-size: 13px;
+	font-size: 13px !important;
 	background-color: #74C2BD !important;
 	padding: 5px 8px 5px 8px;
 	border-radius: 5px;
