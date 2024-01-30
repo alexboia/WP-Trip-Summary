@@ -34,7 +34,7 @@
 	use DbTestHelpers;
 	use RouteLogTestHelpers;
 
-	const TEST_RECORD_COUNT = 5;
+	const TEST_RECORD_COUNT = 100;
 
 	/**
 	 * @var array
@@ -67,6 +67,7 @@
 	}
 
 	private function _installTestData() {
+		$this->_clearAllRouteInfo();
 		$this->_initRouteLogInfo();
 	}
 
@@ -124,9 +125,12 @@
 	}
 
 	private function _getTestRouteLogEntryPostIds() {
-		return array_map(function($r){
-			return $r['log_post_ID'];
+		$postIds = array_map(function($r){
+			return intval($r['log_post_ID']);
 		}, $this->_testRouteLogEntryData);
+
+		return array_unique($postIds, 
+			SORT_NUMERIC);
 	}
 
 	public function test_canGetLogEntryById_whenExists() {
@@ -313,12 +317,66 @@
 		$count = $faker->numberBetween(1, 10);
 		$mgr = Abp01_Route_Log_Manager_Default::getInstance();
 
-		for ($i = 0; $i < 10; $i ++) {
+		for ($i = 0; $i < $count; $i ++) {
 			$postId = $this->_generatePostId($excludePostIds);
 			$log = $mgr->getPublicLog($postId);
+			$this->_assertLogNotNullButEmpty($log);
+		}
+	}
+
+	private function _assertLogNotNullButEmpty(Abp01_Route_Log $log) {
+		$this->assertNotNull($log);
+		$this->assertEquals(0, $log->getLogEntryCount());
+	}
+
+	public function test_canGetAdminLog_whenExists() {
+		$mgr = Abp01_Route_Log_Manager_Default::getInstance();
+		foreach ($this->_getTestRouteLogEntriesPerPostIds() as $postId => $logEntries) {
+			$log = $mgr->getAdminLog($postId);
 
 			$this->assertNotNull($log);
-			$this->assertEquals(0, $log->getLogEntryCount());
+			$this->assertEquals(count($logEntries), $log->getLogEntryCount());
+
+			foreach ($logEntries as $logEntryData) {
+				$actualLogEntry = $this->_findFirst(
+					$log->getLogEntries(), 
+					function(Abp01_Route_Log_Entry $le) use ($logEntryData) {
+						return $le->id == $logEntryData['log_ID'];
+					}, 
+					null);
+
+				$this->assertNotNull($actualLogEntry);
+				$this->_assertLogEntriesMatch(
+					Abp01_Route_Log_Entry::fromDbArray($logEntryData), 
+					$actualLogEntry
+				);
+			}
+		}
+	}
+
+	private function _getTestRouteLogEntriesPerPostIds() {
+		$entriesPerPosts = array();
+		foreach ($this->_testRouteLogEntryData as $r) {
+			$postId = $r['log_post_ID'];
+			if (!isset($entriesPerPosts[$postId])) {
+				$entriesPerPosts[$postId] = array();
+			}
+
+			$entriesPerPosts[$postId][$r['log_ID']] = $r;
+		}
+		return $entriesPerPosts;
+	}
+
+	public function test_canGetAdminLog_whenDoesNotExist() {
+		$faker = self::_getFaker();
+		$excludePostIds = $this->_getTestRouteLogEntryPostIds();
+		$count = $faker->numberBetween(1, 10);
+		$mgr = Abp01_Route_Log_Manager_Default::getInstance();
+
+		for ($i = 0; $i < $count; $i ++) {
+			$postId = $this->_generatePostId($excludePostIds);
+			$log = $mgr->getAdminLog($postId);
+			$this->_assertLogNotNullButEmpty($log);
 		}
 	}
  }

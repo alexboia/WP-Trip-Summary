@@ -32,6 +32,16 @@
 trait GenericTestHelpers {
 	private static $_faker = null;
 
+	protected function _findFirst(array $array, callable $callback, mixed $default = false) {
+		foreach ($array as $el) {
+			if ($callback($el)) {
+				return $el;
+			}
+		}
+
+		return $default;
+	}
+
 	protected function _randomFileName() {
 		$faker = self::_getFaker();
 		$extension = $faker->fileExtension;

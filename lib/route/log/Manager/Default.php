@@ -40,8 +40,8 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 		$routeLogTable = $this->_env->getRouteLogTableName();
 		$usersTable = $this->_env->getWpUsersTableName();
 
-		$db->join($usersTable . ' c_wpu', 'c_wpu.ID = rl.log_created_by');
-		$db->join($usersTable . ' u_wpu', 'u_wpu.ID = rl.log_updated_by');
+		$db->join($usersTable . ' c_wpu', 'c_wpu.ID = rl.log_created_by', 'LEFT');
+		$db->join($usersTable . ' u_wpu', 'u_wpu.ID = rl.log_updated_by', 'LEFT');
 
 		$db->where('rl.log_post_ID', $postId, '=');
 
