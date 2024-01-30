@@ -95,7 +95,7 @@ class Abp01_Route_Log {
 		$fastestRun = $this->getFastestRun();
 		return $fastestRun != null 
 			? $fastestRun->timeInHours
-			: null;
+			: 0;
 	}
 
 	/**
@@ -113,7 +113,7 @@ class Abp01_Route_Log {
 		$slowestRun = $this->getSlowestRun();
 		return $slowestRun != null
 			? $slowestRun->timeInHours
-			: null;
+			: 0;
 	}
 
 	/**
