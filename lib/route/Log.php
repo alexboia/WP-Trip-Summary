@@ -30,7 +30,7 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
 class Abp01_Route_Log {
@@ -48,25 +48,6 @@ class Abp01_Route_Log {
 	public function __construct($postId, array $entries = array()) {
 		$this->_postId = $postId;
 		$this->setLogEntries($entries);
-	}
-
-	public static function fromJson($postId, $logEntriesJson) {
-		if (empty($postId) || empty($logEntriesJson)) {
-            throw new InvalidArgumentException();
-        }
-
-		$logEntriesData = json_decode($logEntriesJson, true);
-		if ($logEntriesData === null || !is_array($logEntriesData)) {
-			return null;
-		}
-
-		$logEntries = array();
-		foreach ($logEntriesData as $data) {
-			$logEntries[] = Abp01_Route_Log_Entry::fromArray($data);
-		}
-
-		return new self($postId, 
-			$logEntries);
 	}
 
 	public function addLogEntry(Abp01_Route_Log_Entry $entry) {
