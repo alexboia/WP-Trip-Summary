@@ -74,7 +74,8 @@ class Abp01_Installer_Step_UninstallSchema implements Abp01_Installer_Step {
 			$this->_getRouteDetailsTableName(),
 			$this->_getRouteTrackTableName(),
 			$this->_getLookupLangTableName(),
-			$this->_getLookupTableName()
+			$this->_getLookupTableName(),
+			$this->_getRouteLogTableName()
 		);
 
 		$customTables = apply_filters('abp01_install_tables_definitions', 
@@ -124,5 +125,9 @@ class Abp01_Installer_Step_UninstallSchema implements Abp01_Installer_Step {
 
 	private function _getRouteDetailsLookupTableName() {
 		return $this->_env->getRouteDetailsLookupTableName();
+	}
+
+	private function _getRouteLogTableName() {
+		return $this->_env->getRouteLogTableName();
 	}
 }

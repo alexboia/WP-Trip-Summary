@@ -86,7 +86,9 @@ class Abp01_Installer_Step_InstallSchema implements Abp01_Installer_Step {
 			$this->_getRouteTrackTableName() 
 				=> $this->_getRouteTrackTableDefinition(),
 			$this->_getRouteDetailsLookupTableName() 
-				=> $this->_getRouteDetailsLookupTableDefinition()
+				=> $this->_getRouteDetailsLookupTableDefinition(),
+			$this->_getRouteLogTableName()
+				=> $this->_getRouteLogTableDefinition()
 		);
 
 		$customTables = apply_filters('abp01_install_tables_definitions', 
@@ -180,6 +182,26 @@ class Abp01_Installer_Step_InstallSchema implements Abp01_Installer_Step {
 		)";
 	}
 
+	private function _getRouteLogTableDefinition() {
+		return "CREATE TABLE IF NOT EXISTS `" . $this->_getRouteLogTableName() . "` (
+			`log_ID` BIGINT(20) NOT NULL AUTO_INCREMENT,
+			`log_post_ID` BIGINT(20) NOT NULL,
+			`log_rider` VARCHAR(255) NOT NULL,
+			`log_date` DATE NOT NULL,
+			`log_vehicle` VARCHAR(255) NOT NULL,
+			`log_gear` TEXT NULL DEFAULT NULL,
+			`log_duration_hours` INT(11) NULL DEFAULT NULL,
+			`log_notes` TEXT NULL DEFAULT NULL,
+			`log_date_created` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+			`log_date_updated` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+			`log_is_public` BIT(1) NOT NULL DEFAULT b'0',
+			`log_created_by` BIGINT(20) NOT NULL,
+			`log_updated_by` BIGINT(20) NOT NULL,
+			PRIMARY KEY (`log_ID`) USING BTREE,
+			INDEX `IDX_route_log_post_ID` (`log_post_ID`) USING BTREE
+		)";
+	}
+
 	private function _getRouteTrackTableName() {
 		return $this->_env->getRouteTrackTableName();
 	}
@@ -198,5 +220,9 @@ class Abp01_Installer_Step_InstallSchema implements Abp01_Installer_Step {
 
 	private function _getRouteDetailsLookupTableName() {
 		return $this->_env->getRouteDetailsLookupTableName();
+	}
+
+	private function _getRouteLogTableName() {
+		return $this->_env->getRouteLogTableName();
 	}
 }
