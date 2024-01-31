@@ -31,6 +31,10 @@
     defined('ABP01_LOADED') or die;
 ?>
 
+<?php do_action('abp01_before_trip_summary_audit_log', 
+	$data->postId, 
+	$data); ?>
+
 <table class="abp01-admin-trip-summary-audit-log">
 	<tbody>
 		<tr class="abp01-trip-summary-audit-log-section-title">
@@ -61,6 +65,10 @@
 			</td>
 		</tr>
 
+		<?php do_action('abp01_after_trip_summary_info_audit_log', 
+			$data->postId, 
+			$data); ?>
+
 		<tr class="abp01-trip-summary-audit-log-section-title">
 			<td colspan="2"><h4><?php echo esc_html__('Trip summary track', 'abp01-trip-summary'); ?></h4></td>
 		</tr>
@@ -88,5 +96,13 @@
 					: '-'; ?>
 			</td>
 		</tr>
+
+		<?php do_action('abp01_after_trip_summary_track_audit_log', 
+			$data->postId, 
+			$data); ?>
 	</tbody>
 </table>
+
+<?php do_action('abp01_after_trip_summary_audit_log', 
+	$data->postId, 
+	$data); ?>

@@ -57,10 +57,32 @@ class Abp01_Viewer {
 	}
 
 	public static function getAvailableTabs() {
-		return array(
+		$availableTabs = array(
 			self::TAB_INFO => __('Prosaic details', 'abp01-trip-summary'), 
 			self::TAB_MAP => __('Map', 'abp01-trip-summary')
 		);
+
+		$additionalTabs = apply_filters('abp01_additional_frontend_viewer_tabs', 
+			array(), 
+			null);
+
+		if (!empty($additionalTabs)) {
+			foreach ($additionalTabs as $tabCode => $tabInfo) {
+				$label = !empty($tabInfo['label']) 
+					? $tabInfo['label'] 
+					: null;
+
+				if (empty($label) || empty($tabCode)) {
+					continue;
+				}
+
+				if (!isset($availableTabs[$tabCode])) {
+					$availableTabs[$tabCode] = $label;
+				}
+			}
+		}
+
+		return $availableTabs;
 	}
 
 	public static function isTabSupported($tab) {

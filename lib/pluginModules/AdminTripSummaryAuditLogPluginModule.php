@@ -180,6 +180,7 @@ class Abp01_PluginModules_AdminTripSummaryAuditLogPluginModule extends Abp01_Plu
 
 	private function _renderAdminAuditLogForPostId($postId) {
 		$data = new stdClass();
+		$data->postId = $postId;
 		$data->auditLogData = $postId  > 0 
 			? $this->_getAuditLogData($postId)
 			: $this->_getEmptyAuditLogData();
