@@ -1,5 +1,5 @@
 <p align="center">
-   <img align="center" width="210" height="200" src="https://raw.githubusercontent.com/alexboia/WP-Trip-Summary/master/logo.png" style="margin-bottom: 20px; margin-right: 20px; corner-radius: 5px;" />
+   <img align="center" width="210" height="200" src="https://raw.githubusercontent.com/alexboia/WP-Trip-Summary/master/logo.png" style="margin-bottom: 20px; margin-right: 20px; border-radius: 5px;" />
 </p>
 
 <h1 align="center">WP-Trip-Summary</h1>
