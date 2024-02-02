@@ -351,7 +351,7 @@ All of the above, with the following amendments:
 2. phpunit version 5.x installed and available in your $PATH, for running the tests;
 3. wp (wp-cli) version 2.x installed and available in your $PATH, for initializing the test environment, if needed
 4. phpcompatinfo version 5.x installed and available in your $PATH, for generating the compatibility information files
-5. cygwin, for Windows users, such as myself, for setting up the development environment, running unit tests and the build scripts, with the following requirements itself:
+5. cygwin, for Windows users (or Windows Linux Subsystem, in which case it pretty much works out of the box), such as myself, for setting up the development environment, running unit tests and the build scripts, with the following requirements itself:
    - wget command;
    - curl command;
    - gettext libraries;
