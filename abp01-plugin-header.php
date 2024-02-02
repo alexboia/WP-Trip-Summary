@@ -108,7 +108,7 @@ define('ABP01_LANG_DIR', ABP01_PLUGIN_ROOT . '/lang');
  * 
  * @var string
  */
-define('ABP01_VERSION', '0.3.0');
+define('ABP01_VERSION', '0.3.1');
 
 if (!defined('ABP01_MAX_EXECUTION_TIME_MINUTES')) {
 	/**

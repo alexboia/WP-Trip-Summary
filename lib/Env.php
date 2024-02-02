@@ -404,7 +404,8 @@ class Abp01_Env {
 	 */
 	public function getDb() {
 		if ($this->_db == null) {
-			$this->_db = new ($this->_mysqliDbClass)($this->_dbHost,
+			$className = $this->_mysqliDbClass;
+			$this->_db = new $className($this->_dbHost,
 				$this->_dbUserName,
 				$this->_dbPassword,
 				$this->_dbName);
@@ -428,7 +429,8 @@ class Abp01_Env {
 	 */
 	public function getMetaDb() {
 		if ($this->_metaDb == null) {
-			$this->_metaDb = new ($this->_mysqliDbClass)($this->_dbHost,
+			$className = $this->_mysqliDbClass;
+			$this->_metaDb = new $className($this->_dbHost,
 				$this->_dbUserName,
 				$this->_dbPassword,
 				'information_schema');
