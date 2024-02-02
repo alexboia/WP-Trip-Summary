@@ -87,7 +87,8 @@ class Abp01_Installer_Step_Update implements Abp01_Installer_Step {
 			new Abp01_Installer_Step_Update_UpdateTo022($this->_env),
 			new Abp01_Installer_Step_Update_UpdateTo024($this->_env),
 			new Abp01_Installer_Step_Update_UpdateTo027($this->_env),
-			new Abp01_Installer_Step_Update_UpdateTo029($this->_env)
+			new Abp01_Installer_Step_Update_UpdateTo029($this->_env),
+			new Abp01_Installer_Step_Update_UpdateTo030($this->_env)
 		);
 
 		if (!empty($installedVersion)) {

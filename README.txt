@@ -4,7 +4,7 @@ Donate link: https://ko-fi.com/alexandruboia
 Tags: trip, summary, map, gpx, travel
 Requires at least: 6.0.0
 Tested up to: 6.4.3
-Stable tag: 0.2.9
+Stable tag: 0.3.0
 Requires PHP: 7.4.0
 License: BSD New License
 License URI: https://opensource.org/licenses/BSD-3-Clause
@@ -130,6 +130,9 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 5. For those with plug-in versions older than 0.2.1, please see here notes on updating to plug-in version 0.2.1: https://github.com/alexboia/WP-Trip-Summary/blob/master/README-UPDATE-021.md
 
 == Changelog ==
+
+= 0.3.0 =
+- Fixed bug on unix platforms.
 
 = 0.2.9 =
 - Added rider's log feature;
