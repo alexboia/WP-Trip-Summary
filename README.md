@@ -2,7 +2,7 @@
    <img align="center" width="210" height="200" src="https://raw.githubusercontent.com/alexboia/WP-Trip-Summary/master/logo.png" style="margin-bottom: 20px; margin-right: 20px; corner-radius: 5px;" />
 </p>
 
-# WP-Trip-Summary
+<h1 align="center">WP-Trip-Summary</h1>
 
 <p align="center">
    An opinionated, multi-language, WordPress trip summary plugin to help travel bloggers manage and display structured information about their train rides and biking or hiking trips.
@@ -15,7 +15,7 @@
 ## Status
 
 [![WP compatibility](https://plugintests.com/plugins/wporg/wp-trip-summary/wp-badge.svg)](https://plugintests.com/plugins/wporg/wp-trip-summary/latest)
-   [![PHP compatibility](https://plugintests.com/plugins/wporg/wp-trip-summary/php-badge.svg)](https://plugintests.com/plugins/wporg/wp-trip-summary/latest)
+[![PHP compatibility](https://plugintests.com/plugins/wporg/wp-trip-summary/php-badge.svg)](https://plugintests.com/plugins/wporg/wp-trip-summary/latest)
 
 ## Contents
 
