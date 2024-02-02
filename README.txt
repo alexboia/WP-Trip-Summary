@@ -13,19 +13,11 @@ A WordPress trip summary plugin to help travel bloggers manage and display struc
 
 == Description ==
 
-Is this plug-in a good fit for you?
-------------------------------------
-This plug-in is very good for you if:
-
-- you are a travel blogger and you're writing a lot about your trips, as this is a very good way of also providing a bit of extra information (actually, I'm the occasional travel blogger myself and I wrote it with this very purpose in mind).
-- you are a niche travel agency, as this would be a very helpful tool to have a highly professional approach to presenting your trips;
-- you are a hotel or an accomodation unit and want to present the options your guests would have for spending time around you;
-- you are government agency concerned with promoting turistic attractions, as you can have a website up and running in no time: just install WordPress, add this plug-in and you are ready to go.
-
 Features
 --------
 - attach technical information to a post (ex. how long was your trip, how much did you totally climb, where from and where to, how hard do you think it has been, what kind of roads or trails did you encounter etc.);
 - attach GPS data to a post (GPX and GeoJSON files are currently accepted as data sources) and display that track on a map;
+- maintain rider's log entries, while optionally specifying some of them as public;
 - allows management of the look-up data used to populate the fields presented as single or multi-selection options list (ex. `Difficulty Level`, `Open During Seasons` etc.);
 - allows customization of the map layer:
    - map tile source (comes by default configured with [OpenStreetMap](https://www.openstreetmap.org/)); 
@@ -36,9 +28,10 @@ Features
 
 More details
 ------------
-This plug-in provides two basic features:
+This plug-in provides three basic features:
 - allow some structured information to be filled in, according to a selected trip type;
-- allow some GPS track to be uploaded and then rendered on a map.
+- allow some GPS track to be uploaded and then rendered on a map;
+- maintain rider's log entries, while optionally specifying some of them as public.
 
 Structured information is supported for the following types of trips:
 - Bike trips;
@@ -121,9 +114,12 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 5. Admin - Trip Editor - Trip information
 6. Admin - Trip Editor - No trip type selected yet
 7. Admin - Plug-in settings editor
-8. Admin - Plug-in settings editor - chose apre-defined tile configuration
+8. Admin - Plug-in settings editor - chose a pre-defined tile configuration
 9. Frontend Viewer - Trip Map with altitude profile
-10. Maintenance page
+10. Admin - Maintenance page
+11. Admin - Add rider log entry
+12. Admin - List rider log entries
+13. Frontend viewer - List rider log entries
 
 == Installation ==
 
@@ -134,6 +130,12 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 5. For those with plug-in versions older than 0.2.1, please see here notes on updating to plug-in version 0.2.1: https://github.com/alexboia/WP-Trip-Summary/blob/master/README-UPDATE-021.md
 
 == Changelog ==
+
+= 0.2.9 =
+- Added rider's log feature;
+- Bug fix when validating GPX files that begin with XML comments (courtesy of Philip Flohr);
+- Fixed some warnings on PHP 8;
+- Internal installer rework.
 
 = 0.2.8 =
 - Added trip summary audit log to post edit and post listing pages;

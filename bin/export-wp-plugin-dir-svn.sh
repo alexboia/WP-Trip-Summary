@@ -81,6 +81,9 @@ copy_asset_files() {
 	cp ./assets/en_US/admin-settings-predefined-tile-layer.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-8.png" > /dev/null
 	cp ./assets/en_US/viewer-map-alt-profile.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-9.png" > /dev/null
 	cp ./assets/en_US/maintenance.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-10.png" > /dev/null
+	cp ./assets/en_US/admin-log-entry-add.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-11.png" > /dev/null
+	cp ./assets/en_US/admin-log-entry-listing.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-12.png" > /dev/null
+	cp ./assets/en_US/viewer-log-entries.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-13.png" > /dev/null
 
     cp ./assets/banner-772x250.jpg    "$WPTS_EXPORT_ASSETS_DIR/banner-772x250.jpg" > /dev/null
     cp ./assets/banner-1544x500.jpg    "$WPTS_EXPORT_ASSETS_DIR/banner-1544x500.jpg" > /dev/null

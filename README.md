@@ -11,40 +11,28 @@ An opinionated, multi-language, WordPress trip summary plugin to help travel blo
 
 ## Contents
 
-1. [Is it good for you?](#wpts-isitgoodforyou)
-2. [Features](#wpts-features)
-3. [Downloading the plug-in](#wpts-get-it)
-4. [Alternatives](#wpts-alternatives)
-5. [Progress & Management](#wpts-progress)
-6. [What it does](#wpts-what-does)
-7. [Supported languages](#wpts-langs)
-8. [Changelog](#wpts-changelog)
-9. [Upgrade notices](#wpts-upgrade-notices)
-10. [Roadmap](#wpts-roadmap)
-11. [Requirements](#wpts-requirements)
-12. [Limitations](#wpts-limitations)
-13. [Screenshots](#wpts-screenshots)
-14. [Contributing](#wpts-contributing)
-15. [Credits](#wpts-credits)
-16. [License](#wpts-license)
-
-## Is it good for you?
-<a name="wpts-isitgoodforyou"></a>  
-
-This plug-in is very good for you if:
-
-- you are a travel blogger and you're writing a lot about your trips, as this is a very good way of also providing a bit of extra information (actually, I'm the occasional travel blogger myself and I wrote it with this very purpose in mind).
-- you are a niche travel agency, as this would be a very helpful tool to have a highly professional approach to presenting your trips;
-- you are a hotel or an accomodation unit and want to present the options your guests would have for spending time around you;
-- you are government agency concerned with promoting turistic attractions, as you can have a website up and running in no time: just install WordPress, add this plug-in and you are ready to go.
-
-Do you think this would be right for you but there's that extra thing that's missing? [Let's chat!](https://github.com/alexboia/WP-Trip-Summary/issues/new/choose).
+1. [Features](#wpts-features)
+2. [Downloading the plug-in](#wpts-get-it)
+3. [Alternatives](#wpts-alternatives)
+4. [Progress & Management](#wpts-progress)
+5. [What it does](#wpts-what-does)
+6. [Supported languages](#wpts-langs)
+7. [Changelog](#wpts-changelog)
+8. [Upgrade notices](#wpts-upgrade-notices)
+9. [Roadmap](#wpts-roadmap)
+10. [Requirements](#wpts-requirements)
+11. [Limitations](#wpts-limitations)
+12. [Screenshots](#wpts-screenshots)
+13. [Contributing](#wpts-contributing)
+14. [Credits](#wpts-credits)
+15. [License](#wpts-license)
 
 ## Features
 <a name="wpts-features"></a>  
 
 - attach technical information to a post (ex. how long was your trip, how much did you totally climb, where from and where to, how hard do you think it has been, what kind of roads or trails did you encounter etc.);
 - attach some GPS data to a post ([see below for a detailed discussion on accepted file formats](#wpts-features-file-format)) and display that track on a map;
+- maintain rider's log entries, while optionally specifying some of them as public;
 - allows management of the look-up data used to populate the fields presented as single or multi-selection options list (ex. `Difficulty Level`, `Open During Seasons` etc.);
 - allows customization of the map layer:
    - map tile source (comes by default configured with [OpenStreetMap](https://www.openstreetmap.org/)); 
@@ -136,7 +124,7 @@ It also knows how to import data (markers and lines) from GPX/KML/GeoJSON files,
 It's still constantly updated and I recommend it if all you want to define and organize general purpose maps, possibly a lot of them, and use them in any post.  
 Find out more and get it here: [https://wordpress.org/plugins/waymark/](https://wordpress.org/plugins/waymark/).
 
-### WP GPX Maps
+### WP GPX Maps (no longer maintained)
 
 WP GPX Maps allows you to upload a GPX track and display it on a map, along with a couple of graphs: altitude, speed, heart rate, temperature, cadence, grade.
 It also looks up the media gallery for picture files that would match the coordinates on the track and display those on the map as well.
@@ -144,7 +132,7 @@ You get central management of these tracks and you can embed them anywhere using
 It's a bit behind with the updates, but I recommed it for a similar reason I recommended Waymark - if you'd like to manage your stuff centrally and use it anywhere - as well as for the wealth of graphs it provides out of the box.
 Find out more and get it here: [https://wordpress.org/plugins/wp-gpx-maps/](https://wordpress.org/plugins/wp-gpx-maps/).
 
-### Lf Hiker
+### Lf Hiker (no longer maintained)
 
 Lf Hiker is somwehat closer to WP Trip Summary's philosophy: it's a plugin that allows you to quickly display your gpx tracks with their profile elevation on an interactive map.
 It's also linked to a post; not directly, but through the media gallery, through which you upload your GPX files. Ultimately, you can embed those anywhere using shortcodes and also provide some custom information for each post, to be displayed alongside the core track data.  
@@ -157,26 +145,14 @@ Find out more and get it here: [https://wordpress.org/plugins/lf-hiker/](https:/
 The [milestones](https://github.com/alexboia/WP-Trip-Summary/milestones) area usually paints a good outlook on the workload for the current release, as well as the past and planned releases.  
 You might also be interested in the [issues](https://github.com/alexboia/WP-Trip-Summary/issues) area, for the gruesome details about what's currently on the table.
 
-### Project board
-
-Another area that might interest you is [the project board](https://github.com/users/alexboia/projects/1).   
-Since, for some reason, the project does not appear in the `Projects` tab, I don't have any other option other than to announce it here.  
-At any rate, that's where you shall find pretty much every idea I have for this project along the way in a - for now - semi-formal to informal aspect.  
-Project notes that I commit to as actual development work will be converted to github issues and shall [also appear here](https://github.com/alexboia/WP-Trip-Summary/issues).  
-
-Stucture of the project board:
-- `To do bucket` column: any idea enters the project management workflow using this column;
-- `To do for current version (x.y.z)` column: ideas that are good candidates for implementation in the current version are moved here; not all may remain and they can either fall back to the `To do bucket` or move to `Nice to have for current version (x.y.z)` (see below);
-- `Nice to have for current version (x.y.z)` column: ideas that may or may not be implemented in the current version, due to time constraints vs. usefulness ratio;
-- `In progress` & `Done` columns: pretty self-explanatory.
-
 ## What it does  
 <a name="wpts-what-does"></a>  
 
-This plug-in provides two basic features:
+This plug-in provides three basic features:
 
 - allow some structured information to be filled in, according to a selected trip type;
-- allow some GPS track to be uploaded and then rendered on a map.
+- allow some GPS track to be uploaded and then rendered on a map;
+- maintain rider's log entries, while optionally specifying some of them as public.
 
 ### Structured technical information
 
@@ -232,6 +208,18 @@ I really wanted to host the GPS tracks myself for various reasons:
 
 Thus, I developed a module to do just that: upload a GPS track (currently only GPX and GeoJSON files can be uploaded), parse it and display it.
 
+### Rider's log entries
+
+For each post you can add unlimited log entries, each corresponding to someone travelling that route, specifying the following details:
+
+- Who (the rider's name);
+- When (date);
+- Time (how many hours spent);
+- Vehicle used (e.g. bike make and model);
+- Gear (notes about what equipment was used - backpack configuration and the like);
+- Other (random) notes;
+- Whether or not the entry should be displayed publicly (if so, then the entry will be shown in the frontend viewer in a separate tab dedicated to log entries).
+
 ### JSON-LD front-end data
 
 The plug-in, as of version `0.2.8` inserts structured JSON-LD data in the post and page details page, 
@@ -278,6 +266,12 @@ The following languages are supported:
 
 ## Changelog
 <a name="wpts-changelog"></a>  
+
+### Version 0.2.9
+- Added rider's log feature;
+- Bug fix when validating GPX files that begin with XML comments (courtesy of Philip Flohr);
+- Fixed some warnings on PHP 8;
+- Internal installer rework.
 
 ### Version 0.2.8
 - Added shortcuts to plug-in's entry from the plug-in listing page;
