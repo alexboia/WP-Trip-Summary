@@ -11,7 +11,7 @@
  * Text Domain: abp01-trip-summary
  * Requires PHP: 7.4.0
  * Requires at least: 6.0.0
- * WPTS Version Name: Emil Racovita
+ * WPTS Version Name: SG-1
  */
 
 /**

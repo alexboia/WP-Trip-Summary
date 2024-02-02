@@ -37,10 +37,44 @@ class Abp01_Installer_Step_Update_UpdateTo029 implements Abp01_Installer_Step_Up
 
 	private $_lastError;
 
+	/**
+	 * @var Abp01_Env
+	 */
 	private $_env;
 
-    public function execute() { 
+	/**
+	 * @var Abp01_Installer_Table_Definitions
+	 */
+	private $_tableDefs;
 
+	public function __construct(Abp01_Env $env) {
+		$this->_env = $env;
+		$this->_tableDefs = new Abp01_Installer_Table_Definitions($env);
+	}
+
+    public function execute() { 
+		$this->_lastError = null;
+		$this->_createTable($this->_getRouteLogTableName(), $this->_getRouteLogTableDefinition());
+		return empty($this->_lastError);
+	}
+
+	private function _createTable($tableName, $tableDef) {
+		$result = false;
+		try {
+			$service = new Abp01_Installer_Service_CreateDbTable($this->_env);
+			$result = $service->execute($tableName, $tableDef);
+		} catch (Exception $exc) {
+			$this->_lastError = $exc;
+		}
+		return $result;
+	}
+
+	private function _getRouteLogTableDefinition() {
+		return $this->_tableDefs->getRouteLogTableDefinition();
+	}
+
+	private function _getRouteLogTableName() {
+		return $this->_env->getRouteLogTableName();
 	}
 
     public function getLastError() { 

@@ -46,8 +46,14 @@ class Abp01_Installer_Step_InstallSchema implements Abp01_Installer_Step {
 
 	private $_onlyTables = array();
 
+	/**
+	 * @var Abp01_Installer_Table_Definitions
+	 */
+	private $_tableDefs;
+
 	public function __construct(Abp01_Env $env) {
 		$this->_env = $env;
+		$this->_tableDefs = new Abp01_Installer_Table_Definitions($env);
 	}
 
 	public function execute() { 
@@ -127,79 +133,27 @@ class Abp01_Installer_Step_InstallSchema implements Abp01_Installer_Step {
 	}
 
 	private function _getRouteTrackTableDefinition() {
-		return "CREATE TABLE IF NOT EXISTS `" . $this->_getRouteTrackTableName() . "` (
-			`post_ID` BIGINT(20) UNSIGNED NOT NULL,
-			`route_track_file` LONGTEXT NOT NULL,
-			`route_track_file_mime_type` VARCHAR(250) NOT NULL DEFAULT 'application/gpx' ,
-			`route_min_coord` POINT NOT NULL,
-			`route_max_coord` POINT NOT NULL,
-			`route_bbox` POLYGON NOT NULL,
-			`route_min_alt` FLOAT NULL DEFAULT '0',
-			`route_max_alt` FLOAT NULL DEFAULT '0',
-			`route_track_created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-			`route_track_modified_at` TIMESTAMP NULL DEFAULT NULL,
-			`route_track_modified_by` BIGINT(20) NULL DEFAULT NULL,
-				PRIMARY KEY (`post_ID`),
-				SPATIAL INDEX `idx_route_track_bbox` (`route_bbox`)
-		)";
+		return $this->_tableDefs->getRouteTrackTableDefinition();
 	}
 
 	private function _getRouteDetailsTableDefinition() {
-		return "CREATE TABLE IF NOT EXISTS `" . $this->_getRouteDetailsTableName() . "` (
-			`post_ID` BIGINT(10) UNSIGNED NOT NULL,
-			`route_type` VARCHAR(150) NOT NULL,
-			`route_data_serialized` LONGTEXT NOT NULL,
-			`route_data_created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-			`route_data_last_modified_at` TIMESTAMP NULL DEFAULT NULL,
-			`route_data_last_modified_by` BIGINT(20) NULL DEFAULT NULL,
-				PRIMARY KEY (`post_ID`)
-		)";
+		return $this->_tableDefs->getRouteDetailsTableDefinition();
 	}
 
 	private function _getLookupLangTableDefinition() {
-		return "CREATE TABLE IF NOT EXISTS `" . $this->_getLookupLangTableName() . "` (
-			`ID` INT(10) UNSIGNED NOT NULL,
-			`lookup_lang` VARCHAR(10) NOT NULL,
-			`lookup_label` VARCHAR(255) NOT NULL,
-				PRIMARY KEY (`ID`, `lookup_lang`)
-		)";
+		return $this->_tableDefs->getLookupLangTableDefinition();
 	}
 
 	private function _getLookupTableDefinition() {
-		return "CREATE TABLE IF NOT EXISTS `" . $this->_getLookupTableName() . "` (
-			`ID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-			`lookup_category` VARCHAR(150) NOT NULL,
-			`lookup_label` VARCHAR(255) NOT NULL,
-				PRIMARY KEY (`ID`)
-		)";
+		return $this->_tableDefs->getLookupTableDefinition();
 	}
 
 	private function _getRouteDetailsLookupTableDefinition() {
-		return "CREATE TABLE IF NOT EXISTS `" . $this->_getRouteDetailsLookupTableName() . "` (
-			`post_ID` BIGINT(10) UNSIGNED NOT NULL,
-			`lookup_ID` INT(10) UNSIGNED NOT NULL,
-				PRIMARY KEY (`post_ID`, `lookup_ID`)
-		)";
+		return $this->_tableDefs->getRouteDetailsLookupTableDefinition();
 	}
 
 	private function _getRouteLogTableDefinition() {
-		return "CREATE TABLE IF NOT EXISTS `" . $this->_getRouteLogTableName() . "` (
-			`log_ID` BIGINT(20) NOT NULL AUTO_INCREMENT,
-			`log_post_ID` BIGINT(20) NOT NULL,
-			`log_rider` VARCHAR(255) NOT NULL,
-			`log_date` DATE NOT NULL,
-			`log_vehicle` VARCHAR(255) NOT NULL,
-			`log_gear` TEXT NULL DEFAULT NULL,
-			`log_duration_hours` INT(11) NULL DEFAULT NULL,
-			`log_notes` TEXT NULL DEFAULT NULL,
-			`log_date_created` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
-			`log_date_updated` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
-			`log_is_public` BIT(1) NOT NULL DEFAULT b'0',
-			`log_created_by` BIGINT(20) NOT NULL,
-			`log_updated_by` BIGINT(20) NOT NULL,
-			PRIMARY KEY (`log_ID`) USING BTREE,
-			INDEX `IDX_route_log_post_ID` (`log_post_ID`) USING BTREE
-		)";
+		return $this->_tableDefs->getRouteLogTableDefinition();
 	}
 
 	private function _getRouteTrackTableName() {
