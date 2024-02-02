@@ -9,6 +9,10 @@ An opinionated, multi-language, WordPress trip summary plugin to help travel blo
 [![WP compatibility](https://plugintests.com/plugins/wporg/wp-trip-summary/wp-badge.svg)](https://plugintests.com/plugins/wporg/wp-trip-summary/latest)
 [![PHP compatibility](https://plugintests.com/plugins/wporg/wp-trip-summary/php-badge.svg)](https://plugintests.com/plugins/wporg/wp-trip-summary/latest)
 
+<p align="center">
+   <img align="center" width="210" height="200" src="https://raw.githubusercontent.com/alexboia/WP-Trip-Summary/master/screenshots/V4.png?raw=true" style="margin-bottom: 20px; margin-right: 20px;" />
+</p>
+
 ## Contents
 
 1. [Features](#wpts-features)
@@ -381,6 +385,10 @@ All of the above, with the following amendments:
 ##### Viewer - Map with altitude profile
 
 ![Viewer - Map with altitude profile](/screenshots/V3.gif?raw=true)
+
+##### Viewer - Log entries
+
+![Viewer - Info](/screenshots/V4.png?raw=true)
 
 ## How can you help
 <a name="wpts-contributing"></a>  

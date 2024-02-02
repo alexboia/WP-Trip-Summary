@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 0.2.9
+- Added rider's log feature;
+- Bug fix when validating GPX files that begin with XML comments (courtesy of Philip Flohr);
+- Fixed some warnings on PHP 8;
+- Internal installer rework.
+
 ### Version 0.2.8
 - Added shortcuts to plug-in's entry from the plug-in listing page;
 - Added maintenance page with the following tools: clear cached track data, clear all trip summary info, detect posts that have missing track files;
