@@ -2,9 +2,7 @@
    <img align="center" width="210" height="200" src="https://raw.githubusercontent.com/alexboia/WP-Trip-Summary/master/logo.png" style="margin-bottom: 20px; margin-right: 20px; corner-radius: 5px;" />
 </p>
 
-<p align="center">
 # WP-Trip-Summary
-</p>
 
 <p align="center">
    An opinionated, multi-language, WordPress trip summary plugin to help travel bloggers manage and display structured information about their train rides and biking or hiking trips.
