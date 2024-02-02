@@ -105,7 +105,7 @@ echo "Using version: ${WPTS_VERSION}"
 ensure_out_dirs
 clean_out_dirs
 regenerate_help
-make_compat_info
+#make_compat_info
 copy_source_files
 generate_package
 clean_tmp_dir

@@ -36,7 +36,7 @@ class ViewerTests extends WP_UnitTestCase {
         $availableTabs = Abp01_Viewer::getAvailableTabs();
 
         $this->assertNotEmpty($availableTabs);
-        $this->assertEquals(2, count($availableTabs));
+        $this->assertEquals(3, count($availableTabs));
         $this->assertArrayHasKey(Abp01_Viewer::TAB_INFO, $availableTabs);
         $this->assertArrayHasKey(Abp01_Viewer::TAB_MAP, $availableTabs);
     }
