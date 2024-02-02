@@ -10,7 +10,7 @@ An opinionated, multi-language, WordPress trip summary plugin to help travel blo
 [![PHP compatibility](https://plugintests.com/plugins/wporg/wp-trip-summary/php-badge.svg)](https://plugintests.com/plugins/wporg/wp-trip-summary/latest)
 
 <p align="center">
-   <img align="center" width="210" height="200" src="https://raw.githubusercontent.com/alexboia/WP-Trip-Summary/master/screenshots/V4.png?raw=true" style="margin-bottom: 20px; margin-right: 20px;" />
+   <img align="center" src="https://raw.githubusercontent.com/alexboia/WP-Trip-Summary/master/screenshots/MAIN.png?raw=true" style="margin-bottom: 20px; margin-right: 20px;" />
 </p>
 
 ## Contents
