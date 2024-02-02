@@ -9,15 +9,9 @@ else
 	COMPAT_RESTORE_DIR=false
 fi
 
- phpcompatinfo analyser:run --alias cmain --output=./build/compat-info/main-compat-info.txt > /dev/null
-
- pushd ./tests > /dev/null
- phpcompatinfo analyser:run --alias ctests --output=../build/compat-info/tests-compat-info.txt > /dev/null
- popd > /dev/null
-
- pushd ./help > /dev/null
- phpcompatinfo analyser:run --alias chelp --output=../build/compat-info/help-compat-info.txt > /dev/null
- popd > /dev/null
+ phpcompatinfo analyser:run . --exclude tests --exclude help --output ./build/compat-info/main-compat-info.txt --profile
+ phpcompatinfo analyser:run ./tests --output ./build/compat-info/tests-compat-info.txt --profile
+ phpcompatinfo analyser:run ./help --output ./build/compat-info/help-compat-info.txt --profile
 
 if [ "$COMPAT_RESTORE_DIR" = true ]
 then
