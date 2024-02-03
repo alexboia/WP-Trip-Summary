@@ -250,7 +250,7 @@ trait AdminTestDataHelpers {
 		$faker = $this->_getFaker();
 		
 		$data = new stdClass();
-		$data->postId = $faker->randomNumber();
+		$data->postId = $faker->numberBetween(1, PHP_INT_MAX);
 		$data->hasRouteTrack = $faker->boolean();
 		$data->hasRouteInfo = $faker->boolean();
 		$data->trackDownloadUrl = $faker->url;

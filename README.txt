@@ -82,9 +82,6 @@ Helping out:
 - by donating: https://ko-fi.com/alexandruboia;
 - support my paid work: https://alexboia.gumroad.com/.
 
-Important note:
-For those with plug-in versions older than 0.2.1, please see here notes on updating to plug-in version 0.2.1: https://github.com/alexboia/WP-Trip-Summary/blob/master/README-UPDATE-021.md
-
 == Frequently Asked Questions ==
 
 = How can it be displayed for other post types than page and post? =
