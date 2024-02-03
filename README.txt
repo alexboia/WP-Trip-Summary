@@ -13,8 +13,8 @@ A WordPress trip summary plugin to help travel bloggers manage and display struc
 
 == Description ==
 
-Features
---------
+### Features
+
 - attach technical information to a post (ex. how long was your trip, how much did you totally climb, where from and where to, how hard do you think it has been, what kind of roads or trails did you encounter etc.);
 - attach GPS data to a post (GPX and GeoJSON files are currently accepted as data sources) and display that track on a map;
 - maintain rider's log entries, while optionally specifying some of them as public;
@@ -26,8 +26,8 @@ Features
 - allows customization of the measurement unit system used to represent various values (ex. `Total distance`, `Total climb` etc.);
 - multi-language.
 
-More details
-------------
+### More details
+
 This plug-in provides three basic features:
 - allow some structured information to be filled in, according to a selected trip type;
 - allow some GPS track to be uploaded and then rendered on a map;
@@ -65,7 +65,8 @@ For train rides the following fields are available:
 - Whether the line is electrified or not;
 - Line type.
 
-Requirements:
+### Requirements
+
 - PHP version 7.4.0 or greater;
 - MySQL version 5.7 or greater (with spatial support);
 - Wordpress 6.0.0 or greater;
@@ -75,12 +76,15 @@ Requirements:
 - mbstring - not strictly required, but recommended;
 - zlib - not strictly required, but recommended.
 
+### Multi language
+
 Available in English, Romanian and French.
 
-Helping out:
-- by contributing: head over tot he project's GitHub page: https://github.com/alexboia/WP-Trip-Summary;
-- by donating: https://ko-fi.com/alexandruboia;
-- support my paid work: https://alexboia.gumroad.com/.
+### Helping out
+
+- by contributing: head over tot he project's GitHub page: [https://github.com/alexboia/WP-Trip-Summary](https://github.com/alexboia/WP-Trip-Summary);
+- by donating: [https://ko-fi.com/alexandruboia](https://ko-fi.com/alexandruboia);
+- support my paid work: [https://alexboia.gumroad.com/](https://alexboia.gumroad.com/).
 
 == Frequently Asked Questions ==
 
@@ -132,7 +136,7 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 - Fixed bug on some PHP versions.
 
 = 0.3.0 =
-- Fixed bug on unix platforms.
+- Fixed bug on unix platforms due to wrong directory naming (upper case first letter, instead of expected lower case).
 
 = 0.2.9 =
 - Added rider's log feature;
