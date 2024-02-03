@@ -1,9 +1,9 @@
 # Changelog
 
-### 0.3.1
+### Version 0.3.1
 - Fixed bug on some PHP versions.
 
-### 0.3.0
+### Version 0.3.0
 - Fixed bug on unix platforms due to wrong directory naming (upper case first letter, instead of expected lower case).
 
 ### Version 0.2.9

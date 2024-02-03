@@ -17,24 +17,6 @@
 [![WP compatibility](https://plugintests.com/plugins/wporg/wp-trip-summary/wp-badge.svg?_v=0.3.1)](https://plugintests.com/plugins/wporg/wp-trip-summary/latest)
 [![PHP compatibility](https://plugintests.com/plugins/wporg/wp-trip-summary/php-badge.svg?_v=0.3.1)](https://plugintests.com/plugins/wporg/wp-trip-summary/latest)
 
-## Contents
-
-1. [Features](#wpts-features)
-2. [Downloading the plug-in](#wpts-get-it)
-3. [Alternatives](#wpts-alternatives)
-4. [Progress & Management](#wpts-progress)
-5. [What it does](#wpts-what-does)
-6. [Supported languages](#wpts-langs)
-7. [Changelog](#wpts-changelog)
-8. [Upgrade notices](#wpts-upgrade-notices)
-9. [Roadmap](#wpts-roadmap)
-10. [Requirements](#wpts-requirements)
-11. [Limitations](#wpts-limitations)
-12. [Screenshots](#wpts-screenshots)
-13. [Contributing](#wpts-contributing)
-14. [Credits](#wpts-credits)
-15. [License](#wpts-license)
-
 ## Features
 <a name="wpts-features"></a>  
 
@@ -275,10 +257,10 @@ The following languages are supported:
 ## Changelog
 <a name="wpts-changelog"></a>  
 
-### 0.3.1
+### Version 0.3.1
 - Fixed bug on some PHP versions.
 
-### 0.3.0
+### Version 0.3.0
 - Fixed bug on unix platforms due to wrong directory naming (upper case first letter, instead of expected lower case).
 
 ### Version 0.2.9
