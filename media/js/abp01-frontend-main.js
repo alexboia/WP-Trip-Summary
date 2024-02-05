@@ -125,6 +125,8 @@
 			downloadTrackAction: window['abp01_downloadTrackAction'] || null,
 			hasInfo: window['abp01_hasInfo'] || false,
 			hasTrack: window['abp01_hasTrack'] || false,
+			hasAdditionalTabs: window['abp01_hasAdditionalTabs'] || false,
+			totalTabCount: window['abp01_totalTabCount'] || 0,
 			nonceGet: window['abp01_nonceGet'],
 			nonceDownload: window['abp01_nonceDownload'] || null,
 			postId: window['abp01_postId'] || 0
@@ -324,7 +326,7 @@
 	$(document).ready(function() {
 		initState();
 
-		if (context.hasInfo || context.hasTrack) {
+		if (context.totalTabCount > 0) {
 			initControls();
 			initItemValueTogglers();
 			initTeasers();
@@ -332,7 +334,7 @@
 			initMapRetry();
 		}
 
-		if (context.hasInfo && context.hasTrack) {
+		if (context.totalTabCount > 1) {
 			initTabs();
 		} else if (context.hasTrack) {
 			showMap();

@@ -39,6 +39,8 @@
 
     var abp01_hasInfo = <?php echo $data->info->exists ? 'true' : 'false' ?>;
     var abp01_hasTrack = <?php echo $data->track->exists ? 'true' : 'false' ?>;
+    var abp01_hasAdditionalTabs = <?php echo abp01_frontend_viewer_has_additional_tabs($data) ? 'true' : 'false' ?>;
+    var abp01_totalTabCount = <?php echo abp01_count_frontend_viewer_tabs($data); ?>;
     var abp01_postId = '<?php echo $data->postId; ?>';
     var abp01_nonceGet = '<?php echo esc_js($data->nonceGet); ?>';
 	var abp01_nonceDownload = '<?php echo esc_js($data->nonceDownload); ?>';
