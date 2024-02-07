@@ -45,6 +45,16 @@ ensure_out_dirs() {
 	fi
 }
 
+# Scan library directory for integrity (dir names, expected class names)
+scan_lib_dir_or_fail() {
+	php ./bin/tools/check-lib-paths.php
+	if [ $? -ne 0 ];
+	then
+		echo "Please correct library directory issues and try again. Build failed.";
+		exit 1000
+	fi
+}
+
 # Regenerate compatibility info
 make_compat_info() {
 	echo "Building compatibility information files..."
@@ -102,6 +112,7 @@ generate_package() {
 
 echo "Using version: ${WPTS_VERSION}"
 
+scan_lib_dir_or_fail
 ensure_out_dirs
 clean_out_dirs
 regenerate_help
