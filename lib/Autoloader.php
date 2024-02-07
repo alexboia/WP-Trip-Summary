@@ -36,6 +36,10 @@ class Abp01_Autoloader {
 
 	private static $_prefix = 'Abp01_';
 
+	private static $_3rdPartyPrefixes = array(
+		'StepanDalecky' => '3rdParty/kml-parser'
+	);
+
 	public static function init($libDir) {
 		if (!self::$_initialized) {
 			spl_autoload_register(array(__CLASS__, 'autoload'));
@@ -51,19 +55,38 @@ class Abp01_Autoloader {
 			$classPath = self::_getRelativePath($classPath);
 			$classPath = self::$_libDir . '/' . $classPath . '.php';
 		} else {
-			$classPath = self::$_libDir . '/3rdParty/' . $className . '.php';
+			$separator = '\\';
+			foreach (self::$_3rdPartyPrefixes as $prefix => $searchRelativeDir) {
+				$checkPrefix = $prefix . $separator;
+				if (strpos($className, $checkPrefix) === 0) {
+					$classPath = str_replace($checkPrefix, '', $className);
+					$classPath = self::_getRelativePath($classPath, $separator);
+					$classPath = self::$_libDir . '/' 
+						. $searchRelativeDir . '/' 
+						. $classPath . '.php';
+
+					break;
+				}
+			}
+
+			if (empty($classPath)) {
+				$classPath = self::$_libDir . '/3rdParty/' . $className . '.php';
+			}
 		}
 		if (!empty($classPath) && file_exists($classPath)) {
 			require_once $classPath;
 		}
 	}
 
-	private static function _getRelativePath($className) {
+	private static function _getRelativePath($className, $separator = '_', $transform = 'lcfirst') {
 		$classPath = array();
-		$pathParts = explode('_', $className);
+		$pathParts = explode($separator, $className);
 		$className = array_pop($pathParts);
 		foreach ($pathParts as $namePart) {
-			$namePart[0] = strtolower($namePart[0]);
+			if (!empty($transform) && is_callable($transform)) {
+				$namePart = $transform($namePart);
+			}
+			
 			$classPath[] = $namePart;
 		}
 		$classPath[] = $className;
