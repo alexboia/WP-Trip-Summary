@@ -5,6 +5,7 @@
 - [The Viewer Component](#viewer-component)
 - [The Editor Component](#editor-component)
 - [Configuration & Management](#configuration-management)
+- [Maintenance](#maintenance-component)
 </div>
 
 # General Information {#general-information}
@@ -37,7 +38,8 @@ Depending on the various functions performed by various plug-in components, we c
 
 - The Viewer Component: the box displayed just below the post; this box displayed the kind of information I just mentioned above ([More details here](#viewer-component));
 - The Editor Component: it is attached to the main post editing form and allows adding/modifying/deleting of trip related data ([More details here](#editor-component));
-- The Configuration Component: handles plug-in option management, but also the look-up data management (various lists of values from which one can be selected when filling various selector fields in the trip data editor)([More details here](#configuration-component)).
+- The Configuration Component: handles plug-in option management, but also the look-up data management (various lists of values from which one can be selected when filling various selector fields in the trip data editor)([More details here](#configuration-management));
+- The Maintenance Component: allows you to perform some maintenance-related tasks ([More details here](#maintenance-component)).
 
 [Back to the Table of Contents](#help-root)
 </div>
@@ -45,44 +47,47 @@ Depending on the various functions performed by various plug-in components, we c
 ## Screenshots {#dg-screenshots}
 
 <div class="abp01-help-section abp01-help-image-slideshow" markdown="1">
-#### The configuration page  {.abp01-gallery-item-header}
+#### The configuration page {.abp01-gallery-item-header}
 ![The configuration page]($helpDataDirUrl$/screenshots/admin-settings.png "The configuration page")
 
 #### The configuration page - pre-defined tyle layer selection {.abp01-gallery-item-header}
 ![The configuration page - pre-defined tyle layer selection]($helpDataDirUrl$/screenshots/admin-settings-predefined-tile-layer.png "The configuration page - pre-defined tyle layer selection")
 
-#### Edit post - Trip summary editor launcher {.abp01-gallery-item-header}
-![Edit post - Trip summary editor launcher]($helpDataDirUrl$/screenshots/admin-edit-launcher.png "Edit post - Trip summary editor launcher")
-
-#### Edit post - Trip summary editor launcher (block editor)  {.abp01-gallery-item-header}
-![Edit post - Trip summary editor launcher (block editor)]($helpDataDirUrl$/screenshots/admin-edit-launcher-block.png "Edit post - Trip summary editor launcher (block editor)")
-
-#### Edit post - Trip data - Select trip type  {.abp01-gallery-item-header}
+#### Edit post - Trip data - Select trip type {.abp01-gallery-item-header}
 ![Edit post - Trip data - Select trip type]($helpDataDirUrl$/screenshots/admin-edit-summary-empty.png "Edit post - Trip data - Select trip type")
 
-#### Edit post - Trip data - Bike trip-related information  {.abp01-gallery-item-header}
+#### Edit post - Trip data - Bike trip-related information {.abp01-gallery-item-header}
 ![Edit post - Trip data - Bike trip-related information]($helpDataDirUrl$/screenshots/admin-edit-summary-bike.png "Edit post - Trip data - Bike trip-related information")
 
-#### Edit post - Trip data - Map  {.abp01-gallery-item-header}
+#### Edit post - Trip data - Map {.abp01-gallery-item-header}
 ![Edit post - Trip data - Map]($helpDataDirUrl$/screenshots/admin-edit-map.png "Edit post - Trip data - Map")
 
-#### Post view - Top teaser  {.abp01-gallery-item-header}
+#### Edit post - Trip data - Route log listing {.abp01-gallery-item-header}
+![Edit post - Trip data - Route log listing]($helpDataDirUrl$/screenshots/admin-log-entry-listing.png "Edit post - Trip data - Route log listing")
+
+#### Edit post - Trip data - Route log add/edit {.abp01-gallery-item-header}
+![Edit post - Trip data - Route log add/edit]($helpDataDirUrl$/screenshots/admin-log-entry-add.png "Edit post - Trip data - Route log add/edit")
+
+#### Post view - Top teaser {.abp01-gallery-item-header}
 ![Post view - Top teaser]($helpDataDirUrl$/screenshots/viewer-teaser-top.png "Post view - Top teaser")
 
-#### Post view - Technical summary  {.abp01-gallery-item-header}
+#### Post view - Technical summary {.abp01-gallery-item-header}
 ![Post view - Technical summary]($helpDataDirUrl$/screenshots/viewer-summary.png "Post view - Technical summary")
+
+#### Post view - Map {.abp01-gallery-item-header}
+![Post view - Map]($helpDataDirUrl$/screenshots/viewer-map.png "Post view - Map")
 
 #### Post view - Map With Altitude Profile {.abp01-gallery-item-header}
 ![Post view - Map With Altitude Profile]($helpDataDirUrl$/screenshots/viewer-map-alt-profile.png "Post view - Map With Altitude Profile")
 
-#### Post view - Map  {.abp01-gallery-item-header}
-![Post view - Map]($helpDataDirUrl$/screenshots/viewer-map.png "Post view - Map")
-
-#### Post listing - Additional info columns  {.abp01-gallery-item-header}
+#### Post listing - Additional info columns {.abp01-gallery-item-header}
 ![Post listing - Additional info columns]($helpDataDirUrl$/screenshots/post-listing-columns.png "Post listing - Additional info columns")
 
-#### The maintenance page {.abp01-gallery-item-header}
-![The maintenance page]($helpDataDirUrl$/screenshots/maintenance.png "The maintenance page")
+#### Post View - Route log {.abp01-gallery-item-header}
+![Post view - Route log]($helpDataDirUrl$/screenshots/viewer-log-entries.png "Post view - Route log")
+
+#### Maintenance {.abp01-gallery-item-header}
+![Maintenance]($helpDataDirUrl$/screenshots/maintenance.png "Maintenance")
 
 [Back to the Table of Contents](#help-root)
 </div>
@@ -92,9 +97,9 @@ Depending on the various functions performed by various plug-in components, we c
 <div class="abp01-help-section" markdown="1">
 To run this module, the following technical requirements must be met:
 
-- PHP version 7.4.0 or greater;
+- PHP version 7.0.2 or greater;
 - MySQL version 5.7 or greater (with spatial support);
-- WordPress 6.0.0;
+- WordPress 5.3.0;
 - libxml extension;
 - SimpleXml extension;
 - mysqli extension;
@@ -109,7 +114,7 @@ Basically all these requirements are checked upon installation and the process s
 ## Licensing Terms {#dg-licensing-terms}
 
 <div class="abp01-help-section" markdown="1">
-This plug-in is distributed under the terms of the [BSD New License](https://opensource.org/licenses/BSD-3-Clause). What this means:
+This plug-in is distribute under the terms of the [BSD New License](https://opensource.org/licenses/BSD-3-Clause). What this means:
 
 - that you may use it free of charge and without any kind of royalty;
 - that you may distribute free of charge;
@@ -185,8 +190,8 @@ This is the area where, each on a distinct tab, the following sections are displ
 - the map that displays the route;
 - technical stuff (total distance, total climb etc.).
 
-Each tab is only displayed when the corresponding information has been provided by the post author.  
-If there is not any kind of information for any of these tabs, then the entire component is hidden, including the teasers.  
+Each tab is only displayed when the corresponding information has been provided by the post author.
+If there is not any kind of information for any of these tabs, then the entire component is hidden, including the teasers.
 
 [Back to the Table of Contents](#help-root)
 </div>
@@ -238,9 +243,9 @@ Besides the form, on the bottom side of the screen two additional control button
 
 - "Save" - used to save the changes;
 - "Clear" - used to when the entire trip information set needs to be removed.
+</div>
 
 [Back to the Table of Contents](#help-root)
-</div>
 
 ## The GPS Track Upload & Preview Area
 
@@ -273,7 +278,7 @@ The configuration elements can be seen as forming two discrete sections:
 ## General Options {#configure-general-options}
 
 <div class="abp01-help-section" markdown="1">
-There is a dedicated page where these options may be modified to best suit your needs. One can get there by accessing `Trip Summary -> Settings` in the main menu.
+There is a dedicated page where these options may be modified to best suit your needs. One can get there by accessing Trip Summary -> Settings in the main menu.
 
 Once there, the following settings are made available.
 
@@ -310,18 +315,13 @@ This field allows specifying how multiple values of the same item are laid out i
 This field allows setting how many values are displayed for items that have multiple values. 
 If an item has more values than the what is set in this field, then they are hidden and a `(show)` button is displayed.
 
-#### Enable JSON-LD frontend data
-
-If enabled, the plug-in inserts structured JSON-LD data in the post and page details page, 
-if there is track data attached to that post or page.
-
 #### Map Tile URL Template
 
 The discussion here is a bit longer.
 
 First of all, one has to keep in mind that the map is not displayed as only one physical image, but using multiple images. These images - called tiles - when put together in a specific order, form the image of the map itself.
 
-Also, there are multiple sets of tiles, one for each zoom level and, within each set, each tile is located using two coordinates - let us name them x & y - sort of like squares on a chess board.
+Also, there are multiple set of tiles, one for each zoom level and, within each set, each tile is located using two coordinates - let us name them x & y - sort of like squares on a chess board.
 
 Therefore, in order to access & load a tile from whatever server provides them, we need to request it using the following pieces of information:
 
@@ -374,7 +374,7 @@ By default, this field is checked, so the button is displayed.
 
 #### Track line colour
 
-This field allows setting the colour of the line used to plot the GPS track on the map. 
+This field allows setting the colour used to plot the GPS track on the map. 
 Applies to both front-end viewer and back-end trip summary editor.
 The default value is the previously used colour: `#0033ff`.
 
@@ -422,7 +422,7 @@ This field is available for the following trip types:
 - trekking/hiking trips.
 
 It reflects one's subjective evaluation of how hard the trip was, in terms of effort.
-The plug-in provides the following pre-defined options (with English, French and Romanian translations):
+The plug-in provides the following pre-defined options (with English and Romanian translations):
 
 - Easy;
 - Medium;
@@ -437,7 +437,7 @@ This field is available for the following trip types:
 - trekking/hiking trips.
 
 It allows specifying the seasons during which the route can be traveled through in decent conditions (without extreme expense in terms of effort and without taking great risks).
-The plug-in provides the following pre-defined options (with English, French and Romanian translations):
+The plug-in provides the following pre-defined options (with English and Romanian translations):
 
 - Spring;
 - Summer;
@@ -452,7 +452,7 @@ This field is available for the following trip types:
 - trekking/hiking trips.
 
 It allows specifying the texture / composition of the roads & trails crossed by the route. Eg.: grass, rocky, tarmac, gravel etc.
-The plug-in provides the following pre-defined options (with English, French and Romanian translations):
+The plug-in provides the following pre-defined options (with English and Romanian translations):
 
 - Asphalt;
 - Concrete;
@@ -468,7 +468,7 @@ This field is available for the following trip types:
 - bike trips.
 
 It allows specifying the bike types that should be used for optimal safety and comfort.
-The plug-in provides the following pre-defined options (with English, French and Romanian translations):
+The plug-in provides the following pre-defined options (with English and Romanian translations):
 
 - MTB;
 - Road bike;
@@ -491,7 +491,7 @@ This field is available for the following trip types:
 - train rides.
 
 It allows specifying whether the line was electrified and to what extent.
-The plug-in provides the following pre-defined options (with English, French and Romanian translations):
+The plug-in provides the following pre-defined options (with English and Romanian translations):
 
 - Electrified;
 - Not electrified;
@@ -504,7 +504,7 @@ This field is available for the following trip types:
 - train rides.
 
 It allows specifying whether the line is simple or double (one set of tracks for each way).
-The plug-in provides the following pre-defined options (with English, French and Romanian translations):
+The plug-in provides the following pre-defined options (with English and Romanian translations):
 
 - Simple line;
 - Double line.
@@ -516,7 +516,7 @@ This field is available for the following trip types:
 - train rides.
 
 It allows specifying the line status (for instance whether the line is closed, operating normally, undergoing repairs etc.).
-The plug-in provides the following pre-defined options (with English, French and Romanian translations):
+The plug-in provides the following pre-defined options (with English and Romanian translations):
 
 - In production;
 - Closed;
@@ -535,7 +535,23 @@ The following operations are supported, each in the context of a chosen language
 The following should also be noted:
 
 - when adding a new option/item for the default language, the system only requires the label for that language.
-- when adding a new option/item for a specific language, the system requires the label for both that language and the default language.
+- when adding a new option/item for a specific language, the systems asks requires the label for both that language and the default language.
+
+[Back to the Table of Contents](#help-root)
+</div>
+
+# Maintenance {#maintenance-component}
+
+<div class="abp01-help-section" markdown="1">
+The maintenance section is actually a set of tools that allows you to perform some, let's say, non-day-to-day maintenance tasks.
+Right now (as of version 0.3.1), these are:
+
+- Clear track data cache: this clears the internal cache that this plugin maintains when processing uploaded track files (cannot be undone);
+- Clear all trip summary related data: info, track file data and table records, cache everything (cannot be undone);
+- Detect missing track files: this tool can detect a situation in which you have uploaded a track to a post, but the file no longer exists (cannot detect the reason, though).
+
+To use these maintenance features, simply navigate to `Trip Summary` - `Maintenance` and select the tool you want to run.
+You will be prompted for a confirmation and then the selected tool will start running.
 
 [Back to the Table of Contents](#help-root)
 </div>

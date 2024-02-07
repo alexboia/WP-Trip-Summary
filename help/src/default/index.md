@@ -5,6 +5,7 @@
 - [The Viewer Component](#viewer-component)
 - [The Editor Component](#editor-component)
 - [Configuration & Management](#configuration-management)
+- [Maintenance](#maintenance-component)
 </div>
 
 # General Information {#general-information}
@@ -37,7 +38,8 @@ Depending on the various functions performed by various plug-in components, we c
 
 - The Viewer Component: the box displayed just below the post; this box displayed the kind of information I just mentioned above ([More details here](#viewer-component));
 - The Editor Component: it is attached to the main post editing form and allows adding/modifying/deleting of trip related data ([More details here](#editor-component));
-- The Configuration Component: handles plug-in option management, but also the look-up data management (various lists of values from which one can be selected when filling various selector fields in the trip data editor)([More details here](#configuration-component)).
+- The Configuration Component: handles plug-in option management, but also the look-up data management (various lists of values from which one can be selected when filling various selector fields in the trip data editor)([More details here](#configuration-management));
+- The Maintenance Component: allows you to perform some maintenance-related tasks ([More details here](#maintenance-component)).
 
 [Back to the Table of Contents](#help-root)
 </div>
@@ -60,6 +62,12 @@ Depending on the various functions performed by various plug-in components, we c
 #### Edit post - Trip data - Map {.abp01-gallery-item-header}
 ![Edit post - Trip data - Map]($helpDataDirUrl$/screenshots/admin-edit-map.png "Edit post - Trip data - Map")
 
+#### Edit post - Trip data - Route log listing {.abp01-gallery-item-header}
+![Edit post - Trip data - Route log listing]($helpDataDirUrl$/screenshots/admin-log-entry-listing.png "Edit post - Trip data - Route log listing")
+
+#### Edit post - Trip data - Route log add/edit {.abp01-gallery-item-header}
+![Edit post - Trip data - Route log add/edit]($helpDataDirUrl$/screenshots/admin-log-entry-add.png "Edit post - Trip data - Route log add/edit")
+
 #### Post view - Top teaser {.abp01-gallery-item-header}
 ![Post view - Top teaser]($helpDataDirUrl$/screenshots/viewer-teaser-top.png "Post view - Top teaser")
 
@@ -74,6 +82,12 @@ Depending on the various functions performed by various plug-in components, we c
 
 #### Post listing - Additional info columns {.abp01-gallery-item-header}
 ![Post listing - Additional info columns]($helpDataDirUrl$/screenshots/post-listing-columns.png "Post listing - Additional info columns")
+
+#### Post View - Route log {.abp01-gallery-item-header}
+![Post view - Route log]($helpDataDirUrl$/screenshots/viewer-log-entries.png "Post view - Route log")
+
+#### Maintenance {.abp01-gallery-item-header}
+![Maintenance]($helpDataDirUrl$/screenshots/maintenance.png "Maintenance")
 
 [Back to the Table of Contents](#help-root)
 </div>
@@ -522,6 +536,22 @@ The following should also be noted:
 
 - when adding a new option/item for the default language, the system only requires the label for that language.
 - when adding a new option/item for a specific language, the systems asks requires the label for both that language and the default language.
+
+[Back to the Table of Contents](#help-root)
+</div>
+
+# Maintenance {#maintenance-component}
+
+<div class="abp01-help-section" markdown="1">
+The maintenance section is actually a set of tools that allows you to perform some, let's say, non-day-to-day maintenance tasks.
+Right now (as of version 0.3.1), these are:
+
+- Clear track data cache: this clears the internal cache that this plugin maintains when processing uploaded track files (cannot be undone);
+- Clear all trip summary related data: info, track file data and table records, cache everything (cannot be undone);
+- Detect missing track files: this tool can detect a situation in which you have uploaded a track to a post, but the file no longer exists (cannot detect the reason, though).
+
+To use these maintenance features, simply navigate to `Trip Summary` - `Maintenance` and select the tool you want to run.
+You will be prompted for a confirmation and then the selected tool will start running.
 
 [Back to the Table of Contents](#help-root)
 </div>
