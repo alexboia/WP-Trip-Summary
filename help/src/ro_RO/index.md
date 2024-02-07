@@ -5,6 +5,7 @@
 - [Componenta de Vizualizare](#componenta-vizualizare)
 - [Componenta de Editare](#componenta-editare)
 - [Configurare & Gestiune](#configurare-si-gestiune)
+- [Mentenanță](#componenta-mentenanta)
 </div>
 
 # Detalii Generale {#detalii-generale}
@@ -37,7 +38,8 @@ Cu alte cuvinte, vă puteți documenta (doar) aceste trei tipuri de plimbări.
 
 - Componenta de vizualizare: este caseta afișată imediat sub articol și care prezintă toate informațiile de care am amintit mai sus ([Detalii aici](#componenta-vizualizare));
 - Componenta de editare: este atașată formularului de creare/editare a articolelor și permite modificarea/ștergerea datelor despre traseul parcurs ([Detalii aici](#componenta-editare));
-- Componenta de configurare: se ocupă cu gestiunea opțiunilor generale, dar și cu gestiunea nomenclatoarelor (liste de valori predefinte ce pot fi selectate atunci când se completează datele despre traseul parcurs) ([Detalii aici](#optiuni-de-configurare-si-gestiune)).
+- Componenta de configurare: se ocupă cu gestiunea opțiunilor generale, dar și cu gestiunea nomenclatoarelor (liste de valori predefinte ce pot fi selectate atunci când se completează datele despre traseul parcurs) ([Detalii aici](#configurare-si-gestiune));
+- Componenta de mentenanță: oferă câteva unelte pentru executarea unor operațiuni de mentenanță ([Detalii aici](#componenta-mentenanta)).
 
 [Înapoi la Cuprins](#help-root)
 </div>
@@ -60,6 +62,12 @@ Cu alte cuvinte, vă puteți documenta (doar) aceste trei tipuri de plimbări.
 #### Editare articol - Sumar tehnic - Harta {.abp01-gallery-item-header}
 ![Editare articol - Sumar tehnic - Harta]($helpDataDirUrl$/screenshots/admin-edit-map.png "Editare articol - Sumar tehnic - Harta")
 
+#### Editare articol - Jurnal - Listare înregistrări jurnal {.abp01-gallery-item-header}
+![Editare articol - Jurnal - Listare înregistrări jurnal]($helpDataDirUrl$/screenshots/admin-log-entry-listing.png "Editare articol - Jurnal - Listare înregistrări jurnal")
+
+#### Editare articol - Jurnal - Adăugare înregistrare jurnal {.abp01-gallery-item-header}
+![Editare articol - Jurnal - Adăugare înregistrare jurnal]($helpDataDirUrl$/screenshots/admin-log-entry-add.png "Editare articol - Jurnal - Adăugare înregistrare jurnal")
+
 #### Articol - Teaser-ul din partea de sus {.abp01-gallery-item-header}
 ![Articol - Teaser-ul din partea de sus]($helpDataDirUrl$/screenshots/viewer-teaser-top.png "Articol - Teaser-ul din partea de sus")
 
@@ -74,6 +82,9 @@ Cu alte cuvinte, vă puteți documenta (doar) aceste trei tipuri de plimbări.
 
 #### Listare articole - Coloane informationale {.abp01-gallery-item-header}
 ![Listare articole - Coloane informationale]($helpDataDirUrl$/screenshots/post-listing-columns.png "Listare articole - Coloane informationale")
+
+#### Articol - Jurnal {.abp01-gallery-item-header}
+![Articol - Jurnal]($helpDataDirUrl$/screenshots/viewer-log-entries.png "Articol - Jurnal")
 
 #### Pagina de mentenanță {.abp01-gallery-item-header}
 ![Pagina de mentenanță]($helpDataDirUrl$/screenshots/maintenance.png "Pagina de mentenanță")
@@ -535,6 +546,22 @@ Următoarele operațiuni sunt disponibile, fiecare dintre ele în contextul unei
 
 De notat că atunci când se adaugă un item pentru limba implicită sistemul cere eticheta doar pentru aceasta. 
 Pe de altă parte, când se adaugă un item pentru o limbă anume (ex. Română, Engleză etc.), sistemul cere eticheta atât pentru limba implicită, cât și pentru limba selectată.
+
+[Înapoi la Cuprins](#help-root)
+</div>
+
+# Mentenanță {#componenta-mentenanta}
+
+<div class="abp01-help-section" markdown="1">
+Secțiunea de întreținere este de fapt un set de unelte care îți permite să efectuezi unele operațiuni speciale de întreținere (care nu sunt de zi cu zi).
+În acest moment (versiunea 0.3.1), acestea sunt:
+
+- `Șterge cache-ul track-urilor`: aceasta șterge cache-ul intern pe care acest plugin îl menține atunci când procesează fișierele de urmărire încărcate (nu poate fi anulată);
+- `Șterge toate informațiile specifice modulului`: informații, datele fișierului de urmărire și înregistrările din tabel, cache totul (nu poate fi anulat);
+- `Detectează post-urile cu track-uri lipsă`: acest instrument poate detecta o situație în care ai încărcat un fișier de urmărire într-o postare, dar fișierul nu mai există (nu poate detecta motivul, însă).
+
+Pentru a utiliza aceste caracteristici de întreținere, navighează simplu la `WP Trip Summary` - `Mentenanță` și selectează instrumentul pe care vrei să-l rulezi.
+Ți se va cere o confirmare, iar apoi instrumentul selectat va fi rulat.
 
 [Înapoi la Cuprins](#help-root)
 </div>

@@ -546,9 +546,9 @@ The following should also be noted:
 The maintenance section is actually a set of tools that allows you to perform some, let's say, non-day-to-day maintenance tasks.
 Right now (as of version 0.3.1), these are:
 
-- Clear track data cache: this clears the internal cache that this plugin maintains when processing uploaded track files (cannot be undone);
-- Clear all trip summary related data: info, track file data and table records, cache everything (cannot be undone);
-- Detect missing track files: this tool can detect a situation in which you have uploaded a track to a post, but the file no longer exists (cannot detect the reason, though).
+- `Clear track data cache`: this clears the internal cache that this plugin maintains when processing uploaded track files (cannot be undone);
+- `Clear all trip summary related data`: info, track file data and table records, cache everything (cannot be undone);
+- `Detect missing track files`: this tool can detect a situation in which you have uploaded a track to a post, but the file no longer exists (cannot detect the reason, though).
 
 To use these maintenance features, simply navigate to `Trip Summary` - `Maintenance` and select the tool you want to run.
 You will be prompted for a confirmation and then the selected tool will start running.
