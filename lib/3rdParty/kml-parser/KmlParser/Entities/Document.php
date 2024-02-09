@@ -3,78 +3,40 @@ declare(strict_types = 1);
 
 namespace StepanDalecky\KmlParser\Entities;
 
+use StepanDalecky\KmlParser\EntityTagNames;
 use StepanDalecky\XmlElement\Element;
 
-class Document extends Entity
-{
-
-	public function getId(): string
-	{
-		return $this->element->getAttribute('id');
-	}
-
-	public function hasId(): bool
-	{
-		return $this->element->hasAttribute('id');
-	}
-
-	public function getName(): string
-	{
-		return $this->element->getChild('name')->getValue();
-	}
-
-	public function hasName(): bool
-	{
-		return $this->element->hasChild('name');
-	}
-
-	public function getDescription(): string
-	{
-		return $this->element->getChild('description')->getValue();
-	}
-
-	public function hasDescription(): bool
-	{
-		return $this->element->hasChild('description');
-	}
-
+class Document extends Container {
 	/**
 	 * @return Style[]
 	 */
-	public function getStyles(): array
-	{
+	public function getStyles(): array {
+		if (!$this->hasStyles()) {
+			return array();
+		}
+
 		return array_map(function (Element $element) {
 			return new Style($element);
-		}, $this->element->getChildren('Style'));
+		}, $this->element->getChildren(EntityTagNames::Style));
 	}
 
-	public function getStyleMap(): StyleMap
-	{
-		return new StyleMap($this->element->getChild('StyleMap'));
+	public function hasStyles(): bool {
+		return $this->element->hasChild(EntityTagNames::Style);
 	}
 
-	public function hasStyleMap(): bool
-	{
-		return $this->element->hasChild('StyleMap');
+	public function getStyleMap(): StyleMap {
+		return new StyleMap($this->element->getChild(EntityTagNames::StyleMap));
 	}
 
-	public function getSchema(): Schema
-	{
-		return new Schema($this->element->getChild('Schema'));
+	public function hasStyleMap(): bool {
+		return $this->element->hasChild(EntityTagNames::StyleMap);
 	}
 
-	public function hasSchema(): bool
-	{
-		return $this->element->hasChild('Schema');
+	public function getSchema(): Schema {
+		return new Schema($this->element->getChild(EntityTagNames::Schema));
 	}
 
-	/**
-	 * @return Folder[]
-	 */
-	public function getFolders(): array
-	{
-		return array_map(function (Element $element) {
-			return new Folder($element);
-		}, $this->element->getChildren('Folder'));
+	public function hasSchema(): bool {
+		return $this->element->hasChild(EntityTagNames::Schema);
 	}
 }

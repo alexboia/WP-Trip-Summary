@@ -3,66 +3,91 @@ declare(strict_types = 1);
 
 namespace StepanDalecky\KmlParser\Entities;
 
-class Placemark extends Entity
-{
+use StepanDalecky\KmlParser\EntityTagNames;
 
-	public function getName(): string
-	{
-		return $this->element->getChild('name')->getValue();
+class Placemark extends Feature {
+
+	public function getStyle(): Style|null {
+		if (!$this->hasStyle()) {
+			return null;
+		}
+
+		return new Style($this->element->getChild(EntityTagNames::Style));
 	}
 
-	public function hasName(): bool
-	{
-		return $this->element->hasChild('name');
+	public function hasStyle(): bool {
+		return $this->element->hasChild(EntityTagNames::Style);
 	}
 
-	public function getDescription(): string
-	{
-		return $this->element->getChild('description')->getValue();
+	public function getPoint(): Point|null {
+		if (!$this->hasPoint()) {
+			return null;
+		}
+
+		return new Point($this->element->getChild(EntityTagNames::Point));
 	}
 
-	public function hasDescription(): bool
-	{
-		return $this->element->hasChild('description');
+	public function hasPoint(): bool {
+		return $this->element->hasChild(EntityTagNames::Point);
 	}
 
-	public function getStyleUrl(): string
-	{
-		return $this->element->getChild('styleUrl')->getValue();
+	public function getExtendedData(): ExtendedData|null {
+		if (!$this->hasExtendedData()) {
+			return null;
+		}
+
+		return new ExtendedData($this->element->getChild(EntityTagNames::ExtendedData));
 	}
 
-	public function hasStyleUrl(): bool
-	{
-		return $this->element->hasChild('styleUrl');
+	public function hasExtendedData(): bool {
+		return $this->element->hasChild(EntityTagNames::ExtendedData);
 	}
 
-	public function getStyle(): Style
-	{
-		return new Style($this->element->getChild('Style'));
+	public function getLineString(): LineString|null {
+		if (!$this->hasLineString()) {
+			return null;
+		}
+
+		return new LineString($this->element->getChild(EntityTagNames::LineString));
 	}
 
-	public function hasStyle(): bool
-	{
-		return $this->element->hasChild('Style');
+	public function hasLineString(): bool {
+		return $this->element->hasChild(EntityTagNames::LineString);
 	}
 
-	public function getPoint(): Point
-	{
-		return new Point($this->element->getChild('Point'));
+	public function getLinearRing(): LinearRing|null {
+		if (!$this->hasLinearRing()) {
+			return null;
+		}
+
+		return new LinearRing($this->element->getChild(EntityTagNames::LinearRing));
 	}
 
-	public function hasPoint(): bool
-	{
-		return $this->element->hasChild('Point');
+	public function hasLinearRing(): bool {
+		return $this->element->hasChild(EntityTagNames::LinearRing);
 	}
 
-	public function getExtendedData(): ExtendedData
-	{
-		return new ExtendedData($this->element->getChild('ExtendedData'));
+	public function getPolygon(): Polygon|null {
+		if (!$this->hasPolygon()) {
+			return null;
+		}
+
+		return new Polygon($this->element->getChild(EntityTagNames::Polygon));
 	}
 
-	public function hasExtendedData(): bool
-	{
-		return $this->element->hasChild('ExtendedData');
+	public function hasPolygon(): bool {
+		return $this->element->hasChild(EntityTagNames::Polygon);
+	}
+
+	public function getMultiGeometry(): MultiGeometry|null {
+		if (!$this->hasMultiGeometry()) {
+			return null;
+		}
+
+		return new MultiGeometry($this->element->getChild(EntityTagNames::MultiGeometry));
+	}
+
+	public function hasMultiGeometry(): bool {
+		return $this->element->hasChild(EntityTagNames::MultiGeometry);
 	}
 }

@@ -3,11 +3,16 @@ declare(strict_types = 1);
 
 namespace StepanDalecky\KmlParser\Entities;
 
-class Point extends Entity
-{
+class Point extends Geometry {
+	public function getCoordinates(): Coordinate|null {
+		if (!$this->hasCoordinates()) {
+			return null;
+		}
 
-	public function getCoordinates(): string
-	{
-		return $this->element->getChild('coordinates')->getValue();
+		return new Coordinate($this->element->getChild('coordinates'));
+	}
+
+	public function hasCoordinates(): bool {
+		return $this->element->hasChild('coordinates');
 	}
 }

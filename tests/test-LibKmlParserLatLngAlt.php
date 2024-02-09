@@ -1,5 +1,7 @@
 <?php
 
+use StepanDalecky\KmlParser\Entities\LineString;
+use StepanDalecky\KmlParser\LatLngAlt;
 use StepanDalecky\KmlParser\Parser;
 use Yoast\PHPUnitPolyfills\Polyfills\ExpectException;
 
@@ -33,18 +35,48 @@ use Yoast\PHPUnitPolyfills\Polyfills\ExpectException;
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
- class LibKmlParserTests extends WP_UnitTestCase {
+ class LibKmlParserLatLngAltTests extends WP_UnitTestCase {
 	use GenericTestHelpers;
-	use TestDataFileHelpers;
 
-	public function test_handParseKml() {
-		$fileContents = $this->_readTestDataFileContents('test-kml-document-as-root-no-folders.kml'); 
-		$kmlParser = Parser::fromString($fileContents);
-		$kml = $kmlParser->getKml();
-		$document = $kml->getDocument();
+	public function test_canParseTupleString_withAlt() {
+		$latLng = new LatLngAlt('-90.86948943473118,48.25450093195546,110');
+
+		$this->assertTrue($latLng->hasLongitude());
+		$this->assertTrue($latLng->hasLatitude());
+		$this->assertTrue($latLng->hasAltitude());
+
+		$this->assertEquals(-90.86948943473118, $latLng->getLongitude(), '', 0.0001);
+		$this->assertEquals(48.25450093195546, $latLng->getLatitude(), '', 0.0001);
+		$this->assertEquals(110, $latLng->getAltitude(), '', 0.0001);
+
+		$this->assertFalse($latLng->isEmpty());
 	}
 
-	protected static function _getRootTestsDir() {
-		return __DIR__;
-	}	
+	public function test_canParseTupleString_withoutAlt() {
+		$latLng = new LatLngAlt('-90.86948943473118,48.25450093195546');
+
+		$this->assertTrue($latLng->hasLongitude());
+		$this->assertTrue($latLng->hasLatitude());
+		$this->assertFalse($latLng->hasAltitude());
+
+		$this->assertEquals(-90.86948943473118, $latLng->getLongitude(), '', 0.0001);
+		$this->assertEquals(48.25450093195546, $latLng->getLatitude(), '', 0.0001);
+		$this->assertNull($latLng->getAltitude());
+
+		$this->assertFalse($latLng->isEmpty());
+	}
+
+	public function test_tryParseEmptyTupleString() {
+		$latLng = new LatLngAlt('');
+
+		$this->assertFalse($latLng->hasLongitude());
+		$this->assertFalse($latLng->hasLatitude());
+		$this->assertFalse($latLng->hasAltitude());
+
+		$this->assertNull($latLng->getLongitude());
+		$this->assertNull($latLng->getLatitude());
+		$this->assertNull($latLng->getAltitude());
+
+		$this->assertTrue($latLng->isEmpty());
+	}
  }

@@ -5,26 +5,35 @@ namespace StepanDalecky\XmlElement;
 
 use StepanDalecky\XmlElement\Exceptions\UnexpectedXmlStructureException;
 
-class Element
-{
-
+class Element {
 	/**
 	 * @var \SimpleXMLElement
 	 */
 	private $xmlElement;
 
-	public function __construct(\SimpleXMLElement $xmlElement)
-	{
+	public function __construct(\SimpleXMLElement $xmlElement) {
 		$this->xmlElement = $xmlElement;
 	}
 
-	public static function fromString(string $xmlString): self
-	{
+	public static function fromString(string $xmlString): self {
 		return new self(new \SimpleXMLElement($xmlString));
 	}
 
-	public function getChild(string $name): self
-	{
+	public function countChildren($name = null): int {
+		if (empty($name)) {
+			return $this->xmlElement->count();
+		}
+		
+		$count = 0;
+
+		if (isset($this->xmlElement->{$name})) {
+			$count = $this->xmlElement->{$name}->count();
+		}
+
+		return $count;
+	}
+
+	public function getChild(string $name): self {
 		if (!isset($this->xmlElement->{$name})) {
 			throw new UnexpectedXmlStructureException(sprintf(
 				'There is no <%s> element nested in <%s> element.',
@@ -50,8 +59,7 @@ class Element
 	 * @param string $name
 	 * @return self[]
 	 */
-	public function getChildren(string $name): array
-	{
+	public function getChildren(string $name): array {
 		if (!$this->hasChild($name)) {
 			throw new UnexpectedXmlStructureException(sprintf(
 				'There are no <%s> elements nested in <%s> element.',
@@ -69,27 +77,26 @@ class Element
 		return $elements;
 	}
 
-	public function hasChild(string $name): bool
-	{
+	public function hasChild(string $name): bool {
 		return isset($this->xmlElement->{$name});
 	}
 
-	public function hasChildren(): bool
-	{
-		foreach ($this->xmlElement as $key => $value) {
-			return true;
-		}
-
-		return false;
+	public function hasChildren($name = null): bool {
+		if (empty($name)) {
+			foreach ($this->xmlElement as $key => $value) {
+				return true;
+			}
+			return false;
+		} else {
+			return $this->countChildren($name) > 0;
+		}		
 	}
 
-	public function getValue(): string
-	{
+	public function getValue(): string {
 		return (string) $this->xmlElement;
 	}
 
-	public function getAttribute(string $name): string
-	{
+	public function getAttribute(string $name): string {
 		if (!$this->hasAttribute($name)) {
 			throw new UnexpectedXmlStructureException(sprintf(
 				'Attribute "%s" does not exists in <%s> element.',
@@ -104,8 +111,7 @@ class Element
 	/**
 	 * @return string[] [<attribute name> => <attribute value>, ...]
 	 */
-	public function getAttributes(): array
-	{
+	public function getAttributes(): array {
 		$attributes = [];
 		/**
 		 * @var string $name
@@ -118,18 +124,15 @@ class Element
 		return $attributes;
 	}
 
-	public function hasAttribute(string $name): bool
-	{
+	public function hasAttribute(string $name): bool {
 		return isset($this->xmlElement[$name]);
 	}
 
-	public function hasAttributes(): bool
-	{
+	public function hasAttributes(): bool {
 		return (bool) $this->getAttributes();
 	}
 
-	private function getName(): string
-	{
+	private function getName(): string {
 		return $this->xmlElement->getName();
 	}
 }
