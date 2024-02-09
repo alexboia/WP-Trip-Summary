@@ -1,6 +1,7 @@
 <?php
 
 use StepanDalecky\KmlParser\Entities\Kml;
+use StepanDalecky\KmlParser\Exceptions\InvalidKmlRootElementException;
 use StepanDalecky\KmlParser\Parser;
 use Yoast\PHPUnitPolyfills\Polyfills\ExpectException;
 
@@ -35,6 +36,7 @@ use Yoast\PHPUnitPolyfills\Polyfills\ExpectException;
  */
 
  class LibKmlParserTests extends WP_UnitTestCase {
+	use ExpectException;
 	use GenericTestHelpers;
 	use TestDataFileHelpers;
 
@@ -49,6 +51,12 @@ use Yoast\PHPUnitPolyfills\Polyfills\ExpectException;
 	private function _assertEmptyKml(Kml $kml) {
 		$this->assertFalse($kml->hasDocument());
 		$this->assertFalse($kml->hasFolder());
+	}
+
+	public function test_tryParseKmlFileWithInvalidRoot_shouldThrowException() {
+		$this->expectException(InvalidKmlRootElementException::class);
+		$fileContents = $this->_readTestDataFileContents('test-kml-invalidRoot.kml'); 
+		Parser::fromString($fileContents);
 	}
 
 	public function test_canParseKml_documentAsRoot_noFolders_singlePlacemark() {
@@ -117,5 +125,5 @@ use Yoast\PHPUnitPolyfills\Polyfills\ExpectException;
 
 	protected static function _getRootTestsDir() {
 		return __DIR__;
-	}	
+	}
  }
