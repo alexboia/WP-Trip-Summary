@@ -132,7 +132,11 @@ class Element {
 		return (bool) $this->getAttributes();
 	}
 
-	private function getName(): string {
+	public function getName(): string {
 		return $this->xmlElement->getName();
+	}
+
+	public function is(string $tagName): bool {
+		return strtolower($this->getName()) === strtolower($tagName);
 	}
 }

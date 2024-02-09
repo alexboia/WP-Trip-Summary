@@ -1,10 +1,5 @@
 <?php
-
-use StepanDalecky\KmlParser\Entities\LineString;
-use StepanDalecky\KmlParser\LatLngAlt;
 use StepanDalecky\KmlParser\LatLngAltCollection;
-use StepanDalecky\KmlParser\Parser;
-use Yoast\PHPUnitPolyfills\Polyfills\ExpectException;
 
 /**
  * Copyright (c) 2014-2024 Alexandru Boia and Contributors

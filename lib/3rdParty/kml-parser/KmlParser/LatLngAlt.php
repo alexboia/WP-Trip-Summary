@@ -11,6 +11,10 @@ namespace StepanDalecky\KmlParser {
 
 		const MAX_LATITUDE = 90;
 
+		const MIN_ALTITUDE = -PHP_FLOAT_MAX;
+
+		const MAX_ALTITUDE = PHP_FLOAT_MAX;
+
 		private $longitude = null;
 
 		private $latitude = null;
@@ -58,7 +62,7 @@ namespace StepanDalecky\KmlParser {
 		}
 
 		private function isValidAltitude($altitude): bool {
-			return !is_null($altitude) && $altitude > PHP_FLOAT_MIN && $altitude < PHP_FLOAT_MAX;
+			return !is_null($altitude) && $altitude > self::MIN_ALTITUDE && $altitude < self::MAX_ALTITUDE;
 		}
 
 		public function getLatitude(): float|null {

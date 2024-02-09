@@ -5,6 +5,7 @@ namespace StepanDalecky\KmlParser;
 
 use StepanDalecky\KmlParser\Entities\Entity;
 use StepanDalecky\KmlParser\Entities\Kml;
+use StepanDalecky\KmlParser\Exceptions\InvalidKmlRootElementException;
 use StepanDalecky\XmlElement\Element;
 
 class Parser extends Entity {
@@ -18,6 +19,10 @@ class Parser extends Entity {
 
 	public static function fromString(string $string): self {
 		$element = new Element(new \SimpleXMLElement($string));
-		return new self($element);
+		if ($element->is('kml')) {
+			return new self($element);
+		} else {
+			throw new InvalidKmlRootElementException($element->getName());
+		}
 	}
 }
