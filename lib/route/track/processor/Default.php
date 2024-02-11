@@ -38,6 +38,8 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
 
 	const GPX_FILE_EXTENSION = 'gpx';
 
+	const KML_FILE_EXTENSION = 'kml';
+
 	const DEFAULT_FILE_EXTENSION = 'dat';
 	
 	/**
@@ -60,6 +62,8 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
 			Abp01_KnownMimeTypes::getGpxDocumentMimeTypes());
 		$this->_registerExtensionForMimeTypes(self::GEOJSON_FILE_EXTENSION, 
 			Abp01_KnownMimeTypes::getGeoJsonDocumentMimeTypes());
+		$this->_registerExtensionForMimeTypes(self::KML_FILE_EXTENSION, 
+			Abp01_KnownMimeTypes::getKmlDocumentMimeTypes());
 	}
 
 	private function _registerExtensionForMimeTypes($extension, array $mimeTypes) {

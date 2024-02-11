@@ -9,10 +9,10 @@ class Point extends Geometry {
 			return null;
 		}
 
-		return new Coordinate($this->element->getChild('coordinates'));
+		return new Coordinate($this->element->getChild(self::TagCoordinates));
 	}
 
 	public function hasCoordinate(): bool {
-		return $this->element->hasChild('coordinates');
+		return $this->element->hasChild(self::TagCoordinates);
 	}
 }

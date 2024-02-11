@@ -38,7 +38,7 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
 class Abp01_Route_Track_DocumentParser_GeoJson implements Abp01_Route_Track_DocumentParser {
@@ -68,8 +68,8 @@ class Abp01_Route_Track_DocumentParser_GeoJson implements Abp01_Route_Track_Docu
 
 	public function __construct() {
 		if (!self::isSupported()) {
-            throw new Exception('The GeoJson parser requirements are not met');
-        }
+			throw new Exception('The GeoJson parser requirements are not met');
+		}
 	}
 
 	public static function isSupported() {
@@ -83,10 +83,10 @@ class Abp01_Route_Track_DocumentParser_GeoJson implements Abp01_Route_Track_Docu
 		return $sourceString;
 	}
 
-    public function parse($sourceString) { 
+	public function parse($sourceString) { 
 		if ($sourceString === null || empty($sourceString)) {
-            throw new InvalidArgumentException('Empty GeoJson string');
-        }
+			throw new InvalidArgumentException('Empty GeoJson string');
+		}
 
 		$document = null;
 		$geoJsonObject = $this->_deserializeGeoJsonSource($sourceString);
@@ -124,8 +124,8 @@ class Abp01_Route_Track_DocumentParser_GeoJson implements Abp01_Route_Track_Docu
 		}
 
 		return $document instanceof Abp01_Route_Track_Document 
-            ? $document 
-            : null;
+			? $document 
+			: null;
 	}
 
 	private function _deserializeGeoJsonSource($sourceString) {
@@ -600,6 +600,6 @@ class Abp01_Route_Track_DocumentParser_GeoJson implements Abp01_Route_Track_Docu
 	}
 
 	public function getDefaultMimeType() {
-        return 'application/geo+json';
-    }
+		return 'application/geo+json';
+	}
 }

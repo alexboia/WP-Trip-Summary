@@ -50,21 +50,53 @@ class MimeReader {
 		$unknown = null,
 		$html = null;
 
-	public function __construct( $file ) {
-		$this->file = $file;
-		$this->num_bytes = 512;
-
-		if (empty(self::$binary_characters)) {
-			self::$binary_characters .= "\x00\x01\x02\x03\x04\x05\x06\x07\0x08\x0B\x0E\x0F\x10\x11";
-			self::$binary_characters .= "\x12\x13\x14\x15\x16\x17\x18\x19\x1A\x1C\x1D\x1E\x1F";
-		}
-		if (empty(self::$whitespace_characters)) {
-			self::$whitespace_characters .= "\x09\x0A\x0C\x0D\x20";
-		}
-		if (empty(self::$tag_terminating_characters)) {
-			self::$tag_terminating_characters .= "\x20\x3E";
+	private function _is_gpx_xml_subtype() {
+		if (empty($this->header)) {
+			return false;
 		}
 
+		return stripos($this->header, '<gpx') !== false;
+	}
+
+	private function _is_kml_xml_subtype() {
+		if (empty($this->header)) {
+			return false;
+		}
+
+		return stripos($this->header, '<kml') !== false;
+	}
+
+	private function _is_geojson_json_subtype() {
+		if (empty($this->header)) {
+			return false;
+		}
+
+		return $this->_has_test_geojson_keywords($this->header)
+			|| $this->_has_test_geojson_keywords($this->footer);
+	}
+
+	private function _has_test_geojson_keywords($testString) {
+		$testType = '"type"';
+		if (stripos($testString, $testType) === false) {
+			return false;
+		}
+
+		$additionalKeywords = array(
+			'features', 
+			'geometry'
+		);
+
+		foreach ($additionalKeywords as $kw) {
+			$testKw = sprintf('"%s"', $kw);
+			if (stripos($testString, $testKw) !== false) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private function _init_image_definitions() {
 		if (is_null(self::$image)) {
 			$image = &self::$image;
 			$image = array();
@@ -126,7 +158,9 @@ class MimeReader {
 				'ignore' => ''
 			);
 		}
+	}
 
+	private function _init_media_definitions() {
 		if (is_null(self::$media)) {
 			$media = &self::$media;
 			$media = array();
@@ -195,7 +229,9 @@ class MimeReader {
 				'ignore' => ''
 			);
 		}
+	}
 
+	private function _init_font_definitions() {
 		if (is_null(self::$fonts)) {
 			$fonts = &self::$fonts;
 			$fonts = array();
@@ -238,6 +274,9 @@ class MimeReader {
 				'ignore' => ''
 			);
 		}
+	}
+
+	private function _init_archive_definitions() {
 		if (is_null(self::$archive)) {
 			$archive = &self::$archive;
 			$archive = array();
@@ -264,75 +303,108 @@ class MimeReader {
 				'ignore' => ''
 			);
 		}
+	}
 
+	private function _init_xml_definitions() {
 		if (is_null(self::$xml)) {
 			$xml = &self::$xml;
 			$xml = array();
+
+			$refine_xml_sniffing = function() {
+				if ($this->_is_gpx_xml_subtype()) {
+					return 'application/x-gpx+xml';
+				} else if ($this->_is_kml_xml_subtype()) {
+					return 'application/vnd.google-earth.kml+xml';
+				} else {
+					return null;
+				}
+			};
 
 			// UTF-16 Big Endian BOM XML
 			$xml[] = array (
 				'mime' => 'text/xml',
 				'pattern' => "\xFF\xFE\x3C\x3F\x78\x6D\x6C",
 				'mask' => "\xFF\xFF\xFF\xFF\xFF\xFF\xFF",
-				'ignore' => self::$whitespace_characters
+				'ignore' => self::$whitespace_characters,
+				'refine' => $refine_xml_sniffing
 			);
+
 			// UTF-16 Little Endian BOM XML
 			$xml[] = array (
 				'mime' => 'text/xml',
 				'pattern' => "\xFE\xFF\x3C\x3F\x78\x6D\x6C",
 				'mask' => "\xFF\xFF\xFF\xFF\xFF\xFF\xFF",
-				'ignore' => self::$whitespace_characters
+				'ignore' => self::$whitespace_characters,
+				'refine' => $refine_xml_sniffing
 			);
 			// UTF-8 BOM XML
 			$xml[] = array (
 				'mime' => 'text/xml',
 				'pattern' => "\xEF\xBB\xBF\x3C\x3F\x78\x6D\x6C",
 				'mask' => "\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF",
-				'ignore' => self::$whitespace_characters
+				'ignore' => self::$whitespace_characters,
+				'refine' => $refine_xml_sniffing
 			);
 			// No BOM XML
 			$xml[] = array (
 				'mime' => 'text/xml',
 				'pattern' => "\x3C\x3F\x78\x6D\x6C",
 				'mask' => "\xFF\xFF\xFF\xFF\xFF",
-				'ignore' => self::$whitespace_characters
+				'ignore' => self::$whitespace_characters,
+				'refine' => $refine_xml_sniffing
 			);
 		}
+	}
 
+	private function _init_json_definitions() {
 		if (is_null(self::$json)) {
 			$json = &self::$json;
 			$json = array();
+
+			$refine_json_sniffing = function() {
+				if ($this->_is_geojson_json_subtype()) {
+					return 'application/geo+json';
+				} else {
+					return null;
+				}
+			};
 
 			// UTF-16 Big Endian BOM JSON
 			$json[] = array (
 				'mime' => 'application/json',
 				'pattern' => "\xFF\xFE\x7B",
 				'mask' => "\xFF\xFF\xFF",
-				'ignore' => self::$whitespace_characters
+				'ignore' => self::$whitespace_characters,
+				'refine' => $refine_json_sniffing
 			);
 			// UTF-16 Little Endian BOM JSON
 			$json[] = array (
 				'mime' => 'application/json',
 				'pattern' => "\xFE\xFF\x7B",
 				'mask' => "\xFF\xFF\xFF",
-				'ignore' => self::$whitespace_characters
+				'ignore' => self::$whitespace_characters,
+				'refine' => $refine_json_sniffing
 			);
 			// UTF-8 BOM JSON
 			$json[] = array (
 				'mime' => 'application/json',
 				'pattern' => "\xEF\xBB\xBF\x7B",
 				'mask' => "\xFF\xFF\xFF\xFF",
-				'ignore' => self::$whitespace_characters
+				'ignore' => self::$whitespace_characters,
+				'refine' => $refine_json_sniffing
 			);
 			// No BOM text
 			$json[] = array (
 				'mime' => 'application/json',
 				'pattern' => "\x7B",
 				'mask' => "\xFF",
-				'ignore' => self::$whitespace_characters
+				'ignore' => self::$whitespace_characters,
+				'refine' => $refine_json_sniffing
 			);
 		}
+	}
 
+	private function _init_plain_text_definitions() {
 		if (is_null(self::$text)) {
 			$text = &self::$text;
 			$text = array();
@@ -366,12 +438,16 @@ class MimeReader {
 				'ignore' => ''
 			);
 		}
+	}
 
+	private function _init_others_definitions() {
 		if (is_null(self::$others)) {
-			$others        = &self::$others;
-			$others        = array();
+			$others = &self::$others;
+			$others = array();
 		}
+	}
 
+	private function _init_office_definitions() {
 		if (is_null(self::$ms_office)) {
 			$office = &self::$ms_office;
 			$office = array();
@@ -391,7 +467,9 @@ class MimeReader {
 				'ignore' => ''
 			);
 		}
+	}
 
+	private function _init_unknown_definitions() {
 		if (is_null(self::$unknown)) {
 			$unknown = &self::$unknown;
 			$unknown = array();
@@ -523,6 +601,33 @@ class MimeReader {
 				'ignore' => ''
 			);
 		}
+	}
+
+	public function __construct($file, $numBytesToRead = 512) {
+		$this->file = $file;
+		$this->num_bytes = $numBytesToRead;
+
+		if (empty(self::$binary_characters)) {
+			self::$binary_characters .= "\x00\x01\x02\x03\x04\x05\x06\x07\0x08\x0B\x0E\x0F\x10\x11";
+			self::$binary_characters .= "\x12\x13\x14\x15\x16\x17\x18\x19\x1A\x1C\x1D\x1E\x1F";
+		}
+		if (empty(self::$whitespace_characters)) {
+			self::$whitespace_characters .= "\x09\x0A\x0C\x0D\x20";
+		}
+		if (empty(self::$tag_terminating_characters)) {
+			self::$tag_terminating_characters .= "\x20\x3E";
+		}
+
+		$this->_init_image_definitions();
+		$this->_init_media_definitions();
+		$this->_init_font_definitions();
+		$this->_init_archive_definitions();
+		$this->_init_xml_definitions();
+		$this->_init_json_definitions();
+		$this->_init_plain_text_definitions();
+		$this->_init_others_definitions();
+		$this->_init_office_definitions();
+		$this->_init_unknown_definitions();
 
 		$this->read_resource_header();
 		$this->read_resource_footer();
@@ -628,14 +733,14 @@ class MimeReader {
 		if (is_string( $this->file)) {
 			$fp = fopen($this->file, 'rb');
 			fseek($fp, -$this->num_bytes, SEEK_END);
-			$footer = fread($fp,  $this->num_bytes);
+			$footer = fread($fp, $this->num_bytes);
 			fclose($fp);
 		} else {
 			// The current position may not be at the end. Let's take it then set to
 			//  end of file, read {$num_bytes} bytes then reset to last position.
-			$position = ftell( $this->file );
+			$position = ftell($this->file);
 			fseek($this->file, -$this->num_bytes, SEEK_END);
-			$footer = fread($this->file,  $this->num_bytes);
+			$footer = fread($this->file, $this->num_bytes);
 			fseek($this->file, $position, SEEK_SET);
 		}
 
@@ -760,9 +865,11 @@ class MimeReader {
 		if ($this->sniff_archive()) {
 			return;
 		}
+		
 		if ($this->sniff_xml()) {
 			return;
 		}
+
 		if ($this->sniff_json()) {
 			return;
 		}
@@ -981,11 +1088,21 @@ class MimeReader {
 			$x = &self::$xml[$i];
 			if ($this->match_pattern($x['pattern'], $x['mask'], $x['ignore'])) {
 				$this->detected_type = $x['mime'];
+				$this->_refine_sniffing($x);
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	private function _refine_sniffing($x) {
+		if (isset($x['refine']) && is_callable($x['refine'])) {
+			$refined_type = $x['refine']();
+			if (!empty($refined_type)) {
+				$this->detected_type = $refined_type;
+			}
+		}
 	}
 
 	protected function sniff_json() {
@@ -994,6 +1111,7 @@ class MimeReader {
 			$x = &self::$json[$i];
 			if ($this->match_pattern($x['pattern'], $x['mask'], $x['ignore'])) {
 				$this->detected_type = $x['mime'];
+				$this->_refine_sniffing($x);
 				return true;
 			}
 		}

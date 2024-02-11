@@ -6,13 +6,17 @@ namespace StepanDalecky\KmlParser\Entities;
 use StepanDalecky\KmlParser\EntityTagNames;
 
 class Polygon extends Geometry {
+	const TagOuterBoundary = 'outerBoundaryIs';
+
+	const TagInnerBoundary = 'innerBoundaryIs';
+
 	public function getOuterBoundary(): LinearRing| null {
 		if (!$this->hasOuterBoundary()) {
 			return null;
 		}
 
 		$linearRingElem = $this->element
-			->getChild('outerBoundaryIs')
+			->getChild(self::TagOuterBoundary)
 			->getChild(EntityTagNames::LinearRing);
 
 		return new LinearRing($linearRingElem);
@@ -20,11 +24,11 @@ class Polygon extends Geometry {
 
 	public function hasOuterBoundary() {
 		$hasContainer = $this->element
-			->hasChild('outerBoundaryIs');
+			->hasChild(self::TagOuterBoundary);
 
 		if ($hasContainer) {
 			return $this->element
-				->getChild('outerBoundaryIs')
+				->getChild(self::TagOuterBoundary)
 				->hasChild(EntityTagNames::LinearRing);
 		} else {
 			return false;
@@ -41,7 +45,7 @@ class Polygon extends Geometry {
 
 		/** @var LinearRing[] $innerBoundaryLinearRings */
 		$innerBoundaryLinearRings = array();
-		$innerBoundaryElems = $this->element->getChildren('innerBoundaryIs');
+		$innerBoundaryElems = $this->element->getChildren(self::TagInnerBoundary);
 
 		foreach ($innerBoundaryElems as $innerBoundaryElem) {
 			if ($innerBoundaryElem->hasChild(EntityTagNames::LinearRing)) {
@@ -54,6 +58,6 @@ class Polygon extends Geometry {
 	}
 
 	public function hasInnerBoundary() {
-		return $this->element->hasChild('innerBoundaryIs');
+		return $this->element->hasChild(self::TagInnerBoundary);
 	}
 }

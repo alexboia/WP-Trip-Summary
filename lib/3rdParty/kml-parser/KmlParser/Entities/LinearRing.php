@@ -9,10 +9,10 @@ class LinearRing extends Geometry {
 			return null;
 		}
 
-		return new Coordinates($this->element->getChild('coordinates'));
+		return new Coordinates($this->element->getChild(self::TagCoordinates));
 	}
 
 	public function hasCoordinates(): bool {
-		return $this->element->hasChild('coordinates');
+		return $this->element->hasChild(self::TagCoordinates);
 	}
 }

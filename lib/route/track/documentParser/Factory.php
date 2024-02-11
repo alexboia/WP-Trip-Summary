@@ -42,6 +42,9 @@ class Abp01_Route_Track_DocumentParser_Factory {
 
 		$this->registerDocumentParserForMimeTypes(Abp01_Route_Track_DocumentParser_GeoJson::class, 
 			Abp01_KnownMimeTypes::getGeoJsonDocumentMimeTypes());
+
+		$this->registerDocumentParserForMimeTypes(Abp01_Route_Track_DocumentParser_Kml::class, 
+			Abp01_KnownMimeTypes::getKmlDocumentMimeTypes());
 	}
 
 	public function registerDocumentParserForMimeTypes($documentParserClass, array $mimeTypes) {

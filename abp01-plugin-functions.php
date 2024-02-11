@@ -171,9 +171,9 @@ if (!function_exists('write_log')) {
 			ob_start();
 			var_dump($message);
 			$message = ob_get_clean();
-			error_log($message);
+			error_log(trim($message) . PHP_EOL, 3, ABSPATH . 'error_log');
 	   } else {
-			error_log($message);
+			error_log(trim($message) . PHP_EOL, 3, ABSPATH . 'error_log');
 	   }
 	}
 }

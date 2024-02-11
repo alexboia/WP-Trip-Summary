@@ -52,4 +52,10 @@ class Abp01_KnownMimeTypes {
 			'application/vnd.geo+json'
 		);
 	}
+
+	public static function getKmlDocumentMimeTypes() {
+		return array(
+			'application/vnd.google-earth.kml+xml'
+		);
+	}
 }

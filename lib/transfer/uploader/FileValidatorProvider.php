@@ -41,6 +41,8 @@ class Abp01_Transfer_Uploader_FileValidatorProvider {
 			Abp01_KnownMimeTypes::getGpxDocumentMimeTypes());
 		$this->registerValidatorForMimeTypes(new Abp01_Validate_GeoJsonDocument(), 
 			Abp01_KnownMimeTypes::getGeoJsonDocumentMimeTypes());
+		$this->registerValidatorForMimeTypes(new Abp01_Validate_KmlDocument(), 
+			Abp01_KnownMimeTypes::getKmlDocumentMimeTypes());
 	}
 
 	public function registerValidatorForMimeTypes(Abp01_Validate_File $validatorInstance, array $mimeTypes) {

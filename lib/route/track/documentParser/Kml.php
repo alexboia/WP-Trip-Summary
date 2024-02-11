@@ -29,34 +29,49 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use StepanDalecky\KmlParser\Processor;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit;
+    exit;
 }
 
-class Abp01_Validate_GpxDocument implements Abp01_Validate_File {
+class Abp01_Route_Track_DocumentParser_Kml implements Abp01_Route_Track_DocumentParser {
+	public function __construct() {
+		if (!self::isSupported()) {
+			throw new Exception('The GPX parser requirements are not met');
+		}
+	}
 
-	public function validate($input) {
-		if (empty($input)) {
-			throw new InvalidArgumentException('File path may not be empty');
+    public function parse($sourceString) { 
+		if ($sourceString === null || empty($sourceString)) {
+			throw new InvalidArgumentException('Empty KML string');
 		}
 
-		if ( ! is_readable( $input ) ) {
-			return false;
+		try {
+			$document = new Abp01_Route_Track_Document();
+			$delegate = new Abp01_Route_Track_DocumentParser_Kml_LibKmlProcessorDelegate($document);
+			
+			$processor = new Processor($delegate);
+			$processor->processKmlString($sourceString);
+			
+			return $document;
+		} catch (Exception $exc) {
+			throw new Abp01_Route_Track_DocumentParser_Exception(
+				$exc->getMessage(), 
+				Abp01_Route_Track_DocumentParser_ErrorCode::ERROR_CATEGORY_DESERIALIZATION, 
+				$exc->getCode()
+			);
 		}
+		
+		return null;
+	}
 
-		$fileContent = file_get_contents( $input );
-		if (!$fileContent) {
-			return false;
-		}
+	public static function isSupported() {
+		return function_exists('simplexml_load_string') &&
+			function_exists('simplexml_load_file');
+	}
 
-		if (function_exists('mb_stripos')) {
-			$xmlPos = mb_stripos($fileContent, '<?xml', 0, 'UTF-8');
-			$gpxMarkerPos = mb_stripos($fileContent, '<gpx', 0, 'UTF-8');
-		} else {
-			$xmlPos = stripos($fileContent, '<?xml');
-			$gpxMarkerPos = stripos($fileContent, '<gpx');
-		}
-
-		return (is_int($xmlPos) && is_int($gpxMarkerPos)) && ($xmlPos < $gpxMarkerPos);
+    public function getDefaultMimeType() { 
+		return 'application/vnd.google-earth.kml+xml';
 	}
 }

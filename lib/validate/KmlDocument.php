@@ -33,7 +33,7 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
-class Abp01_Validate_GpxDocument implements Abp01_Validate_File {
+class Abp01_Validate_KmlDocument implements Abp01_Validate_File {
 
 	public function validate($input) {
 		if (empty($input)) {
@@ -44,19 +44,20 @@ class Abp01_Validate_GpxDocument implements Abp01_Validate_File {
 			return false;
 		}
 
-		$fileContent = file_get_contents( $input );
+		$fileContent = file_get_contents($input);
 		if (!$fileContent) {
+			write_log('KML file was empty!');
 			return false;
 		}
 
 		if (function_exists('mb_stripos')) {
-			$xmlPos = mb_stripos($fileContent, '<?xml', 0, 'UTF-8');
-			$gpxMarkerPos = mb_stripos($fileContent, '<gpx', 0, 'UTF-8');
+			$xmlPos = mb_stripos( $fileContent, '<?xml', 0, 'UTF-8' );
+			$kmlMarkerPos = mb_stripos($fileContent, '<kml', 0, 'UTF-8');
 		} else {
-			$xmlPos = stripos($fileContent, '<?xml');
-			$gpxMarkerPos = stripos($fileContent, '<gpx');
+			$xmlPos = stripos( $fileContent, '<?xml' );
+			$kmlMarkerPos = stripos($fileContent, '<kml');
 		}
 
-		return (is_int($xmlPos) && is_int($gpxMarkerPos)) && ($xmlPos < $gpxMarkerPos);
+		return (is_int($xmlPos) && is_int($kmlMarkerPos)) && ($xmlPos < $kmlMarkerPos);
 	}
 }

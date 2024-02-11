@@ -317,7 +317,7 @@ class Abp01_Transfer_Uploader {
 
 	private function _processFileUploadFailed() {
 		@unlink($this->_destinationPath);
-		write_log('File upload failed because source file did not pass custom validation.');
+		write_log('File upload failed because source file did not pass custom validation. Detected mime type: <' . $this->_detectedType . '>.');
 		return self::UPLOAD_NOT_VALID;
 	}
 

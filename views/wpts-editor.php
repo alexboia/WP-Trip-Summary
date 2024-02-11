@@ -314,7 +314,7 @@
 <script id="tpl-abp01-formMap-unselected" type="text/x-kite">
     <div id="abp01-form-map-trackSelection" class="abp01-type-selector-container">
         <h3 class="abp01-form-map-selector-notice">
-            <?php echo esc_html__('Upload a GPX or GeoJSON track file', 'abp01-trip-summary'); ?>
+            <?php echo esc_html__('Upload a GPX or GeoJSON or KML track file', 'abp01-trip-summary'); ?>
         </h3>
         <a id="abp01-track-selector" href="javascript:void(0)" class="button button-hero abp01-track-selector first" data-action="abp01-trackSelect">
             <?php echo esc_html__('Chose file', 'abp01-trip-summary'); ?>

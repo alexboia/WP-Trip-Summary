@@ -45,7 +45,7 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Route_Track_DocumentParser_Gpx implements Abp01_Route_Track_DocumentParser {
-	function __construct() {
+	public function __construct() {
 		if (!self::isSupported()) {
 			throw new Exception('The GPX parser requirements are not met');
 		}

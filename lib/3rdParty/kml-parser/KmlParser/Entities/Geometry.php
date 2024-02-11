@@ -5,6 +5,8 @@ namespace StepanDalecky\KmlParser\Entities {
 	use StepanDalecky\XmlElement\Element;
 
 	class Geometry extends Entity {
+		const TagCoordinates = 'coordinates';
+
 		public function __construct(Element $element) {
 			parent::__construct($element);
 		}

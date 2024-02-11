@@ -112,6 +112,9 @@
 	var contentFormMapUnselected = null;
 	var contentFormMapUploaded = null;
 
+	var uploaderCompletedUpdateTmr = null;
+	var uploaderLastError = null;
+
 	function hasRouteInfo() {
 		return context.hasRouteInfo;
 	}
@@ -826,7 +829,7 @@
 				max_file_size: window.abp01_uploadMaxFileSize || 10485760,
 				mime_types: [
 					{ title: abp01MainL10n.lblPluploadFileTypeSelector,
-						extensions: 'gpx,geojson,json' }
+						extensions: 'gpx,geojson,json,kml' }
 				]
 			},
 			runtimes: 'html5,html4',
@@ -912,11 +915,17 @@
 	 * @return void
 	 * */
 	function handleUploaderError(upl, error) {
+		if (uploaderCompletedUpdateTmr != null) {
+			window.clearTimeout(uploaderCompletedUpdateTmr);
+			uploaderCompletedUpdateTmr = null;
+		}
+
 		uploader.disableBrowse(false);
 		uploader.splice();
 		uploader.refresh();
 		hideProgress();
 		toastMessage(false, getTrackUploaderErrorMessage(error));
+		uploaderLastError = error;
 	}
 
 	function handleUploaderFilesAdded(upl, files) {
@@ -931,18 +940,33 @@
 			uploader.setOption('chunk_size', 102400);
 		}
 
+		uploaderLastError = null;
 		uploader.disableBrowse(true);
 		uploader.start();
 	}
 
 	function handleUploaderCompleted(upl) {
-		setHasRouteTrack(true);
-		uploader.disableBrowse(false);
+		if (uploaderLastError != null) {
+			return;
+		}
 
-		destroyTrackUploader();
-		toastMessage(true, abp01MainL10n.lblTrackUploaded);
-		showMap();
-		refreshEnhancedEditor();
+		if (uploaderCompletedUpdateTmr != null) {
+			window.clearTimeout(uploaderCompletedUpdateTmr);
+			uploaderCompletedUpdateTmr = null;
+		}
+
+		uploaderCompletedUpdateTmr = window.setTimeout(function() {
+			setHasRouteTrack(true);
+			uploader.disableBrowse(false);
+
+			destroyTrackUploader();
+			toastMessage(true, abp01MainL10n.lblTrackUploaded);
+			showMap();
+			refreshEnhancedEditor();
+
+			uploaderCompletedUpdateTmr = null;
+			uploaderLastError = null;
+		}, 250);
 	}
 
 	function handleChunkCompleted(upl, file, info) {

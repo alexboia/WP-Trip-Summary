@@ -191,7 +191,6 @@
 			animate : false,
 			tabActiveClass : 'abp01-tab-active',
 			panelActiveClass : 'abp01-tabContentActive',
-			defaultTab : '#abp01-tab-info',
 			tabs: '.abp01-tab',
 			updateHash : false
 		});
