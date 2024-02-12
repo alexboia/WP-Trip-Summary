@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Trip Summary 0.1.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-trip-summary\n"
-"POT-Creation-Date: 2024-01-29T21:27:04+02:00\n"
-"PO-Revision-Date: 2024-01-29 21:30+0200\n"
+"POT-Creation-Date: 2024-02-12T14:56:03+02:00\n"
+"PO-Revision-Date: 2024-02-12 15:16+0200\n"
 "Last-Translator: \n"
 "Language-Team: alexandru.boia [at] outlook [dot] com\n"
 "Language: ro_RO\n"
@@ -41,41 +41,41 @@ msgstr "Alexandru Boia"
 msgid "http://alexboia.net"
 msgstr "http://alexboia.net"
 
-#: abp01-plugin-functions.php:458
+#: abp01-plugin-functions.php:482
 msgid "Bike type"
 msgstr "Tip recomandat de bicicletă"
 
-#: abp01-plugin-functions.php:459 views/wpts-frontend.php:77
+#: abp01-plugin-functions.php:483 views/wpts-frontend.php:77
 #: views/wpts-frontend.php:85
 msgid "Difficulty level"
 msgstr "Nivelul de dificultate"
 
-#: abp01-plugin-functions.php:460 views/wpts-frontend.php:80
+#: abp01-plugin-functions.php:484 views/wpts-frontend.php:80
 #: views/wpts-frontend.php:88
 msgid "Path surface type"
 msgstr "Suprafața drumului/potecii"
 
-#: abp01-plugin-functions.php:461
+#: abp01-plugin-functions.php:485
 msgid "Railroad electrification status"
 msgstr "Status electrificare linie de cale ferată"
 
-#: abp01-plugin-functions.php:462
+#: abp01-plugin-functions.php:486
 msgid "Railroad line status"
 msgstr "Starea liniei de cale ferată"
 
-#: abp01-plugin-functions.php:463
+#: abp01-plugin-functions.php:487
 msgid "Railroad line type"
 msgstr "Tipul liniei de cale ferată"
 
-#: abp01-plugin-functions.php:464 views/wpts-frontend.php:94
+#: abp01-plugin-functions.php:488 views/wpts-frontend.php:94
 msgid "Railroad operators"
 msgstr "Operatori feroviari"
 
-#: abp01-plugin-functions.php:465
+#: abp01-plugin-functions.php:489
 msgid "Recommended seasons"
 msgstr "Practicabil în anotimpurile"
 
-#: abp01-plugin-functions.php:595
+#: abp01-plugin-functions.php:619
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "oră"
@@ -99,12 +99,12 @@ msgid "Not available"
 msgstr "Indisponibil"
 
 #: lib/display/postListing/TripSummaryStatusColumnsDecorator.php:46
-#: views/wpts-audit-log.php:37 views/wpts-editor-launcher-metabox.php:47
+#: views/wpts-audit-log.php:41 views/wpts-editor-launcher-metabox.php:47
 msgid "Trip summary info"
 msgstr "Info traseu"
 
 #: lib/display/postListing/TripSummaryStatusColumnsDecorator.php:55
-#: views/wpts-audit-log.php:65 views/wpts-editor-launcher-metabox.php:59
+#: views/wpts-audit-log.php:73 views/wpts-editor-launcher-metabox.php:59
 msgid "Trip summary track"
 msgstr "Track traseu"
 
@@ -129,45 +129,45 @@ msgstr "Șterge cache-ul track-urilor"
 msgid "Detect missing track files"
 msgstr "Detectează post-urile cu track-uri lipsă"
 
-#: lib/Plugin.php:141
+#: lib/Plugin.php:142
 msgid "Could not activate plug-in: activation failure."
 msgstr ""
 "Plug-in-ul nu a putut fi activat din cauza unei posibile probleme interne"
 
-#: lib/Plugin.php:164
+#: lib/Plugin.php:165
 msgid "Could not activate plug-in: requirements not met."
 msgstr ""
 "Plug-in-ul nu a putut fi activat din cauză că sistemul tău nu suportă toate "
 "cerințele necesare pentru instalare"
 
-#: lib/Plugin.php:171
+#: lib/Plugin.php:172
 msgid "Minimum required PHP version is %s"
 msgstr "Versiunea necesară minimă de PHP este %s"
 
-#: lib/Plugin.php:173
+#: lib/Plugin.php:174
 msgid "Minimum required WP version is %s"
 msgstr "Versiunea necesară minimă de WordPress este %s"
 
-#: lib/Plugin.php:175
+#: lib/Plugin.php:176
 msgid "LIBXML support was not found on your system"
 msgstr "Extensia LIBXML nu a fost găsită pe sistemul tău"
 
-#: lib/Plugin.php:177
+#: lib/Plugin.php:178
 msgid ""
 "Mysqli extension was not found on your system or is not fully compatible"
 msgstr "Extensia MySQLi nu a fost găsită pe sistemul tău"
 
-#: lib/Plugin.php:179
+#: lib/Plugin.php:180
 msgid "MySQL spatial support was not found on your system"
 msgstr "Server-ul MySQL nu are suport pentru date spațiale"
 
-#: lib/Plugin.php:181
+#: lib/Plugin.php:182
 msgid "We could not check whether your system fully supports this plug-in."
 msgstr ""
 "Plug-in-ul nu a putut verifica dacă sistemul tău suportă toate cerințele "
 "necesare pentru instalare"
 
-#: lib/Plugin.php:190
+#: lib/Plugin.php:191
 msgid "Activation error"
 msgstr "Eroare la activare"
 
@@ -180,21 +180,21 @@ msgid "About"
 msgstr "Despre"
 
 #: lib/pluginModules/AdminTripSummaryAuditLogPluginModule.php:152
-#: lib/pluginModules/AdminTripSummaryAuditLogPluginModule.php:219
+#: lib/pluginModules/AdminTripSummaryAuditLogPluginModule.php:220
 msgid "Trip summary audit log"
 msgstr "Auditare jurnal de tură"
 
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:289
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:296
 #: views/wpts-frontend.php:45
 msgid "Trip summary"
 msgstr "Tura pe scurt"
 
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:419
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:433
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:441
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:469
 msgid "The data could not be saved due to a possible database error"
 msgstr "Datele nu au putut fi salvate din cauza unei posibile erori interne"
 
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:531
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:595
 msgid "The data could not be updated due to a possible database error"
 msgstr ""
 "Datele nu au putut fi actualizate din cauza unei posibile erori interne"
@@ -580,10 +580,11 @@ msgstr "Fișierul selectat e prea mare. Dimensiunea maximă admisă e 10MB"
 
 #: lib/TranslatedScriptMessages.php:87 lib/TranslatedScriptMessages.php:92
 msgid ""
-"The selected file type is not valid. Only GPX and GeoJSON files are allowed"
+"The selected file type is not valid. Only GPX, GeoJSON and KML files are "
+"allowed"
 msgstr ""
-"Tipul selectat de fișier nu este valid. Sunt permise doar fișierele GPX și "
-"GeoJSON"
+"Tipul selectat de fișier nu este valid. Sunt permise doar fișierele GPX, "
+"GeoJSON și KML"
 
 #: lib/TranslatedScriptMessages.php:88 lib/TranslatedScriptMessages.php:89
 msgid "The file could not be read"
@@ -649,8 +650,8 @@ msgstr ""
 "sine sau, mai rar, o problemă internă a server-ului."
 
 #: lib/TranslatedScriptMessages.php:102
-msgid "The uploaded file was not a valid GPX or GeoJSON file"
-msgstr "Fișierul încărcat nu a fost un fișier GPX sau GeoJSON valid"
+msgid "The uploaded file was not a valid GPX / GeoJSON / KML file"
+msgstr "Fișierul încărcat nu a fost un fișier GPX / GeoJSON / KML valid"
 
 #: lib/TranslatedScriptMessages.php:103
 msgid "Choose options"
@@ -855,11 +856,11 @@ msgstr "Detalii prozaice"
 msgid "Map"
 msgstr "Hartă & Track GPS"
 
-#: lib/Viewer.php:72
+#: lib/Viewer.php:94
 msgid "Horizontally"
 msgstr "Orizontal"
 
-#: lib/Viewer.php:73
+#: lib/Viewer.php:95
 msgid "Vertically"
 msgstr "Vertical"
 
@@ -940,15 +941,15 @@ msgstr "Vreau să-ți iau o cafea"
 msgid "Changelog"
 msgstr "Jurnal de modificări"
 
-#: views/wpts-audit-log.php:40 views/wpts-audit-log.php:68
+#: views/wpts-audit-log.php:44 views/wpts-audit-log.php:76
 msgid "Date created"
 msgstr "Data creării"
 
-#: views/wpts-audit-log.php:48 views/wpts-audit-log.php:76
+#: views/wpts-audit-log.php:52 views/wpts-audit-log.php:84
 msgid "Date last updated"
 msgstr "Data ultimei modificări"
 
-#: views/wpts-audit-log.php:56 views/wpts-audit-log.php:84
+#: views/wpts-audit-log.php:60 views/wpts-audit-log.php:92
 msgid "Last updated by"
 msgstr "Modificat ultima oară de"
 
@@ -1035,8 +1036,8 @@ msgid "Line gauge"
 msgstr "Ecartamentul liniei"
 
 #: views/wpts-editor.php:317
-msgid "Upload a GPX or GeoJSON track file"
-msgstr "Încarcă un fișier GPX sau GeoJSON"
+msgid "Upload a GPX or GeoJSON or KML track file"
+msgstr "Încarcă un fișier GPX sau GeoJSON sau KML"
 
 #: views/wpts-editor.php:320
 msgid "Chose file"

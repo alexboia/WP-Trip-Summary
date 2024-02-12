@@ -33,6 +33,7 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Monolog\Processor\WebProcessor;
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
@@ -83,6 +84,7 @@ class Abp01_Logger_MonologLogger implements Abp01_Logger {
 				$logger->pushHandler($errorStreamFileHandler);
 			}
 
+			$logger->pushProcessor(new WebProcessor());
 			$this->_logger = $logger;
 		}
 

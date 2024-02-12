@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Trip Summary 0.2.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-trip-summary\n"
-"POT-Creation-Date: 2024-01-29T21:27:04+02:00\n"
-"PO-Revision-Date: 2024-02-02 16:42+0200\n"
+"POT-Creation-Date: 2024-02-12T14:56:03+02:00\n"
+"PO-Revision-Date: 2024-02-12 15:21+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -40,41 +40,41 @@ msgstr "Alexandru Boia"
 msgid "http://alexboia.net"
 msgstr "http://alexboia.net"
 
-#: abp01-plugin-functions.php:458
+#: abp01-plugin-functions.php:482
 msgid "Bike type"
 msgstr "Vélo recommandé"
 
-#: abp01-plugin-functions.php:459 views/wpts-frontend.php:77
+#: abp01-plugin-functions.php:483 views/wpts-frontend.php:77
 #: views/wpts-frontend.php:85
 msgid "Difficulty level"
 msgstr "Niveau de difficulté"
 
-#: abp01-plugin-functions.php:460 views/wpts-frontend.php:80
+#: abp01-plugin-functions.php:484 views/wpts-frontend.php:80
 #: views/wpts-frontend.php:88
 msgid "Path surface type"
 msgstr "Type de surface de piste"
 
-#: abp01-plugin-functions.php:461
+#: abp01-plugin-functions.php:485
 msgid "Railroad electrification status"
 msgstr "État d'électrification ferroviaire"
 
-#: abp01-plugin-functions.php:462
+#: abp01-plugin-functions.php:486
 msgid "Railroad line status"
 msgstr "Condition de la ligne de chemin de fer"
 
-#: abp01-plugin-functions.php:463
+#: abp01-plugin-functions.php:487
 msgid "Railroad line type"
 msgstr "Type de ligne de chemin de fer"
 
-#: abp01-plugin-functions.php:464 views/wpts-frontend.php:94
+#: abp01-plugin-functions.php:488 views/wpts-frontend.php:94
 msgid "Railroad operators"
 msgstr "Compagnies ferroviaires"
 
-#: abp01-plugin-functions.php:465
+#: abp01-plugin-functions.php:489
 msgid "Recommended seasons"
 msgstr "Saisons recommandées"
 
-#: abp01-plugin-functions.php:595
+#: abp01-plugin-functions.php:619
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "heure"
@@ -97,12 +97,12 @@ msgid "Not available"
 msgstr "Indisponible"
 
 #: lib/display/postListing/TripSummaryStatusColumnsDecorator.php:46
-#: views/wpts-audit-log.php:37 views/wpts-editor-launcher-metabox.php:47
+#: views/wpts-audit-log.php:41 views/wpts-editor-launcher-metabox.php:47
 msgid "Trip summary info"
 msgstr "Informations sur le voyage"
 
 #: lib/display/postListing/TripSummaryStatusColumnsDecorator.php:55
-#: views/wpts-audit-log.php:65 views/wpts-editor-launcher-metabox.php:59
+#: views/wpts-audit-log.php:73 views/wpts-editor-launcher-metabox.php:59
 msgid "Trip summary track"
 msgstr "Piste GPS"
 
@@ -127,47 +127,47 @@ msgstr "Supprimer le cache des données de piste"
 msgid "Detect missing track files"
 msgstr "Détecter les fichiers de piste manquants"
 
-#: lib/Plugin.php:141
+#: lib/Plugin.php:142
 msgid "Could not activate plug-in: activation failure."
 msgstr "Impossible d'activer le plug-in: échec de l'activation."
 
-#: lib/Plugin.php:164
+#: lib/Plugin.php:165
 msgid "Could not activate plug-in: requirements not met."
 msgstr ""
 "Impossible d'activer le plug-in: les conditions d'installation ne sont pas "
 "satisfaites. "
 
-#: lib/Plugin.php:171
+#: lib/Plugin.php:172
 msgid "Minimum required PHP version is %s"
 msgstr "La version PHP minimale requise est %s"
 
-#: lib/Plugin.php:173
+#: lib/Plugin.php:174
 msgid "Minimum required WP version is %s"
 msgstr "La version WP minimale requise est %s"
 
-#: lib/Plugin.php:175
+#: lib/Plugin.php:176
 msgid "LIBXML support was not found on your system"
 msgstr "L'extension LIBXML est introuvable sur votre système"
 
-#: lib/Plugin.php:177
+#: lib/Plugin.php:178
 msgid ""
 "Mysqli extension was not found on your system or is not fully compatible"
 msgstr ""
 "L'extension MySQLi est introuvable sur votre système ou n'est pas "
 "entièrement compatible"
 
-#: lib/Plugin.php:179
+#: lib/Plugin.php:180
 msgid "MySQL spatial support was not found on your system"
 msgstr ""
 "Les fonctionnalités spatiales de MySQL sont introuvables sur votre système"
 
-#: lib/Plugin.php:181
+#: lib/Plugin.php:182
 msgid "We could not check whether your system fully supports this plug-in."
 msgstr ""
 "Le plug-in n'a pas pu vérifier si votre système répond à toutes les "
 "exigences d'installation"
 
-#: lib/Plugin.php:190
+#: lib/Plugin.php:191
 msgid "Activation error"
 msgstr "Erreur d'activation"
 
@@ -180,23 +180,23 @@ msgid "About"
 msgstr "À propos"
 
 #: lib/pluginModules/AdminTripSummaryAuditLogPluginModule.php:152
-#: lib/pluginModules/AdminTripSummaryAuditLogPluginModule.php:219
+#: lib/pluginModules/AdminTripSummaryAuditLogPluginModule.php:220
 msgid "Trip summary audit log"
 msgstr "Journal d'audit du résumé du voyage"
 
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:289
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:296
 #: views/wpts-frontend.php:45
 msgid "Trip summary"
 msgstr "Résumé du voyage"
 
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:419
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:433
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:441
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:469
 msgid "The data could not be saved due to a possible database error"
 msgstr ""
 "Les données n'ont pas été enregistrées en raison d'une possible erreur de "
 "base de données"
 
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:531
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:595
 msgid "The data could not be updated due to a possible database error"
 msgstr ""
 "Les données n'ont pas été enregistrées en raison d'une possible erreur de "
@@ -267,7 +267,7 @@ msgstr "WP Trip Summary Info"
 
 #: lib/pluginModules/RouteLogPluginModule.php:218
 msgid "Log"
-msgstr ""
+msgstr "Jurnal"
 
 #: lib/pluginModules/RouteLogPluginModule.php:255
 #: views/wpts-log-editor-launcher-status-item.php:43
@@ -424,6 +424,8 @@ msgstr ""
 #: lib/TranslatedScriptMessages.php:41
 msgid "Deleting all trip summary log entries for this post. Please wait..."
 msgstr ""
+"Suppression de toutes les entrées du journal de résumé de voyage pour ce "
+"message. S'il vous plaît, attendez..."
 
 #: lib/TranslatedScriptMessages.php:42
 msgid "Loading log entry. Please wait..."
@@ -597,10 +599,11 @@ msgstr ""
 
 #: lib/TranslatedScriptMessages.php:87 lib/TranslatedScriptMessages.php:92
 msgid ""
-"The selected file type is not valid. Only GPX and GeoJSON files are allowed"
+"The selected file type is not valid. Only GPX, GeoJSON and KML files are "
+"allowed"
 msgstr ""
-"Le type de fichier téléchargé n'est pas valide. Seuls les fichiers GPX et "
-"GeoJSON sont autorisés"
+"Le type de fichier sélectionné n'est pas valide. Seuls les fichiers GPX, "
+"GeoJSON et KML sont autorisés"
 
 #: lib/TranslatedScriptMessages.php:88 lib/TranslatedScriptMessages.php:89
 msgid "The file could not be read"
@@ -668,8 +671,8 @@ msgstr ""
 "même ou, moins probablement, un problème de serveur interne."
 
 #: lib/TranslatedScriptMessages.php:102
-msgid "The uploaded file was not a valid GPX or GeoJSON file"
-msgstr "Le fichier téléchargé n'était pas un fichier GPX ou GeoJSON valide"
+msgid "The uploaded file was not a valid GPX / GeoJSON / KML file"
+msgstr "Le fichier téléchargé n'était pas un fichier GPX/GeoJSON/KML valide"
 
 #: lib/TranslatedScriptMessages.php:103
 msgid "Choose options"
@@ -883,11 +886,11 @@ msgstr "Détails banals"
 msgid "Map"
 msgstr "Carte et trace GPS"
 
-#: lib/Viewer.php:72
+#: lib/Viewer.php:94
 msgid "Horizontally"
 msgstr "Horizontalement"
 
-#: lib/Viewer.php:73
+#: lib/Viewer.php:95
 msgid "Vertically"
 msgstr "Verticalement"
 
@@ -968,15 +971,15 @@ msgstr "Achetez-moi un café :)"
 msgid "Changelog"
 msgstr "Journal des modifications"
 
-#: views/wpts-audit-log.php:40 views/wpts-audit-log.php:68
+#: views/wpts-audit-log.php:44 views/wpts-audit-log.php:76
 msgid "Date created"
 msgstr "Date créée"
 
-#: views/wpts-audit-log.php:48 views/wpts-audit-log.php:76
+#: views/wpts-audit-log.php:52 views/wpts-audit-log.php:84
 msgid "Date last updated"
 msgstr "Date de la dernière modification"
 
-#: views/wpts-audit-log.php:56 views/wpts-audit-log.php:84
+#: views/wpts-audit-log.php:60 views/wpts-audit-log.php:92
 msgid "Last updated by"
 msgstr "Dernière modification par l'utilisateur"
 
@@ -1064,8 +1067,8 @@ msgid "Line gauge"
 msgstr "Écartement ferroviaire"
 
 #: views/wpts-editor.php:317
-msgid "Upload a GPX or GeoJSON track file"
-msgstr "Téléchargez un fichier de piste GPX ou GeoJSON"
+msgid "Upload a GPX or GeoJSON or KML track file"
+msgstr "Téléchargez un fichier de suivi GPX, GeoJSON ou KML"
 
 #: views/wpts-editor.php:320
 msgid "Chose file"
@@ -1085,7 +1088,7 @@ msgstr "Réessayer"
 
 #: views/wpts-frontend-route-log.php:63
 msgid "There are no log entries yet"
-msgstr ""
+msgstr "Il n'y a pas encore d'entrées de journal"
 
 #: views/wpts-frontend.php:79 views/wpts-frontend.php:87
 msgid "Open during seasons"
@@ -1139,27 +1142,27 @@ msgstr "Journal d'audit"
 
 #: views/wpts-log-editor.php:71
 msgid "Who"
-msgstr ""
+msgstr "Qui"
 
 #: views/wpts-log-editor.php:72
 msgid "When"
-msgstr ""
+msgstr "Quand"
 
 #: views/wpts-log-editor.php:73
 msgid "Time"
-msgstr ""
+msgstr "Temps pris"
 
 #: views/wpts-log-editor.php:74
 msgid "Vehicle"
-msgstr ""
+msgstr "Véhicule"
 
 #: views/wpts-log-editor.php:75
 msgid "Gear"
-msgstr ""
+msgstr "Équipement"
 
 #: views/wpts-log-editor.php:76
 msgid "Is public"
-msgstr ""
+msgstr "Est public"
 
 #: views/wpts-log-editor.php:102 views/wpts-log-editor.php:226
 #: views/wpts-lookup-data-management.php:152
@@ -1168,49 +1171,47 @@ msgstr "Supprimer"
 
 #: views/wpts-log-editor.php:118
 msgid "No log entries"
-msgstr ""
+msgstr "Aucune entrée de journal"
 
 #: views/wpts-log-editor.php:124
 msgid "Add log entry"
-msgstr ""
+msgstr "Ajouter une entrée de journal"
 
 #: views/wpts-log-editor.php:129
 msgid "Clear all log entries"
-msgstr ""
+msgstr "Effacer toutes les entrées du journal"
 
 #: views/wpts-log-editor.php:145
 msgid "Who (rider)"
-msgstr ""
+msgstr "Qui (cavalier)"
 
 #: views/wpts-log-editor.php:149
 msgid "When (date - yyyy-mm-dd)"
-msgstr ""
+msgstr "Quand (date - yyyy-mm-dd)"
 
 #: views/wpts-log-editor.php:153
 msgid "Time (how many hours spent)"
-msgstr ""
+msgstr "Temps (combien d'heures passées)"
 
 #: views/wpts-log-editor.php:157
 msgid "Vehicle used (e.g. bike make and model)"
-msgstr ""
+msgstr "Véhicule utilisé (par exemple, marque et modèle du vélo)"
 
 #: views/wpts-log-editor.php:161
 msgid "Gear (notes about what equipment was used)"
-msgstr ""
+msgstr "Équipement (notes sur l'équipement utilisé)"
 
 #: views/wpts-log-editor.php:165
 msgid "Other notes"
-msgstr ""
+msgstr "Autres notes"
 
 #: views/wpts-log-editor.php:169
 msgid "Display publicly"
-msgstr ""
+msgstr "Afficher publiquement"
 
 #: views/wpts-log-editor.php:175
-#, fuzzy
-#| msgid "Save item"
 msgid "Save entry"
-msgstr "Enregistrer l'élément"
+msgstr "Enregistrer l'entrée du journal"
 
 #: views/wpts-log-editor.php:176 views/wpts-lookup-data-management.php:115
 #: views/wpts-lookup-data-management.php:134
