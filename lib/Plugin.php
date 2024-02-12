@@ -109,6 +109,7 @@ class Abp01_Plugin {
 	 */
 	private $_maintenanceToolRegistry;
 
+
 	public function __construct() {
 		return;
 	}
@@ -433,6 +434,10 @@ class Abp01_Plugin {
 
 	public function getLookupForCurrentLang() {
 		return new Abp01_Lookup();
+	}
+
+	public function getLogManager() {
+		return abp01_get_log_manager();
 	}
 
 	public function getRouteManager() {

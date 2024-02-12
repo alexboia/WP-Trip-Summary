@@ -179,4 +179,8 @@ class Abp01_Route_Track_DocumentParser_Kml_LibKmlProcessorDelegate implements De
     public function end(): void { 
 		return;
 	}
+
+	public function getDocument(): Abp01_Route_Track_Document {
+		return $this->_document;
+	}
 }

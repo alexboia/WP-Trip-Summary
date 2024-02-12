@@ -200,8 +200,14 @@ class Abp01_Transfer_Uploader {
 	 */
 	private $_validatorProvider;
 
-	public function __construct(Abp01_Transfer_Uploader_Config $config) {
+	/**
+	 * @var Abp01_Logger
+	 */
+	private $_logger;
+
+	public function __construct(Abp01_Logger $logger, Abp01_Transfer_Uploader_Config $config) {
 		$this->_key = $config->getKey();
+		$this->_logger = $logger;
 
 		$this->_fileNameProvider = $config->getFileNameProvider();
 		$this->_validatorProvider = $config->getFileValidatorProvider();
@@ -227,7 +233,7 @@ class Abp01_Transfer_Uploader {
 		$this->_detectedType = null;
 
 		if (!$this->hasUploadedFile()) {
-			write_log('File upload failed because no file has been uploaded.');
+			$this->_logger->warning('File upload failed because no file has been uploaded.');
 			return self::UPLOAD_NO_FILE;
 		}
 
@@ -238,41 +244,45 @@ class Abp01_Transfer_Uploader {
 			->constructTempFilePath($this->_declaredFileMimeType);
 
 		if ($this->_chunkSize > 0 && $this->_chunk > 0 && !file_exists($this->_destinationPath)) {
-			write_log('File upload failed because chunk configuration is not valid.');
+			$this->_logger->warning('File upload failed because chunk configuration is not valid.');
 			return self::UPLOAD_INVALID_UPLOAD_PARAMS;
 		}
 
 		if (($this->_chunkSize == 0 || $this->_chunk == 0) && file_exists($this->_destinationPath)) {
-			write_log('Chunk size=0 or first chunk - remove existing destination file.');
+			$this->_logger->warning('Chunk size=0 or first chunk - remove existing destination file.');
 			@unlink($this->_destinationPath);
 		}
 
 		$temp = $this->_getUploadedFileTmpPath();
 		if (!is_uploaded_file($temp)) {
-			write_log('File upload failed because temporary location does not contain a safe source file.');
+			$this->_logger->warning('File upload failed because temporary location does not contain a safe source file.');
 			return self::UPLOAD_NO_FILE;
 		}
 
 		if (!$this->_isFileSizeValid()) {
-			write_log('File upload failed because uploaded file is too large.');
+			$this->_logger->debug('File upload failed because uploaded file is too large.', array(
+				'maxFileSize' => $this->_maxFileSize
+			));
 			return self::UPLOAD_TOO_LARGE;
 		}
 
 		if (!$this->_detectTypeAndValidate()) {
-			write_log('File upload failed because uploaded file does not have a valid mime type: "' . $this->_detectedType . '".');
+			$this->_logger->debug('File upload failed because uploaded file does not have a valid mime type.', array(
+				'detectedType' => $this->_detectedType
+			));
 			return self::UPLOAD_INVALID_MIME_TYPE;
 		}
 
 		$out = @fopen($this->_destinationPath, $this->_chunkSize > 0 ? 'ab' : 'wb');
 		if (!$out) {
-			write_log('File upload failed because destination file could not be open.');
+			$this->_logger->warning('File upload failed because destination file could not be open.');
 			return self::UPLOAD_STORE_INITIALIZATION_FAILED;
 		}
 
 		$in = @fopen($temp, 'rb');
 		if (!$in) {
 			@fclose($out);
-			write_log('File upload failed because source file could not be open.');
+			$this->_logger->warning('File upload failed because source file could not be open.');
 			return self::UPLOAD_STORE_INITIALIZATION_FAILED;
 		}
 
@@ -287,11 +297,21 @@ class Abp01_Transfer_Uploader {
 		$isReady = $this->_haveAllChunksBeenUploaded();
 
 		if ($isReady) {
+			$this->_logger->debug('All chunks have been uploaded. Performing final validation.');
 			if ($this->_passesFinalValidation()) {
 				$returnStatus = $this->_processFileUploadReady();
 			} else {
 				$returnStatus = $this->_processFileUploadFailed();
-			}			
+			}
+			
+			$this->_logger->debug('Final validation completed.', array(
+				'returnStatus' => $returnStatus
+			));
+		} else {
+			$this->_logger->debug('More chunks need to be uploaded.', array(
+				'chunk' => $this->_chunk,
+				'chunkCount' => $this->_chunkCount
+			));
 		}
 
 		$this->_isReady = $isReady;
@@ -311,13 +331,15 @@ class Abp01_Transfer_Uploader {
 			$this->_destinationPath = $finalDetinationPath;
 		}
 
-		write_log('The file upload has been successfully processed and completed.');
+		$this->_logger->debug('The file upload has been successfully processed and completed.');
 		return self::UPLOAD_OK;
 	}
 
 	private function _processFileUploadFailed() {
 		@unlink($this->_destinationPath);
-		write_log('File upload failed because source file did not pass custom validation. Detected mime type: <' . $this->_detectedType . '>.');
+		$this->_logger->warning('File upload failed because source file did not pass custom validation.', array(
+			'detectedType' => $this->_detectedType
+		));
 		return self::UPLOAD_NOT_VALID;
 	}
 

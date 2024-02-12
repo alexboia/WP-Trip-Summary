@@ -225,6 +225,13 @@ class Abp01_Env {
 	private $_cacheStorageDir;
 
 	/**
+	 * The path to the logs storage directory.
+	 * 
+	 * @var string
+	 */
+	private $_logStorageDir;
+
+	/**
 	 * The path to the views directory
 	 * 
 	 * @var string
@@ -329,6 +336,15 @@ class Abp01_Env {
 			$this->_rootStorageDir));
 		$this->_cacheStorageDir = wp_normalize_path(sprintf('%s/cache', 
 			$this->_rootStorageDir));
+		$this->_logStorageDir = wp_normalize_path(sprintf('%s/logs', 
+			$this->_rootStorageDir));
+
+		if (defined('ABP01_LOGS_DIR')) {
+			$customLogsDir = constant('ABP01_LOGS_DIR');
+			if (!empty($customLogsDir) && is_dir($customLogsDir)) {
+				$this->_logStorageDir = $customLogsDir;
+			}
+		}
 	}
 
 	private function _initTableNames() {
@@ -638,6 +654,10 @@ class Abp01_Env {
 
 	public function getTracksStorageDir() {
 		return $this->_tracksStorageDir;
+	}
+
+	public function getLogStorageDir() {
+		return $this->_logStorageDir;
 	}
 
 	public function getCacheStorageDir() {

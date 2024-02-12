@@ -94,6 +94,13 @@ define('ABP01_PLUGIN_ROOT_NAME', basename(ABP01_PLUGIN_ROOT));
 define('ABP01_LIB_DIR', ABP01_PLUGIN_ROOT . '/lib');
 
 /**
+ * Absolute path to the composer "vendor" directory
+ * 
+ * @var string
+ */
+define('ABP01_VENDOR_DIR', ABP01_PLUGIN_ROOT . '/vendor');
+
+/**
  * The absolute path to the plug-in's library - lag - directory.
  *  This is where all the translation files (.po, .mo, .pot) are stored.
  *  Eg. /whatever/public_html/wp-content/plugins/wp-trip-summary/lang.

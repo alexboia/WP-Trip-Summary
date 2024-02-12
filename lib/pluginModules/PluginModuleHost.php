@@ -153,6 +153,12 @@ class Abp01_PluginModules_PluginModuleHost {
 			},
 			Abp01_Auth::class => function() {
 				return $this->getAuth();
+			},
+			Abp01_Logger_Manager::class => function() {
+				return $this->getLogManager();
+			},
+			Abp01_Logger::class => function() {
+				return $this->getLogger();
 			}
 		);
 	}
@@ -239,6 +245,14 @@ class Abp01_PluginModules_PluginModuleHost {
 
 	public function getRouteManager() {
 		return $this->_plugin->getRouteManager();
+	}
+
+	public function getLogManager() {
+		return $this->_plugin->getLogManager();
+	}
+
+	public function getLogger() {
+		return $this->getLogManager()->getLogger();
 	}
 
 	public function getRouteLogManager() {

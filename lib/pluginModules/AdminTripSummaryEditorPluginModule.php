@@ -107,6 +107,11 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 	 */
 	private $_tripSummaryShortCodeBlockType;
 
+	/**
+	 * @var Abp01_Logger
+	 */
+	private $_logger;
+
 	public function __construct(Abp01_Route_Manager $routeManager,
 		Abp01_Route_Track_Processor $routeTrackProcessor,
 		Abp01_Transfer_Uploader_FileValidatorProvider $fileValidatorProvider,
@@ -114,6 +119,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		Abp01_Viewer_DataSource_Cache $viewerDataSourceCache,
 		Abp01_View $view,
 		Abp01_UrlHelper $urlHelper,
+		Abp01_Logger $logger,
 		Abp01_Env $env, 
 		Abp01_Auth $auth) {
 		parent::__construct($env, $auth);
@@ -126,6 +132,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		$this->_viewerDataSourceCache = $viewerDataSourceCache;
 		$this->_view = $view;
 		$this->_tripSummaryShortCodeBlockType = new Abp01_TripSummaryShortcodeBlockType();
+		$this->_logger = $logger;
 
 		$this->_initAjaxActions();
 	}
@@ -425,11 +432,28 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 	public function removeRouteInfo() {
 		$postId = $this->_getCurrentPostId();
 		$response = abp01_get_ajax_response();
+		
+		$context = array(
+			'postId' => $postId
+		);
 
-		if ($this->_routeManager->deleteRouteInfo($postId)) {
-			$this->_viewerDataSourceCache->clearCachedPostTripSummaryViewerData($postId);
-			$response->success = true;
-		} else {
+		$this->_logger->debug('Removing route info for post...', $context);
+
+		try {
+			if ($this->_routeManager->deleteRouteInfo($postId)) {
+				$this->_viewerDataSourceCache->clearCachedPostTripSummaryViewerData($postId);
+				$this->_logger->debug('Route info successfully removed for post.', $context);
+				$response->success = true;
+			} else {
+				$this->_logger->warning('Route info could not be removed for post.', $context);
+			}
+
+			throw new Exception('Test');
+		} catch (Exception $exc) {
+			$this->_logger->exception($exc->getMessage(), $exc, $context);
+		}
+		
+		if (!$response->success) {
 			$response->message = esc_html__('The data could not be saved due to a possible database error', 'abp01-trip-summary');
 		}
 
@@ -457,7 +481,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 
 	private function _createUploader($destination) {
 		$config = $this->_constructUploaderConfig($destination);
-		$uploader = new Abp01_Transfer_Uploader($config);
+		$uploader = new Abp01_Transfer_Uploader($this->_logger, $config);
 		return $uploader;
 	}
 

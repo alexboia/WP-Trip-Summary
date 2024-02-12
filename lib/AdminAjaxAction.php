@@ -74,8 +74,14 @@ class Abp01_AdminAjaxAction {
 	 */
 	private $_env;
 
+	/**
+	 * @var Abp01_Logger
+	 */
+	private $_logger;
+
 	public function __construct($actionCode, $callback) {
 		$this->_env = abp01_get_env();
+		$this->_logger = abp01_get_log_manager()->getLogger();
 		$this->_actionCode = $actionCode;
 		$this->_callback = $callback;
 
@@ -172,8 +178,14 @@ class Abp01_AdminAjaxAction {
 	public function isNonceValid() {
 		$currentResourceId = $this
 			->getCurrentResourceId();
-		return $this->_nonceProvider
+		$isNonceValid = $this->_nonceProvider
 			->validateNonce($currentResourceId);
+
+		if (!$isNonceValid) {
+			$this->_logger->warning('Nonce not valid for action <' . $this->_actionCode . '>.');
+		}
+
+		return $isNonceValid;
 	}
 
 	public function register() {
@@ -191,12 +203,16 @@ class Abp01_AdminAjaxAction {
 	}
 
 	public function execute() {
+		$this->_logger->debug('Begin executing action <' . $this->_actionCode . '>...');
 		if (!$this->isNonceValid() 
 			|| !$this->_isCurrentHttpMethodAllowed()
 			|| !$this->_currentUserCanExecute()) {
+			$this->_logger->warning('Execution not allowed for action <' . $this->_actionCode . '>. Exiting...');
 			abp01_die();
 		} else {
-			return call_user_func($this->_callback);
+			$result = call_user_func($this->_callback);
+			$this->_logger->debug('Action <' . $this->_actionCode . '> executed successfully.');
+			return $result;
 		}
 	}
 
@@ -207,12 +223,32 @@ class Abp01_AdminAjaxAction {
 	}
 
 	private function _isHttpMethodAllowed($method) {
-		return in_array($method, $this->_allowedHttpMethods);
+		$httpMethodAllowed = in_array($method, $this->_allowedHttpMethods);
+
+		if (!$httpMethodAllowed) {
+			$this->_logger->warning('Http method not allowed for action <' . $this->_actionCode . '>.', array(
+				'method' => $method,
+				'allowedMethods' => $this->_allowedHttpMethods
+			));
+		}
+
+		return $httpMethodAllowed;
 	}
 
 	private function _currentUserCanExecute() {
-		return $this->_authProvider
+		$currentUserCanExecute = $this->_authProvider
 			->isAuthorizedToExecuteAction();
+
+		if (!$currentUserCanExecute) {
+			$currentUser = wp_get_current_user();
+			$this->_logger->warning('Current user cannot execut action <' . $this->_actionCode . '>.', array(
+				'currentUser' => $currentUser != null 
+					? $currentUser->ID 
+					: '<NULL>'
+			));
+		}
+
+		return $currentUserCanExecute;
 	}
 
 	public function executeAndSendJsonThenExit() {
