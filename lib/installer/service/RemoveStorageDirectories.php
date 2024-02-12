@@ -53,9 +53,11 @@ class Abp01_Installer_Service_RemoveStorageDirectories {
 		$rootStorageDir = $this->_env->getRootStorageDir();
 		$tracksStorageDir = $this->_env->getTracksStorageDir();
 		$cacheStorageDir = $this->_env->getCacheStorageDir();
+		$logStorageDir = $this->_env->getLogStorageDir();
 
 		if ($this->_removeDirectoryAndContents($tracksStorageDir) 
-			&& $this->_removeDirectoryAndContents($cacheStorageDir)) {
+			&& $this->_removeDirectoryAndContents($cacheStorageDir)
+			&& $this->_removeDirectoryAndContents($logStorageDir)) {
 			return $this->_removeDirectoryAndContents($rootStorageDir);
 		} else {
 			return false;

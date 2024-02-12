@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+	<Document>
+		<Placemark>
+			<name>Placemark with LinearRing</name>
+			<LinearRing>
+				<coordinates>
+					-122.365662,37.826988,0
+					-122.365202,37.826302,55
+					-122.364581,37.82655,0
+					-122.365038,37.827237,0
+					-122.365662,37.826988,55
+				</coordinates>
+			</LinearRing>
+		</Placemark>
+	</Document>
+</kml>

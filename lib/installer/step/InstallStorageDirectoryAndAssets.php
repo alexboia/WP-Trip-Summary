@@ -42,10 +42,13 @@ class Abp01_Installer_Step_InstallStorageDirectoryAndAssets implements Abp01_Ins
 
 	private $_cacheStorageDir;
 
+	private $_logStorageDir;
+
 	public function __construct(Abp01_Env $env) {
 		$this->_rootStorageDir = $env->getRootStorageDir();
 		$this->_tracksStorageDir = $env->getTracksStorageDir();
 		$this->_cacheStorageDir = $env->getCacheStorageDir();
+		$this->_logStorageDir = $env->getLogStorageDir();
 	}
 
     public function execute() { 
@@ -59,7 +62,8 @@ class Abp01_Installer_Step_InstallStorageDirectoryAndAssets implements Abp01_Ins
 	private function _ensureStorageDirectories() {
 		$service = new Abp01_Installer_Service_CreateStorageDirectories($this->_rootStorageDir, 
 			$this->_tracksStorageDir, 
-			$this->_cacheStorageDir);
+			$this->_cacheStorageDir,
+			$this->_logStorageDir);
 		return $service->execute();
 	}
 

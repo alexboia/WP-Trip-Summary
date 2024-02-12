@@ -41,7 +41,7 @@ use Yoast\PHPUnitPolyfills\Polyfills\ExpectException;
 	use TestDataFileHelpers;
 
 	public function test_canParseEmptyKml() {
-		$fileContents = $this->_readTestDataFileContents('test-kml-empty.kml'); 
+		$fileContents = $this->_readTestDataFileContents('kml/test-kml-empty.kml'); 
 		$kmlParser = Parser::fromString($fileContents);
 		$kml = $kmlParser->getKml();
 		$this->assertNotNull($kml);
@@ -55,12 +55,12 @@ use Yoast\PHPUnitPolyfills\Polyfills\ExpectException;
 
 	public function test_tryParseKmlFileWithInvalidRoot_shouldThrowException() {
 		$this->expectException(InvalidKmlRootElementException::class);
-		$fileContents = $this->_readTestDataFileContents('test-kml-invalidRoot.kml'); 
+		$fileContents = $this->_readTestDataFileContents('kml/test-kml-invalidRoot.kml'); 
 		Parser::fromString($fileContents);
 	}
 
 	public function test_canParseKml_documentAsRoot_noFolders_singlePlacemark() {
-		$fileContents = $this->_readTestDataFileContents('test-kml-document-as-root-no-folders.kml'); 
+		$fileContents = $this->_readTestDataFileContents('kml/test-kml-document-as-root-no-folders.kml'); 
 		$kmlParser = Parser::fromString($fileContents);
 		
 		$kml = $kmlParser->getKml();

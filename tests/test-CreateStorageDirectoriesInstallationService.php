@@ -45,22 +45,25 @@ class CreateStorageDirectoriesInstallationServiceTests extends WP_UnitTestCase {
 	}
 
 	public function test_canCreateDirectories() {
-		list($rootStorageDir, $tracksStorageDir, $cacheStorageDir) = 
+		list($rootStorageDir, $tracksStorageDir, $cacheStorageDir, $logStorageDir) = 
 			$this->_getTestPluginStorageDirectories();
 			
 		$this->assertDirectoryDoesNotExist($rootStorageDir);
 		$this->assertDirectoryDoesNotExist($tracksStorageDir);
 		$this->assertDirectoryDoesNotExist($cacheStorageDir);
+		$this->assertDirectoryDoesNotExist($logStorageDir);
 
 		$service = new Abp01_Installer_Service_CreateStorageDirectories($rootStorageDir, 
 			$tracksStorageDir, 
-			$cacheStorageDir);
+			$cacheStorageDir,
+			$logStorageDir);
 
 		$service->execute();
 
 		$this->assertDirectoryExists($rootStorageDir);
 		$this->assertDirectoryExists($tracksStorageDir);
 		$this->assertDirectoryExists($cacheStorageDir);
+		$this->assertDirectoryExists($logStorageDir);
 	}
 
 	protected static function _getRootTestsDir() {

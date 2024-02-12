@@ -1,6 +1,9 @@
 <?php
 
+use StepanDalecky\KmlParser\Entities\LinearRing;
+use StepanDalecky\KmlParser\Entities\LineString;
 use StepanDalecky\KmlParser\Entities\Placemark;
+use StepanDalecky\KmlParser\Entities\Point;
 use StepanDalecky\KmlParser\Parser;
 
 /**
@@ -38,7 +41,7 @@ use StepanDalecky\KmlParser\Parser;
 	use TestDataFileHelpers;
 
 	public function test_canParse_withPoint() {
-		$this->_runPlacemarkTest('test-kml-placemark-with-point.kml', 
+		$this->_runPlacemarkTest('kml/test-kml-placemark-with-point.kml', 
 			function(Placemark $placemark) {
 				$this->assertEquals('Placemark with Point', $placemark->getName());
 
@@ -50,17 +53,21 @@ use StepanDalecky\KmlParser\Parser;
 
 				$point = $placemark->getPoint();
 				$this->assertNotNull($point);
-				$this->assertTrue($point->hasCoordinate());
-				
-				$coord = $point->getCoordinate();
-				$this->assertNotNull($coord);
-
-				$latLng = $coord->getLatLngAlt();
-				$this->assertEquals(-90.86948943473118, $latLng->getLongitude());
-				$this->assertEquals(48.25450093195546, $latLng->getLatitude());
-				$this->assertEquals(123.456, $latLng->getAltitude());
+				$this->_assertExpectedPoint($point);
 			}
 		);
+	}
+
+	private function _assertExpectedPoint(Point $point) {
+		$this->assertTrue($point->hasCoordinate());
+	
+		$coord = $point->getCoordinate();
+		$this->assertNotNull($coord);
+
+		$latLng = $coord->getLatLngAlt();
+		$this->assertEquals(-90.86948943473118, $latLng->getLongitude());
+		$this->assertEquals(48.25450093195546, $latLng->getLatitude());
+		$this->assertEquals(123.456, $latLng->getAltitude());
 	}
 
 	private function _runPlacemarkTest($file, $asserter) {
@@ -79,7 +86,7 @@ use StepanDalecky\KmlParser\Parser;
 	}
 
 	public function test_canParse_withLineString() {
-		$this->_runPlacemarkTest('test-kml-placemark-with-lineString.kml', 
+		$this->_runPlacemarkTest('kml/test-kml-placemark-with-lineString.kml', 
 			function(Placemark $placemark) {
 				$this->assertEquals('Placemark with LineString', $placemark->getName());
 
@@ -91,43 +98,110 @@ use StepanDalecky\KmlParser\Parser;
 
 				$lineString = $placemark->getLineString();
 				$this->assertNotNull($lineString);
-				$this->assertTrue($lineString->hasCoordinates());
-
-				$coords = $lineString->getCoordinates();
-				$this->assertNotNull($coords);
-				
-				$latLngCollection = $coords->getLatLngAltCollection();
-				$this->assertNotNull($latLngCollection);
-				$this->assertEquals(2, count($latLngCollection));
-
-				$p0 = $latLngCollection[0];
-				$this->assertTrue($p0->hasLongitude());
-				$this->assertTrue($p0->hasLatitude());
-				$this->assertTrue($p0->hasAltitude());
-				$this->assertFalse($p0->isEmpty());
-
-				$this->assertEquals(-122.364167, $p0->getLongitude(), '', 0.0001);
-				$this->assertEquals(37.824787, $p0->getLatitude(), '', 0.0001);
-				$this->assertEquals(50, $p0->getAltitude(), '', 0.0001);
-
-				$p1 = $latLngCollection[1];
-				$this->assertTrue($p1->hasLongitude());
-				$this->assertTrue($p1->hasLatitude());
-				$this->assertTrue($p1->hasAltitude());
-				$this->assertFalse($p1->isEmpty());
-
-				$this->assertEquals(-122.363917, $p1->getLongitude(), '', 0.0001);
-				$this->assertEquals(37.824423, $p1->getLatitude(), '', 0.0001);
-				$this->assertEquals(55, $p1->getAltitude(), '', 0.0001);
+				$this->_assertExpectedLineString($lineString);
 			}
 		);
 	}
 
-	public function test_canParse_withLinearRing() {
+	private function _assertExpectedLineString(LineString $lineString) {
+		$this->assertTrue($lineString->hasCoordinates());
+
+		$coords = $lineString->getCoordinates();
+		$this->assertNotNull($coords);
 		
+		$latLngCollection = $coords->getLatLngAltCollection();
+		$this->assertNotNull($latLngCollection);
+		$this->assertEquals(2, count($latLngCollection));
+
+		$p0 = $latLngCollection[0];
+		$this->assertTrue($p0->hasLongitude());
+		$this->assertTrue($p0->hasLatitude());
+		$this->assertTrue($p0->hasAltitude());
+		$this->assertFalse($p0->isEmpty());
+
+		$this->assertEquals(-122.364167, $p0->getLongitude(), '', 0.0001);
+		$this->assertEquals(37.824787, $p0->getLatitude(), '', 0.0001);
+		$this->assertEquals(50, $p0->getAltitude(), '', 0.0001);
+
+		$p1 = $latLngCollection[1];
+		$this->assertTrue($p1->hasLongitude());
+		$this->assertTrue($p1->hasLatitude());
+		$this->assertTrue($p1->hasAltitude());
+		$this->assertFalse($p1->isEmpty());
+
+		$this->assertEquals(-122.363917, $p1->getLongitude(), '', 0.0001);
+		$this->assertEquals(37.824423, $p1->getLatitude(), '', 0.0001);
+		$this->assertEquals(55, $p1->getAltitude(), '', 0.0001);
+	}
+
+	public function test_canParse_withLinearRing() {
+		$this->_runPlacemarkTest('kml/test-kml-placemark-with-linearRing.kml', 
+			function(Placemark $placemark) {
+				$this->assertEquals('Placemark with LinearRing', $placemark->getName());
+
+				$this->assertFalse($placemark->hasPoint());
+				$this->assertFalse($placemark->hasLineString());
+				$this->assertTrue($placemark->hasLinearRing());
+				$this->assertFalse($placemark->hasPolygon());
+				$this->assertFalse($placemark->hasMultiGeometry());
+
+				$linearRing = $placemark->getLinearRing();
+				$this->assertNotNull($linearRing);
+				$this->_assertExpectedLinearRing($linearRing);
+			}
+		);
+	}
+
+	private function _assertExpectedLinearRing(LinearRing $linearRing) {
+		$this->assertTrue($linearRing->hasCoordinates());
+
+		$coords = $linearRing->getCoordinates();
+		$this->assertNotNull($coords);
+		
+		$latLngCollection = $coords->getLatLngAltCollection();
+		$this->assertNotNull($latLngCollection);
+		$this->assertEquals(5, count($latLngCollection));
+
+		$p0 = $latLngCollection[0];
+		$this->assertTrue($p0->hasLongitude());
+		$this->assertTrue($p0->hasLatitude());
+		$this->assertTrue($p0->hasAltitude());
+		$this->assertFalse($p0->isEmpty());
+
+		$this->assertEquals(-122.365662, $p0->getLongitude(), '', 0.0001);
+		$this->assertEquals(37.826988, $p0->getLatitude(), '', 0.0001);
+		$this->assertEquals(0, $p0->getAltitude(), '', 0.0001);
+
+		$p1 = $latLngCollection[1];
+		$this->assertTrue($p1->hasLongitude());
+		$this->assertTrue($p1->hasLatitude());
+		$this->assertTrue($p1->hasAltitude());
+		$this->assertFalse($p1->isEmpty());
+
+		$this->assertEquals(-122.365202, $p1->getLongitude(), '', 0.0001);
+		$this->assertEquals(37.826302, $p1->getLatitude(), '', 0.0001);
+		$this->assertEquals(55, $p1->getAltitude(), '', 0.0001);
+
+		$p4 = $latLngCollection[4];
+		$this->assertTrue($p4->hasLongitude());
+		$this->assertTrue($p4->hasLatitude());
+		$this->assertTrue($p4->hasAltitude());
+		$this->assertFalse($p4->isEmpty());
+
+		$this->assertEquals(-122.365662, $p4->getLongitude(), '', 0.0001);
+		$this->assertEquals(37.826988, $p4->getLatitude(), '', 0.0001);
+		$this->assertEquals(55, $p4->getAltitude(), '', 0.0001);
 	}
 
 	public function test_canParse_withPolygon() {
+		
+	}
+
+	private function _assertExpectedOuterBoundary(LinearRing $linearRing) {
+
+	}
+
+	private function _assertExpectedInnerBoundary(LinearRing $linearRing) {
 		
 	}
 

@@ -40,10 +40,13 @@ class Abp01_Installer_Service_CreateStorageDirectories {
 
 	private $_cacheStorageDir;
 
-	public function __construct($rootStorageDir, $tracksStorageDir, $cacheStorageDir) {
+	private $_logStorageDir;
+
+	public function __construct($rootStorageDir, $tracksStorageDir, $cacheStorageDir, $logStorageDir) {
 		$this->_rootStorageDir = $rootStorageDir;
 		$this->_tracksStorageDir = $tracksStorageDir;
 		$this->_cacheStorageDir = $cacheStorageDir;
+		$this->_logStorageDir = $logStorageDir;
 	}
 	
 	public function execute() {
@@ -66,7 +69,14 @@ class Abp01_Installer_Service_CreateStorageDirectories {
 					@mkdir($cacheStorageDir);
 				}
 
-				$result = is_dir($cacheStorageDir);
+				if (is_dir($cacheStorageDir)) {
+					$logStorageDir = $this->_logStorageDir;
+					if (!is_dir($logStorageDir)) {
+						@mkdir($logStorageDir);
+					}
+
+					$result = is_dir($logStorageDir);
+				}
 			} else {
 				$result = false;
 			}

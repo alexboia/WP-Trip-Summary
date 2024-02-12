@@ -34,7 +34,8 @@
 		$env = Abp01_Env::getInstance();
 		$directoriesService = new Abp01_Installer_Service_CreateStorageDirectories($env->getRootStorageDir(), 
 			$env->getTracksStorageDir(), 
-			$env->getCacheStorageDir());
+			$env->getCacheStorageDir(),
+			$env->getLogStorageDir());
 
 		$directoriesService->execute();
 
@@ -103,10 +104,12 @@
 		$rootStorageDir = $rootTestDataDir . '/storage';
 		$tracksStorageDir = $rootStorageDir . '/tracks';
 		$cacheStorageDir = $rootStorageDir . '/cache';
+		$logStorageDir = $rootStorageDir . '/logs';
 
 		return array($rootStorageDir, 
 			$tracksStorageDir, 
-			$cacheStorageDir);
+			$cacheStorageDir,
+			$logStorageDir);
 	}
 
 	protected static function _getActualPluginStorageDirectories() {
