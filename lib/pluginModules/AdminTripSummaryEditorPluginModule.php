@@ -410,8 +410,14 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 	public function saveRouteInfo() {
 		$postId = $this->_getCurrentPostId();
 		$type = Abp01_InputFiltering::getPOSTValueOrDie('type');
+		$context = array(
+			'postId' => $postId
+		);
+
+		$this->_logger->debug('Saving route info for post...', $context);
 
 		if (!Abp01_Route_Info::isTypeSupported($type)) {
+			$this->_logger->warning('Route type <' . $type . '> not supported.', $context);
 			die;
 		}
 
@@ -419,10 +425,19 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		$info = Abp01_Route_Info::fromType($type);
 		$info->populateFromRawInput($_POST);
 
-		if ($this->_routeManager->saveRouteInfo($postId, $info, get_current_user_id())) {
-			$this->_viewerDataSourceCache->clearCachedPostTripSummaryViewerData($postId);
-			$response->success = true;
-		} else {
+		try {
+			if ($this->_routeManager->saveRouteInfo($postId, $info, get_current_user_id())) {
+				$this->_viewerDataSourceCache->clearCachedPostTripSummaryViewerData($postId);
+				$this->_logger->debug('Route info successfully saved for post.', $context);
+				$response->success = true;
+			} else {
+				$this->_logger->warning('Route info could not be saved for post.', $context);
+			}
+		} catch (Exception $exc) {
+			$this->_logger->exception($exc->getMessage(), $exc, $context);
+		}
+
+		if (!$response->success) {
 			$response->message = esc_html__('The data could not be saved due to a possible database error', 'abp01-trip-summary');
 		}
 
@@ -432,7 +447,6 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 	public function removeRouteInfo() {
 		$postId = $this->_getCurrentPostId();
 		$response = abp01_get_ajax_response();
-		
 		$context = array(
 			'postId' => $postId
 		);
@@ -447,8 +461,6 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 			} else {
 				$this->_logger->warning('Route info could not be removed for post.', $context);
 			}
-
-			throw new Exception('Test');
 		} catch (Exception $exc) {
 			$this->_logger->exception($exc->getMessage(), $exc, $context);
 		}
@@ -463,6 +475,11 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 	public function uploadRouteTrack() {
 		$postId = $this->_getCurrentPostId();
 		$uploader = $this->_createUploader($postId);
+		$context = array(
+			'postId' => $postId
+		);
+
+		$this->_logger->debug('Uploading route track for post...', $context);
 
 		$response = new stdClass();
 		$response->status = $uploader->receive();
@@ -475,6 +492,12 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 				$uploader->getDestinationPath(), 
 				$uploader->getDetectedType());
 		}
+
+		$this->_logger->debug('Done uploading route track for post.', 
+			array_merge($context, array(
+				'ready' => $response->ready,
+				'status' => $response->status
+			)));
 
 		return $response;
 	}
@@ -538,6 +561,9 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 			}
 		} catch (Abp01_Route_Track_DocumentParser_Exception $exc) {
 			$status = Abp01_Transfer_Uploader::UPLOAD_DESTINATION_FILE_CORRUPT;
+			$this->_logger->exception($exc->getMessage(), $exc, array(
+				'postId' => $postId
+			));
 		}
 
 		return $status;
@@ -546,12 +572,26 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 	public function removeRouteTrack() {
 		$postId = $this->_getCurrentPostId();
 		$response = abp01_get_ajax_response();
+		$context = array(
+			'postId' => $postId
+		);
 
-		if ($this->_routeManager->deleteRouteTrack($postId)) {
-			$this->_routeTrackProcessor->deleteTrackFiles($postId);
-			$this->_viewerDataSourceCache->clearCachedPostTripSummaryViewerData($postId);
-			$response->success = true;
-		} else {
+		$this->_logger->debug('Removing route track for post...', $context);
+
+		try {
+			if ($this->_routeManager->deleteRouteTrack($postId)) {
+				$this->_routeTrackProcessor->deleteTrackFiles($postId);
+				$this->_viewerDataSourceCache->clearCachedPostTripSummaryViewerData($postId);
+				$this->_logger->debug('Route track successfully removed for post.', $context);
+				$response->success = true;
+			} else {
+				$this->_logger->warning('Route track could not be removed for post.', $context);
+			}
+		} catch (Exception $exc) {
+			$this->_logger->exception($exc->getMessage(), $exc, $context);
+		}
+
+		if (!$response->success) {
 			$response->message = esc_html__('The data could not be updated due to a possible database error', 'abp01-trip-summary');
 		}
 

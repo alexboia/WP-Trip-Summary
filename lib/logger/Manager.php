@@ -51,10 +51,44 @@ class Abp01_Logger_Manager {
 	public function getLogger(): Abp01_Logger {
 		if ($this->_logger === null) {
 			$this->_ensureLoggerDirectory();
-			$this->_logger = new Abp01_Logger_MonologLogger($this->_config);
+			$this->_createLogger();
 		}
 
 		return $this->_logger;
+	}
+
+	private function _createLogger() {
+		$defaultLoggerClass = Abp01_Logger_MonologLogger::class;
+		$loggerClass = apply_filters('abp01_get_logger_class', $defaultLoggerClass);
+		
+		$implementsInterface = in_array(Abp01_Logger::class, 
+			class_implements($loggerClass));
+
+		if ($defaultLoggerClass !== $loggerClass && $implementsInterface) {
+			$reflectionLoggerClass = new ReflectionClass($loggerClass);
+			if (!$reflectionLoggerClass->isAbstract()) {
+				try {
+					$this->_logger = $reflectionLoggerClass->newInstanceArgs(array(
+						$this->_config
+					));
+				} catch (Exception $exc) {
+					error_log(
+						'Invalid log error class: <' . $loggerClass .'>. ' . 
+						'Could not create logger instance, will use default logger class. ' .
+						'Error: ' . $exc->getMessage() 
+							. PHP_EOL 
+							. $exc->getTraceAsString()
+					);
+					$this->_logger = null;
+				}
+			} else {
+				$this->_logger = null;
+			}
+		}
+
+		if ($this->_logger === null) {
+			$this->_logger = new Abp01_Logger_MonologLogger($this->_config);
+		}
 	}
 
 	private function _ensureLoggerDirectory() {
