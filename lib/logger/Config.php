@@ -78,4 +78,8 @@ class Abp01_Logger_Config {
 	public function getLoggerName(): string {
 		return Abp01_Logger::class;
 	}
+
+	public function shouldCaptureWebContext(): bool {
+		return true;
+	}
 }
