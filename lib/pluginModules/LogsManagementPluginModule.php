@@ -42,15 +42,46 @@ class Abp01_PluginModules_LogsManagementPluginModule extends Abp01_PluginModules
 	 */
 	private $_view;
 
-	public function __construct(Abp01_View $view,
+	/**
+	 * @var Abp01_Logger_Manager
+	 */
+	private $_logManager;
+
+	/**
+	 * @var Abp01_AdminAjaxAction
+	 */
+	private $_getLogFileContentsAjaxAction;
+
+	public function __construct(Abp01_Logger_Manager $logManager,
+		Abp01_View $view,
 		Abp01_Env $env, 
 		Abp01_Auth $auth) {
 		parent::__construct($env, $auth);
+
+		$this->_logManager = $logManager;
 		$this->_view = $view;
+
+		$this->_initAjaxActions();
+	}
+
+	private function _initAjaxActions() {
+		$authCallback = $this->_createManagePluginSettingsAuthCallback();
+
+		$this->_getLogFileContentsAjaxAction = 
+			Abp01_AdminAjaxAction::create(ABP01_ACTION_GET_LOG_FILE_CONTENTS, array($this, 'getLogFileContents'))
+				->useDefaultNonceProvider('abp01_nonce_get_log_file_contents')
+				->authorizeByCallback($authCallback)
+				->onlyForHttpGet();
 	}
 
     public function load() { 
+		$this->_registerAjaxActions();
 		$this->_registerWebPageAssets();
+	}
+
+	private function _registerAjaxActions() {
+		$this->_getLogFileContentsAjaxAction
+			->register();
 	}
 
 	private function _registerWebPageAssets() {
@@ -98,8 +129,76 @@ class Abp01_PluginModules_LogsManagementPluginModule extends Abp01_PluginModules
 			die;
 		}
 
+		$debugLogFiles = array();
+		$errorLogFiles = array();
+
+		$logFiles = $this->_logManager->getLogFiles();
+		
+		foreach ($logFiles as $lf) {
+			if ($lf->isDebugLogFile()) {
+				$debugLogFiles[] = $lf->asPlainObject();
+			} else if ($lf->isErrorLogFile()) {
+				$errorLogFiles[] = $lf->asPlainObject();
+			}
+		}
+
 		$data = new stdClass();
 
+		$data->ajaxUrl = $this->_getAjaxBaseUrl();
+		$data->ajaxGetLogFileAction = ABP01_ACTION_GET_LOG_FILE_CONTENTS;
+		$data->getLogFileNonce = $this->_getLogFileContentsAjaxAction
+			->generateNonce();
+
+		$data->isDebugLoggingEnabled = $this->_logManager->isErrorLoggingEnabled();
+		$data->isErrorLoggingEnabled = $this->_logManager->isErrorLoggingEnabled();
+
+		$data->hasErrorLogFiles = !empty($errorLogFiles);
+		$data->errorLogFiles = $errorLogFiles;
+		
+		$data->hasDebugLogFiles = !empty($debugLogFiles);
+		$data->debugLogFiles = $debugLogFiles;
+
 		echo $this->_view->renderAdminSystemLogsPage($data);
+	}
+
+	public function getLogFileContents() {
+		$fileId = Abp01_InputFiltering::getFilteredGETValue('abp01_fileId');
+		if (empty($fileId)) {
+			die;
+		}
+
+		$logFiles = $this->_logManager->getLogFiles();
+
+		/**
+		 * @var Abp01_Logger_FileInfo $foundFile
+		 */
+		$foundFile = null;
+		foreach ($logFiles as $logFile) {
+			if ($logFile->matchesId($fileId)) {
+				$foundFile = $logFile;
+				break;
+			}
+		}
+
+		$response = abp01_get_ajax_response(array(
+			'found' => false,
+			'trimmed' => false,
+			'contents' => null
+		));
+
+		$response->found = $foundFile != null;
+		$response->trimmed = false;
+
+		if ($logFile != null) {
+			$response->trimmed = $logFile->getFileSize() > 500000;
+			$response->contents = !$response->trimmed
+				? $logFile->contents()
+				: $logFile->tail(200);
+		} else {
+			$response->contents = null;
+		}
+
+		$response->success = true;
+		return $response;
 	}
 }

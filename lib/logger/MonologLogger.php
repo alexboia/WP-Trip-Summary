@@ -71,35 +71,43 @@ class Abp01_Logger_MonologLogger implements Abp01_Logger {
 	}
 
 	private function _createRotatingLogHandlers(Logger $logger, FormatterInterface $formatter) {
-		$debugRotatingFileHandler = new RotatingFileHandler($this->_config->getDebugLogFile(), 
-			$this->_config->getMaxLogFiles(), 
-			Logger::DEBUG);
+		if ($this->_config->isDebugLoggingEnabled()) {
+			$debugRotatingFileHandler = new RotatingFileHandler($this->_config->getDebugLogFile(), 
+				$this->_config->getMaxLogFiles(), 
+				Logger::DEBUG);
 
-		$debugRotatingFileHandler->setFormatter($formatter);
-		$logger->pushHandler($debugRotatingFileHandler);
+			$debugRotatingFileHandler->setFormatter($formatter);
+			$logger->pushHandler($debugRotatingFileHandler);
+		}
 
-		$errorRotatingFileHandler = new RotatingFileHandler($this->_config->getErrorLogFile(), 
-			$this->_config->getMaxLogFiles(), 
-			Logger::WARNING, 
-			false);
+		if ($this->_config->isErrorLoggingEnabled()) {
+			$errorRotatingFileHandler = new RotatingFileHandler($this->_config->getErrorLogFile(), 
+				$this->_config->getMaxLogFiles(), 
+				Logger::WARNING, 
+				false);
 
-		$errorRotatingFileHandler->setFormatter($formatter);
-		$logger->pushHandler($errorRotatingFileHandler);
+			$errorRotatingFileHandler->setFormatter($formatter);
+			$logger->pushHandler($errorRotatingFileHandler);
+		}
 	}
 
 	private function _createSimpleLogHandlers(Logger $logger, FormatterInterface $formatter) {
-		$debugStreamFileHandler = new StreamHandler($this->_config->getDebugLogFile(),  
-			Logger::DEBUG);
+		if ($this->_config->isDebugLoggingEnabled()) {
+			$debugStreamFileHandler = new StreamHandler($this->_config->getDebugLogFile(),  
+				Logger::DEBUG);
 
-		$debugStreamFileHandler->setFormatter($formatter);
-		$logger->pushHandler($debugStreamFileHandler);
+			$debugStreamFileHandler->setFormatter($formatter);
+			$logger->pushHandler($debugStreamFileHandler);
+		}
 
-		$errorStreamFileHandler = new RotatingFileHandler($this->_config->getErrorLogFile(), 
-			Logger::WARNING,
-			false);
+		if ($this->_config->isErrorLoggingEnabled()) {
+			$errorStreamFileHandler = new RotatingFileHandler($this->_config->getErrorLogFile(), 
+				Logger::WARNING,
+				false);
 
-		$errorStreamFileHandler->setFormatter($formatter);
-		$logger->pushHandler($errorStreamFileHandler);
+			$errorStreamFileHandler->setFormatter($formatter);
+			$logger->pushHandler($errorStreamFileHandler);
+		}
 	}
 	
 	public function emergency(string|Stringable $message, array $context = []): void { 

@@ -33,69 +33,25 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
-class Abp01_Logger_Config {
-	private $_loggerDirectory;
-
-	private $_rotateLogs;
-
-	private $_maxLogFiles;
-
-	private $_isDebugMode;
-
-	public function __construct($loggerDirectory, $rotateLogs, $maxLogFiles, $isDebugMode) {
-		$this->_loggerDirectory = $loggerDirectory;
-		$this->_rotateLogs = $rotateLogs;
-		$this->_maxLogFiles = $maxLogFiles > 0 ? $maxLogFiles : 10;
-		$this->_isDebugMode = $isDebugMode;
+class Abp01_Logger_FileInfo extends Abp01_Io_FileInfo {
+	public function isDebugLogFile(): bool {
+		return stripos($this->getFileName(), 'wpts_debug') === 0;
 	}
 
-	public function getLoggerDirectory() {
-		return $this->_loggerDirectory;
+	public function isErrorLogFile(): bool {
+		return stripos($this->getFileName(), 'wpts_error') === 0;
 	}
 
-	public function getDebugLogFile(): string {
-		return $this->_loggerDirectory . '/wpts_debug.log';
-	}	
-
-	public function getErrorLogFile(): string {
-		return $this->_loggerDirectory . '/wpts_error.log';
-	}
-
-	public function shouldRotateLogs(): bool {
-		return $this->_rotateLogs === true 
-			|| intval($this->_rotateLogs) === 1
-			|| $this->_rotateLogs === 'yes';
-	}
-
-	public function getMaxLogFiles(): int {
-		return $this->_maxLogFiles;
-	}
-
-	public function isDebugMode(): bool {
-		return $this->_isDebugMode;
-	}
-
-	public function isErrorLoggingEnabled(): bool {
-		if (!defined('ABP01_ENABLE_ERROR_LOGGING')) {
-			return true;
-		} else {
-			return constant('ABP01_ENABLE_ERROR_LOGGING') === true;
-		}
-	}
-
-	public function isDebugLoggingEnabled(): bool {
-		if (!defined('ABP01_ENABLE_DEBUG_LOGGING')) {
-			return $this->isDebugMode();
-		} else {
-			return constant('ABP01_ENABLE_DEBUG_LOGGING') === true;
-		}
-	}
-
-	public function getLoggerName(): string {
-		return Abp01_Logger::class;
-	}
-
-	public function shouldCaptureWebContext(): bool {
-		return true;
+	public function asPlainObject(): stdClass {
+		$data = new stdClass();
+		$data->id = $this->id();
+		$data->fileName = $this->getFileName();
+		$data->fileSize = $this->getFileSize();
+		$data->formattedSize = $this->getFormattedFileSize();
+		$data->lastModified = $this->getLastModified();
+		$data->fomattedLastModified = date('Y-m-d H:i:s', $data->lastModified);
+		$data->isErrorLogFile = $this->isErrorLogFile();
+		$data->isDebugLogFile = $this->isDebugLogFile();
+		return $data;
 	}
 }

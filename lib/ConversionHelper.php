@@ -33,69 +33,28 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
-class Abp01_Logger_Config {
-	private $_loggerDirectory;
+class Abp01_ConversionHelper {
+	public static function getByteSizeDescription($sizeBytes) {
+		$size = $sizeBytes;
+		$suffix = array(
+			'B',
+			'KB',
+			'MB',
+			'GB',
+			'TB',
+			'PB',
+			'EB',
+			'ZB',
+			'YB'
+		);
 
-	private $_rotateLogs;
-
-	private $_maxLogFiles;
-
-	private $_isDebugMode;
-
-	public function __construct($loggerDirectory, $rotateLogs, $maxLogFiles, $isDebugMode) {
-		$this->_loggerDirectory = $loggerDirectory;
-		$this->_rotateLogs = $rotateLogs;
-		$this->_maxLogFiles = $maxLogFiles > 0 ? $maxLogFiles : 10;
-		$this->_isDebugMode = $isDebugMode;
-	}
-
-	public function getLoggerDirectory() {
-		return $this->_loggerDirectory;
-	}
-
-	public function getDebugLogFile(): string {
-		return $this->_loggerDirectory . '/wpts_debug.log';
-	}	
-
-	public function getErrorLogFile(): string {
-		return $this->_loggerDirectory . '/wpts_error.log';
-	}
-
-	public function shouldRotateLogs(): bool {
-		return $this->_rotateLogs === true 
-			|| intval($this->_rotateLogs) === 1
-			|| $this->_rotateLogs === 'yes';
-	}
-
-	public function getMaxLogFiles(): int {
-		return $this->_maxLogFiles;
-	}
-
-	public function isDebugMode(): bool {
-		return $this->_isDebugMode;
-	}
-
-	public function isErrorLoggingEnabled(): bool {
-		if (!defined('ABP01_ENABLE_ERROR_LOGGING')) {
-			return true;
-		} else {
-			return constant('ABP01_ENABLE_ERROR_LOGGING') === true;
+		$i = 0;
+		while (($size / 1024) > 1) {
+			$size = $size / 1024;
+			$i++;
 		}
-	}
 
-	public function isDebugLoggingEnabled(): bool {
-		if (!defined('ABP01_ENABLE_DEBUG_LOGGING')) {
-			return $this->isDebugMode();
-		} else {
-			return constant('ABP01_ENABLE_DEBUG_LOGGING') === true;
-		}
-	}
-
-	public function getLoggerName(): string {
-		return Abp01_Logger::class;
-	}
-
-	public function shouldCaptureWebContext(): bool {
-		return true;
+		return round(substr($size, 0, strpos($size, '.') + 4), 2) 
+			. $suffix[$i];
 	}
 }

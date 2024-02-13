@@ -32,7 +32,9 @@
 ?>
 
 <script type="text/javascript">
-
+	var abp01_getLogFileNonce = '<?php echo $data->getLogFileNonce; ?>';
+	var abp01_ajaxGetLogFileAction = '<?php echo $data->ajaxGetLogFileAction; ?>';
+	var abp01_ajaxBaseUrl = '<?php echo $data->ajaxUrl; ?>';
 </script>
 
 <div id="abp01-system-logs-page" class="abp01-bootstrap abp01-page">
@@ -41,37 +43,54 @@
 		<div class="row gx-5">
 			<div class="col col-md-3 abp01-page-sidebar abp01-rounded-container">
 				<h4><?php echo esc_html__('System log files', 'abp01-trip-summary'); ?></h5>
-				<div class="abp01-page-side-bar-content">
+				<div id="abp01-log-file-lists-container" class="abp01-page-side-bar-content">
 					<h5><?php echo __('Debug logs', 'abp01-trip-summary'); ?></h5>
-					<div class="alert alert-primary" role="alert">
-						Debug logging is currently disabled. Only showing existing debug log files.
+
+					<?php if (!$data->isDebugLoggingEnabled): ?>
+						<div class="alert alert-primary" role="alert">
+							<?php echo esc_html__('Debug logging is currently disabled. Only showing existing debug log files.', 'abp01-trip-summary'); ?>
+						</div>
+					<?php endif; ?>
+
+					<div id="abp01-no-debug-log-files-found" class="alert alert-warning" role="alert" style="<?php echo $data->hasDebugLogFiles ? 'display:none;' : ''; ?>">
+						<?php echo esc_html__('There are no debug files available', 'abp01-trip-summary'); ?>
 					</div>
 
-					<div class="alert alert-warning" role="alert">
-						There are no log files available
-					</div>
-
-
-					<div class="list-group">
-						<a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-							The current link item
-						</a>
-						<a href="#" class="list-group-item list-group-item-action">A second link item</a>
-						<a href="#" class="list-group-item list-group-item-action">A third link item</a>
-						<a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
-						<a class="list-group-item list-group-item-action disabled" aria-disabled="true">A disabled link item</a>
-					</div>
+					<?php if ($data->hasDebugLogFiles): ?>
+						<div class="list-group">
+							<?php foreach ($data->debugLogFiles as $key => $df): ?>
+								<?php $isSelected = $key == 0 ?>
+								<a href="javascript:void (0)" data-file-id="<?php echo esc_attr($df->id); ?>" class="list-group-item list-group-item-action <?php echo $isSelected ? 'active' : ''; ?>" <?php echo $isSelected ? 'aria-current="true"' : ''; ?>>
+									<span><strong><?php echo esc_html($df->fileName) ?></strong> (<?php echo esc_html($df->fomattedLastModified); ?>)</span>
+									<span class="badge bg-primary rounded-pill"><?php echo esc_html($df->formattedSize); ?></span>
+								</a>
+							<?php endforeach; ?>
+						</div>
+					<?php endif; ?>
 
 					<h5 class="error-heading"><?php echo __('Error logs', 'abp01-trip-summary'); ?></h5>
-					<div class="list-group">
-						<a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-							The current link item
-						</a>
-						<a href="#" class="list-group-item list-group-item-action">A second link item</a>
-						<a href="#" class="list-group-item list-group-item-action">A third link item</a>
-						<a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
-						<a class="list-group-item list-group-item-action disabled" aria-disabled="true">A disabled link item</a>
+
+					<?php if (!$data->isErrorLoggingEnabled): ?>
+						<div class="alert alert-primary" role="alert">
+							<?php echo esc_html__('Error logging is currently disabled. Only showing existing debug log files.', 'abp01-trip-summary'); ?>
+						</div>
+					<?php endif; ?>
+
+					<div id="abp01-no-error-log-files-found" class="alert alert-warning" role="alert" style="<?php echo $data->hasErrorLogFiles ? 'display:none;' : ''; ?>">
+						<?php echo esc_html__('There are no error files available', 'abp01-trip-summary'); ?>
 					</div>
+
+					<?php if ($data->hasErrorLogFiles): ?>
+						<div class="list-group">
+							<?php foreach ($data->errorLogFiles as $key => $errf): ?>
+								<?php $isSelected = !$data->hasDebugLogFiles && $key == 0 ?>
+								<a href="javascript:void (0)" data-file-id="<?php echo esc_attr($errf->id); ?>" class="list-group-item list-group-item-action <?php echo $isSelected ? 'active' : ''; ?>" <?php echo $isSelected ? 'aria-current="true"' : ''; ?>>
+									<span><strong><?php echo esc_html($errf->fileName) ?></strong> (<?php echo esc_html($errf->fomattedLastModified); ?>)</span>
+									<span class="badge bg-primary rounded-pill"><?php echo esc_html($errf->formattedSize); ?></span>
+								</a>
+							<?php endforeach; ?>
+						</div>
+					<?php endif; ?>
 				</div>
 			</div>
 			<div class="col col-md-9 abp01-page-workspace">
@@ -79,13 +98,13 @@
 					<h4><?php echo esc_html__('Log file contents', 'abp01-trip-summary'); ?></h5>
 					<div class="abp01-page-workspace-content">
 						<div class="abp01-page-workspace-toolbar">
-							<button id="abp01-download-current-log" type="button" class="btn btn-primary abp01-log-action-btn">Download</button>
-							<button id="abp01-refresh-current-log" type="button" class="btn btn-secondary abp01-log-action-btn">Reload</button>
-							<button id="abp01-delete-current-log" type="button" class="btn btn-danger abp01-log-action-btn">Delete</button>
+							<button id="abp01-download-current-log" type="button" class="btn btn-primary abp01-log-action-btn"><span class="dashicons dashicons-download"></span> Download</button>
+							<button id="abp01-refresh-current-log" type="button" class="btn btn-secondary abp01-log-action-btn"><span class="dashicons dashicons-image-rotate"></span> Reload</button>
+							<button id="abp01-delete-current-log" type="button" class="btn btn-danger abp01-log-action-btn"><span class="dashicons dashicons-trash"></span> Delete</button>
 						</div>
 
-						<div id="abp01-log-file-too-large-warning" class="alert alert-warning" role="alert">
-							The log file is larger than size X, currently displaying last N lines.
+						<div id="abp01-log-file-too-large-warning" class="alert alert-warning" role="alert" style="display: none;">
+							The log file is too large. Only displaying the last 200 lines.
 						</div>
 
 						<textarea id="abp01-log-file-contents" class="abp01-code-reading-area" readonly="readonly"></textarea>

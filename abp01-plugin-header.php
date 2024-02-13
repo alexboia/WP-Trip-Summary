@@ -194,6 +194,13 @@ define('ABP01_ACTION_SAVE_SETTINGS', 'abp01_save_settings');
 define('ABP01_ACTION_EXEC_MAINTENANCE_TOOL', 'abp01_exec_maintenance_tool');
 
 /**
+ * The action name used with admin-ajax.php when reading log file contents. 
+ * 
+ * @var string
+ */
+define('ABP01_ACTION_GET_LOG_FILE_CONTENTS', 'abp01_get_log_file_contents');
+
+/**
  * The action name used with admin-ajax.php when downloading the GPS track.
  * 
  * @var string

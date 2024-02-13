@@ -56,27 +56,6 @@
 	overflow: hidden;
 }
 
-.abp01-progress-container {
-	width: 400px;
-	height: 45px;
-}
-
-.abp01-progress-label {
-	width: 400px;
-	height: 25px;
-	text-align: center;
-	line-height: 25px;
-	vertical-align: middle;
-	font-size: 13px;
-	color: #fff;
-	font-weight: bold;
-}
-
-.abp01-progress-bar {
-	width: 400px;
-	height: 20px;
-}
-
 .abp01-clear {
 	clear: both;
 	width: 0;
@@ -98,6 +77,38 @@ textarea.abp01-code-reading-area {
 	border: 1px solid #f1f1f1;
 	border-radius: 5px;
 	resize: none;
+}
+
+.abp01-bs-progress-label {
+	text-align: center;
+	line-height: 25px;
+	vertical-align: middle;
+	font-size: 13px;
+	color: #fff;
+	font-weight: bold;
+}
+
+/* Deprecated stuff */
+
+.abp01-progress-container {
+	width: 400px;
+	height: 45px;
+}
+
+.abp01-progress-label {
+	width: 400px;
+	height: 25px;
+	text-align: center;
+	line-height: 25px;
+	vertical-align: middle;
+	font-size: 13px;
+	color: #fff;
+	font-weight: bold;
+}
+
+.abp01-progress-bar {
+	width: 400px;
+	height: 20px;
 }
 
 /* Admin page common stuff */
@@ -154,6 +165,19 @@ textarea.abp01-code-reading-area {
 
 .abp01-page-workspace-toolbar {
 	margin-bottom: 10px;
+}
+
+.abp01-page-workspace-toolbar .btn {
+	font-size: 13px;
+}
+
+.abp01-page-workspace-toolbar .btn .dashicons {
+	font-size: 14px;
+	width: 17px;
+	height: 17px;
+	line-height: 17px;
+	vertical-align: middle;
+	margin-bottom: 5px;
 }
 
 /* Trip summary audit log */

@@ -132,8 +132,8 @@ class Abp01_PluginModules_MaintenancePluginModule extends Abp01_PluginModules_Pl
 		}
 
 		$data = new stdClass();
-		$data->ajaxExecuteToolAction = ABP01_ACTION_EXEC_MAINTENANCE_TOOL;
 		$data->ajaxUrl = $this->_getAjaxBaseUrl();
+		$data->ajaxExecuteToolAction = ABP01_ACTION_EXEC_MAINTENANCE_TOOL;
 		$data->nonce = $this->_executeToolAction
 			->generateNonce();
 

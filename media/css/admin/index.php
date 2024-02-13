@@ -1,3 +1,4 @@
+<?php
 /**
  * Copyright (c) 2014-2024 Alexandru Boia and Contributors
  *
@@ -28,6 +29,5 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
- (function($) {
-	
- })(jQuery);
+header('Location: ../../../../../../index.php');
+exit;

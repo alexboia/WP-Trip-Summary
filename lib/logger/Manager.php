@@ -57,7 +57,7 @@ class Abp01_Logger_Manager {
 		return $this->_logger;
 	}
 
-	private function _createLogger() {
+	private function _createLogger(): void {
 		$defaultLoggerClass = Abp01_Logger_MonologLogger::class;
 		$loggerClass = apply_filters('abp01_get_logger_class', $defaultLoggerClass);
 		
@@ -91,10 +91,42 @@ class Abp01_Logger_Manager {
 		}
 	}
 
-	private function _ensureLoggerDirectory() {
+	private function _ensureLoggerDirectory(): void {
 		$dir = $this->_config->getLoggerDirectory();
 		if (!is_dir($dir)) {
 			@mkdir($dir);
 		}
+	}
+
+	/**
+	 * @return Abp01_Logger_FileInfo[]
+	 */
+	public function getLogFiles(): array {
+		$dir = $this->_config->getLoggerDirectory();
+		if (!is_dir($dir)) {
+			return array();
+		}
+
+		$fileNames = scandir($dir);
+		if ($fileNames === false) {
+			return array();
+		}
+
+		$logFiles = array();
+
+		foreach ($fileNames as $name) {
+			$filePath = realpath($dir . '/' . $name);
+			$logFiles[] = new Abp01_Logger_FileInfo($filePath);
+		}
+
+		return $logFiles;
+	}
+
+	public function isDebugLoggingEnabled() {
+		return $this->_config->isDebugLoggingEnabled();
+	}
+
+	public function isErrorLoggingEnabled() {
+		return $this->_config->isErrorLoggingEnabled();
 	}
 }
