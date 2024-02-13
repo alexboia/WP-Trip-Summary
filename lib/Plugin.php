@@ -276,7 +276,7 @@ class Abp01_Plugin {
 			Abp01_PluginModules_TeaserTextsSyncPluginModule::class,
 			Abp01_PluginModules_AdminTripSummaryAuditLogPluginModule::class,
 			Abp01_PluginModules_RouteLogPluginModule::class,
-			Abp01_PluginModules_LogsManagementPluginModule::class,
+			Abp01_PluginModules_SystemLogsManagementPluginModule::class,
 			Abp01_PluginModules_HelpPluginModule::class,
 			Abp01_PluginModules_AboutPagePluginModule::class
 		));

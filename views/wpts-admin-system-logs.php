@@ -34,6 +34,8 @@
 <script type="text/javascript">
 	var abp01_getLogFileNonce = '<?php echo $data->getLogFileNonce; ?>';
 	var abp01_ajaxGetLogFileAction = '<?php echo $data->ajaxGetLogFileAction; ?>';
+	var abp01_downloadLogFileNonce = '<?php echo $data->downloadLogFileNonce; ?>';
+	var abp01_ajaxDownloadLogFileAction = '<?php echo $data->ajaxDownloadLogFileAction; ?>';
 	var abp01_ajaxBaseUrl = '<?php echo $data->ajaxUrl; ?>';
 </script>
 
@@ -98,9 +100,11 @@
 					<h4><?php echo esc_html__('Log file contents', 'abp01-trip-summary'); ?></h5>
 					<div class="abp01-page-workspace-content">
 						<div class="abp01-page-workspace-toolbar">
-							<button id="abp01-download-current-log" type="button" class="btn btn-primary abp01-log-action-btn"><span class="dashicons dashicons-download"></span> Download</button>
-							<button id="abp01-refresh-current-log" type="button" class="btn btn-secondary abp01-log-action-btn"><span class="dashicons dashicons-image-rotate"></span> Reload</button>
-							<button id="abp01-delete-current-log" type="button" class="btn btn-danger abp01-log-action-btn"><span class="dashicons dashicons-trash"></span> Delete</button>
+							<?php if ($data->hasErrorLogFiles || $data->hasDebugLogFiles): ?>
+								<button id="abp01-download-current-log" type="button" class="btn btn-primary abp01-log-action-btn"><span class="dashicons dashicons-download"></span> <?php echo esc_html__('Download', 'abp01-trip-summary'); ?></button>
+								<button id="abp01-refresh-current-log" type="button" class="btn btn-secondary abp01-log-action-btn"><span class="dashicons dashicons-image-rotate"></span> <?php echo esc_html__('Reload', 'abp01-trip-summary'); ?></button>
+								<button id="abp01-delete-current-log" type="button" class="btn btn-danger abp01-log-action-btn"><span class="dashicons dashicons-trash"></span> <?php echo esc_html__('Delete', 'abp01-trip-summary'); ?></button>
+							<?php endif; ?>
 						</div>
 
 						<div id="abp01-log-file-too-large-warning" class="alert alert-warning" role="alert" style="display: none;">

@@ -122,6 +122,27 @@ class Abp01_Logger_Manager {
 		return $logFiles;
 	}
 
+	public function getLogFileById($logFileId): Abp01_Logger_FileInfo|null {
+		if (empty($logFileId)) {
+			return null;
+		}
+
+		$logFiles = $this->getLogFiles();
+
+		/**
+		 * @var Abp01_Logger_FileInfo $foundFile
+		 */
+		$foundFile = null;
+		foreach ($logFiles as $logFile) {
+			if ($logFile->matchesId($logFileId)) {
+				$foundFile = $logFile;
+				break;
+			}
+		}
+
+		return $foundFile;
+	}
+
 	public function isDebugLoggingEnabled() {
 		return $this->_config->isDebugLoggingEnabled();
 	}

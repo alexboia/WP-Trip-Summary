@@ -57,8 +57,10 @@
 	function getContext() {
 		return {
 			getLogFileNonce: window['abp01_getLogFileNonce'] || null,
+			downloadLogFileNonce: window['abp01_downloadLogFileNonce'] || null,
 
 			ajaxGetLogFileAction: window['abp01_ajaxGetLogFileAction'] || null,
+			ajaxDownloadLogFileAction: window['abp01_ajaxDownloadLogFileAction'] || null,
 			ajaxBaseUrl: window['abp01_ajaxBaseUrl'] || null,
 		};
 	}
@@ -68,6 +70,14 @@
 			.addSearch('action', context.ajaxGetLogFileAction)
 			.addSearch('abp01_fileId', logFileId)
 			.addSearch('abp01_nonce_get_log_file_contents', context.getLogFileNonce)
+			.toString();
+	}
+
+	function getDownloadLogFileUrl(logFileId) {
+		return URI(context.ajaxBaseUrl)
+			.addSearch('action', context.ajaxDownloadLogFileAction)
+			.addSearch('abp01_fileId', logFileId)
+			.addSearch('abp01_nonce_download_log_file', context.downloadLogFileNonce)
 			.toString();
 	}
 
@@ -108,6 +118,10 @@
 		});
 	}
 
+	function downloadLogFile(logFileId) {
+		window.open(getDownloadLogFileUrl(logFileId), '_blank');
+	}
+
 	function reloadCurrentLogFileId() {
 		if (!!currentLogFileId) {
 			loadLogFile(currentLogFileId);
@@ -125,9 +139,29 @@
 		}
 	}
 
+	function setActiveLogFileItem($logFileItem) {
+		$('#abp01-log-file-lists-container .list-group-item-action').removeClass('active');
+		$logFileItem.addClass('active');
+	}
+
 	function initEvents() {
 		$(document).on('click', '#abp01-refresh-current-log', function() {
 			reloadCurrentLogFileId();
+		});
+
+		$(document).on('click', '#abp01-download-current-log', function() {
+			if (!!currentLogFileId) {
+				downloadLogFile(currentLogFileId);
+			}
+		});
+
+		$(document).on('click', '#abp01-log-file-lists-container .list-group-item-action', function() {
+			var $me = $(this);
+			var logFileId = getLogFileId($me);
+			if (!!logFileId) {
+				setActiveLogFileItem($me);
+				loadLogFile(logFileId);
+			}
 		});
 	}
 

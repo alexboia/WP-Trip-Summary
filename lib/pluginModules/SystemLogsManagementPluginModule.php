@@ -36,7 +36,7 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 /**
  * @package WP-Trip-Summary
  */
-class Abp01_PluginModules_LogsManagementPluginModule extends Abp01_PluginModules_PluginModule {
+class Abp01_PluginModules_SystemLogsManagementPluginModule extends Abp01_PluginModules_PluginModule {
 	/**
 	 * @var Abp01_View
 	 */
@@ -52,6 +52,11 @@ class Abp01_PluginModules_LogsManagementPluginModule extends Abp01_PluginModules
 	 */
 	private $_getLogFileContentsAjaxAction;
 
+	/**
+	 * @var Abp01_AdminAjaxAction
+	 */
+	private $_downloadLogFileAjaxAction;
+
 	public function __construct(Abp01_Logger_Manager $logManager,
 		Abp01_View $view,
 		Abp01_Env $env, 
@@ -64,7 +69,7 @@ class Abp01_PluginModules_LogsManagementPluginModule extends Abp01_PluginModules
 		$this->_initAjaxActions();
 	}
 
-	private function _initAjaxActions() {
+	private function _initAjaxActions(): void {
 		$authCallback = $this->_createManagePluginSettingsAuthCallback();
 
 		$this->_getLogFileContentsAjaxAction = 
@@ -72,46 +77,54 @@ class Abp01_PluginModules_LogsManagementPluginModule extends Abp01_PluginModules
 				->useDefaultNonceProvider('abp01_nonce_get_log_file_contents')
 				->authorizeByCallback($authCallback)
 				->onlyForHttpGet();
+
+		$this->_downloadLogFileAjaxAction = 
+			Abp01_AdminAjaxAction::create(ABP01_ACTION_DOWNLOAD_LOG_FILE, array($this, 'downloadLogFile'))
+				->useDefaultNonceProvider('abp01_nonce_download_log_file')
+				->authorizeByCallback($authCallback)
+				->onlyForHttpGet();
 	}
 
-    public function load() { 
+    public function load(): void { 
 		$this->_registerAjaxActions();
 		$this->_registerWebPageAssets();
 	}
 
-	private function _registerAjaxActions() {
+	private function _registerAjaxActions(): void {
 		$this->_getLogFileContentsAjaxAction
+			->register();
+		$this->_downloadLogFileAjaxAction
 			->register();
 	}
 
-	private function _registerWebPageAssets() {
+	private function _registerWebPageAssets(): void {
 		add_action('admin_enqueue_scripts', 
 			array($this, 'onAdminEnqueueStyles'));
 		add_action('admin_enqueue_scripts', 
 			array($this, 'onAdminEnqueueScripts'));
 	}
 
-	public function onAdminEnqueueStyles() {
+	public function onAdminEnqueueStyles(): void {
 		if ($this->_shouldEnqueueWebPageAssets()) {
 			Abp01_Includes::includeStyleAdminSystemLogs();
 		}
 	}
 
-	public function onAdminEnqueueScripts() {
+	public function onAdminEnqueueScripts(): void {
 		if ($this->_shouldEnqueueWebPageAssets()) {
 			Abp01_Includes::includeScriptAdminSystemLogs(array());
 		}
 	}
 
-	private function _shouldEnqueueWebPageAssets() {
+	private function _shouldEnqueueWebPageAssets(): bool {
 		return $this->_isViewingSystemLogsPage();
 	}
 
-	private function _isViewingSystemLogsPage() {
+	private function _isViewingSystemLogsPage(): bool {
 		return $this->_env->isAdminPage('abp01-system-logs');
 	}
 	
-	public function getMenuItems() {
+	public function getMenuItems(): array {
 		return array(
 			array(
 				'slug' => 'abp01-system-logs',
@@ -124,7 +137,7 @@ class Abp01_PluginModules_LogsManagementPluginModule extends Abp01_PluginModules
 		);
 	}
 
-	public function displayLogsManagementPage() {
+	public function displayLogsManagementPage(): void {
 		if (!$this->_currentUserCanManagePluginSettings()) {
 			die;
 		}
@@ -132,7 +145,8 @@ class Abp01_PluginModules_LogsManagementPluginModule extends Abp01_PluginModules
 		$debugLogFiles = array();
 		$errorLogFiles = array();
 
-		$logFiles = $this->_logManager->getLogFiles();
+		$logFiles = $this->_logManager
+			->getLogFiles();
 		
 		foreach ($logFiles as $lf) {
 			if ($lf->isDebugLogFile()) {
@@ -149,6 +163,10 @@ class Abp01_PluginModules_LogsManagementPluginModule extends Abp01_PluginModules
 		$data->getLogFileNonce = $this->_getLogFileContentsAjaxAction
 			->generateNonce();
 
+		$data->ajaxDownloadLogFileAction = ABP01_ACTION_DOWNLOAD_LOG_FILE;
+		$data->downloadLogFileNonce = $this->_downloadLogFileAjaxAction
+			->generateNonce();
+
 		$data->isDebugLoggingEnabled = $this->_logManager->isErrorLoggingEnabled();
 		$data->isErrorLoggingEnabled = $this->_logManager->isErrorLoggingEnabled();
 
@@ -161,24 +179,14 @@ class Abp01_PluginModules_LogsManagementPluginModule extends Abp01_PluginModules
 		echo $this->_view->renderAdminSystemLogsPage($data);
 	}
 
-	public function getLogFileContents() {
+	public function getLogFileContents(): stdClass {
 		$fileId = Abp01_InputFiltering::getFilteredGETValue('abp01_fileId');
 		if (empty($fileId)) {
 			die;
 		}
 
-		$logFiles = $this->_logManager->getLogFiles();
-
-		/**
-		 * @var Abp01_Logger_FileInfo $foundFile
-		 */
-		$foundFile = null;
-		foreach ($logFiles as $logFile) {
-			if ($logFile->matchesId($fileId)) {
-				$foundFile = $logFile;
-				break;
-			}
-		}
+		$foundFile = $this->_logManager
+			->getLogFileById($fileId);
 
 		$response = abp01_get_ajax_response(array(
 			'found' => false,
@@ -189,16 +197,58 @@ class Abp01_PluginModules_LogsManagementPluginModule extends Abp01_PluginModules
 		$response->found = $foundFile != null;
 		$response->trimmed = false;
 
-		if ($logFile != null) {
-			$response->trimmed = $logFile->getFileSize() > 500000;
+		if ($foundFile != null) {
+			$response->trimmed = $foundFile->getFileSize() > $this->_getMaxDisplayableLogSize();
 			$response->contents = !$response->trimmed
-				? $logFile->contents()
-				: $logFile->tail(200);
+				? $foundFile->contents()
+				: $foundFile->tail($this->_getLogFileTailLineCount());
 		} else {
 			$response->contents = null;
 		}
 
 		$response->success = true;
 		return $response;
+	}
+
+	private function _getMaxDisplayableLogSize(): int {
+		$lineCount = $this->_getLogFileTailLineCount() * 500;
+		return $lineCount;
+	}
+
+	private function _getLogFileTailLineCount(): int {
+		$tailLineCount = $defaultTailLineCount = 500;
+		if (defined('ABP01_LOG_FILE_DISPLAY_TAIL_LINE_COUNT')) {
+			$tailLineCount = intval(constant('ABP01_LOG_FILE_DISPLAY_TAIL_LINE_COUNT'));
+		}
+
+		$tailLineCount = intval(apply_filters('abp01_log_file_display_tail_line_count', 
+			$tailLineCount));
+
+		if ($tailLineCount <= 0) {
+			$tailLineCount = $defaultTailLineCount;
+		}
+
+		return $tailLineCount;
+	}
+
+	public function downloadLogFile(): void {
+		$fileId = Abp01_InputFiltering::getFilteredGETValue('abp01_fileId');
+		if (empty($fileId)) {
+			die;
+		}
+
+		$foundFile = $this->_logManager
+			->getLogFileById($fileId);
+
+		$fileDownloader = $this->_createDefaultFileDownloaderInstance();
+		$fileDownloader->sendFileWithMimeType($foundFile->getFilePath(), 'text/plain');
+
+		die;
+	}
+
+	private function _createDefaultFileDownloaderInstance() {
+		return new Abp01_Transfer_FileDownloaderWithScriptTermination(
+			new Abp01_Transfer_SimpleFileDownloader()
+		);
 	}
 }
