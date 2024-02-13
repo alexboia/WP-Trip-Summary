@@ -236,7 +236,7 @@
 		var logEntryId = parseInt(formValues.abp01_route_log_entry_id);
 		var isEditing = !isNaN(logEntryId) && logEntryId > 0;
 
-		toggleBusy(true, abp01AdminlogEntriesL10n.msgSaveWorking);
+		toggleBusy(true, abp01AdminLogEntriesL10n.msgSaveWorking);
 		
 		$.ajax(getLogEntryFormSaveUrl(), {
 			type: 'POST',
@@ -260,11 +260,11 @@
 				
 				logEntryFormLastValues = formValues;
 			} else {
-				toastMessage(false, (data || {}).message || abp01AdminlogEntriesL10n.errCouldNotSaveLogEntry);
+				toastMessage(false, (data || {}).message || abp01AdminLogEntriesL10n.errCouldNotSaveLogEntry);
 			}
 		}).fail(function (xhr, status, error) {
 			toggleBusy(false);
-			toastMessage(false, abp01AdminlogEntriesL10n.errCouldNotSaveLogEntry);
+			toastMessage(false, abp01AdminLogEntriesL10n.errCouldNotSaveLogEntry);
 		});
 	}
 
@@ -325,11 +325,11 @@
 			return;
 		}
 		
-		if (!confirm(abp01AdminlogEntriesL10n.msgConfirmLogEntryRemoval)) {
+		if (!confirm(abp01AdminLogEntriesL10n.msgConfirmLogEntryRemoval)) {
 			return;
 		}
 
-		toggleBusy(true, abp01AdminlogEntriesL10n.msgDeleteLogEntryWorking);
+		toggleBusy(true, abp01AdminLogEntriesL10n.msgDeleteLogEntryWorking);
 
 		$.ajax(getLogEntryDeleteUrl(logEntryId), {
 			type: 'POST',
@@ -339,15 +339,15 @@
 			toggleBusy(false);
 			if (!!data && !!data.success) {
 				window.setTimeout(function() {
-					toastMessage(true, data.message || abp01AdminlogEntriesL10n.msgLogEntryDeleted);
+					toastMessage(true, data.message || abp01AdminLogEntriesL10n.msgLogEntryDeleted);
 					removeLogEntryRow(logEntryId);
 				}, 500);
 			} else {
-				toastMessage(false, (data || {}).message || abp01AdminlogEntriesL10n.errCouldNotDeleteLogEntry);
+				toastMessage(false, (data || {}).message || abp01AdminLogEntriesL10n.errCouldNotDeleteLogEntry);
 			}
 		}).fail(function (xhr, status, error) {
 			toggleBusy(false);
-			toastMessage(false, abp01AdminlogEntriesL10n.errCouldNotDeleteLogEntry);
+			toastMessage(false, abp01AdminLogEntriesL10n.errCouldNotDeleteLogEntry);
 		});
 	}
 
@@ -371,18 +371,18 @@
 	function setLogEntryFormTitle(values) {
 		var $formTitle = $('#abp01-tripSummaryLog-formTitle');
 		if (parseInt(values.abp01_route_log_entry_id) <= 0) {
-			$formTitle.text(abp01AdminlogEntriesL10n.lblLogEntryAddFormTitle);
+			$formTitle.text(abp01AdminLogEntriesL10n.lblLogEntryAddFormTitle);
 		} else {
-			$formTitle.text(abp01AdminlogEntriesL10n.lblLogEntryEditFormTitle);
+			$formTitle.text(abp01AdminLogEntriesL10n.lblLogEntryEditFormTitle);
 		}
 	}
 
 	function deleteAllLogEntries() {
-		if (!confirm(abp01AdminlogEntriesL10n.msgConfirmLogAllEntriesRemoval)) {
+		if (!confirm(abp01AdminLogEntriesL10n.msgConfirmLogAllEntriesRemoval)) {
 			return;
 		}
 
-		toggleBusy(true, abp01AdminlogEntriesL10n.msgDeleteAllLogEntriesWorking);
+		toggleBusy(true, abp01AdminLogEntriesL10n.msgDeleteAllLogEntriesWorking);
 
 		$.ajax(getLogEntriesDeleteUrl(), {
 			type: 'POST',
@@ -391,15 +391,15 @@
 		}).done(function (data, status, xhr) {
 			toggleBusy(false);
 			if (!!data && !!data.success) {
-				toastMessage(true, data.message || abp01AdminlogEntriesL10n.msgLogAllEntriesDeleted);
+				toastMessage(true, data.message || abp01AdminLogEntriesL10n.msgLogAllEntriesDeleted);
 				removeAllLogEntriesRows();
 				updateTripSummaryLogLauncherStatusItem(false);
 			} else {
-				toastMessage(false, (data || {}).message || abp01AdminlogEntriesL10n.errCouldNotDeleteAllLogEntries);
+				toastMessage(false, (data || {}).message || abp01AdminLogEntriesL10n.errCouldNotDeleteAllLogEntries);
 			}
 		}).fail(function (xhr, status, error) {
 			toggleBusy(false);
-			toastMessage(false, abp01AdminlogEntriesL10n.errCouldNotDeleteAllLogEntries);
+			toastMessage(false, abp01AdminLogEntriesL10n.errCouldNotDeleteAllLogEntries);
 		});
 	}
 
@@ -411,7 +411,7 @@
 			return;
 		}
 
-		toggleBusy(true, abp01AdminlogEntriesL10n.msgLoadAdminLogEntryByIdForEditing);
+		toggleBusy(true, abp01AdminLogEntriesL10n.msgLoadAdminLogEntryByIdForEditing);
 
 		$.ajax(getGetLogEntryByIdUrl(logEntryId), {
 			type: 'GET',
@@ -437,11 +437,11 @@
 					});
 				}, 500);
 			} else {
-				toastMessage(false, (data || {}).message || abp01AdminlogEntriesL10n.errCouldNotLoadAdminLogEntryDataById);
+				toastMessage(false, (data || {}).message || abp01AdminLogEntriesL10n.errCouldNotLoadAdminLogEntryDataById);
 			}
 		}).fail(function (xhr, status, error) {
 			toggleBusy(false);
-			toastMessage(false, abp01AdminlogEntriesL10n.errCouldNotLoadAdminLogEntryDataById);
+			toastMessage(false, abp01AdminLogEntriesL10n.errCouldNotLoadAdminLogEntryDataById);
 		});
 	}
 
@@ -524,8 +524,8 @@
 		if (!!window.abp01 && !!window.abp01.toggleEnhancedEditorStatusItemText) {
 			window.abp01.toggleEnhancedEditorStatusItemText($statusItem, 
 				hasLogEntries, 
-				abp01AdminlogEntriesL10n.lblTripSummaryLogPresent, 
-				abp01AdminlogEntriesL10n.lblTripSummaryLogNotPresent);
+				abp01AdminLogEntriesL10n.lblTripSummaryLogPresent, 
+				abp01AdminLogEntriesL10n.lblTripSummaryLogNotPresent);
 		}
 
 		refreshTooltips();

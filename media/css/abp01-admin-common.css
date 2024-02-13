@@ -28,6 +28,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* Reset some stuff bootstrap modifies */
 .abp01-status-text {
 	border-radius: 4px;
 	padding: 10px;
@@ -82,7 +83,81 @@
 	height: 0
 }
 
+.abp01-rounded-container {
+	border-radius: 5px;
+	box-shadow: 0 1px 1px rgba(0,0,0,.04);
+	padding: 10px;
+	background-color: #fff;
+}
+
+textarea.abp01-code-reading-area {
+	height: 600px;
+	width: 100%;
+	background-color: #fff;
+	font-family: 'Courier New', Courier, monospace;
+	border: 1px solid #f1f1f1;
+	border-radius: 5px;
+	resize: none;
+}
+
+/* Admin page common stuff */
+
+.abp01-page {
+	
+}
+
+.abp01-page h2.abp01-page-title {
+	color: #1d2327;
+  	font-size: 1.3em;
+  	margin: 1em 0;
+	display: block;
+	font-weight: 600;
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+}
+
+.abp01-page-sidebar h4, .abp01-page-workspace h4 {
+	font-size: 1.1em;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #f1f1f1;
+	margin-bottom: 10px;
+	font-weight: bold;
+}
+
+.abp01-page-sidebar h4 {
+	margin-left: -10px;
+	margin-right: -10px;
+}
+
+.abp01-page-side-bar-content {
+	margin-left: -10px;
+	margin-right: -10px;
+}
+
+.abp01-page-sidebar h5, .abp01-page-workspace h5 {
+	font-size: 1em;
+	padding: 10px;
+	background-color: var(--bs-primary);
+	border-radius: 5px;
+	color: #fff;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	display: inline-block;
+}
+
+.abp01-page-sidebar h5:first-of-type {
+	margin-top: 0px;
+}
+
+.abp01-page-sidebar h5.error-heading, .abp01-page-workspace h5.error-heading {
+	background-color: var(--bs-danger);
+}
+
+.abp01-page-workspace-toolbar {
+	margin-bottom: 10px;
+}
+
 /* Trip summary audit log */
+/* TODO: move to separate file */
 #abp01-trip-summary-audit-log .inside {
 	padding-left: 4px;
 	padding-right: 4px;

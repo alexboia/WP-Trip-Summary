@@ -96,7 +96,7 @@ class Abp01_PluginModules_MaintenancePluginModule extends Abp01_PluginModules_Pl
 	}
 
 	private function _shouldEnqueueWebPageAssets() {
-		return $this->_isViewingMaintenancePage() ;
+		return $this->_isViewingMaintenancePage();
 	}
 
 	private function _isViewingMaintenancePage() {

@@ -52,8 +52,14 @@ class Abp01_PluginModules_PluginModuleHost {
 	 */
 	private $_pluginModuleActivator;
 
+	/**
+	 * @var Abp01_Logger
+	 */
+	private $_logger;
+
 	public function __construct(Abp01_Plugin $plugin, array $pluginModulesClasses) {
 		$this->_plugin = $plugin;
+		$this->_logger = $plugin->getLogManager()->getLogger();
 		$this->_pluginModuleActivator = $this->_createPluginModuleActivator();
 		$this->_pluginModules = $this->_createModules($pluginModulesClasses);
 	}
@@ -73,7 +79,8 @@ class Abp01_PluginModules_PluginModuleHost {
 	}
 
 	private function _createModuleInstance($moduleClassName) {
-	   return $this->_pluginModuleActivator->createModuleInstance($moduleClassName);
+		$this->_logger->debug('Creating plugin module instance: <' . $moduleClassName . '>...');
+		return $this->_pluginModuleActivator->createModuleInstance($moduleClassName);
 	}
 
 	private function _getInjectableServiceFactories() {
@@ -168,6 +175,12 @@ class Abp01_PluginModules_PluginModuleHost {
 
 		foreach ($this->_pluginModules as $module) {
 			$moduleMenuItems = $module->getMenuItems();
+			if (!is_array($moduleMenuItems)) {
+				$moduleMenuItems = array();
+			}
+
+			$this->_logger->debug('Found <' . count($moduleMenuItems) . '> menu items for module <' . get_class($module) . '>.');
+
 			if (!empty($moduleMenuItems)) {
 				$menuItemsCollector->collectMenuItems($moduleMenuItems);
 			}

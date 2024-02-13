@@ -118,6 +118,11 @@ class Abp01_View {
 		return $this->_renderCoreView('wpts-maintenance.php', $data);
 	}
 
+	public function renderAdminSystemLogsPage(stdClass $data) {
+		$this->_registerAdminHelpers();
+		return $this->_renderCoreView('wpts-admin-system-logs.php', $data);
+	}
+
 	public function renderAdminMaintenanceToolResult($toolId, stdClass $data) {
 		$viewFileName = sprintf('maintenance/wpts-%s-result.php', $toolId);
 		return $this->_viewFileExists($viewFileName)

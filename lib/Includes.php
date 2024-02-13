@@ -86,6 +86,8 @@ class Abp01_Includes {
 
 	const JS_CHART_JS = 'abp01-chart-js';
 
+	const JS_BOOTSTRAP = 'abp01-bootstrap';
+
 	const JS_ABP01_MAP = 'abp01-map';
 
 	const JS_ABP01_COMMON = 'abp01-common-js';
@@ -118,6 +120,8 @@ class Abp01_Includes {
 
 	const JS_ABP01_ADMIN_LOG_ENTRIES = 'abp01-admin-log-entries';
 
+	const JS_ABP01_ADMIN_SYSTEM_LOGS = 'abp01-admin-system-logs';
+
 	const JS_SYSTEM_THICKBOX = 'thickbox';
 
 	const JS_SELECT2 = 'select2-js';
@@ -142,9 +146,13 @@ class Abp01_Includes {
 
 	const STYLE_JQUERY_TOASTR = 'jquery-toastr-css';
 
+	const STYLE_BOOTSTRAP = 'abp01-bootstrap-css';
+
 	const STYLE_TIPPED_JS = 'tipped-js-css';
 
 	const STYLE_CHART_JS = 'abp01-chart-js-css';
+
+	const STYLE_ADMIN_SYSTEM_LOGS = 'abp01-admin-system-logs-css';
 
 	const STYLE_ABP01_NUMERIC_STEPPER = 'abp01-numeric-stepper-css';
 
@@ -240,6 +248,11 @@ class Abp01_Includes {
 			'deps' => array(
 				self::JS_JQUERY
 			)
+		),
+		self::JS_BOOTSTRAP => array(
+			'path' => 'media/bootstrap/js/bootstrap.bundle.min.js',
+			'version' => '5.3.2',
+			'deps' => array()
 		),
 		self::JS_LEAFLET_NOCONFLICT => array(
 			'path' => 'media/js/abp01-leaflet-noconflict.js', 
@@ -508,6 +521,17 @@ class Abp01_Includes {
 				self::JS_ABP01_OPERATION_MESSAGE
 			)
 		),
+		self::JS_ABP01_ADMIN_SYSTEM_LOGS => array(
+			'path' => 'media/js/abp01-admin-system-logs.js',
+			'version' => ABP01_VERSION,
+			'deps' => array(
+				self::JS_JQUERY,
+				self::JS_BOOTSTRAP,
+				self::JS_URI_JS,
+				self::JS_ABP01_COMMON,
+				self::JS_ABP01_OPERATION_MESSAGE
+			)
+		),
 		self::JS_ABP01_ADMIN_HELP => array(
 			'path' => 'media/js/abp01-admin-help.js',
 			'version' => ABP01_VERSION,
@@ -574,6 +598,11 @@ class Abp01_Includes {
 			'path' => 'media/js/3rdParty/leaflet-plugins/leaflet-fullscreen/leaflet.fullscreen.css', 
 			'version' => '0.0.4'
 		), 
+		self::STYLE_BOOTSTRAP => array(
+			'path' => 'media/bootstrap/css/abp01-bootstrap.css',
+			'version' => '5.3.2',
+			'deps' => array()
+		),
 		self::STYLE_ABP01_NUMERIC_STEPPER => array(
 			'path' => 'media/css/abp01-numeric-stepper.css', 
 			'version' => ABP01_VERSION,
@@ -708,6 +737,14 @@ class Abp01_Includes {
 				self::STYLE_TIPPED_JS,
 				self::STYLE_ADMIN_COMMON,
 				self::STYLE_ABP01_NUMERIC_STEPPER
+			)
+		),
+		self::STYLE_ADMIN_SYSTEM_LOGS => array(
+			'path' => 'media/css/abp01-admin-system-logs.css', 
+			'version' => ABP01_VERSION,
+			'deps' => array(
+				self::STYLE_BOOTSTRAP,
+				self::STYLE_ADMIN_COMMON
 			)
 		),
 		self::STYLE_ADMIN_SETTINGS => array(
@@ -938,7 +975,17 @@ class Abp01_Includes {
 
 		if (!empty($localization)) {
 			wp_localize_script(self::JS_ABP01_ADMIN_LOG_ENTRIES, 
-				'abp01AdminlogEntriesL10n', 
+				'abp01AdminLogEntriesL10n', 
+				$localization);
+		}
+	}
+
+	public static function includeScriptAdminSystemLogs($localization) {
+		self::_includeScript(self::JS_ABP01_ADMIN_SYSTEM_LOGS);
+
+		if (!empty($localization)) {
+			wp_localize_script(self::JS_ABP01_ADMIN_SYSTEM_LOGS, 
+				'abp01AdminSystemLogL10n', 
 				$localization);
 		}
 	}
@@ -1011,5 +1058,9 @@ class Abp01_Includes {
 
 	public static function includeStyleFrontendLogEntries() {
 		self::_includeStyle(self::STYLE_FRONTEND_LOG_ENTRIES);
+	}
+
+	public static function includeStyleAdminSystemLogs() {
+		self::_includeStyle(self::STYLE_ADMIN_SYSTEM_LOGS);
 	}
 }

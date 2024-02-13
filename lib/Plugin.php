@@ -268,8 +268,6 @@ class Abp01_Plugin {
 			Abp01_PluginModules_LookupDataManagementPluginModule::class,
 			Abp01_PluginModules_MaintenancePluginModule::class,
 			Abp01_PluginModules_JsonLdFrontendDataPluginModule::class,
-			Abp01_PluginModules_HelpPluginModule::class,
-			Abp01_PluginModules_AboutPagePluginModule::class,
 			Abp01_PluginModules_PostListingCustomizationPluginModule::class,
 			Abp01_PluginModules_DownloadTrackDataPluginModule::class,
 			Abp01_PluginModules_GetTrackDataPluginModule::class,
@@ -277,7 +275,10 @@ class Abp01_Plugin {
 			Abp01_PluginModules_FrontendViewerPluginModule::class,
 			Abp01_PluginModules_TeaserTextsSyncPluginModule::class,
 			Abp01_PluginModules_AdminTripSummaryAuditLogPluginModule::class,
-			Abp01_PluginModules_RouteLogPluginModule::class
+			Abp01_PluginModules_RouteLogPluginModule::class,
+			Abp01_PluginModules_LogsManagementPluginModule::class,
+			Abp01_PluginModules_HelpPluginModule::class,
+			Abp01_PluginModules_AboutPagePluginModule::class
 		));
 	}
 
