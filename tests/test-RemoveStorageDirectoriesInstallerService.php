@@ -42,12 +42,13 @@ class RemoveStorageDirectoriesInstallerServiceTests extends WP_UnitTestCase {
 	}
 
 	public function test_canRemoveDirectories() {
-		list($rootStorageDir, $tracksStorageDir, $cacheStorageDir) = 
+		list($rootStorageDir, $tracksStorageDir, $cacheStorageDir, $logStorageDir) = 
 			$this->_getActualPluginStorageDirectories();
 
 		$this->assertDirectoryExists($rootStorageDir);
 		$this->assertDirectoryExists($tracksStorageDir);
 		$this->assertDirectoryExists($cacheStorageDir);	
+		$this->assertDirectoryExists($logStorageDir);
 
 		$service = new Abp01_Installer_Service_RemoveStorageDirectories($this->_getEnv());
 		$result = $service->execute();
@@ -55,7 +56,8 @@ class RemoveStorageDirectoriesInstallerServiceTests extends WP_UnitTestCase {
 
 		$this->assertDirectoryDoesNotExist($rootStorageDir);
 		$this->assertDirectoryDoesNotExist($tracksStorageDir);
-		$this->assertDirectoryDoesNotExist($cacheStorageDir);	
+		$this->assertDirectoryDoesNotExist($cacheStorageDir);
+		$this->assertDirectoryDoesNotExist($logStorageDir);
 	}
 
 	protected static function _getRootTestsDir() {

@@ -48,25 +48,44 @@ class CreateStorageDirsSecurityAssetsInstallationServiceTests extends WP_UnitTes
 	}
 
 	public function test_canCreate() {
-		list($rootStorageDir, $tracksStorageDir, $cacheStorageDir) = 
+		list($rootStorageDir, $tracksStorageDir, $cacheStorageDir, $logStorageDir) = 
 			$this->_getTestPluginStorageDirectories();
 
 		$this->_assertMissingFiles($rootStorageDir);
 		$this->_assertMissingFiles($tracksStorageDir);
 		$this->_assertMissingFiles($cacheStorageDir);
+		$this->_assertMissingFiles($logStorageDir);
 
 		$service = new Abp01_Installer_Service_CreateStorageDirsSecurityAssets($rootStorageDir, 
 			$tracksStorageDir, 
-			$cacheStorageDir);
+			$cacheStorageDir, 
+			$logStorageDir);
 
 		$service->execute();
 
 		$this->_assertIndexPhpFile($rootStorageDir, '../../../index.php');
 		$this->_assertIndexPhpFile($tracksStorageDir, '../../../../index.php');
 		$this->_assertIndexPhpFile($cacheStorageDir, '../../../../index.php');
+		$this->_assertIndexPhpFile($logStorageDir, '../../../../index.php');
 
-		$this->_assertHtaccesFile($tracksStorageDir);
-		$this->_assertHtaccesFile($cacheStorageDir);
+		$trackFilesExcludedExtensions = array(
+			'.cache',
+			'.gpx',
+			'.geojson',
+			'.kml'
+		);
+
+		$this->_assertHtaccesFile($tracksStorageDir, 
+			$trackFilesExcludedExtensions);
+		$this->_assertHtaccesFile($cacheStorageDir, 
+			$trackFilesExcludedExtensions);
+
+		$logFilesExcludedExtensions = array(
+			'.log'
+		);
+
+		$this->_assertHtaccesFile($logStorageDir, 
+			$logFilesExcludedExtensions);
 	}
 
 	private function _assertMissingFiles($directory) {
@@ -88,19 +107,12 @@ class CreateStorageDirsSecurityAssetsInstallationServiceTests extends WP_UnitTes
 		$this->assertEquals($expectedContents, $contents);
 	}
 
-	private function _assertHtaccesFile($directory) {
+	private function _assertHtaccesFile($directory, $expectedExcludedExtensions) {
 		$file = $directory . '/.htaccess';
 		$this->assertFileExists($file);
 
 		$contents = file_get_contents($file);
 		$this->assertNotEmpty($contents);
-
-		$expectedExcludedExtensions = array(
-			'.cache',
-			'.gpx',
-			'.geojson',
-			'.kml'
-		);
 
 		foreach ($expectedExcludedExtensions as $ee) {
 			$filesMatchRule = '<FilesMatch "\\' . $ee . '">';

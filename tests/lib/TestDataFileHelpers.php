@@ -41,13 +41,14 @@
 
 		$securityAssetsService = new Abp01_Installer_Service_CreateStorageDirsSecurityAssets($env->getRootStorageDir(), 
 			$env->getTracksStorageDir(), 
-			$env->getCacheStorageDir());
+			$env->getCacheStorageDir(),
+			$env->getLogStorageDir());
 
 		$securityAssetsService->execute();
 	}
 
 	protected static function _ensurePluginTestDirectoriesCreated() {
-		list($rootStorageDir, $tracksStorageDir, $cacheStorageDir) = 
+		list($rootStorageDir, $tracksStorageDir, $cacheStorageDir, $logStorageDir) = 
 			self::_getTestPluginStorageDirectories();
 
 		if (!is_dir($rootStorageDir)) {
@@ -61,10 +62,14 @@
 		if (!is_dir($cacheStorageDir)) {
 			mkdir($cacheStorageDir);
 		}
+
+		if (!is_dir($logStorageDir)) {
+			mkdir($logStorageDir);
+		}
 	}
 
 	protected static function _ensurePluginTestDirectoriesRemoved() {
-		list($rootStorageDir, $tracksStorageDir, $cacheStorageDir) = 
+		list($rootStorageDir, $tracksStorageDir, $cacheStorageDir, $logStorageDir) = 
 			self::_getTestPluginStorageDirectories();
 
 		if (is_dir($cacheStorageDir)) {
@@ -75,6 +80,11 @@
 		if (is_dir($tracksStorageDir)) {
 			self::_removeFiles($tracksStorageDir);
 			@rmdir($tracksStorageDir);
+		}
+
+		if (is_dir($logStorageDir)) {
+			self::_removeFiles($logStorageDir);
+			@rmdir($logStorageDir);
 		}
 
 		if (is_dir($rootStorageDir)) {
@@ -117,7 +127,8 @@
 		return array(
 			$env->getRootStorageDir(), 
 			$env->getTracksStorageDir(), 
-			$env->getCacheStorageDir()
+			$env->getCacheStorageDir(),
+			$env->getLogStorageDir()
 		);
 	}
 

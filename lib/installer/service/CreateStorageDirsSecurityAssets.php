@@ -40,16 +40,20 @@ class Abp01_Installer_Service_CreateStorageDirsSecurityAssets {
 
 	private $_cacheStorageDir;
 
-	public function __construct($rootStorageDir, $tracksStorageDir, $cacheStorageDir) {
+	private $_logStorageDir;
+
+	public function __construct($rootStorageDir, $tracksStorageDir, $cacheStorageDir, $logStorageDir) {
 		$this->_rootStorageDir = $rootStorageDir;
 		$this->_tracksStorageDir = $tracksStorageDir;
 		$this->_cacheStorageDir = $cacheStorageDir;
+		$this->_logStorageDir = $logStorageDir;
 	}
 
 	public function execute() {
 		$rootStorageDir = $this->_rootStorageDir;
 		$tracksStorageDir = $this->_tracksStorageDir;
 		$cacheStorageDir = $this->_cacheStorageDir;
+		$logStorageDir = $this->_logStorageDir;
 
 		$rootAssets = array(
 			array(
@@ -72,12 +76,27 @@ class Abp01_Installer_Service_CreateStorageDirsSecurityAssets {
 			)
 		);
 
+		$logAssets = array(
+			array(
+				'name' => 'index.php',
+				'contents' => $this->_getGuardIndexPhpFileContents(4),
+				'type' => 'file'
+			),
+			array(
+				'name' => '.htaccess',
+				'contents' => $this->_getLogAssetsGuardHtaccessFileContents(),
+				'type' => 'file'
+			)
+		);
+
 		$this->_installAssetsForDirectory($rootStorageDir, 
 			$rootAssets);
 		$this->_installAssetsForDirectory($tracksStorageDir, 
 			$tracksAssets);
 		$this->_installAssetsForDirectory($cacheStorageDir, 
 			$tracksAssets);
+		$this->_installAssetsForDirectory($logStorageDir, 
+			$logAssets);
 
 		return true;
 	}
@@ -129,6 +148,15 @@ class Abp01_Installer_Service_CreateStorageDirsSecurityAssets {
 				"\t" . 'deny from all',
 			'</FilesMatch>',
 			'<FilesMatch "\.kml">',
+				"\t" . 'order allow,deny',
+				"\t" . 'deny from all',
+			'</FilesMatch>'
+		));
+	}
+
+	private function _getLogAssetsGuardHtaccessFileContents() {
+		return join("\n", array(
+			'<FilesMatch "\.log">',
 				"\t" . 'order allow,deny',
 				"\t" . 'deny from all',
 			'</FilesMatch>'

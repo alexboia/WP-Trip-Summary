@@ -70,7 +70,8 @@ class Abp01_Installer_Step_InstallStorageDirectoryAndAssets implements Abp01_Ins
 	private function _installStorageDirsSecurityAssets() {
 		$service = new Abp01_Installer_Service_CreateStorageDirsSecurityAssets($this->_rootStorageDir, 
 			$this->_tracksStorageDir, 
-			$this->_cacheStorageDir);
+			$this->_cacheStorageDir,
+			$this->_logStorageDir);
 
 		return $service->execute();
 	}

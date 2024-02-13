@@ -68,10 +68,12 @@ class Abp01_Installer_Step_Update_UpdateTo022 implements Abp01_Installer_Step_Up
 		$rootStorageDir = $this->_env->getRootStorageDir();
 		$tracksStorageDir = $this->_env->getTracksStorageDir();
 		$cacheStorageDir = $this->_env->getCacheStorageDir();
+		$logStorageDir = $this->_env->getLogStorageDir();
 
 		$service = new Abp01_Installer_Service_CreateStorageDirsSecurityAssets($rootStorageDir, 
 			$tracksStorageDir, 
-			$cacheStorageDir);
+			$cacheStorageDir,
+			$logStorageDir);
 
 		return $service->execute();
 	}
