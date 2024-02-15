@@ -33,18 +33,27 @@
 	var progressBar = null;
 	var currentLogFileId = null;
 	var confirmDeleteModal = null;
+	var logResultAlert = null;
 
 	function toggleBusy(show) {
-		if (progressBar === null) {
-			progressBar = $('#wpwrap').abp01ProgressModal();
-		}
-
 		if (show) {
 			var message = arguments.length == 2 ? arguments[1] : null;
 			progressBar.show(message || 'Please wait');
 		} else {
 			progressBar.hide();
 		}
+	}
+
+	function showSuccessResult(message) {
+		logResultAlert.success(message);
+	}
+
+	function showErrorResult(message) {
+		logResultAlert.danger(message);
+	}
+
+	function hideResult() {
+		logResultAlert.hide();
 	}
 
 	function getSelectedLogFileItem() {
@@ -98,6 +107,7 @@
 
 	function loadLogFile(logFileId) {
 		toggleBusy(true);
+		hideResult();
 
 		$.ajax(getGetLogFileUrl(logFileId), {
 			type: 'GET',
@@ -106,12 +116,12 @@
 		}).done(function (data, status, xhr) {
 			toggleBusy(false);
 			if (!!data && !!data.success) {
-				//TODO: error if not found
 				currentLogFileId = logFileId;
 
 				if (!!data.found) {
 					$('#abp01-log-file-contents').text(data.contents);
 				} else {
+					showErrorResult('The log file could not be found');
 					$('#abp01-log-file-contents').text('');
 				}
 
@@ -121,11 +131,11 @@
 					$('#abp01-log-file-too-large-warning').hide();
 				}
 			} else {
-				//TODO: error
+				showErrorResult(data.message || 'The log file could not be loaded');
 			}
 		}).fail(function (xhr, status, error) {
 			toggleBusy(false);
-			//TODO: error
+			showErrorResult('The log file could not be loaded');
 		});
 	}
 
@@ -143,39 +153,53 @@
 		}).done(function (data, status, xhr) {
 			toggleBusy(false);
 			if (!!data && !!data.success) {
-				//Clear current log ID, contents and menu options
-				currentLogFileId = null;
-				$('#abp01-log-file-contents').text('');
-
-				var logType = null;
-				var $item = getLogFileItem(logFileId);
-				var $itemParent = $item.parent();
-
-				if ($item.length > 0) {
-					logType = $item.data('file-type');
-					$item.remove();
-				}
-
-				var $remainingItemsOfSameType = $itemParent.find('.list-group-item-action');
-				if ($remainingItemsOfSameType.length > 0)  {
-					pickNewSelectedLogFile($remainingItemsOfSameType);
-					loadInitialLogFile();
-				} else {
-					showNoLogsMessage(logType);
-
-					var $allRemainingItems = $('#abp01-log-file-lists-container .list-group-item-action');
-					if ($allRemainingItems.length > 0) {
-						pickNewSelectedLogFile($allRemainingItems);
-						loadInitialLogFile();
-					}
-				}
+				showSuccessResult('The log file has been successfully deleted.');
+				processLogFileItemRemoval(logFileId);
 			} else {
-				//TODO: error
+				showErrorResult('The log file could not be deleted');
 			}
 		}).fail(function (xhr, status, error) {
 			toggleBusy(false);
-			//TODO: error
+			showErrorResult('The log file could not be deleted');
 		});
+	}
+
+	function processLogFileItemRemoval(logFileId) {
+		var logType = null;
+		var $item = getLogFileItem(logFileId);
+		var $itemParent = $item.parent();
+
+		clearCurrentLogInfo();
+
+		if ($item.length > 0) {
+			logType = $item.data('file-type');
+			$item.remove();
+		}
+
+		var $remainingItemsOfSameType = $itemParent.find('.list-group-item-action');
+		if ($remainingItemsOfSameType.length > 0)  {
+			pickNewSelectedLogFile($remainingItemsOfSameType);
+			loadInitialLogFile();
+		} else {
+			tryPickNewLogFileFromAllRemainingItems();
+			showNoLogsMessage(logType);
+		}
+	}
+
+	function clearCurrentLogInfo() {
+		currentLogFileId = null;
+		$('#abp01-log-file-contents').text('');
+		$('#abp01-log-file-too-large-warning').hide();
+	}
+
+	function tryPickNewLogFileFromAllRemainingItems() {
+		var $allRemainingItems = $('#abp01-log-file-lists-container .list-group-item-action');
+		if ($allRemainingItems.length > 0) {
+			pickNewSelectedLogFile($allRemainingItems);
+			loadInitialLogFile();
+		} else {
+			$('#abp01-page-workspace-toolbar').hide();
+		}
 	}
 
 	function getLogFileItem(logFileId) {
@@ -278,8 +302,14 @@
 		});
 	}
 
+	function initControls() {
+		progressBar = $('#wpwrap').abp01ProgressModal();
+		logResultAlert = $('#abp01-log-action-result').abp01AlertInline();
+	}
+
 	$(function() {
 		initState();
+		initControls();
 		initEvents();
 		loadInitialLogFile();
 	});

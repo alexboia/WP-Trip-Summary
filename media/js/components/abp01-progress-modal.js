@@ -67,11 +67,20 @@
 
 		function getHtml() {
 			return [
-				'<div id="abp01-progress-container" class="abp01-bootstrap abp01-bs-progress-container" style="display: none;">',
+				('<div id="abp01-progress-container" ' + 
+						'class="abp01-bootstrap abp01-bs-progress-container" ' + 
+						'style="display: none;">'),
 					'<div id="abp01-progress-label" class="abp01-bs-progress-label"></div>',
 					'<div id="abp01-progress-bar-container" class="abp01-bs-progress-bar-container">',
-						'<div id="abp01-progress-bar-outer" class="progress" role="progressbar" aria-label="WP Trip Summary Progress Bar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">',
-							'<div id="abp01-progress-bar-indicator" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%">',
+						('<div id="abp01-progress-bar-outer" class="progress" ' + 
+								'role="progressbar" ' + 
+								'aria-label="WP Trip Summary Progress Bar" ' + 
+								'aria-valuenow="100" ' + 
+								'aria-valuemin="0" ' + 
+								'aria-valuemax="100">'),
+							('<div id="abp01-progress-bar-indicator" ' + 
+								'class="progress-bar progress-bar-striped progress-bar-animated" ' + 
+								'style="width: 100%">'),
 							'</div>',
 						'</div>',
 					'</div>',

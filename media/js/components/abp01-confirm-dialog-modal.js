@@ -43,13 +43,15 @@
 	}
 
 	function confirmDialogModal(spec = {}) {
+		var opts = spec || {};
+
 		var confirmWnd = null;
 		var chosenAction = null;
 		var resultCallback = null;
 		var userData = null;
 		var isOpen = false;
 
-		var confirmWndId = (spec.id || 'abp01-confirm-dialog-modal');
+		var confirmWndId = (opts.id || 'abp01-confirm-dialog-modal');
 		var confirmWndSelector = '#' + confirmWndId;
 		var confirWndContainerId = confirmWndId + '-container';
 		var confirmWndContainerSelector = '#' + confirWndContainerId;
@@ -62,21 +64,28 @@
 			return [
 				'<div id="' + confirWndContainerId + '" class="abp01-bootstrap" style="display: none;">',
 				'<div id="' + confirmWndId + '" class="modal fade" tabindex="-1" aria-hidden="true" role="dialog">',
-					'<div class="modal-dialog modal-dialog-centered">',
-						'<div class="modal-content">',
-							'<div class="modal-header">',
-								'<h5 class="modal-title">Confirm</h5>',
-								'<button data-abp01-modal-action="' + ACTION_CODE_NO + '" type="button" class="btn-close" aria-label="Close"></button>',
-							'</div>',
-							'<div class="modal-body">',
-								'<p class="abp01-confirm-dialog-message"></p>',
-							'</div>',
-							'<div class="modal-footer">',
-								'<button data-abp01-modal-action="' + ACTION_CODE_NO + '" type="button" class="btn btn-secondary">No</button>',
-								'<button data-abp01-modal-action="' + ACTION_CODE_YES + '" type="button" class="btn btn-primary">Yes</button>',
-							'</div>',
+				'<div class="modal-dialog modal-dialog-centered">',
+					'<div class="modal-content">',
+						'<div class="modal-header">',
+							'<h5 class="modal-title">Confirm</h5>',
+							('<button data-abp01-modal-action="' + ACTION_CODE_NO + '" ' + 
+								'type="button" ' + 
+								'class="btn-close" ' + 
+								'aria-label="Close"></button>'),
+						'</div>',
+						'<div class="modal-body">',
+							'<p class="abp01-confirm-dialog-message"></p>',
+						'</div>',
+						'<div class="modal-footer">',
+							('<button data-abp01-modal-action="' + ACTION_CODE_NO + '" ' + 
+								'type="button" ' + 
+								'class="btn btn-secondary">No</button>'),
+							('<button data-abp01-modal-action="' + ACTION_CODE_YES + '" ' + 
+								'type="button" ' + 
+								'class="btn btn-primary">Yes</button>'),
 						'</div>',
 					'</div>',
+				'</div>',
 				'</div>',
 				'<div class="modal-backdrop"></div>',
 				'</div>'
@@ -100,13 +109,15 @@
 				handleConfirmWindowHidden();
 			});
 
-			$(document).on('click', '[data-abp01-modal-action="' + ACTION_CODE_YES + '"]', function() {
-				dismissConfirmWindowWithActionCode(ACTION_CODE_YES);
-			});
+			$(confirmWndSelector).on('click', '[data-abp01-modal-action="' + ACTION_CODE_YES + '"]', 
+				function() {
+					dismissConfirmWindowWithActionCode(ACTION_CODE_YES);
+				});
 
-			$(document).on('click', '[data-abp01-modal-action="' + ACTION_CODE_NO +  '"]', function() {
-				dismissConfirmWindowWithActionCode(ACTION_CODE_NO);
-			});
+			$(confirmWndSelector).on('click', '[data-abp01-modal-action="' + ACTION_CODE_NO +  '"]', 
+				function() {
+					dismissConfirmWindowWithActionCode(ACTION_CODE_NO);
+				});
 		}
 
 		function showBackdrop() {

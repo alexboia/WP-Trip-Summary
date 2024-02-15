@@ -120,6 +120,10 @@ textarea.abp01-code-reading-area {
 	font-weight: bold;
 }
 
+.abp01-alert-container {
+	margin-bottom: 10px;
+}
+
 /* Admin page - basic structure */
 
 .abp01-page {

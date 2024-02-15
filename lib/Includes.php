@@ -96,6 +96,8 @@ class Abp01_Includes {
 
 	const JS_ABP01_CONFIRM_DIALOG_MODAL = 'abp01-confirm-dialog-modal';
 
+	const JS_ABP01_ALERT_INLINE = 'abp01-alert-inline';
+
 	const JS_ABP01_PROGRESS_OVERLAY = 'abp01-progress-overlay';
 
 	const JS_ABP01_OPERATION_MESSAGE = 'abp01-operation-message-js';
@@ -436,6 +438,15 @@ class Abp01_Includes {
 			)
 		), 
 
+		self::JS_ABP01_ALERT_INLINE => array(
+			'path' => 'media/js/components/abp01-alert-inline.js', 
+			'version' => ABP01_VERSION,
+			'deps' => array(
+				self::JS_JQUERY,
+				self::JS_BOOTSTRAP
+			)
+		), 
+
 		self::JS_ABP01_ADMIN_MAIN => array(
 			'path' => 'media/js/abp01-admin-main.js', 
 			'version' => ABP01_VERSION,
@@ -556,7 +567,8 @@ class Abp01_Includes {
 				self::JS_ABP01_COMMON,
 				self::JS_ABP01_OPERATION_MESSAGE,
 				self::JS_ABP01_PROGRESS_MODAL,
-				self::JS_ABP01_CONFIRM_DIALOG_MODAL
+				self::JS_ABP01_CONFIRM_DIALOG_MODAL,
+				self::JS_ABP01_ALERT_INLINE
 			)
 		),
 		self::JS_ABP01_ADMIN_HELP => array(
