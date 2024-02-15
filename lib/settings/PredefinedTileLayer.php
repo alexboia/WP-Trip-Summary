@@ -30,7 +30,7 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
 class Abp01_Settings_PredefinedTileLayer {
@@ -39,8 +39,6 @@ class Abp01_Settings_PredefinedTileLayer {
 	const FILTER_HOOK_GET_PREDEFINED_TILE_LAYERS = 'abp01_predefined_tile_layers';
 
 	const TL_OPEN_STREET_MAP = 'open-street-map';
-
-	const TL_OPEN_STREET_MAP_HIKEBIKE = 'open-street-map-hikebike';
 
 	const TL_TF_OPENCYCLEMAP = 'tf-open-cycle-map';
 
@@ -138,12 +136,6 @@ class Abp01_Settings_PredefinedTileLayer {
 					'OpenStreetMap & Contributors', 
 					'https://www.openstreetmap.org/copyright',
 					'https://www.openstreetmap.org/about'),
-				self::TL_OPEN_STREET_MAP_HIKEBIKE => new self(self::TL_OPEN_STREET_MAP_HIKEBIKE, 
-					__('Open Street Map, Hike & Bike Map', 'abp01-trip-summary'),
-					'http://{s}.tiles.wmflabs.org/hikebike/{z}/{x}/{y}.png', 
-					'OpenStreetMap & Contributors, Render Style by Colin Marquardt', 
-					'https://www.openstreetmap.org/copyright',
-					'https://wiki.openstreetmap.org/wiki/Hike_&_Bike_Map'),
 
 				//See all thunderforest maps here: https://www.thunderforest.com/maps/
 				//See thunderforest map tiles API: https://www.thunderforest.com/docs/map-tiles-api/
