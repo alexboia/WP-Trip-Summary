@@ -32,6 +32,7 @@
 	var context = null;
 	var progressBar = null;
 	var currentLogFileId = null;
+	var confirmDeleteModal = null;
 
 	function toggleBusy(show) {
 		if (progressBar === null) {
@@ -58,9 +59,11 @@
 		return {
 			getLogFileNonce: window['abp01_getLogFileNonce'] || null,
 			downloadLogFileNonce: window['abp01_downloadLogFileNonce'] || null,
+			deleteLogFileNonce: window['abp01_deleteLogFileNonce'] || null,
 
 			ajaxGetLogFileAction: window['abp01_ajaxGetLogFileAction'] || null,
 			ajaxDownloadLogFileAction: window['abp01_ajaxDownloadLogFileAction'] || null,
+			ajaxDeleteLogFileAction: window['abp01_ajaxDeleteLogFileAction'] || null,
 			ajaxBaseUrl: window['abp01_ajaxBaseUrl'] || null,
 		};
 	}
@@ -78,6 +81,14 @@
 			.addSearch('action', context.ajaxDownloadLogFileAction)
 			.addSearch('abp01_fileId', logFileId)
 			.addSearch('abp01_nonce_download_log_file', context.downloadLogFileNonce)
+			.toString();
+	}
+
+	function getDeleteLogFileUrl(logFileId) {
+		return URI(context.ajaxBaseUrl)
+			.addSearch('action', context.ajaxDeleteLogFileAction)
+			.addSearch('abp01_fileId', logFileId)
+			.addSearch('abp01_nonce_delete_log_file', context.deleteLogFileNonce)
 			.toString();
 	}
 
@@ -122,20 +133,120 @@
 		window.open(getDownloadLogFileUrl(logFileId), '_blank');
 	}
 
-	function reloadCurrentLogFileId() {
+	function deleteLogFile(logFileId) {
+		toggleBusy(true);
+
+		$.ajax(getDeleteLogFileUrl(logFileId), {
+			type: 'POST',
+			dataType: 'json',
+			cache: false
+		}).done(function (data, status, xhr) {
+			toggleBusy(false);
+			if (!!data && !!data.success) {
+				//Clear current log ID, contents and menu options
+				currentLogFileId = null;
+				$('#abp01-log-file-contents').text('');
+
+				var logType = null;
+				var $item = getLogFileItem(logFileId);
+				var $itemParent = $item.parent();
+
+				if ($item.length > 0) {
+					logType = $item.data('file-type');
+					$item.remove();
+				}
+
+				var $remainingItemsOfSameType = $itemParent.find('.list-group-item-action');
+				if ($remainingItemsOfSameType.length > 0)  {
+					pickNewSelectedLogFile($remainingItemsOfSameType);
+					loadInitialLogFile();
+				} else {
+					showNoLogsMessage(logType);
+
+					var $allRemainingItems = $('#abp01-log-file-lists-container .list-group-item-action');
+					if ($allRemainingItems.length > 0) {
+						pickNewSelectedLogFile($allRemainingItems);
+						loadInitialLogFile();
+					}
+				}
+			} else {
+				//TODO: error
+			}
+		}).fail(function (xhr, status, error) {
+			toggleBusy(false);
+			//TODO: error
+		});
+	}
+
+	function getLogFileItem(logFileId) {
+		return $('#abp01-log-file-lists-container').find('a[data-file-id="' + logFileId + '"]');
+	}
+
+	function pickNewSelectedLogFile($remainingItems) {
+		var $first = $($remainingItems.get(0));
+		setActiveLogFileItem($first);
+	}
+
+	function showNoLogsMessage(logType) {
+		var $alertMessage = null;
+		if (logType === 'debug-log') {
+			$alertMessage = $('#abp01-no-debug-log-files-found');
+		} else if (logType === 'error-log') {
+			$alertMessage = $('#abp01-no-error-log-files-found');
+		}
+
+		if ($alertMessage != null) {
+			$alertMessage.show();
+		}
+	}
+
+	function reloadCurrentLogFileById() {
 		if (!!currentLogFileId) {
 			loadLogFile(currentLogFileId);
 		}
 	}
 
-	function loadInitialLogFile() {
-		var $selectedLogFileItem = getSelectedLogFileItem();
-		var logFileId = $selectedLogFileItem.length > 0 
-			? getLogFileId($selectedLogFileItem) 
-			: null;
+	function downloadCurrentLogFileById() {
+		if (!!currentLogFileId) {
+			downloadLogFile(currentLogFileId);
+		}
+	}
 
-		if (!!logFileId) {
-			loadLogFile(logFileId);
+	function deleteCurrentLogFileById() {
+		if (!!currentLogFileId) {
+			confirmDelete(function(actionConfirmed, userData) {
+				if (actionConfirmed) {
+					deleteLogFile(currentLogFileId);
+				}
+			});
+		}
+	}
+
+	function confirmDelete(callback) {
+		if (confirmDeleteModal == null) {
+			confirmDeleteModal = $.abp01ConfirmDialogModal();
+		}
+
+		confirmDeleteModal.show('Are you sure you want to remove this log file?', 
+			callback);
+	}
+
+	function loadInitialLogFile(delayed = false) {
+		var load = function() {
+			var $selectedLogFileItem = getSelectedLogFileItem();
+			var logFileId = $selectedLogFileItem.length > 0 
+				? getLogFileId($selectedLogFileItem) 
+				: null;
+
+			if (!!logFileId) {
+				loadLogFile(logFileId);
+			}
+		};
+
+		if (delayed) {
+			window.setTimeout(load, 250);
+		} else {
+			load();
 		}
 	}
 
@@ -146,13 +257,15 @@
 
 	function initEvents() {
 		$(document).on('click', '#abp01-refresh-current-log', function() {
-			reloadCurrentLogFileId();
+			reloadCurrentLogFileById();
 		});
 
 		$(document).on('click', '#abp01-download-current-log', function() {
-			if (!!currentLogFileId) {
-				downloadLogFile(currentLogFileId);
-			}
+			downloadCurrentLogFileById();
+		});
+
+		$(document).on('click', '#abp01-delete-current-log', function() {
+			deleteCurrentLogFileById();
 		});
 
 		$(document).on('click', '#abp01-log-file-lists-container .list-group-item-action', function() {

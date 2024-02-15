@@ -57,6 +57,11 @@ class Abp01_PluginModules_SystemLogsManagementPluginModule extends Abp01_PluginM
 	 */
 	private $_downloadLogFileAjaxAction;
 
+	/**
+	 * @var Abp01_AdminAjaxAction
+	 */
+	private $_deleteLogFileAjaxAction;
+
 	public function __construct(Abp01_Logger_Manager $logManager,
 		Abp01_View $view,
 		Abp01_Env $env, 
@@ -83,6 +88,12 @@ class Abp01_PluginModules_SystemLogsManagementPluginModule extends Abp01_PluginM
 				->useDefaultNonceProvider('abp01_nonce_download_log_file')
 				->authorizeByCallback($authCallback)
 				->onlyForHttpGet();
+
+		$this->_deleteLogFileAjaxAction = 
+			Abp01_AdminAjaxAction::create(ABP01_ACTION_DELETE_LOG_FILE, array($this, 'deleteLogFile'))
+				->useDefaultNonceProvider('abp01_nonce_delete_log_file')
+				->authorizeByCallback($authCallback)
+				->onlyForHttpPost();
 	}
 
     public function load(): void { 
@@ -94,6 +105,8 @@ class Abp01_PluginModules_SystemLogsManagementPluginModule extends Abp01_PluginM
 		$this->_getLogFileContentsAjaxAction
 			->register();
 		$this->_downloadLogFileAjaxAction
+			->register();
+		$this->_deleteLogFileAjaxAction
 			->register();
 	}
 
@@ -159,12 +172,19 @@ class Abp01_PluginModules_SystemLogsManagementPluginModule extends Abp01_PluginM
 		$data = new stdClass();
 
 		$data->ajaxUrl = $this->_getAjaxBaseUrl();
-		$data->ajaxGetLogFileAction = ABP01_ACTION_GET_LOG_FILE_CONTENTS;
+		$data->ajaxGetLogFileAction = $this->_getLogFileContentsAjaxAction
+			->getActionCode();
 		$data->getLogFileNonce = $this->_getLogFileContentsAjaxAction
 			->generateNonce();
 
-		$data->ajaxDownloadLogFileAction = ABP01_ACTION_DOWNLOAD_LOG_FILE;
+		$data->ajaxDownloadLogFileAction = $this->_downloadLogFileAjaxAction
+			->getActionCode();
 		$data->downloadLogFileNonce = $this->_downloadLogFileAjaxAction
+			->generateNonce();
+
+		$data->ajaxDeleteLogFileAction = $this->_deleteLogFileAjaxAction
+			->getActionCode();
+		$data->deleteLogFileNonce = $this->_deleteLogFileAjaxAction
 			->generateNonce();
 
 		$data->isDebugLoggingEnabled = $this->_logManager->isErrorLoggingEnabled();
@@ -180,7 +200,7 @@ class Abp01_PluginModules_SystemLogsManagementPluginModule extends Abp01_PluginM
 	}
 
 	public function getLogFileContents(): stdClass {
-		$fileId = Abp01_InputFiltering::getFilteredGETValue('abp01_fileId');
+		$fileId = $this->_getFileIdFromHttpGet();
 		if (empty($fileId)) {
 			die;
 		}
@@ -210,8 +230,20 @@ class Abp01_PluginModules_SystemLogsManagementPluginModule extends Abp01_PluginM
 		return $response;
 	}
 
+	private function _getFileIdFromHttpGet() {
+		return Abp01_InputFiltering::getFilteredGETValue('abp01_fileId');
+	}
+
 	private function _getMaxDisplayableLogSize(): int {
-		$lineCount = $this->_getLogFileTailLineCount() * 500;
+		$lineCount = $defaultLineCount = $this->_getLogFileTailLineCount() * 500;
+
+		$lineCount = intval(apply_filters('abp01_max_displayable_log_file_size', 
+			$lineCount));
+
+		if ($lineCount <= 0) {
+			$lineCount = $defaultLineCount;
+		}
+
 		return $lineCount;
 	}
 
@@ -232,7 +264,7 @@ class Abp01_PluginModules_SystemLogsManagementPluginModule extends Abp01_PluginM
 	}
 
 	public function downloadLogFile(): void {
-		$fileId = Abp01_InputFiltering::getFilteredGETValue('abp01_fileId');
+		$fileId = $this->_getFileIdFromHttpGet();
 		if (empty($fileId)) {
 			die;
 		}
@@ -250,5 +282,24 @@ class Abp01_PluginModules_SystemLogsManagementPluginModule extends Abp01_PluginM
 		return new Abp01_Transfer_FileDownloaderWithScriptTermination(
 			new Abp01_Transfer_SimpleFileDownloader()
 		);
+	}
+
+	public function deleteLogFile(): stdClass {
+		$fileId = $this->_getFileIdFromHttpGet();
+		if (empty($fileId)) {
+			die;
+		}
+
+		$wasDeleted = $this->_logManager
+			->deleteLogFileById($fileId);
+
+		$response = abp01_get_ajax_response();
+		$response->success = $wasDeleted;
+
+		if (!$response->success) {
+			$response->message = __('The requested log file could not be deleted.', 'abp01-trip-summary');
+		}
+
+		return $response;
 	}
 }

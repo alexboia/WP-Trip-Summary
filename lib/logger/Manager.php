@@ -143,6 +143,20 @@ class Abp01_Logger_Manager {
 		return $foundFile;
 	}
 
+	public function deleteLogFileById($logFileId): bool {
+		if (empty($logFileId)) {
+			return false;
+		}
+
+		$logFile = $this->getLogFileById($logFileId);
+		if (empty($logFile)) {
+			return false;
+		}
+
+		$filePath = $logFile->getFilePath();
+		return @unlink($filePath);
+	}
+
 	public function isDebugLoggingEnabled() {
 		return $this->_config->isDebugLoggingEnabled();
 	}

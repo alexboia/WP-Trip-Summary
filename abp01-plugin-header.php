@@ -208,6 +208,13 @@ define('ABP01_ACTION_GET_LOG_FILE_CONTENTS', 'abp01_get_log_file_contents');
 define('ABP01_ACTION_DOWNLOAD_LOG_FILE', 'abp01_download_log_file');
 
 /**
+ * The action name used with admin-ajax.php when deleting log files. 
+ * 
+ * @var string
+ */
+define('ABP01_ACTION_DELETE_LOG_FILE', 'abp01_delete_log_file');
+
+/**
  * The action name used with admin-ajax.php when downloading the GPS track.
  * 
  * @var string

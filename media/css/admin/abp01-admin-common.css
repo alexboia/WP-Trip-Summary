@@ -28,7 +28,39 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* Reset some stuff bootstrap modifies */
+/* Adjust bootstrap color scheme */
+
+.abp01-bootstrap {
+	--bs-primary: #2271b1;
+}
+
+.abp01-bootstrap .list-group-item {
+	--bs-list-group-active-bg: #2271b1;
+	--bs-list-group-active-border-color: #2271b1;
+}
+
+.abp01-bootstrap button.btn-primary {
+	--bs-btn-bg: #2271b1;
+	--bs-btn-border-color: #2271b1;
+	--bs-btn-hover-bg: #135e96;
+	--bs-btn-hover-border-color: #135e96;
+}
+
+.abp01-bootstrap .bg-primary {
+	--bs-primary-rgb: 34, 113, 177;
+}
+
+.abp01-bootstrap .modal-backdrop {
+	--bs-backdrop-zindex: 99999;
+	opacity: var(--bs-backdrop-opacity);
+}
+
+.abp01-bootstrap .modal {
+	--bs-modal-zindex: 199999;
+}
+
+/* Basic elements and support classes */
+
 .abp01-status-text {
 	border-radius: 4px;
 	padding: 10px;
@@ -88,30 +120,7 @@ textarea.abp01-code-reading-area {
 	font-weight: bold;
 }
 
-/* Deprecated stuff */
-
-.abp01-progress-container {
-	width: 400px;
-	height: 45px;
-}
-
-.abp01-progress-label {
-	width: 400px;
-	height: 25px;
-	text-align: center;
-	line-height: 25px;
-	vertical-align: middle;
-	font-size: 13px;
-	color: #fff;
-	font-weight: bold;
-}
-
-.abp01-progress-bar {
-	width: 400px;
-	height: 20px;
-}
-
-/* Admin page common stuff */
+/* Admin page - basic structure */
 
 .abp01-page {
 	
@@ -249,4 +258,28 @@ table.abp01-admin-trip-summary-audit-log h4 {
 	.is-sidebar-opened .interface-interface-skeleton__sidebar {
 		width: 280px;
 	}
+}
+
+
+/* Deprecated stuff */
+
+.abp01-progress-container {
+	width: 400px;
+	height: 45px;
+}
+
+.abp01-progress-label {
+	width: 400px;
+	height: 25px;
+	text-align: center;
+	line-height: 25px;
+	vertical-align: middle;
+	font-size: 13px;
+	color: #fff;
+	font-weight: bold;
+}
+
+.abp01-progress-bar {
+	width: 400px;
+	height: 20px;
 }

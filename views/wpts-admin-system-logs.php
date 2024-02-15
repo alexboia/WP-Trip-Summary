@@ -32,11 +32,13 @@
 ?>
 
 <script type="text/javascript">
-	var abp01_getLogFileNonce = '<?php echo $data->getLogFileNonce; ?>';
-	var abp01_ajaxGetLogFileAction = '<?php echo $data->ajaxGetLogFileAction; ?>';
-	var abp01_downloadLogFileNonce = '<?php echo $data->downloadLogFileNonce; ?>';
-	var abp01_ajaxDownloadLogFileAction = '<?php echo $data->ajaxDownloadLogFileAction; ?>';
-	var abp01_ajaxBaseUrl = '<?php echo $data->ajaxUrl; ?>';
+	var abp01_getLogFileNonce = '<?php echo esc_js($data->getLogFileNonce); ?>';
+	var abp01_ajaxGetLogFileAction = '<?php echo esc_js($data->ajaxGetLogFileAction); ?>';
+	var abp01_downloadLogFileNonce = '<?php echo esc_js($data->downloadLogFileNonce); ?>';
+	var abp01_ajaxDownloadLogFileAction = '<?php echo esc_js($data->ajaxDownloadLogFileAction); ?>';
+	var abp01_ajaxDeleteLogFileAction = '<?php echo esc_js($data->ajaxDeleteLogFileAction); ?>';
+	var abp01_deleteLogFileNonce = '<?php echo esc_js($data->deleteLogFileNonce); ?>';
+	var abp01_ajaxBaseUrl = '<?php echo esc_js($data->ajaxUrl); ?>';
 </script>
 
 <div id="abp01-system-logs-page" class="abp01-bootstrap abp01-page">
@@ -55,14 +57,14 @@
 					<?php endif; ?>
 
 					<div id="abp01-no-debug-log-files-found" class="alert alert-warning" role="alert" style="<?php echo $data->hasDebugLogFiles ? 'display:none;' : ''; ?>">
-						<?php echo esc_html__('There are no debug files available', 'abp01-trip-summary'); ?>
+						<?php echo esc_html__('There are no debug log files available', 'abp01-trip-summary'); ?>
 					</div>
 
 					<?php if ($data->hasDebugLogFiles): ?>
 						<div class="list-group">
 							<?php foreach ($data->debugLogFiles as $key => $df): ?>
 								<?php $isSelected = $key == 0 ?>
-								<a href="javascript:void (0)" data-file-id="<?php echo esc_attr($df->id); ?>" class="list-group-item list-group-item-action <?php echo $isSelected ? 'active' : ''; ?>" <?php echo $isSelected ? 'aria-current="true"' : ''; ?>>
+								<a href="javascript:void (0)" data-file-type="debug-log" data-file-id="<?php echo esc_attr($df->id); ?>" class="list-group-item list-group-item-action <?php echo $isSelected ? 'active' : ''; ?>" <?php echo $isSelected ? 'aria-current="true"' : ''; ?>>
 									<span><strong><?php echo esc_html($df->fileName) ?></strong> (<?php echo esc_html($df->fomattedLastModified); ?>)</span>
 									<span class="badge bg-primary rounded-pill"><?php echo esc_html($df->formattedSize); ?></span>
 								</a>
@@ -79,14 +81,14 @@
 					<?php endif; ?>
 
 					<div id="abp01-no-error-log-files-found" class="alert alert-warning" role="alert" style="<?php echo $data->hasErrorLogFiles ? 'display:none;' : ''; ?>">
-						<?php echo esc_html__('There are no error files available', 'abp01-trip-summary'); ?>
+						<?php echo esc_html__('There are no error log files available', 'abp01-trip-summary'); ?>
 					</div>
 
 					<?php if ($data->hasErrorLogFiles): ?>
 						<div class="list-group">
 							<?php foreach ($data->errorLogFiles as $key => $errf): ?>
 								<?php $isSelected = !$data->hasDebugLogFiles && $key == 0 ?>
-								<a href="javascript:void (0)" data-file-id="<?php echo esc_attr($errf->id); ?>" class="list-group-item list-group-item-action <?php echo $isSelected ? 'active' : ''; ?>" <?php echo $isSelected ? 'aria-current="true"' : ''; ?>>
+								<a href="javascript:void (0)" data-file-type="error-log" data-file-id="<?php echo esc_attr($errf->id); ?>" class="list-group-item list-group-item-action <?php echo $isSelected ? 'active' : ''; ?>" <?php echo $isSelected ? 'aria-current="true"' : ''; ?>>
 									<span><strong><?php echo esc_html($errf->fileName) ?></strong> (<?php echo esc_html($errf->fomattedLastModified); ?>)</span>
 									<span class="badge bg-primary rounded-pill"><?php echo esc_html($errf->formattedSize); ?></span>
 								</a>
@@ -108,7 +110,7 @@
 						</div>
 
 						<div id="abp01-log-file-too-large-warning" class="alert alert-warning" role="alert" style="display: none;">
-							The log file is too large. Only displaying the last 200 lines.
+							<?php echo esc_html__('The log file is too large. Only displaying the last 200 lines.', 'abp01-trip-summary'); ?>
 						</div>
 
 						<textarea id="abp01-log-file-contents" class="abp01-code-reading-area" readonly="readonly"></textarea>
