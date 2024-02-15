@@ -252,7 +252,13 @@ class Abp01_AdminAjaxAction {
 	}
 
 	public function executeAndSendJsonThenExit() {
-		$executionResult = $this->execute();
+		try {
+			$executionResult = $this->execute();
+		} catch (Exception $exc) {
+			$this->_logger->exception('Error executig action <' . $this->_actionCode . '>.', $exc);
+			$executionResult = abp01_get_ajax_response();
+		}
+
 		if (isset($executionResult)) {
 			$this->_sendJsonAndExit($executionResult);
 		} else {
@@ -262,5 +268,9 @@ class Abp01_AdminAjaxAction {
 
 	private function _sendJsonAndExit($data) {
 		abp01_send_json($data, true);
+	}
+
+	public function getActionCode() {
+		return $this->_actionCode;
 	}
 }

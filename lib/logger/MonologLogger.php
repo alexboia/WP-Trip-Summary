@@ -63,7 +63,8 @@ class Abp01_Logger_MonologLogger implements Abp01_Logger {
 			if ($this->_config->shouldCaptureWebContext()) {
 				$logger->pushProcessor(new WebProcessor());
 			}
-			
+
+			do_action('abp01_customize_monolog_logger', $logger);		
 			$this->_logger = $logger;
 		}
 
@@ -146,7 +147,7 @@ class Abp01_Logger_MonologLogger implements Abp01_Logger {
 		$this->_getOrCreateLogger()->log($level, $message, $context);
 	}	
 
-	public function exception(string $message, Exception $exception, array $context): void {
+	public function exception(string $message, Exception $exception, array $context = []): void {
 		$this->_getOrCreateLogger()->error($message, array_merge($context, array(
 			'exception' => array(
 				'type' => get_class($exception),

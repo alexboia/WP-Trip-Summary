@@ -36,5 +36,5 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 interface Abp01_Logger extends LoggerInterface {
-	function exception(string $message, Exception $exception, array $context): void;
+	function exception(string $message, Exception $exception, array $context = []): void;
 }
