@@ -54,6 +54,7 @@ class Abp01_View {
 
 	private function _registerFrontendHelpers() {
 		$this->_frontendTheme->registerFrontendViewerHelpers();
+		require_once $this->_env->getViewHelpersFilePath('controls.frontend.php');
 	}
 
 	private function _renderFrontendViewerJsVars(stdClass $data) {

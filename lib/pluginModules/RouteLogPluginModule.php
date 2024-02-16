@@ -279,6 +279,10 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 
 	public function addEditorLauncherStatusItem(stdClass $editorData) {
 		$postId = $this->_getCurrentPostId();
+		if (empty($postId)) {
+			$postId = $editorData->postId;
+		}
+
 		$log = $this->_routeLogManager->getAdminLog($postId);
 
 		$data = new stdClass();
