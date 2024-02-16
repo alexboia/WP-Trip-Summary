@@ -35,27 +35,6 @@
 	var confirmDeleteModal = null;
 	var logResultAlert = null;
 
-	function toggleBusy(show) {
-		if (show) {
-			var message = arguments.length == 2 ? arguments[1] : null;
-			progressBar.show(message || 'Please wait');
-		} else {
-			progressBar.hide();
-		}
-	}
-
-	function showSuccessResult(message) {
-		logResultAlert.success(message);
-	}
-
-	function showErrorResult(message) {
-		logResultAlert.danger(message);
-	}
-
-	function hideResult() {
-		logResultAlert.hide();
-	}
-
 	function getSelectedLogFileItem() {
 		return $('#abp01-log-file-lists-container').find('.list-group-item.active');
 	}
@@ -101,8 +80,25 @@
 			.toString();
 	}
 
-	function initState() {
-		context = getContext();
+	function toggleBusy(show) {
+		if (show) {
+			var message = arguments.length == 2 ? arguments[1] : null;
+			progressBar.show(message || 'Please wait');
+		} else {
+			progressBar.hide();
+		}
+	}
+
+	function showSuccessResult(message) {
+		logResultAlert.success(message);
+	}
+
+	function showErrorResult(message) {
+		logResultAlert.danger(message);
+	}
+
+	function hideResult() {
+		logResultAlert.hide();
 	}
 
 	function loadLogFile(logFileId) {
@@ -304,6 +300,10 @@
 	function initControls() {
 		progressBar = $('#wpwrap').abp01ProgressModal();
 		logResultAlert = $('#abp01-log-action-result').abp01AlertInline();
+	}
+
+	function initState() {
+		context = getContext();
 	}
 
 	$(function() {
