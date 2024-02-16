@@ -37,7 +37,7 @@ namespace StepanDalecky\KmlParser {
 					if (isset($parts[2])) {
 						$altitude = floatval($parts[2]);
 					} else {
-						$altitude = PHP_FLOAT_MIN;
+						$altitude = self::MIN_ALTITUDE;
 					}
 
 					if ($this->isValidLongitude($longitude) 

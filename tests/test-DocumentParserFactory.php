@@ -123,7 +123,8 @@ class DocumentParserFactoryTests extends WP_UnitTestCase {
 			'text/xml' => Abp01_Route_Track_DocumentParser_Gpx::class,
 			'application/json' => Abp01_Route_Track_DocumentParser_GeoJson::class,
 			'application/geo+json' => Abp01_Route_Track_DocumentParser_GeoJson::class,
-			'application/vnd.geo+json' => Abp01_Route_Track_DocumentParser_GeoJson::class
+			'application/vnd.geo+json' => Abp01_Route_Track_DocumentParser_GeoJson::class,
+			'application/vnd.google-earth.kml+xml' => Abp01_Route_Track_DocumentParser_Kml::class
 		);
 	}
 

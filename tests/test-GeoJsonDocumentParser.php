@@ -1,7 +1,4 @@
 <?php
-
-use Yoast\PHPUnitPolyfills\Polyfills\ExpectException;
-
 /**
  * Copyright (c) 2014-2024 Alexandru Boia and Contributors
  *
@@ -31,6 +28,8 @@ use Yoast\PHPUnitPolyfills\Polyfills\ExpectException;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+use Yoast\PHPUnitPolyfills\Polyfills\ExpectException;
 
 class GeoJsonDocumentParserTests extends WP_UnitTestCase {
 	use ExpectException;

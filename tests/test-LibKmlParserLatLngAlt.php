@@ -1,10 +1,4 @@
 <?php
-
-use StepanDalecky\KmlParser\Entities\LineString;
-use StepanDalecky\KmlParser\LatLngAlt;
-use StepanDalecky\KmlParser\Parser;
-use Yoast\PHPUnitPolyfills\Polyfills\ExpectException;
-
 /**
  * Copyright (c) 2014-2024 Alexandru Boia and Contributors
  *
@@ -35,7 +29,9 @@ use Yoast\PHPUnitPolyfills\Polyfills\ExpectException;
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
- class LibKmlParserLatLngAltTests extends WP_UnitTestCase {
+use StepanDalecky\KmlParser\LatLngAlt;
+
+class LibKmlParserLatLngAltTests extends WP_UnitTestCase {
 	use GenericTestHelpers;
 
 	public function test_canParseTupleString_withAlt() {

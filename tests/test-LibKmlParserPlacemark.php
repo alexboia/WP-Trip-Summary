@@ -2,8 +2,10 @@
 
 use StepanDalecky\KmlParser\Entities\LinearRing;
 use StepanDalecky\KmlParser\Entities\LineString;
+use StepanDalecky\KmlParser\Entities\MultiGeometry;
 use StepanDalecky\KmlParser\Entities\Placemark;
 use StepanDalecky\KmlParser\Entities\Point;
+use StepanDalecky\KmlParser\Entities\Polygon;
 use StepanDalecky\KmlParser\Parser;
 
 /**
@@ -74,7 +76,10 @@ use StepanDalecky\KmlParser\Parser;
 		$fileContents = $this->_readTestDataFileContents($file); 
 		$kmlParser = Parser::fromString($fileContents);
 		$kml = $kmlParser->getKml();
+		
 		$document = $kml->getDocument();
+		$this->assertNotNull($document);
+		$this->assertEquals(basename($file), $document->getName());
 
 		$placemarks = $document->getPlacemarks();
 		$this->assertNotNull($placemarks);
@@ -194,19 +199,157 @@ use StepanDalecky\KmlParser\Parser;
 	}
 
 	public function test_canParse_withPolygon() {
-		
+		$this->_runPlacemarkTest('kml/test-kml-placemark-with-polygon.kml', 
+			function(Placemark $placemark) {
+				$this->assertEquals('Placemark with Polygon', $placemark->getName());
+
+				$this->assertFalse($placemark->hasPoint());
+				$this->assertFalse($placemark->hasLineString());
+				$this->assertFalse($placemark->hasLinearRing());
+				$this->assertTrue($placemark->hasPolygon());
+				$this->assertFalse($placemark->hasMultiGeometry());
+
+				$polygon = $placemark->getPolygon();
+				$this->assertNotNull($polygon);
+				$this->_assertExpectedPolygon($polygon);				
+			}
+		);
+	}
+
+	private function _assertExpectedPolygon(Polygon $polygon) {
+		$this->assertTrue($polygon->hasOuterBoundary());
+		$this->assertTrue($polygon->hasInnerBoundary());
+		$this->assertEquals(1, count($polygon->getInnerBoundary()));
+
+		$this->_assertExpectedOuterBoundary($polygon->getOuterBoundary());
+		$this->_assertExpectedInnerBoundary($polygon->getInnerBoundary()[0]);
 	}
 
 	private function _assertExpectedOuterBoundary(LinearRing $linearRing) {
+		$this->assertTrue($linearRing->hasCoordinates());
 
+		$coords = $linearRing->getCoordinates();
+		$this->assertNotNull($coords);
+		
+		$latLngCollection = $coords->getLatLngAltCollection();
+		$this->assertNotNull($latLngCollection);
+		$this->assertEquals(5, count($latLngCollection));
+
+		$p0 = $latLngCollection[0];
+		$this->assertTrue($p0->hasLongitude());
+		$this->assertTrue($p0->hasLatitude());
+		$this->assertTrue($p0->hasAltitude());
+		$this->assertFalse($p0->isEmpty());
+
+		$this->assertEquals(-122.366278, $p0->getLongitude(), '', 0.0001);
+		$this->assertEquals(37.818844, $p0->getLatitude(), '', 0.0001);
+		$this->assertEquals(30, $p0->getAltitude(), '', 0.0001);
+
+		$p1 = $latLngCollection[1];
+		$this->assertTrue($p1->hasLongitude());
+		$this->assertTrue($p1->hasLatitude());
+		$this->assertTrue($p1->hasAltitude());
+		$this->assertFalse($p1->isEmpty());
+
+		$this->assertEquals(-122.365248, $p1->getLongitude(), '', 0.0001);
+		$this->assertEquals(37.819267, $p1->getLatitude(), '', 0.0001);
+		$this->assertEquals(35, $p1->getAltitude(), '', 0.0001);
+
+		$p4 = $latLngCollection[4];
+		$this->assertTrue($p4->hasLongitude());
+		$this->assertTrue($p4->hasLatitude());
+		$this->assertTrue($p4->hasAltitude());
+		$this->assertFalse($p4->isEmpty());
+
+		$this->assertEquals(-122.366278, $p4->getLongitude(), '', 0.0001);
+		$this->assertEquals(37.818844, $p4->getLatitude(), '', 0.0001);
+		$this->assertEquals(30, $p4->getAltitude(), '', 0.0001);
 	}
 
 	private function _assertExpectedInnerBoundary(LinearRing $linearRing) {
+		$this->assertTrue($linearRing->hasCoordinates());
+
+		$coords = $linearRing->getCoordinates();
+		$this->assertNotNull($coords);
 		
+		$latLngCollection = $coords->getLatLngAltCollection();
+		$this->assertNotNull($latLngCollection);
+		$this->assertEquals(5, count($latLngCollection));
+
+		$p0 = $latLngCollection[0];
+		$this->assertTrue($p0->hasLongitude());
+		$this->assertTrue($p0->hasLatitude());
+		$this->assertTrue($p0->hasAltitude());
+		$this->assertFalse($p0->isEmpty());
+
+		$this->assertEquals(-122.366212, $p0->getLongitude(), '', 0.0001);
+		$this->assertEquals(37.818977, $p0->getLatitude(), '', 0.0001);
+		$this->assertEquals(30, $p0->getAltitude(), '', 0.0001);
+
+		$p1 = $latLngCollection[1];
+		$this->assertTrue($p1->hasLongitude());
+		$this->assertTrue($p1->hasLatitude());
+		$this->assertTrue($p1->hasAltitude());
+		$this->assertFalse($p1->isEmpty());
+
+		$this->assertEquals(-122.365424, $p1->getLongitude(), '', 0.0001);
+		$this->assertEquals(37.819294, $p1->getLatitude(), '', 0.0001);
+		$this->assertEquals(45, $p1->getAltitude(), '', 0.0001);
+
+		$p4 = $latLngCollection[4];
+		$this->assertTrue($p4->hasLongitude());
+		$this->assertTrue($p4->hasLatitude());
+		$this->assertTrue($p4->hasAltitude());
+		$this->assertFalse($p4->isEmpty());
+
+		$this->assertEquals(-122.366212, $p4->getLongitude(), '', 0.0001);
+		$this->assertEquals(37.818977, $p4->getLatitude(), '', 0.0001);
+		$this->assertEquals(30, $p4->getAltitude(), '', 0.0001);
 	}
 
 	public function test_canParse_withMultiGeometry() {
-		
+		$this->_runPlacemarkTest('kml/test-kml-placemark-with-multiGeometry.kml', 
+			function(Placemark $placemark) {
+				$this->assertEquals('Placemark with MultiGeometry', $placemark->getName());
+
+				$this->assertFalse($placemark->hasPoint());
+				$this->assertFalse($placemark->hasLineString());
+				$this->assertFalse($placemark->hasLinearRing());
+				$this->assertFalse($placemark->hasPolygon());
+				$this->assertTrue($placemark->hasMultiGeometry());
+
+				$multiGeometry = $placemark->getMultiGeometry();
+				$this->assertNotNull($multiGeometry);
+				$this->_assertExpectedMultiGeometry($multiGeometry);				
+			}
+		);
+	}
+
+	private function _assertExpectedMultiGeometry(MultiGeometry $multiGeometry) {
+		$this->assertTrue($multiGeometry->hasPoints());
+		$this->assertTrue($multiGeometry->hasLinearRings());
+		$this->assertTrue($multiGeometry->hasPolygons());
+		$this->assertTrue($multiGeometry->hasLineStrings());
+
+		$points = $multiGeometry->getPoints();
+		$this->assertEquals(1, count($points));
+		$this->assertNotNull($points[0]);
+		$this->_assertExpectedPoint($points[0]);
+
+		$lineStrings = $multiGeometry->getLineStrings();
+		$this->assertEquals(1, count($lineStrings));
+		$this->assertNotNull($lineStrings[0]);
+		$this->_assertExpectedLineString($lineStrings[0]);
+
+		$linearRings = $multiGeometry->getLinearRings();
+		$this->assertEquals(1, count($linearRings));
+		$this->assertNotNull($linearRings[0]);
+		$this->_assertExpectedLinearRing($linearRings[0]);
+
+		$polygons = $multiGeometry->getPolygons();
+		$this->assertEquals(1, count($polygons));
+		$this->assertNotNull($polygons[0]);
+		$this->_assertExpectedPolygon($polygons[0]);
 	}
 
 	protected static function _getRootTestsDir() {

@@ -63,7 +63,7 @@ namespace StepanDalecky\KmlParser\Entities {
 		}
 
 		/**
-		 * @return Polygon
+		 * @return Polygon[]
 		 */
 		public function getPolygons(): array {
 			if (!$this->hasPolygons()) {
