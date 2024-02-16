@@ -138,7 +138,6 @@ class PredefinedTileLayerTests extends WP_UnitTestCase {
 	private function _getExpectedDefaultPredefinedTileLayerIds() {
 		return array(
 			Abp01_Settings_PredefinedTileLayer::TL_OPEN_STREET_MAP,
-			Abp01_Settings_PredefinedTileLayer::TL_OPEN_STREET_MAP_HIKEBIKE,
 			Abp01_Settings_PredefinedTileLayer::TL_TF_ATLAS,
 			Abp01_Settings_PredefinedTileLayer::TL_TF_LANDSCAPE,
 			Abp01_Settings_PredefinedTileLayer::TL_TF_MOBILE_ATLAS,
