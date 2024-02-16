@@ -67,7 +67,7 @@
 				'<div class="modal-dialog modal-dialog-centered">',
 					'<div class="modal-content">',
 						'<div class="modal-header">',
-							'<h5 class="modal-title">Confirm</h5>',
+							'<h5 class="modal-title">' + abp01AdminCommonL10n.lblConfirmTitle + '</h5>',
 							('<button data-abp01-modal-action="' + ACTION_CODE_NO + '" ' + 
 								'type="button" ' + 
 								'class="btn-close" ' + 
@@ -79,10 +79,10 @@
 						'<div class="modal-footer">',
 							('<button data-abp01-modal-action="' + ACTION_CODE_NO + '" ' + 
 								'type="button" ' + 
-								'class="btn btn-secondary">No</button>'),
+								'class="btn btn-secondary">' + abp01AdminCommonL10n.btnNo + '</button>'),
 							('<button data-abp01-modal-action="' + ACTION_CODE_YES + '" ' + 
 								'type="button" ' + 
-								'class="btn btn-primary">Yes</button>'),
+								'class="btn btn-primary">' + abp01AdminCommonL10n.btnYes + '</button>'),
 						'</div>',
 					'</div>',
 				'</div>',
@@ -209,7 +209,7 @@
 		function updateMessage(message) {
 			$(confirmWndSelector)
 				.find('.abp01-confirm-dialog-message')
-				.text(message || 'Are you sure you want to proceed?');
+				.text(message || abp01AdminCommonL10n.lblConfirmQuestion);
 		}
 
 		function hide() {

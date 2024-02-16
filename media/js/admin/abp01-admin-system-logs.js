@@ -116,12 +116,11 @@
 		}).done(function (data, status, xhr) {
 			toggleBusy(false);
 			if (!!data && !!data.success) {
-				currentLogFileId = logFileId;
-
 				if (!!data.found) {
+					currentLogFileId = logFileId;
 					$('#abp01-log-file-contents').text(data.contents);
 				} else {
-					showErrorResult('The log file could not be found');
+					showErrorResult(abp01AdminSystemLogL10n.errCouldNotFindLogFile);
 					$('#abp01-log-file-contents').text('');
 				}
 
@@ -131,11 +130,11 @@
 					$('#abp01-log-file-too-large-warning').hide();
 				}
 			} else {
-				showErrorResult(data.message || 'The log file could not be loaded');
+				showErrorResult(data.message || abp01AdminSystemLogL10n.errCouldNotLoadLogFile);
 			}
 		}).fail(function (xhr, status, error) {
 			toggleBusy(false);
-			showErrorResult('The log file could not be loaded');
+			showErrorResult(abp01AdminSystemLogL10n.errCouldNotLoadLogFile);
 		});
 	}
 
@@ -153,14 +152,14 @@
 		}).done(function (data, status, xhr) {
 			toggleBusy(false);
 			if (!!data && !!data.success) {
-				showSuccessResult('The log file has been successfully deleted.');
+				showSuccessResult(abp01AdminSystemLogL10n.msgLogFileRemovalSuccess);
 				processLogFileItemRemoval(logFileId);
 			} else {
-				showErrorResult('The log file could not be deleted');
+				showErrorResult(data.message || abp01AdminSystemLogL10n.errCouldNotRemoveLogFile);
 			}
 		}).fail(function (xhr, status, error) {
 			toggleBusy(false);
-			showErrorResult('The log file could not be deleted');
+			showErrorResult(abp01AdminSystemLogL10n.errCouldNotRemoveLogFile);
 		});
 	}
 
@@ -251,7 +250,7 @@
 			confirmDeleteModal = $.abp01ConfirmDialogModal();
 		}
 
-		confirmDeleteModal.show('Are you sure you want to remove this log file?', 
+		confirmDeleteModal.show(abp01AdminSystemLogL10n.msgConfirmLogFileRemoval, 
 			callback);
 	}
 

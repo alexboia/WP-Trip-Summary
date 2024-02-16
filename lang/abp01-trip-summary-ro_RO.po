@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Trip Summary 0.1.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-trip-summary\n"
-"POT-Creation-Date: 2024-02-12T14:56:03+02:00\n"
-"PO-Revision-Date: 2024-02-12 15:16+0200\n"
+"POT-Creation-Date: 2024-02-16T12:49:22+02:00\n"
+"PO-Revision-Date: 2024-02-16 13:03+0200\n"
 "Last-Translator: \n"
 "Language-Team: alexandru.boia [at] outlook [dot] com\n"
 "Language: ro_RO\n"
@@ -83,13 +83,15 @@ msgstr[1] "ore"
 msgstr[2] ""
 
 #: lib/display/postListing/TripSummaryStatusColumn.php:47
-#: lib/pluginModules/RouteLogPluginModule.php:436 views/wpts-log-editor.php:98
+#: lib/pluginModules/RouteLogPluginModule.php:436
+#: lib/TranslatedScriptMessages.php:41 views/wpts-log-editor.php:98
 #: views/wpts-log-editor.php:219
 msgid "Yes"
 msgstr "Da"
 
 #: lib/display/postListing/TripSummaryStatusColumn.php:48
-#: lib/pluginModules/RouteLogPluginModule.php:437 views/wpts-log-editor.php:99
+#: lib/pluginModules/RouteLogPluginModule.php:437
+#: lib/TranslatedScriptMessages.php:42 views/wpts-log-editor.php:99
 #: views/wpts-log-editor.php:221
 msgid "No"
 msgstr "Nu"
@@ -339,6 +341,16 @@ msgstr ""
 msgid "Tile layer API key is required"
 msgstr "Trebuie să completezi cheia API a sursei de tile-uri de hartă"
 
+#: lib/pluginModules/SystemLogsManagementPluginModule.php:149
+#: lib/pluginModules/SystemLogsManagementPluginModule.php:150
+#: views/wpts-admin-system-logs.php:45
+msgid "System logs"
+msgstr "Jurnale de sistem"
+
+#: lib/pluginModules/SystemLogsManagementPluginModule.php:304
+msgid "The requested log file could not be deleted."
+msgstr "Fișierul ales de jurnal nu a putut fi șters"
+
 #: lib/Settings.php:277
 msgid ""
 "For the pragmatic sort, there is also a trip summary at the bottom of this "
@@ -355,178 +367,202 @@ msgstr ""
 "Se pare că ai sărit peste poveste. E păcat să o ratezi. Nu ai vrea să o "
 "citești? Click aici pentru început!"
 
-#: lib/settings/PredefinedTileLayer.php:136
+#: lib/settings/PredefinedTileLayer.php:134
 msgid "Basic Open Street Map Style"
 msgstr "Harta clasică Open Street Map"
 
-#: lib/settings/PredefinedTileLayer.php:142
-msgid "Open Street Map, Hike & Bike Map"
-msgstr "Harta pentru Drumeții și Ciclism bazată pe Open Street Map"
-
-#: lib/settings/PredefinedTileLayer.php:151
+#: lib/settings/PredefinedTileLayer.php:143
 msgid "Thunderforest Atlas Map"
 msgstr "Harta Thunderforest Atlas"
 
-#: lib/settings/PredefinedTileLayer.php:157
+#: lib/settings/PredefinedTileLayer.php:149
 msgid "Thunderforest Landscape Map"
 msgstr "Harta Thunderforest Landscape"
 
-#: lib/settings/PredefinedTileLayer.php:163
+#: lib/settings/PredefinedTileLayer.php:155
 msgid "Thunderforest Mobile Atlas Map"
 msgstr "Harta Thunderforest Mobile Atlas"
 
-#: lib/settings/PredefinedTileLayer.php:169
+#: lib/settings/PredefinedTileLayer.php:161
 msgid "Thunderforest Neighbourhood Map"
 msgstr "Harta Thunderforest Neighbourhood"
 
-#: lib/settings/PredefinedTileLayer.php:175
+#: lib/settings/PredefinedTileLayer.php:167
 msgid "Thunderforest Open Cycle Map"
 msgstr "Thunderforest Open Cycle Map"
 
-#: lib/settings/PredefinedTileLayer.php:181
+#: lib/settings/PredefinedTileLayer.php:173
 msgid "Thunderforest Outdoors Map"
 msgstr "Harta Thunderforest Outdoors"
 
-#: lib/settings/PredefinedTileLayer.php:187
+#: lib/settings/PredefinedTileLayer.php:179
 msgid "Thunderforest Pioneer Map"
 msgstr "Harta Thunderforest Pioneer"
 
-#: lib/settings/PredefinedTileLayer.php:193
+#: lib/settings/PredefinedTileLayer.php:185
 msgid "Thunderforest Spinal Map"
 msgstr "Harta Thunderforest Spinal"
 
-#: lib/settings/PredefinedTileLayer.php:199
+#: lib/settings/PredefinedTileLayer.php:191
 msgid "Thunderforest Transport Map"
 msgstr "Harta Thunderforest Transport"
 
-#: lib/settings/PredefinedTileLayer.php:205
+#: lib/settings/PredefinedTileLayer.php:197
 msgid "Thunderforest Transport Dark Map"
 msgstr "Harta Thunderforest Transport Dark"
 
 #: lib/TranslatedScriptMessages.php:39
+msgid "Confirm"
+msgstr "Confirmare necesară"
+
+#: lib/TranslatedScriptMessages.php:40
+msgid "Are you sure you want to proceed?"
+msgstr "Siguri dorești să continui?"
+
+#: lib/TranslatedScriptMessages.php:48
+msgid "Are you sure you want to remove this log file?"
+msgstr "Sigur dorești să ștergi fișierul de jurnal?"
+
+#: lib/TranslatedScriptMessages.php:49
+msgid "The log file has been successfully deleted."
+msgstr "Fișierul de jurnal a fost șters cu succes."
+
+#: lib/TranslatedScriptMessages.php:50
+msgid "The log file could not be deleted"
+msgstr "Fișierul de jurnal nu a putut fi șters"
+
+#: lib/TranslatedScriptMessages.php:51
+msgid "The log file could not be loaded"
+msgstr "Fișierul de jurnal nu a putut fi încărcat"
+
+#: lib/TranslatedScriptMessages.php:52
+msgid "The log file could not be found"
+msgstr "Fișierul de jurnal nu a putut fi găsit"
+
+#: lib/TranslatedScriptMessages.php:58
 msgid "Saving trip summary log entry. Please wait..."
 msgstr "Se salvează înregistrarea de jurnal. Te rog să aștepți..."
 
-#: lib/TranslatedScriptMessages.php:40
+#: lib/TranslatedScriptMessages.php:59
 msgid "Deleting trip summary log entry. Please wait..."
 msgstr "Se șterge înregistrarea de jurnal. Te rog să aștepți..."
 
-#: lib/TranslatedScriptMessages.php:41
+#: lib/TranslatedScriptMessages.php:60
 msgid "Deleting all trip summary log entries for this post. Please wait..."
 msgstr "Se șterg înregistrările de jurnal. Te rog să aștepți..."
 
-#: lib/TranslatedScriptMessages.php:42
+#: lib/TranslatedScriptMessages.php:61
 msgid "Loading log entry. Please wait..."
 msgstr "Se încarcă înregistrarea de jurnal. Te rugăm să aștepți..."
 
-#: lib/TranslatedScriptMessages.php:44
+#: lib/TranslatedScriptMessages.php:63
 msgid "Remove selected log entry? This action cannot be undone!"
 msgstr ""
 "Sigur ștergi această înregistrare de jurnal? Datele nu vor putea fi "
 "recuperate!"
 
-#: lib/TranslatedScriptMessages.php:45
+#: lib/TranslatedScriptMessages.php:64
 msgid "Remove all log entries for this post? This action cannot be undone!"
 msgstr ""
 "Sigur ștergi toate înregistrările de jurnal? Datele nu vor putea fi "
 "recuperate!"
 
-#: lib/TranslatedScriptMessages.php:47
+#: lib/TranslatedScriptMessages.php:66
 msgid "The trip summary log entry has been successfully deleted"
 msgstr "Înregistrarea de jurnal a fost ștearsă cu succes"
 
-#: lib/TranslatedScriptMessages.php:48
+#: lib/TranslatedScriptMessages.php:67
 msgid ""
 "All the trip summary log entries for this post have been successfully deleted"
 msgstr "Înregistrările de jurnal au fost șterse cu succes"
 
-#: lib/TranslatedScriptMessages.php:50
+#: lib/TranslatedScriptMessages.php:69
 msgid "The trip summary log entry could not be saved"
 msgstr "Înregistrarea de jurnal nu a putut fi salvată"
 
-#: lib/TranslatedScriptMessages.php:51
+#: lib/TranslatedScriptMessages.php:70
 msgid "The trip summary log entry could not be deleted"
 msgstr "Înregistrarea de jurnal nu a putut fi ștearsă"
 
-#: lib/TranslatedScriptMessages.php:52
+#: lib/TranslatedScriptMessages.php:71
 msgid "The trip summary log entries for this post could not be deleted"
 msgstr "Înregistrările de jurnal nu au putut fi șterse"
 
-#: lib/TranslatedScriptMessages.php:53
+#: lib/TranslatedScriptMessages.php:72
 msgid "The log entry could not be loaded."
 msgstr "Înregistrarea de jurnal nu a putut fi încărcată."
 
-#: lib/TranslatedScriptMessages.php:55 views/wpts-log-editor.php:135
+#: lib/TranslatedScriptMessages.php:74 views/wpts-log-editor.php:135
 msgid "Add trip summary log entry"
 msgstr "Adaugă înregistrare nouă"
 
-#: lib/TranslatedScriptMessages.php:56
+#: lib/TranslatedScriptMessages.php:75
 msgid "Edit trip summary log entry"
 msgstr "Modifică înregistrarea de jurnal"
 
-#: lib/TranslatedScriptMessages.php:58
+#: lib/TranslatedScriptMessages.php:77
 #: views/wpts-log-editor-launcher-status-item.php:39
 msgid "Trip summary log is present for this post"
 msgstr "Există înregistrări de jurnal pentru acest post"
 
-#: lib/TranslatedScriptMessages.php:59
+#: lib/TranslatedScriptMessages.php:78
 #: views/wpts-log-editor-launcher-status-item.php:40
 msgid "Trip summary log is not present for this post"
 msgstr "Nu există înregistrări de jurnal pentru acest post"
 
-#: lib/TranslatedScriptMessages.php:65
+#: lib/TranslatedScriptMessages.php:84
 #: views/wpts-editor-quick-actions-tooltip.php:36
 #: views/wpts-editor-quick-actions.php:49
 msgid "Clear info"
 msgstr "Șterge info"
 
-#: lib/TranslatedScriptMessages.php:66
+#: lib/TranslatedScriptMessages.php:85
 #: views/wpts-editor-quick-actions-tooltip.php:43
 #: views/wpts-editor-quick-actions.php:55
 msgid "Clear track"
 msgstr "Șterge track"
 
-#: lib/TranslatedScriptMessages.php:67
+#: lib/TranslatedScriptMessages.php:86
 msgid "GPX files"
 msgstr "Fișiere GPX"
 
-#: lib/TranslatedScriptMessages.php:68
+#: lib/TranslatedScriptMessages.php:87
 msgid "Generating preview. Please wait..."
 msgstr "Se generează harta și traseul. Te rog să aștepți..."
 
-#: lib/TranslatedScriptMessages.php:69
+#: lib/TranslatedScriptMessages.php:88
 msgid "Uploading track"
 msgstr "Se încarcă track-ul"
 
-#: lib/TranslatedScriptMessages.php:70
+#: lib/TranslatedScriptMessages.php:89
 msgid "The track has been uploaded and saved successfully"
 msgstr "Fișierul a fost încărcat și procesat cu succes"
 
-#: lib/TranslatedScriptMessages.php:71 views/wpts-editor.php:113
+#: lib/TranslatedScriptMessages.php:90 views/wpts-editor.php:113
 msgid "Biking"
 msgstr "Cu bicicleta"
 
-#: lib/TranslatedScriptMessages.php:72 views/wpts-editor.php:116
+#: lib/TranslatedScriptMessages.php:91 views/wpts-editor.php:116
 msgid "Hiking"
 msgstr "Per-pedes"
 
-#: lib/TranslatedScriptMessages.php:73
+#: lib/TranslatedScriptMessages.php:92
 msgid "Train ride"
 msgstr "Cu trenul"
 
-#: lib/TranslatedScriptMessages.php:74
+#: lib/TranslatedScriptMessages.php:93
 msgid "Clearing track. Please wait..."
 msgstr "Se șterge track-ul. Te rog să aștepți..."
 
-#: lib/TranslatedScriptMessages.php:75
+#: lib/TranslatedScriptMessages.php:94
 msgid "The track has been successfully cleared"
 msgstr "Track-ul a fost șters cu succes"
 
-#: lib/TranslatedScriptMessages.php:76
+#: lib/TranslatedScriptMessages.php:95
 msgid "The data could not be updated"
 msgstr "Datele nu au putut fi salvate"
 
-#: lib/TranslatedScriptMessages.php:77
+#: lib/TranslatedScriptMessages.php:96
 msgid ""
 "The data could not be updated due to a possible network error or an internal "
 "server issue"
@@ -534,19 +570,19 @@ msgstr ""
 "Datele nu au putut fi salvade din cauza unei posibile erori de rețea sau a "
 "unei erori interne"
 
-#: lib/TranslatedScriptMessages.php:78
+#: lib/TranslatedScriptMessages.php:97
 msgid "Saving data. Please wait..."
 msgstr "Se salvează datele. Te rog să aștepți..."
 
-#: lib/TranslatedScriptMessages.php:79
+#: lib/TranslatedScriptMessages.php:98
 msgid "The data has been saved"
 msgstr "Datele au fost salvate"
 
-#: lib/TranslatedScriptMessages.php:80
+#: lib/TranslatedScriptMessages.php:99
 msgid "The data could not be saved"
 msgstr "Datele nu au putut fi salvate"
 
-#: lib/TranslatedScriptMessages.php:81
+#: lib/TranslatedScriptMessages.php:100
 msgid ""
 "The data could not be saved due to a possible network error or an internal "
 "server issue"
@@ -554,19 +590,19 @@ msgstr ""
 "Datele nu au putut fi salvate din cauza unei posibile erori de rețea sau a "
 "unei erori interne"
 
-#: lib/TranslatedScriptMessages.php:82
+#: lib/TranslatedScriptMessages.php:101
 msgid "Clearing trip info. Please wait..."
 msgstr "Șterg informațiile traseului. Te rog să aștepți..."
 
-#: lib/TranslatedScriptMessages.php:83
+#: lib/TranslatedScriptMessages.php:102
 msgid "The trip info has been cleared"
 msgstr "Informațiile traseului au fost șterse"
 
-#: lib/TranslatedScriptMessages.php:84
+#: lib/TranslatedScriptMessages.php:103
 msgid "The trip info could not be cleared"
 msgstr "Informațiile traseului nu au putut fi șterse"
 
-#: lib/TranslatedScriptMessages.php:85
+#: lib/TranslatedScriptMessages.php:104
 msgid ""
 "The trip info could not be cleared due to a possible network error or an "
 "internal server issue"
@@ -574,11 +610,11 @@ msgstr ""
 "Informațiile traseului nu au putut fi șterse din cauza unei posibile erori "
 "de rețea sau a unei erori interne"
 
-#: lib/TranslatedScriptMessages.php:86 lib/TranslatedScriptMessages.php:93
+#: lib/TranslatedScriptMessages.php:105 lib/TranslatedScriptMessages.php:112
 msgid "The selected file is too large. Maximum allowed size is 10MB"
 msgstr "Fișierul selectat e prea mare. Dimensiunea maximă admisă e 10MB"
 
-#: lib/TranslatedScriptMessages.php:87 lib/TranslatedScriptMessages.php:92
+#: lib/TranslatedScriptMessages.php:106 lib/TranslatedScriptMessages.php:111
 msgid ""
 "The selected file type is not valid. Only GPX, GeoJSON and KML files are "
 "allowed"
@@ -586,27 +622,27 @@ msgstr ""
 "Tipul selectat de fișier nu este valid. Sunt permise doar fișierele GPX, "
 "GeoJSON și KML"
 
-#: lib/TranslatedScriptMessages.php:88 lib/TranslatedScriptMessages.php:89
+#: lib/TranslatedScriptMessages.php:107 lib/TranslatedScriptMessages.php:108
 msgid "The file could not be read"
 msgstr "Fișierul nu a putut fi citit"
 
-#: lib/TranslatedScriptMessages.php:90
+#: lib/TranslatedScriptMessages.php:109
 msgid "The uploader could not be initialized"
 msgstr "Una din componente nu a putut fi inițializată corect"
 
-#: lib/TranslatedScriptMessages.php:91 lib/TranslatedScriptMessages.php:101
+#: lib/TranslatedScriptMessages.php:110 lib/TranslatedScriptMessages.php:120
 msgid "The file could not be uploaded"
 msgstr "Fișierul nu a putut fi încărcat"
 
-#: lib/TranslatedScriptMessages.php:94
+#: lib/TranslatedScriptMessages.php:113
 msgid "No file was uploaded"
 msgstr "Nu a fost încărcat nici un fișier"
 
-#: lib/TranslatedScriptMessages.php:95
+#: lib/TranslatedScriptMessages.php:114
 msgid "The file could not be uploaded due to a possible internal server issue"
 msgstr "Fișierul nu a putut fi încărcat din cauza unei posibile erori interne"
 
-#: lib/TranslatedScriptMessages.php:96
+#: lib/TranslatedScriptMessages.php:115
 msgid ""
 "The file could not be stored on the server (#2). This usually indicates an "
 "internal server issue."
@@ -614,7 +650,7 @@ msgstr ""
 "Fișierul nu a putut fi stocat pe server (#2). Acest lucru indică de obicei o "
 "problemă internă a server-ului."
 
-#: lib/TranslatedScriptMessages.php:97
+#: lib/TranslatedScriptMessages.php:116
 msgid ""
 "The file could not be stored on the server (#1). This usually indicates an "
 "internal server issue."
@@ -622,7 +658,7 @@ msgstr ""
 "Fișierul nu a putut fi stocat pe server (#1). Acest lucru indică de obicei o "
 "problemă internă a server-ului."
 
-#: lib/TranslatedScriptMessages.php:98
+#: lib/TranslatedScriptMessages.php:117
 msgid ""
 "The upload request contains some invalid parameters. This might indicate an "
 "error within the plug-in itself or an attempt to forge the request."
@@ -631,7 +667,7 @@ msgstr ""
 "Acest lucru indică de obicei cu plug-in-ul în sine sau o încercare de a "
 "falsifica cererea."
 
-#: lib/TranslatedScriptMessages.php:99
+#: lib/TranslatedScriptMessages.php:118
 msgid ""
 "The destination were the track file was uploaded cannot be found. This "
 "usually indicates an internal server issue."
@@ -639,7 +675,7 @@ msgstr ""
 "Destinația la care a fost stocat fișierul track-ului GPS este de negăsit. "
 "Acest lucru indică de obicei o problemă internă a server-ului."
 
-#: lib/TranslatedScriptMessages.php:100
+#: lib/TranslatedScriptMessages.php:119
 msgid ""
 "The destination were the track file was uploaded has been found, but is "
 "corrupt. This usually indicates a problem with the file itself or, less "
@@ -649,43 +685,43 @@ msgstr ""
 "fișierul este corupt. Acest lucru indică de obicei o problemă cu fișierul în "
 "sine sau, mai rar, o problemă internă a server-ului."
 
-#: lib/TranslatedScriptMessages.php:102
+#: lib/TranslatedScriptMessages.php:121
 msgid "The uploaded file was not a valid GPX / GeoJSON / KML file"
 msgstr "Fișierul încărcat nu a fost un fișier GPX / GeoJSON / KML valid"
 
-#: lib/TranslatedScriptMessages.php:103
+#: lib/TranslatedScriptMessages.php:122
 msgid "Choose options"
 msgstr "Alege opțiuni"
 
-#: lib/TranslatedScriptMessages.php:104
+#: lib/TranslatedScriptMessages.php:123
 msgid "{0} selected"
 msgstr "{0} opțiuni selectate"
 
-#: lib/TranslatedScriptMessages.php:105
+#: lib/TranslatedScriptMessages.php:124
 msgid "Select all"
 msgstr "Selectează tot"
 
-#: lib/TranslatedScriptMessages.php:106
+#: lib/TranslatedScriptMessages.php:125
 #: views/wpts-editor-launcher-metabox.php:42
 msgid "Trip summary information is present for this post"
 msgstr "Informațiile despre traseu au fost furnizate pentru acest post"
 
-#: lib/TranslatedScriptMessages.php:107
+#: lib/TranslatedScriptMessages.php:126
 #: views/wpts-editor-launcher-metabox.php:43
 msgid "Trip summary information is not present for this post"
 msgstr "Informațiile despre traseu nu au fost furnizate pentru acest post"
 
-#: lib/TranslatedScriptMessages.php:108
+#: lib/TranslatedScriptMessages.php:127
 #: views/wpts-editor-launcher-metabox.php:54
 msgid "Trip summary track is present for this post"
 msgstr "Track-ul traseului a fost încărcat și procesat pentru acest post"
 
-#: lib/TranslatedScriptMessages.php:109
+#: lib/TranslatedScriptMessages.php:128
 #: views/wpts-editor-launcher-metabox.php:55
 msgid "Trip summary track is not present for this post"
 msgstr "Track-ul traseului nu a fost încărcat pentru acest post"
 
-#: lib/TranslatedScriptMessages.php:110
+#: lib/TranslatedScriptMessages.php:129
 msgid ""
 "Are you sure you want to remove the trip summary information? This action "
 "cannot be undone!"
@@ -693,7 +729,7 @@ msgstr ""
 "Sigur ștergi informațiile traseului? Odată efectuată, această acțiune nu "
 "poate fi anulată!"
 
-#: lib/TranslatedScriptMessages.php:111
+#: lib/TranslatedScriptMessages.php:130
 msgid ""
 "Are you sure you want to remove the trip summary track? This action cannot "
 "be undone!"
@@ -701,7 +737,7 @@ msgstr ""
 "Sigur ștergi track-ul traseului? Odată efectuată, această acțiune nu poate "
 "fi anulată!"
 
-#: lib/TranslatedScriptMessages.php:117
+#: lib/TranslatedScriptMessages.php:136
 msgid ""
 "The settings could not be saved due to a possible network error or an "
 "internal server issue"
@@ -709,90 +745,90 @@ msgstr ""
 "Opțiunile nu au putut fi salvate din cauza unei posibile erori de rețea sau "
 "a unei erori interne"
 
-#: lib/TranslatedScriptMessages.php:118
+#: lib/TranslatedScriptMessages.php:137
 msgid "The settings could not be saved due to a possible internal server issue"
 msgstr "Opțiunile nu au putut fi salvate din cauza unei posibile erori interne"
 
-#: lib/TranslatedScriptMessages.php:119
+#: lib/TranslatedScriptMessages.php:138
 msgid "Settings successfully saved"
 msgstr "Opțiunile au fost salvate cu succes"
 
-#: lib/TranslatedScriptMessages.php:120
+#: lib/TranslatedScriptMessages.php:139
 msgid "Saving settings. Please wait..."
 msgstr "Se salvează opțiunile. Te rog să aștepți..."
 
-#: lib/TranslatedScriptMessages.php:126 lib/TranslatedScriptMessages.php:143
+#: lib/TranslatedScriptMessages.php:145 lib/TranslatedScriptMessages.php:162
 msgid "Working. Please wait..."
 msgstr "Lucrez. Așteaptă puțin..."
 
-#: lib/TranslatedScriptMessages.php:127
+#: lib/TranslatedScriptMessages.php:146
 msgid "Item successfully saved"
 msgstr "Itemul a fost salvat cu succes"
 
-#: lib/TranslatedScriptMessages.php:128
+#: lib/TranslatedScriptMessages.php:147
 #: views/wpts-lookup-data-management.php:81
 #: views/wpts-lookup-data-management.php:95
 msgid "Add new item"
 msgstr "Adaugă item"
 
-#: lib/TranslatedScriptMessages.php:129
+#: lib/TranslatedScriptMessages.php:148
 msgid "Modify item"
 msgstr "Modifică"
 
-#: lib/TranslatedScriptMessages.php:130
+#: lib/TranslatedScriptMessages.php:149
 msgid ""
 "The item could not be saved due to a possible network error or an internal "
 "server issue"
 msgstr ""
 "Itemul nu a putut fi salvat din cauza unei posibile probleme de conexiune"
 
-#: lib/TranslatedScriptMessages.php:131
+#: lib/TranslatedScriptMessages.php:150
 msgid "The item could not be saved due to a possible internal server issue"
 msgstr "Itemul nu a putut fi salvat din cauza unei posibile probleme interne"
 
-#: lib/TranslatedScriptMessages.php:132
+#: lib/TranslatedScriptMessages.php:151
 msgid "Confirm item removal"
 msgstr "Confirmă ștergerea itemului"
 
-#: lib/TranslatedScriptMessages.php:133
+#: lib/TranslatedScriptMessages.php:152
 msgid ""
 "The item could not be deleted due to a possible network error or an internal "
 "server issue"
 msgstr ""
 "Itemul nu a putut fi șters in cauza unei posibile probleme de conexiune"
 
-#: lib/TranslatedScriptMessages.php:134
+#: lib/TranslatedScriptMessages.php:153
 msgid "The item could not be deleted due to a possible internal server issue"
 msgstr "Itemul nu a putut fi șters din cauza unei posibile probleme interne"
 
-#: lib/TranslatedScriptMessages.php:135
+#: lib/TranslatedScriptMessages.php:154
 msgid "The item has been successfully deleted"
 msgstr "Itemul a fost șters cu succes"
 
-#: lib/TranslatedScriptMessages.php:136
+#: lib/TranslatedScriptMessages.php:155
 msgid ""
 "The lookup items could not be loaded due to a possible network error or an "
 "internal server issue"
 msgstr ""
 "Itemii nu au putut fi încărcați din cauza unei posibile probleme de conexiune"
 
-#: lib/TranslatedScriptMessages.php:137
+#: lib/TranslatedScriptMessages.php:156
 msgid "The lookup items could not be loaded"
 msgstr "Itemii nu au putut fi încărcați"
 
-#: lib/TranslatedScriptMessages.php:144
+#: lib/TranslatedScriptMessages.php:163
 msgid "Are you sure you want to execute the selected tool?"
 msgstr "Sigur execuți unealta selectată?"
 
-#: lib/TranslatedScriptMessages.php:145
+#: lib/TranslatedScriptMessages.php:164
 msgid "The selected maintenance tool successfully executed."
 msgstr "Unealta selectată a fost executată cu succes."
 
-#: lib/TranslatedScriptMessages.php:146
+#: lib/TranslatedScriptMessages.php:165
 msgid "The selected maintenance tool could not be executed."
 msgstr "Unealta selectată nu a putut fi executată."
 
-#: lib/TranslatedScriptMessages.php:147
+#: lib/TranslatedScriptMessages.php:166
 msgid ""
 "The selected maintenance tool could not be executed due to a possible "
 "network issue. Please check your internet connection and try again."
@@ -800,35 +836,35 @@ msgstr ""
 "Unealta selectată nu a putut fi executată din cauza unei posibile probleme "
 "de conexiune. Te rugăm să verifici conexiunea la internet și să reîncerc."
 
-#: lib/TranslatedScriptMessages.php:153
+#: lib/TranslatedScriptMessages.php:172
 msgid "Minimum altitude:"
 msgstr "Altitudinea minimă:"
 
-#: lib/TranslatedScriptMessages.php:154
+#: lib/TranslatedScriptMessages.php:173
 msgid "Maximum altitude:"
 msgstr "Altitudinea maximă:"
 
-#: lib/TranslatedScriptMessages.php:155
+#: lib/TranslatedScriptMessages.php:174
 msgid "Altitude:"
 msgstr "Altitudinea:"
 
-#: lib/TranslatedScriptMessages.php:156
+#: lib/TranslatedScriptMessages.php:175
 msgid "Distance:"
 msgstr "Distanța:"
 
-#: lib/TranslatedScriptMessages.php:157 views/helpers/controls.frontend.php:92
+#: lib/TranslatedScriptMessages.php:176 views/helpers/controls.frontend.php:92
 msgid "(show)"
 msgstr "(arată)"
 
-#: lib/TranslatedScriptMessages.php:158
+#: lib/TranslatedScriptMessages.php:177
 msgid "(hide)"
 msgstr "(ascunde)"
 
-#: lib/TranslatedScriptMessages.php:164
+#: lib/TranslatedScriptMessages.php:183
 msgid "Loading help contents. Please wait..."
 msgstr "Se încară conținutul. Te rugăm să aștepți..."
 
-#: lib/TranslatedScriptMessages.php:165
+#: lib/TranslatedScriptMessages.php:184
 msgid ""
 "The help contents could not be loaded due to a possible network error or an "
 "internal server issue."
@@ -836,15 +872,15 @@ msgstr ""
 "Conținutul nu a putut fi încărcat din cauza unei posibile probleme de "
 "conexi\tune"
 
-#: lib/TranslatedScriptMessages.php:166
+#: lib/TranslatedScriptMessages.php:185
 msgid "The help contents could not be loaded."
 msgstr "Conținutul nu a putut fi încărcat"
 
-#: lib/TranslatedScriptMessages.php:172
+#: lib/TranslatedScriptMessages.php:191
 msgid "Loading audit log. Please wait..."
 msgstr "Se încarcă datele de auditare. Te rugăm să aștepți..."
 
-#: lib/TranslatedScriptMessages.php:173
+#: lib/TranslatedScriptMessages.php:192
 msgid "The audit log could not be loaded!"
 msgstr "Datele de auditare nu au putut fi încărcate!"
 
@@ -940,6 +976,61 @@ msgstr "Vreau să-ți iau o cafea"
 #: views/wpts-about.php:95
 msgid "Changelog"
 msgstr "Jurnal de modificări"
+
+#: views/wpts-admin-system-logs.php:49
+msgid "System log files"
+msgstr "Fișiere jurnal de sistem"
+
+#: views/wpts-admin-system-logs.php:51
+msgid "Debug logs"
+msgstr "Fișiere jurnal pentru depanare"
+
+#: views/wpts-admin-system-logs.php:55
+msgid ""
+"Debug logging is currently disabled. Only showing existing debug log files."
+msgstr ""
+"Jurnalizarea pentru depanare este momentan inactivă. Se afișează doar "
+"fișierele existente."
+
+#: views/wpts-admin-system-logs.php:60
+msgid "There are no debug log files available"
+msgstr "Nu există fișiere jurnal pentru depanare."
+
+#: views/wpts-admin-system-logs.php:75
+msgid "Error logs"
+msgstr "Fișiere jurnal pentru erori"
+
+#: views/wpts-admin-system-logs.php:79
+msgid ""
+"Error logging is currently disabled. Only showing existing debug log files."
+msgstr ""
+"Jurnalizarea erorilor este momentan inactivă. Se afișează doar fișierele "
+"existente."
+
+#: views/wpts-admin-system-logs.php:84
+msgid "There are no error log files available"
+msgstr "Nu există fișiere jurnal pentru erori."
+
+#: views/wpts-admin-system-logs.php:102
+msgid "Log file contents"
+msgstr "Conținutul fișierului jurnal"
+
+#: views/wpts-admin-system-logs.php:106
+msgid "Download"
+msgstr "Descarcă"
+
+#: views/wpts-admin-system-logs.php:107
+msgid "Reload"
+msgstr "Reîncarcă"
+
+#: views/wpts-admin-system-logs.php:108 views/wpts-log-editor.php:102
+#: views/wpts-log-editor.php:226 views/wpts-lookup-data-management.php:152
+msgid "Delete"
+msgstr "Șterge"
+
+#: views/wpts-admin-system-logs.php:115
+msgid "The log file is too large. Only displaying the last 200 lines."
+msgstr "Fișierul este prea mare. Se afișează doar ultimele 200 de linii."
 
 #: views/wpts-audit-log.php:44 views/wpts-audit-log.php:76
 msgid "Date created"
@@ -1132,11 +1223,6 @@ msgstr "Echipament"
 #: views/wpts-log-editor.php:76
 msgid "Is public"
 msgstr "Afișează public"
-
-#: views/wpts-log-editor.php:102 views/wpts-log-editor.php:226
-#: views/wpts-lookup-data-management.php:152
-msgid "Delete"
-msgstr "Șterge"
 
 #: views/wpts-log-editor.php:118
 msgid "No log entries"
@@ -1391,6 +1477,9 @@ msgstr "Detalii"
 #: views/wpts-settings.php:406
 msgid "Use this tile layer"
 msgstr "Folosește această sursă"
+
+#~ msgid "Open Street Map, Hike & Bike Map"
+#~ msgstr "Harta pentru Drumeții și Ciclism bazată pe Open Street Map"
 
 #~ msgid "The selected file type is not valid. Only GPX files are allowed"
 #~ msgstr ""

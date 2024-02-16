@@ -34,6 +34,25 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_TranslatedScriptMessages {
+	public static function getCommonScriptTranslations() {
+		return array(
+			'lblConfirmTitle' => esc_html__('Confirm', 'abp01-trip-summary'),
+			'lblConfirmQuestion' => esc_html__('Are you sure you want to proceed?', 'abp01-trip-summary'),
+			'btnYes' => esc_html__('Yes', 'abp01-trip-summary'),
+			'btnNo' => esc_html__('No', 'abp01-trip-summary')
+		);
+	}
+
+	public static function getAdminSystemLogsManagementTranslations() {
+		return array(
+			'msgConfirmLogFileRemoval' => esc_html__('Are you sure you want to remove this log file?', 'abp01-trip-summary'),
+			'msgLogFileRemovalSuccess' => esc_html__('The log file has been successfully deleted.', 'abp01-trip-summary'),
+			'errCouldNotRemoveLogFile' => esc_html__('The log file could not be deleted', 'abp01-trip-summary'),
+			'errCouldNotLoadLogFile' => esc_html__('The log file could not be loaded', 'abp01-trip-summary'),
+			'errCouldNotFindLogFile' => esc_html__('The log file could not be found', 'abp01-trip-summary')
+		);
+	}
+
 	public static function getAdminTripSummaryAdminLogEntriesTranslations() {
 		return array(
 			'msgSaveWorking' => esc_html__('Saving trip summary log entry. Please wait...', 'abp01-trip-summary'),

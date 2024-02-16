@@ -31,6 +31,7 @@
 
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\BrowserConsoleHandler;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -62,6 +63,10 @@ class Abp01_Logger_MonologLogger implements Abp01_Logger {
 
 			if ($this->_config->shouldCaptureWebContext()) {
 				$logger->pushProcessor(new WebProcessor());
+			}
+
+			if ($this->_config->isDebugMode()) {
+				$logger->pushHandler(new BrowserConsoleHandler());
 			}
 
 			do_action('abp01_customize_monolog_logger', $logger);		
@@ -102,9 +107,8 @@ class Abp01_Logger_MonologLogger implements Abp01_Logger {
 		}
 
 		if ($this->_config->isErrorLoggingEnabled()) {
-			$errorStreamFileHandler = new RotatingFileHandler($this->_config->getErrorLogFile(), 
-				Logger::WARNING,
-				false);
+			$errorStreamFileHandler = new StreamHandler($this->_config->getErrorLogFile(), 
+				Logger::WARNING);
 
 			$errorStreamFileHandler->setFormatter($formatter);
 			$logger->pushHandler($errorStreamFileHandler);

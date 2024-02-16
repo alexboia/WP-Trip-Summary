@@ -101,13 +101,15 @@
 				<div class="abp01-rounded-container abp01-page-workspace-inner">
 					<h4><?php echo esc_html__('Log file contents', 'abp01-trip-summary'); ?></h5>
 					<div class="abp01-page-workspace-content">
-						<div class="abp01-page-workspace-toolbar">
+						<div id="abp01-page-workspace-toolbar" class="abp01-page-workspace-toolbar">
 							<?php if ($data->hasErrorLogFiles || $data->hasDebugLogFiles): ?>
 								<button id="abp01-download-current-log" type="button" class="btn btn-primary abp01-log-action-btn"><span class="dashicons dashicons-download"></span> <?php echo esc_html__('Download', 'abp01-trip-summary'); ?></button>
 								<button id="abp01-refresh-current-log" type="button" class="btn btn-secondary abp01-log-action-btn"><span class="dashicons dashicons-image-rotate"></span> <?php echo esc_html__('Reload', 'abp01-trip-summary'); ?></button>
 								<button id="abp01-delete-current-log" type="button" class="btn btn-danger abp01-log-action-btn"><span class="dashicons dashicons-trash"></span> <?php echo esc_html__('Delete', 'abp01-trip-summary'); ?></button>
 							<?php endif; ?>
 						</div>
+
+						<div id="abp01-log-action-result" class="abp01-alert-container"></div>
 
 						<div id="abp01-log-file-too-large-warning" class="alert alert-warning" role="alert" style="display: none;">
 							<?php echo esc_html__('The log file is too large. Only displaying the last 200 lines.', 'abp01-trip-summary'); ?>

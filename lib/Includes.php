@@ -1023,11 +1023,18 @@ class Abp01_Includes {
 	public static function includeScriptAdminSystemLogs($localization) {
 		self::_includeScript(self::JS_ABP01_ADMIN_SYSTEM_LOGS);
 
+		self::_includeScriptAdminCommonTranslations();
 		if (!empty($localization)) {
 			wp_localize_script(self::JS_ABP01_ADMIN_SYSTEM_LOGS, 
 				'abp01AdminSystemLogL10n', 
 				$localization);
 		}
+	}
+
+	private static function _includeScriptAdminCommonTranslations() {
+		wp_localize_script(self::JS_ABP01_COMMON, 
+			'abp01AdminCommonL10n', 
+			Abp01_TranslatedScriptMessages::getCommonScriptTranslations());
 	}
 
 	public static function getClassicEditorViewerShortcodePluginUrl() {

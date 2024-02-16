@@ -125,8 +125,12 @@ class Abp01_PluginModules_SystemLogsManagementPluginModule extends Abp01_PluginM
 
 	public function onAdminEnqueueScripts(): void {
 		if ($this->_shouldEnqueueWebPageAssets()) {
-			Abp01_Includes::includeScriptAdminSystemLogs(array());
+			Abp01_Includes::includeScriptAdminSystemLogs($this->_getAdminSystemLogsManagementTranslations());
 		}
+	}
+
+	private function _getAdminSystemLogsManagementTranslations() {
+		return Abp01_TranslatedScriptMessages::getAdminSystemLogsManagementTranslations();
 	}
 
 	private function _shouldEnqueueWebPageAssets(): bool {

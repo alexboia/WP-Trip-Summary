@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-02-12T14:56:03+02:00\n"
+"POT-Creation-Date: 2024-02-16T12:49:22+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: abp01-trip-summary\n"
@@ -79,6 +79,7 @@ msgstr[1] ""
 
 #: lib/display/postListing/TripSummaryStatusColumn.php:47
 #: lib/pluginModules/RouteLogPluginModule.php:436
+#: lib/TranslatedScriptMessages.php:41
 #: views/wpts-log-editor.php:98
 #: views/wpts-log-editor.php:219
 msgid "Yes"
@@ -86,6 +87,7 @@ msgstr ""
 
 #: lib/display/postListing/TripSummaryStatusColumn.php:48
 #: lib/pluginModules/RouteLogPluginModule.php:437
+#: lib/TranslatedScriptMessages.php:42
 #: views/wpts-log-editor.php:99
 #: views/wpts-log-editor.php:221
 msgid "No"
@@ -329,6 +331,16 @@ msgstr ""
 msgid "Tile layer API key is required"
 msgstr ""
 
+#: lib/pluginModules/SystemLogsManagementPluginModule.php:149
+#: lib/pluginModules/SystemLogsManagementPluginModule.php:150
+#: views/wpts-admin-system-logs.php:45
+msgid "System logs"
+msgstr ""
+
+#: lib/pluginModules/SystemLogsManagementPluginModule.php:304
+msgid "The requested log file could not be deleted."
+msgstr ""
+
 #: lib/Settings.php:277
 msgid "For the pragmatic sort, there is also a trip summary at the bottom of this page. Click here to consult it"
 msgstr ""
@@ -337,432 +349,456 @@ msgstr ""
 msgid "It looks like you skipped the story. You should check it out. Click here to go back to beginning"
 msgstr ""
 
-#: lib/settings/PredefinedTileLayer.php:136
+#: lib/settings/PredefinedTileLayer.php:134
 msgid "Basic Open Street Map Style"
 msgstr ""
 
-#: lib/settings/PredefinedTileLayer.php:142
-msgid "Open Street Map, Hike & Bike Map"
-msgstr ""
-
-#: lib/settings/PredefinedTileLayer.php:151
+#: lib/settings/PredefinedTileLayer.php:143
 msgid "Thunderforest Atlas Map"
 msgstr ""
 
-#: lib/settings/PredefinedTileLayer.php:157
+#: lib/settings/PredefinedTileLayer.php:149
 msgid "Thunderforest Landscape Map"
 msgstr ""
 
-#: lib/settings/PredefinedTileLayer.php:163
+#: lib/settings/PredefinedTileLayer.php:155
 msgid "Thunderforest Mobile Atlas Map"
 msgstr ""
 
-#: lib/settings/PredefinedTileLayer.php:169
+#: lib/settings/PredefinedTileLayer.php:161
 msgid "Thunderforest Neighbourhood Map"
 msgstr ""
 
-#: lib/settings/PredefinedTileLayer.php:175
+#: lib/settings/PredefinedTileLayer.php:167
 msgid "Thunderforest Open Cycle Map"
 msgstr ""
 
-#: lib/settings/PredefinedTileLayer.php:181
+#: lib/settings/PredefinedTileLayer.php:173
 msgid "Thunderforest Outdoors Map"
 msgstr ""
 
-#: lib/settings/PredefinedTileLayer.php:187
+#: lib/settings/PredefinedTileLayer.php:179
 msgid "Thunderforest Pioneer Map"
 msgstr ""
 
-#: lib/settings/PredefinedTileLayer.php:193
+#: lib/settings/PredefinedTileLayer.php:185
 msgid "Thunderforest Spinal Map"
 msgstr ""
 
-#: lib/settings/PredefinedTileLayer.php:199
+#: lib/settings/PredefinedTileLayer.php:191
 msgid "Thunderforest Transport Map"
 msgstr ""
 
-#: lib/settings/PredefinedTileLayer.php:205
+#: lib/settings/PredefinedTileLayer.php:197
 msgid "Thunderforest Transport Dark Map"
 msgstr ""
 
 #: lib/TranslatedScriptMessages.php:39
-msgid "Saving trip summary log entry. Please wait..."
+msgid "Confirm"
 msgstr ""
 
 #: lib/TranslatedScriptMessages.php:40
-msgid "Deleting trip summary log entry. Please wait..."
-msgstr ""
-
-#: lib/TranslatedScriptMessages.php:41
-msgid "Deleting all trip summary log entries for this post. Please wait..."
-msgstr ""
-
-#: lib/TranslatedScriptMessages.php:42
-msgid "Loading log entry. Please wait..."
-msgstr ""
-
-#: lib/TranslatedScriptMessages.php:44
-msgid "Remove selected log entry? This action cannot be undone!"
-msgstr ""
-
-#: lib/TranslatedScriptMessages.php:45
-msgid "Remove all log entries for this post? This action cannot be undone!"
-msgstr ""
-
-#: lib/TranslatedScriptMessages.php:47
-msgid "The trip summary log entry has been successfully deleted"
+msgid "Are you sure you want to proceed?"
 msgstr ""
 
 #: lib/TranslatedScriptMessages.php:48
-msgid "All the trip summary log entries for this post have been successfully deleted"
+msgid "Are you sure you want to remove this log file?"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:49
+msgid "The log file has been successfully deleted."
 msgstr ""
 
 #: lib/TranslatedScriptMessages.php:50
-msgid "The trip summary log entry could not be saved"
+msgid "The log file could not be deleted"
 msgstr ""
 
 #: lib/TranslatedScriptMessages.php:51
-msgid "The trip summary log entry could not be deleted"
+msgid "The log file could not be loaded"
 msgstr ""
 
 #: lib/TranslatedScriptMessages.php:52
+msgid "The log file could not be found"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:58
+msgid "Saving trip summary log entry. Please wait..."
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:59
+msgid "Deleting trip summary log entry. Please wait..."
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:60
+msgid "Deleting all trip summary log entries for this post. Please wait..."
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:61
+msgid "Loading log entry. Please wait..."
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:63
+msgid "Remove selected log entry? This action cannot be undone!"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:64
+msgid "Remove all log entries for this post? This action cannot be undone!"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:66
+msgid "The trip summary log entry has been successfully deleted"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:67
+msgid "All the trip summary log entries for this post have been successfully deleted"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:69
+msgid "The trip summary log entry could not be saved"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:70
+msgid "The trip summary log entry could not be deleted"
+msgstr ""
+
+#: lib/TranslatedScriptMessages.php:71
 msgid "The trip summary log entries for this post could not be deleted"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:53
+#: lib/TranslatedScriptMessages.php:72
 msgid "The log entry could not be loaded."
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:55
+#: lib/TranslatedScriptMessages.php:74
 #: views/wpts-log-editor.php:135
 msgid "Add trip summary log entry"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:56
+#: lib/TranslatedScriptMessages.php:75
 msgid "Edit trip summary log entry"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:58
+#: lib/TranslatedScriptMessages.php:77
 #: views/wpts-log-editor-launcher-status-item.php:39
 msgid "Trip summary log is present for this post"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:59
+#: lib/TranslatedScriptMessages.php:78
 #: views/wpts-log-editor-launcher-status-item.php:40
 msgid "Trip summary log is not present for this post"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:65
+#: lib/TranslatedScriptMessages.php:84
 #: views/wpts-editor-quick-actions-tooltip.php:36
 #: views/wpts-editor-quick-actions.php:49
 msgid "Clear info"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:66
+#: lib/TranslatedScriptMessages.php:85
 #: views/wpts-editor-quick-actions-tooltip.php:43
 #: views/wpts-editor-quick-actions.php:55
 msgid "Clear track"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:67
+#: lib/TranslatedScriptMessages.php:86
 msgid "GPX files"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:68
+#: lib/TranslatedScriptMessages.php:87
 msgid "Generating preview. Please wait..."
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:69
+#: lib/TranslatedScriptMessages.php:88
 msgid "Uploading track"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:70
+#: lib/TranslatedScriptMessages.php:89
 msgid "The track has been uploaded and saved successfully"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:71
+#: lib/TranslatedScriptMessages.php:90
 #: views/wpts-editor.php:113
 msgid "Biking"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:72
+#: lib/TranslatedScriptMessages.php:91
 #: views/wpts-editor.php:116
 msgid "Hiking"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:73
+#: lib/TranslatedScriptMessages.php:92
 msgid "Train ride"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:74
+#: lib/TranslatedScriptMessages.php:93
 msgid "Clearing track. Please wait..."
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:75
+#: lib/TranslatedScriptMessages.php:94
 msgid "The track has been successfully cleared"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:76
+#: lib/TranslatedScriptMessages.php:95
 msgid "The data could not be updated"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:77
+#: lib/TranslatedScriptMessages.php:96
 msgid "The data could not be updated due to a possible network error or an internal server issue"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:78
+#: lib/TranslatedScriptMessages.php:97
 msgid "Saving data. Please wait..."
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:79
+#: lib/TranslatedScriptMessages.php:98
 msgid "The data has been saved"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:80
+#: lib/TranslatedScriptMessages.php:99
 msgid "The data could not be saved"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:81
+#: lib/TranslatedScriptMessages.php:100
 msgid "The data could not be saved due to a possible network error or an internal server issue"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:82
+#: lib/TranslatedScriptMessages.php:101
 msgid "Clearing trip info. Please wait..."
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:83
+#: lib/TranslatedScriptMessages.php:102
 msgid "The trip info has been cleared"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:84
+#: lib/TranslatedScriptMessages.php:103
 msgid "The trip info could not be cleared"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:85
+#: lib/TranslatedScriptMessages.php:104
 msgid "The trip info could not be cleared due to a possible network error or an internal server issue"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:86
-#: lib/TranslatedScriptMessages.php:93
+#: lib/TranslatedScriptMessages.php:105
+#: lib/TranslatedScriptMessages.php:112
 msgid "The selected file is too large. Maximum allowed size is 10MB"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:87
-#: lib/TranslatedScriptMessages.php:92
+#: lib/TranslatedScriptMessages.php:106
+#: lib/TranslatedScriptMessages.php:111
 msgid "The selected file type is not valid. Only GPX, GeoJSON and KML files are allowed"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:88
-#: lib/TranslatedScriptMessages.php:89
+#: lib/TranslatedScriptMessages.php:107
+#: lib/TranslatedScriptMessages.php:108
 msgid "The file could not be read"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:90
+#: lib/TranslatedScriptMessages.php:109
 msgid "The uploader could not be initialized"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:91
-#: lib/TranslatedScriptMessages.php:101
+#: lib/TranslatedScriptMessages.php:110
+#: lib/TranslatedScriptMessages.php:120
 msgid "The file could not be uploaded"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:94
+#: lib/TranslatedScriptMessages.php:113
 msgid "No file was uploaded"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:95
+#: lib/TranslatedScriptMessages.php:114
 msgid "The file could not be uploaded due to a possible internal server issue"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:96
+#: lib/TranslatedScriptMessages.php:115
 msgid "The file could not be stored on the server (#2). This usually indicates an internal server issue."
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:97
+#: lib/TranslatedScriptMessages.php:116
 msgid "The file could not be stored on the server (#1). This usually indicates an internal server issue."
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:98
+#: lib/TranslatedScriptMessages.php:117
 msgid "The upload request contains some invalid parameters. This might indicate an error within the plug-in itself or an attempt to forge the request."
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:99
+#: lib/TranslatedScriptMessages.php:118
 msgid "The destination were the track file was uploaded cannot be found. This usually indicates an internal server issue."
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:100
+#: lib/TranslatedScriptMessages.php:119
 msgid "The destination were the track file was uploaded has been found, but is corrupt. This usually indicates a problem with the file itself or, less likely, an internal server issue."
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:102
+#: lib/TranslatedScriptMessages.php:121
 msgid "The uploaded file was not a valid GPX / GeoJSON / KML file"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:103
+#: lib/TranslatedScriptMessages.php:122
 msgid "Choose options"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:104
+#: lib/TranslatedScriptMessages.php:123
 msgid "{0} selected"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:105
+#: lib/TranslatedScriptMessages.php:124
 msgid "Select all"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:106
+#: lib/TranslatedScriptMessages.php:125
 #: views/wpts-editor-launcher-metabox.php:42
 msgid "Trip summary information is present for this post"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:107
+#: lib/TranslatedScriptMessages.php:126
 #: views/wpts-editor-launcher-metabox.php:43
 msgid "Trip summary information is not present for this post"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:108
+#: lib/TranslatedScriptMessages.php:127
 #: views/wpts-editor-launcher-metabox.php:54
 msgid "Trip summary track is present for this post"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:109
+#: lib/TranslatedScriptMessages.php:128
 #: views/wpts-editor-launcher-metabox.php:55
 msgid "Trip summary track is not present for this post"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:110
+#: lib/TranslatedScriptMessages.php:129
 msgid "Are you sure you want to remove the trip summary information? This action cannot be undone!"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:111
+#: lib/TranslatedScriptMessages.php:130
 msgid "Are you sure you want to remove the trip summary track? This action cannot be undone!"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:117
+#: lib/TranslatedScriptMessages.php:136
 msgid "The settings could not be saved due to a possible network error or an internal server issue"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:118
+#: lib/TranslatedScriptMessages.php:137
 msgid "The settings could not be saved due to a possible internal server issue"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:119
+#: lib/TranslatedScriptMessages.php:138
 msgid "Settings successfully saved"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:120
+#: lib/TranslatedScriptMessages.php:139
 msgid "Saving settings. Please wait..."
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:126
-#: lib/TranslatedScriptMessages.php:143
+#: lib/TranslatedScriptMessages.php:145
+#: lib/TranslatedScriptMessages.php:162
 msgid "Working. Please wait..."
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:127
+#: lib/TranslatedScriptMessages.php:146
 msgid "Item successfully saved"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:128
+#: lib/TranslatedScriptMessages.php:147
 #: views/wpts-lookup-data-management.php:81
 #: views/wpts-lookup-data-management.php:95
 msgid "Add new item"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:129
+#: lib/TranslatedScriptMessages.php:148
 msgid "Modify item"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:130
+#: lib/TranslatedScriptMessages.php:149
 msgid "The item could not be saved due to a possible network error or an internal server issue"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:131
+#: lib/TranslatedScriptMessages.php:150
 msgid "The item could not be saved due to a possible internal server issue"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:132
+#: lib/TranslatedScriptMessages.php:151
 msgid "Confirm item removal"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:133
+#: lib/TranslatedScriptMessages.php:152
 msgid "The item could not be deleted due to a possible network error or an internal server issue"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:134
+#: lib/TranslatedScriptMessages.php:153
 msgid "The item could not be deleted due to a possible internal server issue"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:135
+#: lib/TranslatedScriptMessages.php:154
 msgid "The item has been successfully deleted"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:136
+#: lib/TranslatedScriptMessages.php:155
 msgid "The lookup items could not be loaded due to a possible network error or an internal server issue"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:137
+#: lib/TranslatedScriptMessages.php:156
 msgid "The lookup items could not be loaded"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:144
+#: lib/TranslatedScriptMessages.php:163
 msgid "Are you sure you want to execute the selected tool?"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:145
+#: lib/TranslatedScriptMessages.php:164
 msgid "The selected maintenance tool successfully executed."
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:146
+#: lib/TranslatedScriptMessages.php:165
 msgid "The selected maintenance tool could not be executed."
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:147
+#: lib/TranslatedScriptMessages.php:166
 msgid "The selected maintenance tool could not be executed due to a possible network issue. Please check your internet connection and try again."
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:153
+#: lib/TranslatedScriptMessages.php:172
 msgid "Minimum altitude:"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:154
+#: lib/TranslatedScriptMessages.php:173
 msgid "Maximum altitude:"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:155
+#: lib/TranslatedScriptMessages.php:174
 msgid "Altitude:"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:156
+#: lib/TranslatedScriptMessages.php:175
 msgid "Distance:"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:157
+#: lib/TranslatedScriptMessages.php:176
 #: views/helpers/controls.frontend.php:92
 msgid "(show)"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:158
+#: lib/TranslatedScriptMessages.php:177
 msgid "(hide)"
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:164
+#: lib/TranslatedScriptMessages.php:183
 msgid "Loading help contents. Please wait..."
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:165
+#: lib/TranslatedScriptMessages.php:184
 msgid "The help contents could not be loaded due to a possible network error or an internal server issue."
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:166
+#: lib/TranslatedScriptMessages.php:185
 msgid "The help contents could not be loaded."
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:172
+#: lib/TranslatedScriptMessages.php:191
 msgid "Loading audit log. Please wait..."
 msgstr ""
 
-#: lib/TranslatedScriptMessages.php:173
+#: lib/TranslatedScriptMessages.php:192
 msgid "The audit log could not be loaded!"
 msgstr ""
 
@@ -860,6 +896,57 @@ msgstr ""
 
 #: views/wpts-about.php:95
 msgid "Changelog"
+msgstr ""
+
+#: views/wpts-admin-system-logs.php:49
+msgid "System log files"
+msgstr ""
+
+#: views/wpts-admin-system-logs.php:51
+msgid "Debug logs"
+msgstr ""
+
+#: views/wpts-admin-system-logs.php:55
+msgid "Debug logging is currently disabled. Only showing existing debug log files."
+msgstr ""
+
+#: views/wpts-admin-system-logs.php:60
+msgid "There are no debug log files available"
+msgstr ""
+
+#: views/wpts-admin-system-logs.php:75
+msgid "Error logs"
+msgstr ""
+
+#: views/wpts-admin-system-logs.php:79
+msgid "Error logging is currently disabled. Only showing existing debug log files."
+msgstr ""
+
+#: views/wpts-admin-system-logs.php:84
+msgid "There are no error log files available"
+msgstr ""
+
+#: views/wpts-admin-system-logs.php:102
+msgid "Log file contents"
+msgstr ""
+
+#: views/wpts-admin-system-logs.php:106
+msgid "Download"
+msgstr ""
+
+#: views/wpts-admin-system-logs.php:107
+msgid "Reload"
+msgstr ""
+
+#: views/wpts-admin-system-logs.php:108
+#: views/wpts-log-editor.php:102
+#: views/wpts-log-editor.php:226
+#: views/wpts-lookup-data-management.php:152
+msgid "Delete"
+msgstr ""
+
+#: views/wpts-admin-system-logs.php:115
+msgid "The log file is too large. Only displaying the last 200 lines."
 msgstr ""
 
 #: views/wpts-audit-log.php:44
@@ -1061,12 +1148,6 @@ msgstr ""
 
 #: views/wpts-log-editor.php:76
 msgid "Is public"
-msgstr ""
-
-#: views/wpts-log-editor.php:102
-#: views/wpts-log-editor.php:226
-#: views/wpts-lookup-data-management.php:152
-msgid "Delete"
 msgstr ""
 
 #: views/wpts-log-editor.php:118
