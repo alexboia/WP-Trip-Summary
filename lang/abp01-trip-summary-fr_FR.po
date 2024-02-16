@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Trip Summary 0.2.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-trip-summary\n"
-"POT-Creation-Date: 2024-02-16T12:49:22+02:00\n"
-"PO-Revision-Date: 2024-02-16 20:24+0200\n"
+"POT-Creation-Date: 2024-02-16T21:08:42+02:00\n"
+"PO-Revision-Date: 2024-02-16 21:10+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -1032,10 +1032,10 @@ msgstr "Journaux d'erreurs"
 
 #: views/wpts-admin-system-logs.php:79
 msgid ""
-"Error logging is currently disabled. Only showing existing debug log files."
+"Error logging is currently disabled. Only showing existing error log files."
 msgstr ""
 "La journalisation des erreurs est actuellement désactivée. Afficher "
-"uniquement les fichiers journaux de débogage existants."
+"uniquement les fichiers journaux d'erreurs existants."
 
 #: views/wpts-admin-system-logs.php:84
 msgid "There are no error log files available"
