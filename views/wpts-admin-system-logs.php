@@ -76,7 +76,7 @@
 
 					<?php if (!$data->isErrorLoggingEnabled): ?>
 						<div class="alert alert-primary" role="alert">
-							<?php echo esc_html__('Error logging is currently disabled. Only showing existing debug log files.', 'abp01-trip-summary'); ?>
+							<?php echo esc_html__('Error logging is currently disabled. Only showing existing error log files.', 'abp01-trip-summary'); ?>
 						</div>
 					<?php endif; ?>
 
