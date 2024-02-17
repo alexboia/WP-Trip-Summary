@@ -30,57 +30,45 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit ;
+	exit;
 }
 
-class Abp01_Display_PostListing_TripSummaryRouteTypeColumn extends Abp01_Display_PostListing_Column {
-	public function __construct($key, $label, Abp01_Display_PostListing_ColumnDataSource $dataSource) {
-		parent::__construct($key, $label, $dataSource);
+class Abp01_Display_PostListing_RouteTypeFilterProcessor implements Abp01_Display_PostListing_FilterProcessor {
+	public function processFilter(Abp01_Display_PostListing_Filter $filter): void {
+		add_filter('posts_join', 
+			function($join, WP_Query $query) use ($filter): string {
+				return $this->_processQueryJoin($join, $query, $filter->getCurrentValue());
+			}, 10, 2);
+
+		add_filter('posts_clauses', 
+			function(array $clauses, WP_Query $query) use ($filter): array {
+				return $this->_processQueryClauses($clauses, $query, $filter->getCurrentValue());
+			}, 10, 2);
 	}
 
-	public function renderValue($postId) {
-		$routeType = parent::renderValue($postId);
+	private function _processQueryJoin($join, WP_Query $query, $currentValue): string {
+		$postsTableName = $this->_getPostsTableName();
+		$routeDetailsTableName = $this->_getRouteDetailsTableName();
 
-		$label = $this->_getRouteTypeLabel($postId, 
-			$routeType);
+		if (!empty($currentValue)) {
+			$join .= ' LEFT JOIN `' . $routeDetailsTableName . '` `abp01rd` ON `' . $postsTableName . '`.`ID` = `abp01rd`.`post_ID`';
+		}
 
-		return $this->_formatRouteTypeLabel($postId, 
-			$routeType, 
-			$label);
+		return $join;
 	}
 
-	private function _formatRouteTypeLabel($postId, $routeType, $routeTypeLabel) {
-		$cssClass = sprintf('abp01-route-type-cell abp01-route-type-cell-%s', !empty($routeType) 
-			? esc_attr($routeType)
-			: 'none');
-		$formatted = '<span class="' . $cssClass . '">' . $routeTypeLabel . '</span>';
-
-		return apply_filters('abp01_formatted_route_tyle_listing_label', 
-			$formatted, 
-			$postId, 
-			$routeType, 
-			$routeTypeLabel);
+	private function _processQueryClauses(array $clauses, WP_Query $query, $currentValue): array {
+		if (!empty($currentValue)) {
+			$clauses['where'] = " AND `abp01rd`.`route_type` = '" . esc_sql($currentValue) . "'";
+		}
+		return $clauses;	
+	}
+	
+	private function _getRouteDetailsTableName() {
+		return abp01_get_env()->getRouteDetailsTableName();
 	}
 
-	private function _getRouteTypeLabel($postId, $routeType) {
-		$routeTypeLabel = '';
-		if (!empty($routeType)) {
-			$routeTypeLabel = Abp01_Route_Type::getTypeLabel($routeType);
-		} else {
-			$routeTypeLabel = '-';
-		}		
-
-		return apply_filters('abp01_unformatted_route_type_label', 
-			$routeTypeLabel, 
-			$postId,
-			$routeType);
-	}
-
-	public function renderLabel() {
-		return parent::renderLabel();
-	}
-
-	public function getKey() {
-		return parent::getKey();
+	private function _getPostsTableName() {
+		return abp01_get_env()->getWpPostsTableName();
 	}
 }

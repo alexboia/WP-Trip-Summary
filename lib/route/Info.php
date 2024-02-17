@@ -35,11 +35,11 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 
 //TODO: also add post id
 class Abp01_Route_Info {
-	const BIKE = 'bike';
+	const BIKE = Abp01_Route_Type::BIKE;
 
-	const HIKING = 'hiking';
+	const HIKING = Abp01_Route_Type::HIKING;
 
-	const TRAIN_RIDE = 'trainRide';
+	const TRAIN_RIDE = Abp01_Route_Type::TRAIN_RIDE;
 
 	private $_data = array();
 

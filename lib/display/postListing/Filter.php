@@ -30,57 +30,39 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit ;
+	exit;
 }
 
-class Abp01_Display_PostListing_TripSummaryRouteTypeColumn extends Abp01_Display_PostListing_Column {
-	public function __construct($key, $label, Abp01_Display_PostListing_ColumnDataSource $dataSource) {
-		parent::__construct($key, $label, $dataSource);
+abstract class Abp01_Display_PostListing_Filter {
+	protected $_key;
+
+	protected $_label;
+
+	protected $_processor;
+
+	public function __construct(string $key, string|null $label, Abp01_Display_PostListing_FilterProcessor $processor) {
+		$this->_key = $key;
+		$this->_label = $label;
+		$this->_processor = $processor;
 	}
 
-	public function renderValue($postId) {
-		$routeType = parent::renderValue($postId);
+	abstract public function render();
 
-		$label = $this->_getRouteTypeLabel($postId, 
-			$routeType);
-
-		return $this->_formatRouteTypeLabel($postId, 
-			$routeType, 
-			$label);
+	public function process() {
+		$this->_processor->processFilter($this);
 	}
 
-	private function _formatRouteTypeLabel($postId, $routeType, $routeTypeLabel) {
-		$cssClass = sprintf('abp01-route-type-cell abp01-route-type-cell-%s', !empty($routeType) 
-			? esc_attr($routeType)
-			: 'none');
-		$formatted = '<span class="' . $cssClass . '">' . $routeTypeLabel . '</span>';
-
-		return apply_filters('abp01_formatted_route_tyle_listing_label', 
-			$formatted, 
-			$postId, 
-			$routeType, 
-			$routeTypeLabel);
+	public function getCurrentValue(): mixed {
+		return isset($_GET[$this->_key]) 
+			? trim(sanitize_text_field($_GET[$this->_key])) 
+			: '';
 	}
 
-	private function _getRouteTypeLabel($postId, $routeType) {
-		$routeTypeLabel = '';
-		if (!empty($routeType)) {
-			$routeTypeLabel = Abp01_Route_Type::getTypeLabel($routeType);
-		} else {
-			$routeTypeLabel = '-';
-		}		
-
-		return apply_filters('abp01_unformatted_route_type_label', 
-			$routeTypeLabel, 
-			$postId,
-			$routeType);
+	public function getKey(): string {
+		return $this->_key;
 	}
 
-	public function renderLabel() {
-		return parent::renderLabel();
-	}
-
-	public function getKey() {
-		return parent::getKey();
+	public function getLabel(): string|null {
+		return $this->_label;
 	}
 }

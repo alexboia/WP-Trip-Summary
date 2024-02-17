@@ -98,7 +98,7 @@ class Abp01_Display_PostListing_TripSummaryRouteTypeDataSource implements Abp01_
 		set_transient($cacheKey, $statusInfo, MINUTE_IN_SECONDS / 2);
 	}
 
-	private function _getCurrentWpQuery() {
+	private function _getCurrentWpQuery(): WP_Query|null {
 		return isset($GLOBALS['wp_query'])
 			? $GLOBALS['wp_query'] 
 			: null;

@@ -69,7 +69,8 @@ class Abp01_PluginModules_PostListingCustomizationPluginModule extends Abp01_Plu
 	private function _getPostListingCustomizations() {
 		return array(
 			new Abp01_Display_PostListing_TripSummaryStatusColumnsDecorator(),
-			new Abp01_Display_PostListing_TripSummaryRouteTypeColumnsDecorator()
+			new Abp01_Display_PostListing_TripSummaryRouteTypeColumnsDecorator(),
+			new Abp01_Display_PostListing_RouteTypeFilterDecorator()
 		);
 	}
 }

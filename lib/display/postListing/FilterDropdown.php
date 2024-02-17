@@ -30,57 +30,69 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit ;
+	exit;
 }
 
-class Abp01_Display_PostListing_TripSummaryRouteTypeColumn extends Abp01_Display_PostListing_Column {
-	public function __construct($key, $label, Abp01_Display_PostListing_ColumnDataSource $dataSource) {
-		parent::__construct($key, $label, $dataSource);
+class Abp01_Display_PostListing_FilterDropdown extends Abp01_Display_PostListing_Filter {
+	/**
+	 * @var Abp01_Display_PostListing_FilterDataSource
+	 */
+	private $_dataSource;
+
+	private $_contents = null;
+
+	public function __construct(string $key, 
+			string|null $label, 
+			Abp01_Display_PostListing_FilterDataSource $dataSource, 
+			Abp01_Display_PostListing_FilterProcessor $processor) {
+		parent::__construct($key, $label, $processor);
+		$this->_dataSource = $dataSource;
 	}
 
-	public function renderValue($postId) {
-		$routeType = parent::renderValue($postId);
-
-		$label = $this->_getRouteTypeLabel($postId, 
-			$routeType);
-
-		return $this->_formatRouteTypeLabel($postId, 
-			$routeType, 
-			$label);
+	public function render(): string {
+		if ($this->_contents === null) {
+			$this->_contents = $this->_render();
+		}
+		return $this->_contents;
 	}
 
-	private function _formatRouteTypeLabel($postId, $routeType, $routeTypeLabel) {
-		$cssClass = sprintf('abp01-route-type-cell abp01-route-type-cell-%s', !empty($routeType) 
-			? esc_attr($routeType)
-			: 'none');
-		$formatted = '<span class="' . $cssClass . '">' . $routeTypeLabel . '</span>';
+	public function getCurrentValue(): mixed {
+		$currentValue = parent::getCurrentValue();
+		$options = $this->getOptions();
 
-		return apply_filters('abp01_formatted_route_tyle_listing_label', 
-			$formatted, 
-			$postId, 
-			$routeType, 
-			$routeTypeLabel);
-	}
-
-	private function _getRouteTypeLabel($postId, $routeType) {
-		$routeTypeLabel = '';
-		if (!empty($routeType)) {
-			$routeTypeLabel = Abp01_Route_Type::getTypeLabel($routeType);
+		if (!empty($options[$currentValue])) {
+			return $currentValue;
 		} else {
-			$routeTypeLabel = '-';
-		}		
-
-		return apply_filters('abp01_unformatted_route_type_label', 
-			$routeTypeLabel, 
-			$postId,
-			$routeType);
+			return null;
+		}
 	}
 
-	public function renderLabel() {
-		return parent::renderLabel();
+	private function _render(): string {
+		$contents = '';
+		$options = $this->getOptions();
+		$currentValue = $this->getCurrentValue();
+
+		if (empty($options)) {
+			return '';
+		}
+
+		if (!empty($this->_label)) {
+			$contents = '<label class="screen-reader-text" for="' . $this->_key . '">' . $this->_label . '</label>';
+		}
+
+		$contents .= '<select name="' . $this->_key . '" id="' . $this->_key . '">';	
+		foreach ($options as $optValue => $optLabel) {
+			$contents .= '<option value="' . esc_attr($optValue) . '" ' . selected($currentValue, $optValue, false) . '>';
+			$contents .= esc_html($optLabel);
+			$contents .= '</option>';
+		}
+
+		$contents .= '</select>';
+
+		return $contents;
 	}
 
-	public function getKey() {
-		return parent::getKey();
+	public function getOptions(): array {
+		return $this->_dataSource->getOptions();
 	}
 }

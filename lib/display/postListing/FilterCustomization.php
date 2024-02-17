@@ -33,54 +33,43 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit ;
 }
 
-class Abp01_Display_PostListing_TripSummaryRouteTypeColumn extends Abp01_Display_PostListing_Column {
-	public function __construct($key, $label, Abp01_Display_PostListing_ColumnDataSource $dataSource) {
-		parent::__construct($key, $label, $dataSource);
+class Abp01_Display_PostListing_FilterCustomization implements Abp01_Display_PostListing_Customization {
+
+	private $_filters = array();
+
+	private $_forPostTypes = array();
+
+	/**
+	 * @param Abp01_Display_PostListing_Filter[] $filters 
+	 * @param string[] $postTypes 
+	 */
+	public function __construct(array $filters, array $postTypes) {
+		$this->_filters = $filters;
+		$this->_forPostTypes = $postTypes;
 	}
 
-	public function renderValue($postId) {
-		$routeType = parent::renderValue($postId);
-
-		$label = $this->_getRouteTypeLabel($postId, 
-			$routeType);
-
-		return $this->_formatRouteTypeLabel($postId, 
-			$routeType, 
-			$label);
+	public function apply() { 
+		$this->_initProcessing();
+		$this->_initDisplay();
 	}
 
-	private function _formatRouteTypeLabel($postId, $routeType, $routeTypeLabel) {
-		$cssClass = sprintf('abp01-route-type-cell abp01-route-type-cell-%s', !empty($routeType) 
-			? esc_attr($routeType)
-			: 'none');
-		$formatted = '<span class="' . $cssClass . '">' . $routeTypeLabel . '</span>';
-
-		return apply_filters('abp01_formatted_route_tyle_listing_label', 
-			$formatted, 
-			$postId, 
-			$routeType, 
-			$routeTypeLabel);
+	private function _initDisplay() {
+		add_action('restrict_manage_posts', array($this, 'displayFilters'), 10, 2);
 	}
 
-	private function _getRouteTypeLabel($postId, $routeType) {
-		$routeTypeLabel = '';
-		if (!empty($routeType)) {
-			$routeTypeLabel = Abp01_Route_Type::getTypeLabel($routeType);
-		} else {
-			$routeTypeLabel = '-';
-		}		
+	public function displayFilters($postType, $which) {
+		if (!in_array($postType, $this->_forPostTypes)) {
+			return;
+		}
 
-		return apply_filters('abp01_unformatted_route_type_label', 
-			$routeTypeLabel, 
-			$postId,
-			$routeType);
+		foreach ($this->_filters as $filter) {
+			echo $filter->render();
+		}
 	}
 
-	public function renderLabel() {
-		return parent::renderLabel();
-	}
-
-	public function getKey() {
-		return parent::getKey();
+	private function _initProcessing() {
+		foreach ($this->_filters as $filter) {
+			$filter->process();
+		}
 	}
 }

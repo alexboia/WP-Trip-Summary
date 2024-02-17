@@ -34,102 +34,102 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Display_PostListing_TripSummaryStatusColumnDataSource implements Abp01_Display_PostListing_ColumnDataSource {
-    /**
-     * @var array
-     */
-    private static $_tripSummaryStatusInfoForCurrentWpQuery = null;
-    
-    /**
-     * @var Abp01_Route_Manager
-     */
-    private $_routeManager;
+	/**
+	 * @var array
+	 */
+	private static $_tripSummaryStatusInfoForCurrentWpQuery = null;
+	
+	/**
+	 * @var Abp01_Route_Manager
+	 */
+	private $_routeManager;
 
-    private $_dataKey;
-    
-    public function __construct(Abp01_Route_Manager $routeManager, $dataKey) {
-        $this->_routeManager = $routeManager;
-        $this->_dataKey = $dataKey;
-    }
+	private $_dataKey;
+	
+	public function __construct(Abp01_Route_Manager $routeManager, $dataKey) {
+		$this->_routeManager = $routeManager;
+		$this->_dataKey = $dataKey;
+	}
 
-    public function getValue($postId) {
-        $postStatusInfo = $this->_getTripSummaryStatusInfoForPostId($postId);
-        return isset($postStatusInfo[$this->_dataKey]) 
-            ? $postStatusInfo[$this->_dataKey] 
-            : false;
-    }
+	public function getValue($postId) {
+		$postStatusInfo = $this->_getTripSummaryStatusInfoForPostId($postId);
+		return isset($postStatusInfo[$this->_dataKey]) 
+			? $postStatusInfo[$this->_dataKey] 
+			: false;
+	}
 
-    private function _getTripSummaryStatusInfoForPostId($postId) {
-        $allStatusInfo = $this->_getTripSummaryStatusInfoForCurrentWpQuery();
-        $postStatusInfo = isset($allStatusInfo[$postId]) 
-            ? $allStatusInfo[$postId]
-            : array();
-    
-        return $postStatusInfo;
-    }
+	private function _getTripSummaryStatusInfoForPostId($postId) {
+		$allStatusInfo = $this->_getTripSummaryStatusInfoForCurrentWpQuery();
+		$postStatusInfo = isset($allStatusInfo[$postId]) 
+			? $allStatusInfo[$postId]
+			: array();
+	
+		return $postStatusInfo;
+	}
 
-    private function _getTripSummaryStatusInfoForCurrentWpQuery() {
-        if (!$this->_isTripSummaryStatusInfoCachedForCurrentWpQuery()) {
-            $query = $this->_getCurrentWpQuery();
-            $allStatusInfo = $query != null
-                ? $this->_getPostsTripSummaryStatusInfo($query->posts)
-                : array();
+	private function _getTripSummaryStatusInfoForCurrentWpQuery() {
+		if (!$this->_isTripSummaryStatusInfoCachedForCurrentWpQuery()) {
+			$query = $this->_getCurrentWpQuery();
+			$allStatusInfo = $query != null
+				? $this->_getPostsTripSummaryStatusInfo($query->posts)
+				: array();
 
-            $this->_cacheTripSummaryStatusInfoForCurrentWpQuery($allStatusInfo);
-        }
+			$this->_cacheTripSummaryStatusInfoForCurrentWpQuery($allStatusInfo);
+		}
 
-        return $this->_retrieveCachedTripSummaryStatusInfoForCurrentWpQuery();
-    }
+		return $this->_retrieveCachedTripSummaryStatusInfoForCurrentWpQuery();
+	}
 
-    private function _isTripSummaryStatusInfoCachedForCurrentWpQuery() {
-        return self::$_tripSummaryStatusInfoForCurrentWpQuery !== null;
-    }
+	private function _isTripSummaryStatusInfoCachedForCurrentWpQuery() {
+		return self::$_tripSummaryStatusInfoForCurrentWpQuery !== null;
+	}
 
-    private function _cacheTripSummaryStatusInfoForCurrentWpQuery($allStatusInfo) {
-        self::$_tripSummaryStatusInfoForCurrentWpQuery = $allStatusInfo;
-    }
+	private function _cacheTripSummaryStatusInfoForCurrentWpQuery($allStatusInfo) {
+		self::$_tripSummaryStatusInfoForCurrentWpQuery = $allStatusInfo;
+	}
 
-    private function _retrieveCachedTripSummaryStatusInfoForCurrentWpQuery() {
-        return self::$_tripSummaryStatusInfoForCurrentWpQuery;
-    }
+	private function _retrieveCachedTripSummaryStatusInfoForCurrentWpQuery() {
+		return self::$_tripSummaryStatusInfoForCurrentWpQuery;
+	}
 
-    private function _getCurrentWpQuery() {
-        return isset($GLOBALS['wp_query'])
-            ? $GLOBALS['wp_query'] 
-            : null;
-    }
+	private function _getCurrentWpQuery() {
+		return isset($GLOBALS['wp_query'])
+			? $GLOBALS['wp_query'] 
+			: null;
+	}
 
-    private function _getPostsTripSummaryStatusInfo($posts) {
-        $postIds = array();
-        $allStatusInfo = array();
-    
-        //extract post IDs
-        $postIds = abp01_extract_post_ids($posts);
-        if (!empty($postIds)) {
-            //Attempt to extract any cached data
-            $cacheKey = $this->_getPostsTripSummaryStatusInfoCacheKey($postIds);
-            $allStatusInfo = $this->_retrieveCachedTripSummaryStatusInfo($cacheKey);
-    
-            //If there is no status information cached, fetch it
-            if (!is_array($allStatusInfo)) {
-                $allStatusInfo = $this->_routeManager
-                    ->getTripSummaryStatusInfo($postIds);
-                $this->_cacheTripSummaryStatusInfo($cacheKey, 
-                    $allStatusInfo);
-            }
-        }
-    
-        return $allStatusInfo;
-    }
+	private function _getPostsTripSummaryStatusInfo($posts) {
+		$postIds = array();
+		$allStatusInfo = array();
+	
+		//extract post IDs
+		$postIds = abp01_extract_post_ids($posts);
+		if (!empty($postIds)) {
+			//Attempt to extract any cached data
+			$cacheKey = $this->_getPostsTripSummaryStatusInfoCacheKey($postIds);
+			$allStatusInfo = $this->_retrieveCachedTripSummaryStatusInfo($cacheKey);
+	
+			//If there is no status information cached, fetch it
+			if (!is_array($allStatusInfo)) {
+				$allStatusInfo = $this->_routeManager
+					->getTripSummaryStatusInfo($postIds);
+				$this->_cacheTripSummaryStatusInfo($cacheKey, 
+					$allStatusInfo);
+			}
+		}
+	
+		return $allStatusInfo;
+	}
 
-    private function _getPostsTripSummaryStatusInfoCacheKey($postIds) {
-        return sprintf('_abp01_posts_listing_info_%s', sha1(join('_', $postIds)));
-    }
+	private function _getPostsTripSummaryStatusInfoCacheKey($postIds) {
+		return sprintf('_abp01_posts_listing_info_%s', sha1(join('_', $postIds)));
+	}
 
-    private function _retrieveCachedTripSummaryStatusInfo($cacheKey) {
-        return get_transient($cacheKey);
-    }
+	private function _retrieveCachedTripSummaryStatusInfo($cacheKey) {
+		return get_transient($cacheKey);
+	}
 
-    private function _cacheTripSummaryStatusInfo($cacheKey, $statusInfo) {
-        set_transient($cacheKey, $statusInfo, MINUTE_IN_SECONDS / 2);
-    }
+	private function _cacheTripSummaryStatusInfo($cacheKey, $statusInfo) {
+		set_transient($cacheKey, $statusInfo, MINUTE_IN_SECONDS / 2);
+	}
 }

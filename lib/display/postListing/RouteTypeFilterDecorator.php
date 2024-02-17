@@ -33,54 +33,23 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit ;
 }
 
-class Abp01_Display_PostListing_TripSummaryRouteTypeColumn extends Abp01_Display_PostListing_Column {
-	public function __construct($key, $label, Abp01_Display_PostListing_ColumnDataSource $dataSource) {
-		parent::__construct($key, $label, $dataSource);
+class Abp01_Display_PostListing_RouteTypeFilterDecorator extends Abp01_Display_PostListing_FilterCustomization {
+	public function __construct() {
+		parent::__construct($this->_getFilters(), $this->_getPostTypes());
 	}
 
-	public function renderValue($postId) {
-		$routeType = parent::renderValue($postId);
-
-		$label = $this->_getRouteTypeLabel($postId, 
-			$routeType);
-
-		return $this->_formatRouteTypeLabel($postId, 
-			$routeType, 
-			$label);
+	private function _getFilters() {
+		return array(
+			new Abp01_Display_PostListing_FilterDropdown(
+				'abp01_route_type', 
+				__('Filter by route type', 'abp01-trip-summary'), 
+				new Abp01_Display_PostListing_RouteTypeFilterDataSource(),
+				new Abp01_Display_PostListing_RouteTypeFilterProcessor()
+			)
+		);
 	}
-
-	private function _formatRouteTypeLabel($postId, $routeType, $routeTypeLabel) {
-		$cssClass = sprintf('abp01-route-type-cell abp01-route-type-cell-%s', !empty($routeType) 
-			? esc_attr($routeType)
-			: 'none');
-		$formatted = '<span class="' . $cssClass . '">' . $routeTypeLabel . '</span>';
-
-		return apply_filters('abp01_formatted_route_tyle_listing_label', 
-			$formatted, 
-			$postId, 
-			$routeType, 
-			$routeTypeLabel);
-	}
-
-	private function _getRouteTypeLabel($postId, $routeType) {
-		$routeTypeLabel = '';
-		if (!empty($routeType)) {
-			$routeTypeLabel = Abp01_Route_Type::getTypeLabel($routeType);
-		} else {
-			$routeTypeLabel = '-';
-		}		
-
-		return apply_filters('abp01_unformatted_route_type_label', 
-			$routeTypeLabel, 
-			$postId,
-			$routeType);
-	}
-
-	public function renderLabel() {
-		return parent::renderLabel();
-	}
-
-	public function getKey() {
-		return parent::getKey();
+	
+	private function _getPostTypes() {
+		return Abp01_AvailabilityHelper::getTripSummaryAvailableForPostTypes();
 	}
 }

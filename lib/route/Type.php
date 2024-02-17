@@ -30,57 +30,32 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit ;
+	exit;
 }
 
-class Abp01_Display_PostListing_TripSummaryRouteTypeColumn extends Abp01_Display_PostListing_Column {
-	public function __construct($key, $label, Abp01_Display_PostListing_ColumnDataSource $dataSource) {
-		parent::__construct($key, $label, $dataSource);
+class Abp01_Route_Type {
+	const BIKE = 'bike';
+
+	const HIKING = 'hiking';
+
+	const TRAIN_RIDE = 'trainRide';
+
+	public static function getAvailableTypes(): array {
+		return array(
+			Abp01_Route_Info::BIKE => __('Biking', 'abp01-trip-summary'),
+			Abp01_Route_Info::HIKING => __('Hiking', 'abp01-trip-summary'),
+			Abp01_Route_Info::TRAIN_RIDE => __('Train Ride', 'abp01-trip-summary')
+		);
 	}
 
-	public function renderValue($postId) {
-		$routeType = parent::renderValue($postId);
-
-		$label = $this->_getRouteTypeLabel($postId, 
-			$routeType);
-
-		return $this->_formatRouteTypeLabel($postId, 
-			$routeType, 
-			$label);
-	}
-
-	private function _formatRouteTypeLabel($postId, $routeType, $routeTypeLabel) {
-		$cssClass = sprintf('abp01-route-type-cell abp01-route-type-cell-%s', !empty($routeType) 
-			? esc_attr($routeType)
-			: 'none');
-		$formatted = '<span class="' . $cssClass . '">' . $routeTypeLabel . '</span>';
-
-		return apply_filters('abp01_formatted_route_tyle_listing_label', 
-			$formatted, 
-			$postId, 
-			$routeType, 
-			$routeTypeLabel);
-	}
-
-	private function _getRouteTypeLabel($postId, $routeType) {
-		$routeTypeLabel = '';
-		if (!empty($routeType)) {
-			$routeTypeLabel = Abp01_Route_Type::getTypeLabel($routeType);
-		} else {
-			$routeTypeLabel = '-';
-		}		
-
-		return apply_filters('abp01_unformatted_route_type_label', 
-			$routeTypeLabel, 
-			$postId,
-			$routeType);
-	}
-
-	public function renderLabel() {
-		return parent::renderLabel();
-	}
-
-	public function getKey() {
-		return parent::getKey();
+	public static function getTypeLabel(string $typeCode): string|null {
+		if (empty($typeCode)) {
+			return null;
+		}
+		
+		$types = self::getAvailableTypes();
+		return !empty($types[$typeCode]) 
+			? $types[$typeCode]
+			: null;
 	}
 }

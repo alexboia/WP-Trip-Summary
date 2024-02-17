@@ -34,76 +34,77 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Display_PostListing_ColumnCustomization implements Abp01_Display_PostListing_Customization {
-    /**
-     * @var Abp01_Display_PostListing_Column[]
-     */
-    private $_columns = array();
+	/**
+	 * @var Abp01_Display_PostListing_Column[]
+	 */
+	private $_columns = array();
 
-    private $_forPostTypes = array();
+	private $_forPostTypes = array();
 
-    /**
-     * @param Abp01_Display_PostListing_Column[] $columns 
-     * @param string[] $forPostTypes 
-     * @return void 
-     */
-    public function __construct(array $columns, array $forPostTypes) {
-        $this->_columns = array();
-        foreach ($columns as $c) {
-            $this->_columns[$c->getKey()] = $c;
-        }
+	/**
+	 * @param Abp01_Display_PostListing_Column[] $columns 
+	 * @param string[] $forPostTypes 
+	 * @return void 
+	 */
+	public function __construct(array $columns, array $forPostTypes) {
+		$this->_columns = array();
+		foreach ($columns as $c) {
+			$this->_columns[$c->getKey()] = $c;
+		}
 
-        $this->_forPostTypes = $forPostTypes;
-    }
+		$this->_forPostTypes = $forPostTypes;
+	}
 
-    public function apply() {
-        add_filter('manage_posts_columns', 
-            array($this, 'registerPostListingColumns'), 
-            10, 2);
-	    add_filter('manage_pages_columns', 
-            array($this, 'registerPageListingColumns'), 
-            10, 1);
+	public function apply() {
+		//TODO: obey post types returned by Abp01_AvailabilityHelper::getTripSummaryAvailableForPostTypes()
+		add_filter('manage_posts_columns', 
+			array($this, 'registerPostListingColumns'), 
+			10, 2);
+		add_filter('manage_pages_columns', 
+			array($this, 'registerPageListingColumns'), 
+			10, 1);
 
-        add_action('manage_posts_custom_column', 
-            array($this, 'getPostListingCustomColumnValue'), 
-            10, 2);
-	    add_action('manage_pages_custom_column', 
-            array($this, 'getPostListingCustomColumnValue'),
-            10, 2);
-    }
+		add_action('manage_posts_custom_column', 
+			array($this, 'getPostListingCustomColumnValue'), 
+			10, 2);
+		add_action('manage_pages_custom_column', 
+			array($this, 'getPostListingCustomColumnValue'),
+			10, 2);
+	}
 
-    public function registerPostListingColumns($existingColumns, $postType) {
-        if ($this->_shouldAddColumnsForPostTypeListing($postType)) {
-            $existingColumns = $this->_addCustomColumns($existingColumns);
-        }
-        return $existingColumns;
-    }
+	public function registerPostListingColumns($existingColumns, $postType) {
+		if ($this->_shouldAddColumnsForPostTypeListing($postType)) {
+			$existingColumns = $this->_addCustomColumns($existingColumns);
+		}
+		return $existingColumns;
+	}
 
-    private function _shouldAddColumnsForPostTypeListing($postType) {
-        return in_array($postType, $this->_forPostTypes);
-    }
+	private function _shouldAddColumnsForPostTypeListing($postType) {
+		return in_array($postType, $this->_forPostTypes);
+	}
 
-    private function _addCustomColumns($existingColumns) {
-        foreach ($this->_columns as $key => $column) {
-            $existingColumns[$key] = $column->renderLabel();
-        }
-        return $existingColumns;
-    }
+	private function _addCustomColumns($existingColumns) {
+		foreach ($this->_columns as $key => $column) {
+			$existingColumns[$key] = $column->renderLabel();
+		}
+		return $existingColumns;
+	}
 
-    public function registerPageListingColumns($existingColumns) {
-        if ($this->_shouldAddColumnsForPageListing()) {
-            $existingColumns = $this->_addCustomColumns($existingColumns);
-        }
-        return $existingColumns;
-    }
+	public function registerPageListingColumns($existingColumns) {
+		if ($this->_shouldAddColumnsForPageListing()) {
+			$existingColumns = $this->_addCustomColumns($existingColumns);
+		}
+		return $existingColumns;
+	}
 
-    private function _shouldAddColumnsForPageListing() {
-        return $this->_shouldAddColumnsForPostTypeListing('page');
-    }
+	private function _shouldAddColumnsForPageListing() {
+		return $this->_shouldAddColumnsForPostTypeListing('page');
+	}
 
-    public function getPostListingCustomColumnValue($columnKey, $postId) {
-        if (isset($this->_columns[$columnKey])) {
-            $column = $this->_columns[$columnKey];
-            echo $column->renderValue($postId);
-        }
-    }
+	public function getPostListingCustomColumnValue($columnKey, $postId) {
+		if (isset($this->_columns[$columnKey])) {
+			$column = $this->_columns[$columnKey];
+			echo $column->renderValue($postId);
+		}
+	}
 }
