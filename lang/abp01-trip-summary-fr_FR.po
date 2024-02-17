@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Trip Summary 0.2.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-trip-summary\n"
-"POT-Creation-Date: 2024-02-16T21:08:42+02:00\n"
-"PO-Revision-Date: 2024-02-16 21:10+0200\n"
+"POT-Creation-Date: 2024-02-17T20:14:37+02:00\n"
+"PO-Revision-Date: 2024-02-17 20:18+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -80,15 +80,27 @@ msgid_plural "hours"
 msgstr[0] "heure"
 msgstr[1] "heures"
 
+#: lib/display/postListing/RouteTypeFilterDataSource.php:39
+msgid "All route types"
+msgstr "Tous types d'itinéraires"
+
+#: lib/display/postListing/RouteTypeFilterDecorator.php:45
+msgid "Filter by route type"
+msgstr "Filtrer par type d'itinéraire"
+
+#: lib/display/postListing/TripSummaryRouteTypeColumnsDecorator.php:46
+msgid "Route type"
+msgstr "Type d'itinéraire"
+
 #: lib/display/postListing/TripSummaryStatusColumn.php:47
-#: lib/pluginModules/RouteLogPluginModule.php:436
+#: lib/pluginModules/RouteLogPluginModule.php:440
 #: lib/TranslatedScriptMessages.php:41 views/wpts-log-editor.php:98
 #: views/wpts-log-editor.php:219
 msgid "Yes"
 msgstr "Oui"
 
 #: lib/display/postListing/TripSummaryStatusColumn.php:48
-#: lib/pluginModules/RouteLogPluginModule.php:437
+#: lib/pluginModules/RouteLogPluginModule.php:441
 #: lib/TranslatedScriptMessages.php:42 views/wpts-log-editor.php:99
 #: views/wpts-log-editor.php:221
 msgid "No"
@@ -276,27 +288,27 @@ msgstr "Jurnal"
 msgid "Trip summary log"
 msgstr "Journal de synthèse du voyage"
 
-#: lib/pluginModules/RouteLogPluginModule.php:420
+#: lib/pluginModules/RouteLogPluginModule.php:424
 msgid "The log entry could not be saved."
 msgstr "L'entrée du journal n'a pas pu être enregistrée."
 
-#: lib/pluginModules/RouteLogPluginModule.php:444
+#: lib/pluginModules/RouteLogPluginModule.php:448
 msgid "The log entry rider is mandatory"
 msgstr "L'avenant d'entrée du journal est obligatoire"
 
-#: lib/pluginModules/RouteLogPluginModule.php:451
+#: lib/pluginModules/RouteLogPluginModule.php:455
 msgid "A valid log entry date is mandatory"
 msgstr "Une date d’entrée de journal valide est obligatoire"
 
-#: lib/pluginModules/RouteLogPluginModule.php:458
+#: lib/pluginModules/RouteLogPluginModule.php:462
 msgid "The log entry vehicle is mandatory"
 msgstr "Le véhicule d'entrée en rondins est obligatoire"
 
-#: lib/pluginModules/RouteLogPluginModule.php:477
+#: lib/pluginModules/RouteLogPluginModule.php:481
 msgid "The log entry could not be deleted."
 msgstr "L'entrée du journal n'a pas pu être supprimée."
 
-#: lib/pluginModules/RouteLogPluginModule.php:493
+#: lib/pluginModules/RouteLogPluginModule.php:497
 msgid "The log entries could not be deleted."
 msgstr "Les entrées du journal n'ont pas pu être supprimées."
 
@@ -356,6 +368,20 @@ msgstr "Fichiers journaux système"
 #: lib/pluginModules/SystemLogsManagementPluginModule.php:304
 msgid "The requested log file could not be deleted."
 msgstr "Le fichier journal demandé n'a pas pu être supprimé."
+
+#: lib/route/Type.php:45 lib/TranslatedScriptMessages.php:90
+#: views/wpts-editor.php:113
+msgid "Biking"
+msgstr "Aller à vélo"
+
+#: lib/route/Type.php:46 lib/TranslatedScriptMessages.php:91
+#: views/wpts-editor.php:116
+msgid "Hiking"
+msgstr "Randonnée"
+
+#: lib/route/Type.php:47 views/wpts-editor.php:119
+msgid "Train Ride"
+msgstr "Voyage en train"
 
 #: lib/Settings.php:277
 msgid ""
@@ -554,14 +580,6 @@ msgstr "Téléchargement de la trace GPS"
 #: lib/TranslatedScriptMessages.php:89
 msgid "The track has been uploaded and saved successfully"
 msgstr "La trace GPS a été téléchargée et enregistrée avec succès"
-
-#: lib/TranslatedScriptMessages.php:90 views/wpts-editor.php:113
-msgid "Biking"
-msgstr "Aller à vélo"
-
-#: lib/TranslatedScriptMessages.php:91 views/wpts-editor.php:116
-msgid "Hiking"
-msgstr "Randonnée"
 
 #: lib/TranslatedScriptMessages.php:92
 msgid "Train ride"
@@ -1110,10 +1128,6 @@ msgstr "Sauvegarder"
 #: views/wpts-editor.php:110
 msgid "Chose the type of your tour"
 msgstr "Choisissez le type de votre voyage"
-
-#: views/wpts-editor.php:119
-msgid "Train Ride"
-msgstr "Voyage en train"
 
 #: views/wpts-editor.php:128 views/wpts-editor.php:194
 #: views/wpts-editor.php:252 views/wpts-frontend.php:75

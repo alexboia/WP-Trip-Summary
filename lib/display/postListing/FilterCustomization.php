@@ -30,11 +30,10 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit ;
+	exit;
 }
 
 class Abp01_Display_PostListing_FilterCustomization implements Abp01_Display_PostListing_Customization {
-
 	private $_filters = array();
 
 	private $_forPostTypes = array();
@@ -49,8 +48,8 @@ class Abp01_Display_PostListing_FilterCustomization implements Abp01_Display_Pos
 	}
 
 	public function apply() { 
-		$this->_initProcessing();
 		$this->_initDisplay();
+		$this->_initProcessing();
 	}
 
 	private function _initDisplay() {

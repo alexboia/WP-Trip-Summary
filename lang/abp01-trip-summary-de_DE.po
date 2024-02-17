@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Plugins - WP Trip Summary - Development (trunk)\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-trip-summary\n"
-"POT-Creation-Date: 2024-02-16T21:08:42+02:00\n"
-"PO-Revision-Date: 2024-02-16 21:10+0200\n"
+"POT-Creation-Date: 2024-02-17T20:14:37+02:00\n"
+"PO-Revision-Date: 2024-02-17 20:19+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -79,15 +79,27 @@ msgid_plural "hours"
 msgstr[0] "stunde"
 msgstr[1] "stunden"
 
+#: lib/display/postListing/RouteTypeFilterDataSource.php:39
+msgid "All route types"
+msgstr "Alle Routentypen"
+
+#: lib/display/postListing/RouteTypeFilterDecorator.php:45
+msgid "Filter by route type"
+msgstr "Filtern Sie nach Routentyp"
+
+#: lib/display/postListing/TripSummaryRouteTypeColumnsDecorator.php:46
+msgid "Route type"
+msgstr "Routentyp"
+
 #: lib/display/postListing/TripSummaryStatusColumn.php:47
-#: lib/pluginModules/RouteLogPluginModule.php:436
+#: lib/pluginModules/RouteLogPluginModule.php:440
 #: lib/TranslatedScriptMessages.php:41 views/wpts-log-editor.php:98
 #: views/wpts-log-editor.php:219
 msgid "Yes"
 msgstr "Ja"
 
 #: lib/display/postListing/TripSummaryStatusColumn.php:48
-#: lib/pluginModules/RouteLogPluginModule.php:437
+#: lib/pluginModules/RouteLogPluginModule.php:441
 #: lib/TranslatedScriptMessages.php:42 views/wpts-log-editor.php:99
 #: views/wpts-log-editor.php:221
 msgid "No"
@@ -274,27 +286,27 @@ msgstr "Protokoll"
 msgid "Trip summary log"
 msgstr "Protokoll der Reisezusammenfassung"
 
-#: lib/pluginModules/RouteLogPluginModule.php:420
+#: lib/pluginModules/RouteLogPluginModule.php:424
 msgid "The log entry could not be saved."
 msgstr "Der Protokolleintrag konnte nicht gespeichert werden."
 
-#: lib/pluginModules/RouteLogPluginModule.php:444
+#: lib/pluginModules/RouteLogPluginModule.php:448
 msgid "The log entry rider is mandatory"
 msgstr "Das Protokollfeld Fahrerf ist obligatorisch"
 
-#: lib/pluginModules/RouteLogPluginModule.php:451
+#: lib/pluginModules/RouteLogPluginModule.php:455
 msgid "A valid log entry date is mandatory"
 msgstr "Ein gültiges Protokolleintragsdatum ist obligatorisch"
 
-#: lib/pluginModules/RouteLogPluginModule.php:458
+#: lib/pluginModules/RouteLogPluginModule.php:462
 msgid "The log entry vehicle is mandatory"
 msgstr "Der Protokolleintrag Fahrzeug ist obligatorisch"
 
-#: lib/pluginModules/RouteLogPluginModule.php:477
+#: lib/pluginModules/RouteLogPluginModule.php:481
 msgid "The log entry could not be deleted."
 msgstr "Der Protokolleintrag konnte nicht gelöscht werden."
 
-#: lib/pluginModules/RouteLogPluginModule.php:493
+#: lib/pluginModules/RouteLogPluginModule.php:497
 msgid "The log entries could not be deleted."
 msgstr "Die Protokolleinträge konnten nicht gelöscht werden."
 
@@ -356,6 +368,20 @@ msgstr "Systemprotokolle"
 #: lib/pluginModules/SystemLogsManagementPluginModule.php:304
 msgid "The requested log file could not be deleted."
 msgstr "Die angeforderte Protokolldatei konnte nicht gelöscht werden."
+
+#: lib/route/Type.php:45 lib/TranslatedScriptMessages.php:90
+#: views/wpts-editor.php:113
+msgid "Biking"
+msgstr "Radfahren"
+
+#: lib/route/Type.php:46 lib/TranslatedScriptMessages.php:91
+#: views/wpts-editor.php:116
+msgid "Hiking"
+msgstr "Wandern"
+
+#: lib/route/Type.php:47 views/wpts-editor.php:119
+msgid "Train Ride"
+msgstr "Zugfahrt"
 
 #: lib/Settings.php:277
 msgid ""
@@ -551,14 +577,6 @@ msgstr "Titel wird hochgeladen"
 #: lib/TranslatedScriptMessages.php:89
 msgid "The track has been uploaded and saved successfully"
 msgstr "Der Track wurde erfolgreich hochgeladen und gespeichert"
-
-#: lib/TranslatedScriptMessages.php:90 views/wpts-editor.php:113
-msgid "Biking"
-msgstr "Radfahren"
-
-#: lib/TranslatedScriptMessages.php:91 views/wpts-editor.php:116
-msgid "Hiking"
-msgstr "Wandern"
 
 #: lib/TranslatedScriptMessages.php:92
 msgid "Train ride"
@@ -1108,10 +1126,6 @@ msgstr "Speichern"
 #: views/wpts-editor.php:110
 msgid "Chose the type of your tour"
 msgstr "Wähle die Art deiner Tour"
-
-#: views/wpts-editor.php:119
-msgid "Train Ride"
-msgstr "Zugfahrt"
 
 #: views/wpts-editor.php:128 views/wpts-editor.php:194
 #: views/wpts-editor.php:252 views/wpts-frontend.php:75

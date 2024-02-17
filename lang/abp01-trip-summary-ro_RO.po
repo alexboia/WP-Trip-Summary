@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Trip Summary 0.1.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-trip-summary\n"
-"POT-Creation-Date: 2024-02-16T21:08:42+02:00\n"
-"PO-Revision-Date: 2024-02-16 21:09+0200\n"
+"POT-Creation-Date: 2024-02-17T20:14:37+02:00\n"
+"PO-Revision-Date: 2024-02-17 20:16+0200\n"
 "Last-Translator: \n"
 "Language-Team: alexandru.boia [at] outlook [dot] com\n"
 "Language: ro_RO\n"
@@ -82,15 +82,27 @@ msgstr[0] "oră"
 msgstr[1] "ore"
 msgstr[2] ""
 
+#: lib/display/postListing/RouteTypeFilterDataSource.php:39
+msgid "All route types"
+msgstr "Toate tipurile de tură"
+
+#: lib/display/postListing/RouteTypeFilterDecorator.php:45
+msgid "Filter by route type"
+msgstr "Filtrează după tipul de tură"
+
+#: lib/display/postListing/TripSummaryRouteTypeColumnsDecorator.php:46
+msgid "Route type"
+msgstr "Tipul turei"
+
 #: lib/display/postListing/TripSummaryStatusColumn.php:47
-#: lib/pluginModules/RouteLogPluginModule.php:436
+#: lib/pluginModules/RouteLogPluginModule.php:440
 #: lib/TranslatedScriptMessages.php:41 views/wpts-log-editor.php:98
 #: views/wpts-log-editor.php:219
 msgid "Yes"
 msgstr "Da"
 
 #: lib/display/postListing/TripSummaryStatusColumn.php:48
-#: lib/pluginModules/RouteLogPluginModule.php:437
+#: lib/pluginModules/RouteLogPluginModule.php:441
 #: lib/TranslatedScriptMessages.php:42 views/wpts-log-editor.php:99
 #: views/wpts-log-editor.php:221
 msgid "No"
@@ -271,27 +283,27 @@ msgstr "Jurnal"
 msgid "Trip summary log"
 msgstr "Jurnal de parcurgere"
 
-#: lib/pluginModules/RouteLogPluginModule.php:420
+#: lib/pluginModules/RouteLogPluginModule.php:424
 msgid "The log entry could not be saved."
 msgstr "Înregistrarea de jurnal nu a putut fi salvată."
 
-#: lib/pluginModules/RouteLogPluginModule.php:444
+#: lib/pluginModules/RouteLogPluginModule.php:448
 msgid "The log entry rider is mandatory"
 msgstr "Călătorul este obligatoriu pentru o înregistrare de jurnal"
 
-#: lib/pluginModules/RouteLogPluginModule.php:451
+#: lib/pluginModules/RouteLogPluginModule.php:455
 msgid "A valid log entry date is mandatory"
 msgstr "Data este obligatorie pentru o înregistrare de jurnal"
 
-#: lib/pluginModules/RouteLogPluginModule.php:458
+#: lib/pluginModules/RouteLogPluginModule.php:462
 msgid "The log entry vehicle is mandatory"
 msgstr "Vehiculul este obligatoriu pentru o înregistrare de jurnal"
 
-#: lib/pluginModules/RouteLogPluginModule.php:477
+#: lib/pluginModules/RouteLogPluginModule.php:481
 msgid "The log entry could not be deleted."
 msgstr "Înregistrarea de jurnal nu a putut fi ștearsă"
 
-#: lib/pluginModules/RouteLogPluginModule.php:493
+#: lib/pluginModules/RouteLogPluginModule.php:497
 msgid "The log entries could not be deleted."
 msgstr "Înregistrările de jurnal nu au putut fi șterse"
 
@@ -350,6 +362,20 @@ msgstr "Jurnale de sistem"
 #: lib/pluginModules/SystemLogsManagementPluginModule.php:304
 msgid "The requested log file could not be deleted."
 msgstr "Fișierul ales de jurnal nu a putut fi șters"
+
+#: lib/route/Type.php:45 lib/TranslatedScriptMessages.php:90
+#: views/wpts-editor.php:113
+msgid "Biking"
+msgstr "Cu bicicleta"
+
+#: lib/route/Type.php:46 lib/TranslatedScriptMessages.php:91
+#: views/wpts-editor.php:116
+msgid "Hiking"
+msgstr "Per-pedes"
+
+#: lib/route/Type.php:47 views/wpts-editor.php:119
+msgid "Train Ride"
+msgstr "Cu trenul"
 
 #: lib/Settings.php:277
 msgid ""
@@ -537,14 +563,6 @@ msgstr "Se încarcă track-ul"
 #: lib/TranslatedScriptMessages.php:89
 msgid "The track has been uploaded and saved successfully"
 msgstr "Fișierul a fost încărcat și procesat cu succes"
-
-#: lib/TranslatedScriptMessages.php:90 views/wpts-editor.php:113
-msgid "Biking"
-msgstr "Cu bicicleta"
-
-#: lib/TranslatedScriptMessages.php:91 views/wpts-editor.php:116
-msgid "Hiking"
-msgstr "Per-pedes"
 
 #: lib/TranslatedScriptMessages.php:92
 msgid "Train ride"
@@ -1077,10 +1095,6 @@ msgstr "Salvează"
 #: views/wpts-editor.php:110
 msgid "Chose the type of your tour"
 msgstr "Alege tipul turei"
-
-#: views/wpts-editor.php:119
-msgid "Train Ride"
-msgstr "Cu trenul"
 
 #: views/wpts-editor.php:128 views/wpts-editor.php:194
 #: views/wpts-editor.php:252 views/wpts-frontend.php:75
