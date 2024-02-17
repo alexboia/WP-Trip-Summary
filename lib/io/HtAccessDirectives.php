@@ -30,26 +30,31 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit;
+    exit;
 }
 
-class Abp01_Installer_Step_Update_UpdateTo030 implements Abp01_Installer_Step_Update_Interface {
-
-	public function getTargetVersion() { 
-		return '0.3.0';
+class Abp01_Io_HtAccessDirectives {
+	public static function getDenyFileByExtensionDirective(string $extension): string {
+		return join("\n", array(
+			'<FilesMatch "\.' . $extension . '">',
+				"\t" . 'order allow,deny',
+				"\t" . 'deny from all',
+			'</FilesMatch>'
+		));
 	}
 
-	public function execute() { 
-		$path = ABP01_LIB_DIR . '/route/log/Manager';
-		$changeToPath = ABP01_LIB_DIR . '/route/log/manager';
-		if (is_dir($path)) {
-			if (!is_dir($changeToPath)) {
-				@rename($path, $changeToPath, null);
+	/**
+	 * @return string
+	 */
+	public static function getDenyFileByExtensionsDirective(array $extensions): string {
+		$directies = array();
+
+		foreach ($extensions as $extension) {
+			if (!empty($extension)) {
+				$directies[] = self::getDenyFileByExtensionDirective($extension);
 			}
 		}
-	}
 
-	public function getLastError() { 
-		null;
+		return join("\n", $directies);
 	}
 }

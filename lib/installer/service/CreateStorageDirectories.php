@@ -34,56 +34,40 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Installer_Service_CreateStorageDirectories {
-	private $_rootStorageDir;
+	private $_directoriesToInstall = array();
 
-	private $_tracksStorageDir;
-
-	private $_cacheStorageDir;
-
-	private $_logStorageDir;
-
-	public function __construct($rootStorageDir, $tracksStorageDir, $cacheStorageDir, $logStorageDir) {
-		$this->_rootStorageDir = $rootStorageDir;
-		$this->_tracksStorageDir = $tracksStorageDir;
-		$this->_cacheStorageDir = $cacheStorageDir;
-		$this->_logStorageDir = $logStorageDir;
+	public function __construct() {
+		$args = func_get_args();
+		foreach ($args as $arg) {
+			if (!empty($arg)) {
+				$this->_directoriesToInstall[] = $arg;
+			}
+		}
 	}
 	
-	public function execute() {
-		$result = true;
-		$rootStorageDir = $this->_rootStorageDir;
-		
-		if (!is_dir($rootStorageDir)) {
-			@mkdir($rootStorageDir);
-		}
+	public function execute(): bool {
+		return $this->_installDirectories($this->_directoriesToInstall);
+	}
 
-		if (is_dir($rootStorageDir)) {
-			$tracksStorageDir = $this->_tracksStorageDir;
-			if (!is_dir($tracksStorageDir)) {
-				@mkdir($tracksStorageDir);
+	/**
+	 * @param string[] $directories 
+	 * @return bool 
+	 */
+	private function _installDirectories(array $directories): bool {
+		foreach ($directories as $directory) {
+			if (empty($directory)) {
+				continue;
 			}
 
-			if (is_dir($tracksStorageDir)) {
-				$cacheStorageDir = $this->_cacheStorageDir;
-				if (!is_dir($cacheStorageDir)) {
-					@mkdir($cacheStorageDir);
-				}
-
-				if (is_dir($cacheStorageDir)) {
-					$logStorageDir = $this->_logStorageDir;
-					if (!is_dir($logStorageDir)) {
-						@mkdir($logStorageDir);
-					}
-
-					$result = is_dir($logStorageDir);
-				}
-			} else {
-				$result = false;
+			if (!is_dir($directory)) {
+				@mkdir($directory);
 			}
-		} else {
-			$result = false;
+
+			if (!is_dir($directory)) {
+				return false;
+			}
 		}
 
-		return $result;
+		return true;
 	}
 }

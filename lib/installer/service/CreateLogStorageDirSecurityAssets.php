@@ -33,23 +33,39 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
-class Abp01_Installer_Step_Update_UpdateTo030 implements Abp01_Installer_Step_Update_Interface {
+class Abp01_Installer_Service_CreateLogStorageDirSecurityAssets extends Abp01_Installer_Service_BaseCreateStorageDirSecurityAssets {
+	/**
+	 * @var string
+	 */
+	private $_logStorageDir;
 
-	public function getTargetVersion() { 
-		return '0.3.0';
+	public function __construct(string $logStorageDir) {
+		$this->_logStorageDir = $logStorageDir;
 	}
 
-	public function execute() { 
-		$path = ABP01_LIB_DIR . '/route/log/Manager';
-		$changeToPath = ABP01_LIB_DIR . '/route/log/manager';
-		if (is_dir($path)) {
-			if (!is_dir($changeToPath)) {
-				@rename($path, $changeToPath, null);
-			}
-		}
+	public function execute(): bool {
+		$logStorageDir = $this->_logStorageDir;
+
+		$logAssets = array(
+			array(
+				'name' => 'index.php',
+				'contents' => $this->_getGuardIndexPhpFileContents(4),
+				'type' => 'file'
+			),
+			array(
+				'name' => '.htaccess',
+				'contents' => $this->_getLogAssetsGuardHtaccessFileContents(),
+				'type' => 'file'
+			)
+		);
+
+		return $this->_installAssetsForDirectory($logStorageDir, 
+			$logAssets);
 	}
 
-	public function getLastError() { 
-		null;
+	private function _getLogAssetsGuardHtaccessFileContents(): string {
+		return Abp01_Io_HtAccessDirectives::getDenyFileByExtensionDirective(
+			'log'
+		);
 	}
 }

@@ -33,20 +33,40 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
-class Abp01_Installer_Step_Update_UpdateTo030 implements Abp01_Installer_Step_Update_Interface {
+class Abp01_Installer_Step_Update_UpdateTo032 implements Abp01_Installer_Step_Update_Interface {
 
+	/**
+	 * @var Abp01_Env
+	 */
+	private $_env;
+
+	public function __construct(Abp01_Env $env) {
+		$this->_env = $env;
+	}
+	
 	public function getTargetVersion() { 
-		return '0.3.0';
+		return '0.3.2';
 	}
 
 	public function execute() { 
-		$path = ABP01_LIB_DIR . '/route/log/Manager';
-		$changeToPath = ABP01_LIB_DIR . '/route/log/manager';
-		if (is_dir($path)) {
-			if (!is_dir($changeToPath)) {
-				@rename($path, $changeToPath, null);
-			}
-		}
+		return $this->_ensureStorageDirectories() 
+			&& $this->_installStorageDirsSecurityAssets();
+	}
+
+	private function _ensureStorageDirectories() {
+		$rootStorageDir = $this->_env->getRootStorageDir();
+		$logStorageDir = $this->_env->getLogStorageDir();
+
+		$service = new Abp01_Installer_Service_CreateStorageDirectories($rootStorageDir, 
+			$logStorageDir);
+
+		return $service->execute();
+	}
+
+	private function _installStorageDirsSecurityAssets() {
+		$logStorageDir = $this->_env->getLogStorageDir();
+		$createLogAssetsService = new Abp01_Installer_Service_CreateLogStorageDirSecurityAssets($logStorageDir);
+		return $createLogAssetsService->execute();
 	}
 
 	public function getLastError() { 

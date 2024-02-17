@@ -30,26 +30,48 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit;
+    exit;
 }
 
-class Abp01_Installer_Step_Update_UpdateTo030 implements Abp01_Installer_Step_Update_Interface {
+class Abp01_Io_DirectoryAssetInstaller {
+	public static function installAssetsForDirectory(string $targetDir, array $assetsDesc): bool {
+		if (!is_dir($targetDir)) {
+			return false;
+		}
 
-	public function getTargetVersion() { 
-		return '0.3.0';
-	}
+		if (empty($assetsDesc)) {
+			return true;
+		}
 
-	public function execute() { 
-		$path = ABP01_LIB_DIR . '/route/log/Manager';
-		$changeToPath = ABP01_LIB_DIR . '/route/log/manager';
-		if (is_dir($path)) {
-			if (!is_dir($changeToPath)) {
-				@rename($path, $changeToPath, null);
+		foreach ($assetsDesc as $asset) {
+			if (empty($asset)) {
+				continue;
+			}
+
+			$result = false;
+			$assetPath = wp_normalize_path(sprintf('%s/%s', 
+				$targetDir, 
+				$asset['name']));
+
+			if ($asset['type'] == 'file') {
+				$assetHandle = @fopen($assetPath, 'w+');
+				if ($assetHandle) {
+					fwrite($assetHandle, $asset['contents']);
+					fclose($assetHandle);
+					$result = true;
+				}
+			} else if ($asset['type'] == 'directory') {
+				if (!is_dir($assetPath)) {
+					@mkdir($assetPath);
+				}
+				$result = is_dir($assetPath);
+			}
+
+			if (!$result) {
+				return false;
 			}
 		}
-	}
 
-	public function getLastError() { 
-		null;
+		return true;
 	}
 }

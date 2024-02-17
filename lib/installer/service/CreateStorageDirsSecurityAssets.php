@@ -30,7 +30,7 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
+	exit;
 }
 
 class Abp01_Installer_Service_CreateStorageDirsSecurityAssets {
@@ -42,7 +42,10 @@ class Abp01_Installer_Service_CreateStorageDirsSecurityAssets {
 
 	private $_logStorageDir;
 
-	public function __construct($rootStorageDir, $tracksStorageDir, $cacheStorageDir, $logStorageDir) {
+	public function __construct($rootStorageDir, 
+			$tracksStorageDir, 
+			$cacheStorageDir, 
+			$logStorageDir) {
 		$this->_rootStorageDir = $rootStorageDir;
 		$this->_tracksStorageDir = $tracksStorageDir;
 		$this->_cacheStorageDir = $cacheStorageDir;
@@ -50,120 +53,14 @@ class Abp01_Installer_Service_CreateStorageDirsSecurityAssets {
 	}
 
 	public function execute() {
-		$rootStorageDir = $this->_rootStorageDir;
-		$tracksStorageDir = $this->_tracksStorageDir;
-		$cacheStorageDir = $this->_cacheStorageDir;
-		$logStorageDir = $this->_logStorageDir;
+		$createRootAssetsService = new Abp01_Installer_Service_CreateRootStorageDirSecurityAssets($this->_rootStorageDir);
+		$createTrackAssetsService = new Abp01_Installer_Service_CreateTracksStorageDirSecurityAssets($this->_tracksStorageDir, $this->_cacheStorageDir);
+		$createLogAssetsService = new Abp01_Installer_Service_CreateLogStorageDirSecurityAssets($this->_logStorageDir);
 
-		$rootAssets = array(
-			array(
-				'name' => 'index.php',
-				'contents' => $this->_getGuardIndexPhpFileContents(3),
-				'type' => 'file'
-			)
-		);
-
-		$tracksAssets = array(
-			array(
-				'name' => 'index.php',
-				'contents' => $this->_getGuardIndexPhpFileContents(4),
-				'type' => 'file'
-			),
-			array(
-				'name' => '.htaccess',
-				'contents' => $this->_getTrackAssetsGuardHtaccessFileContents(),
-				'type' => 'file'
-			)
-		);
-
-		$logAssets = array(
-			array(
-				'name' => 'index.php',
-				'contents' => $this->_getGuardIndexPhpFileContents(4),
-				'type' => 'file'
-			),
-			array(
-				'name' => '.htaccess',
-				'contents' => $this->_getLogAssetsGuardHtaccessFileContents(),
-				'type' => 'file'
-			)
-		);
-
-		$this->_installAssetsForDirectory($rootStorageDir, 
-			$rootAssets);
-		$this->_installAssetsForDirectory($tracksStorageDir, 
-			$tracksAssets);
-		$this->_installAssetsForDirectory($cacheStorageDir, 
-			$tracksAssets);
-		$this->_installAssetsForDirectory($logStorageDir, 
-			$logAssets);
+		$createRootAssetsService->execute();
+		$createTrackAssetsService->execute();
+		$createLogAssetsService->execute();
 
 		return true;
-	}
-
-	private function _installAssetsForDirectory($targetDir, $assetsDesc) {
-		if (!is_dir($targetDir)) {
-			return false;
-		}
-
-		foreach ($assetsDesc as $asset) {
-			$result = false;
-			$assetPath = wp_normalize_path(sprintf('%s/%s', 
-				$targetDir, 
-				$asset['name']));
-
-			if ($asset['type'] == 'file') {
-				$assetHandle = @fopen($assetPath, 'w+');
-				if ($assetHandle) {
-					fwrite($assetHandle, $asset['contents']);
-					fclose($assetHandle);
-					$result = true;
-				}
-			} else if ($asset['type'] == 'directory') {
-				if (!is_dir($assetPath)) {
-					@mkdir($assetPath);
-				}
-				$result = is_dir($assetPath);
-			}
-
-			if (!$result) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	private function _getTrackAssetsGuardHtaccessFileContents() {
-		return join("\n", array(
-			'<FilesMatch "\.cache">',
-				"\t" . 'order allow,deny',
-				"\t" . 'deny from all',
-			'</FilesMatch>',
-			'<FilesMatch "\.gpx">',
-				"\t" . 'order allow,deny',
-				"\t" . 'deny from all',
-			'</FilesMatch>',
-			'<FilesMatch "\.geojson">',
-				"\t" . 'order allow,deny',
-				"\t" . 'deny from all',
-			'</FilesMatch>',
-			'<FilesMatch "\.kml">',
-				"\t" . 'order allow,deny',
-				"\t" . 'deny from all',
-			'</FilesMatch>'
-		));
-	}
-
-	private function _getLogAssetsGuardHtaccessFileContents() {
-		return join("\n", array(
-			'<FilesMatch "\.log">',
-				"\t" . 'order allow,deny',
-				"\t" . 'deny from all',
-			'</FilesMatch>'
-		));
-	}
-
-	private function _getGuardIndexPhpFileContents($redirectCount) {
-		return '<?php header("Location: ' . str_repeat('../', $redirectCount) . 'index.php"); exit;';
 	}
 }

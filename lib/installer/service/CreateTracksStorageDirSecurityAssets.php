@@ -33,23 +33,49 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
-class Abp01_Installer_Step_Update_UpdateTo030 implements Abp01_Installer_Step_Update_Interface {
+class Abp01_Installer_Service_CreateTracksStorageDirSecurityAssets extends Abp01_Installer_Service_BaseCreateStorageDirSecurityAssets {
+	/**
+	 * @var string
+	 */
+	private $_tracksStorageDir;
 
-	public function getTargetVersion() { 
-		return '0.3.0';
+	/**
+	 * @var string
+	 */
+	private $_cacheStorageDir;
+
+	public function __construct(string $tracksStorageDir, string $cacheStorageDir) {
+		$this->_tracksStorageDir = $tracksStorageDir;
+		$this->_cacheStorageDir = $cacheStorageDir;
 	}
 
-	public function execute() { 
-		$path = ABP01_LIB_DIR . '/route/log/Manager';
-		$changeToPath = ABP01_LIB_DIR . '/route/log/manager';
-		if (is_dir($path)) {
-			if (!is_dir($changeToPath)) {
-				@rename($path, $changeToPath, null);
-			}
-		}
+	public function execute(): bool {
+		$tracksStorageDir = $this->_tracksStorageDir;
+		$cacheStorageDir = $this->_cacheStorageDir;
+
+		$tracksAssets = array(
+			array(
+				'name' => 'index.php',
+				'contents' => $this->_getGuardIndexPhpFileContents(4),
+				'type' => 'file'
+			),
+			array(
+				'name' => '.htaccess',
+				'contents' => $this->_getTrackAssetsGuardHtaccessFileContents(),
+				'type' => 'file'
+			)
+		);
+
+		return $this->_installAssetsForDirectory($tracksStorageDir, $tracksAssets) &&
+			$this->_installAssetsForDirectory($cacheStorageDir, $tracksAssets);
 	}
 
-	public function getLastError() { 
-		null;
+	private function _getTrackAssetsGuardHtaccessFileContents(): string {
+		return Abp01_Io_HtAccessDirectives::getDenyFileByExtensionsDirective(array(
+			'cache',
+			'gpx',
+			'geojson',
+			'kml'
+		));
 	}
 }

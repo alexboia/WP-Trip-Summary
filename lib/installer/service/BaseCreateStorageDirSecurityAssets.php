@@ -33,23 +33,15 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
-class Abp01_Installer_Step_Update_UpdateTo030 implements Abp01_Installer_Step_Update_Interface {
+abstract class Abp01_Installer_Service_BaseCreateStorageDirSecurityAssets {
+	public abstract function execute(): bool;
 
-	public function getTargetVersion() { 
-		return '0.3.0';
+	protected function _installAssetsForDirectory(string $targetDir, array $assetsDesc): bool {
+		return Abp01_Io_DirectoryAssetInstaller::installAssetsForDirectory($targetDir, 
+			$assetsDesc);
 	}
 
-	public function execute() { 
-		$path = ABP01_LIB_DIR . '/route/log/Manager';
-		$changeToPath = ABP01_LIB_DIR . '/route/log/manager';
-		if (is_dir($path)) {
-			if (!is_dir($changeToPath)) {
-				@rename($path, $changeToPath, null);
-			}
-		}
-	}
-
-	public function getLastError() { 
-		null;
+	protected function _getGuardIndexPhpFileContents($redirectCount): string {
+		return Abp01_Io_IndexPhpDirectives::getRedirectDirective($redirectCount);
 	}
 }

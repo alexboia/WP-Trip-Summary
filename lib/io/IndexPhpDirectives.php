@@ -30,26 +30,11 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit;
+    exit;
 }
 
-class Abp01_Installer_Step_Update_UpdateTo030 implements Abp01_Installer_Step_Update_Interface {
-
-	public function getTargetVersion() { 
-		return '0.3.0';
-	}
-
-	public function execute() { 
-		$path = ABP01_LIB_DIR . '/route/log/Manager';
-		$changeToPath = ABP01_LIB_DIR . '/route/log/manager';
-		if (is_dir($path)) {
-			if (!is_dir($changeToPath)) {
-				@rename($path, $changeToPath, null);
-			}
-		}
-	}
-
-	public function getLastError() { 
-		null;
+class Abp01_Io_IndexPhpDirectives {
+	public static function getRedirectDirective($redirectCount) {
+		return '<?php header("Location: ' . str_repeat('../', $redirectCount) . 'index.php"); exit;';
 	}
 }
