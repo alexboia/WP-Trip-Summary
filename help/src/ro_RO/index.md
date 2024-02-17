@@ -189,7 +189,8 @@ Nu este afișat mereu, ci doar când sistemul detectează posibilitatea ca utili
 Reprezintă, desigur, zona propriu-zisă unde sunt afișate, pe câte un tab distinct:
 
 - harta cu traseul evidențiat;
-- informațiile tehnice (distanță, diferența de nivel etc.).
+- informațiile tehnice (distanță, diferența de nivel etc.);
+- jurnalul de parcurgere (tab denumit simplu `Jurnal`)
 
 Fiecare din aceste tab-uri este afișat doar dacă există informațiile corespunzătoare. 
 Dacă nu există informații pentru niciunul din tab-uri, atunci întreaga componentă este ascunsă, inclusiv teaser-ele.
@@ -230,10 +231,14 @@ Permite accesul rapid la următoarele informații și acțiuni relevante:
 - dacă post-ul curent are sau nu atașat un track GPS:
     - marcat cu o bifă albă pe fundal verde rotund dacă da;
     - marcat cu un X alb pe fundal roșu rotund, dacă nu.
+- dacă post-ul curent are sau nu atașat un jurnal de parcurgere:
+    - marcat cu o bifă albă pe fundal verde rotund dacă da;
+    - marcat cu un X alb pe fundal roșu rotund, dacă nu.
 - ștergerea rapidă a informațiilor tehnice despre traseu atașate post-ului curent (via butonul `Acțiuni rapide`);
 - ștergerea rapidă a track-ului GPS atașat post-ului curent (via butonul `Acțiuni rapide`);
 - descărcarea track-ului GPS atașat post-ului curent (via butonul `Acțiuni rapide`);
 - deschiderea componentei de editare propriu-zise pentru post-ul curent (via butonul `Modifică`).
+- navigarea la secțiunea din pagină de unde poate fi gestionat jurnalul de parcugere (via click pe opțiunea `Jurnal de parcurgere`).
 
 [Înapoi la Cuprins](#help-root)
 </div>
@@ -272,6 +277,46 @@ Odată track-ul încărcat, harta va fi centrată, iar zoom-ul său ajustat astf
 
 - "Salvează" - trebuie acționat pentru persistarea modificărilor (vizibil doar dacă a fost ales un tip de traseu);
 - "Șterge track" - trebuie acționat atunci când se dorește ștergerea întregului track (vizibil, desigur, doar după ce a fost încărcat un track).
+
+[Înapoi la Cuprins](#help-root)
+</div>
+
+## Caseta de editare a jurnalului de parcurgere
+
+<div class="abp01-help-section" markdown="1">
+Această zonă conține o listă a tuturor înregistrărilor jurnalului de parcurgere existente pentru această postare, precum și acces la următoarele acțiuni:
+
+#### Globale:
+
+- Adaugă o nouă înregistrare de jurnal (prin intermediul butonului `Adaugă înregistrare de jurnal`);
+- Șterge toate înregistrările din jurnal (prin intermediul butonului `Șterge toate înregistrările`, care este afișat doar dacă există înregistrări de jurnal).
+
+#### Pentru fiecare înregistrare a jurnalului de parcurgere:
+
+- Editează (prin intermediul linkului `Editează`);
+- Șterge (prin intermediul linkului `Șterge`).
+
+### Formularul de adăugare/editare a unei înregistrări de jurnal
+
+Fiecare câmp din acest formular (cu excepția câmpului `Când` - care necesită o dată calendaristică validă și a câmpului `Durata`, care necesită un număr întreg valid) poate fi liber editat.
+
+**Codul HTML nu este permis.**
+
+Dacă o înregistrare de jurnal nu este marcată ca publică (`Afișează public` nu este bifată), atunci înregistrarea de jurnal nu va apărea în tab-ul `Jurnal` al componentei de vizualizare.
+
+Sistemul încearcă să furnizeze valori implicite pentru următoarele câmpuri:
+
+- `Cine` - Numele de afișare al utilizatorului curent;
+- `Când` - Data curentă;
+- `Vehicul folosit` - Ultimul vehicul utilizat pentru postarea curentă.
+
+Pentru ușurința-n utilizare, atunci când se adaugă sau editează succesiv mai multe înregistrări de jurnal, sistemul va păstra între editări valorile următoarelor câmpuri:
+
+- `Cine`;
+- `Când`;
+- `Vehicul folosit`;
+- `Echipament folosit`,
+- `Afișează public`.
 
 [Înapoi la Cuprins](#help-root)
 </div>
