@@ -440,6 +440,39 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 		);
 	}
 
+	function getTripSummaryRouteTypeInfo($postIds) {
+		if (!is_array($postIds)) {
+			$postIds = array($postIds);
+		}
+
+		$allRouteTypeInfoData = array();
+		$rawRouteTypeInfoData = $this->_queryForRouteTypeInfoData($postIds);
+
+		if (!empty($rawRouteTypeInfoData)) {
+			foreach ($rawRouteTypeInfoData as $row) {
+				$postId = intval($row['post_ID']);
+				$allRouteTypeInfoData[$postId] = $row['route_type'];
+			}
+		}
+
+		return $allRouteTypeInfoData;
+	}
+
+	private function _queryForRouteTypeInfoData($postIds) {
+		$db = $this->_env->getDb();
+		$infoTable = $this->_env->getRouteDetailsTableName();
+
+		$db->where('rd.post_ID', $postIds, 
+			'IN');
+
+		$rawRouteTypeInfoData = $db->get($infoTable  . ' rd', null, array(
+			'rd.post_ID', 
+			'rd.route_type'
+		));
+
+		return $rawRouteTypeInfoData;
+	}
+
 	public function getAllPostsWithRouteTracks() {
 		$postIds = array();
 

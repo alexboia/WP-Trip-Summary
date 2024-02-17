@@ -34,41 +34,38 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Display_PostListing_TripSummaryStatusColumnsDecorator extends Abp01_Display_PostListing_ColumnCustomization {
-    public function __construct() {
-        parent::__construct($this->_getColumns(), $this->_getPostTypes());
-    }
+	public function __construct() {
+		parent::__construct($this->_getColumns(), $this->_getPostTypes());
+	}
 
-    private function _getColumns() {
-        $routeManager = $this->_getRouteManager();
-        return array(
-            new Abp01_Display_PostListing_TripSummaryStatusColumn(
-                'abp01_trip_summary_info_status', 
-                esc_html__('Trip summary info', 'abp01-trip-summary'), 
-                new Abp01_Display_PostListing_TripSummaryStatusColumnDataSource(
-                    $routeManager, 
-                    'has_route_details'
-                )
-            ),
+	private function _getColumns(): array {
+		$routeManager = $this->_getRouteManager();
+		return array(
+			new Abp01_Display_PostListing_TripSummaryStatusColumn(
+				'abp01_trip_summary_info_status', 
+				esc_html__('Trip summary info', 'abp01-trip-summary'), 
+				new Abp01_Display_PostListing_TripSummaryStatusColumnDataSource(
+					$routeManager, 
+					'has_route_details'
+				)
+			),
 
-            new Abp01_Display_PostListing_TripSummaryStatusColumn(
-                'abp01_trip_summary_track_status', 
-                esc_html__('Trip summary track', 'abp01-trip-summary'), 
-                new Abp01_Display_PostListing_TripSummaryStatusColumnDataSource(
-                    $routeManager, 
-                    'has_route_track'
-                )
-            )
-        );
-    }
+			new Abp01_Display_PostListing_TripSummaryStatusColumn(
+				'abp01_trip_summary_track_status', 
+				esc_html__('Trip summary track', 'abp01-trip-summary'), 
+				new Abp01_Display_PostListing_TripSummaryStatusColumnDataSource(
+					$routeManager, 
+					'has_route_track'
+				)
+			)
+		);
+	}
 
-    private function _getRouteManager() {
-        return abp01_get_route_manager();
-    }
+	private function _getRouteManager(): Abp01_Route_Manager {
+		return abp01_get_route_manager();
+	}
 
-    private function _getPostTypes() {
-        return array(
-            'post', 
-            'page'
-        );
-    }
+	private function _getPostTypes(): array {
+		return Abp01_AvailabilityHelper::getTripSummaryAvailableForPostTypes();
+	}
 }

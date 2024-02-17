@@ -34,28 +34,30 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 interface Abp01_Route_Manager {
-    function saveRouteInfo($postId, Abp01_Route_Info $info, $currentUserId);
+	function saveRouteInfo($postId, Abp01_Route_Info $info, $currentUserId);
 
-    function deleteRouteInfo($postId);
+	function deleteRouteInfo($postId);
 
-    function saveRouteTrack(Abp01_Route_Track $track, $currentUserId);
+	function saveRouteTrack(Abp01_Route_Track $track, $currentUserId);
 
-    function deleteRouteTrack($postId);
+	function deleteRouteTrack($postId);
 
-    function getRouteInfo($postId);
+	function getRouteInfo($postId);
 
-    /**
-     * @return Abp01_Route_Track
-     */
-    function getRouteTrack($postId);
+	/**
+	 * @return Abp01_Route_Track
+	 */
+	function getRouteTrack($postId);
 
-    function hasRouteTrack($postId);
+	function hasRouteTrack($postId);
 
-    function hasRouteInfo($postId);
+	function hasRouteInfo($postId);
 
-    function getTripSummaryStatusInfo($postIds);
+	function getTripSummaryStatusInfo($postIds);
 
-    function getAllPostsWithRouteTracks();
+	function getTripSummaryRouteTypeInfo($postIds);
 
-    function clearAll();
+	function getAllPostsWithRouteTracks();
+
+	function clearAll();
 }

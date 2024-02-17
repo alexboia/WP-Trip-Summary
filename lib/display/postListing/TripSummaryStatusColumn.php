@@ -34,30 +34,30 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Display_PostListing_TripSummaryStatusColumn extends Abp01_Display_PostListing_Column {
-    public function __construct($key, $label, Abp01_Display_PostListing_ColumnDataSource $dataSource) {
-        parent::__construct($key, $label, $dataSource);
-    }
+	public function __construct($key, $label, Abp01_Display_PostListing_ColumnDataSource $dataSource) {
+		parent::__construct($key, $label, $dataSource);
+	}
 
-    public function renderValue($postId) {
-        $formattedValue = null;
-        $value = parent::renderValue($postId);
+	public function renderValue($postId) {
+		$formattedValue = null;
+		$value = parent::renderValue($postId);
 
-        if ($value !== null) {
-            $formattedValue = $value
-                ? abp01_get_status_text(esc_html__('Yes', 'abp01-trip-summary'), ABP01_STATUS_OK)
-                : abp01_get_status_text(esc_html__('No', 'abp01-trip-summary'), ABP01_STATUS_ERR);
-        } else {
-            $formattedValue = abp01_get_status_text(esc_html__('Not available', 'abp01-trip-summary'), ABP01_STATUS_WARN);
-        }
+		if ($value !== null) {
+			$formattedValue = $value
+				? abp01_get_status_text(esc_html__('Yes', 'abp01-trip-summary'), ABP01_STATUS_OK)
+				: abp01_get_status_text(esc_html__('No', 'abp01-trip-summary'), ABP01_STATUS_ERR);
+		} else {
+			$formattedValue = abp01_get_status_text(esc_html__('Not available', 'abp01-trip-summary'), ABP01_STATUS_WARN);
+		}
 
-        return $formattedValue;
-    }
+		return $formattedValue;
+	}
 
-    public function renderLabel() {
-        return parent::renderLabel();
-    }
+	public function renderLabel() {
+		return parent::renderLabel();
+	}
 
-    public function getKey() {
-        return parent::getKey();
-    }
+	public function getKey() {
+		return parent::getKey();
+	}
 }
