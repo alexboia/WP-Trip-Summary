@@ -41,10 +41,6 @@ class Abp01_Display_PostListing_TripSummaryRouteTypeColumn extends Abp01_Display
 	public function renderValue($postId) {
 		$routeType = parent::renderValue($postId);
 
-		if (empty($routeType)) {
-			return '-';
-		}
-
 		$label = $this->_getRouteTypeLabel($postId, 
 			$routeType);
 
@@ -54,7 +50,9 @@ class Abp01_Display_PostListing_TripSummaryRouteTypeColumn extends Abp01_Display
 	}
 
 	private function _formatRouteTypeLabel($postId, $routeType, $routeTypeLabel) {
-		$cssClass = sprintf('abp01-route-type-cell abp01-route-type-cell-%s', esc_attr($routeType));
+		$cssClass = sprintf('abp01-route-type-cell abp01-route-type-cell-%s', !empty($routeType) 
+			? esc_attr($routeType)
+			: 'none');
 		$formatted = '<span class="' . $cssClass . '">' . $routeTypeLabel . '</span>';
 
 		return apply_filters('abp01_formatted_route_tyle_listing_label', 
@@ -66,17 +64,21 @@ class Abp01_Display_PostListing_TripSummaryRouteTypeColumn extends Abp01_Display
 
 	private function _getRouteTypeLabel($postId, $routeType) {
 		$routeTypeLabel = '';
-		switch ($routeType) {
-			case Abp01_Route_Info::BIKE:
-				$routeTypeLabel = __('Biking', 'abp01-trip-summary');
-				break;
-			case Abp01_Route_Info::HIKING:
-				$routeTypeLabel = __('Hiking', 'abp01-trip-summary');
-				break;
-			case Abp01_Route_Info::TRAIN_RIDE:
-				$routeTypeLabel = __('Train Ride', 'abp01-trip-summary');
-				break;
-		}
+		if (!empty($routeType)) {
+			switch ($routeType) {
+				case Abp01_Route_Info::BIKE:
+					$routeTypeLabel = __('Biking', 'abp01-trip-summary');
+					break;
+				case Abp01_Route_Info::HIKING:
+					$routeTypeLabel = __('Hiking', 'abp01-trip-summary');
+					break;
+				case Abp01_Route_Info::TRAIN_RIDE:
+					$routeTypeLabel = __('Train Ride', 'abp01-trip-summary');
+					break;
+			}
+		} else {
+			$routeTypeLabel = '-';
+		}		
 
 		return apply_filters('abp01_unformatted_route_type_label', 
 			$routeTypeLabel, 
