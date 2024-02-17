@@ -188,7 +188,8 @@ It is not always displayed, but only when the system detects that the user might
 This is the area where, each on a distinct tab, the following sections are displayed:
 
 - the map that displays the route;
-- technical stuff (total distance, total climb etc.).
+- technical stuff (total distance, total climb etc.);
+- the trip summary log tab (named, simply, `Log`).
 
 Each tab is only displayed when the corresponding information has been provided by the post author.
 If there is not any kind of information for any of these tabs, then the entire component is hidden, including the teasers.
@@ -219,10 +220,14 @@ At a glance, it allows access to the following information and actions:
 - whether or the the current post has a trip summary GPS track attached to it:
     - marked with a white check mark on a green round background if so;
     - marked with a white X mark on a red round background if not.
+- whether or the the current post has any trip summary log entries attached to it:
+    - marked with a white check mark on a green round background if so;
+    - marked with a white X mark on a red round background if not.
 - quickly remove the current post's trip summary information (via the `Quick actions` link button);
 - quickly remove the current post's trip summary GPS track (via the `Quick actions` link button);
 - download the current post's trip summary GPS track (via the `Quick actions` link button);
-- open the trip summary editor form for the current post (via the `Edit` button).
+- open the trip summary editor form for the current post (via the `Edit` button)
+- scroll down to the box from which the trip summary log can be managed (by clicking the `Trip summary log` editor launcher entry).
 
 [Back to the Table of Contents](#help-root)
 </div>
@@ -259,6 +264,46 @@ Besides the form, on the bottom side of the screen two additional control button
 
 - "Save" - used to save the changes;
 - "Clear" - used to when the entire track needs to be removed.
+
+[Back to the Table of Contents](#help-root)
+</div>
+
+## The trip summary log editor box
+
+<div class="abp01-help-section" markdown="1">
+This area contains a list of all the trip summary log entries (records) entered for this post, as well as access to the following actions:
+
+#### Global:
+
+- Add new log entry (via the `Add log entry` button);
+- Clear all log entries (via the `Clear all log entries` button, which is only displayed if there are any log entries).
+
+#### For each existing log entry:
+
+- Edit (via the `Edit` link);
+- Delete (via the `Delete` link).
+
+### The log entry add/edit form
+
+Every field from this form (apart from the `When` field - which requires a valid date and the `Time` field, which requies a valid integer) can be freely edited.
+
+**HTML code is not allowed.**
+
+If a log entry is not marked as public (`Display publicly` is not checked), then the log entry will not appear in the `Log` frontend viewer tab.
+
+The system attempts to provide default values for the following fields:
+
+- `Who` - The current user display name;
+- `When` - The current date;
+- `Vehicle used` - The last used vehiche for the current post.
+
+For convenience, when adding or editing multiple log entries in a row, the system will maintain between edits the values of following fields:
+
+- `Who`;
+- `When`;
+- `Vehicle used`;
+- `Gear`,
+- `Display publicly`.
 
 [Back to the Table of Contents](#help-root)
 </div>
