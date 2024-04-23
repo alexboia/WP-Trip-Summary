@@ -9,7 +9,7 @@ else
 	COMPAT_RESTORE_DIR=false
 fi
 
- phpcompatinfo analyser:run . --exclude tests --exclude help > ./build/compat-info/main-compat-info.txt
+ phpcompatinfo analyser:run . --exclude tests --exclude help --exclude build --exclude bin --exclude docs > ./build/compat-info/main-compat-info.txt
  phpcompatinfo analyser:run ./tests > ./build/compat-info/tests-compat-info.txt
  phpcompatinfo analyser:run ./help > ./build/compat-info/help-compat-info.txt
 
