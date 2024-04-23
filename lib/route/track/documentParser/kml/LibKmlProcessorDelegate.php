@@ -165,6 +165,9 @@ class Abp01_Route_Track_DocumentParser_Kml_LibKmlProcessorDelegate implements De
 	}
 
     public function processMultiGeometry(MultiGeometry $multiGeometry, FeatureMetadata $featureMetadata): void { 
+		//Multi geometry is not processed directly, 
+		//	parts are processed individually, as returned 
+		//	by shouldIndividuallyProcessMultiGeometryParts().
 		return;
 	}
 

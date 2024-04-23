@@ -37,6 +37,7 @@
 WP-Trip-Summary supports the following file formats when importing GPS track data that should be attached to a post:
 - GPX ([see more details here](https://en.wikipedia.org/wiki/GPS_Exchange_Format));
 - GeoJSON ([see more details here](https://en.wikipedia.org/wiki/GeoJSON)).
+- KML ([see more details here](https://developers.google.com/kml/documentation/kmlreference));
 
 #### GPX
 
@@ -92,6 +93,40 @@ GeoJson documents are assumed to comply with [RFC 7946](https://tools.ietf.org/h
 - If a `MultiPolygon` geometry is contained within a `Feature` object, then a name is searched for in the feature object's `properties` property and assigned to each of the resulting track parts.
 
 For the more technically inclined, [the parser can be consulted here](https://github.com/alexboia/WP-Trip-Summary/blob/master/lib/route/track/documentParser/GeoJson.php).
+
+#### KML
+
+An uploaded file is processed as a KML file (and validated as such) if it has any of the following mime types:
+
+- `application/vnd.google-earth.kml+xml`.
+
+The KML parse is based on [Stepan Daleky's KML parser on GitLab](https://gitlab.com/stepandalecky/kml-parser), which I further built upon in two areas:
+
+- support for additional KML objects;
+- a basic processing infrastructure.
+
+It might worth your while (to take a loot at it here)[https://github.com/alexboia/WP-Trip-Summary/tree/master/lib/3rdParty/kml-parser/KmlParser].
+
+KML documents are parsed as follows:
+
+- Either root KML folder or root KML document is considered, not both (first it checks for a root folder and, if not found for a root document);
+- A KML container is searched, in this order, for: folders, documents and placemarks;
+- For a placemark, `Point`, `Linestring`, `LinearRing`, `Polygon` and `MultiGeometry` geometries are supported;
+- Neither folder, nor document metadata is stored;
+
+- A `Point` geometry is read as a document-level waypoint, regardless of where it is found in the KML file;
+- For a `Point` geometry, the name and description metadata are stored;
+
+- A `LineString` is read as a track part with a single track segment;
+- For a `LineString` geometry, only the name metadata is stored;
+
+- A `LinearRing` is read as a track part with a single track segment;
+- For a `LinearRing` geometry, only the name metadata is stored;
+
+- A `Polygon` is read as two track parts: one for the outer boundary `LinearRing`, the other for the inner boundary `LinearRing`;
+- For a `Polygon` geometry, only the name metadata is stored, for each of the resulting track parts;
+
+- A `MultiGeometry` is processed by reading its individual parts, not as a whole, obeying the above-mentioned rules.
 
 ## Downloading the plug-in
 <a name="wpts-get-it"></a>
