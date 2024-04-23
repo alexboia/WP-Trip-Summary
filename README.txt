@@ -3,8 +3,8 @@ Contributors: alexandruboia
 Donate link: https://ko-fi.com/alexandruboia
 Tags: trip, summary, map, gpx, travel
 Requires at least: 6.0.0
-Tested up to: 6.4.3
-Stable tag: 0.3.1
+Tested up to: 6.5.2
+Stable tag: 0.3.2
 Requires PHP: 7.4.0
 License: BSD New License
 License URI: https://opensource.org/licenses/BSD-3-Clause
@@ -78,7 +78,7 @@ For train rides the following fields are available:
 
 ### Multi language
 
-Available in English, Romanian and French.
+Available in English, Romanian, French and (since 0.3.2) German.
 
 ### Helping out
 
@@ -92,7 +92,7 @@ Available in English, Romanian and French.
 Out of the box this is not possible, but, as of 0.2.8 you can customize it using a filter hook. Please see this wiki page for an example: https://github.com/alexboia/WP-Trip-Summary/wiki/Changing-the-editor-availability-per-post-type.
 
 = Does it support KML files? =
-The plug-in currently only supports GPX and GeoJSON files as a way to upload GPS tracks. KML will be supported round about 0.3, maybe earlier.
+Yes, as of version 0.3.2.
 
 = Can I insert the trip summary front-end viewer at a custom location? =
 You can insert the trip summary viewer at a custom location *in the same post for which you have defined it* using the following shortcode: [abp01_trip_summary_viewer] (no parameters required). Only one such shortcode allowed and supported per post.
@@ -131,6 +131,14 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 5. For those with plug-in versions older than 0.2.1, please see here notes on updating to plug-in version 0.2.1: https://github.com/alexboia/WP-Trip-Summary/blob/master/README-UPDATE-021.md
 
 == Changelog ==
+
+= 0.3.2 =
+- Added German translation (de_DE, many thanks to Nico - nida78);
+- Added support for KML files;
+- Bring help contents (mostly) up-to-date with the new features, for ro_RO and en_US;
+- Add route type filter in admin area post listing;
+- Some small bug fixes;
+- Add proper error and debug logging infrastructure, including dedicated log management page.
 
 = 0.3.1 =
 - Fixed bug on some PHP versions.
