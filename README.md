@@ -128,6 +128,8 @@ KML documents are parsed as follows:
 
 - A `MultiGeometry` is processed by reading its individual parts, not as a whole, obeying the above-mentioned rules.
 
+For the more technically inclined, [the parser can be consulted here](https://github.com/alexboia/WP-Trip-Summary/blob/master/lib/route/track/documentParser/Kml.php).
+
 ## Downloading the plug-in
 <a name="wpts-get-it"></a>
 
