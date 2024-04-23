@@ -382,7 +382,7 @@ However, there is no definitive plan for it, but, as a general rule, I would lik
 
 ### For running the plug-in itself
 
-1. PHP version 7.4.0 or greater;
+1. PHP version 8.0.0 or greater;
 2. MySQL version 5.7 or greater (with spatial support);
 3. WordPress 6.0.0 or greater;
 4. libxml extension;

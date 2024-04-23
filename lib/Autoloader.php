@@ -60,7 +60,7 @@ class Abp01_Autoloader {
 				$checkPrefix = $prefix . $separator;
 				if (strpos($className, $checkPrefix) === 0) {
 					$classPath = str_replace($checkPrefix, '', $className);
-					$classPath = self::_getRelativePath($classPath, $separator);
+					$classPath = self::_getRelativePath($classPath, $separator, null);
 					$classPath = self::$_libDir . '/' 
 						. $searchRelativeDir . '/' 
 						. $classPath . '.php';

@@ -669,7 +669,7 @@ class Abp01_Env {
 	}
 
 	public function getRequiredPhpVersion() {
-		return '7.4.0';
+		return '8.0.0';
 	}
 
 	public function getWpVersion() {

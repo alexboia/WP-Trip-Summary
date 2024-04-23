@@ -5,7 +5,7 @@ Tags: trip, summary, map, gpx, travel
 Requires at least: 6.0.0
 Tested up to: 6.5.2
 Stable tag: 0.3.2
-Requires PHP: 7.4.0
+Requires PHP: 8.0.0
 License: BSD New License
 License URI: https://opensource.org/licenses/BSD-3-Clause
 
@@ -67,7 +67,7 @@ For train rides the following fields are available:
 
 ### Requirements
 
-- PHP version 7.4.0 or greater;
+- PHP version 8.0.0 or greater;
 - MySQL version 5.7 or greater (with spatial support);
 - Wordpress 6.0.0 or greater;
 - libxml extension;

@@ -93,6 +93,7 @@ copy_source_files() {
 	mkdir "$WPTS_BUILD_TMPDIR/media" && cp -r ./media/* "$WPTS_BUILD_TMPDIR/media"
 	mkdir "$WPTS_BUILD_TMPDIR/views" && cp -r ./views/* "$WPTS_BUILD_TMPDIR/views"
 	mkdir "$WPTS_BUILD_TMPDIR/lib" && cp -r ./lib/* "$WPTS_BUILD_TMPDIR/lib"
+	mkdir "$WPTS_BUILD_TMPDIR/vendor" && cp -r ./vendor/* "$WPTS_BUILD_TMPDIR/vendor"
 	mkdir "$WPTS_BUILD_TMPDIR/lang" && cp -r ./lang/* "$WPTS_BUILD_TMPDIR/lang"
 
 	mkdir "$WPTS_BUILD_TMPDIR/data"

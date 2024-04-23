@@ -9,7 +9,7 @@
  * License URI: https://github.com/alexboia/WP-Trip-Summary/blob/master/LICENSE.md
  * Plugin URI: https://github.com/alexboia/WP-Trip-Summary
  * Text Domain: abp01-trip-summary
- * Requires PHP: 7.4.0
+ * Requires PHP: 8.0.0
  * Requires at least: 6.0.0
  * WPTS Version Name: Marco Polo
  */
