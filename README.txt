@@ -13,10 +13,13 @@ A WordPress trip summary plugin to help travel bloggers manage and display struc
 
 == Description ==
 
+🌟 [GitHub](https://github.com/alexboia/WP-Trip-Summary)
+❤️ [WordPress](https://wordpress.org/plugins/wp-trip-summary/)
+
 ### Features
 
 - attach technical information to a post (ex. how long was your trip, how much did you totally climb, where from and where to, how hard do you think it has been, what kind of roads or trails did you encounter etc.);
-- attach GPS data to a post (GPX and GeoJSON files are currently accepted as data sources) and display that track on a map;
+- attach GPS data to a post (GPX, GeoJSON and KML files are currently accepted as data sources) and display that track on a map;
 - maintain rider's log entries, while optionally specifying some of them as public;
 - allows management of the look-up data used to populate the fields presented as single or multi-selection options list (ex. `Difficulty Level`, `Open During Seasons` etc.);
 - allows customization of the map layer:
@@ -67,7 +70,7 @@ For train rides the following fields are available:
 
 ### Requirements
 
-- PHP version 8.0.0 or greater;
+- PHP version 8.0.0 or greater (as of version 0.3.2);
 - MySQL version 5.7 or greater (with spatial support);
 - Wordpress 6.0.0 or greater;
 - libxml extension;
