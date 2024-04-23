@@ -278,6 +278,19 @@ As of version `0.2.8`, there is a new `Maintenance` section, which allows you to
 
 The box is described by the south-west and north-east points, in lat-lng format: `Lat1 Lng1 Lat2 Lng2`.
 
+Menu: `Trip Summary` -> `Maintenance`.
+
+### System logs
+
+As of version `0.3.2`, there is a new `System logs` section, which allows you to manage the log files to which WP Trip Summary writes its debug and error messages.
+
+There are two sections for each of the log types (debug and error, respectively, as mentioned), BUT debug logs are only produced if:
+
+- `ABP01_ENABLE_DEBUG_LOGGING` is defined (in `wp-config.php`) and set to `true` (if defined, it will supersede `WP_DEBUG`) or;
+- `WP_DEBUG` is defined and set to `true`.
+
+Menu: `Trip Summary` -> `System logs`.
+
 ## Supported languages
 <a name="wpts-langs"></a>  
 
@@ -288,9 +301,19 @@ The following languages are supported:
 | English | en_US | Also serves as default language |
 | French | fr_FR | - |
 | Romanian | ro_RO | - |
+| German | de_DE | Partly contribured by [Nico](https://wordpress.org/support/users/nida78/), partly translated using Google Translate. |
 
 ## Changelog
 <a name="wpts-changelog"></a>  
+
+### Version 0.3.2
+- Added German translation ([issue #90](https://github.com/alexboia/WP-Trip-Summary/issues/90));
+- Added support for KML files ([issue #91](https://github.com/alexboia/WP-Trip-Summary/issues/91));
+- Bring help contents (mostly) up-to-date with the new features, for ro_RO and en_US ([issue #89](https://github.com/alexboia/WP-Trip-Summary/issues/89));
+- Add route type filter in admin area post listing ([issue #92](https://github.com/alexboia/WP-Trip-Summary/issues/92));
+- Some embarrassing bug fixes;
+- Add proper error and debug logging infrastructure, including dedicated log management page (go to `Trip Summary` -> `System logs`);
+- Other stuff which I may not remember.
 
 ### Version 0.3.1
 - Fixed bug on some PHP versions.
