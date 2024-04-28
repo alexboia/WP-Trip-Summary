@@ -32,6 +32,15 @@
 trait GenericTestHelpers {
 	private static $_faker = null;
 
+	protected function _resetInstanceProperty($targetInstance, $propName, $resetVal = null) {
+		//Courtesy of: https://coderwall.com/p/tx9cgg/resetting-singletons-in-php-testing-the-untestable
+		$rTargetInstance = new ReflectionClass($targetInstance);
+		$p = $rTargetInstance->getProperty($propName);
+		$p->setAccessible(true);
+		$p->setValue($targetInstance, $resetVal);
+		$p->setAccessible(false);
+	}
+
 	protected function _findFirst(array $array, callable $callback, mixed $default = false) {
 		foreach ($array as $el) {
 			if ($callback($el)) {
@@ -120,6 +129,10 @@ trait GenericTestHelpers {
 		return $ascii;
 	}
 
+	protected function _currentDayOfMonthAsInt() {
+		return intval(date('d'));
+	}
+
 	/**
 	 * @return \Faker\Generator
 	 */
@@ -206,6 +219,67 @@ trait GenericTestHelpers {
 		return $result;
 	}
 
+	protected function _generateDatedFilesWithContents($fileNamePrefix, $baseFilePath, $fileCount) {
+		$files = array();
+		$startDate = new DateTime();
+		$faker = $this->_getFaker();
+
+		for ($i = 0; $i < $fileCount; $i ++) {
+			$intervalString = sprintf('%d day', $i + 1);
+			$date = $startDate->sub(DateInterval::createFromDateString($intervalString));
+			$fileName = sprintf('%s-%s.log', $fileNamePrefix, $date->format('Y-m-d'));
+			$filePath = $baseFilePath  . '/' . $fileName;
+
+			$fileContents = $faker->paragraphs(3, true);
+			file_put_contents($filePath, $fileContents);
+			$files[] = $filePath;
+		}
+
+		return $files;
+	}
+
+	protected function _generateRandomTestFile($lineCount = null) {
+		$baseDir = WP_CONTENT_DIR;
+		$faker = $this->_getFaker();
+
+		if (is_null($lineCount) || $lineCount <= 0) {
+			$lineCount = intval($faker->numberBetween(1, 1000));
+		}
+
+		$lines = array();
+		for ($i = 0; $i < $lineCount; $i ++) {
+			$line = $faker->sentence(10);
+			$line = str_replace("\r", '', $line);
+			$line = str_replace("\n", '', $line);
+			$lines[] = $line;
+		}
+
+		$fileContents = join("\n", $lines);
+		$filePath = $this->_generateRandomTestFilePath($baseDir);
+		file_put_contents($filePath, $fileContents);
+
+		return array(
+			'lines' => $lines,
+			'contents' => $fileContents,
+			'path' => realpath($filePath),
+			'size' => filesize($filePath)
+		);
+	}
+
+	protected function _generateRandomTestFilePath($directory = null) {
+		if (empty($directory)) {
+			$directory = WP_CONTENT_DIR;
+		}
+
+		$faker = $this->_getFaker();
+
+		$fileName = sprintf('f_rand_%s_%d.txt', 
+			sha1($faker->randomAscii), 
+			time());
+
+		return $directory . '/' . $fileName;
+	}
+
 	protected function _isFunctionDefined($functionName) {
 		$defined = get_defined_functions();
 		return (isset($defined['internal']) && in_array($functionName, $defined['internal'], true)) 
@@ -226,6 +300,11 @@ trait GenericTestHelpers {
 		), array(
 			null
 		));
+	}
+
+	protected function _randomSha1() {
+		$faker = $this->_getFaker();
+		return sha1($faker->randomAscii . time());
 	}
 
 	protected function _getRouteManager() {

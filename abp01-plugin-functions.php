@@ -169,24 +169,39 @@ function abp01_wp_error_from_exception(Exception $exc) {
 function abp01_get_log_manager() {
 	static $logManager = null;
 	if ($logManager === null) {
-		$env = abp01_get_env();
-		$rotateLogs = defined('ABP01_LOGS_ROTATE') 
-			? constant('ABP01_LOGS_ROTATE') 
-			: true;
-
-		$maxLogFiles = defined('ABP01_LOGS_MAX_LOG_FILES')
-			? intval(constant('ABP01_LOGS_MAX_LOG_FILES'))
-			: 10;
-
-		$config = new Abp01_Logger_Config($env->getLogStorageDir(), 
-			$rotateLogs, 
-			$maxLogFiles, 
-			$env->isDebugMode());
-
+		$config = abp01_get_logger_config();
 		$logManager = new Abp01_Logger_Manager($config);
 	}
 
 	return $logManager;
+}
+
+function abp01_get_logger_config() {
+	$env = abp01_get_env();
+	$defaultRotateLogs = defined('ABP01_LOGS_ROTATE') 
+		? constant('ABP01_LOGS_ROTATE') 
+		: true;
+
+	$rotateLogs = apply_filters('abp01_get_logger_config_rotate_logs', 
+		$defaultRotateLogs) === true;
+
+	$defaultMaxLogFiles = defined('ABP01_LOGS_MAX_LOG_FILES')
+		? intval(constant('ABP01_LOGS_MAX_LOG_FILES'))
+		: 10;
+
+	$maxLogFiles = intval(apply_filters('abp01_get_logger_config_max_log_files', 
+		$defaultMaxLogFiles));
+
+	if ($maxLogFiles <= 0) {
+		$maxLogFiles = $defaultMaxLogFiles;
+	}
+
+	$config = new Abp01_Logger_Config($env->getLogStorageDir(), 
+		$rotateLogs, 
+		$maxLogFiles, 
+		$env->isDebugMode());
+
+	return $config;
 }
 
 if (!function_exists('write_log')) {

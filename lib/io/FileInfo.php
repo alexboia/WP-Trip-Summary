@@ -91,20 +91,43 @@ class Abp01_Io_FileInfo {
 		$fileObject->fseek(0, SEEK_END);
 
 		while ($currentLineCount < $nLines && $fileObject->ftell() > 0) {
-			$fileObject->fseek(-512, SEEK_CUR);
-			$loopContents = $fileObject->fread(512);
+			$pFtell = $fileObject->ftell();
+			$seekCount = min($pFtell, 512);
+			$fileObject->fseek(-$seekCount, SEEK_CUR);
+
+			$readCount = $seekCount;
+			$loopContents = $fileObject->fread($readCount);
 
 			if ($loopContents === false) {
 				break;
 			}
 
+			$loopLen = function_exists('mb_strlen')
+				? mb_strlen($loopContents)
+				: strlen($loopContents);
+
 			$tailContents = $loopContents . $tailContents;
 			$currentLineCount += substr_count($loopContents, "\n");
-			$fileObject->fseek(-strlen($loopContents), SEEK_CUR);
+
+			if ($loopLen < 512) {
+				break;
+			}
+
+			$fileObject->fseek(-$loopLen, SEEK_CUR);
 		}
 
 		unset($fileObject);
 		$fileObject = null;
+
+		$tailLines = explode("\n", $tailContents);
+		$actualTailLineCount = count($tailLines);
+
+
+
+		if (count($tailLines) > $nLines) {
+			$tailLines = array_slice($tailLines, $actualTailLineCount - $nLines);
+			$tailContents = join("\n", $tailLines);
+		}		
 
 		return $tailContents;
 	}

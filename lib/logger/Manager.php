@@ -60,7 +60,7 @@ class Abp01_Logger_Manager {
 	private function _createLogger(): void {
 		$defaultLoggerClass = Abp01_Logger_MonologLogger::class;
 		$loggerClass = apply_filters('abp01_get_logger_class', $defaultLoggerClass);
-		
+
 		$implementsInterface = in_array(Abp01_Logger::class, 
 			class_implements($loggerClass));
 
@@ -115,11 +115,26 @@ class Abp01_Logger_Manager {
 		$logFiles = array();
 
 		foreach ($fileNames as $name) {
+			if ($name == '.' || $name == '..') {
+				continue;
+			}
+
 			$filePath = realpath($dir . '/' . $name);
-			$logFiles[] = new Abp01_Logger_FileInfo($filePath);
+			if ($this->_maybeLogFile($filePath)) {
+				$logFile = new Abp01_Logger_FileInfo($filePath);
+				if ($logFile->isDebugLogFile() 
+					|| $logFile->isErrorLogFile()) {
+					$logFiles[] = $logFile;
+				}
+			}
 		}
 
 		return $logFiles;
+	}
+
+	private function _maybeLogFile($filePath) {
+		$filePathInfo = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+		return !empty($filePathInfo) && $filePathInfo === 'log';
 	}
 
 	public function getLogFileById($logFileId): Abp01_Logger_FileInfo|null {
@@ -163,5 +178,9 @@ class Abp01_Logger_Manager {
 
 	public function isErrorLoggingEnabled() {
 		return $this->_config->isErrorLoggingEnabled();
+	}
+
+	public function getConfig() {
+		return $this->_config;
 	}
 }

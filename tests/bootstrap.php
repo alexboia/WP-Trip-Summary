@@ -128,6 +128,9 @@ function _manually_install_plugin() {
 }
 
 function _include_plugin_dependent_test_classes() {
+	require_once 'lib/testDoubles/abp01StubLogger.php';
+	require_once 'lib/testDoubles/abp01InvalidStubLogger.php';
+
 	require_once 'lib/TestFrontendTheme.php';
 	require_once 'lib/MockDocumentParser.php';
 	require_once 'lib/MockFileValidator.php';
