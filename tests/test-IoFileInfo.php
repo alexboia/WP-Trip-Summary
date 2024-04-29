@@ -32,6 +32,22 @@
 class IoFileInfoTests extends WP_UnitTestCase {
 	use GenericTestHelpers;
 
+	protected function setUp(): void {
+		parent::setUp();
+		$this->_removeAllLogFiles();
+	}
+	
+	protected function tearDown(): void {
+		parent::tearDown();
+		$this->_removeAllLogFiles();
+	}
+
+	private function _removeAllLogFiles() {
+		$dir = WP_CONTENT_DIR;
+		$this->_removeAllFiles($dir, 'f_rand_*.txt');
+		$this->_removeAllFiles($dir, 'f_rand_*.log');
+	}
+
 	public function test_canGetId() {
 		$fileData = $this->_generateRandomTestFile();
 		$filePath = $fileData['path'];
@@ -82,6 +98,8 @@ class IoFileInfoTests extends WP_UnitTestCase {
 
 	public function test_canGetContents_whenFileDoesntExist() {
 		$bogusFilePath = $this->_generateRandomTestFilePath();
+
+		var_dump($bogusFilePath);
 
 		$fileInfo = new Abp01_Io_FileInfo($bogusFilePath);
 		$readContents = $fileInfo->contents();

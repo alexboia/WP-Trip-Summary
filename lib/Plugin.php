@@ -376,7 +376,17 @@ class Abp01_Plugin {
 	}
 
 	private function _determineReadmeTxtFilePath() {
-		return ABP01_PLUGIN_ROOT . '/readme.txt';
+		$regularFile = ABP01_PLUGIN_ROOT . '/readme.txt';
+		if (is_readable($regularFile)) {
+			return $regularFile;
+		}
+
+		$devFile = ABP01_PLUGIN_ROOT . '/README.txt';
+		if (is_readable($devFile)) {
+			return $devFile;
+		}
+
+		return null;
 	}
 
 	public function getViewerDataSourceCache() {
