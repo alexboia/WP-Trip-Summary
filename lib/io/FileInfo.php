@@ -122,8 +122,6 @@ class Abp01_Io_FileInfo {
 		$tailLines = explode("\n", $tailContents);
 		$actualTailLineCount = count($tailLines);
 
-
-
 		if (count($tailLines) > $nLines) {
 			$tailLines = array_slice($tailLines, $actualTailLineCount - $nLines);
 			$tailContents = join("\n", $tailLines);
@@ -166,6 +164,7 @@ class Abp01_Io_FileInfo {
 	}
 
 	public function exists(): bool {
-		return is_readable($this->_filePath) && is_file($this->_filePath);
+		return is_readable($this->_filePath) 
+			&& is_file($this->_filePath);
 	}
 }

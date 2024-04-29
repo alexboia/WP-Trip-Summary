@@ -30,9 +30,9 @@
  */
 
 class SystemLogManagerTests extends WP_UnitTestCase {
-	const TEST_LOG_FILE_COUNT = 10;
-	
 	use GenericTestHelpers;
+
+	const TEST_LOG_FILE_COUNT = 10;
 
 	protected function setUp(): void {
 		parent::setUp();
