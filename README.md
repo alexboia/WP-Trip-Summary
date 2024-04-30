@@ -346,33 +346,20 @@ The following languages are supported:
 ## Roadmap
 <a name="wpts-roadmap"></a>  
 
-### Road to Version 0.3
+### Road to Version 0.4
 
-Version 0.2.0 was the first I deemed fit to actually be published as a plug-in. 
-From there on the main purpose of all 0.2.* versions is to:
+Moving forward to 0.4, the focus is on extensibility, a slightly improved UI and, as a nice to have, a broader language support:
 
-   - [ ] improve stability of the plug-in by:
-      - [ ] actual bug-fixing (of either reported or found as result of manual testing);
-      - [ ] expand the set of available automated tests (in-progress);
-      - [ ] gradually update the set of third party components (in-progress).
-   - [x] improve the overall usability of the plug-in (meaning the minimum amount of features to render it usable enough for most of the users):
-      - [x] allow users to see at a glance, when listing posts, which post has trip summary information and track data and which has not;
-      - [x] improve trip summary editing experience;
-   - [x] add some options to allow for quick customization:
-      - [x] customize the colour of the line used to plot the track on the map;
-      - [x] customize the weight of the line used to plot the track on the map.
-   - [x] improve localization by adding at least one more language:
-      - [x] French translation has been completed.
-   - [x] publish a guide for customizing the front-end trip summary viewer (planned for 0.2.5);
+   - [ ] support custom route types:
+      - [ ] also add some more pre-defined types, such as: roadtrips, water-stuff etc.;
+   - [ ] allow customization of settings section;
+   - [ ] allow viewer color-scheme customization, both programatically and from the settings page.
    - [ ] add some nice to have features, which can be quickly implemented and provide some value, such as:
-      - [x] display minimum and maximum altitude (planned for 0.2.5);
-      - [x] compute and display an altitude profile;
       - [ ] display GPX waypoints;
-      - [x] allow the trip summary viewer to be added as a shortcode anywhere in the text (planned for 0.2.5).
-   - [x] publish a list of things with which anyone can help, if he or she desires to do so;
+   - [ ] an API for plugin developers;
    - [ ] refactoring (on-going).
 
-### Version 0.3 and onwards
+### Version 0.4 and onwards
 
 There are a lot of features I would like to see implemented in this plug-in and [I would also be curious about your input on this matter](https://github.com/alexboia/WP-Trip-Summary/issues/new/choose).
 However, there is no definitive plan for it, but, as a general rule, I would like to see a maintenance realease every other release, to keep things stable enough.
