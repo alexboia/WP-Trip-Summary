@@ -317,30 +317,6 @@ The following languages are supported:
 - Add proper error and debug logging infrastructure, including dedicated log management page (go to `Trip Summary` -> `System logs`);
 - Other stuff which I may not remember.
 
-### Version 0.3.1
-- Fixed bug on some PHP versions.
-
-### Version 0.3.0
-- Fixed bug on unix platforms due to wrong directory naming (upper case first letter, instead of expected lower case).
-
-### Version 0.2.9
-- Added rider's log feature;
-- Bug fix when validating GPX files that begin with XML comments (courtesy of Philip Flohr);
-- Fixed some warnings on PHP 8;
-- Internal installer rework.
-
-### Version 0.2.8
-- Added shortcuts to plug-in's entry from the plug-in listing page;
-- Added maintenance page with the following tools: clear cached track data, clear all trip summary info, detect posts that have missing track files;
-- Added JSON-LD structured data to posts or pages that have trip summary track data (type Place, with box GeoShape);
-- Added additional REST API field to WP-JSON post endpoint to return trip summary data;
-- Fixed MysqliDb dependency -  The MysqliDb generates deprectation warnings and needs to be updated ([Issue #79](https://github.com/alexboia/WP-Trip-Summary/issues/79));
-- Fixed JS warnings caused by including editor scripts in non-editor pages ([Issue #78](https://github.com/alexboia/WP-Trip-Summary/issues/78));
-- Added trip summary audit log to post edit and post listing pages ([Issue #80](https://github.com/alexboia/WP-Trip-Summary/issues/80));
-- Updated UI + UX of the lookup data management editor page ([Issue #77](https://github.com/alexboia/WP-Trip-Summary/issues/77));
-- Fixed trip summary shortcode block not rendering in post/page view;
-- Fixed trip summary shortcode block editor widget not showing up.
-
 [See the entire changelog here](https://github.com/alexboia/WP-Trip-Summary/blob/master/CHANGELOG.md)
 
 ## Roadmap
