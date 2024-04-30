@@ -58,6 +58,7 @@ copy_source_files() {
 	mkdir "$1/media" && cp -r ./media/* "$1/media"
 	mkdir "$1/views" && cp -r ./views/* "$1/views"
 	mkdir "$1/lib" && cp -r ./lib/* "$1/lib"
+	mkdir "$1/vendor" && cp -r ./vendor/* "$1/vendor"
 	mkdir "$1/lang" && cp -r ./lang/* "$1/lang"
 
 	mkdir "$1/data"

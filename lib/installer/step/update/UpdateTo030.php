@@ -47,6 +47,8 @@ class Abp01_Installer_Step_Update_UpdateTo030 implements Abp01_Installer_Step_Up
 				@rename($path, $changeToPath, null);
 			}
 		}
+
+		return true;
 	}
 
 	public function getLastError() { 
