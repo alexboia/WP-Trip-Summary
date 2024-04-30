@@ -151,7 +151,7 @@ It also knows how to import data (markers and lines) from GPX/KML/GeoJSON files,
 It's still constantly updated and I recommend it if all you want to define and organize general purpose maps, possibly a lot of them, and use them in any post.  
 Find out more and get it here: [https://wordpress.org/plugins/waymark/](https://wordpress.org/plugins/waymark/).
 
-### WP GPX Maps (no longer maintained)
+### WP GPX Maps
 
 WP GPX Maps allows you to upload a GPX track and display it on a map, along with a couple of graphs: altitude, speed, heart rate, temperature, cadence, grade.
 It also looks up the media gallery for picture files that would match the coordinates on the track and display those on the map as well.
