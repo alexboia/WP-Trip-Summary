@@ -357,12 +357,9 @@ Moving forward to 0.4, the focus is on extensibility, a slightly improved UI and
    - [ ] add some nice to have features, which can be quickly implemented and provide some value, such as:
       - [ ] display GPX waypoints;
    - [ ] an API for plugin developers;
-   - [ ] refactoring (on-going).
-
-### Version 0.4 and onwards
-
-There are a lot of features I would like to see implemented in this plug-in and [I would also be curious about your input on this matter](https://github.com/alexboia/WP-Trip-Summary/issues/new/choose).
-However, there is no definitive plan for it, but, as a general rule, I would like to see a maintenance realease every other release, to keep things stable enough.
+   - [ ] refactoring (on-going);
+   
+Also, [use the Issues area to submit your idea](https://github.com/alexboia/WP-Trip-Summary/issues/new/choose).
 
 ## Requirements
 <a name="wpts-requirements"></a>  
