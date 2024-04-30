@@ -5,7 +5,7 @@
  * Author URI: http://alexboia.net
  * Version: 0.3.2
  * Description: Aids a travel blogger to add structured information about his tours (biking, hiking, train travels etc.)
- * License: New BSD License
+ * License: Modified BSD License
  * License URI: https://github.com/alexboia/WP-Trip-Summary/blob/master/LICENSE.md
  * Plugin URI: https://github.com/alexboia/WP-Trip-Summary
  * Text Domain: abp01-trip-summary

@@ -6,7 +6,7 @@ Requires at least: 6.0.0
 Tested up to: 6.5.2
 Stable tag: 0.3.2
 Requires PHP: 8.0.0
-License: BSD New License
+License: Modified BSD License
 License URI: https://opensource.org/licenses/BSD-3-Clause
 
 A WordPress trip summary plugin to help travel bloggers manage and display structured information about their train rides and biking or hiking trips.
