@@ -235,6 +235,9 @@ First officially distributed version.
 
 == Upgrade Notice ==
 
+= 0.3.2 = 
+Upgrade to this version for additional features, better user experience and improved plug-in stability
+
 = 0.2.8. = 
 Upgrade to this version for additional features, better user experience and improved plug-in stability
 
