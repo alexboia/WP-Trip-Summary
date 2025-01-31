@@ -4,7 +4,7 @@ use Yoast\PHPUnitPolyfills\Polyfills\AssertStringContains;
 use Yoast\PHPUnitPolyfills\Polyfills\AssertionRenames;
 
 /**
- * Copyright (c) 2014-2024 Alexandru Boia and Contributors
+ * Copyright (c) 2014-2025 Alexandru Boia and Contributors
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
