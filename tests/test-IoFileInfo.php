@@ -99,8 +99,6 @@ class IoFileInfoTests extends WP_UnitTestCase {
 	public function test_canGetContents_whenFileDoesntExist() {
 		$bogusFilePath = $this->_generateRandomTestFilePath();
 
-		var_dump($bogusFilePath);
-
 		$fileInfo = new Abp01_Io_FileInfo($bogusFilePath);
 		$readContents = $fileInfo->contents();
 

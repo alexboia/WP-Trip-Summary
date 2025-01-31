@@ -124,6 +124,9 @@ class Abp01_Plugin {
 
 		add_action('plugins_loaded', 
 			array($this, 'onPluginsLoaded'));
+
+		add_action('init', 
+			array($this, 'onInit'));
 	}
 
 	public function onActivatePlugin() {
@@ -227,7 +230,6 @@ class Abp01_Plugin {
 
 	public function onPluginsLoaded() {
 		$this->_configureScriptIncludes();
-		$this->_loadTextDomain();
 		$this->_initView();
 		$this->_increaseExecutionLimits();
 		$this->_updateIfNeeded();
@@ -236,16 +238,30 @@ class Abp01_Plugin {
 		$this->_loadPluginModules();
 	}
 
+	public function onInit() {
+		//Moved here, bound to init action hook, because of this:
+		// PHP Notice:  Function _load_textdomain_just_in_time was called incorrectly. 
+		//	Translation loading for the abp01-trip-summary domain was triggered too early. 
+		//	This is usually an indicator for some code in the plugin or theme running too early. 
+		//	Translations should be loaded at the init action or later. 
+		//	Please see https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/ 
+		//	for more information. 
+		//	(This message was added in version 6.7.0.) in /wp-includes/functions.php on line 6114
+		$this->_loadTextDomain();
+	}
+
 	private function _configureScriptIncludes() {
 		Abp01_Includes::configure(ABP01_PLUGIN_MAIN, true);
 	}
 
 	private function _loadTextDomain() {
-		load_plugin_textdomain(
-			'abp01-trip-summary', 
-			false, 
-			plugin_basename(ABP01_LANG_DIR)
-		);
+		if (abp01_are_translations_available()) {
+			load_plugin_textdomain(
+				'abp01-trip-summary', 
+				false, 
+				plugin_basename(ABP01_LANG_DIR)
+			);
+		}		
 	}
 
 	private function _initView() {

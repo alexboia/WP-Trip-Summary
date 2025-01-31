@@ -15,6 +15,10 @@ class ComposerStaticInit2d18172b152e32bc3a112ed6ec9792eb
         array (
             'Monolog\\' => 8,
         ),
+        'K' => 
+        array (
+            'KamelPhp\\' => 9,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -25,6 +29,10 @@ class ComposerStaticInit2d18172b152e32bc3a112ed6ec9792eb
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
+        'KamelPhp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/myclar/kamel-php/src',
         ),
     );
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6ab37c392bc67afe27bf4c34181ecf1c",
+    "content-hash": "e87d1948799ea87272afc4c27e150f9f",
     "packages": [
         {
             "name": "monolog/monolog",
@@ -109,17 +109,57 @@
             "time": "2023-10-27T15:25:26+00:00"
         },
         {
-            "name": "psr/log",
-            "version": "3.0.0",
+            "name": "myclar/kamel-php",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/php-fig/log.git",
-                "reference": "fe5ea303b0887d5caefd3d431c3e61ad47037001"
+                "url": "https://github.com/alexboia/KML-for-PHP.git",
+                "reference": "77107a58ed81d11157090a1aa54426ec08db470f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/fe5ea303b0887d5caefd3d431c3e61ad47037001",
-                "reference": "fe5ea303b0887d5caefd3d431c3e61ad47037001",
+                "url": "https://api.github.com/repos/alexboia/KML-for-PHP/zipball/77107a58ed81d11157090a1aa54426ec08db470f",
+                "reference": "77107a58ed81d11157090a1aa54426ec08db470f",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "KamelPhp\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "A PHP KML parser library",
+            "keywords": [
+                "kml",
+                "library",
+                "parser",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/alexboia/KML-for-PHP/issues",
+                "source": "https://github.com/alexboia/KML-for-PHP/tree/v1.0.1"
+            },
+            "time": "2025-01-21T09:54:50+00:00"
+        },
+        {
+            "name": "psr/log",
+            "version": "3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/log.git",
+                "reference": "f16e1d5863e37f8d8c2a01719f5b34baa2b714d3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/f16e1d5863e37f8d8c2a01719f5b34baa2b714d3",
+                "reference": "f16e1d5863e37f8d8c2a01719f5b34baa2b714d3",
                 "shasum": ""
             },
             "require": {
@@ -154,9 +194,9 @@
                 "psr-3"
             ],
             "support": {
-                "source": "https://github.com/php-fig/log/tree/3.0.0"
+                "source": "https://github.com/php-fig/log/tree/3.0.2"
             },
-            "time": "2021-07-14T16:46:02+00:00"
+            "time": "2024-09-11T13:17:53+00:00"
         }
     ],
     "packages-dev": [],
@@ -167,5 +207,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.6.0"
 }

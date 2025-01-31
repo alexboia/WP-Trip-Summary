@@ -29,15 +29,15 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-use StepanDalecky\KmlParser\Entities\Coordinate;
-use StepanDalecky\KmlParser\Entities\Coordinates;
-use StepanDalecky\KmlParser\Entities\Point;
-use StepanDalecky\KmlParser\Entities\LineString;
-use StepanDalecky\KmlParser\Entities\LinearRing;
-use StepanDalecky\KmlParser\Entities\Polygon;
-use StepanDalecky\KmlParser\Entities\MultiGeometry;
-use StepanDalecky\KmlParser\Processor\Delegate;
-use StepanDalecky\KmlParser\Processor\FeatureMetadata;
+use KamelPhp\KmlParser\Entities\Coordinate;
+use KamelPhp\KmlParser\Entities\Coordinates;
+use KamelPhp\KmlParser\Entities\Point;
+use KamelPhp\KmlParser\Entities\LineString;
+use KamelPhp\KmlParser\Entities\LinearRing;
+use KamelPhp\KmlParser\Entities\Polygon;
+use KamelPhp\KmlParser\Entities\MultiGeometry;
+use KamelPhp\KmlParser\Processor\Delegate;
+use KamelPhp\KmlParser\Processor\FeatureMetadata;
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;

@@ -42,6 +42,10 @@ if (!function_exists('abp01_die')) {
 	}
 }
 
+function abp01_are_translations_available() {
+	return did_action('init') >= 1;
+}
+
 /**
  * Initializes the autoloading process
  * 

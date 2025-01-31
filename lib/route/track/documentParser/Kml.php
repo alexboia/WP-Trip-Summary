@@ -29,7 +29,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-use StepanDalecky\KmlParser\Processor;
+use KamelPhp\KmlParser\Processor;
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;

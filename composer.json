@@ -1,5 +1,6 @@
 {
     "require": {
-        "monolog/monolog": "2.9.2"
+        "monolog/monolog": "2.9.2",
+        "myclar/kamel-php": "^1.0"
     }
 }
