@@ -304,35 +304,35 @@
 		var $ctrlTrackLineWeight = $('#abp01-trackLineWeight');
 		var minLineWeight = parseInt($ctrlTrackLineWeight.attr('data-min-line-weight'));
 
-		$ctrlTrackLineWeight.abp01NumericStepper({
-			minValue: minLineWeight,
-			maxValue: 10,
-			defaultValue: 3
-		});
+		// $ctrlTrackLineWeight.abp01NumericStepper({
+		// 	minValue: minLineWeight,
+		// 	maxValue: 10,
+		// 	defaultValue: 3
+		// });
 	}
 
 	function initMapHeightStepper() {
 		var $ctrlMapHeight = $('#abp01-mapHeight');
 		var minMapHeight = parseInt($ctrlMapHeight.attr('data-min-map-height'));
 
-		$ctrlMapHeight.abp01NumericStepper({
-			minValue: minMapHeight,
-			maxValue: 1000,
-			defaultValue: minMapHeight,
-			increment: 10
-		});
+		// $ctrlMapHeight.abp01NumericStepper({
+		// 	minValue: minMapHeight,
+		// 	maxValue: 1000,
+		// 	defaultValue: minMapHeight,
+		// 	increment: 10
+		// });
 	}
 
 	function initViewerItemValueDisplayCountStepper() {
 		var $ctrlCiewerItemValueDisplayCount = $('#abp01-viewerItemValueDisplayCount');
 		var minViewerItemValueDisplayCount = parseInt($ctrlCiewerItemValueDisplayCount.attr('data-min-viewer-item-value-display-count'));
 
-		$ctrlCiewerItemValueDisplayCount.abp01NumericStepper({
-			minValue: minViewerItemValueDisplayCount,
-			maxValue: 100,
-			defaultValue: minViewerItemValueDisplayCount,
-			increment: 1
-		});
+		// $ctrlCiewerItemValueDisplayCount.abp01NumericStepper({
+		// 	minValue: minViewerItemValueDisplayCount,
+		// 	maxValue: 100,
+		// 	defaultValue: minViewerItemValueDisplayCount,
+		// 	increment: 1
+		// });
 	}
 
 	$(document).ready(function() {

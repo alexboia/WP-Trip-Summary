@@ -101,7 +101,7 @@ class Abp01_View {
 
 	public function renderAdminSettingsPage(stdClass $data) {
 		$this->_registerAdminHelpers();
-		return $this->_renderCoreView('wpts-settings.php', $data);
+		return $this->_renderCoreView('wpts-admin-settings.php', $data);
 	}
 
 	public function renderAdminHelpPage(stdClass $data) {

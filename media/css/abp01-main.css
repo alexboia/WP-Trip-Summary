@@ -349,12 +349,6 @@ a.abp01-close-editor:hover {
 	width: 350px !important;
 }
 
-.abp01-textarea-input {
-	width: 350px;
-	height: 125px;
-	resize: none;
-}
-
 .abp01-text-input {
 	width: 350px !important;
 }
@@ -365,10 +359,6 @@ a.abp01-close-editor:hover {
 
 #abp01-submit-settings {
 	text-align: center;
-}
-
-.abp01-settings-info {
-	font-style: italic;
 }
 
 .abp01-settings-save-result, 

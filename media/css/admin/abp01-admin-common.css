@@ -124,6 +124,60 @@ textarea.abp01-code-reading-area {
 	margin-bottom: 10px;
 }
 
+.lead.abp01-settings-info {
+	font-size: 16px;
+}
+
+.row .abp01-checkbox-container {
+	padding-top: 7px;
+}
+
+label {
+	cursor: pointer;
+}
+
+.abp01-page form label {
+	text-align: right;
+	font-weight: bold;
+}
+
+.abp01-page form .abp01-tab-content-container div.row {
+	margin-left: 4px;
+	margin-right: 4px;
+}
+
+.abp01-page form .abp01-tab-content-container div.row:nth-child(2n+1) {
+	background-color: #f6f7f7;
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+
+.abp01-bootstrap .form-control {
+	font-size: 13px;
+}
+
+.abp01-bootstrap .form-control.form-select.abp01-select,
+.abp01-bootstrap .form-control.abp01-textarea-input,
+.abp01-bootstrap .form-control.abp01-text-input,
+.abp01-bootstrap .form-control.abp01-number-input {
+	min-width: 450px;
+	width: 450px;
+}
+
+.abp01-bootstrap .form-control.abp01-text-input {
+	display: inline-block;
+}
+
+.abp01-bootstrap .form-control.abp01-tile-layer-url-input {
+	display: inline-block;
+	min-width: 350px;
+	width: 350px;
+}
+
+.form-control.abp01-textarea-input {
+	resize: none;
+}
+
 /* Admin page - basic structure */
 
 .abp01-page {

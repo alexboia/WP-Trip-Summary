@@ -16,3 +16,4 @@ data/help/ro_RO
 data/help/fr_FR
 wp-trip-summary.code-workspace
 .wpts-installed
+node_modules

@@ -516,7 +516,7 @@ class Abp01_Includes {
 			)
 		), 
 		self::JS_ABP01_ADMIN_SETTINGS => array(
-			'path' => 'media/js/abp01-admin-settings.js', 
+			'path' => 'media/js/admin/abp01-admin-settings.js', 
 			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::JS_JQUERY,
@@ -524,6 +524,7 @@ class Abp01_Includes {
 				self::JS_JQUERY_BLOCKUI,
 				self::JS_URI_JS,
 				self::JS_TIPPED_JS,
+				self::JS_BOOTSTRAP,
 				self::JS_ABP01_COMMON,
 				self::JS_ABP01_PROGRESS_OVERLAY,
 				self::JS_ABP01_NUMERIC_STEPPER,
@@ -794,6 +795,7 @@ class Abp01_Includes {
 				self::STYLE_NPROGRESS,
 				self::STYLE_TIPPED_JS,
 				self::STYLE_ABP01_NUMERIC_STEPPER,
+				self::STYLE_BOOTSTRAP,
 				self::STYLE_ADMIN_COMMON
 			)
 		),
