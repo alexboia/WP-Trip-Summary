@@ -91,13 +91,29 @@
 		}
 	}
 
+	function initTooltipsOnPage(container: string) {
+		var $els: JQuery = $('[data-bs-toggle="tooltip"]');
+		$els.each(function() {
+			var $me: JQuery = $(this);
+			var el: HTMLElement = $me.get(0);
+			new bootstrap.Tooltip(el, {
+				container: container,
+				delay: {
+					show: 0,
+					hide: 2500
+				}
+			});
+		});
+	}
+
 	if (window.abp01 == undefined) {
 		window.abp01 = {
 			scrollToTop: scrollToTop,
 			disableWindowScroll: disableWindowScroll,
 			enableWindowScroll: enableWindowScroll,
 			initToastMessages: initToastMessages,
-			toastMessage: toastMessage
+			toastMessage: toastMessage,
+			initTooltipsOnPage: initTooltipsOnPage
 		};
 	}
 

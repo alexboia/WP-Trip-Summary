@@ -34,9 +34,11 @@
  (function($) {
 	"use strict";
 
-	$.fn.abp01AlertInline = function(spec) {
+	$.fn.abp01AlertInline = function(spec: WpTripSummaryAlertInlineOptions) {
 		var $container: JQuery = $(this);
-		var opts: any = spec || {};
+		var opts: WpTripSummaryAlertInlineOptions = spec || {
+			dismissible: false
+		};
 
 		var isDismissible: boolean = !!opts.dismissible;
 
@@ -45,7 +47,7 @@
 		}
 
 		function getHtml(): string {
-			var classes = ['alert'];
+			var classes: string[] = ['alert'];
 
 			if (isDismissible) {
 				classes.push('alert-dismissible');

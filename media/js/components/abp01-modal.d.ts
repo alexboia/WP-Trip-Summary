@@ -30,25 +30,16 @@
 
 /// <reference types="jquery" />
 
-interface WpTripSummaryAlertInline {
-	show(message: string, type: string, animate: boolean): void;
-	hide(animate: boolean): void;
-
-	primary(message: string, animate: boolean): void;
-	secondary(message: string, animate: boolean): void;
-
-	success(message: string, animate: boolean): void;
-	danger(message: string, animate: boolean): void;
-	warning(message: string, animate: boolean): void;
-	info(message: string, animate: boolean): void;
-	light(message: string, animate: boolean): void;
-	dark(message: string, animate: boolean): void;
+interface WpTripSummaryModal {
+	show(): void;
+	hide(): void;
 }
 
-interface WpTripSummaryAlertInlineOptions {
-	dismissible: boolean;
+
+interface WpTripSummaryModalOptions {
+	trigger: string;
 }
 
 interface JQuery {
-	abp01AlertInline(opts: WpTripSummaryAlertInlineOptions): WpTripSummaryAlertInline;
+	abp01Modal(spec: WpTripSummaryModalOptions): WpTripSummaryModal;
 }

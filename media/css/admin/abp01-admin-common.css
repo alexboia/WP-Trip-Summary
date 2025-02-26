@@ -124,9 +124,11 @@ textarea.abp01-code-reading-area {
 	margin-bottom: 10px;
 }
 
-.lead.abp01-settings-info {
-	font-size: 16px;
+.abp01-modal-window.modal h3.modal-title {
+	font-size: 17px;
 }
+
+/* Form stuff */
 
 .row .abp01-checkbox-container {
 	padding-top: 7px;
@@ -178,6 +180,18 @@ label {
 	resize: none;
 }
 
+.abp01-predefined-field-with-selector-container {
+	height: 32px;
+	line-height: 32px;
+	vertical-align: middle;
+}
+
+.btn.abp01-choose-predefined-field-value {
+	font-size: 12px;
+	height: 33px;
+	margin-top: -4px;
+}
+
 /* Admin page - basic structure */
 
 .abp01-page {
@@ -204,6 +218,21 @@ label {
 .abp01-page-sidebar h4 {
 	margin-left: -10px;
 	margin-right: -10px;
+}
+
+.abp01-page-side-bar-content .nav-link {
+	color: var(--bs-primary);
+}
+
+.abp01-page-side-bar-content .nav-link.active,
+.abp01-page-side-bar-content .nav-pills .nav-link.active {
+	background-color: var(--bs-primary);
+	color: #fff;
+}
+
+.lead.abp01-workspace-info,
+.lead.abp01-settings-info {
+	font-size: 16px;
 }
 
 .abp01-page-side-bar-content {
@@ -245,6 +274,12 @@ label {
 	line-height: 17px;
 	vertical-align: middle;
 	margin-bottom: 5px;
+}
+
+.abp01-page-workspace-toolbar .btn.abp01-form-submit-btn .dashicons {
+	margin-bottom: 2px;
+	padding-bottom: 0px;
+	margin-right: 4px;
 }
 
 /* Trip summary audit log */

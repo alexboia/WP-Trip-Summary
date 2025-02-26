@@ -33,7 +33,9 @@
     "use strict";
     $.fn.abp01AlertInline = function (spec) {
         var $container = $(this);
-        var opts = spec || {};
+        var opts = spec || {
+            dismissible: false
+        };
         var isDismissible = !!opts.dismissible;
         function hasHtml() {
             return $container.find('.alert ').length > 0;

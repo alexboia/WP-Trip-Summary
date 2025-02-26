@@ -320,31 +320,7 @@ a.abp01-close-editor:hover {
 	padding: 0;
 }
 
-.abp01-settings-container {
-	background: #fff;
-	box-shadow: 0 1px 1px rgba(0,0,0,.04);
-	border-radius: 5px;
-	padding: 5px;
-	width: 753px;
-	margin-top: 10px;
-}
-
-.abp01-settings-container .form-table {
-	margin-top: 0px;
-}
-
-.abp01-settings-container th {
-	padding: 10px 5px 10px 0px !important;
-}
-
-.abp01-settings-container th label {
-	margin-left: 10px;
-}
-
-.abp01-settings-container td {
-	padding: 5px 0px 5px 0px;
-}
-
+/* Generic forms */
 .abp01-select {
 	width: 350px !important;
 }
@@ -353,24 +329,11 @@ a.abp01-close-editor:hover {
 	width: 350px !important;
 }
 
-.apb01-settings-save {
-	margin-top: 10px;
-}
-
-#abp01-submit-settings {
-	text-align: center;
-}
-
-.abp01-settings-save-result, 
 .abp01-lookup-listing-result, 
 .abp01-lookup-operation-result,
 .abp01-tool-execution-result {
 	margin-left: 0px !important;
 	margin-right: 10px !important;
-}
-
-.abp01-settings-save-result {
-	width: 729px;
 }
 
 .abp01-tool-execution-result,
@@ -421,71 +384,13 @@ a.abp01-close-editor:hover {
 	vertical-align: middle;
 }
 
-.abp01-window-container-header .abp01-close-window,
-#abp01-predefined-tile-layers-container-header .abp01-close-tile-layer-selector {
+.abp01-window-container-header .abp01-close-window {
 	float: right;
 	text-decoration: none;
 	color: rgb(34,34,34);
 }
 
-.abp01-predefined-tile-layer {
-	border-bottom: 1px solid #f1f1f1;
-	padding-bottom: 10px;
-	margin-top: 10px;
-}
 
-.abp01-predefined-tile-layer h4 {
-	margin-top: 0px;
-	padding-top: 0px;
-	margin-top: 5px;
-	margin-bottom: 5px;
-	font-size: 1.2em;
-}
-
-.abp01-predefined-tile-layer ul {
-	margin: 0 0 10px 0;
-	padding: 0;
-}
-
-.abp01-predefined-tile-layer .abp01-predefined-tile-layer-prop {
-	color: #50575e;
-	font-size: 14px;
-}
-
-.abp01-predefined-tile-layer .abp01-predefined-tile-layer-prop.abp01-predefined-tile-layer-prop-warn {
-	padding-top: 5px;
-	padding-bottom: 5px;
-}
-
-.abp01-predefined-tile-layer .abp01-predefined-tile-layer-prop.abp01-predefined-tile-layer-prop-warn span.abp01-predefined-tile-layer-prop-warn-message {
-	background-color: #fffb91;
-	border: 1px solid #ffea00;
-	-moz-border-radius: 2px;
-	-webkit-border-radius: 2px;
-	border-radius: 2px;
-	color: #868445;
-	padding: 6px;
-	font-size: 13px;
-}
-
-.abp01-predefined-tile-layer .abp01-predefined-tile-layer-prop.abp01-predefined-tile-layer-prop-warn span.dashicons {
-	margin-right: 5px;
-}
-
-.abp01-predefined-tile-layer-actions a.button {
-	margin-right: 10px;
-	font-size: 11px;
-	min-height: 30px;
-	line-height: 30px;
-	height: 30px;
-	vertical-align: middle;
-	box-sizing: content-box;
-}
-
-#abp01-tileLayer-apiKey-nag {
-	margin-top: 5px;
-	cursor: pointer;
-}
 
 /* START Lookup data management section */
 .abp01-lookupControl {

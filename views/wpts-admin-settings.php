@@ -42,11 +42,56 @@
 	<form id="abp01-settings-form" method="post">
 		<div id="abp01-settings-form-beacon"></div>
 		<h2 class="abp01-page-title"><?php echo esc_html__('Trip Summary Settings', 'abp01-trip-summary'); ?></h2>
+
+		<div id="abp01-predefined-tile-layers-window" class="modal fade abp01-modal-window" aria-hidden="true" tabindex="-1">
+			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 class="modal-title"><?php echo __('Chose a pre-defined tile layer service', 'abp01-trip-summary'); ?></h3>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<?php foreach ($data->settings->allowedPredefinedTileLayers as $tl): ?>
+							<div class="abp01-predefined-tile-layer">
+								<h4><?php echo esc_html($tl->label); ?></h4>
+								<ul>
+									<li class="abp01-predefined-tile-layer-prop"> 
+										<?php echo esc_html($tl->tileLayerObject->attributionTxt); ?>
+									</li>
+									<?php if ($tl->apiKeyRequired): ?>
+										<li class="abp01-predefined-tile-layer-prop abp01-predefined-tile-layer-prop-warn"> 
+											<span class="abp01-predefined-tile-layer-prop-warn-message">
+												<span class="dashicons dashicons-warning"></span>
+												<?php echo __('This tile layer requires an API key from the service provider', 'abp01-trip-summary'); ?>
+											</span>
+										</li>
+									<?php endif; ?>
+								</ul>
+								<div class="abp01-predefined-tile-layer-actions">
+									<a class="btn btn-secondary btn-sm abp01-view-tile-layer-details" 
+										href="<?php echo esc_attr($tl->infoUrl); ?>" 
+										target="_blank">
+										<?php echo __('View details', 'abp01-trip-summary'); ?>
+									</a>
+									<button class="btn btn-primary btn-sm abp01-use-tile-layer" 
+										data-predefined-tile-layer-id="<?php echo esc_attr($tl->id); ?>" 
+										href="javascript:void(0);"
+										type="button">
+										<?php echo __('Use this tile layer', 'abp01-trip-summary'); ?>
+									</button>
+								</div>
+							</div>
+						<?php endforeach; ?>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<div class="container-fluid px-4">
 			<div class="row gx-5">
 				<div class="col col-md-3 abp01-page-sidebar abp01-rounded-container">
 					<h4><?php echo esc_html__('Menu', 'abp01-trip-summary'); ?></h4>
-					<div id="abp01-log-file-lists-container" class="abp01-page-side-bar-content">
+					<div id="abp01-admin-settings-menu-container" class="abp01-page-side-bar-content">
 						<ul class="nav nav-pills nav-fill flex-column">
 							<li class="nav-item">
 								<button class="nav-link active" 
@@ -81,6 +126,9 @@
 				<div class="col col-md-9 abp01-page-workspace">
 					<div class="abp01-rounded-container abp01-page-workspace-inner">
 						<h4><?php echo esc_html__('Options', 'abp01-trip-summary'); ?></h4>
+
+						<div id="abp01-settings-action-result" class="abp01-alert-container"></div>
+						
 						<div class="tab-content abp01-page-workspace-content">
 							<div id="abp01-general-settings" 
 								role="tabpanel"
@@ -214,18 +262,20 @@
 								<div class="mb-3 row">
 									<label for="abp01-tileLayerUrl" class="col-sm-3 col-form-label"><?php echo esc_html__('Tile layer URL template', 'abp01-trip-summary'); ?>:</label>
 									<div class="col-sm-9">
-										<input type="text" 
-											id="abp01-tileLayerUrl" 
-											name="tileLayerUrl" 
-											class="form-control abp01-text-input abp01-tile-layer-url-input" 
-											value="<?php echo esc_attr($data->settings->tileLayer->url); ?>" 
-										/>
+										<div class="abp01-predefined-field-with-selector-container">
+											<input type="text" 
+												id="abp01-tileLayerUrl" 
+												name="tileLayerUrl" 
+												class="form-control abp01-text-input abp01-tile-layer-url-input" 
+												value="<?php echo esc_attr($data->settings->tileLayer->url); ?>" 
+											/>
 
-										<input type="button" 
-											id="abp01-predefined-tile-layer-selector" 
-											class="button" 
-											value="<?php echo esc_html__('... or chose pre-defined', 'abp01-trip-summary'); ?>" 
-										/>
+											<button type="button" 
+												id="abp01-predefined-tile-layer-selector" 
+												class="btn btn-secondary abp01-choose-predefined-field-value">
+												<?php echo esc_html__('... or chose pre-defined', 'abp01-trip-summary'); ?>
+											</button>
+										</div>
 									</div>
 								</div>
 
@@ -265,8 +315,10 @@
 
 										<span id="abp01-tileLayer-apiKey-nag" 
 											class="dashicons dashicons-warning" 
-											style="display: none" 
-											data-nag-text="<?php echo esc_attr__('This tile layer requires an API key from the service provider', 'abp01-trip-summary'); ?>"></span>
+											data-bs-toggle="tooltip" 
+											data-bs-placement="bottom"
+											data-bs-title="<?php echo esc_attr__('This tile layer requires an API key from the service provider', 'abp01-trip-summary'); ?>"
+											style="display: none"></span>
 									</div>
 								</div>
 
@@ -383,54 +435,14 @@
 
 							<div id="abp01-page-workspace-toolbar" class="abp01-page-workspace-toolbar">
 								<div class="apb01-settings-save">
-									<input type="button" 
+									<button type="button" 
 										id="abp01-submit-settings" 
 										name="abp01-submit-settings" 
-										class="btn btn-primary abp01-form-submit-btn apb01-settings-save-btn" 
-										value="<?php echo esc_html__('Save settings', 'abp01-trip-summary'); ?>" 
-									/>
+										class="btn btn-primary abp01-form-submit-btn apb01-settings-save-btn">
+										<span class="dashicons dashicons-saved"></span><?php echo esc_html__('Save settings', 'abp01-trip-summary'); ?>
+									</button>
 								</div>
 							</div>
-
-							<script id="tpl-abp01-predefined-tile-layers-container" type="text/x-kite">
-								<div id="abp01-predefined-tile-layers-container" class="abp01-window-container">
-									<div id="abp01-predefined-tile-layers-container-header" class="abp01-window-container-header">
-										<h3><?php echo __('Chose a pre-defined tile layer service', 'abp01-trip-summary'); ?></h3>
-										<a href="javascript:void(0)" class="abp01-close-window abp01-close-tile-layer-selector">
-											<span class="dashicons dashicons-dismiss"></span>
-										</a>
-										<div class="abp01-clear"></div>
-									</div>
-									<div id="abp01-predefined-tile-layers-container-inner" class="abp01-window-container-inner">
-										{{#predefinedTileLayers}}
-											<div class="abp01-predefined-tile-layer">
-												<h4>{{label}}</h4>
-												<ul>
-													<li class="abp01-predefined-tile-layer-prop"> 
-														{{tileLayerObject.attributionTxt}}
-													</li>
-													{{? apiKeyRequired }}
-														<li class="abp01-predefined-tile-layer-prop abp01-predefined-tile-layer-prop-warn"> 
-															<span class="abp01-predefined-tile-layer-prop-warn-message">
-																<span class="dashicons dashicons-warning"></span>
-																<?php echo __('This tile layer requires an API key from the service provider', 'abp01-trip-summary'); ?>
-															</span>
-														</li>
-													{{/?}}
-												</ul>
-												<div class="abp01-predefined-tile-layer-actions">
-													<a class="button abp01-view-tile-layer-details" href="{{infoUrl}}" target="_blank">
-														<?php echo __('View details', 'abp01-trip-summary'); ?>
-													</a>
-													<a class="button button-primary abp01-use-tile-layer" data-predefined-tile-layer-id="{{id}}" href="javascript:void(0);">
-														<?php echo __('Use this tile layer', 'abp01-trip-summary'); ?>
-													</a>
-												</div>
-											</div>
-										{{/predefinedTileLayers}}
-									</div
-								</div
-							</script>
 						</div>
 					</div>
 				</div>

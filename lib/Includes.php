@@ -96,6 +96,8 @@ class Abp01_Includes {
 
 	const JS_ABP01_CONFIRM_DIALOG_MODAL = 'abp01-confirm-dialog-modal';
 
+	const JS_ABP01_MODAL = 'abp01-modal';
+
 	const JS_ABP01_ALERT_INLINE = 'abp01-alert-inline';
 
 	const JS_ABP01_PROGRESS_OVERLAY = 'abp01-progress-overlay';
@@ -438,6 +440,16 @@ class Abp01_Includes {
 			)
 		), 
 
+		self::JS_ABP01_MODAL => array(
+			'path' => 'media/js/components/abp01-modal.js', 
+			'version' => ABP01_VERSION,
+			'deps' => array(
+				self::JS_JQUERY,
+				self::JS_BOOTSTRAP,
+				self::JS_ABP01_COMMON
+			)
+		),
+
 		self::JS_ABP01_ALERT_INLINE => array(
 			'path' => 'media/js/components/abp01-alert-inline.js', 
 			'version' => ABP01_VERSION,
@@ -520,15 +532,14 @@ class Abp01_Includes {
 			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::JS_JQUERY,
-				self::JS_WP_COLOR_PICKER,
 				self::JS_JQUERY_BLOCKUI,
+				self::JS_WP_COLOR_PICKER,
 				self::JS_URI_JS,
-				self::JS_TIPPED_JS,
 				self::JS_BOOTSTRAP,
 				self::JS_ABP01_COMMON,
-				self::JS_ABP01_PROGRESS_OVERLAY,
-				self::JS_ABP01_NUMERIC_STEPPER,
-				self::JS_ABP01_OPERATION_MESSAGE
+				self::JS_ABP01_MODAL,
+				self::JS_ABP01_PROGRESS_MODAL,
+				self::JS_ABP01_ALERT_INLINE
 			)
 		),
 		self::JS_ABP01_ADMIN_LOOKUP_MGMT => array(
@@ -789,12 +800,10 @@ class Abp01_Includes {
 			)
 		),
 		self::STYLE_ADMIN_SETTINGS => array(
-			'alias' => self::STYLE_ADMIN_MAIN,
+			'path' => 'media/css/admin/abp01-admin-settings.css', 
+			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::STYLE_WP_COLOR_PICKER,
-				self::STYLE_NPROGRESS,
-				self::STYLE_TIPPED_JS,
-				self::STYLE_ABP01_NUMERIC_STEPPER,
 				self::STYLE_BOOTSTRAP,
 				self::STYLE_ADMIN_COMMON
 			)

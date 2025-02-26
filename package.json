@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "wp-types": "^4.67.0"
+  },
+  "dependencies": {
+    "@types/jquery.blockui": "^0.0.33",
+    "@types/urijs": "^1.19.25"
+  }
+}
