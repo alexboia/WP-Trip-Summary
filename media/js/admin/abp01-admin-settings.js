@@ -29,10 +29,10 @@
  */
 /// <reference types="jquery" />
 /// <reference types="urijs" />
-/// <reference path="./abp01-admin-settings.d.ts" />
 /// <reference path="../abp01-common.d.ts" />
 /// <reference path="../components/abp01-alert-inline.d.ts" />
 /// <reference path="../components/abp01-progress-modal.d.ts" />
+/// <reference path="./abp01-admin-settings.d.ts" />
 (function ($) {
     "use strict";
     var $ctrlSettingsForm = null;
@@ -185,11 +185,11 @@
     }
     function initListeners() {
         $('.apb01-settings-save-btn')
-            .click(saveSettings);
+            .on('click', saveSettings);
         $('#abp01-tileLayerUrl')
-            .change(updateApiKeyNag);
+            .on('change', updateApiKeyNag);
         $('#abp01-tileLayerApiKey')
-            .change(updateApiKeyNag);
+            .on('change', updateApiKeyNag);
         $(document).on('click', '.abp01-close-tile-layer-selector', closePredefinedTileLayerSelector);
         $(document).on('click', '.abp01-use-tile-layer', selectPreDefinedTileLayer);
     }
