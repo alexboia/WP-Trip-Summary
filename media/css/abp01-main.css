@@ -519,46 +519,6 @@ a.abp01-close-editor:hover {
 }
 /* END Lookup data management section */
 
-/* START maintenance section */
-.abp01-admin-maintenance-container {
-	margin: 0 10px 20px 0px;
-	width: 783px;
-	border-radius: 5px;
-	box-shadow: 0 1px 1px rgba(0,0,0,.04);
-	padding: 10px;
-	background-color: #fff;
-} 
-
-.abp01-admin-maintenance-tagline {
-	margin-bottom: 10px;
-	clear: both;
-}
-
-.abp01-admin-maintenance-tagline h3 {
-	margin: 0;
-	padding: 0;
-	font-size: 14px;
-}
-
-.abp01-maintenance-tool-select {
-	width: 100%;
-	max-width: 780px !important;
-}
-
-.abp01-maintenance-tool-action-container {
-	margin-top: 10px;
-}
-
-.abp01-admin-maintenance-result-container-inner {
-	margin-top: 10px;
-}
-
-.abp01-admin-maintenance-container table {
-	border-radius: 5px;
-}
-
-/* END maintenance section */
-
 /* START Sumo Select overrides */
 .SelectBox { 
 	width: 622px;

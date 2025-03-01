@@ -27,61 +27,40 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+.abp01-bootstrap .form-control.abp01-select.abp01-maintenance-tool-select {
+	width: 100%;
+	min-width: unset;
+}
 
-.abp01-predefined-tile-layer {
-	border-bottom: 1px solid #f1f1f1;
-	padding-bottom: 10px;
+#abp01-execute-maintenance-tool {
+	width: calc(100% - 7px);
+}
+
+.abp01-admin-maintenance-result-placeholder {
+	width: 200px;
+	height: 200px;
+	margin: 0 auto;
+	margin-top: 16px;
+	margin-bottom: 16px;
+	opacity: 0.1;
+}
+
+.abp01-admin-maintenance-result-placeholder .dashicons {
+	font-size: 200px;
+	width: 200px;
+	height: 200px;
+}
+
+.abp01-maintenance-tool-action-container {
 	margin-top: 10px;
 }
 
-.abp01-predefined-tile-layer h4 {
-	margin-top: 0px;
-	padding-top: 0px;
-	margin-top: 5px;
-	margin-bottom: 5px;
-	font-size: 1.2em;
-}
-
-.abp01-predefined-tile-layer ul {
-	margin: 0 0 10px 0;
-	padding: 0;
-}
-
-.abp01-predefined-tile-layer .abp01-predefined-tile-layer-prop {
-	color: #50575e;
-	font-size: 14px;
-}
-
-.abp01-predefined-tile-layer .abp01-predefined-tile-layer-prop.abp01-predefined-tile-layer-prop-warn {
-	padding-top: 5px;
-	padding-bottom: 5px;
-}
-
-.abp01-predefined-tile-layer .abp01-predefined-tile-layer-prop.abp01-predefined-tile-layer-prop-warn span.abp01-predefined-tile-layer-prop-warn-message {
-	background-color: #fffb91;
-	border: 1px solid #ffea00;
-	-moz-border-radius: 2px;
-	-webkit-border-radius: 2px;
-	border-radius: 2px;
-	color: #868445;
-	padding: 6px;
-	font-size: 13px;
-	display: block;
-}
-
-.abp01-predefined-tile-layer .abp01-predefined-tile-layer-prop.abp01-predefined-tile-layer-prop-warn span.dashicons {
-	margin-right: 5px;
-}
-
-.abp01-predefined-tile-layer-actions a.button {
-	margin-right: 10px;
-}
-
-#abp01-tileLayer-apiKey-nag {
-	margin-top: 5px;
-	cursor: pointer;
-}
-
-.apb01-settings-save {
+.abp01-admin-maintenance-result-container-inner {
 	margin-top: 10px;
+}
+
+#abp01-admin-missing-tracks-posts td {
+	min-height: 31px;
+	line-height: 31px;
+	vertical-align: middle;
 }

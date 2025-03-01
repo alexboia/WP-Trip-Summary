@@ -32,7 +32,7 @@
 ?>
 
 <?php if (!empty($data->result['posts'])): ?>
-	<table id="abp01-admin-missing-tracks-posts" class="wp-list-table widefat fixed striped">
+	<table id="abp01-admin-missing-tracks-posts" class="table table-striped">
 		<thead>
 			<tr>
 				<th width="20%"><?php echo esc_html__('ID', 'abp01-trip-summary'); ?></th>
@@ -46,13 +46,15 @@
 					<td><?php echo esc_html($p['id']) ?></td>
 					<td><?php echo esc_html($p['title']) ?></td>
 					<td>
-						<a href="<?php echo esc_attr($p['permalink_url']) ?>" target="_blank"><?php echo esc_html__('[View]', 'abp01-trip-summary'); ?></a>
-						<a href="<?php echo esc_attr($p['edit_url']) ?>" target="_blank"><?php echo esc_html__('[Edit]', 'abp01-trip-summary'); ?></a>
+						<a class="btn btn-primary btn-sm" href="<?php echo esc_attr($p['permalink_url']) ?>" target="_blank"><?php echo esc_html__('View', 'abp01-trip-summary'); ?></a>
+						<a class="btn btn-secondary btn-sm" href="<?php echo esc_attr($p['edit_url']) ?>" target="_blank"><?php echo esc_html__('Edit', 'abp01-trip-summary'); ?></a>
 					</td>
 				</tr>
 			<?php endforeach; ?>
 		</tbody>
 	</table>
 <?php else: ?>
-	<p><?php echo esc_html__('No posts with missing track files found!', 'abp01-trip-summary'); ?></p>
+	<div class="alert alert-primary" role="alert">
+		<?php echo esc_html__('No posts with missing track files found!', 'abp01-trip-summary'); ?>
+	</div>
 <?php endif; ?>

@@ -557,16 +557,17 @@ class Abp01_Includes {
 			)
 		),
 		self::JS_ABP01_ADMIN_MAINTENANCE => array(
-			'path' => 'media/js/abp01-admin-maintenance.js',
+			'path' => 'media/js/admin/abp01-admin-maintenance.js',
 			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::JS_JQUERY,
-				self::JS_JQUERY_BLOCKUI,
-				self::JS_KITE_JS,
 				self::JS_URI_JS,
+				self::JS_BOOTSTRAP,
 				self::JS_ABP01_COMMON,
-				self::JS_ABP01_PROGRESS_OVERLAY,
-				self::JS_ABP01_OPERATION_MESSAGE
+				self::JS_ABP01_OPERATION_MESSAGE,
+				self::JS_ABP01_PROGRESS_MODAL,
+				self::JS_ABP01_CONFIRM_DIALOG_MODAL,
+				self::JS_ABP01_ALERT_INLINE
 			)
 		),
 		self::JS_ABP01_ADMIN_SYSTEM_LOGS => array(
@@ -818,11 +819,10 @@ class Abp01_Includes {
 			)
 		),
 		self::STYLE_ADMIN_MAINTENANCE => array(
-			'alias' => self::STYLE_ADMIN_MAIN,
+			'path' => 'media/css/admin/abp01-admin-maintenance.css', 
+			'version' => ABP01_VERSION,
 			'deps' => array(
-				self::STYLE_SYSTEM_THICKBOX,
-				self::STYLE_NPROGRESS,
-				self::STYLE_JQUERY_TOASTR,
+				self::STYLE_BOOTSTRAP,
 				self::STYLE_ADMIN_COMMON
 			)
 		),
@@ -987,6 +987,7 @@ class Abp01_Includes {
 
 	public static function includeScriptAdminMaintenance($localization) {
 		self::_includeScript(self::JS_ABP01_ADMIN_MAINTENANCE);
+		self::_includeScriptAdminCommonTranslations();
 		if (!empty($localization)) {
 			wp_localize_script(self::JS_ABP01_ADMIN_MAINTENANCE, 
 				'abp01MaintenanceL10n', 

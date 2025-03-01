@@ -31,7 +31,7 @@
 /// <reference types="jquery" />
 
 interface WpTripSummaryProgressModal {
-	show(): void;
+	show(text?:string): void;
 	hide(): void;
 }
 

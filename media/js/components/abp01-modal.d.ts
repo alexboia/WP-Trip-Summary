@@ -35,7 +35,6 @@ interface WpTripSummaryModal {
 	hide(): void;
 }
 
-
 interface WpTripSummaryModalOptions {
 	trigger: string;
 }

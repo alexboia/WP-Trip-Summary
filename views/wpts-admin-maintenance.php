@@ -37,48 +37,50 @@
 	var abp01_ajaxBaseUrl = '<?php echo $data->ajaxUrl; ?>';
 </script>
 
-<div id="abp01-maintenance-page">
+<div id="abp01-maintenance-page" class="abp01-bootstrap abp01-page">
 	<div id="abp01-maintenance-form-beacon"></div>	
-	<h2><?php echo esc_html__('Maintenance', 'abp01-trip-summary'); ?></h2>
-	<div id="abp01-tool-execution-result" class="abp01-tool-execution-result notice" style="display:none"></div>
-	
-	<div id="abp01-admin-maintenance-container" class="abp01-admin-maintenance-container">
-		<div class="abp01-admin-maintenance-tagline">
-			<h3><?php echo esc_html__('Available tools', 'abp01-trip-summary') ?></h3>
-		</div>
+	<h2 class="abp01-page-title"><?php echo esc_html__('Maintenance', 'abp01-trip-summary'); ?></h2>
 
-		<div class="abp01-maintenance-tool-select-container">
-			<select id="abp01-maintenance-tool-select" class="abp01-maintenance-tool-select">
-				<option value=""><?php echo esc_html__('Select one', 'abp01-trip-summary') ?></option>
-				<?php foreach ($data->toolsInfo as $key => $label): ?>
-					<option value="<?php echo esc_attr($key); ?>"><?php echo esc_html($label); ?></option>
-				<?php endforeach; ?>
-			</select>
-		</div>
+	<div class="container-fluid px-4">
+		<div class="row gx-5">
+			<div class="col col-md-3 abp01-page-sidebar abp01-rounded-container">
+				<h4><?php echo esc_html__('Available tools', 'abp01-trip-summary') ?></h4>
 
-		<div class="abp01-maintenance-tool-action-container">
-			<input type="button" 
-				id="abp01-execute-maintenance-tool" 
-				name="abp01-execute-maintenance-tool" 
-				class="button button-primary" 
-				value="<?php echo esc_html__('Execute', 'abp01-trip-summary'); ?>" 
-				disabled="disabled"
-			/>
-		</div>
-	</div>
+				<div id="abp01-admin-maintenance-menu-container" class="abp01-page-side-bar-content">
+					<div class="abp01-maintenance-tool-select-container">
+						<select id="abp01-maintenance-tool-select" class="form-control form-select abp01-select abp01-maintenance-tool-select">
+							<option value=""><?php echo esc_html__('Select one', 'abp01-trip-summary') ?></option>
+							<?php foreach ($data->toolsInfo as $key => $label): ?>
+								<option value="<?php echo esc_attr($key); ?>"><?php echo esc_html($label); ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
 
-	<div id="abp01-admin-maintenance-result-container" 
-			class="abp01-admin-maintenance-container" 
-			style="display: none;">
-		<div class="abp01-admin-maintenance-tagline">
-			<h3><?php echo esc_html__('Execution result', 'abp01-trip-summary') ?></h3>
+					<div class="abp01-maintenance-tool-action-container">
+						<button type="button" disabled="disabled"
+							id="abp01-execute-maintenance-tool" 
+							name="abp01-execute-maintenance-tool"
+							class="btn btn-primary">
+							<?php echo esc_html__('Execute', 'abp01-trip-summary'); ?>
+						</button>
+					</div>
+				</div>
+			</div>
 
-			<div id="abp01-admin-maintenance-result-container-inner" 
-				class="abp01-admin-maintenance-result-container-inner">
+			<div class="col col-md-9 abp01-page-workspace">
+				<div class="abp01-rounded-container abp01-page-workspace-inner">
+					<h4><?php echo esc_html__('Execution result', 'abp01-trip-summary') ?></h4>
+					
+					<div id="abp01-tool-action-result" class="abp01-alert-container"></div>
+
+					<div id="abp01-admin-maintenance-result-container-inner" 
+						class="abp01-admin-maintenance-result-container-inner">
+						<div class="abp01-admin-maintenance-result-placeholder">
+							<span class="dashicons dashicons-admin-tools"></span>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-
-	<?php echo abp01_render_partial_view('common/wpts-progress-container.php', 
-		new stdClass()); ?>
 </div>

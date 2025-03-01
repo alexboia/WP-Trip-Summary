@@ -116,7 +116,7 @@ class Abp01_View {
 
 	public function renderAdminMaintenancePage(stdClass $data) {
 		$this->_registerAdminHelpers();
-		return $this->_renderCoreView('wpts-maintenance.php', $data);
+		return $this->_renderCoreView('wpts-admin-maintenance.php', $data);
 	}
 
 	public function renderAdminSystemLogsPage(stdClass $data) {

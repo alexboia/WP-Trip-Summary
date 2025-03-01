@@ -172,11 +172,15 @@ class ViewTests extends WP_UnitTestCase {
     }
 
     private function _assertAdminSettingsPageBasicStructureCorrect($settingsPage) {
-        $this->assertStringContainsString('<div id="abp01-settings-page">', $settingsPage);
+        $this->assertStringContainsString('<div id="abp01-settings-page" class="abp01-bootstrap abp01-page">', $settingsPage);
         $this->assertStringContainsString('<form id="abp01-settings-form" method="post">', $settingsPage);
-        $this->assertStringContainsString('<div class="abp01-settings-info description">', $settingsPage);
+        $this->assertStringContainsString('<div id="abp01-admin-settings-menu-container" class="abp01-page-side-bar-content">', $settingsPage);
+        $this->assertStringContainsString('<div class="tab-content abp01-page-workspace-content">', $settingsPage);
+        $this->assertStringContainsString('<div id="abp01-general-settings"', $settingsPage);
+        $this->assertStringContainsString('<div id="abp01-viewer-settings"', $settingsPage);
+        $this->assertStringContainsString('<div id="abp01-map-settings"', $settingsPage);
         $this->assertStringContainsString('<div class="apb01-settings-save">', $settingsPage);
-        $this->assertStringContainsString('<script id="tpl-abp01-progress-container" type="text/x-kite">', $settingsPage);
+        $this->assertStringContainsString('<div id="abp01-predefined-tile-layers-window" class="modal fade abp01-modal-window" aria-hidden="true" tabindex="-1">', $settingsPage);
     }
 
     public function test_canRenderAdminHelpPage_nonEmptyHelpContents() {

@@ -41,7 +41,7 @@
 	var $ctrlSettingsForm: JQuery = null;
 	var $ctrlTileLayerApiKeyNag: JQuery = null;
 
-	var progressBar = null;
+	var progressBar: WpTripSummaryProgressModal = null;
 	var settingsSaveResult: WpTripSummaryAlertInline = null;
 	var predefinedTileLayersModal: WpTripSummaryModal = null;
 	
