@@ -87,7 +87,7 @@
 		toolResult.danger(message, false);
 	}
 
-	function hideOperationMessage() {
+	function hideOperationMessage(): void {
 		toolResult.hide(false);
 	}
 
@@ -134,7 +134,7 @@
 		});
 	}
 
-	function handleExecuteButtonClicked() {
+	function handleExecuteButtonClicked(): void {
 		if (confirmExecutionModal === null) {
 			confirmExecutionModal = $.abp01ConfirmDialogModal();
 		}
@@ -163,7 +163,7 @@
 		context = getContext();
 	}
 
-	function initControls() {
+	function initControls(): void {
 		toolResultPlaceholder = $('#abp01-admin-maintenance-result-container-inner')
 			.html();
 		toolResult = $('#abp01-tool-action-result').abp01AlertInline({
