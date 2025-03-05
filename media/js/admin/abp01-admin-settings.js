@@ -196,7 +196,7 @@
     function initColorPickers() {
         $('#abp01-trackLineColour').wpColorPicker();
     }
-    $(document).ready(function () {
+    $(function () {
         initFormState();
         initControls();
         initListeners();

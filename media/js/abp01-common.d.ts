@@ -37,12 +37,21 @@ interface WpTripSummaryMaintenanceL10N {
 	msgExecutedFailNetwork: string;
 }
 
+interface WpTripSummaryAdminSystemLogsL10N {
+	msgLogFileRemovalSuccess: string;
+	errCouldNotRemoveLogFile: string;
+	msgConfirmLogFileRemoval: string;
+	errCouldNotLoadLogFile: string;
+	errCouldNotFindLogFile: string;
+}
+
 declare global {
 	interface Window { 
 		abp01: WpTripSummary; 
 		abp01SettingsL10n: WpTripSummarySettingsL10N;
 		abp01MaintenanceL10n: WpTripSummaryMaintenanceL10N;
 		abp01AdminCommonL10n: WpTripSummaryAdminCommonL10N;
+		abp01AdminSystemLogL10n: WpTripSummaryAdminSystemLogsL10N;
 	}
 
 	interface JQueryStatic {
