@@ -57,7 +57,7 @@ class Abp01_PluginModules_TeaserTextsSyncPluginModule extends Abp01_PluginModule
 		$this->_settings = $settings;
 	}
 
-	public function load() {
+	public function load(): void {
 		add_action('update_option_WPLANG', 
 			array($this, 'onLanguageUpdatedQueueTeaserSyncRequest'), 
 			self::UPDATE_OPTION_HOOK_PRIORITY, 

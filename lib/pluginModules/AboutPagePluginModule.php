@@ -58,7 +58,7 @@ class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_Plug
 		$this->_view = $view;
 	}
 
-	public function load() {
+	public function load(): void {
 		$this->_registerWebPageAssets();
 	}
 

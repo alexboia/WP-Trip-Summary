@@ -30,35 +30,12 @@
  */
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit ;
+    exit;
 }
 
-class Abp01_Display_PostListing_TripSummaryRouteTypeColumnsDecorator extends Abp01_Display_PostListing_ColumnCustomization {
-	public function __construct() {
-		parent::__construct($this->_getPostTypes());
-	}
-
-	/**
-	 * @return Abp01_Display_PostListing_Column[]
-	 */
-	protected function _getColumns(): array {
-		$routeManager = $this->_getRouteManager();
-		return array(
-			new Abp01_Display_PostListing_TripSummaryRouteTypeColumn(
-				'abp01_trip_summary_route_type', 
-				esc_html__('Route type', 'abp01-trip-summary'), 
-				new Abp01_Display_PostListing_TripSummaryRouteTypeDataSource(
-					$routeManager
-				)
-			)
-		);
-	}
-
-	private function _getRouteManager(): Abp01_Route_Manager {
-		return abp01_get_route_manager();
-	}
-
-	private function _getPostTypes() {
-		return Abp01_AvailabilityHelper::getTripSummaryAvailableForPostTypes();
-	}
+/**
+ * @package WP-Trip-Summary
+ */
+interface Abp01_PluginMenuItemProvider {
+	public function getMenuItems(): array;
 }

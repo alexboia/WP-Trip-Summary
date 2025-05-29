@@ -52,7 +52,7 @@ abstract class Abp01_PluginModules_PluginModule {
 		$this->_auth = $auth;
 	}
 
-	protected function _cantEditPostTripSummary($post) {
+	protected function _cantEditPostTripSummary($post): bool {
 		if (empty($post)) {
 			throw new InvalidArgumentException('Post information may not be empty!');
 		}
@@ -68,40 +68,40 @@ abstract class Abp01_PluginModules_PluginModule {
 		return !empty($postId) && $this->_auth->canEditPostTripSummary($postId);
 	}
 
-	protected function _createEditCurrentPostTripSummaryAuthCallback() {
+	protected function _createEditCurrentPostTripSummaryAuthCallback(): callable {
 		return function() {
 			return $this->_canEditCurrentPostTripSummary();
 		};
 	}
 
-	protected function _canEditCurrentPostTripSummary() {
+	protected function _canEditCurrentPostTripSummary(): bool {
 		$postId = $this->_getCurrentPostId();
 		return !empty($postId) && $this->_auth->canEditPostTripSummary($postId);
 	}
 
-	protected function _createManagePluginSettingsAuthCallback() {
+	protected function _createManagePluginSettingsAuthCallback(): callable {
 		return function() {
 			return $this->_currentUserCanManagePluginSettings();
 		};
 	}
 
-	protected function _getCurrentPostId() {
+	protected function _getCurrentPostId(): int|null {
 		return $this->_env->getCurrentPostId('abp01_postId');
 	}
 
-	protected function _currentUserCanManagePluginSettings() {
+	protected function _currentUserCanManagePluginSettings(): bool {
 		return $this->_auth->canManagePluginSettings();
 	}
 
-	protected function _getAjaxBaseUrl() {
+	protected function _getAjaxBaseUrl(): string {
 		return $this->_env->getAjaxBaseUrl();
 	}
 
-	protected function _getPluginMediaImgBaseUrl() {
+	protected function _getPluginMediaImgBaseUrl(): string {
 		return $this->_env->getPluginAssetUrl('media/img');
 	}
 
-	protected function _getLookupForCurrentLang() {
+	protected function _getLookupForCurrentLang(): Abp01_Lookup {
 		return abp01_get_plugin()->getLookupForCurrentLang();
 	}
 
@@ -113,5 +113,9 @@ abstract class Abp01_PluginModules_PluginModule {
 		return array();
 	}
 
-	abstract public function load();
+	public function init(): void {
+		return;
+	}
+
+	abstract public function load(): void;
 }

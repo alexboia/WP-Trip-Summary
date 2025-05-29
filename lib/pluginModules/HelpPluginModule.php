@@ -72,7 +72,7 @@ class Abp01_PluginModules_HelpPluginModule extends Abp01_PluginModules_PluginMod
                 ->onlyForHttpGet();
     }
 
-    public function load() {
+    public function load(): void {
         $this->_registerAjaxActions();
         $this->_registerWebPageAssets();
     }

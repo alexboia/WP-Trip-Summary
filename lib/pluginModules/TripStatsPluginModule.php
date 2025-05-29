@@ -38,7 +38,7 @@ class Abp01_PluginModules_TripStatsPluginModule extends Abp01_PluginModules_Plug
 		parent::__construct($env, $auth);
 	}
 
-	public function load() {
+	public function load(): void {
 		
 	}
 }

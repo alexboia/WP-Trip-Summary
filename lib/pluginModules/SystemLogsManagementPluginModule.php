@@ -37,6 +37,10 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
  * @package WP-Trip-Summary
  */
 class Abp01_PluginModules_SystemLogsManagementPluginModule extends Abp01_PluginModules_PluginModule {
+	const DEFAULT_TAIL_LINE_COUNT = 512;
+
+	const DEFAULT_MAX_CHARACTERS_PER_LINE = 512;
+
 	/**
 	 * @var Abp01_View
 	 */
@@ -213,6 +217,7 @@ class Abp01_PluginModules_SystemLogsManagementPluginModule extends Abp01_PluginM
 			->getLogFileById($fileId);
 
 		$response = abp01_get_ajax_response(array(
+			'logFileId' => $fileId,
 			'found' => false,
 			'trimmed' => false,
 			'contents' => null
@@ -239,20 +244,22 @@ class Abp01_PluginModules_SystemLogsManagementPluginModule extends Abp01_PluginM
 	}
 
 	private function _getMaxDisplayableLogSize(): int {
-		$lineCount = $defaultLineCount = $this->_getLogFileTailLineCount() * 500;
+		$tailLineCount = $this->_getLogFileTailLineCount();		
+		$maxSize = $defaultMaxSize = $tailLineCount * self::DEFAULT_MAX_CHARACTERS_PER_LINE;
 
-		$lineCount = intval(apply_filters('abp01_max_displayable_log_file_size', 
-			$lineCount));
+		$maxSize = intval(apply_filters('abp01_max_displayable_log_file_size', 
+			$maxSize));
 
-		if ($lineCount <= 0) {
-			$lineCount = $defaultLineCount;
+		if ($maxSize <= 0) {
+			$maxSize = $defaultMaxSize;
 		}
 
-		return $lineCount;
+		return $maxSize;
 	}
 
 	private function _getLogFileTailLineCount(): int {
-		$tailLineCount = $defaultTailLineCount = 500;
+		$tailLineCount = $defaultTailLineCount = self::DEFAULT_TAIL_LINE_COUNT;
+
 		if (defined('ABP01_LOG_FILE_DISPLAY_TAIL_LINE_COUNT')) {
 			$tailLineCount = intval(constant('ABP01_LOG_FILE_DISPLAY_TAIL_LINE_COUNT'));
 		}
@@ -294,8 +301,7 @@ class Abp01_PluginModules_SystemLogsManagementPluginModule extends Abp01_PluginM
 			die;
 		}
 
-		$wasDeleted = $this->_logManager
-			->deleteLogFileById($fileId);
+		$wasDeleted = $this->_logManager->deleteLogFileById($fileId);
 
 		$response = abp01_get_ajax_response();
 		$response->success = $wasDeleted;

@@ -34,13 +34,22 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 abstract class Abp01_Display_PostListing_Filter {
-	protected $_key;
+	/**
+	 * @var string
+	 */
+	private $_key;
 
-	protected $_label;
+	/**
+	 * @var string|callable|null
+	 */
+	private $_label;
 
-	protected $_processor;
+	/**
+	 * @var Abp01_Display_PostListing_FilterProcessor
+	 */
+	private $_processor;
 
-	public function __construct(string $key, string|null $label, Abp01_Display_PostListing_FilterProcessor $processor) {
+	public function __construct(string $key, string|callable|null $label, Abp01_Display_PostListing_FilterProcessor $processor) {
 		$this->_key = $key;
 		$this->_label = $label;
 		$this->_processor = $processor;
@@ -63,6 +72,14 @@ abstract class Abp01_Display_PostListing_Filter {
 	}
 
 	public function getLabel(): string|null {
-		return $this->_label;
+		$label = null;
+
+		if (is_callable($this->_label)) {
+			$label = call_user_func($this->_label);
+		} else if (is_string($this->_label)) {
+			$label = $this->_label;
+		}
+
+		return $label;
 	}
 }

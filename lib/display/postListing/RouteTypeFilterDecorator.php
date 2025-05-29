@@ -35,14 +35,19 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 
 class Abp01_Display_PostListing_RouteTypeFilterDecorator extends Abp01_Display_PostListing_FilterCustomization {
 	public function __construct() {
-		parent::__construct($this->_getFilters(), $this->_getPostTypes());
+		parent::__construct($this->_getPostTypes());
 	}
 
-	private function _getFilters() {
+	/**
+	 * @return \Abp01_Display_PostListing_FilterDropdown[] 
+	 */
+	protected function _getFilters(): array {
 		return array(
 			new Abp01_Display_PostListing_FilterDropdown(
 				'abp01_route_type', 
-				__('Filter by route type', 'abp01-trip-summary'), 
+				function() { 
+					return __('Filter by route type', 'abp01-trip-summary');
+				}, 
 				new Abp01_Display_PostListing_RouteTypeFilterDataSource(),
 				new Abp01_Display_PostListing_RouteTypeFilterProcessor()
 			)

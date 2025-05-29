@@ -64,7 +64,7 @@ class Abp01_PluginModules_JsonLdFrontendDataPluginModule extends Abp01_PluginMod
 		$this->_view = $view;
 	}
 
-	public function load() {
+	public function load(): void {
 		if ($this->_jsonLdFrontendDataEnabled()) {
 			add_action('wp_head', array($this, 'includeJsonLdFrontendData'));
 		}

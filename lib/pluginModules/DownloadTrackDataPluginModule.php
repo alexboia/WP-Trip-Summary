@@ -82,7 +82,7 @@ class Abp01_PluginModules_DownloadTrackDataPluginModule extends Abp01_PluginModu
 				->onlyForHttpGet();
 	}
 	
-	public function load() {
+	public function load(): void {
 		$this->_registerAjaxActions();
 	}
 

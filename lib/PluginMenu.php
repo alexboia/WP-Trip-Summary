@@ -37,10 +37,15 @@ class Abp01_PluginMenu {
 	/**
 	 * @var array
 	 */
-	private $_menuItems = array();
+	private $_menuItems = null;
 
-	public function __construct(array $menuItems) {
-		$this->_menuItems = $menuItems;
+	/**
+	 * @var Abp01_PluginMenuItemProvider
+	 */
+	private $_menuItemsProvider = null;
+
+	public function __construct(Abp01_PluginMenuItemProvider $menuItemsProvider) {
+		$this->_menuItemsProvider = $menuItemsProvider;
 	}
 	
 	public function register() {
@@ -48,6 +53,10 @@ class Abp01_PluginMenu {
 	}
 
 	public function addMenuItems() {
+		if ($this->_menuItems === null) {
+			$this->_menuItems = $this->_menuItemsProvider->getMenuItems();
+		}
+
 		foreach ($this->_menuItems as $menuItem) {
 			$this->_addParentMenuItem($menuItem);
 		}

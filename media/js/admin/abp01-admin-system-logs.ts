@@ -117,22 +117,11 @@
 			type: 'GET',
 			dataType: 'json',
 			cache: false
-		}).done(function (data, status, xhr) {
+		}).done(function (data: WpTripSummaryLogFileContentsInfo, status, xhr) {
 			toggleBusy(false);
 			if (!!data && !!data.success) {
-				if (!!data.found) {
-					currentLogFileId = logFileId;
-					$('#abp01-log-file-contents').text(data.contents);
-				} else {
-					showErrorResult(window.abp01AdminSystemLogL10n.errCouldNotFindLogFile);
-					$('#abp01-log-file-contents').text('');
-				}
-
-				if (!!data.trimmed) {
-					$('#abp01-log-file-too-large-warning').show();
-				} else {
-					$('#abp01-log-file-too-large-warning').hide();
-				}
+				setCurrentLogFileAndUpdateContents(data);
+				toggleLogFileTooLargeWarning(data);
 			} else {
 				showErrorResult(data.message || window.abp01AdminSystemLogL10n.errCouldNotLoadLogFile);
 			}
@@ -140,6 +129,26 @@
 			toggleBusy(false);
 			showErrorResult(window.abp01AdminSystemLogL10n.errCouldNotLoadLogFile);
 		});
+	}
+
+	function setCurrentLogFileAndUpdateContents(data: WpTripSummaryLogFileContentsInfo): void {
+		var $logFileContents: JQuery = $('#abp01-log-file-contents');
+		if (!!data.found) {
+			currentLogFileId = data.logFileId;
+			$logFileContents.text(data.contents);
+		} else {
+			showErrorResult(window.abp01AdminSystemLogL10n.errCouldNotFindLogFile);
+			$logFileContents.text('');
+		}
+	}
+
+	function toggleLogFileTooLargeWarning(data: WpTripSummaryLogFileContentsInfo): void {
+		var $logFileTooLargeWarning: JQuery = $('#abp01-log-file-too-large-warning');
+		if (!!data.trimmed) {
+			$logFileTooLargeWarning.show();
+		} else {
+			$logFileTooLargeWarning.hide();
+		}
 	}
 
 	function downloadLogFile(logFileId: string): void {

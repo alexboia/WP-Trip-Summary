@@ -87,7 +87,7 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 		$this->_tripSummaryShortCodeBlockType = new Abp01_TripSummaryShortcodeBlockType();
 	}
 
-	public function load() {
+	public function load(): void {
 		$this->_registerCustomBlockTypes();
 		$this->_registerWebPageAssets();
 		$this->_initViewerContentHooks();

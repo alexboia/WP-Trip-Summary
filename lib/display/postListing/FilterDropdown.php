@@ -42,7 +42,7 @@ class Abp01_Display_PostListing_FilterDropdown extends Abp01_Display_PostListing
 	private $_contents = null;
 
 	public function __construct(string $key, 
-			string|null $label, 
+			string|callable|null $label, 
 			Abp01_Display_PostListing_FilterDataSource $dataSource, 
 			Abp01_Display_PostListing_FilterProcessor $processor) {
 		parent::__construct($key, $label, $processor);
@@ -71,16 +71,19 @@ class Abp01_Display_PostListing_FilterDropdown extends Abp01_Display_PostListing
 		$contents = '';
 		$options = $this->getOptions();
 		$currentValue = $this->getCurrentValue();
+		
+		$label = $this->getLabel();
+		$key = $this->getKey();
 
 		if (empty($options)) {
 			return '';
 		}
 
-		if (!empty($this->_label)) {
-			$contents = '<label class="screen-reader-text" for="' . $this->_key . '">' . $this->_label . '</label>';
+		if (!empty($label)) {
+			$contents = '<label class="screen-reader-text" for="' . esc_attr($key) . '">' . $label . '</label>';
 		}
 
-		$contents .= '<select name="' . $this->_key . '" id="' . $this->_key . '">';	
+		$contents .= '<select name="' . esc_attr($key) . '" id="' . esc_attr($key) . '">';	
 		foreach ($options as $optValue => $optLabel) {
 			$contents .= '<option value="' . esc_attr($optValue) . '" ' . selected($currentValue, $optValue, false) . '>';
 			$contents .= esc_html($optLabel);

@@ -41,7 +41,7 @@ class Abp01_PluginModules_PostListingCustomizationPluginModule extends Abp01_Plu
 		parent::__construct($env, $auth);
 	}
 
-	public function load() {
+	public function load(): void {
 		$this->_registerWebPageAssets();
 		$this->_registerPostListingCustomizations();
 	}

@@ -170,7 +170,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 				->onlyForHttpPost();
 	}
 
-	public function load() {
+	public function load(): void {
 		$this->_ensureStorageDirectory();
 		$this->_registerAjaxActions();
 		$this->_registerCustomBlockTypesEditors();

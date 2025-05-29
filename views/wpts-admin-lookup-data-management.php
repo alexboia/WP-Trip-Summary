@@ -28,37 +28,20 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+	defined('ABP01_LOADED') or die;
+?>
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit ;
-}
+<script type="text/javascript">
+	var abp01_ajaxUrl = '<?php echo esc_js($data->context->ajaxBaseUrl); ?>';
 
-class Abp01_Display_PostListing_TripSummaryRouteTypeColumnsDecorator extends Abp01_Display_PostListing_ColumnCustomization {
-	public function __construct() {
-		parent::__construct($this->_getPostTypes());
-	}
+	var abp01_getLookupNonce = '<?php echo esc_js($data->context->getLookupNonce); ?>';
+	var abp01_addLookupNonce = '<?php echo esc_js($data->context->addLookupNonce); ?>';
+	var abp01_editLookupNonce = '<?php echo esc_js($data->context->editLookupNonce); ?>';
+	var abp01_deleteLookupNonce = '<?php echo esc_js($data->context->deleteLookupNonce); ?>';
 
-	/**
-	 * @return Abp01_Display_PostListing_Column[]
-	 */
-	protected function _getColumns(): array {
-		$routeManager = $this->_getRouteManager();
-		return array(
-			new Abp01_Display_PostListing_TripSummaryRouteTypeColumn(
-				'abp01_trip_summary_route_type', 
-				esc_html__('Route type', 'abp01-trip-summary'), 
-				new Abp01_Display_PostListing_TripSummaryRouteTypeDataSource(
-					$routeManager
-				)
-			)
-		);
-	}
+	var abp01_ajaxGetLookupAction = '<?php echo esc_js($data->context->getLookupAction); ?>';
+	var abp01_ajaxAddLookupAction = '<?php echo esc_js($data->context->addLookupAction); ?>';
+	var abp01_ajaxEditLookupAction = '<?php echo esc_js($data->context->editLookupAction); ?>';
+	var abp01_ajaxDeleteLookupAction = '<?php echo esc_js($data->context->deleteLookupAction); ?>';
+</script>
 
-	private function _getRouteManager(): Abp01_Route_Manager {
-		return abp01_get_route_manager();
-	}
-
-	private function _getPostTypes() {
-		return Abp01_AvailabilityHelper::getTripSummaryAvailableForPostTypes();
-	}
-}

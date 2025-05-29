@@ -120,7 +120,7 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 					->onlyForHttpGet();
 	}
 
-	public function load() {
+	public function load(): void {
 		if ($this->_tripSummaryLogEnabled()) {
 			$this->_registerAjaxActions();
 			$this->_registerAdminWebPageAssets();

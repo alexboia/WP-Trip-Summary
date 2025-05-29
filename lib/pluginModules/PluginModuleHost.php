@@ -36,7 +36,7 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 /**
  * @package WP-Trip-Summary
  */
-class Abp01_PluginModules_PluginModuleHost {
+class Abp01_PluginModules_PluginModuleHost implements Abp01_PluginMenuItemProvider {
 	/**
 	 * @var Abp01_Plugin
 	 */
@@ -170,7 +170,7 @@ class Abp01_PluginModules_PluginModuleHost {
 		);
 	}
 
-	public function getMenuItems() {
+	public function getMenuItems(): array {
 		$menuItemsCollector = new Abp01_PluginMenuItemCollector();
 
 		foreach ($this->_pluginModules as $module) {
@@ -192,6 +192,13 @@ class Abp01_PluginModules_PluginModuleHost {
 	public function load() {
 		foreach ($this->_pluginModules as $module) {
 			$module->load();
+		}
+	}
+
+
+	public function init() {
+		foreach ($this->_pluginModules as $module) {
+			$module->init();
 		}
 	}
 

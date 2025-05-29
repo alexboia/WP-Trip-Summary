@@ -81,7 +81,7 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
 				->onlyForHttpPost();
 	}
 
-	public function load() {
+	public function load(): void {
 		$this->_registerAjaxActions();
 		$this->_registerWebPageAssets();
 	}

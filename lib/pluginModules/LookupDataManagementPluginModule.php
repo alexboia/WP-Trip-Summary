@@ -71,16 +71,6 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 	private $_deleteLookupDataItemAjaxAction;
 
 	/**
-	 * @var array
-	 */
-	private $_availableLookupCategories = array();
-
-	/**
-	 * @var array
-	 */
-	private $_availableLookupLanguages = array();
-
-	/**
 	 * @var Abp01_NonceProvider_Default
 	 */
 	private $_inUseLookupItemRemovalNonceProvider;
@@ -89,11 +79,6 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 		parent::__construct($env, $auth);
 
 		$this->_view = $view;
-		
-		$this->_availableLookupCategories = 
-			$this->_getAvailableLookupCategories();
-		$this->_availableLookupLanguages = 
-			$this->_getAvailableLookupLanguages();
 
 		$this->_initNonceProviders();
 		$this->_initAjaxActions();
@@ -146,7 +131,7 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 				->onlyForHttpPost();
 	}
 
-	public function load() {
+	public function load(): void {
 		$this->_registerAjaxActions();
 		$this->_registerWebPageAssets();
 	}
@@ -218,16 +203,16 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 		//set available lookup categories/types
 		$data = new stdClass();
 
-		$data->controls = new stdClass();
-		$data->controls->availableCategories = 
-			$this->_getDisplayableAvailableLookupCategories();
-		$data->controls->selectedCategory = 
-			$this->_determineInitialSelectedCategory();
+		$availableCategories = $this->_getAvailableLookupCategories();
+		$availableLookupLanguages = $this->_getAvailableLookupLanguages();
 
-		$data->controls->availableLanguages = 
-			$this->_getDisplayableAvailableLookupLangauges();
+		$data->controls = new stdClass();
+		$data->controls->availableCategories = $availableCategories;
+		$data->controls->selectedCategory = $this->_determineInitialSelectedCategory($availableCategories);
+
+		$data->controls->availableLanguages = $availableLookupLanguages;
 		$data->controls->selectedLanguage = 
-			$this->_determineIntialSelectedLanguageCode();
+			$this->_determineIntialSelectedLanguageCode($availableLookupLanguages);
 
 		//set current context
 		$data->context = new stdClass();
@@ -252,18 +237,10 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 		echo $this->_view->renderAdminLookupPage($data);
 	}
 
-	private function _getDisplayableAvailableLookupCategories() {
-		return $this->_availableLookupCategories;
-	}
-
-	private function _getDisplayableAvailableLookupLangauges() {
-		return $this->_availableLookupLanguages;
-	}
-
-	private function _determineIntialSelectedLanguageCode() {
+	private function _determineIntialSelectedLanguageCode($availableLookupLanguages) {
 		$langCode = $this->_readInitialSelectedLanguageCodeFromUrl();
 
-		if (!$this->_isLanguageCodeSupported($langCode)) {
+		if (!$this->_isLanguageCodeSupported($langCode, $availableLookupLanguages)) {
 			$langCode = Abp01_Lookup::DEFAULT_LANGUAGE_CODE;
 		}
 
@@ -276,15 +253,15 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 			: null;
 	}
 
-	private function _isLanguageCodeSupported($langCode) {
-		return !empty($langCode) && array_key_exists($langCode, $this->_availableLookupLanguages);
+	private function _isLanguageCodeSupported($langCode, $availableLookupLanguages) {
+		return !empty($langCode) && array_key_exists($langCode, $availableLookupLanguages);
 	}
 
-	private function _determineInitialSelectedCategory() {
+	private function _determineInitialSelectedCategory($availableCategories) {
 		$category = $this->_readInitialSelectedCategoryCodeFromUrl();
 
-		if (!$this->_isLookupCategorySupported($category)) {
-			$category = $this->_getDefaultSelectedLookupCategory();
+		if (!$this->_isLookupCategorySupported($category, $availableCategories)) {
+			$category = $this->_getDefaultSelectedLookupCategory($availableCategories);
 		}
 
 		return $category;
@@ -296,12 +273,12 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 			: null;
 	}
 
-	private function _isLookupCategorySupported($category) {
-		return array_key_exists($category, $this->_availableLookupCategories);
+	private function _isLookupCategorySupported($category, $availableCategories) {
+		return array_key_exists($category, $availableCategories);
 	}
 
-	private function _getDefaultSelectedLookupCategory() {
-		return current($this->_availableLookupCategories);
+	private function _getDefaultSelectedLookupCategory($availableCategories) {
+		return current($availableCategories);
 	}
 
 	public function getLookupDataItems() {

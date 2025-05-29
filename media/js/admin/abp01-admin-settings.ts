@@ -94,25 +94,19 @@
 
 	function getCurrentTileLayerInfoFromInputFields():WpTripSummaryTileLayer {
 		return {
-			url: $('#abp01-tileLayerUrl').val().toString(),
-			attributionTxt: $('#abp01-tileLayerAttributionTxt').val().toString(),
-			attributionUrl: $('#abp01-tileLayerAttributionUrl').val().toString(),
-			apiKey: $('#abp01-tileLayerApiKey').val().toString()
+			url: ($('#abp01-tileLayerUrl').val() || '').toString(),
+			attributionTxt: ($('#abp01-tileLayerAttributionTxt').val() || '').toString(),
+			attributionUrl: ($('#abp01-tileLayerAttributionUrl').val() || '').toString(),
+			apiKey: ($('#abp01-tileLayerApiKey').val() || '').toString()
 		};
 	}
 
 	function updateInputFieldsWithTileLayerInfo(tileLayer: WpTripSummaryTileLayer): void {
-		$('#abp01-tileLayerUrl')
-			.val(tileLayer.url);
+		$('#abp01-tileLayerUrl').val(tileLayer.url);
+		$('#abp01-tileLayerApiKey').val('');
 
-		$('#abp01-tileLayerAttributionTxt')
-			.val(tileLayer.attributionTxt);
-
-		$('#abp01-tileLayerAttributionUrl')
-			.val(tileLayer.attributionUrl);
-
-		$('#abp01-tileLayerApiKey')
-			.val('');
+		$('#abp01-tileLayerAttributionTxt').val(tileLayer.attributionTxt);
+		$('#abp01-tileLayerAttributionUrl').val(tileLayer.attributionUrl);
 
 		$('#abp01-tileLayerUrl').trigger('change');
 	}

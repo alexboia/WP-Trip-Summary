@@ -299,13 +299,16 @@ class Abp01_Plugin {
 	}
 
 	private function _setupPluginMenu() {
-		$menuItems = $this->_pluginModuleHost->getMenuItems();
-		$this->_pluginMenu = new Abp01_PluginMenu($menuItems);
+		$this->_pluginMenu = new Abp01_PluginMenu($this->_pluginModuleHost);
 		$this->_pluginMenu->register();
 	}
 
 	private function _loadPluginModules() {
 		$this->_pluginModuleHost->load();
+	}
+
+	private function _initPluginModules() {
+		$this->_pluginModuleHost->init();
 	}
 
 	public function getRouteTrackProcessor() {

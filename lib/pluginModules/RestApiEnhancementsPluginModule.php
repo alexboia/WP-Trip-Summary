@@ -50,7 +50,7 @@ class Abp01_PluginModules_RestApiEnhancementsPluginModule extends Abp01_PluginMo
 		$this->_restDataSource = $restDataSource;
 	}
 
-	public function load() {
+	public function load(): void {
 		add_action('rest_api_init', 
 			array($this, 'initRestApi'));
 	}

@@ -40,3 +40,12 @@ interface WpTripSummaryAdminSystemLogsContext {
 	ajaxDeleteLogFileAction: string;
 	ajaxBaseUrl: string;
 }
+
+interface WpTripSummaryLogFileContentsInfo {
+	logFileId: string;
+	found: boolean;
+	trimmed: boolean;
+	contents: string;
+	success: boolean;
+	message: string;
+}

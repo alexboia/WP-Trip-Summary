@@ -41,7 +41,7 @@ class Abp01_PluginModules_PluginListingPageCustomizationPluginModule extends Abp
 		parent::__construct($env, $auth);
 	}
 
-	public function load() {
+	public function load(): void {
 		add_filter('plugin_row_meta', 
 			array($this, 'registerPluginRowMeta'), 
 			10, 

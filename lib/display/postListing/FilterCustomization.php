@@ -34,20 +34,22 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Display_PostListing_FilterCustomization implements Abp01_Display_PostListing_Customization {
-	private $_filters = array();
+	/**
+	 * @var \Abp01_Display_PostListing_Filter[]
+	 */
+	private $_filters = null;
 
 	private $_forPostTypes = array();
 
 	/**
-	 * @param Abp01_Display_PostListing_Filter[] $filters 
 	 * @param string[] $postTypes 
 	 */
-	public function __construct(array $filters, array $postTypes) {
-		$this->_filters = $filters;
+	public function __construct(array $postTypes) {
 		$this->_forPostTypes = $postTypes;
 	}
 
 	public function apply() { 
+		$this->_esureFilters();
 		$this->_initDisplay();
 		$this->_initProcessing();
 	}
@@ -57,6 +59,7 @@ class Abp01_Display_PostListing_FilterCustomization implements Abp01_Display_Pos
 	}
 
 	public function displayFilters($postType, $which) {
+		$this->_esureFilters();
 		if (!in_array($postType, $this->_forPostTypes)) {
 			return;
 		}
@@ -70,5 +73,20 @@ class Abp01_Display_PostListing_FilterCustomization implements Abp01_Display_Pos
 		foreach ($this->_filters as $filter) {
 			$filter->process();
 		}
+	}
+
+	private function _esureFilters() {
+		if ($this->_filters === null) {
+			$this->_filters = $this->_getFilters();
+		}
+
+		return $this->_filters;
+	}
+
+	/**
+	 * @return \Abp01_Display_PostListing_Filter[]
+	 */
+	protected function _getFilters(): array {
+		return array();
 	}
 }

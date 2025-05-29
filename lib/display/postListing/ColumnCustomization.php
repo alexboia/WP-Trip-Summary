@@ -37,21 +37,17 @@ class Abp01_Display_PostListing_ColumnCustomization implements Abp01_Display_Pos
 	/**
 	 * @var Abp01_Display_PostListing_Column[]
 	 */
-	private $_columns = array();
+	private $_columns = null;
 
+	/**
+	 * @var string[]
+	 */
 	private $_forPostTypes = array();
 
 	/**
-	 * @param Abp01_Display_PostListing_Column[] $columns 
 	 * @param string[] $forPostTypes 
-	 * @return void 
 	 */
-	public function __construct(array $columns, array $forPostTypes) {
-		$this->_columns = array();
-		foreach ($columns as $c) {
-			$this->_columns[$c->getKey()] = $c;
-		}
-
+	public function __construct(array $forPostTypes) {
 		$this->_forPostTypes = $forPostTypes;
 	}
 
@@ -73,6 +69,7 @@ class Abp01_Display_PostListing_ColumnCustomization implements Abp01_Display_Pos
 	}
 
 	public function registerPostListingColumns($existingColumns, $postType) {
+		$this->_ensureColumns();
 		if ($this->_shouldAddColumnsForPostTypeListing($postType)) {
 			$existingColumns = $this->_addCustomColumns($existingColumns);
 		}
@@ -91,6 +88,7 @@ class Abp01_Display_PostListing_ColumnCustomization implements Abp01_Display_Pos
 	}
 
 	public function registerPageListingColumns($existingColumns) {
+		$this->_ensureColumns();
 		if ($this->_shouldAddColumnsForPageListing()) {
 			$existingColumns = $this->_addCustomColumns($existingColumns);
 		}
@@ -102,9 +100,29 @@ class Abp01_Display_PostListing_ColumnCustomization implements Abp01_Display_Pos
 	}
 
 	public function getPostListingCustomColumnValue($columnKey, $postId) {
+		$this->_ensureColumns();
 		if (isset($this->_columns[$columnKey])) {
 			$column = $this->_columns[$columnKey];
 			echo $column->renderValue($postId);
 		}
+	}
+
+	protected function _ensureColumns() {
+		if ($this->_columns === null) {
+			$columns = $this->_getColumns();
+			
+			$this->_columns = array();
+			foreach ($columns as $c) {
+				$this->_columns[$c->getKey()] = $c;
+			}
+		}
+		return $this->_columns;
+	}
+
+	/**
+	 * @return Abp01_Display_PostListing_Column[]
+	 */
+	protected function _getColumns(): array {
+		return array();
 	}
 }

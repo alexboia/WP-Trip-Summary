@@ -35,10 +35,10 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 
 class Abp01_Display_PostListing_TripSummaryStatusColumnsDecorator extends Abp01_Display_PostListing_ColumnCustomization {
 	public function __construct() {
-		parent::__construct($this->_getColumns(), $this->_getPostTypes());
+		parent::__construct($this->_getPostTypes());
 	}
 
-	private function _getColumns(): array {
+	protected function _getColumns(): array {
 		$routeManager = $this->_getRouteManager();
 		return array(
 			new Abp01_Display_PostListing_TripSummaryStatusColumn(

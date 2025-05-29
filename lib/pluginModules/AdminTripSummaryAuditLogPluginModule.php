@@ -81,7 +81,7 @@ class Abp01_PluginModules_AdminTripSummaryAuditLogPluginModule extends Abp01_Plu
 				->onlyForHttpGet();
 	}
 	
-	public function load() { 
+	public function load(): void { 
 		$this->_registerWebPageAssets();
 		$this->_registerAjaxActions();
 		$this->_registerEditorControls();
