@@ -709,6 +709,22 @@ class Abp01_Lookup {
 		return $result;
 	}
 
+	public function lookupById($id) {	
+		$id = intval($id);		
+		if ($id <= 0) {
+			return null;
+		}
+
+		$this->_loadDataIfNeeded();
+		foreach ($this->_cache as $type => $typeItems) {
+			if (isset($typeItems[$id])) {
+				$this->_createOption(intval($id), $typeItems[$id], $type);
+			}
+		}
+
+		return null;
+	}
+
 	/**
 	 * Lookup the difficulty level item that corresponds to the given id.
 	 * @param integer $id The id for which the item must be retrieved

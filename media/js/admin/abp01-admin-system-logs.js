@@ -81,7 +81,7 @@
     function toggleBusy(show) {
         if (show) {
             var message = arguments.length == 2 ? arguments[1] : null;
-            progressBar.show(message || 'Please wait');
+            progressBar.show((message || window.abp01AdminSystemLogL10n.msgWorking) || 'Please wait');
         }
         else {
             progressBar.hide();
@@ -106,20 +106,8 @@
         }).done(function (data, status, xhr) {
             toggleBusy(false);
             if (!!data && !!data.success) {
-                if (!!data.found) {
-                    currentLogFileId = logFileId;
-                    $('#abp01-log-file-contents').text(data.contents);
-                }
-                else {
-                    showErrorResult(window.abp01AdminSystemLogL10n.errCouldNotFindLogFile);
-                    $('#abp01-log-file-contents').text('');
-                }
-                if (!!data.trimmed) {
-                    $('#abp01-log-file-too-large-warning').show();
-                }
-                else {
-                    $('#abp01-log-file-too-large-warning').hide();
-                }
+                setCurrentLogFileAndUpdateContents(data);
+                toggleLogFileTooLargeWarning(data);
             }
             else {
                 showErrorResult(data.message || window.abp01AdminSystemLogL10n.errCouldNotLoadLogFile);
@@ -128,6 +116,26 @@
             toggleBusy(false);
             showErrorResult(window.abp01AdminSystemLogL10n.errCouldNotLoadLogFile);
         });
+    }
+    function setCurrentLogFileAndUpdateContents(data) {
+        var $logFileContents = $('#abp01-log-file-contents');
+        if (!!data.found) {
+            currentLogFileId = data.logFileId;
+            $logFileContents.text(data.contents);
+        }
+        else {
+            showErrorResult(window.abp01AdminSystemLogL10n.errCouldNotFindLogFile);
+            $logFileContents.text('');
+        }
+    }
+    function toggleLogFileTooLargeWarning(data) {
+        var $logFileTooLargeWarning = $('#abp01-log-file-too-large-warning');
+        if (!!data.trimmed) {
+            $logFileTooLargeWarning.show();
+        }
+        else {
+            $logFileTooLargeWarning.hide();
+        }
     }
     function downloadLogFile(logFileId) {
         window.open(getDownloadLogFileUrl(logFileId), '_blank');

@@ -67,6 +67,18 @@
 			$me.on('hide.bs.modal', function() {
 				_hideBackdrop();
 			});
+
+			$me.on('hidden.bs.modal', function() {
+				if (!!spec.onHide) {
+					spec.onHide.apply($me);
+				}
+			});
+
+			$me.on('shown.bs.modal', function() {
+				if (!!spec.onShow) {
+					spec.onShow.apply($me);
+				}	
+			});
 		}
 
 		function _showBackdrop(): void {
@@ -103,13 +115,22 @@
 			}
 		}
 
+		function _findAnd(selector: string, callback: Function): JQuery {
+			var $target: JQuery = $me.find(selector);
+			if (!!callback) {
+				callback($target);
+			}
+			return $target;
+		}
+
 		_wrap();
 		_listen();
 		_watchTrigger();
 
 		return {
 			show: _show,
-			hide: _hide
+			hide: _hide,
+			findAnd: _findAnd
 		};
 	};
 })(jQuery);

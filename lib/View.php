@@ -137,7 +137,7 @@ class Abp01_View {
 
 	public function renderAdminLookupPage(stdClass $data) {
 		$this->_registerAdminHelpers();
-		return $this->_renderCoreView('wpts-lookup-data-management.php', $data);
+		return $this->_renderCoreView('wpts-admin-lookup-data-management.php', $data);
 	}
 
 	public function renderAdminTripSummaryEditor(stdClass $data) {

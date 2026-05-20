@@ -38,14 +38,15 @@
 (function ($) {
 	"use strict";
 
+	var context: WpTripSummarySettingsContext = null;
+
 	var $ctrlSettingsForm: JQuery = null;
 	var $ctrlTileLayerApiKeyNag: JQuery = null;
 
-	var progressBar: WpTripSummaryProgressModal = null;
 	var settingsSaveResult: WpTripSummaryAlertInline = null;
 	var predefinedTileLayersModal: WpTripSummaryModal = null;
-	
-	var context: WpTripSummarySettingsContext = null;
+
+	var toggleBusy: WpTripSummaryBusyToggler = null;
 
 	function getContext(): WpTripSummarySettingsContext {
 		return {
@@ -72,20 +73,6 @@
 
 	function hideOperationMessage(): void {
 		settingsSaveResult.hide(false);
-	}
-
-	function toggleBusy(show: boolean): void {
-		if (show) {
-			if (progressBar == null) {
-				progressBar = $('#wpwrap').abp01ProgressModal({});
-			}
-
-			progressBar.show(window.abp01SettingsL10n.msgSaveWorking || 'Please wait');
-		} else {
-			if (progressBar != null) {
-				progressBar.hide();
-			}
-		}
 	}
 
 	function updatePreviouslySavedTileLayerFromInputFields(): void {
@@ -198,16 +185,32 @@
 		$ctrlSettingsForm = $('#abp01-settings-form');
 		$ctrlTileLayerApiKeyNag = $('#abp01-tileLayer-apiKey-nag');
 
-		settingsSaveResult = $('#abp01-settings-action-result').abp01AlertInline({
+		toggleBusy = createBusyToggler();
+		settingsSaveResult = createSaveResultAlert();
+		predefinedTileLayersModal = createPredefinedTileLayersModal();
+
+		initTooltips();
+		initColorPickers();
+	}
+
+	function createBusyToggler(): WpTripSummaryBusyToggler {
+		return $.abp01.createBusyToggler('#wpwrap', window.abp01SettingsL10n.msgSaveWorking);
+	}
+
+	function createSaveResultAlert(): WpTripSummaryAlertInline {
+		return $('#abp01-settings-action-result').abp01AlertInline({
 			dismissible: false
 		});
+	}
 
-		predefinedTileLayersModal = $('#abp01-predefined-tile-layers-window').abp01Modal({
+	function createPredefinedTileLayersModal(): WpTripSummaryModal {
+		return $('#abp01-predefined-tile-layers-window').abp01Modal({
 			trigger: '#abp01-predefined-tile-layer-selector'
 		});
+	}
 
+	function initTooltips(): void {
 		$.abp01.initTooltipsOnPage('#abp01-settings-page');
-		initColorPickers();
 	}
 
 	function initListeners(): void {

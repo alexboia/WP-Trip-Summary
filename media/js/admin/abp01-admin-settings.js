@@ -35,12 +35,12 @@
 /// <reference path="./abp01-admin-settings.d.ts" />
 (function ($) {
     "use strict";
+    var context = null;
     var $ctrlSettingsForm = null;
     var $ctrlTileLayerApiKeyNag = null;
-    var progressBar = null;
     var settingsSaveResult = null;
     var predefinedTileLayersModal = null;
-    var context = null;
+    var toggleBusy = null;
     function getContext() {
         return {
             apiKeyNagSetup: false,
@@ -63,39 +63,22 @@
     function hideOperationMessage() {
         settingsSaveResult.hide(false);
     }
-    function toggleBusy(show) {
-        if (show) {
-            if (progressBar == null) {
-                progressBar = $('#wpwrap').abp01ProgressModal({});
-            }
-            progressBar.show(window.abp01SettingsL10n.msgSaveWorking || 'Please wait');
-        }
-        else {
-            if (progressBar != null) {
-                progressBar.hide();
-            }
-        }
-    }
     function updatePreviouslySavedTileLayerFromInputFields() {
         context.previouslySavedTileLayer = getCurrentTileLayerInfoFromInputFields();
     }
     function getCurrentTileLayerInfoFromInputFields() {
         return {
-            url: $('#abp01-tileLayerUrl').val().toString(),
-            attributionTxt: $('#abp01-tileLayerAttributionTxt').val().toString(),
-            attributionUrl: $('#abp01-tileLayerAttributionUrl').val().toString(),
-            apiKey: $('#abp01-tileLayerApiKey').val().toString()
+            url: ($('#abp01-tileLayerUrl').val() || '').toString(),
+            attributionTxt: ($('#abp01-tileLayerAttributionTxt').val() || '').toString(),
+            attributionUrl: ($('#abp01-tileLayerAttributionUrl').val() || '').toString(),
+            apiKey: ($('#abp01-tileLayerApiKey').val() || '').toString()
         };
     }
     function updateInputFieldsWithTileLayerInfo(tileLayer) {
-        $('#abp01-tileLayerUrl')
-            .val(tileLayer.url);
-        $('#abp01-tileLayerAttributionTxt')
-            .val(tileLayer.attributionTxt);
-        $('#abp01-tileLayerAttributionUrl')
-            .val(tileLayer.attributionUrl);
-        $('#abp01-tileLayerApiKey')
-            .val('');
+        $('#abp01-tileLayerUrl').val(tileLayer.url);
+        $('#abp01-tileLayerApiKey').val('');
+        $('#abp01-tileLayerAttributionTxt').val(tileLayer.attributionTxt);
+        $('#abp01-tileLayerAttributionUrl').val(tileLayer.attributionUrl);
         $('#abp01-tileLayerUrl').trigger('change');
     }
     function getFormSaveUrl() {
@@ -174,14 +157,27 @@
     function initControls() {
         $ctrlSettingsForm = $('#abp01-settings-form');
         $ctrlTileLayerApiKeyNag = $('#abp01-tileLayer-apiKey-nag');
-        settingsSaveResult = $('#abp01-settings-action-result').abp01AlertInline({
+        toggleBusy = createBusyToggler();
+        settingsSaveResult = createSaveResultAlert();
+        predefinedTileLayersModal = createPredefinedTileLayersModal();
+        initTooltips();
+        initColorPickers();
+    }
+    function createBusyToggler() {
+        return $.abp01.createBusyToggler('#wpwrap', window.abp01SettingsL10n.msgSaveWorking);
+    }
+    function createSaveResultAlert() {
+        return $('#abp01-settings-action-result').abp01AlertInline({
             dismissible: false
         });
-        predefinedTileLayersModal = $('#abp01-predefined-tile-layers-window').abp01Modal({
+    }
+    function createPredefinedTileLayersModal() {
+        return $('#abp01-predefined-tile-layers-window').abp01Modal({
             trigger: '#abp01-predefined-tile-layer-selector'
         });
+    }
+    function initTooltips() {
         $.abp01.initTooltipsOnPage('#abp01-settings-page');
-        initColorPickers();
     }
     function initListeners() {
         $('.apb01-settings-save-btn')

@@ -40,10 +40,10 @@
 	"use strict";
 
 	var context: WpTripSummaryMaintenanceContext = null;
-	var progressBar: WpTripSummaryProgressModal = null;
 	var toolResult: WpTripSummaryAlertInline = null;
 	var toolResultPlaceholder: string = null;
 	var confirmExecutionModal: WpTripSummaryConfirmModal = null;
+	var toggleBusy: WpTripSummaryBusyToggler = null;
 
 	function getContext(): WpTripSummaryMaintenanceContext {
 		return {
@@ -63,20 +63,6 @@
 		$('#abp01-admin-maintenance-result-container-inner')
 			.html(content)
 			.show();
-	}
-
-	function toggleBusy(show: boolean): void {
-		if (show) {
-			if (progressBar == null) {
-				progressBar = $('#wpwrap').abp01ProgressModal({});
-			}
-
-			progressBar.show(window.abp01MaintenanceL10n.msgWorking || 'Please wait');
-		} else {
-			if (progressBar != null) {
-				progressBar.hide();
-			}
-		}
 	}
 
 	function displaySuccessfulOperationMessage(message: string): void {
@@ -164,9 +150,17 @@
 	}
 
 	function initControls(): void {
-		toolResultPlaceholder = $('#abp01-admin-maintenance-result-container-inner')
-			.html();
-		toolResult = $('#abp01-tool-action-result').abp01AlertInline({
+		toggleBusy = createBusyToggler();
+		toolResultPlaceholder = $('#abp01-admin-maintenance-result-container-inner').html();
+		toolResult = createToolResultAlertInline();
+	}
+
+	function createBusyToggler(): WpTripSummaryBusyToggler {
+		return $.abp01.createBusyToggler('#wpwrap', window.abp01MaintenanceL10n.msgWorking);
+	}
+
+	function createToolResultAlertInline(): WpTripSummaryAlertInline {
+		return $('#abp01-tool-action-result').abp01AlertInline({
 			dismissible: false
 		});
 	}

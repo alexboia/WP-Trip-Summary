@@ -91,7 +91,7 @@
 	function toggleBusy(show: boolean): void {
 		if (show) {
 			var message = arguments.length == 2 ? arguments[1] : null;
-			progressBar.show(message || 'Please wait');
+			progressBar.show((message || window.abp01AdminSystemLogL10n.msgWorking) || 'Please wait');
 		} else {
 			progressBar.hide();
 		}
@@ -258,7 +258,7 @@
 		}
 	}
 
-	function confirmDelete(callback) {
+	function confirmDelete(callback: Function): void {
 		if (confirmDeleteModal == null) {
 			confirmDeleteModal = $.abp01ConfirmDialogModal();
 		}

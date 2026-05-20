@@ -43,7 +43,7 @@
 		window.abp01.enableWindowScroll();
 	}
 
-	$.fn.abp01ProgressModal = function(spec: WpTripSummaryProgressModalOptions): WpTripSummaryModal {
+	$.fn.abp01ProgressModal = function(spec: WpTripSummaryProgressModalOptions): WpTripSummaryProgressModal {
 		var $me = $(this);
 		var opts: WpTripSummaryProgressModalOptions = spec || {};
 

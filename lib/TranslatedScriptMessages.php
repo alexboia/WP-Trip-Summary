@@ -45,6 +45,7 @@ class Abp01_TranslatedScriptMessages {
 
 	public static function getAdminSystemLogsManagementTranslations() {
 		return array(
+			'msgWorking' => esc_html__('Working. Please wait...', 'abp01-trip-summary'),
 			'msgConfirmLogFileRemoval' => esc_html__('Are you sure you want to remove this log file?', 'abp01-trip-summary'),
 			'msgLogFileRemovalSuccess' => esc_html__('The log file has been successfully deleted.', 'abp01-trip-summary'),
 			'errCouldNotRemoveLogFile' => esc_html__('The log file could not be deleted', 'abp01-trip-summary'),
@@ -148,6 +149,7 @@ class Abp01_TranslatedScriptMessages {
 			'editItemTitle' => esc_html__('Modify item', 'abp01-trip-summary'),
 			'errFailNetwork' => esc_html__('The item could not be saved due to a possible network error or an internal server issue', 'abp01-trip-summary'),
 			'errFailGeneric' => esc_html__('The item could not be saved due to a possible internal server issue', 'abp01-trip-summary'),
+			'errSaveFailInvalidData' => esc_html__('Please fill in all required fields.', 'abp01-trip-summary'),
 			'ttlConfirmDelete' => esc_html__('Confirm item removal', 'abp01-trip-summary'),
 			'errDeleteFailedNetwork' => esc_html__('The item could not be deleted due to a possible network error or an internal server issue', 'abp01-trip-summary'),
 			'errDeleteFailedGeneric' => esc_html__('The item could not be deleted due to a possible internal server issue', 'abp01-trip-summary'),

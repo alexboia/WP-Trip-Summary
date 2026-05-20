@@ -30,18 +30,65 @@
 
 /// <reference types="jquery" />
 
-interface WpTripSummaryModal {
-	show(): void;
-	hide(): void;
-	findAnd(selector: string, callback: Function): JQuery;
+interface WpTripSummaryLookupManagementContext {
+	ajaxBaseUrl: string;
+	
+	getLookupNonce: string;
+	addLookupNonce: string;
+	editLookupNonce: string;
+	deleteLookupNonce: string;
+	
+	ajaxGetLookupAction: string;
+	ajaxAddLookupAction: string;
+	ajaxEditLookupAction: string;
+	ajaxDeleteLookupAction: string;
 }
 
-interface WpTripSummaryModalOptions {
-	trigger: string;
-	onShow?: Function;
-	onHide?: Function;
+interface WpTripSummaryCurrentLookupDataItemSelection {
+	type: string;
+	typeName: string;
+	language: string;
+	languageName: string;
+	isDefaultLanguage: boolean;
 }
 
-interface JQuery {
-	abp01Modal(spec: WpTripSummaryModalOptions): WpTripSummaryModal;
+interface WpTripSummaryLookupDataItem {
+	id: number;
+	type: string;
+	defaultLabel: string;
+	hasTranslation: boolean;
+	label: string;
+}
+
+interface WpTripSummaryLookupListingResponse {
+	success: boolean;
+	message: string;
+	items?: WpTripSummaryLookupDataItem[];
+}
+
+interface WpTripSummaryLookupDataItemSaveResponse {
+	success: boolean;
+	message: string;
+	item?: WpTripSummaryLookupDataItem;
+}
+
+interface WpTripSummaryLookupDataItemDeleteResponse {
+	success: boolean;
+	message: string;
+	requiresConfirmation?: boolean;
+	confirmationNonce?:string;
+}
+
+interface WpTripSummaryCurrentLookupItemsMap {
+	[key: number]: WpTripSummaryLookupDataItem;
+}
+
+declare enum WpTripSummaryLookupDataItemDeleteStage {
+	InitialRequest = "_lookup_delete_initial_request",
+	InUseConfirmation = "_lookup_delete_inuse_confirmation"
+}
+
+interface WpTripSummaryLookupDataItemDeleteFlow {
+	stage: WpTripSummaryLookupDataItemDeleteStage;
+	nonce: string;
 }

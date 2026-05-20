@@ -29,7 +29,8 @@
  */
 /// <reference types="jquery" />
 /// <reference types="toastr" />
-/// <reference path="abp01-common.d.ts" />
+/// <reference path="./abp01-common.d.ts" />
+/// <reference path="./components/abp01-progress-modal.d.ts" />
 (function ($) {
     "use strict";
     function scrollToTop() {
@@ -94,6 +95,76 @@
             });
         });
     }
+    function createBusyToggler(selector, defaultMessage) {
+        var progressBar = null;
+        return function (show, message) {
+            if (message === void 0) { message = null; }
+            if (show) {
+                if (progressBar == null) {
+                    progressBar = $(selector).abp01ProgressModal({});
+                }
+                progressBar.show((message || defaultMessage) || 'Please wait...');
+            }
+            else {
+                if (progressBar != null) {
+                    progressBar.hide();
+                }
+            }
+        };
+    }
+    function isNullOrWhiteSpace(value) {
+        if (!value) {
+            return true;
+        }
+        if (typeof value !== 'string') {
+            value = value.toString();
+        }
+        if (typeof value === 'string') {
+            return value.trim().length === 0;
+        }
+        return false;
+    }
+    function kiteTemplate(templateId, data) {
+        try {
+            if (window.kite) {
+                return window.kite(templateId, data);
+            }
+            else {
+                throw new Error('KiteJS is not available.');
+            }
+        }
+        catch (error) {
+            console.error('Failed to compile lookup listing template:', error);
+            return null;
+        }
+    }
+    $.fn.singleVal = function () {
+        var $me = $(this);
+        return ($me.val() || '').toString();
+    };
+    $.fn.singleValNumeric = function (defaultValue) {
+        if (defaultValue === void 0) { defaultValue = 0; }
+        var $me = $(this);
+        var strValue = $me.singleVal();
+        if (!strValue || strValue.length <= 0) {
+            return defaultValue;
+        }
+        var numericValue = parseInt(strValue);
+        if (isNaN(numericValue)) {
+            return defaultValue;
+        }
+        return numericValue;
+    };
+    $.fn.optionTextByValue = function (value) {
+        var $me = $(this);
+        var $option = $me.find('option[value="' + value + '"]');
+        if ($option.length > 0) {
+            return $option.text();
+        }
+        else {
+            return null;
+        }
+    };
     if (window.abp01 == undefined) {
         window.abp01 = {
             scrollToTop: scrollToTop,
@@ -101,7 +172,10 @@
             enableWindowScroll: enableWindowScroll,
             initToastMessages: initToastMessages,
             toastMessage: toastMessage,
-            initTooltipsOnPage: initTooltipsOnPage
+            initTooltipsOnPage: initTooltipsOnPage,
+            createBusyToggler: createBusyToggler,
+            isNullOrWhiteSpace: isNullOrWhiteSpace,
+            kiteTemplate: kiteTemplate
         };
     }
     $.abp01 = window.abp01;
