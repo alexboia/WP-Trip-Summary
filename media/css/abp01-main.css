@@ -236,6 +236,18 @@ a.abp01-close-editor:hover {
 	width: 638px;
 }
 
+#abp01-techbox-editor .abp01-input-text {
+	max-height: 30px;
+	min-height: 30px;
+}
+
+#abp01-techbox-editor .abp01-editor-footer .button {
+	max-height: 30px;
+	min-height: 30px;
+	line-height: 30px;
+	vertical-align: middle;
+}
+
 .abp01-form-line select {
 	width: 638px;
 }
