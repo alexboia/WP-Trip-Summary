@@ -61,12 +61,6 @@ make_compat_info() {
 	./bin/detect-compat-info.sh
 }
 
-# Ensure help contents is up to date
-regenerate_help() {
-	echo "Re-generating help contents..."
-	php ./help/tools/make-help.php
-}
-
 clean_tmp_dir() {
 	echo "Cleaning up temporary directory..."
 	rm -rf $WPTS_BUILD_TMPDIR/*
@@ -98,9 +92,8 @@ copy_source_files() {
 
 	mkdir "$WPTS_BUILD_TMPDIR/data"
 	mkdir "$WPTS_BUILD_TMPDIR/data/cache" && mkdir "$WPTS_BUILD_TMPDIR/data/storage"
-	mkdir "$WPTS_BUILD_TMPDIR/data/help" && mkdir "$WPTS_BUILD_TMPDIR/data/setup"
+	mkdir "$WPTS_BUILD_TMPDIR/data/setup"
 
-	cp -r ./data/help/* "$WPTS_BUILD_TMPDIR/data/help" > /dev/null
 	cp -r ./data/dev/setup/* "$WPTS_BUILD_TMPDIR/data/setup" > /dev/null
 }
 
@@ -116,7 +109,6 @@ echo "Using version: ${WPTS_VERSION}"
 scan_lib_dir_or_fail
 ensure_out_dirs
 clean_out_dirs
-regenerate_help
 #make_compat_info
 copy_source_files
 generate_package
