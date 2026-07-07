@@ -37,6 +37,7 @@
 	--wpts-danger-hover: #C9332C;
 	--wpts-warn: #F29E1F;
 	--wpts-warn-ink: #8A3F00;
+	--wpts-list-selection: #1FA4B4;
 }
 
 .abp01-bootstrap {
@@ -44,8 +45,12 @@
 }
 
 .abp01-bootstrap .list-group-item {
-	--bs-list-group-active-bg: var(--wpts-primary);
-	--bs-list-group-active-border-color: var(--wpts-primary);
+	--bs-list-group-active-bg: var(--wpts-list-selection);
+	--bs-list-group-active-border-color: var(--wpts-list-selection);
+}
+
+.abp01-bootstrap .list-group-item:focus {
+	box-shadow: none;
 }
 
 .abp01-bootstrap .btn-primary {

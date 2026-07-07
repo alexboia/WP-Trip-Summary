@@ -43,7 +43,7 @@ class Abp01_ChangeLogDataSource_ReadMe implements Abp01_ChangeLogDataSource {
 		$this->_changeLogExtractor = new Abp01_ReadmeChangelogExtractor($readmeFilePath);
 	}
 
-	public function getChangeLog() {
+	public function getChangeLog(): array {
 		return $this->_changeLogExtractor->extractChangeLog();
 	}
 }

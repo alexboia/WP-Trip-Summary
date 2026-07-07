@@ -29,7 +29,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
@@ -84,7 +84,7 @@ class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_Plug
 	}
 
 	public function displayAdminAboutPage() {
-		$data = new stdClass();
+		$data = new Abp01_ViewModel_AboutPageVm();
 		$data->pluginLogoPath = $this->_getPluginLogoPath();
 		$data->pluginData = $this->_getPluginData();
 		$data->envData = $this->_getEnvData();
@@ -96,12 +96,12 @@ class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_Plug
 		return $this->_env->getPluginAssetUrl('media/img/logo.png');
 	}
 
-	private function _getPluginData() {
+	private function _getPluginData(): array {
 		$this->_registerAdditionalPluginHeadersProvider();
 		return get_plugin_data(ABP01_PLUGIN_MAIN);
 	}
 
-	private function _getEnvData() {
+	private function _getEnvData(): array {
 		return array(
 			'CurrentWP' => $this->_env->getWpVersion(),
 			'CurrentPHP' => $this->_env->getPhpVersion()

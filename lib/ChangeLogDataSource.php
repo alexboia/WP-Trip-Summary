@@ -34,5 +34,5 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 interface Abp01_ChangeLogDataSource {
-	function getChangeLog();
+	function getChangeLog(): array;
 }

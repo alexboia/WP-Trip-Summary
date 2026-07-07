@@ -29,6 +29,8 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+declare(strict_types=1);
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
@@ -55,7 +57,7 @@ class Abp01_ChangeLogDataSource_Cached implements Abp01_ChangeLogDataSource {
 		delete_option(self::OPT_CHANGELOG_CACHE_KEY);
 	}
 
-	public function getChangeLog() {
+	public function getChangeLog(): array {
 		$changeLog = null;
 		$cachedChangeLog = $this->_readCachedChangeLog();
 

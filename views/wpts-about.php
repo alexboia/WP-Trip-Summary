@@ -29,6 +29,10 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
     defined('ABP01_LOADED') or die;
+	
+	/**
+	 * @var Abp01_ViewModel_AboutPageVm $data
+	 */
 ?>
 
 <div id="abp01-about-page">

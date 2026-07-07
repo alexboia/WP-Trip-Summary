@@ -61,7 +61,7 @@ class Abp01_View {
 		return $this->_renderCoreView('wpts-frontend-jsvars.php', $data);
 	}
 
-	private function _renderCoreView($file, stdClass $data) {
+	private function _renderCoreView($file, $data) {
 		ob_start();
 		require $this->_env->getViewFilePath($file);
 		return ob_get_clean();
@@ -109,7 +109,7 @@ class Abp01_View {
 		return $this->_renderCoreView('wpts-help.php', $data);
 	}
 
-	public function renderAdminAboutPage(stdClass $data) {
+	public function renderAdminAboutPage(Abp01_ViewModel_AboutPageVm $data) {
 		$this->_registerAdminHelpers();
 		return $this->_renderCoreView('wpts-about.php', $data);
 	}
