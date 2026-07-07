@@ -82,34 +82,36 @@
 			: 'body';
 
 		if (success) {
-			toastr.success(message, null, {
+			toastr.success(message, undefined, {
 				target: toastrTarget
 			});
 		} else {
-			toastr.error(message, null, {
+			toastr.error(message, undefined, {
 				target: toastrTarget
 			});
 		}
 	}
 
 	function initTooltipsOnPage(container: string) {
-		var $els: JQuery = $('[data-bs-toggle="tooltip"]');
+		const $els: JQuery = $('[data-bs-toggle="tooltip"]');
 		$els.each(function() {
-			var $me: JQuery = $(this);
-			var el: HTMLElement = $me.get(0);
-			new bootstrap.Tooltip(el, {
-				container: container,
-				delay: {
-					show: 0,
-					hide: 2500
-				}
-			});
+			const $me: JQuery = $(this);
+			const el: HTMLElement|undefined = $me.get(0);
+			if (!!el) {
+				new bootstrap.Tooltip(el, {
+					container: container,
+					delay: {
+						show: 0,
+						hide: 2500
+					}
+				});
+			}
 		});
 	}
 
 	function createBusyToggler(selector: string, defaultMessage?: string): WpTripSummaryBusyToggler {
-		var progressBar: WpTripSummaryProgressModal = null;
-		return function(show: boolean, message: string = null): void {
+		let progressBar: WpTripSummaryProgressModal|null = null;
+		return function(show: boolean, message: string|null = null): void {
 			if (show) {
 				if (progressBar == null) {
 					progressBar = $(selector).abp01ProgressModal({});
@@ -174,7 +176,7 @@
 		return numericValue;
 	}
 
-	$.fn.optionTextByValue = function(value: string): string {
+	$.fn.optionTextByValue = function(value: string): string|null {
 		var $me: JQuery = $(this);
 		var $option: JQuery = $me.find('option[value="' + value + '"]');
 

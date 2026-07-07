@@ -30,15 +30,17 @@
 
 /// <reference types="jquery" />
 
- interface WpTripSummaryConfirmModal {
-	show(message: string, callback: Function): void;
+type WpTripSummaryConfirmModalResultCallback = (confirmed: boolean, userData?: any) => void;
+
+interface WpTripSummaryConfirmModal {
+	show(message: string, callback: WpTripSummaryConfirmModalResultCallback): void;
 	hide(): void;
- }
+}
 
- interface WpTripSummaryConfirmModalOptions {
-	id: string;
- }
+interface WpTripSummaryConfirmModalOptions {
+	id: string|null;
+}
 
- interface JQueryStatic {
+interface JQueryStatic {
 	abp01ConfirmDialogModal(opts?:WpTripSummaryConfirmModalOptions): WpTripSummaryConfirmModal;
- }
+}

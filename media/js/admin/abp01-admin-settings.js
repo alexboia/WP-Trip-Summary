@@ -55,16 +55,18 @@
         window.abp01.scrollToTop();
     }
     function displaySuccessfulOperationMessage(message) {
-        settingsSaveResult.success(message, false);
+        settingsSaveResult?.success(message, false);
     }
     function displayFailedOperationMessage(message) {
-        settingsSaveResult.danger(message, false);
+        settingsSaveResult?.danger(message, false);
     }
     function hideOperationMessage() {
-        settingsSaveResult.hide(false);
+        settingsSaveResult?.hide(false);
     }
     function updatePreviouslySavedTileLayerFromInputFields() {
-        context.previouslySavedTileLayer = getCurrentTileLayerInfoFromInputFields();
+        if (!!context) {
+            context.previouslySavedTileLayer = getCurrentTileLayerInfoFromInputFields();
+        }
     }
     function getCurrentTileLayerInfoFromInputFields() {
         return {
@@ -81,23 +83,32 @@
         $('#abp01-tileLayerAttributionUrl').val(tileLayer.attributionUrl);
         $('#abp01-tileLayerUrl').trigger('change');
     }
+    function _checkContextOrThrow() {
+        if (!context) {
+            throw new Error('Invalid context');
+        }
+        return context;
+    }
+    function _baseUrlOrThrow() {
+        return URI(_checkContextOrThrow().ajaxBaseUrl || "");
+    }
     function getFormSaveUrl() {
-        return URI(context.ajaxBaseUrl)
-            .addSearch('action', context.ajaxSaveAction)
-            .addSearch('abp01_nonce_settings', context.nonce)
+        return _baseUrlOrThrow()
+            .addSearch('action', context?.ajaxSaveAction)
+            .addSearch('abp01_nonce_settings', context?.nonce)
             .toString();
     }
     function saveSettings() {
         scrollToTop();
-        toggleBusy(true);
+        toggleBusy?.(true);
         hideOperationMessage();
         $.ajax(getFormSaveUrl(), {
             type: 'POST',
             dataType: 'json',
             cache: false,
-            data: $ctrlSettingsForm.serialize()
+            data: $ctrlSettingsForm?.serialize()
         }).done(function (data, status, xhr) {
-            toggleBusy(false);
+            toggleBusy?.(false);
             if (data && data.success) {
                 updatePreviouslySavedTileLayerFromInputFields();
                 displaySuccessfulOperationMessage(window.abp01SettingsL10n.msgSaveOk);
@@ -106,17 +117,19 @@
                 displayFailedOperationMessage(data.message || window.abp01SettingsL10n.errSaveFailGeneric);
             }
         }).fail(function (xhr, status, error) {
-            toggleBusy(false);
+            toggleBusy?.(false);
             displayFailedOperationMessage(window.abp01SettingsL10n.errSaveFailNetwork);
         });
     }
     function closePredefinedTileLayerSelector() {
-        predefinedTileLayersModal.hide();
+        predefinedTileLayersModal?.hide();
     }
     function selectPreDefinedTileLayer() {
-        var $me = $(this);
-        var layerId = $me.attr('data-predefined-tile-layer-id');
-        var predefinedTileLayer = context.predefinedTileLayers[layerId] || null;
+        const $me = $(this);
+        const layerId = $me.attr('data-predefined-tile-layer-id') || null;
+        const predefinedTileLayer = !!layerId
+            ? context?.predefinedTileLayers[layerId] || null
+            : null;
         if (predefinedTileLayer) {
             updatePreviouslySavedTileLayerFromInputFields();
             updateInputFieldsWithTileLayerInfo(predefinedTileLayer.tileLayerObject);
@@ -124,12 +137,12 @@
         closePredefinedTileLayerSelector();
     }
     function initApiKeyNag() {
-        if (!context.apiKeyNagSetup) {
+        if (!!context && !context.apiKeyNagSetup) {
             context.apiKeyNagSetup = true;
         }
     }
     function updateApiKeyNag() {
-        var tileLayer = getCurrentTileLayerInfoFromInputFields();
+        const tileLayer = getCurrentTileLayerInfoFromInputFields();
         if (needsApiKey(tileLayer)) {
             showApiKeyNag();
         }
@@ -138,7 +151,7 @@
         }
     }
     function needsApiKey(tileLayer) {
-        var needsApiKey = false;
+        let needsApiKey = false;
         if (tileLayer.url.indexOf('{apiKey}') >= 0) {
             needsApiKey = !tileLayer.apiKey || tileLayer.apiKey.length <= 0;
         }
@@ -146,10 +159,10 @@
     }
     function showApiKeyNag() {
         initApiKeyNag();
-        $ctrlTileLayerApiKeyNag.show();
+        $ctrlTileLayerApiKeyNag?.show();
     }
     function hideApiKeyNag() {
-        $ctrlTileLayerApiKeyNag.hide();
+        $ctrlTileLayerApiKeyNag?.hide();
     }
     function initFormState() {
         context = getContext();

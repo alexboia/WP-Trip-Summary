@@ -71,34 +71,35 @@
             ? arguments[2]
             : 'body';
         if (success) {
-            toastr.success(message, null, {
+            toastr.success(message, undefined, {
                 target: toastrTarget
             });
         }
         else {
-            toastr.error(message, null, {
+            toastr.error(message, undefined, {
                 target: toastrTarget
             });
         }
     }
     function initTooltipsOnPage(container) {
-        var $els = $('[data-bs-toggle="tooltip"]');
+        const $els = $('[data-bs-toggle="tooltip"]');
         $els.each(function () {
-            var $me = $(this);
-            var el = $me.get(0);
-            new bootstrap.Tooltip(el, {
-                container: container,
-                delay: {
-                    show: 0,
-                    hide: 2500
-                }
-            });
+            const $me = $(this);
+            const el = $me.get(0);
+            if (!!el) {
+                new bootstrap.Tooltip(el, {
+                    container: container,
+                    delay: {
+                        show: 0,
+                        hide: 2500
+                    }
+                });
+            }
         });
     }
     function createBusyToggler(selector, defaultMessage) {
-        var progressBar = null;
-        return function (show, message) {
-            if (message === void 0) { message = null; }
+        let progressBar = null;
+        return function (show, message = null) {
             if (show) {
                 if (progressBar == null) {
                     progressBar = $(selector).abp01ProgressModal({});
@@ -142,8 +143,7 @@
         var $me = $(this);
         return ($me.val() || '').toString();
     };
-    $.fn.singleValNumeric = function (defaultValue) {
-        if (defaultValue === void 0) { defaultValue = 0; }
+    $.fn.singleValNumeric = function (defaultValue = 0) {
         var $me = $(this);
         var strValue = $me.singleVal();
         if (!strValue || strValue.length <= 0) {

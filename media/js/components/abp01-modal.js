@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014-2025 Alexandru Boia and Contributors
+ * Copyright (c) 2014-2026 Alexandru Boia and Contributors
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -34,15 +34,15 @@
     "use strict";
     $.fn.abp01Modal = function (spec) {
         var $me = $(this);
-        var myId = $me.get(0).id;
-        var mySelector = "#".concat(myId);
+        var myId = $me.get(0)?.id || null;
+        var mySelector = `#${myId}`;
         var trigger = spec.trigger || null;
         var $wrap = null;
         var bsModal = null;
         function _wrap() {
-            var wrapId = "".concat(myId, "-__wrap");
-            $me.wrap("<div id=\"".concat(wrapId, "\" class=\"abp01-bootstrap\" style=\"display: none;\"></div>"));
-            $wrap = $("#".concat(wrapId));
+            var wrapId = `${myId}-__wrap`;
+            $me.wrap(`<div id="${wrapId}" class="abp01-bootstrap" style="display: none;"></div>`);
+            $wrap = $(`#${wrapId}`);
             $wrap.append('<div class="modal-backdrop"></div>');
         }
         function _watchTrigger() {
@@ -69,19 +69,17 @@
             });
         }
         function _showBackdrop() {
-            $wrap
-                .find('.modal-backdrop')
+            $wrap?.find('.modal-backdrop')
                 .fadeIn('slow');
         }
         function _hideBackdrop() {
-            $wrap
-                .find('.modal-backdrop')
+            $wrap?.find('.modal-backdrop')
                 .fadeOut('slow');
         }
         function _show() {
             _init();
-            $wrap.show();
-            bsModal.show();
+            $wrap?.show();
+            bsModal?.show();
         }
         function _init() {
             if (bsModal == null) {

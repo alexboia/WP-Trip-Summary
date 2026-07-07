@@ -38,15 +38,15 @@
 (function ($) {
 	"use strict";
 
-	var context: WpTripSummarySettingsContext = null;
+	var context: WpTripSummarySettingsContext|null = null;
 
-	var $ctrlSettingsForm: JQuery = null;
-	var $ctrlTileLayerApiKeyNag: JQuery = null;
+	var $ctrlSettingsForm: JQuery|null = null;
+	var $ctrlTileLayerApiKeyNag: JQuery|null = null;
 
-	var settingsSaveResult: WpTripSummaryAlertInline = null;
-	var predefinedTileLayersModal: WpTripSummaryModal = null;
+	var settingsSaveResult: WpTripSummaryAlertInline|null = null;
+	var predefinedTileLayersModal: WpTripSummaryModal|null = null;
 
-	var toggleBusy: WpTripSummaryBusyToggler = null;
+	var toggleBusy: WpTripSummaryBusyToggler|null = null;
 
 	function getContext(): WpTripSummarySettingsContext {
 		return {
@@ -63,20 +63,22 @@
 		window.abp01.scrollToTop();
 	}
 
-	function displaySuccessfulOperationMessage(message): void {
-		settingsSaveResult.success(message, false);
+	function displaySuccessfulOperationMessage(message: string): void {
+		settingsSaveResult?.success(message, false);
 	}
 
-	function displayFailedOperationMessage(message): void {
-		settingsSaveResult.danger(message, false);
+	function displayFailedOperationMessage(message: string): void {
+		settingsSaveResult?.danger(message, false);
 	}
 
 	function hideOperationMessage(): void {
-		settingsSaveResult.hide(false);
+		settingsSaveResult?.hide(false);
 	}
 
 	function updatePreviouslySavedTileLayerFromInputFields(): void {
-		context.previouslySavedTileLayer = getCurrentTileLayerInfoFromInputFields();
+		if (!!context) {
+			context.previouslySavedTileLayer = getCurrentTileLayerInfoFromInputFields();
+		}
 	}
 
 	function getCurrentTileLayerInfoFromInputFields():WpTripSummaryTileLayer {
@@ -98,25 +100,36 @@
 		$('#abp01-tileLayerUrl').trigger('change');
 	}
 
+	function _checkContextOrThrow(): WpTripSummarySettingsContext {
+		if (!context) {
+			throw new Error('Invalid context');
+		}
+		return context;
+	}
+
+	function _baseUrlOrThrow(): URI {
+		return URI(_checkContextOrThrow().ajaxBaseUrl || "");
+	}
+
 	function getFormSaveUrl(): string {
-		return URI(context.ajaxBaseUrl)
-			.addSearch('action', context.ajaxSaveAction)
-			.addSearch('abp01_nonce_settings', context.nonce)
+		return _baseUrlOrThrow()
+			.addSearch('action', context?.ajaxSaveAction)
+			.addSearch('abp01_nonce_settings', context?.nonce)
 			.toString();
 	}
 
 	function saveSettings(): void {
 		scrollToTop();
-		toggleBusy(true);
+		toggleBusy?.(true);
 		hideOperationMessage();
 		
 		$.ajax(getFormSaveUrl(), {
 			type: 'POST',
 			dataType: 'json',
 			cache: false,
-			data: $ctrlSettingsForm.serialize()
+			data: $ctrlSettingsForm?.serialize()
 		}).done(function (data, status, xhr) {
-			toggleBusy(false);
+			toggleBusy?.(false);
 			if (data && data.success) {
 				updatePreviouslySavedTileLayerFromInputFields();
 				displaySuccessfulOperationMessage(window.abp01SettingsL10n.msgSaveOk);
@@ -124,19 +137,22 @@
 				displayFailedOperationMessage(data.message || window.abp01SettingsL10n.errSaveFailGeneric);
 			}
 		}).fail(function (xhr, status, error) {
-			toggleBusy(false);
+			toggleBusy?.(false);
 			displayFailedOperationMessage(window.abp01SettingsL10n.errSaveFailNetwork);
 		});
 	}
 
 	function closePredefinedTileLayerSelector(): void {
-		predefinedTileLayersModal.hide();
+		predefinedTileLayersModal?.hide();
 	}
 
-	function selectPreDefinedTileLayer(): void {
-		var $me: JQuery = $(this);
-		var layerId: string = $me.attr('data-predefined-tile-layer-id');
-		var predefinedTileLayer: any = context.predefinedTileLayers[layerId] || null;
+	function selectPreDefinedTileLayer(this: HTMLElement): void {
+		const $me: JQuery = $(this);
+		const layerId: string|null = $me.attr('data-predefined-tile-layer-id') || null;
+
+		const predefinedTileLayer: any = !!layerId 
+			? context?.predefinedTileLayers[layerId] || null
+			: null;
 
 		if (predefinedTileLayer) {
 			updatePreviouslySavedTileLayerFromInputFields();
@@ -146,13 +162,13 @@
 	}
 
 	function initApiKeyNag(): void {
-		if (!context.apiKeyNagSetup) {
+		if (!!context && !context.apiKeyNagSetup) {
 			context.apiKeyNagSetup = true;
 		}
 	}
 
 	function updateApiKeyNag(): void {
-		var tileLayer: WpTripSummaryTileLayer = getCurrentTileLayerInfoFromInputFields();
+		const tileLayer: WpTripSummaryTileLayer = getCurrentTileLayerInfoFromInputFields();
 		if (needsApiKey(tileLayer)) {
 			showApiKeyNag();
 		} else {
@@ -161,7 +177,7 @@
 	}
 
 	function needsApiKey(tileLayer: WpTripSummaryTileLayer): boolean {
-		var needsApiKey: boolean = false;
+		let needsApiKey: boolean = false;
 		if (tileLayer.url.indexOf('{apiKey}') >= 0) {
 			needsApiKey = !tileLayer.apiKey || tileLayer.apiKey.length <= 0;
 		}
@@ -170,11 +186,11 @@
 
 	function showApiKeyNag(): void {
 		initApiKeyNag();
-		$ctrlTileLayerApiKeyNag.show();
+		$ctrlTileLayerApiKeyNag?.show();
 	}
 
 	function hideApiKeyNag(): void {
-		$ctrlTileLayerApiKeyNag.hide();
+		$ctrlTileLayerApiKeyNag?.hide();
 	}
 
 	function initFormState(): void {

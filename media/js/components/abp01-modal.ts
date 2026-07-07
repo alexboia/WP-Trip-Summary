@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014-2025 Alexandru Boia and Contributors
+ * Copyright (c) 2014-2026 Alexandru Boia and Contributors
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -38,12 +38,12 @@
 	$.fn.abp01Modal = function(spec:WpTripSummaryModalOptions): WpTripSummaryModal {
 		var $me: JQuery = $(this);
 
-		var myId: string = $me.get(0).id;
+		var myId: string|null = $me.get(0)?.id || null;
 		var mySelector: string = `#${myId}`;
 
-		var trigger: string = spec.trigger || null;
-		var $wrap: JQuery = null;
-		var bsModal: bootstrap.Modal = null;
+		var trigger: string|NodeList|null = spec.trigger || null;
+		var $wrap: JQuery|null = null;
+		var bsModal: bootstrap.Modal|null = null;
 
 		function _wrap(): void {
 			var wrapId: string = `${myId}-__wrap`;
@@ -82,21 +82,19 @@
 		}
 
 		function _showBackdrop(): void {
-			$wrap
-				.find('.modal-backdrop')
+			$wrap?.find('.modal-backdrop')
 				.fadeIn('slow');
 		}
 
 		function _hideBackdrop(): void {
-			$wrap
-				.find('.modal-backdrop')
+			$wrap?.find('.modal-backdrop')
 				.fadeOut('slow');
 		}
 
 		function _show(): void {
 			_init();
-			$wrap.show();
-			bsModal.show();
+			$wrap?.show();
+			bsModal?.show();
 		}
 
 		function _init(): void {

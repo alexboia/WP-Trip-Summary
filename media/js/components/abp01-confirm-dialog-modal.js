@@ -133,7 +133,7 @@
         }
         function dismissConfirmWindowWithActionCode(actionCode) {
             chosenAction = actionCode;
-            confirmWnd.hide();
+            confirmWnd?.hide();
         }
         function show(message, callback) {
             if (isOpen) {
@@ -150,7 +150,7 @@
         function showConfirmWnd() {
             initConfirmWnd();
             $(confirmWndContainerSelector).show();
-            confirmWnd.show();
+            confirmWnd?.show();
         }
         function initConfirmWnd() {
             if (confirmWnd === null) {
@@ -163,7 +163,7 @@
         }
         function updateResultCallback(callback) {
             if (!callback || (typeof callback !== 'function')) {
-                resultCallback = function () {
+                resultCallback = function (confirmed) {
                     warnNoResultCallbackRegistered();
                 };
             }

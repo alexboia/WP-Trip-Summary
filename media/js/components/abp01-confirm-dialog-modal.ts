@@ -51,9 +51,9 @@
 		var opts:WpTripSummaryConfirmModalOptions = spec 
 			|| { id: null };
 
-		var confirmWnd: bootstrap.Modal = null;
-		var chosenAction: string = null;
-		var resultCallback: Function = null;
+		var confirmWnd: bootstrap.Modal|null = null;
+		var chosenAction: string|null = null;
+		var resultCallback: WpTripSummaryConfirmModalResultCallback|null = null;
 		var userData: any = null;
 		var isOpen: boolean = false;
 
@@ -158,10 +158,10 @@
 
 		function dismissConfirmWindowWithActionCode(actionCode: string): void {
 			chosenAction = actionCode;
-			confirmWnd.hide();
+			confirmWnd?.hide();
 		}
 
-		function show(message: string, callback: Function): void {
+		function show(message: string, callback: WpTripSummaryConfirmModalResultCallback): void {
 			if (isOpen) {
 				return;
 			}
@@ -180,7 +180,7 @@
 		function showConfirmWnd(): void {
 			initConfirmWnd();
 			$(confirmWndContainerSelector).show();
-			confirmWnd.show();
+			confirmWnd?.show();
 		}
 
 		function initConfirmWnd(): void {
@@ -193,9 +193,9 @@
 			}
 		}
 
-		function updateResultCallback(callback: Function): void {
+		function updateResultCallback(callback: WpTripSummaryConfirmModalResultCallback): void {
 			if (!callback || (typeof callback !== 'function')) {
-				resultCallback = function() {
+				resultCallback = function(confirmed: boolean) {
 					warnNoResultCallbackRegistered();
 				};
 			} else {

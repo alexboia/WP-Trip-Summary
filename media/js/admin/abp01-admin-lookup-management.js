@@ -34,15 +34,16 @@
 /// <reference path="../components/abp01-progress-modal.d.ts" />
 /// <reference path="../components/abp01-confirm-dialog-modal.d.ts" />
 /// <reference path="./abp01-admin-lookup-management.d.ts" />
+/// <reference types="lodash" />
 (function ($) {
     "use strict";
     /**
      * Constants
      * */
-    var DEFAULT_LANG = '_default';
-    var LOOKUP_DELETE_INITIAL_REQUEST = '_lookup_delete_initial_request';
-    var LOOKUP_DELETE_INUSE_CONFIRMATION = '_lookup_delete_inuse_confirmation';
-    var EDIT_FORM_SELECTORS = {
+    const DEFAULT_LANG = '_default';
+    const LOOKUP_DELETE_INITIAL_REQUEST = '_lookup_delete_initial_request';
+    const LOOKUP_DELETE_INUSE_CONFIRMATION = '_lookup_delete_inuse_confirmation';
+    const EDIT_FORM_SELECTORS = {
         FORM: '#abp01-edit-lookup-form',
         TITLE_EXTRA: '#abp01-edit-lookup-window-title-extra',
         ITEM_ID_FIELD: '#abp01-lookup-item-id',
@@ -68,7 +69,10 @@
         nonce: null
     };
     function escapeHtml(value) {
-        return (window['lodash'] || window['_'])['escape'](value);
+        if (!value) {
+            return '';
+        }
+        return window.lodash.escape(value);
     }
     function getContext() {
         return {
@@ -89,50 +93,62 @@
     function createEditorBusyToggler() {
         return $.abp01.createBusyToggler('#abp01-edit-lookup-window-content', window.abp01LookupMgmtL10n.msgWorking);
     }
+    function _checkContextOrThrow() {
+        if (!context) {
+            throw new Error('Invalid context');
+        }
+        return context;
+    }
+    function _baseUrlOrThrow() {
+        return URI(_checkContextOrThrow().ajaxBaseUrl || "");
+    }
     function getLoadLookupDataUrl() {
-        return URI(context.ajaxBaseUrl)
-            .addSearch('action', context.ajaxGetLookupAction)
-            .addSearch('abp01_nonce_lookup_mgmt', context.getLookupNonce)
+        return _baseUrlOrThrow()
+            .addSearch('action', context?.ajaxGetLookupAction)
+            .addSearch('abp01_nonce_lookup_mgmt', context?.getLookupNonce)
             .toString();
     }
     function getAddLookupUrl() {
-        return URI(context.ajaxBaseUrl)
-            .addSearch('action', context.ajaxAddLookupAction)
-            .addSearch('abp01_nonce_lookup_mgmt', context.addLookupNonce)
+        return _baseUrlOrThrow()
+            .addSearch('action', context?.ajaxAddLookupAction)
+            .addSearch('abp01_nonce_lookup_mgmt', context?.addLookupNonce)
             .toString();
     }
     function getEditLookupUrl() {
-        return URI(context.ajaxBaseUrl)
-            .addSearch('action', context.ajaxEditLookupAction)
-            .addSearch('abp01_nonce_lookup_mgmt', context.editLookupNonce)
+        return _baseUrlOrThrow()
+            .addSearch('action', context?.ajaxEditLookupAction)
+            .addSearch('abp01_nonce_lookup_mgmt', context?.editLookupNonce)
             .toString();
     }
     function getDeleteLookupUrl() {
-        return URI(context.ajaxBaseUrl)
-            .addSearch('action', context.ajaxDeleteLookupAction)
-            .addSearch('abp01_nonce_lookup_mgmt', context.deleteLookupNonce)
-            .toString();
+        const uri = _baseUrlOrThrow()
+            .addSearch('action', context?.ajaxDeleteLookupAction)
+            .addSearch('abp01_nonce_lookup_mgmt', context?.deleteLookupNonce);
+        if (isLookupDeleteInuUseConfirmationStage()) {
+            uri.addSearch('abp01_nonce_lookup_force_remove', getLookupDeleteInUseConfirmationNonce());
+        }
+        return uri.toString();
     }
     function hideGenericActionResult() {
-        genericActionResult.hide(false);
+        genericActionResult?.hide(false);
     }
     function displaySuccesfulGenericActionResult(message) {
-        genericActionResult.success(message, false);
+        genericActionResult?.success(message, false);
     }
     function displayFailedGenericActionResult(message) {
-        genericActionResult.danger(message, false);
+        genericActionResult?.danger(message, false);
     }
     function hideEditorActionResult() {
-        editorActionResult.hide(false);
+        editorActionResult?.hide(false);
     }
     function displaySuccesfulEditorActionResult(message) {
-        editorActionResult.success(message, false);
+        editorActionResult?.success(message, false);
     }
     function displayFailedEditorActionResult(message) {
-        editorActionResult.danger(message, false);
+        editorActionResult?.danger(message, false);
     }
     function beginEditingItem(itemId) {
-        editingItem = currentItems.hasOwnProperty(itemId)
+        editingItem = !!currentItems && currentItems.hasOwnProperty(itemId)
             ? currentItems[itemId]
             : null;
         return editingItem;
@@ -142,6 +158,32 @@
     }
     function clearCurrentlyEditedItem() {
         editingItem = null;
+    }
+    function setLookupDeleteInitialRequest() {
+        lookupDelete = {
+            stage: LOOKUP_DELETE_INITIAL_REQUEST,
+            nonce: null
+        };
+    }
+    function setLookupDeleteInUseConfirmation(nonce) {
+        lookupDelete = {
+            stage: LOOKUP_DELETE_INUSE_CONFIRMATION,
+            nonce: nonce
+        };
+    }
+    function isLookupDeleteInuUseConfirmationStage() {
+        return lookupDelete.stage === LOOKUP_DELETE_INUSE_CONFIRMATION;
+    }
+    function getLookupDeleteInUseConfirmationNonce() {
+        return lookupDelete.nonce;
+    }
+    function setCurrentItemDeleted() {
+        if (isCurrentlyEditingItem()) {
+            if (!!currentItems && !!editingItem) {
+                delete currentItems[editingItem.id];
+            }
+            clearCurrentlyEditedItem();
+        }
     }
     function clearLookupDeleteState() {
         lookupDelete = {
@@ -157,11 +199,13 @@
     }
     function cleanupLookupItems() {
         clearAllLocalData();
-        $ctlLookupListing
-            .find('tbody')
+        $ctlLookupListing?.find('tbody')
             .html('');
     }
     function updateLocalItemData(item) {
+        if (!currentItems) {
+            currentItems = {};
+        }
         currentItems[item.id] = item;
     }
     function getLookupListingTemplate() {
@@ -171,11 +215,14 @@
         return tplLookupListing;
     }
     function renderLookupItems(items, append) {
-        var data = {
+        const data = {
             lookupItems: items
         };
-        var content = getLookupListingTemplate()(data);
-        var $container = $ctlLookupListing.find('tbody');
+        const content = getLookupListingTemplate()(data);
+        const $container = $ctlLookupListing?.find('tbody');
+        if (!$container || $container.length == 0) {
+            return;
+        }
         if (!append) {
             $container.html(content);
         }
@@ -184,20 +231,27 @@
         }
     }
     function getCurrentLookupDataItemSelection() {
-        var typeCode = $ctlTypeSelector.singleVal();
-        var languageCode = $ctlLangSelector.singleVal();
+        const typeCode = $ctlTypeSelector?.singleVal() || null;
+        const languageCode = $ctlLangSelector?.singleVal() || null;
+        if (!typeCode || !languageCode) {
+            return null;
+        }
         return {
             type: typeCode,
             language: languageCode,
-            typeName: $ctlTypeSelector.optionTextByValue(typeCode),
-            languageName: $ctlLangSelector.optionTextByValue(languageCode),
+            typeName: $ctlTypeSelector?.optionTextByValue(typeCode) || "",
+            languageName: $ctlLangSelector?.optionTextByValue(languageCode) || "",
             isDefaultLanguage: languageCode === DEFAULT_LANG
         };
     }
     function reloadLookupItems() {
-        pageToggleBusy(true);
+        pageToggleBusy?.(true);
         hideGenericActionResult();
-        var lookupSelection = getCurrentLookupDataItemSelection();
+        const lookupSelection = getCurrentLookupDataItemSelection();
+        if (!lookupSelection) {
+            console.error('Failed to get lookup selection.');
+            return;
+        }
         $.ajax(getLoadLookupDataUrl(), {
             cache: false,
             dataType: 'json',
@@ -207,7 +261,7 @@
                 lang: lookupSelection.language
             }
         }).done(function (response) {
-            pageToggleBusy(false);
+            pageToggleBusy?.(false);
             if (!!response && response.success && response.items) {
                 cleanupLookupItems();
                 renderLookupItems(response.items, false);
@@ -219,7 +273,7 @@
                 displayFailedGenericActionResult(window.abp01LookupMgmtL10n.errListingFailGeneric);
             }
         }).fail(function () {
-            pageToggleBusy(false);
+            pageToggleBusy?.(false);
             displayFailedGenericActionResult(window.abp01LookupMgmtL10n.errListingFailNetwork);
         });
     }
@@ -230,24 +284,28 @@
         if (id > 0) {
             beginEditingItem(id);
         }
-        var lookupSelection = getCurrentLookupDataItemSelection();
-        var isEditingNonDefaultLang = !lookupSelection
+        const lookupSelection = getCurrentLookupDataItemSelection();
+        if (!lookupSelection) {
+            console.error('Failed to get lookup selection.');
+            return;
+        }
+        const isEditingNonDefaultLang = !lookupSelection
             .isDefaultLanguage;
-        lookupDataItemEditorModal.findAnd(EDIT_FORM_SELECTORS.TITLE_EXTRA, function ($titleExtra) {
+        lookupDataItemEditorModal?.findAnd(EDIT_FORM_SELECTORS.TITLE_EXTRA, function ($titleExtra) {
             $titleExtra.text(" - " + lookupSelection.typeName);
         });
-        lookupDataItemEditorModal.findAnd(EDIT_FORM_SELECTORS.ITEM_ID_FIELD, function ($id) {
+        lookupDataItemEditorModal?.findAnd(EDIT_FORM_SELECTORS.ITEM_ID_FIELD, function ($id) {
             $id.val(id.toString());
         });
-        lookupDataItemEditorModal.findAnd(EDIT_FORM_SELECTORS.DEFAULT_LABEL_FIELD, function ($defaultLabel) {
+        lookupDataItemEditorModal?.findAnd(EDIT_FORM_SELECTORS.DEFAULT_LABEL_FIELD, function ($defaultLabel) {
             if (isCurrentlyEditingItem()) {
-                $defaultLabel.val(editingItem.defaultLabel);
+                $defaultLabel.val(editingItem?.defaultLabel || "");
             }
             else {
                 $defaultLabel.val('');
             }
         });
-        lookupDataItemEditorModal.findAnd(EDIT_FORM_SELECTORS.TRANSLATED_LABEL_CONTAINER, function ($translatedLabelContainer) {
+        lookupDataItemEditorModal?.findAnd(EDIT_FORM_SELECTORS.TRANSLATED_LABEL_CONTAINER, function ($translatedLabelContainer) {
             var $langDetails = $translatedLabelContainer.find('.abp01-languageDetails');
             if (isEditingNonDefaultLang) {
                 $translatedLabelContainer.show();
@@ -258,31 +316,35 @@
                 $langDetails.html('');
             }
         });
-        lookupDataItemEditorModal.findAnd(EDIT_FORM_SELECTORS.TRANSLATED_LABEL_FIELD, function ($translatedLabel) {
+        lookupDataItemEditorModal?.findAnd(EDIT_FORM_SELECTORS.TRANSLATED_LABEL_FIELD, function ($translatedLabel) {
             if (isCurrentlyEditingItem() && isEditingNonDefaultLang) {
-                $translatedLabel.val(editingItem.label);
+                $translatedLabel.val(editingItem?.label || "");
             }
             else {
                 $translatedLabel.val('');
             }
         });
-        editorActionResult.hide(false);
-        lookupDataItemEditorModal.show();
+        editorActionResult?.hide(false);
+        lookupDataItemEditorModal?.show();
     }
     function saveLookupDataItem() {
-        var lookupSelection = getCurrentLookupDataItemSelection();
-        var formDataItem = collectLookupDataItemFormData(lookupSelection);
-        var isEdit = formDataItem.id > 0;
-        var url = isEdit
+        const lookupSelection = getCurrentLookupDataItemSelection();
+        if (!lookupSelection) {
+            console.error('Failed to get lookup selection.');
+            return;
+        }
+        const formDataItem = collectLookupDataItemFormData(lookupSelection);
+        const isEdit = formDataItem.id > 0;
+        const url = isEdit
             ? getEditLookupUrl()
             : getAddLookupUrl();
         if (!isValidLookupDataItem(formDataItem, lookupSelection)) {
-            editorActionResult.danger(window.abp01LookupMgmtL10n.errSaveFailInvalidData, false);
+            editorActionResult?.danger(window.abp01LookupMgmtL10n.errSaveFailInvalidData, false);
             return;
         }
-        editorToggleBusy(true);
+        editorToggleBusy?.(true);
         hideEditorActionResult();
-        var sendData = {
+        const sendData = {
             id: formDataItem.id,
             type: lookupSelection.type,
             lang: lookupSelection.language,
@@ -295,15 +357,15 @@
             type: 'POST',
             data: sendData
         }).done(function (response) {
-            editorToggleBusy(false);
+            editorToggleBusy?.(false);
             if (!!response && !!response.success) {
                 if (isCurrentlyEditingItem()) {
                     updateLocalItemData(formDataItem);
                     refreshLookupItem(formDataItem);
                 }
                 else {
-                    updateLocalItemData(response.item);
-                    renderLookupItems([response.item], true);
+                    updateLocalItemData(response.item || formDataItem);
+                    renderLookupItems([response.item || formDataItem], true);
                     clearLookupDataItemEditForm();
                 }
                 displaySuccesfulEditorActionResult(window.abp01LookupMgmtL10n.msgSaveOk);
@@ -312,7 +374,7 @@
                 displayFailedEditorActionResult(response.message || window.abp01LookupMgmtL10n.errFailGeneric);
             }
         }).fail(function () {
-            editorToggleBusy(false);
+            editorToggleBusy?.(false);
             displayFailedEditorActionResult(window.abp01LookupMgmtL10n.errFailNetwork);
         });
     }
@@ -331,13 +393,13 @@
         }
     }
     function collectLookupDataItemFormData(lookupSelection) {
-        var $form = $(EDIT_FORM_SELECTORS.FORM);
-        var id = $form.find(EDIT_FORM_SELECTORS.ITEM_ID_FIELD)
+        const $form = $(EDIT_FORM_SELECTORS.FORM);
+        const id = $form.find(EDIT_FORM_SELECTORS.ITEM_ID_FIELD)
             .singleValNumeric();
-        var defaultLabel = $form.find(EDIT_FORM_SELECTORS.DEFAULT_LABEL_FIELD)
+        const defaultLabel = $form.find(EDIT_FORM_SELECTORS.DEFAULT_LABEL_FIELD)
             .singleVal()
             .trim();
-        var label = !lookupSelection.isDefaultLanguage
+        const label = !lookupSelection.isDefaultLanguage
             ? $form.find(EDIT_FORM_SELECTORS.TRANSLATED_LABEL_FIELD)
                 .singleVal()
                 .trim()
@@ -357,15 +419,67 @@
         return lookupSelection.isDefaultLanguage
             || !$.abp01.isNullOrWhiteSpace(item.label);
     }
-    function confirmDeleteLookupDataItem(id) {
+    function confirmDeleteLookupDataItem(itemId) {
+        beginEditingItem(itemId);
+        setLookupDeleteInitialRequest();
+        _showConfrmDeleteModal(itemId, window.abp01LookupMgmtL10n.ttlConfirmDelete);
+    }
+    function _showConfrmDeleteModal(itemId, message) {
         if (!confirmDeleteModal) {
             confirmDeleteModal = $.abp01ConfirmDialogModal();
         }
-        confirmDeleteModal.show(window.abp01LookupMgmtL10n.ttlConfirmDelete, function () {
-            deleteLookupDataItem(id);
+        confirmDeleteModal.show(message, function (confirmed) {
+            if (confirmed) {
+                queueMicrotask(() => deleteLookupDataItem(itemId));
+            }
         });
     }
-    function deleteLookupDataItem(id) {
+    function deleteLookupDataItem(itemId) {
+        pageToggleBusy?.(true);
+        hideGenericActionResult();
+        const lookupSelection = getCurrentLookupDataItemSelection();
+        if (!lookupSelection) {
+            console.error('Failed to get lookup selection.');
+            return;
+        }
+        $.ajax(getDeleteLookupUrl(), {
+            cache: false,
+            dataType: 'json',
+            type: 'POST',
+            data: {
+                id: itemId,
+                lang: lookupSelection.language,
+                deleteOnlyLang: false
+            }
+        })
+            .done(function (response) {
+            pageToggleBusy?.(false);
+            //Successful removal, move on with cleaning everything up
+            if (!!response.success) {
+                deleteLookupItemRow(editingItem);
+                setCurrentItemDeleted();
+                displaySuccesfulGenericActionResult(window.abp01LookupMgmtL10n.msgDeleteOk);
+            }
+            else if (!!response.requiresConfirmation && !!response.confirmationNonce) {
+                setLookupDeleteInUseConfirmation(response.confirmationNonce);
+                queueMicrotask(() => _showConfrmDeleteModal(itemId, response.message));
+            }
+            else {
+                displayFailedGenericActionResult(response.message
+                    || window.abp01LookupMgmtL10n.errDeleteFailedGeneric);
+            }
+        })
+            .fail(function () {
+            pageToggleBusy?.(false);
+            displayFailedGenericActionResult(window.abp01LookupMgmtL10n.errDeleteFailedNetwork);
+        });
+    }
+    function deleteLookupItemRow(item) {
+        if (!item) {
+            return;
+        }
+        const $row = $('#lookupItemRow-' + item.id);
+        $row.remove();
     }
     function initContext() {
         context = getContext();
@@ -404,26 +518,26 @@
         lookupDataItemEditorModal = createLookupDataItemEditorModal();
     }
     function initListeners() {
-        $ctlTypeSelector.on('change', reloadLookupItems);
-        $ctlLangSelector.on('change', reloadLookupItems);
+        $ctlTypeSelector?.on('change', reloadLookupItems);
+        $ctlLangSelector?.on('change', reloadLookupItems);
         $('#abp01-reload-list-top').on('click', reloadLookupItems);
         $("#abp01-add-lookup-top").on('click', function () {
             openLookupDataEditorWindow(null);
         });
         $(document).on("click", 'a[rel="item-edit"]', function () {
-            var $me = $(this);
-            var id = getLookupItemId($me);
+            const $me = $(this);
+            const id = getLookupItemId($me);
             openLookupDataEditorWindow(id);
         });
         $(document).on("click", 'a[rel="item-delete"]', function () {
-            var $me = $(this);
-            var id = getLookupItemId($me);
+            const $me = $(this);
+            const id = getLookupItemId($me);
             confirmDeleteLookupDataItem(id);
         });
         $("#abp01-btn-save-lookup-data-item").on('click', saveLookupDataItem);
     }
     function getLookupItemId($target) {
-        return parseInt($target.attr("data-lookupId"));
+        return parseInt($target.attr("data-lookupId") || "0");
     }
     $(function () {
         initContext();

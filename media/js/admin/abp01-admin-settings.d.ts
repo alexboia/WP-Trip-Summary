@@ -39,13 +39,21 @@ interface WpTripSummaryTileLayer {
 
 interface WpTripSummarySettingsContext {
 	apiKeyNagSetup: boolean;
-	nonce: string;
-	ajaxSaveAction: string;
-	ajaxBaseUrl: string;
+	nonce: string|null;
+	ajaxSaveAction: string|null;
+	ajaxBaseUrl: string|null;
+	//TODO: should be typed as well
 	predefinedTileLayers: any;
-	previouslySavedTileLayer: WpTripSummaryTileLayer;
+	previouslySavedTileLayer: WpTripSummaryTileLayer|null;
 }
 
 interface JQuery {
 	wpColorPicker(): JQuery;
+}
+
+interface Window {
+	abp01_nonce: string|null;
+	abp01_ajaxSaveAction: string|null;
+	abp01_ajaxBaseUrl: string|null;
+	abp01_predefinedTileLayers: any
 }

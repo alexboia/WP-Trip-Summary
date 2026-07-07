@@ -37,7 +37,7 @@ interface WpTripSummaryModal {
 }
 
 interface WpTripSummaryModalOptions {
-	trigger: string;
+	trigger: string|null;
 	onShow?: Function;
 	onHide?: Function;
 }

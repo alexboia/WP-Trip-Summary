@@ -56,8 +56,7 @@
                 '</div>'
             ].join('');
         }
-        function show(message, type, animate) {
-            if (animate === void 0) { animate = true; }
+        function show(message, type, animate = true) {
             var $alert = $container.find('.alert');
             $alert.removeClass('alert-primary')
                 .removeClass('alert-secondary')
@@ -75,8 +74,7 @@
                 $alert.show();
             }
         }
-        function hide(animate) {
-            if (animate === void 0) { animate = true; }
+        function hide(animate = true) {
             var $alert = $container.find('.alert');
             if (animate) {
                 $alert.fadeOut('fast', function () {
@@ -93,36 +91,28 @@
         return {
             show: show,
             hide: hide,
-            primary: function (message, animate) {
-                if (animate === void 0) { animate = true; }
+            primary: function (message, animate = true) {
                 show(message, 'primary', animate);
             },
-            secondary: function (message, animate) {
-                if (animate === void 0) { animate = true; }
+            secondary: function (message, animate = true) {
                 show(message, 'secondary', animate);
             },
-            success: function (message, animate) {
-                if (animate === void 0) { animate = true; }
+            success: function (message, animate = true) {
                 show(message, 'success', animate);
             },
-            danger: function (message, animate) {
-                if (animate === void 0) { animate = true; }
+            danger: function (message, animate = true) {
                 show(message, 'danger', animate);
             },
-            warning: function (message, animate) {
-                if (animate === void 0) { animate = true; }
+            warning: function (message, animate = true) {
                 show(message, 'warning', animate);
             },
-            info: function (message, animate) {
-                if (animate === void 0) { animate = true; }
+            info: function (message, animate = true) {
                 show(message, 'info', animate);
             },
-            light: function (message, animate) {
-                if (animate === void 0) { animate = true; }
+            light: function (message, animate = true) {
                 show(message, 'light', animate);
             },
-            dark: function (message, animate) {
-                if (animate === void 0) { animate = true; }
+            dark: function (message, animate = true) {
                 show(message, 'dark', animate);
             }
         };

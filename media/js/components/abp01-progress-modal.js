@@ -52,8 +52,8 @@
                 background: 'transparent'
             }, opts.style || {});
             return $.extend(style, {
-                left: ($me.width() - style.width) / 2,
-                top: ($me.height() - style.height) / 2
+                left: ($me.width() || 0 - style.width) / 2,
+                top: ($me.height() || 0 - style.height) / 2
             });
         }
         function hasHtml() {

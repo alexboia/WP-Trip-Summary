@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014-2025 Alexandru Boia and Contributors
+ * Copyright (c) 2014-2026 Alexandru Boia and Contributors
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -31,7 +31,13 @@
 /// <reference types="jquery" />
 
 interface WpTripSummaryMaintenanceContext {
-	nonce: string;
-	ajaxExecuteToolAction: string;
-	ajaxBaseUrl: string;
+	nonce: string|null;
+	ajaxExecuteToolAction: string|null;
+	ajaxBaseUrl: string|null;
+}
+
+interface Window {
+	abp01_nonce: string|null;
+	abp01_ajaxExecuteToolAction: string|null;
+	abp01_ajaxBaseUrl: string|null;
 }

@@ -29,6 +29,10 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 	defined('ABP01_LOADED') or die;
+
+	/**
+	 * @var \stdClass $data
+	 */
 ?>
 
 <script type="text/javascript">
@@ -74,18 +78,6 @@
 				<div class="modal-footer">
 					<button id="abp01-btn-save-lookup-data-item" type="button" class="btn btn-primary"><?php echo esc_html__('Save item', 'abp01-trip-summary'); ?></button>
 					<button id="abp01-btn-dismiss-lookup-data-item-edit" type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?php echo esc_html__('Cancel', 'abp01-trip-summary'); ?></button>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Delete Lookup Data Item modal -->
-	<div id="abp01-delete-lookup-window" class="modal modal-lg fade abp01-modal-window" tabindex="-1" aria-labelledby="abp01-delete-lookup-window-title" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-			<div id="abp01-delete-lookup-window-content" class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="abp01-edit-lookup-window-title"><?php echo esc_html__('Delete Lookup Data Item', 'abp01-trip-summary'); ?></h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php echo esc_attr__('Close', 'abp01-trip-summary'); ?>"></button>
 				</div>
 			</div>
 		</div>

@@ -65,6 +65,11 @@ interface WpTripSummaryLookupManagementL10N {
 	msgSaveOk: string;
 	errSaveFailInvalidData: string;
 	ttlConfirmDelete: string;
+	errDeleteFailedNetwork: string;
+	errDeleteFailedGeneric: string;
+	msgDeleteOk: string;
+	addItemTitle: string;
+	editItemTitle: string;
 }
 
 declare global {
@@ -87,6 +92,10 @@ declare global {
 	interface JQuery {
 		singleVal(): string;
 		singleValNumeric(defaultValue?: number): number;
-		optionTextByValue(value: string): string;
+		optionTextByValue(value: string): string|null;
+	}
+
+	interface LoDashFacade {
+		escape(string?: string): string;
 	}
 }

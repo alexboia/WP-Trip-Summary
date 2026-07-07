@@ -3,5 +3,8 @@
     "@types/bootstrap": "^5.2.10",
     "@types/jquery": "^3.5.32",
     "@types/toastr": "^2.1.43"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.17.24"
   }
 }

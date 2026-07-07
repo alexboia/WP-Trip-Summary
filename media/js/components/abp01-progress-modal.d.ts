@@ -30,6 +30,9 @@
 
 /// <reference types="jquery" />
 
+type WpTripSummaryProgressModalBlockHandler = () => void;
+type WpTripSummaryProgressModalUnblockHandler = () => void;
+
 interface WpTripSummaryProgressModal {
 	show(text?:string): void;
 	hide(): void;
@@ -38,8 +41,8 @@ interface WpTripSummaryProgressModal {
 interface WpTripSummaryProgressModalOptions {
 	shouldDisableScroll?: boolean;
 	style?: any;
-	onBlock?: Function;
-	onUnblock?: Function;
+	onBlock?: WpTripSummaryProgressModalBlockHandler;
+	onUnblock?: WpTripSummaryProgressModalUnblockHandler;
 }
 
 interface JQuery {

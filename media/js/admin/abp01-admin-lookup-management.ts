@@ -35,6 +35,7 @@
 /// <reference path="../components/abp01-progress-modal.d.ts" />
 /// <reference path="../components/abp01-confirm-dialog-modal.d.ts" />
 /// <reference path="./abp01-admin-lookup-management.d.ts" />
+/// <reference types="lodash" />
 
 (function($) {
 	"use strict";
@@ -54,32 +55,36 @@
 		TRANSLATED_LABEL_FIELD: '#abp01-edit-item-translated-label'
 	};
 
-	var context: WpTripSummaryLookupManagementContext = null;
+	var context: WpTripSummaryLookupManagementContext|null = null;
 	
-	var genericActionResult: WpTripSummaryAlertInline = null;
-	var editorActionResult: WpTripSummaryAlertInline = null;
+	var genericActionResult: WpTripSummaryAlertInline|null = null;
+	var editorActionResult: WpTripSummaryAlertInline|null = null;
 
-	var pageToggleBusy: WpTripSummaryBusyToggler = null;
-	var editorToggleBusy: WpTripSummaryBusyToggler = null;
-	var lookupDataItemEditorModal: WpTripSummaryModal = null;
+	var pageToggleBusy: WpTripSummaryBusyToggler|null = null;
+	var editorToggleBusy: WpTripSummaryBusyToggler|null = null;
+	var lookupDataItemEditorModal: WpTripSummaryModal|null = null;
 
-	var $ctlTypeSelector: JQuery = null;
-	var $ctlLangSelector: JQuery = null;
-	var $ctlLookupListing: JQuery = null;
+	var $ctlTypeSelector: JQuery|null = null;
+	var $ctlLangSelector: JQuery|null = null;
+	var $ctlLookupListing: JQuery|null = null;
 
-	var tplLookupListing = null;
+	var tplLookupListing:any = null;
 
-	var currentItems: WpTripSummaryCurrentLookupItemsMap = {};
-	var editingItem: WpTripSummaryLookupDataItem = null;
+	var currentItems: WpTripSummaryCurrentLookupItemsMap|null = {};
+	var editingItem: WpTripSummaryLookupDataItem|null = null;
 
-	var confirmDeleteModal: WpTripSummaryConfirmModal = null;
-	var lookupDelete = {
+	var confirmDeleteModal: WpTripSummaryConfirmModal|null = null;
+	var lookupDelete: LookupDeleteInfo = {
 		stage: null,
 		nonce: null
 	};
 
-	function escapeHtml(value): string {
-		return (window['lodash'] || window['_'])['escape'](value);
+	function escapeHtml(value: string|null): string {
+		if (!value) {
+			return '';
+		}
+		
+		return window.lodash.escape(value);
 	}
 
 	function getContext(): WpTripSummaryLookupManagementContext {
@@ -108,60 +113,76 @@
 			window.abp01LookupMgmtL10n.msgWorking);
 	}
 
+	function _checkContextOrThrow(): WpTripSummaryLookupManagementContext {
+		if (!context) {
+			throw new Error('Invalid context');
+		}
+		return context;
+	}
+
+	function _baseUrlOrThrow(): URI {
+		return URI(_checkContextOrThrow().ajaxBaseUrl || "");
+	}
+
 	function getLoadLookupDataUrl(): string {
-		return URI(context.ajaxBaseUrl)
-			.addSearch('action', context.ajaxGetLookupAction)
-			.addSearch('abp01_nonce_lookup_mgmt', context.getLookupNonce)
+		return _baseUrlOrThrow()
+			.addSearch('action', context?.ajaxGetLookupAction)
+			.addSearch('abp01_nonce_lookup_mgmt', context?.getLookupNonce)
 			.toString();
 	}
 
 	function getAddLookupUrl(): string {
-		return URI(context.ajaxBaseUrl)
-			.addSearch('action', context.ajaxAddLookupAction)
-			.addSearch('abp01_nonce_lookup_mgmt', context.addLookupNonce)
+		return _baseUrlOrThrow()
+			.addSearch('action', context?.ajaxAddLookupAction)
+			.addSearch('abp01_nonce_lookup_mgmt', context?.addLookupNonce)
 			.toString();
 	}
 
 	function getEditLookupUrl(): string {
-		return URI(context.ajaxBaseUrl)
-			.addSearch('action', context.ajaxEditLookupAction)
-			.addSearch('abp01_nonce_lookup_mgmt', context.editLookupNonce)
+		return _baseUrlOrThrow()
+			.addSearch('action', context?.ajaxEditLookupAction)
+			.addSearch('abp01_nonce_lookup_mgmt', context?.editLookupNonce)
 			.toString();
 	}
 
 	function getDeleteLookupUrl(): string {	
-		return URI(context.ajaxBaseUrl)
-			.addSearch('action', context.ajaxDeleteLookupAction)
-			.addSearch('abp01_nonce_lookup_mgmt', context.deleteLookupNonce)
-			.toString();
+		const uri: URI = _baseUrlOrThrow()
+			.addSearch('action', context?.ajaxDeleteLookupAction)
+			.addSearch('abp01_nonce_lookup_mgmt', context?.deleteLookupNonce);
+
+		if (isLookupDeleteInuUseConfirmationStage()) {
+			uri.addSearch('abp01_nonce_lookup_force_remove', getLookupDeleteInUseConfirmationNonce());
+		}
+
+		return uri.toString();
 	}
 
 	function hideGenericActionResult(): void {
-		genericActionResult.hide(false);
+		genericActionResult?.hide(false);
 	}
 
 	function displaySuccesfulGenericActionResult(message: string): void {
-		genericActionResult.success(message, false);
+		genericActionResult?.success(message, false);
 	}
 
 	function displayFailedGenericActionResult(message: string): void {
-		genericActionResult.danger(message, false);
+		genericActionResult?.danger(message, false);
 	}
 
 	function hideEditorActionResult(): void {
-		editorActionResult.hide(false);
+		editorActionResult?.hide(false);
 	}
 
 	function displaySuccesfulEditorActionResult(message: string): void {
-		editorActionResult.success(message, false);
+		editorActionResult?.success(message, false);
 	}
 
 	function displayFailedEditorActionResult(message: string): void {
-		editorActionResult.danger(message, false);
+		editorActionResult?.danger(message, false);
 	}
 
-	function beginEditingItem(itemId: number): WpTripSummaryLookupDataItem {
-		editingItem = currentItems.hasOwnProperty(itemId) 
+	function beginEditingItem(itemId: number): WpTripSummaryLookupDataItem|null {
+		editingItem = !!currentItems && currentItems.hasOwnProperty(itemId) 
 			? currentItems[itemId] 
 			: null;
 
@@ -174,6 +195,37 @@
 
 	function clearCurrentlyEditedItem(): void {
 		editingItem = null;
+	}
+
+	function setLookupDeleteInitialRequest() {
+		lookupDelete = {
+			stage: LOOKUP_DELETE_INITIAL_REQUEST,
+			nonce: null
+		};
+	}
+
+	function setLookupDeleteInUseConfirmation(nonce: string|null) {
+		lookupDelete = {
+			stage: LOOKUP_DELETE_INUSE_CONFIRMATION,
+			nonce: nonce
+		}; 
+	}
+
+	function isLookupDeleteInuUseConfirmationStage() {
+		return lookupDelete.stage === LOOKUP_DELETE_INUSE_CONFIRMATION;
+	}
+
+	function getLookupDeleteInUseConfirmationNonce() {
+		return lookupDelete.nonce;
+	}
+
+	function setCurrentItemDeleted() {
+		if (isCurrentlyEditingItem()) {
+			if (!!currentItems && !!editingItem) {
+				delete currentItems[editingItem.id];
+			}
+			clearCurrentlyEditedItem();
+		}
 	}
 
 	function clearLookupDeleteState(): void {
@@ -192,12 +244,15 @@
 
 	function cleanupLookupItems(): void {
 		clearAllLocalData();
-		$ctlLookupListing
-			.find('tbody')
+		$ctlLookupListing?.find('tbody')
 			.html('');
 	}
 
-	function updateLocalItemData(item): void {
+	function updateLocalItemData(item: WpTripSummaryLookupDataItem): void {
+		if (!currentItems) {
+			currentItems = {};
+		}
+
 		currentItems[item.id] = item;
 	}
 
@@ -208,14 +263,17 @@
 		return tplLookupListing;
 	}
 
-	function renderLookupItems(items, append): void {
-		var data = {
+	function renderLookupItems(items: WpTripSummaryLookupDataItem[], append: boolean): void {
+		const data = {
 			lookupItems: items
 		};
 
-		var content = getLookupListingTemplate()(data);
+		const content = getLookupListingTemplate()(data);
 
-		var $container = $ctlLookupListing.find('tbody');
+		const $container = $ctlLookupListing?.find('tbody');
+		if (!$container || $container.length == 0) {
+			return;
+		}
 
 		if (!append) {
 			$container.html(content);
@@ -224,25 +282,34 @@
 		}
 	}
 
-	function getCurrentLookupDataItemSelection(): WpTripSummaryCurrentLookupDataItemSelection {
-		var typeCode: string = $ctlTypeSelector.singleVal();
-		var languageCode: string = $ctlLangSelector.singleVal();
+	function getCurrentLookupDataItemSelection(): WpTripSummaryCurrentLookupDataItemSelection|null {
+		const typeCode: string|null = $ctlTypeSelector?.singleVal()|| null;
+		const languageCode: string|null = $ctlLangSelector?.singleVal() || null;
+
+		if (!typeCode || !languageCode) {
+			return null;
+		}
 
 		return {
 			type: typeCode,
 			language: languageCode,
-			typeName: $ctlTypeSelector.optionTextByValue(typeCode),
-			languageName: $ctlLangSelector.optionTextByValue(languageCode),
+			typeName: $ctlTypeSelector?.optionTextByValue(typeCode) || "",
+			languageName: $ctlLangSelector?.optionTextByValue(languageCode) || "",
 			isDefaultLanguage: languageCode === DEFAULT_LANG
 		}
 	}
 
 	function reloadLookupItems(): void {
-		pageToggleBusy(true);
+		pageToggleBusy?.(true);
 		hideGenericActionResult();
 
-		var lookupSelection: WpTripSummaryCurrentLookupDataItemSelection =
+		const lookupSelection: WpTripSummaryCurrentLookupDataItemSelection|null =
 		 	getCurrentLookupDataItemSelection();
+
+		if (!lookupSelection) {
+			console.error('Failed to get lookup selection.');
+			return;
+		}
 
 		$.ajax(getLoadLookupDataUrl(), {
 			cache: false,
@@ -253,7 +320,7 @@
 				lang: lookupSelection.language
 			}
 		}).done(function(response: WpTripSummaryLookupListingResponse): void {
-			pageToggleBusy(false);
+			pageToggleBusy?.(false);
 			if (!!response && response.success && response.items) {
 				cleanupLookupItems();
 				renderLookupItems(response.items, false);
@@ -264,12 +331,12 @@
 				displayFailedGenericActionResult(window.abp01LookupMgmtL10n.errListingFailGeneric);
 			}
 		}).fail(function() {
-			pageToggleBusy(false);
+			pageToggleBusy?.(false);
 			displayFailedGenericActionResult(window.abp01LookupMgmtL10n.errListingFailNetwork);
 		});
 	}
 
-	function openLookupDataEditorWindow(id?: number): void {
+	function openLookupDataEditorWindow(id: number|null): void {
 		if (!id || isNaN(id) || id <= 0) {
 			id = 0;
 		}
@@ -278,32 +345,37 @@
 			beginEditingItem(id);
 		}
 
-		var lookupSelection: WpTripSummaryCurrentLookupDataItemSelection = 
+		const lookupSelection: WpTripSummaryCurrentLookupDataItemSelection|null = 
 			getCurrentLookupDataItemSelection();
 
-		var isEditingNonDefaultLang: boolean = !lookupSelection
+		if (!lookupSelection) {
+			console.error('Failed to get lookup selection.');
+			return;
+		}
+
+		const isEditingNonDefaultLang: boolean = !lookupSelection
 			.isDefaultLanguage;
 
-		lookupDataItemEditorModal.findAnd(EDIT_FORM_SELECTORS.TITLE_EXTRA, 
+		lookupDataItemEditorModal?.findAnd(EDIT_FORM_SELECTORS.TITLE_EXTRA, 
 			function($titleExtra: JQuery) {
 				$titleExtra.text(" - " + lookupSelection.typeName);
 			});
 
-		lookupDataItemEditorModal.findAnd(EDIT_FORM_SELECTORS.ITEM_ID_FIELD, 
+		lookupDataItemEditorModal?.findAnd(EDIT_FORM_SELECTORS.ITEM_ID_FIELD, 
 			function($id:JQuery) {
 				$id.val(id.toString());
 			});
 
-		lookupDataItemEditorModal.findAnd(EDIT_FORM_SELECTORS.DEFAULT_LABEL_FIELD, 
+		lookupDataItemEditorModal?.findAnd(EDIT_FORM_SELECTORS.DEFAULT_LABEL_FIELD, 
 			function($defaultLabel: JQuery) {
 				if (isCurrentlyEditingItem()) {
-					$defaultLabel.val(editingItem.defaultLabel);
+					$defaultLabel.val(editingItem?.defaultLabel || "");
 				} else {
 					$defaultLabel.val('');
 				}
 			});
 
-		lookupDataItemEditorModal.findAnd(EDIT_FORM_SELECTORS.TRANSLATED_LABEL_CONTAINER, 
+		lookupDataItemEditorModal?.findAnd(EDIT_FORM_SELECTORS.TRANSLATED_LABEL_CONTAINER, 
 			function($translatedLabelContainer: JQuery) {
 				var $langDetails: JQuery = $translatedLabelContainer.find('.abp01-languageDetails');
 				if (isEditingNonDefaultLang) {
@@ -315,40 +387,46 @@
 				}
 			});
 
-		lookupDataItemEditorModal.findAnd(EDIT_FORM_SELECTORS.TRANSLATED_LABEL_FIELD, 
+		lookupDataItemEditorModal?.findAnd(EDIT_FORM_SELECTORS.TRANSLATED_LABEL_FIELD, 
 			function($translatedLabel: JQuery) {
 				if (isCurrentlyEditingItem() && isEditingNonDefaultLang) {
-					$translatedLabel.val(editingItem.label);
+					$translatedLabel.val(editingItem?.label || "");
 				} else {
 					$translatedLabel.val('');
 				}
 			});
 
-		editorActionResult.hide(false);
-		lookupDataItemEditorModal.show(); 
+		editorActionResult?.hide(false);
+		lookupDataItemEditorModal?.show(); 
 	}
 
 	function saveLookupDataItem(): void {	
-		var lookupSelection: WpTripSummaryCurrentLookupDataItemSelection = 
+		const lookupSelection: WpTripSummaryCurrentLookupDataItemSelection|null = 
 			getCurrentLookupDataItemSelection();
-		var formDataItem: WpTripSummaryLookupDataItem = 
+
+		if (!lookupSelection) {
+			console.error('Failed to get lookup selection.');
+			return;
+		}
+		
+		const formDataItem: WpTripSummaryLookupDataItem = 
 			collectLookupDataItemFormData(lookupSelection);
 
-		var isEdit: boolean = formDataItem.id > 0;
+		const isEdit: boolean = formDataItem.id > 0;
 		
-		var url: string = isEdit 
+		const url: string = isEdit 
 			? getEditLookupUrl() 
 			: getAddLookupUrl();
 
 		if (!isValidLookupDataItem(formDataItem, lookupSelection)) {
-			editorActionResult.danger(window.abp01LookupMgmtL10n.errSaveFailInvalidData, false);
+			editorActionResult?.danger(window.abp01LookupMgmtL10n.errSaveFailInvalidData, false);
 			return;
 		}
 
-		editorToggleBusy(true);
+		editorToggleBusy?.(true);
 		hideEditorActionResult();
 
-		var sendData: any = {
+		const sendData: any = {
 			id: formDataItem.id,
 			type: lookupSelection.type,
 			lang: lookupSelection.language,
@@ -362,14 +440,14 @@
 			type: 'POST',
 			data: sendData
 		}).done(function(response: WpTripSummaryLookupDataItemSaveResponse): void {
-			editorToggleBusy(false);
+			editorToggleBusy?.(false);
 			if (!!response && !!response.success) {
 				if (isCurrentlyEditingItem()) {
 					updateLocalItemData(formDataItem);
 					refreshLookupItem(formDataItem);
 				} else {
-					updateLocalItemData(response.item);
-					renderLookupItems([response.item], true);
+					updateLocalItemData(response.item || formDataItem);
+					renderLookupItems([response.item || formDataItem], true);
 					clearLookupDataItemEditForm();
 				}
 
@@ -378,7 +456,7 @@
 				displayFailedEditorActionResult(response.message || window.abp01LookupMgmtL10n.errFailGeneric);
 			}
 		}).fail(function() {
-			editorToggleBusy(false);
+			editorToggleBusy?.(false);
 			displayFailedEditorActionResult(window.abp01LookupMgmtL10n.errFailNetwork);
 		});
 	}
@@ -400,16 +478,16 @@
 	}
 
 	function collectLookupDataItemFormData(lookupSelection: WpTripSummaryCurrentLookupDataItemSelection): WpTripSummaryLookupDataItem {
-		var $form: JQuery = $(EDIT_FORM_SELECTORS.FORM);	
+		const $form: JQuery = $(EDIT_FORM_SELECTORS.FORM);	
 		
-		var id: number = $form.find(EDIT_FORM_SELECTORS.ITEM_ID_FIELD)
+		const id: number = $form.find(EDIT_FORM_SELECTORS.ITEM_ID_FIELD)
 			.singleValNumeric();
 
-		var defaultLabel: string = $form.find(EDIT_FORM_SELECTORS.DEFAULT_LABEL_FIELD)
+		const defaultLabel: string = $form.find(EDIT_FORM_SELECTORS.DEFAULT_LABEL_FIELD)
 			.singleVal()
 			.trim();
 
-		var label: string = !lookupSelection.isDefaultLanguage 
+		const label: string = !lookupSelection.isDefaultLanguage 
 			? $form.find(EDIT_FORM_SELECTORS.TRANSLATED_LABEL_FIELD)
 				.singleVal()
 				.trim()
@@ -433,18 +511,73 @@
 			|| !$.abp01.isNullOrWhiteSpace(item.label)	;
     }
 
-	function confirmDeleteLookupDataItem(id: number): void {
+	function confirmDeleteLookupDataItem(itemId: number): void {
+		beginEditingItem(itemId);
+		setLookupDeleteInitialRequest();
+		_showConfrmDeleteModal(itemId, window.abp01LookupMgmtL10n.ttlConfirmDelete);
+	}
+
+	function _showConfrmDeleteModal(itemId: number, message: string) {
 		if (!confirmDeleteModal) {
 			confirmDeleteModal = $.abp01ConfirmDialogModal();
 		}
 
-		confirmDeleteModal.show(window.abp01LookupMgmtL10n.ttlConfirmDelete, function() {
-			deleteLookupDataItem(id);
+		confirmDeleteModal.show(message, function(confirmed: boolean) {
+			if (confirmed) {
+				queueMicrotask(() => deleteLookupDataItem(itemId));
+			}
 		});
 	}
 
-	function deleteLookupDataItem(id: number): void {
+	function deleteLookupDataItem(itemId: number): void {
+		pageToggleBusy?.(true);
+		hideGenericActionResult();
 
+		const lookupSelection: WpTripSummaryCurrentLookupDataItemSelection|null =
+		 	getCurrentLookupDataItemSelection();
+
+		if (!lookupSelection) {
+			console.error('Failed to get lookup selection.');
+			return;
+		}
+
+		$.ajax(getDeleteLookupUrl(), {
+			cache: false,
+			dataType: 'json',
+			type: 'POST',
+			data: {
+				id: itemId,
+				lang: lookupSelection.language,
+				deleteOnlyLang: false
+			}
+		})
+		.done(function(response:WpTripSummaryLookupDataItemDeleteResponse) {
+			pageToggleBusy?.(false);
+			//Successful removal, move on with cleaning everything up
+			if (!!response.success) {
+				deleteLookupItemRow(editingItem);
+				setCurrentItemDeleted();
+				displaySuccesfulGenericActionResult(window.abp01LookupMgmtL10n.msgDeleteOk);
+			} else if (!!response.requiresConfirmation && !!response.confirmationNonce) {
+				setLookupDeleteInUseConfirmation(response.confirmationNonce);
+				queueMicrotask(() => _showConfrmDeleteModal(itemId, response.message));
+			} else {
+				displayFailedGenericActionResult(response.message 
+					|| window.abp01LookupMgmtL10n.errDeleteFailedGeneric);
+			}
+		})
+		.fail(function() {
+			pageToggleBusy?.(false);
+			displayFailedGenericActionResult(window.abp01LookupMgmtL10n.errDeleteFailedNetwork);
+		});
+	}
+
+	function deleteLookupItemRow(item: WpTripSummaryLookupDataItem|null) {
+		if (!item) {
+			return;
+		}
+		const $row: JQuery = $('#lookupItemRow-' + item.id);
+		$row.remove();
 	}
 
 	function initContext(): void {
@@ -452,7 +585,7 @@
 	}
 
 	function setupKiteFormatters(): void {
-		window.kite.formatters['esc-html'] = function(v, obj) {
+		window.kite.formatters['esc-html'] = function(v: any, obj: any) {
 			return escapeHtml(v);
 		};
 	}
@@ -493,8 +626,8 @@
 	}
 
 	function initListeners(): void {
-		$ctlTypeSelector.on('change', reloadLookupItems);
-		$ctlLangSelector.on('change', reloadLookupItems);
+		$ctlTypeSelector?.on('change', reloadLookupItems);
+		$ctlLangSelector?.on('change', reloadLookupItems);
 
 		$('#abp01-reload-list-top').on('click', reloadLookupItems);
 
@@ -503,15 +636,15 @@
 		});
 
 		$(document).on("click", 'a[rel="item-edit"]', function() {
-			var $me: JQuery = $(this);
-			var id: number = getLookupItemId($me);
+			const $me: JQuery = $(this);
+			const id: number = getLookupItemId($me);
 			openLookupDataEditorWindow(id);
 		});
 
 
 		$(document).on("click", 'a[rel="item-delete"]', function() {
-			var $me: JQuery = $(this);
-			var id: number = getLookupItemId($me);
+			const $me: JQuery = $(this);
+			const id: number = getLookupItemId($me);
 			confirmDeleteLookupDataItem(id);
 		});
 
@@ -519,7 +652,7 @@
 	}
 
 	function getLookupItemId($target: JQuery): number {
-		return parseInt($target.attr("data-lookupId"));
+		return parseInt($target.attr("data-lookupId") || "0");
 	}
 
 	$(function() {

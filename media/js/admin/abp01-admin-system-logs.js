@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014-2025 Alexandru Boia and Contributors
+ * Copyright (c) 2014-2026 Alexandru Boia and Contributors
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -54,31 +54,43 @@
             ajaxGetLogFileAction: window['abp01_ajaxGetLogFileAction'] || null,
             ajaxDownloadLogFileAction: window['abp01_ajaxDownloadLogFileAction'] || null,
             ajaxDeleteLogFileAction: window['abp01_ajaxDeleteLogFileAction'] || null,
-            ajaxBaseUrl: window['abp01_ajaxBaseUrl'] || null,
+            ajaxBaseUrl: window['abp01_ajaxBaseUrl'] || '',
         };
     }
+    function _checkContextOrThrow() {
+        if (!context) {
+            throw new Error('Invalid context');
+        }
+        return context;
+    }
+    function _baseUrlOrThrow() {
+        return URI(_checkContextOrThrow().ajaxBaseUrl || "");
+    }
     function getGetLogFileUrl(logFileId) {
-        return URI(context.ajaxBaseUrl)
-            .addSearch('action', context.ajaxGetLogFileAction)
+        return _baseUrlOrThrow()
+            .addSearch('action', context?.ajaxGetLogFileAction)
             .addSearch('abp01_fileId', logFileId)
-            .addSearch('abp01_nonce_get_log_file_contents', context.getLogFileNonce)
+            .addSearch('abp01_nonce_get_log_file_contents', context?.getLogFileNonce)
             .toString();
     }
     function getDownloadLogFileUrl(logFileId) {
-        return URI(context.ajaxBaseUrl)
-            .addSearch('action', context.ajaxDownloadLogFileAction)
+        return _baseUrlOrThrow()
+            .addSearch('action', context?.ajaxDownloadLogFileAction)
             .addSearch('abp01_fileId', logFileId)
-            .addSearch('abp01_nonce_download_log_file', context.downloadLogFileNonce)
+            .addSearch('abp01_nonce_download_log_file', context?.downloadLogFileNonce)
             .toString();
     }
     function getDeleteLogFileUrl(logFileId) {
-        return URI(context.ajaxBaseUrl)
-            .addSearch('action', context.ajaxDeleteLogFileAction)
+        return _baseUrlOrThrow()
+            .addSearch('action', context?.ajaxDeleteLogFileAction)
             .addSearch('abp01_fileId', logFileId)
-            .addSearch('abp01_nonce_delete_log_file', context.deleteLogFileNonce)
+            .addSearch('abp01_nonce_delete_log_file', context?.deleteLogFileNonce)
             .toString();
     }
     function toggleBusy(show) {
+        if (!progressBar) {
+            return;
+        }
         if (show) {
             var message = arguments.length == 2 ? arguments[1] : null;
             progressBar.show((message || window.abp01AdminSystemLogL10n.msgWorking) || 'Please wait');
@@ -88,13 +100,13 @@
         }
     }
     function showSuccessResult(message) {
-        logResultAlert.success(message, false);
+        logResultAlert?.success(message, false);
     }
     function showErrorResult(message) {
-        logResultAlert.danger(message, false);
+        logResultAlert?.danger(message, false);
     }
     function hideResult() {
-        logResultAlert.hide(false);
+        logResultAlert?.hide(false);
     }
     function loadLogFile(logFileId) {
         toggleBusy(true);
@@ -198,11 +210,13 @@
         return $('#abp01-log-file-lists-container').find('a[data-file-id="' + logFileId + '"]');
     }
     function pickNewSelectedLogFile($remainingItems) {
-        var $first = $($remainingItems.get(0));
-        setActiveLogFileItem($first);
+        const $first = $remainingItems.eq(0);
+        if ($first.length > 0) {
+            setActiveLogFileItem($first);
+        }
     }
     function showNoLogsMessage(logType) {
-        var $alertMessage = null;
+        let $alertMessage = null;
         if (logType === 'debug-log') {
             $alertMessage = $('#abp01-no-debug-log-files-found');
         }
@@ -225,9 +239,9 @@
     }
     function deleteCurrentLogFileById() {
         if (!!currentLogFileId) {
-            confirmDelete(function (actionConfirmed, userData) {
+            confirmDelete(function (actionConfirmed) {
                 if (actionConfirmed) {
-                    deleteLogFile(currentLogFileId);
+                    deleteLogFile(currentLogFileId || "");
                 }
             });
         }
@@ -238,11 +252,10 @@
         }
         confirmDeleteModal.show(window.abp01AdminSystemLogL10n.msgConfirmLogFileRemoval, callback);
     }
-    function loadInitialLogFile(delayed) {
-        if (delayed === void 0) { delayed = false; }
-        var load = function () {
-            var $selectedLogFileItem = getSelectedLogFileItem();
-            var logFileId = $selectedLogFileItem.length > 0
+    function loadInitialLogFile(delayed = false) {
+        const load = function () {
+            const $selectedLogFileItem = getSelectedLogFileItem();
+            const logFileId = $selectedLogFileItem.length > 0
                 ? getLogFileId($selectedLogFileItem)
                 : null;
             if (!!logFileId) {

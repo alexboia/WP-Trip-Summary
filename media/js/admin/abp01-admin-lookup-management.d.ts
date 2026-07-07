@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014-2025 Alexandru Boia and Contributors
+ * Copyright (c) 2014-2026 Alexandru Boia and Contributors
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -29,19 +29,20 @@
  */
 
 /// <reference types="jquery" />
+/// <reference types="lodash" />
 
 interface WpTripSummaryLookupManagementContext {
-	ajaxBaseUrl: string;
+	ajaxBaseUrl: string|null;
 	
-	getLookupNonce: string;
-	addLookupNonce: string;
-	editLookupNonce: string;
-	deleteLookupNonce: string;
+	getLookupNonce: string|null;
+	addLookupNonce: string|null;
+	editLookupNonce: string|null;
+	deleteLookupNonce: string|null;
 	
-	ajaxGetLookupAction: string;
-	ajaxAddLookupAction: string;
-	ajaxEditLookupAction: string;
-	ajaxDeleteLookupAction: string;
+	ajaxGetLookupAction: string|null;
+	ajaxAddLookupAction: string|null;
+	ajaxEditLookupAction: string|null;
+	ajaxDeleteLookupAction: string|null;
 }
 
 interface WpTripSummaryCurrentLookupDataItemSelection {
@@ -91,4 +92,22 @@ declare enum WpTripSummaryLookupDataItemDeleteStage {
 interface WpTripSummaryLookupDataItemDeleteFlow {
 	stage: WpTripSummaryLookupDataItemDeleteStage;
 	nonce: string;
+}
+
+interface Window {
+	abp01_ajaxUrl: string|null;
+	abp01_getLookupNonce: string|null;
+	abp01_addLookupNonce: string|null;
+	abp01_editLookupNonce: string|null;
+	abp01_deleteLookupNonce: string|null;
+	abp01_ajaxGetLookupAction: string|null;
+	abp01_ajaxAddLookupAction: string|null;
+	abp01_ajaxEditLookupAction: string|null;
+	abp01_ajaxDeleteLookupAction: string|null;
+	lodash: LoDashFacade;
+}
+
+interface LookupDeleteInfo {
+	stage: string|null;
+	nonce: string|null;
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014-2025 Alexandru Boia and Contributors
+ * Copyright (c) 2014-2026 Alexandru Boia and Contributors
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -31,14 +31,14 @@
 /// <reference types="jquery" />
 
 interface WpTripSummaryAdminSystemLogsContext {
-	getLogFileNonce: string;
-	downloadLogFileNonce: string;
-	deleteLogFileNonce: string;
+	getLogFileNonce: string|null;
+	downloadLogFileNonce: string|null;
+	deleteLogFileNonce: string|null;
 
-	ajaxGetLogFileAction: string;
-	ajaxDownloadLogFileAction: string;
-	ajaxDeleteLogFileAction: string;
-	ajaxBaseUrl: string;
+	ajaxGetLogFileAction: string|null;
+	ajaxDownloadLogFileAction: string|null;
+	ajaxDeleteLogFileAction: string|null;
+	ajaxBaseUrl: string|null;
 }
 
 interface WpTripSummaryLogFileContentsInfo {
@@ -48,4 +48,14 @@ interface WpTripSummaryLogFileContentsInfo {
 	contents: string;
 	success: boolean;
 	message: string;
+}
+
+interface Window {
+	abp01_getLogFileNonce: string|null;
+	abp01_downloadLogFileNonce: string|null;
+	abp01_deleteLogFileNonce: string|null;
+	abp01_ajaxGetLogFileAction: string|null;
+	abp01_ajaxDownloadLogFileAction: string|null;
+	abp01_ajaxDeleteLogFileAction: string|null;
+	abp01_ajaxBaseUrl: string|null;
 }

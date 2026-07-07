@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014-2025 Alexandru Boia and Contributors
+ * Copyright (c) 2014-2026 Alexandru Boia and Contributors
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -39,11 +39,11 @@
 (function($) {
 	"use strict";
 
-	var context: WpTripSummaryMaintenanceContext = null;
-	var toolResult: WpTripSummaryAlertInline = null;
-	var toolResultPlaceholder: string = null;
-	var confirmExecutionModal: WpTripSummaryConfirmModal = null;
-	var toggleBusy: WpTripSummaryBusyToggler = null;
+	var context: WpTripSummaryMaintenanceContext|null = null;
+	var toolResult: WpTripSummaryAlertInline|null = null;
+	var toolResultPlaceholder: string|null = null;
+	var confirmExecutionModal: WpTripSummaryConfirmModal|null = null;
+	var toggleBusy: WpTripSummaryBusyToggler|null = null;
 
 	function getContext(): WpTripSummaryMaintenanceContext {
 		return {
@@ -54,33 +54,48 @@
 	}
 
 	function hideExecutionResultContent(): void {
+		if (!toolResultPlaceholder) {
+			return;
+		}
+
 		$('#abp01-admin-maintenance-result-container-inner')
 			.html(toolResultPlaceholder)
 			.hide();
 	}
 
-	function showExecutionResultContent(content): void {
+	function showExecutionResultContent(content: string|null): void {
 		$('#abp01-admin-maintenance-result-container-inner')
-			.html(content)
+			.html(content || '')
 			.show();
 	}
 
 	function displaySuccessfulOperationMessage(message: string): void {
-		toolResult.success(message, false);
+		toolResult?.success(message, false);
 	}
 
 	function displayFailedOperationMessage(message: string): void {
-		toolResult.danger(message, false);
+		toolResult?.danger(message, false);
 	}
 
 	function hideOperationMessage(): void {
-		toolResult.hide(false);
+		toolResult?.hide(false);
+	}
+
+	function _checkContextOrThrow(): WpTripSummaryMaintenanceContext {
+		if (!context) {
+			throw new Error('Invalid context');
+		}
+		return context;
+	}
+
+	function _baseUrlOrThrow(): URI {
+		return URI(_checkContextOrThrow().ajaxBaseUrl || "");
 	}
 
 	function getExecuteToolUrl(toolId: string): string {
-		return URI(context.ajaxBaseUrl)
-			.addSearch('action', context.ajaxExecuteToolAction)
-			.addSearch('abp01_nonce_execute_tool', context.nonce)
+		return _baseUrlOrThrow()
+			.addSearch('action', context?.ajaxExecuteToolAction)
+			.addSearch('abp01_nonce_execute_tool', context?.nonce)
 			.addSearch('abp01_tool_id', toolId)
 			.toString();
 	}
@@ -97,7 +112,7 @@
 	function executeTool(toolId: string): void {
 		hideOperationMessage();
 		hideExecutionResultContent();
-		toggleBusy(true);
+		toggleBusy?.(true);
 
 		$.ajax(getExecuteToolUrl(toolId), {
 			type: 'POST',
@@ -105,7 +120,7 @@
 			cache: false,
 			data: {}
 		}).done(function (data, status, xhr) {
-			toggleBusy(false);
+			toggleBusy?.(false);
 			if (data && data.success) {
 				displaySuccessfulOperationMessage(window.abp01MaintenanceL10n.msgExecutedOk);
 				if (!!data.content) {
@@ -115,7 +130,7 @@
 				displayFailedOperationMessage(data.message || window.abp01MaintenanceL10n.msgExecutedFailGeneric);
 			}
 		}).fail(function (xhr, status, error) {
-			toggleBusy(false);
+			toggleBusy?.(false);
 			displayFailedOperationMessage(window.abp01MaintenanceL10n.msgExecutedFailNetwork);
 		});
 	}
@@ -133,7 +148,7 @@
 			});
 	}
 
-	function handleMaintenanceToolSelected(): void {
+	function handleMaintenanceToolSelected(this: HTMLElement): void {
 		var $me: JQuery = $(this);
 		var selection = $me.val();
 		var $btn: JQuery = $('#abp01-execute-maintenance-tool');
