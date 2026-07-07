@@ -30,20 +30,36 @@
 
 /* Adjust bootstrap color scheme */
 
+:root {
+	--wpts-primary: #0d4a80;
+	--wpts-primary-hover: #0A3868;
+	--wpts-danger: #E04038;
+	--wpts-danger-hover: #C9332C;
+	--wpts-warn: #F29E1F;
+	--wpts-warn-ink: #8A3F00;
+}
+
 .abp01-bootstrap {
-	--bs-primary: #2271b1;
+	--bs-primary: var(--wpts-primary);
 }
 
 .abp01-bootstrap .list-group-item {
-	--bs-list-group-active-bg: #2271b1;
-	--bs-list-group-active-border-color: #2271b1;
+	--bs-list-group-active-bg: var(--wpts-primary);
+	--bs-list-group-active-border-color: var(--wpts-primary);
 }
 
-.abp01-bootstrap button.btn-primary {
-	--bs-btn-bg: #2271b1;
-	--bs-btn-border-color: #2271b1;
-	--bs-btn-hover-bg: #135e96;
-	--bs-btn-hover-border-color: #135e96;
+.abp01-bootstrap .btn-primary {
+	--bs-btn-bg: var(--wpts-primary);
+	--bs-btn-border-color: var(--wpts-primary);
+	--bs-btn-hover-bg: var(--wpts-primary-hover);
+	--bs-btn-hover-border-color: var(--wpts-primary-hover);
+}
+
+.abp01-bootstrap .btn-danger {
+	--bs-btn-bg: var(--wpts-danger);
+	--bs-btn-border-color: var(--wpts-danger);
+	--bs-btn-hover-bg: var(--wpts-danger-hover);
+	--bs-btn-hover-border-color: var(--wpts-danger-hover);
 }
 
 .abp01-bootstrap .bg-primary {

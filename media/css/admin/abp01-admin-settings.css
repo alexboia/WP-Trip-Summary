@@ -58,12 +58,12 @@
 }
 
 .abp01-predefined-tile-layer .abp01-predefined-tile-layer-prop.abp01-predefined-tile-layer-prop-warn span.abp01-predefined-tile-layer-prop-warn-message {
-	background-color: #fffb91;
-	border: 1px solid #ffea00;
-	-moz-border-radius: 2px;
-	-webkit-border-radius: 2px;
-	border-radius: 2px;
-	color: #868445;
+	background-color: var(--wpts-warn);
+	border: 1px solid var(--wpts-warn-ink);
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	color: var(--wpts-warn-ink);
 	padding: 6px;
 	font-size: 13px;
 	display: block;
