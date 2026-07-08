@@ -38,10 +38,19 @@
 	--wpts-warn: #F29E1F;
 	--wpts-warn-ink: #8A3F00;
 	--wpts-list-selection: #1FA4B4;
+	--wpts-border-happy: #1FA4B4;
+	--wpts-border-neutral1: #E7EDF1;
+	--wpts-border-neutral2: #EAEFF2;
+	--wpts-border-neutral3: #E3EAEF;
 }
 
 .abp01-bootstrap {
 	--bs-primary: var(--wpts-primary);
+	--bs-border-color: var(--wpts-border-neutral1);
+}
+
+.abp01-bootstrap .table {
+	--bs-table-border-color: var(--wpts-border-neutral1);
 }
 
 .abp01-bootstrap .list-group-item {
@@ -197,6 +206,10 @@ label {
 	width: 350px;
 }
 
+.abp01-bootstrap .table {
+
+}
+
 .form-control.abp01-textarea-input {
 	resize: none;
 }
@@ -288,7 +301,8 @@ label {
 	font-size: 13px;
 }
 
-.abp01-page-workspace-toolbar .btn .dashicons {
+.abp01-page-workspace-toolbar .btn .dashicons,
+.abp01-page-sidebar .btn .dashicons {
 	font-size: 14px;
 	width: 17px;
 	height: 17px;

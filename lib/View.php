@@ -111,7 +111,7 @@ class Abp01_View {
 
 	public function renderAdminAboutPage(Abp01_ViewModel_AboutPageVm $data) {
 		$this->_registerAdminHelpers();
-		return $this->_renderCoreView('wpts-about.php', $data);
+		return $this->_renderCoreView('wpts-admin-about.php', $data);
 	}
 
 	public function renderAdminMaintenancePage(stdClass $data) {
@@ -131,7 +131,7 @@ class Abp01_View {
 			: '';
 	}
 	
-	private function _viewFileExists($viewFileName) {
+	private function _viewFileExists(string $viewFileName): bool {
 		return is_readable($this->_env->getViewFilePath($viewFileName));
 	}
 

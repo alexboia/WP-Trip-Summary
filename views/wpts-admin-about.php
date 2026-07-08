@@ -36,5 +36,93 @@
 ?>
 
 <div id="abp01-about-page" class="abp01-bootstrap abp01-page">
+	<h2 class="abp01-page-title"><?php echo esc_html__('About WP Trip Summary', 'abp01-trip-summary'); ?></h2>
+	<div class="container-fluid px-4">
+		<div class="row gx-5">
+			<div class="col col-md-3 abp01-page-sidebar abp01-rounded-container">
+				<h4><?php echo esc_html__('Info', 'abp01-trip-summary') ?></h4>
 
+				<div id="abp01-admin-help-plugin-info-container" class="abp01-page-side-bar-content">
+					<div id="abp01-about-logo">
+						<div id="abp01-about-logo-inner">
+							<img src="<?php echo esc_attr($data->pluginLogoPath); ?>" class="abp01-about-logo" />
+						</div>
+					</div>
+
+					<div id="abp01-about-info">
+						<table id="abp01-about-info-listing" class="table table-hover table-striped">
+							<tbody>
+								<tr>
+									<th scope="row"><?php echo esc_html__('Current Version', 'abp01-trip-summary'); ?></th>
+									<td><a target="_blank" href="https://www.wikipedia.org/search-redirect.php?family=wikipedia&language=en&search=<?php echo esc_attr($data->pluginData['WPTS Version Name']); ?>&language=en" class="btn btn-outline-info btn-sm"><?php echo esc_html($data->pluginData['Version']); ?> / <?php echo esc_html($data->pluginData['WPTS Version Name']); ?></a></td>
+								</tr>
+								<tr>
+									<th scope="row"><?php echo esc_html__('License', 'abp01-trip-summary') ?></th>
+									<td><a href="<?php echo esc_attr($data->pluginData['License URI']) ?>" target="_blank" class="btn btn-outline-info btn-sm"><?php echo esc_html($data->pluginData['License']); ?></a></td>
+								</tr>
+								<tr>
+									<th scope="row"><?php echo esc_html__('Author', 'abp01-trip-summary'); ?></th>
+									<td>
+										<a href="<?php echo esc_attr($data->pluginData['AuthorURI']); ?>" target="_blank" class="btn btn-outline-info btn-sm"><?php echo esc_html($data->pluginData['AuthorName']); ?></a>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row"><?php echo esc_html__('Minimum WordPress Version', 'abp01-trip-summary'); ?></th>
+									<td><?php echo esc_html($data->pluginData['RequiresWP']); ?></td>
+								</tr>
+								<tr>
+									<th scope="row"><?php echo esc_html__('Your WordPress Version', 'abp01-trip-summary'); ?></th>
+									<td><?php echo esc_html($data->envData['CurrentWP']) ?></td>
+								</tr>
+								<tr>
+									<th scope="row"><?php echo esc_html__('Minimum PHP Version', 'abp01-trip-summary'); ?></th>
+									<td><?php echo esc_html($data->pluginData['RequiresPHP']); ?></td>
+								</tr>
+								<tr>
+									<th scope="row"><?php echo esc_html__('Your PHP Version', 'abp01-trip-summary') ?></th>
+									<td><?php echo esc_html($data->envData['CurrentPHP']) ?></td>
+								</tr>
+								<tr>
+									<th scope="row"><?php echo esc_html__('Project source', 'abp01-trip-summary'); ?></th>
+									<td><a href="<?php echo esc_attr($data->pluginData['PluginURI']); ?>" target="_blank" class="btn btn-outline-info btn-sm"><?php echo esc_html__('Github', 'abp01-trip-summary'); ?></a></td>
+								</tr>
+							</tbody>
+						</table>
+						<div id="abp01-about-actions">
+							<a id="abp01-about-action-supportme" href="https://ko-fi.com/Q5Q01KGLM" 
+								target="_blank"
+								class="btn btn-primary abp01-btn-about-action"><span class="dashicons dashicons-sos"></span> <?php echo esc_html__('Buy me a coffee :)', 'abp01-trip-summary'); ?></a>
+
+							<a id="abp01-about-get-support" href="https://wordpress.org/support/plugin/wp-trip-summary/" 
+								target="_blank" 
+								class="btn btn-danger abp01-btn-about-action"><span class="dashicons dashicons-trash"></span> <?php echo esc_html__('Get Support', 'abp01-trip-summary') ?></a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col col-md-9 abp01-page-workspace">
+				<div class="abp01-rounded-container abp01-page-workspace-inner">
+					<h4><?php echo esc_html__('Changelog', 'abp01-trip-summary'); ?></h4>
+					<?php foreach ($data->changelog as $version => $items): ?>
+						<div class="abp01-about-changelog-version">
+							<table class="table table-hover table-striped">
+								<thead>
+									<th>
+										<h5 class="abp01-about-version-header"><?php echo esc_html($version); ?></h5>
+									</th>
+								</thead>
+								<tbody>
+									<?php foreach ($items as $item): ?>
+										<tr>
+											<td><?php echo esc_html($item); ?></td>
+										</tr>
+									<?php endforeach; ?>
+								</tbody>
+							</table>
+						</div>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</div>		
+	</div>
 </div>

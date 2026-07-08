@@ -29,6 +29,10 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 	defined('ABP01_LOADED') or die;
+
+	/**
+	 * @var \stdClass $data
+	 */
 ?>
 
 <script type="text/javascript">

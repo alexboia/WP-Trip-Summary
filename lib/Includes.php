@@ -118,8 +118,6 @@ class Abp01_Includes {
 
 	const JS_ABP01_ADMIN_MAINTENANCE = 'abp01-admin-maintenance';
 
-	const JS_ABP01_ADMIN_HELP = 'abp01-admin-help';
-
 	const JS_ABP01_VIEWER_SHORTCODE_BLOCK = 'abp01-viewer-short-code-block';
 
 	const JS_ABP01_CLASSIC_EDITOR_VIEWER_SHORTCODE_PLUGIN = 'abp01-classic-editor-viewer-shortcode-plugin';
@@ -174,8 +172,6 @@ class Abp01_Includes {
 
 	const STYLE_ADMIN_LOOKUP_MANAGEMENT = 'abp01-lookup-management-css';
 	
-	const STYLE_ADMIN_HELP = 'abp01-help-css';
-
 	const STYLE_ADMIN_ABOUT = 'abp01-about-css';
 
 	const STYLE_ADMIN_MAINTENANCE = 'abp01-maintenance-css';
@@ -211,9 +207,9 @@ class Abp01_Includes {
 	/**
 	 * @var Abp01_Includes_Manager
 	 */
-	private static $_includesManager = null;
+	private static Abp01_Includes_Manager|null $_includesManager = null;
 
-	private static $_scripts = array(
+	private static array $_scripts = array(
 		self::JS_URI_JS => array(
 			'path' => 'media/js/3rdParty/uri/URI.js', 
 			'version' => '1.19.2'
@@ -587,19 +583,6 @@ class Abp01_Includes {
 				self::JS_ABP01_ALERT_INLINE
 			)
 		),
-		self::JS_ABP01_ADMIN_HELP => array(
-			'path' => 'media/js/abp01-admin-help.js',
-			'version' => ABP01_VERSION,
-			'deps' => array(
-				self::JS_JQUERY,
-				self::JS_JQUERY_BLOCKUI,
-				self::JS_URI_JS,
-				self::JS_ABP01_COMMON,
-				self::JS_ABP01_PROGRESS_OVERLAY,
-				self::JS_ABP01_HELP_IMAGE_GALLERY,
-				self::JS_ABP01_OPERATION_MESSAGE
-			)
-		),
 		self::JS_ABP01_LISTING_AUDIT_LOG => array(
 			'path' => 'media/js/abp01-admin-listing-audit-log.js',
 			'version' => ABP01_VERSION,
@@ -828,19 +811,11 @@ class Abp01_Includes {
 				self::STYLE_ADMIN_COMMON
 			)
 		),
-		self::STYLE_ADMIN_HELP => array(
-			'path' => 'media/css/abp01-help.css', 
-			'version' => ABP01_VERSION,
-			'deps' => array(
-				self::STYLE_NPROGRESS,
-				self::STYLE_ABP01_HELP_IMAGE_GALLERY,
-				self::STYLE_ADMIN_COMMON
-			)
-		),
 		self::STYLE_ADMIN_ABOUT => array(
-			'path' => 'media/css/abp01-about.css', 
+			'path' => 'media/css/admin/abp01-admin-about.css', 
 			'version' => ABP01_VERSION,
 			'deps' => array(
+				self::STYLE_BOOTSTRAP,
 				self::STYLE_ADMIN_COMMON
 			)
 		),
@@ -998,15 +973,6 @@ class Abp01_Includes {
 		}
 	}
 
-	public static function includeScriptAdminHelp($localization) {
-		self::_includeScript(self::JS_ABP01_ADMIN_HELP);
-		if (!empty($localization)) {
-			wp_localize_script(self::JS_ABP01_ADMIN_HELP, 
-				'abp01HelpL10n', 
-				$localization);
-		}
-	}
-
 	public static function includeScriptAdminListingAuditLog($localization) {
 		self::_includeScript(self::JS_ABP01_LISTING_AUDIT_LOG);
 		if (!empty($localization)) {
@@ -1088,10 +1054,6 @@ class Abp01_Includes {
 
 	public static function includeStyleAdminSettings() {
 		self::_includeStyle(self::STYLE_ADMIN_SETTINGS);
-	}
-
-	public static function includeStyleAdminHelp() {
-		self::_includeStyle(self::STYLE_ADMIN_HELP);
 	}
 
 	public static function includeStyleAdminAbout() {
