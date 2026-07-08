@@ -162,8 +162,6 @@ class Abp01_Includes {
 
 	const STYLE_ABP01_NUMERIC_STEPPER = 'abp01-numeric-stepper-css';
 
-	const STYLE_ABP01_HELP_IMAGE_GALLERY = 'abp01-help-image-gallery-css';
-
 	const STYLE_ADMIN_COMMON = 'abp01-admin-common-css';
 
 	const STYLE_ADMIN_MAIN = 'abp01-main-css';
@@ -648,13 +646,6 @@ class Abp01_Includes {
 				self::STYLE_DASHICONS
 			)
 		), 
-		self::STYLE_ABP01_HELP_IMAGE_GALLERY => array(
-			'path' => 'media/css/abp01-admin-help-image-gallery.css', 
-			'version' => ABP01_VERSION,
-			'deps' => array(
-				self::STYLE_DASHICONS
-			)
-		),
 		self::STYLE_JQUERY_TOASTR => array(
 			'path' => 'media/js/3rdParty/toastr/toastr.css', 
 			'version' => '2.1.4'
@@ -767,7 +758,7 @@ class Abp01_Includes {
 			)
 		),
 		self::STYLE_ADMIN_LOG_ENTRIES => array(
-			'path' => 'media/css/abp01-admin-log-entries.css', 
+			'path' => 'media/css/admin/abp01-admin-log-entries.css', 
 			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::STYLE_NPROGRESS,
@@ -820,7 +811,7 @@ class Abp01_Includes {
 			)
 		),
 		self::STYLE_ADMIN_POSTS_LISTING => array(
-			'path' => 'media/css/abp01-admin-posts-listing.css', 
+			'path' => 'media/css/admin/abp01-admin-posts-listing.css', 
 			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::STYLE_ADMIN_COMMON
