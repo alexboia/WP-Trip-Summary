@@ -76,8 +76,8 @@
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button id="abp01-btn-save-lookup-data-item" type="button" class="btn btn-primary"><?php echo esc_html__('Save item', 'abp01-trip-summary'); ?></button>
-					<button id="abp01-btn-dismiss-lookup-data-item-edit" type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?php echo esc_html__('Cancel', 'abp01-trip-summary'); ?></button>
+					<button id="abp01-btn-save-lookup-data-item" type="button" class="btn btn-primary"><span class="dashicons dashicons-saved"></span> <?php echo esc_html__('Save item', 'abp01-trip-summary'); ?></button>
+					<button id="abp01-btn-dismiss-lookup-data-item-edit" type="button" class="btn btn-danger" data-bs-dismiss="modal"><span class="dashicons dashicons-no"></span> <?php echo esc_html__('Cancel', 'abp01-trip-summary'); ?></button>
 				</div>
 			</div>
 		</div>
@@ -117,8 +117,8 @@
 
 					<div class="abp01-page-workspace-content">
 						<div id="abp01-page-workspace-toolbar" class="abp01-page-workspace-toolbar">
-							<button type="button" id="abp01-add-lookup-top"  class="btn btn-primary"><?php echo esc_html__('Add new item', 'abp01-trip-summary'); ?></button>
-							<button type="button" id="abp01-reload-list-top" class="btn btn-secondary"><?php echo esc_html__('Reload list', 'abp01-trip-summary'); ?></button>
+							<button type="button" id="abp01-add-lookup-top"  class="btn btn-primary"><span class="dashicons dashicons-plus"></span> <?php echo esc_html__('Add new item', 'abp01-trip-summary'); ?></button>
+							<button type="button" id="abp01-reload-list-top" class="btn btn-secondary"><span class="dashicons dashicons-image-rotate"></span> <?php echo esc_html__('Reload list', 'abp01-trip-summary'); ?></button>
 						</div>
 
 						<div id="abp01-generic-action-result" class="abp01-alert-container"></div>
@@ -152,7 +152,7 @@
 				{{/?}}
 			</td>
 			<td width="20%">
-				<a class="btn btn-primary btn-sm" href="javascript:void(0)" rel="item-edit" data-lookupId="{{id}}"><?php echo esc_html__('Edit', 'abp01-trip-summary'); ?></a> 
+				<a class="btn btn-secondary btn-sm" href="javascript:void(0)" rel="item-edit" data-lookupId="{{id}}"><?php echo esc_html__('Edit', 'abp01-trip-summary'); ?></a> 
 				<a class="btn btn-danger btn-sm" href="javascript:void(0)" rel="item-delete" data-lookupId="{{id}}"><?php echo esc_html__('Delete', 'abp01-trip-summary'); ?></a>
 			</td>
 		</tr>

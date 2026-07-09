@@ -29,10 +29,14 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
     defined('ABP01_LOADED') or die;
+
+	/**
+	 * @var \stdClass $data
+	 */
 ?>
 
 <script type="text/javascript">
-	if (window['abp01_postId']) {
+	if (!window['abp01_postId']) {
 		window['abp01_postId'] = '<?php echo $data->postId; ?>';
 	}
 
@@ -55,10 +59,6 @@
 
 	var abp01_getAdminLogEntryByIdNonce = '<?php echo esc_js($data->getAdminLogEntryByIdNonce); ?>';
 	var abp01_getAdminlogEntryByIdAction = '<?php echo esc_js($data->ajaxGetAdminlogEntryByIdAction); ?>';
-
-	if (!window['abp01_postId']) {
-		window['abp01_postId'] = '<?php echo $data->postId; ?>';
-	}
 </script>
 
 <div id="abp01-tripSummaryLog-adminRoot" class="hide-if-no-js">

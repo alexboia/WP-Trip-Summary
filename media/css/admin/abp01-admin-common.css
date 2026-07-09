@@ -51,6 +51,7 @@
 
 .abp01-bootstrap .table {
 	--bs-table-border-color: var(--wpts-border-neutral1);
+	vertical-align: middle;
 }
 
 .abp01-bootstrap .list-group-item {
@@ -308,13 +309,24 @@ label {
 	height: 17px;
 	line-height: 17px;
 	vertical-align: middle;
-	margin-bottom: 5px;
+	margin-bottom: 2px;
 }
 
 .abp01-page-workspace-toolbar .btn.abp01-form-submit-btn .dashicons {
 	margin-bottom: 2px;
 	padding-bottom: 0px;
 	margin-right: 4px;
+}
+
+.modal-footer .dashicons {
+	margin-bottom: 2px;
+	padding-bottom: 0px;
+	margin-right: 4px;
+	font-size: 14px;
+	width: 17px;
+	height: 17px;
+	line-height: 17px;
+	vertical-align: middle;
 }
 
 /* Trip summary audit log */

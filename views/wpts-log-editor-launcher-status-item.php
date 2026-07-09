@@ -29,6 +29,10 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
     defined('ABP01_LOADED') or die;
+
+	/**
+	 * @var \stdClass $data
+	 */
 ?>
 
 <div id="abp01-editor-launcher-status-trip-summary-logs" class="abp01-editor-launcher-status-item">
