@@ -150,12 +150,12 @@ class Abp01_View {
 		return $this->_renderCoreView('wpts-editor-launcher-metabox.php', $data);
 	}
 
-	public function renderAdminTripSummaryAuditLogContent(stdClass $data) {
+	public function renderAdminTripSummaryAuditLogContent(Abp01_ViewModel_PostAuditLogVm $data) {
 		$this->_registerAdminHelpers();
 		return $this->_renderCoreView('wpts-audit-log.php', $data);
 	}
 
-	public function renderAdminTripSummaryListingInlineScripts(stdClass $data) {
+	public function renderAdminTripSummaryListingInlineScripts(Abp01_ViewModel_SimpleScriptsInfoVm $data) {
 		$this->_registerAdminHelpers();
 		return $this->_renderCoreView('wpts-listing-inline-scripts.php', $data);
 	}

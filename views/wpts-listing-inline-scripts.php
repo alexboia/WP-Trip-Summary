@@ -31,14 +31,14 @@
 	defined('ABP01_LOADED') or die;
 
 	/**
-	 * @var \stdClass $data
+	 * @var \Abp01_ViewModel_SimpleScriptsInfoVm $data
 	 */
 ?>
 
 <script type="text/javascript">
-	var abp01_auditLogNonce = '<?php echo $data->nonce; ?>';
-	var abp01_auditLogAjaxAction = '<?php echo $data->ajaxAction; ?>';
-	var abp01_auditLogAjaxBaseUrl = '<?php echo $data->ajaxBaseUrl; ?>';
+	var abp01_auditLogNonce = '<?php echo esc_js($data->nonce); ?>';
+	var abp01_auditLogAjaxAction = '<?php echo esc_js($data->ajaxAction); ?>';
+	var abp01_auditLogAjaxBaseUrl = '<?php echo esc_js($data->ajaxBaseUrl); ?>';
 </script>
 <script id="tpl-abp01-progress-container" type="text/x-kite">
 	<div id="abp01-progress-container" class="abp01-progress-container">

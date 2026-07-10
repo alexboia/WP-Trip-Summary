@@ -48,7 +48,7 @@ class Abp01_PluginModules_PluginListingPageCustomizationPluginModule extends Abp
 			2);
 	}
 
-	public function registerPluginRowMeta($links, $file) {
+	public function registerPluginRowMeta(array $links, string $file) {
 		if ($this->_isThisPlugin($file)) {
 			$links[] = 
 				'<a href="' . esc_attr($this->_getSettingsPageUrl()) . '" target="_blank">' 

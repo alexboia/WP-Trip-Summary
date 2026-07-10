@@ -34,32 +34,32 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_AuditLog_Data {
-	private $_infoCreatedAt;
+	private string|null $_infoCreatedAt;
 
-	private $_infoLastModifiedAt;
+	private string|null $_infoLastModifiedAt;
 
-	private $_infoLastModifiedByUserId;
+	private string|null $_infoLastModifiedByUserId;
 
-	private $_infoLastModifiedByUserName;
+	private string|null $_infoLastModifiedByUserName;
 
-	private $_trackCreatedAt;
+	private string|null $_trackCreatedAt;
 
-	private $_trackLastModifiedAt;
+	private string|null $_trackLastModifiedAt;
 
-	private $_trackLastModifiedByUserId;
+	private string|null $_trackLastModifiedByUserId;
 
-	private $_trackLastModifiedByUserName;
+	private string|null $_trackLastModifiedByUserName;
 
 	public function __construct(array $infoAuditLogData, array $trackAuditLogData) {
 		$this->_initInfoAuditLog($infoAuditLogData);
 		$this->_initTrackAuditLog($trackAuditLogData);
 	}
 
-	public static function empty() {
+	public static function empty(): Abp01_AuditLog_Data {
 		return new self(array(), array());
 	}
 
-	private function _initInfoAuditLog(array $infoAuditLogData) {
+	private function _initInfoAuditLog(array $infoAuditLogData): void {
 		$this->_infoCreatedAt = isset($infoAuditLogData['route_data_created_at'])
 			? $infoAuditLogData['route_data_created_at']
 			: null;
@@ -107,35 +107,67 @@ class Abp01_AuditLog_Data {
 		return $data;
 	}
 
-	public function getInfoCreatedAt() {
+	public function getInfoCreatedAt(): ?string {
 		return $this->_infoCreatedAt;
 	}
 
-	public function getInfoLastModifiedAt() {
+	public function hasInfoCreatedAt(): bool {
+		return !empty($this->_infoCreatedAt);
+	}
+
+	public function getInfoLastModifiedAt(): ?string {
 		return $this->_infoLastModifiedAt;
 	}
 
-	public function getInfoLastModifiedByUserId() {
+	public function hasInfoLastModifiedAt(): bool {
+		return !empty($this->_infoLastModifiedAt);
+	}
+
+	public function getInfoLastModifiedByUserId(): ?string {
 		return $this->_infoLastModifiedByUserId;
 	}
 
-	public function getInfoLastModifiedByUserName() {
+	public function hasInfoLastModifiedByUserId(): bool {
+		return !empty($this->_infoLastModifiedByUserId);
+	}
+
+	public function getInfoLastModifiedByUserName(): ?string {
 		return $this->_infoLastModifiedByUserName;
 	}
 
-	public function getTrackCreatedAt() {
+	public function hasInfoLastModifiedByUserName(): bool {
+		return !empty($this->_infoLastModifiedByUserName);
+	}
+
+	public function getTrackCreatedAt(): ?string {
 		return $this->_trackCreatedAt;
 	}
 
-	public function getTrackLastModifiedAt() {
+	public function hasTrackCreatedAt(): bool {
+		return !empty($this->_trackCreatedAt);
+	}
+
+	public function getTrackLastModifiedAt(): ?string {
 		return $this->_trackLastModifiedAt;
 	}
 
-	public function getTrackLastModifiedByUserId() {
+	public function hasTrackLastModifiedAt(): bool {
+		return !empty($this->_trackLastModifiedAt);
+	}
+
+	public function getTrackLastModifiedByUserId(): ?string {
 		return $this->_trackLastModifiedByUserId;
 	}
 
-	public function getTrackLastModifiedByUserName() {
+	public function hasTrackLastModifiedByUserId(): bool {
+		return !empty($this->_trackLastModifiedByUserId);
+	}
+
+	public function getTrackLastModifiedByUserName(): ?string {
 		return $this->_trackLastModifiedByUserName;
+	}
+
+	public function hasTrackLastModifiedByUserName(): bool {
+		return !empty($this->_trackLastModifiedByUserName);
 	}
 }

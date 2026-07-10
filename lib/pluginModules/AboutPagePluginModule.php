@@ -37,15 +37,9 @@ if (!defined('ABP01_LOADED')) {
  * @package WP-Trip-Summary
  */
 class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_PluginModule {
-	/**
-	 * @var Abp01_View
-	 */
-	private $_view;
+	private Abp01_View $_view;
 
-	/**
-	 * @var Abp01_ChangeLogDataSource
-	 */
-	private $_changeLogDataSource;
+	private Abp01_ChangeLogDataSource $_changeLogDataSource;
 
 	public function __construct(Abp01_ChangeLogDataSource $changeLogDataSource, 
 		Abp01_View $view, 
@@ -62,7 +56,7 @@ class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_Plug
 		$this->_registerWebPageAssets();
 	}
 
-	public function registerAdditionalPluginHeaders($extraHeaders) {
+	public function registerAdditionalPluginHeaders(array $extraHeaders): array {
 		return array_merge($extraHeaders, array(
 			'WPTSVersionName' => 'WPTS Version Name',
 			'License' => 'License',
@@ -70,7 +64,7 @@ class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_Plug
 		));
 	}
 
-	public function getMenuItems() {
+	public function getMenuItems(): array {
 		return array(
 			array(
 				'slug' => ABP01_ABOUT_SUBMENU_SLUG,
@@ -92,7 +86,7 @@ class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_Plug
 		echo $this->_view->renderAdminAboutPage($data);
 	}
 
-	private function _getPluginLogoPath() {
+	private function _getPluginLogoPath(): string {
 		return $this->_env->getPluginAssetUrl('media/img/logo.png');
 	}
 
@@ -124,11 +118,11 @@ class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_Plug
 		}
 	}
 
-	private function _shouldEnqueueWebPageAssets() {
+	private function _shouldEnqueueWebPageAssets(): bool {
 		return $this->_isViewingAboutPage() ;
 	}
 
-	private function _isViewingAboutPage() {
+	private function _isViewingAboutPage(): bool {
 		return $this->_env->isAdminPage(ABP01_ABOUT_SUBMENU_SLUG);
 	}
 }

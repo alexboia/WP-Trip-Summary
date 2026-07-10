@@ -35,12 +35,8 @@ if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
-class Abp01_ViewModel_AboutPageVm extends \stdClass {
-	public string $pluginLogoPath;
+class Abp01_ViewModel_PostAuditLogVm extends \stdClass {
+	public int $postId;
 
-	public array $pluginData;
-
-	public array $envData;
-
-	public array $changelog;
+	public Abp01_AuditLog_Data $auditLogData;
 }

@@ -29,7 +29,9 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+declare(strict_types=1);
+
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
@@ -47,29 +49,23 @@ class Abp01_PluginModules_AdminTripSummaryAuditLogPluginModule extends Abp01_Plu
 
 	const AUDIT_LOG_NONCE_URL_PARAM_NAME = 'abp01_nonce';
 	
-	/**
-	 * @var Abp01_View
-	 */
-	private $_view;
+	private Abp01_View $_view;
 
-	/**
-	 * @var Abp01_AuditLog_Provider
-	 */
-	private $_provider;
+	private Abp01_AuditLog_Provider $_provider;
 
-	/**
-	 * @var Abp01_AdminAjaxAction
-	 */
-	private $_getAuditLogContentByPostIdAjaxAction;
+	private Abp01_AdminAjaxAction $_getAuditLogContentByPostIdAjaxAction;
     
-	public function __construct(Abp01_AuditLog_Provider $provider, Abp01_View $view, Abp01_Env $env, Abp01_Auth $auth) {
+	public function __construct(Abp01_AuditLog_Provider $provider, 
+			Abp01_View $view, 
+			Abp01_Env $env, 
+			Abp01_Auth $auth) {
 		parent::__construct($env, $auth);
 		$this->_provider = $provider;
 		$this->_view = $view;
 		$this->_initAjaxActions();
 	}
 
-	private function _initAjaxActions() {
+	private function _initAjaxActions(): void {
 		$authCallback = $this->_createEditCurrentPostTripSummaryAuthCallback();
 		$currentResourceProvider = new Abp01_AdminAjaxAction_CurrentResourceProvider_None();
 
@@ -89,14 +85,14 @@ class Abp01_PluginModules_AdminTripSummaryAuditLogPluginModule extends Abp01_Plu
 		$this->_registerTripSummaryListingAuditLogInlineScripts();
 	}
 
-	private function _registerWebPageAssets() {
+	private function _registerWebPageAssets(): void {
 		add_action('admin_enqueue_scripts', 
 			array($this, 'onAdminEnqueueStyles'));
 		add_action('admin_enqueue_scripts', 
 			array($this, 'onAdminEnqueueScripts'));
 	}
 
-	public function onAdminEnqueueStyles() {
+	public function onAdminEnqueueStyles(): void {
 		if ($this->_shouldEnqueueCoreAuditLogStyles()) {
 			Abp01_Includes::includeStyleAdminAuditLog();
 		}
@@ -106,22 +102,22 @@ class Abp01_PluginModules_AdminTripSummaryAuditLogPluginModule extends Abp01_Plu
 		}
 	}
 
-	private function _shouldEnqueueCoreAuditLogStyles() {
+	private function _shouldEnqueueCoreAuditLogStyles(): bool {
 		return $this->_shouldEnqueueEditorWebPageAssets() 
 			|| $this->_shouldEnqueueListingWebPageAssets();
 	}
 
-	private function _shouldEnqueueEditorWebPageAssets() {
+	private function _shouldEnqueueEditorWebPageAssets(): bool {
 		return $this->_env->isEditingWpPost(Abp01_AvailabilityHelper::getTripSummaryAvailableForPostTypes()) 
 			&& $this->_canEditCurrentPostTripSummary();
 	}
 
-	private function _shouldEnqueueListingWebPageAssets() {
+	private function _shouldEnqueueListingWebPageAssets(): bool {
 		return $this->_env->isListingWpPosts(Abp01_AvailabilityHelper::getTripSummaryAvailableForPostTypes()) 
 			&& $this->_canEditCurrentPostTripSummary();
 	}
 
-	private function _shouldEnqueueListingAuditLogStyles() {
+	private function _shouldEnqueueListingAuditLogStyles(): bool {
 		return $this->_shouldEnqueueListingWebPageAssets();
 	}
 
@@ -131,22 +127,22 @@ class Abp01_PluginModules_AdminTripSummaryAuditLogPluginModule extends Abp01_Plu
 		}
 	}
 
-	private function _shouldEnqueueListingAuditLogScripts() {
+	private function _shouldEnqueueListingAuditLogScripts(): bool {
 		return $this->_shouldEnqueueListingWebPageAssets();
 	}
 
-	private function _registerAjaxActions() {
+	private function _registerAjaxActions(): void {
 		$this->_getAuditLogContentByPostIdAjaxAction
 			->register();
 	}
 
-	private function _registerEditorControls() {
+	private function _registerEditorControls(): void {
 		add_action('add_meta_boxes', array($this, 'registerAdminEditorAuditLogSummaryMetabox'), 
 			self::AUDIT_LOG_METABOX_REGISTRATION_HOOK_PRIORITY, 
 			2);
 	}
 
-	public function registerAdminEditorAuditLogSummaryMetabox($postType, $post) {
+	public function registerAdminEditorAuditLogSummaryMetabox(string|null $postType, \WP_Post|null $post) {
 		if ($this->_shouldRegisterAdminEditorLauncherMetaboxes($postType, $post)) {
 			add_meta_box('abp01-trip-summary-audit-log', 
 				__('Trip summary audit log', 'abp01-trip-summary'),
@@ -162,24 +158,36 @@ class Abp01_PluginModules_AdminTripSummaryAuditLogPluginModule extends Abp01_Plu
 		}
 	}
 
-	private function _shouldRegisterAdminEditorLauncherMetaboxes($postType, $post) {
+	private function _shouldRegisterAdminEditorLauncherMetaboxes(string|null $postType, \WP_Post $post): bool {
+		if (empty($postType)) {
+			return false;
+		}
+
 		return Abp01_AvailabilityHelper::isEditorAvailableForPostType($postType) 
 			&& $this->_cantEditPostTripSummary($post);
 	}
 
-	public function addAdminAuditLog($post, $args) {
+	public function addAdminAuditLog(\WP_Post|null $post, array|null $args) {
+		if (!$post) {
+			return;
+		}
+
+		if ($args === null) {
+			$args = array();
+		}
+
 		if ($this->_cantEditPostTripSummary($post)) {
 			$this->_displayAdminAuditLogForPost($post, $args);
 		}
 	}
 
-	private function _displayAdminAuditLogForPost($post, $args) {
+	private function _displayAdminAuditLogForPost(\WP_Post $post, array $args) {
 		$postId = intval($post->ID);
 		echo $this->_renderAdminAuditLogForPostId($postId);
 	}
 
-	private function _renderAdminAuditLogForPostId($postId) {
-		$data = new stdClass();
+	private function _renderAdminAuditLogForPostId(int $postId): string|false {
+		$data = new Abp01_ViewModel_PostAuditLogVm();
 		$data->postId = $postId;
 		$data->auditLogData = $postId  > 0 
 			? $this->_getAuditLogData($postId)
@@ -188,14 +196,12 @@ class Abp01_PluginModules_AdminTripSummaryAuditLogPluginModule extends Abp01_Plu
 		return $this->_view->renderAdminTripSummaryAuditLogContent($data);
 	}
 
-	private function _getAuditLogData($postId) {
-		$auditLog = $this->_provider->getAuditLogForPostId($postId);
-		return $auditLog->asPlainObject();
+	private function _getAuditLogData(int $postId): Abp01_AuditLog_Data {
+		return $this->_provider->getAuditLogForPostId($postId);
 	}
 
-	private function _getEmptyAuditLogData() {
-		$emptyAuditLog = Abp01_AuditLog_Data::empty();
-		return $emptyAuditLog->asPlainObject();
+	private function _getEmptyAuditLogData(): Abp01_AuditLog_Data {
+		return Abp01_AuditLog_Data::empty();
 	}
 
 	private function _registerPostRowActions() {
@@ -205,28 +211,38 @@ class Abp01_PluginModules_AdminTripSummaryAuditLogPluginModule extends Abp01_Plu
 			2);
 	}
 
-	public function addPostRowActions(array $actions, $post) {
+	public function addPostRowActions(array $actions, \WP_Post|null $post) {
+		if (!$post) {
+			return;
+		}
+
 		$postId = intval($post->ID);
 		$postType = $post->post_type;
 		
 		if ($this->_shouldRegisterAdminEditorLauncherMetaboxes($postType, $post)) {
-			$actions['abp01_show_trip_summary_audit_log'] = $this->_renderViewTripSummaryAuditLogLink($postId);
+			$actions['abp01_show_trip_summary_audit_log'] = 
+				$this->_renderViewTripSummaryAuditLogLink($postId);
 		}
 
 		return $actions;
 	}
 
-	private function _renderViewTripSummaryAuditLogLink($postId) {
-		return '<a class="abp01-admin-listing-audit-log-link" href="javascript:void(0);" data-post="' . $postId . '">' . __('Trip summary audit log', 'abp01-trip-summary') . '</a>';
+	private function _renderViewTripSummaryAuditLogLink(int|string $postId) {
+		return '<a class="abp01-admin-listing-audit-log-link" href="javascript:void(0);" data-post="' . esc_attr($postId) . '">' 
+			. esc_html__('Trip summary audit log', 'abp01-trip-summary') 
+		. '</a>';
 	}
 
 	private function _registerTripSummaryListingAuditLogInlineScripts() {
-		add_action('in_admin_footer', array($this, 'renderTripSummaryListingAuditLogInlineScripts'));
+		add_action(
+			'in_admin_footer', 
+			array($this, 'renderTripSummaryListingAuditLogInlineScripts')
+		);
 	}
 
 	public function renderTripSummaryListingAuditLogInlineScripts() {
 		if ($this->_shouldEnqueueListingAuditLogScripts()) {
-			$data = new stdClass();
+			$data = new Abp01_ViewModel_SimpleScriptsInfoVm();
 			$data->ajaxBaseUrl = $this->_env->getAjaxBaseUrl();
 			$data->ajaxAction = ABP01_ACTION_GET_AUDIT_LOG_FOR_POST;
 			$data->nonce = $this->_getAuditLogContentByPostIdAjaxAction->generateNonce();

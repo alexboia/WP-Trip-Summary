@@ -29,6 +29,10 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
     defined('ABP01_LOADED') or die;
+
+	/**
+	 * @var \Abp01_ViewModel_PostAuditLogVm $data
+	 */
 ?>
 
 <?php do_action('abp01_before_trip_summary_audit_log', 
@@ -43,24 +47,24 @@
 		<tr>
 			<th scope="row"><?php echo esc_html__('Date created', 'abp01-trip-summary'); ?></th>
 			<td><?php 
-				echo !empty($data->auditLogData->infoCreatedAt) 
-					? esc_html(abp01_format_db_date($data->auditLogData->infoCreatedAt))
+				echo $data->auditLogData->hasInfoCreatedAt()
+					? esc_html(abp01_format_db_date($data->auditLogData->getInfoCreatedAt()))
 					: '-'; ?>
 			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php echo esc_html__('Date last updated', 'abp01-trip-summary'); ?></th>
 			<td><?php 
-				echo !empty($data->auditLogData->infoLastModifiedAt) 
-					? esc_html(abp01_format_db_date($data->auditLogData->infoLastModifiedAt))
+				echo $data->auditLogData->hasInfoLastModifiedAt()
+					? esc_html(abp01_format_db_date($data->auditLogData->getInfoLastModifiedAt()))
 					: '-'; ?>
 			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php echo esc_html__('Last updated by', 'abp01-trip-summary'); ?></th>
 			<td><?php 
-				echo !empty($data->auditLogData->infoLastModifiedByUserName) 
-					? esc_html($data->auditLogData->infoLastModifiedByUserName)
+				echo $data->auditLogData->hasInfoLastModifiedByUserName()
+					? esc_html($data->auditLogData->getInfoLastModifiedByUserName())
 					: '-'; ?>
 			</td>
 		</tr>
@@ -75,24 +79,24 @@
 		<tr>
 			<th scope="row"><?php echo esc_html__('Date created', 'abp01-trip-summary'); ?></th>
 			<td><?php 
-				echo !empty($data->auditLogData->trackCreatedAt) 
-					? esc_html(abp01_format_db_date($data->auditLogData->trackCreatedAt))
+				echo $data->auditLogData->hasTrackCreatedAt()
+					? esc_html(abp01_format_db_date($data->auditLogData->getTrackCreatedAt()))
 					: '-'; ?>
 			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php echo esc_html__('Date last updated', 'abp01-trip-summary'); ?></th>
 			<td><?php 
-				echo !empty($data->auditLogData->trackLastModifiedAt) 
-					? esc_html(abp01_format_db_date($data->auditLogData->trackLastModifiedAt))
+				echo $data->auditLogData->hasTrackLastModifiedAt()
+					? esc_html(abp01_format_db_date($data->auditLogData->getTrackLastModifiedAt()))
 					: '-'; ?>
 			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php echo esc_html__('Last updated by', 'abp01-trip-summary'); ?></th>
 			<td><?php 
-				echo !empty($data->auditLogData->trackLastModifiedByUserName) 
-					? esc_html($data->auditLogData->trackLastModifiedByUserName)
+				echo $data->auditLogData->hasTrackLastModifiedByUserName() 
+					? esc_html($data->auditLogData->getTrackLastModifiedByUserName())
 					: '-'; ?>
 			</td>
 		</tr>

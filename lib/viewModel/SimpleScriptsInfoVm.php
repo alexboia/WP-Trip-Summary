@@ -29,18 +29,16 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
- declare(strict_types=1);
+declare(strict_types=1);
 
 if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
-class Abp01_ViewModel_AboutPageVm extends \stdClass {
-	public string $pluginLogoPath;
+class Abp01_ViewModel_SimpleScriptsInfoVm extends \stdClass {
+	public string $ajaxBaseUrl;
 
-	public array $pluginData;
+	public string $ajaxAction;
 
-	public array $envData;
-
-	public array $changelog;
+	public string $nonce;
 }
