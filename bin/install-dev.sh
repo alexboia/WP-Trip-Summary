@@ -297,11 +297,10 @@ check_and_install_tooling() {
         require_command mysqladmin
     fi
 
-    check_and_install_composer
-    check_and_install_wp_stuff
     check_wp_config_wired_to_getenv
-
+    check_and_install_composer
     install_vendor_dependencies
+    check_and_install_wp_stuff
 }
 
 setup_unit_testing() {
