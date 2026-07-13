@@ -29,13 +29,15 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 class NoDependenciesSamplePluginModule extends Abp01_PluginModules_PluginModule {
-    public function __construct(Abp01_Env $env, Abp01_Auth $auth) {
+    public function __construct(Env $env, Abp01_Auth $auth) {
         parent::__construct($env, $auth);
         SamplePluginModuleCreationState::reportModuleConstructed(__CLASS__, func_get_args());
     }
 
-    public function load() {
+    public function load(): void {
         SamplePluginModuleCallState::reportModuleLoadCalled(__CLASS__);
     }
 }

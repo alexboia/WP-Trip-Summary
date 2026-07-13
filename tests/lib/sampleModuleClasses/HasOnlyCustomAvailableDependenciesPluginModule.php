@@ -42,7 +42,7 @@ class HasOnlyCustomAvailableDependenciesPluginModule extends Abp01_PluginModules
         SamplePluginModuleCreationState::reportModuleConstructed(__CLASS__, func_get_args());
     }
 
-    public function load() {
+    public function load(): void {
         SamplePluginModuleCallState::reportModuleLoadCalled(__CLASS__);
     }
 

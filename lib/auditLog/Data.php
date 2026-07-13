@@ -125,7 +125,7 @@ class Abp01_AuditLog_Data {
 		return !empty($this->_infoLastModifiedAt);
 	}
 
-	public function getInfoLastModifiedByUserId(): ?string {
+	public function getInfoLastModifiedByUserId(): ?int {
 		return $this->_infoLastModifiedByUserId;
 	}
 
@@ -157,7 +157,7 @@ class Abp01_AuditLog_Data {
 		return !empty($this->_trackLastModifiedAt);
 	}
 
-	public function getTrackLastModifiedByUserId(): ?string {
+	public function getTrackLastModifiedByUserId(): ?int {
 		return $this->_trackLastModifiedByUserId;
 	}
 

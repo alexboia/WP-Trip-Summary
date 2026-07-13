@@ -29,12 +29,14 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use \WpTripSummary\Env;
+
 class RequiresOnlyUnsupportedDependenciesSamplePluginModule extends Abp01_PluginModules_PluginModule {
-    private $_wpPost; 
+    private \WP_Post $_wpPost; 
 
-    private $_wpQuery;
+    private \WP_Query $_wpQuery;
 
-    public function __construct(WP_Post $wpPost, WP_Query $wpQuery, Abp01_Env $env, Abp01_Auth $auth) {
+    public function __construct(WP_Post $wpPost, WP_Query $wpQuery, Env $env, Abp01_Auth $auth) {
         parent::__construct($env, $auth);
 
         $this->_wpPost = $wpPost;
@@ -42,7 +44,7 @@ class RequiresOnlyUnsupportedDependenciesSamplePluginModule extends Abp01_Plugin
         SamplePluginModuleCreationState::reportModuleConstructed(__CLASS__, func_get_args());
     }
 
-    public function load() {
+    public function load(): void {
         SamplePluginModuleCallState::reportModuleLoadCalled(__CLASS__);
     }
 
