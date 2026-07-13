@@ -17,3 +17,4 @@ data/help/fr_FR
 wp-trip-summary.code-workspace
 .wpts-installed
 node_modules
+vendor

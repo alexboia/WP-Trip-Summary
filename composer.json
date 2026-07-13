@@ -2,5 +2,12 @@
     "require": {
         "monolog/monolog": "^3.0",
         "myclar/kamel-php": "^1.0"
+    },
+    "require-dev": {
+        "yoast/phpunit-polyfills": "^1.0",
+        "wp-phpunit/wp-phpunit": "^6.3"
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
     }
 }

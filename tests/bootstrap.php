@@ -29,43 +29,46 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once 'faker/autoload.php';
-require_once 'mockery/helpers.php';
-require_once 'mockery/autoload.php';
-require_once 'polyfills/phpunitpolyfills-autoload.php';
+define('WPTS_TESTS_ROOT', __DIR__);
+define('WPTS_ROOT', realpath(__DIR__ . '/..'));
 
-require_once 'lib/testDoubles/abp01Noop.php';
-require_once 'lib/testDoubles/abp01Die.php';
-require_once 'lib/testDoubles/abp01SendHeader.php';
-require_once 'lib/testDoubles/abp01SetHttpResonseCode.php';
-require_once 'lib/testDoubles/abp01IsUrlRewriteEnabled.php';
+require_once WPTS_TESTS_ROOT. '/faker/autoload.php';
+require_once WPTS_TESTS_ROOT .'/mockery/helpers.php';
+require_once WPTS_TESTS_ROOT . '/mockery/autoload.php';
+require_once WPTS_ROOT . '/vendor/autoload.php';
 
-require_once 'lib/data/ExpectedLookupData.php';
-require_once 'lib/data/GpxTestDataProvider.php';
+require_once WPTS_TESTS_ROOT . '/lib/testDoubles/abp01Noop.php';
+require_once WPTS_TESTS_ROOT . '/lib/testDoubles/abp01Die.php';
+require_once WPTS_TESTS_ROOT . '/lib/testDoubles/abp01SendHeader.php';
+require_once WPTS_TESTS_ROOT . '/lib/testDoubles/abp01SetHttpResonseCode.php';
+require_once WPTS_TESTS_ROOT . '/lib/testDoubles/abp01IsUrlRewriteEnabled.php';
 
-require_once 'lib/DbTestHelpers.php';
-require_once 'lib/GenericTestHelpers.php';
-require_once 'lib/IncludesTestDataHelpers.php';
-require_once 'lib/TestDataFileHelpers.php';
-require_once 'lib/TestAuthDataHelpers.php';
-require_once 'lib/LookupDataTestHelpers.php';
-require_once 'lib/RouteInfoTestDataSets.php';
-require_once 'lib/RouteTrackBboxTestDataHelpers.php';
-require_once 'lib/RouteTrackPathHelpers.php';
-require_once 'lib/RouteTrackTestDataHelpers.php';
-require_once 'lib/RouteTrackDocumentTestHelpers.php';
-require_once 'lib/RouteTrackPointTestDataHelpers.php';
-require_once 'lib/RouteTrackAltitudeProfileTestDataHelpers.php';
-require_once 'lib/ViewerTestDataHelpers.php';
-require_once 'lib/SettingsDataHelpers.php';
-require_once 'lib/AdminTestDataHelpers.php';
-require_once 'lib/GpsDocumentFakerDataProvider.php';
-require_once 'lib/GpxDocumentFakerDataProvider.php';
-require_once 'lib/GeoJsonDocumentFakerDataProvider.php';
-require_once 'lib/IntegerIdGenerator.php';
-require_once 'lib/AuditLogDataHelpers.php';
-require_once 'lib/TestRouteDataProvider.php';
-require_once 'lib/RouteLogTestHelpers.php';
+require_once WPTS_TESTS_ROOT . '/lib/data/ExpectedLookupData.php';
+require_once WPTS_TESTS_ROOT . '/lib/data/GpxTestDataProvider.php';
+
+require_once WPTS_TESTS_ROOT . '/lib/DbTestHelpers.php';
+require_once WPTS_TESTS_ROOT . '/lib/GenericTestHelpers.php';
+require_once WPTS_TESTS_ROOT . '/lib/IncludesTestDataHelpers.php';
+require_once WPTS_TESTS_ROOT . '/lib/TestDataFileHelpers.php';
+require_once WPTS_TESTS_ROOT . '/lib/TestAuthDataHelpers.php';
+require_once WPTS_TESTS_ROOT . '/lib/LookupDataTestHelpers.php';
+require_once WPTS_TESTS_ROOT . '/lib/RouteInfoTestDataSets.php';
+require_once WPTS_TESTS_ROOT . '/lib/RouteTrackBboxTestDataHelpers.php';
+require_once WPTS_TESTS_ROOT . '/lib/RouteTrackPathHelpers.php';
+require_once WPTS_TESTS_ROOT . '/lib/RouteTrackTestDataHelpers.php';
+require_once WPTS_TESTS_ROOT . '/lib/RouteTrackDocumentTestHelpers.php';
+require_once WPTS_TESTS_ROOT . '/lib/RouteTrackPointTestDataHelpers.php';
+require_once WPTS_TESTS_ROOT . '/lib/RouteTrackAltitudeProfileTestDataHelpers.php';
+require_once WPTS_TESTS_ROOT . '/lib/ViewerTestDataHelpers.php';
+require_once WPTS_TESTS_ROOT . '/lib/SettingsDataHelpers.php';
+require_once WPTS_TESTS_ROOT . '/lib/AdminTestDataHelpers.php';
+require_once WPTS_TESTS_ROOT . '/lib/GpsDocumentFakerDataProvider.php';
+require_once WPTS_TESTS_ROOT . '/lib/GpxDocumentFakerDataProvider.php';
+require_once WPTS_TESTS_ROOT . '/lib/GeoJsonDocumentFakerDataProvider.php';
+require_once WPTS_TESTS_ROOT . '/lib/IntegerIdGenerator.php';
+require_once WPTS_TESTS_ROOT . '/lib/AuditLogDataHelpers.php';
+require_once WPTS_TESTS_ROOT . '/lib/TestRouteDataProvider.php';
+require_once WPTS_TESTS_ROOT . '/lib/RouteLogTestHelpers.php';
 
 $_tests_dir = getenv('WP_TESTS_DIR');
 if (!$_tests_dir) {
@@ -78,15 +81,21 @@ if (is_dir($_tests_dir)) {
 	die('Test directory not found');
 }
 
+// Forward custom PHPUnit Polyfills configuration to PHPUnit bootstrap file.
+$_phpunit_polyfills_path = getenv( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH' );
+if ( false !== $_phpunit_polyfills_path ) {
+	define( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH', $_phpunit_polyfills_path );
+}
+
 function _get_tests_base_dir() {
-	return __DIR__;
+	return WPTS_TESTS_ROOT;
 }
 
 function _get_plugin_base_dir() {
-	return dirname(__DIR__);
+	return WPTS_ROOT;
 }
 
-function _get_tests_file_path($file) {
+function _get_tests_file_path(string $file) {
 	return _get_tests_base_dir() . '/' . $file;
 }
 
@@ -104,7 +113,7 @@ function _manually_load_plugin() {
 }
 
 function _override_plugin_db_wrapper() {
-	require_once 'lib/MysqliDbTestWrapper.php';
+	require_once WPTS_TESTS_ROOT . '/lib/MysqliDbTestWrapper.php';
 	abp01_get_env()->configureMysqliDbClass(MysqliDbTestWrapper::class);
 }
 
@@ -128,32 +137,32 @@ function _manually_install_plugin() {
 }
 
 function _include_plugin_dependent_test_classes() {
-	require_once 'lib/testDoubles/abp01StubLogger.php';
-	require_once 'lib/testDoubles/abp01InvalidStubLogger.php';
+	require_once WPTS_TESTS_ROOT . '/lib/testDoubles/abp01StubLogger.php';
+	require_once WPTS_TESTS_ROOT . '/lib/testDoubles/abp01InvalidStubLogger.php';
 
-	require_once 'lib/TestFrontendTheme.php';
-	require_once 'lib/MockDocumentParser.php';
-	require_once 'lib/MockFileValidator.php';
-	require_once 'lib/sampleModuleClasses/SamplePluginModuleDependency.php';
-	require_once 'lib/sampleModuleClasses/SamplePluginModuleCallState.php';
-	require_once 'lib/sampleModuleClasses/SamplePluginModuleCreationState.php';
-	require_once 'lib/sampleModuleClasses/NoDependenciesSamplePluginModule.php';
-	require_once 'lib/sampleModuleClasses/RequiresSupportedDependenciesSamplePluginModule.php';
-	require_once 'lib/sampleModuleClasses/RequiresAllSupportedDependenciesSamplePluginModule.php';
-	require_once 'lib/sampleModuleClasses/RequiresOneSupportedDependencySamplePluginModule.php';
-	require_once 'lib/sampleModuleClasses/RequiresSomeUnsupportedDependenciesSamplePluginModule.php';
-	require_once 'lib/sampleModuleClasses/RequiresOnlyUnsupportedDependenciesSamplePluginModule.php';
-	require_once 'lib/sampleModuleClasses/NotAValidModuleClassSamplePluginModule.php';
-	require_once 'lib/sampleModuleClasses/HasOnlyCustomAvailableDependenciesPluginModule.php';
-	require_once 'lib/GpsDocumentFormatTestInfo.php';
-	require_once 'lib/GpxDocumentFormatTestInfo.php';
-	require_once 'lib/GeoJsonDocumentFormatTestInfo.php';
+	require_once WPTS_TESTS_ROOT . '/lib/TestFrontendTheme.php';
+	require_once WPTS_TESTS_ROOT . '/lib/MockDocumentParser.php';
+	require_once WPTS_TESTS_ROOT . '/lib/MockFileValidator.php';
+	require_once WPTS_TESTS_ROOT . '/lib/sampleModuleClasses/SamplePluginModuleDependency.php';
+	require_once WPTS_TESTS_ROOT . '/lib/sampleModuleClasses/SamplePluginModuleCallState.php';
+	require_once WPTS_TESTS_ROOT . '/lib/sampleModuleClasses/SamplePluginModuleCreationState.php';
+	require_once WPTS_TESTS_ROOT . '/lib/sampleModuleClasses/NoDependenciesSamplePluginModule.php';
+	require_once WPTS_TESTS_ROOT . '/lib/sampleModuleClasses/RequiresSupportedDependenciesSamplePluginModule.php';
+	require_once WPTS_TESTS_ROOT . '/lib/sampleModuleClasses/RequiresAllSupportedDependenciesSamplePluginModule.php';
+	require_once WPTS_TESTS_ROOT . '/lib/sampleModuleClasses/RequiresOneSupportedDependencySamplePluginModule.php';
+	require_once WPTS_TESTS_ROOT . '/lib/sampleModuleClasses/RequiresSomeUnsupportedDependenciesSamplePluginModule.php';
+	require_once WPTS_TESTS_ROOT . '/lib/sampleModuleClasses/RequiresOnlyUnsupportedDependenciesSamplePluginModule.php';
+	require_once WPTS_TESTS_ROOT . '/lib/sampleModuleClasses/NotAValidModuleClassSamplePluginModule.php';
+	require_once WPTS_TESTS_ROOT . '/lib/sampleModuleClasses/HasOnlyCustomAvailableDependenciesPluginModule.php';
+	require_once WPTS_TESTS_ROOT . '/lib/GpsDocumentFormatTestInfo.php';
+	require_once WPTS_TESTS_ROOT . '/lib/GpxDocumentFormatTestInfo.php';
+	require_once WPTS_TESTS_ROOT . '/lib/GeoJsonDocumentFormatTestInfo.php';
 }
 
 function _include_asserts() {
 	spl_autoload_register(function($className) {
 		if (strpos($className, 'Assert') === 0) {
-			require_once 'lib/assert/' . $className . '.php';
+			require_once WPTS_TESTS_ROOT . '/lib/assert/' . $className . '.php';
 		}
 	});
 }
