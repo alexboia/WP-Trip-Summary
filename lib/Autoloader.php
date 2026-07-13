@@ -36,11 +36,13 @@ class Abp01_Autoloader {
 
 	private static $_prefix = 'Abp01_';
 
+	private static $_namespacePrefix = 'WpTripSummary\\';
+
 	private static $_3rdPartyPrefixes = array(
 		'StepanDalecky' => '3rdParty/kml-parser'
 	);
 
-	public static function init($libDir) {
+	public static function init(string $libDir) {
 		if (!self::$_initialized) {
 			spl_autoload_register(array(__CLASS__, 'autoload'));
 			self::$_libDir = $libDir;
@@ -48,12 +50,16 @@ class Abp01_Autoloader {
 		}
 	}
 
-	private static function autoload($className) {
+	private static function autoload(string $className) {
 		$classPath = null;
 		if (strpos($className, self::$_prefix) === 0) {
 			$classPath = str_replace(self::$_prefix, '', $className);
-			$classPath = self::_getRelativePath($classPath);
+			$classPath = self::_getRelativePath($classPath, '_');
 			$classPath = self::$_libDir . '/' . $classPath . '.php';
+		}  else if (strpos($className, self::$_namespacePrefix) === 0) {
+			$classPath = str_replace(self::$_namespacePrefix, '', $className);
+			$classPath = self::_getRelativePath($classPath, '\\');
+			$classPath = self::$_libDir . '/' . $classPath . '.php';		
 		} else {
 			$separator = '\\';
 			foreach (self::$_3rdPartyPrefixes as $prefix => $searchRelativeDir) {
@@ -78,7 +84,7 @@ class Abp01_Autoloader {
 		}
 	}
 
-	private static function _getRelativePath($className, $separator = '_', $transform = 'lcfirst') {
+	private static function _getRelativePath(string $className, string $separator = '_', ?string $transform = 'lcfirst'): string {
 		$classPath = array();
 		$pathParts = explode($separator, $className);
 		$className = array_pop($pathParts);

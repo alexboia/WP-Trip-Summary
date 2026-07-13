@@ -29,9 +29,11 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
+
+use WpTripSummary\Env;
 
 class Abp01_Installer {
 	/**
@@ -75,9 +77,9 @@ class Abp01_Installer {
 	const OPT_VERSION = 'abp01.option.version';
 
 	/**
-	 * @var Abp01_Env The current instance of the plug-in environment
+	 * The current instance of the plug-in environment
 	 */
-	private $_env;
+	private Env $_env;
 
 	/**
 	 * @var mixed The last occured error
@@ -94,7 +96,7 @@ class Abp01_Installer {
 	 * @param bool $installLookupData Whether or not to install lookup data
 	 */
 	public function __construct($installLookupData = true) {
-		$this->_env = Abp01_Env::getInstance();
+		$this->_env = Env::getInstance();
 		$this->_installLookupData = $installLookupData;
 	}
 

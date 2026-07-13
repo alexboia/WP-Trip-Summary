@@ -30,20 +30,12 @@
  */
 
 class RequiresOneSupportedDependencySamplePluginModule extends Abp01_PluginModules_PluginModule {
-    private $_help; 
-
-    public function __construct(Abp01_Help $help, Abp01_Env $env, Abp01_Auth $auth) {
+    public function __construct(Abp01_Env $env, Abp01_Auth $auth) {
         parent::__construct($env, $auth);
-
-        $this->_help = $help;
         SamplePluginModuleCreationState::reportModuleConstructed(__CLASS__, func_get_args());
     }
 
-    public function load() {
+    public function load(): void {
         SamplePluginModuleCallState::reportModuleLoadCalled(__CLASS__);
-    }
-
-    public function hasHelp() {
-        return !empty($this->_help);
     }
 }

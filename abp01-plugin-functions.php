@@ -55,15 +55,24 @@ function abp01_init_autoloaders() {
 	require_once ABP01_VENDOR_DIR . '/autoload.php';
 	require_once ABP01_LIB_DIR . '/Autoloader.php';
 	Abp01_Autoloader::init(ABP01_LIB_DIR);
+	abp01_init_legacy_class_aliases();
+}
+
+function abp01_init_legacy_class_aliases(): void {
+	abp01_legacy_class_alias(\WpTripSummary\Env::class, 'Abp01_Env');
+}
+
+function abp01_legacy_class_alias( string $newClass,string $legacyClass): void {
+    if (!class_exists($legacyClass, false)) {
+        class_alias($newClass, $legacyClass);
+    }
 }
 
 /**
  * Returns the current environment accessor instance
- * 
- * @return Abp01_Env The current environment accessor instance
  */
-function abp01_get_env() {
-	return Abp01_Env::getInstance();
+function abp01_get_env(): \WpTripSummary\Env {
+	return \WpTripSummary\Env::getInstance();
 }
 
 /**
@@ -96,13 +105,6 @@ function abp01_get_route_manager() {
  */
 function abp01_get_route_log_manager() {
 	return Abp01_Route_Log_Manager_Default::getInstance();
-}
-
-/**
- * @return Abp01_Help
- */
-function abp01_get_help() {
-	return new Abp01_Help();
 }
 
 /**

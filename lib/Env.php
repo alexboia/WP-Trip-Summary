@@ -29,20 +29,21 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+declare(strict_types=1);
+namespace WpTripSummary;
+
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
+
+use mysqli_driver;
+use MysqliDb;
 
 /**
  * A class that serves as an accessor for the current WordPress environment
  */
-class Abp01_Env {
-	/**
-	 * The singleton instance
-	 * 
-	 * @var Abp01_Env
-	 */
-	private static $_instance = null;
+class Env {
+	private static Env|null $_instance = null;
 
 	/**
 	 * Current language
@@ -250,24 +251,20 @@ class Abp01_Env {
 	 */
 	private $_mysqliDbClass = MysqliDb::class;
 
-	/**
-	 * Gets or creates the singleton instance
-	 * @return Abp01_Env The singleton instance
-	 */
-	public static function getInstance() {
+	public static function getInstance(): Env {
 		if (self::$_instance == null) {
 			self::$_instance = new self();
 		}
 		return self::$_instance;
 	}
 
-	public function configureMysqliDbClass($className) {
+	public function configureMysqliDbClass(string $className) {
 		if ($this->_db != null || $this->_metaDb != null) {
-			throw new Abp01_Exception('Cannot change database wrapper class: an instance has already been created!');
+			throw new \Abp01_Exception('Cannot change database wrapper class: an instance has already been created!');
 		}
 
 		if (!is_a($className, MysqliDb::class, true)) {
-			throw new Abp01_Exception('Cannot change database wrapper class: Class is not an instance of <' . MysqliDb::class . '>!');
+			throw new \Abp01_Exception('Cannot change database wrapper class: Class is not an instance of <' . MysqliDb::class . '>!');
 		}
 
 		$this->_mysqliDbClass = $className;
@@ -281,7 +278,7 @@ class Abp01_Env {
 	}
 
 	public function __clone() {
-		throw new Exception('Cloning a singleton of type ' . __CLASS__ . ' is not allowed');
+		throw new \Exception('Cloning a singleton of type ' . __CLASS__ . ' is not allowed');
 	}
 
 	private function _initFromWpConfig() {
@@ -366,13 +363,13 @@ class Abp01_Env {
 
 	public function overrideDataDir($dataDir) {
 		if (empty($dataDir) || !is_dir($dataDir)) {
-			throw new InvalidArgumentException();
+			throw new \InvalidArgumentException();
 		}
 		$this->_dataDir = $dataDir;
 	}
 	
 	public function getFrontendTemplateLocations() {
-		$dirs = new stdClass();
+		$dirs = new \stdClass();
 		$dirs->default = $this->_viewsDir;
 		$dirs->theme = $this->getCurrentThemeDir() . '/abp01-viewer';
 		$dirs->themeUrl = $this->getCurrentThemeUrl() . '/abp01-viewer';
@@ -418,7 +415,7 @@ class Abp01_Env {
 	/**
 	 * @return \MysqliDb
 	 */
-	public function getDb() {
+	public function getDb(): MysqliDb {
 		if ($this->_db == null) {
 			$className = $this->_mysqliDbClass;
 			$this->_db = new $className($this->_dbHost,
@@ -619,7 +616,7 @@ class Abp01_Env {
 	public function getRouteDetailsLookupTableName() {
 		return $this->_routeDetailsLookupTableName;
 	}
- 
+
 	public function getRouteLogTableName() {
 		return $this->_routeLogTableName;
 	}
@@ -636,13 +633,13 @@ class Abp01_Env {
 		return $this->_viewsDir;
 	}
 
-	public function getViewFilePath($viewFile) {
+	public function getViewFilePath(string $viewFile): string {
 		return wp_normalize_path(sprintf('%s/%s', 
 			$this->_viewsDir, 
 			$viewFile));
 	}
 
-	public function getViewHelpersFilePath($helperFile) {
+	public function getViewHelpersFilePath(string $helperFile): string {
 		return wp_normalize_path(sprintf('%s/helpers/%s', 
 			$this->_viewsDir, 
 			$helperFile));

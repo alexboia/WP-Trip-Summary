@@ -53,7 +53,6 @@ class PluginModuleHostTests extends WP_UnitTestCase {
             Abp01_Settings::class,
             Abp01_Route_Manager::class,
             Abp01_View::class,
-            Abp01_Help::class,
             Abp01_Env::class,
             Abp01_Auth::class
         )));
@@ -62,7 +61,6 @@ class PluginModuleHostTests extends WP_UnitTestCase {
             Abp01_Settings::class,
             Abp01_Route_Manager::class,
             Abp01_View::class,
-            Abp01_Help::class,
             Abp01_Env::class,
             Abp01_Auth::class
         )));

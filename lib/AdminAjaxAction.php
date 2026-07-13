@@ -29,6 +29,8 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
@@ -46,11 +48,14 @@ class Abp01_AdminAjaxAction {
 
 	const HTTP_ANY = '*';
 
-	private $_actionCode;
+	private string $_actionCode;
 
+	/**
+	 * @var callable
+	 */
 	private $_callback;
 
-	private $_requiresAuthentication = true;
+	private bool $_requiresAuthentication = true;
 
 	/**
 	 * @var Abp01_NonceProvider
@@ -62,24 +67,21 @@ class Abp01_AdminAjaxAction {
 	 */
 	private $_authProvider = null;
 
-	private $_allowedHttpMethods = array();
+	private array $_allowedHttpMethods = array();
 
 	/**
 	 * @var Abp01_AdminAjaxAction_CurrentResourceProvider
 	 */
 	private $_currentResourceProvider;
 
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+	private Env $_env;
 
 	/**
 	 * @var Abp01_Logger
 	 */
 	private $_logger;
 
-	public function __construct($actionCode, $callback) {
+	public function __construct(string $actionCode, callable $callback) {
 		$this->_env = abp01_get_env();
 		$this->_logger = abp01_get_log_manager()->getLogger();
 		$this->_actionCode = $actionCode;
@@ -91,7 +93,7 @@ class Abp01_AdminAjaxAction {
 		$this->allowAllHttpMethods();
 	}
 
-	public static function create($actionCode, $callback) {
+	public static function create(string $actionCode, callable $callback) {
 		return new self($actionCode, $callback);
 	}
 
@@ -100,7 +102,7 @@ class Abp01_AdminAjaxAction {
 		return $this;
 	}
 
-	public function onlyForHttpMethod($httpMethod) {
+	public function onlyForHttpMethod(string $httpMethod) {
 		if (empty($httpMethod)) {
 			throw new InvalidArgumentException('Http method may not be null');
 		}

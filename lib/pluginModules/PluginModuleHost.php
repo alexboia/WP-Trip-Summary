@@ -155,9 +155,6 @@ class Abp01_PluginModules_PluginModuleHost implements Abp01_PluginMenuItemProvid
 			Abp01_Route_Log_Manager::class => function() {
 				return $this->getRouteLogManager();
 			},
-			Abp01_Help::class => function() {
-				return $this->getHelp();
-			},
 			Abp01_Auth::class => function() {
 				return $this->getAuth();
 			},
@@ -281,10 +278,6 @@ class Abp01_PluginModules_PluginModuleHost implements Abp01_PluginMenuItemProvid
 
 	public function getAuditLogProvider() {
 		return $this->_plugin->getAuditLogProvider();
-	}
-
-	public function getHelp() {
-		return $this->_plugin->getHelp();
 	}
 
 	public function getView() {

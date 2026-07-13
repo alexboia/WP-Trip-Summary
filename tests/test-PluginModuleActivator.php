@@ -168,9 +168,6 @@ class PluginModuleActivatorTests extends WP_UnitTestCase {
 			},
 			Abp01_Route_Manager::class => function() {
 				return abp01_get_route_manager();
-			},
-			Abp01_Help::class => function() {
-				return abp01_get_help();
 			}
 		);
 	}

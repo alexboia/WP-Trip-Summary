@@ -167,7 +167,7 @@ function _include_asserts() {
 	});
 }
 
-function _sync_wp_tests_config($testsDir) {
+function _sync_wp_tests_config(string $testsDir) {
 	$thisConfig = _get_tests_base_dir() . '/wp-tests-config.php';
 	$runtimeConfig = $testsDir . '/wp-tests-config.php';
 

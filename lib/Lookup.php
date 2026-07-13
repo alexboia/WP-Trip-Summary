@@ -29,9 +29,11 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
+
+use WpTripSummary\Env;
 
 class Abp01_Lookup {
 	const DIFFICULTY_LEVEL = 'difficultyLevel';
@@ -62,9 +64,8 @@ class Abp01_Lookup {
 
 	/**
 	 * Reference to the environment object
-	 * @var Abp01_Env
 	 */
-	private $_env = null;
+	private Env $_env;
 
 	/**
 	 * Current language setting

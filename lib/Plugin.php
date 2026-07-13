@@ -29,6 +29,8 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
@@ -477,10 +479,6 @@ class Abp01_Plugin {
 		return abp01_get_route_log_manager();
 	}
 
-	public function getHelp() {
-		return abp01_get_help();
-	}
-
 	public function getView() {
 		return abp01_get_view();
 	}
@@ -489,7 +487,7 @@ class Abp01_Plugin {
 		return abp01_get_settings();
 	}
 
-	public function getEnv() {
+	public function getEnv(): Env {
 		return abp01_get_env();
 	}
 

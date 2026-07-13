@@ -36,12 +36,9 @@ class RequiresSupportedDependenciesSamplePluginModule extends Abp01_PluginModule
 
     private $_view;
     
-    private $_help;
-    
     public function __construct(Abp01_Settings $settings, 
         Abp01_Route_Manager $routeManager, 
         Abp01_View $view, 
-        Abp01_Help $help,
         Abp01_Env $env,
         Abp01_Auth $auth) {
 
@@ -50,12 +47,11 @@ class RequiresSupportedDependenciesSamplePluginModule extends Abp01_PluginModule
         $this->_settings = $settings;
         $this->_routeManager = $routeManager;
         $this->_view = $view;
-        $this->_help = $help;
 
         SamplePluginModuleCreationState::reportModuleConstructed(__CLASS__, func_get_args());
     }
 
-    public function load() {
+    public function load(): void {
         SamplePluginModuleCallState::reportModuleLoadCalled(__CLASS__);
     }
 
@@ -73,9 +69,5 @@ class RequiresSupportedDependenciesSamplePluginModule extends Abp01_PluginModule
 
     public function hasView() {
         return !empty($this->_view);
-    }
-
-    public function hasHelp() {
-        return !empty($this->_help);
     }
 }

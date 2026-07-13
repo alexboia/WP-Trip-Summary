@@ -36,15 +36,12 @@ class RequiresAllSupportedDependenciesSamplePluginModule extends Abp01_PluginMod
 
     private $_view;
     
-    private $_help;
-
     private $_pluginModuleHost;
    
     public function __construct(Abp01_PluginModules_PluginModuleHost $pluginModuleHost, 
         Abp01_Settings $settings, 
         Abp01_Route_Manager $routeManager, 
         Abp01_View $view, 
-        Abp01_Help $help,
         Abp01_Env $env,
         Abp01_Auth $auth) {
 
@@ -53,13 +50,12 @@ class RequiresAllSupportedDependenciesSamplePluginModule extends Abp01_PluginMod
         $this->_settings = $settings;
         $this->_routeManager = $routeManager;
         $this->_view = $view;
-        $this->_help = $help;
         $this->_pluginModuleHost = $pluginModuleHost;
 
         SamplePluginModuleCreationState::reportModuleConstructed(__CLASS__, func_get_args());
     }
 
-    public function load() {
+    public function load(): void {
         SamplePluginModuleCallState::reportModuleLoadCalled(__CLASS__);
     }
 
@@ -85,9 +81,5 @@ class RequiresAllSupportedDependenciesSamplePluginModule extends Abp01_PluginMod
 
     public function hasView() {
         return !empty($this->_view);
-    }
-
-    public function hasHelp() {
-        return !empty($this->_help);
     }
 }
