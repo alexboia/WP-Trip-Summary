@@ -40,23 +40,24 @@
 	var abp01_auditLogAjaxAction = '<?php echo esc_js($data->ajaxAction); ?>';
 	var abp01_auditLogAjaxBaseUrl = '<?php echo esc_js($data->ajaxBaseUrl); ?>';
 </script>
-<script id="tpl-abp01-progress-container" type="text/x-kite">
-	<div id="abp01-progress-container" class="abp01-progress-container">
-		<div data-role="progressLabel" id="abp01-progress-label" class="abp01-progress-label"></div>
-		<div data-role="progressParent" id="abp01-progress-bar" class="abp01-progress-bar"></div>
-	</div>
-</script>
-<script id="tpl-abp01-audit-log-container" type="text/x-kite">
-	<div id="abp01-audit-log-container" class="abp01-window-container">
-		<div id="abp01-audit-log-container-header" class="abp01-window-container-header">
-			<h3><?php echo __('Audit log', 'abp01-trip-summary'); ?></h3>
-			<a href="javascript:void(0)" class="abp01-close-window abp01-close-tile-layer-selector">
-				<span class="dashicons dashicons-dismiss"></span>
-			</a>
-			<div class="abp01-clear"></div>
+
+<div id="abp01-listing-audit-log-container" class="abp01-bootstrap abp01-bootstrap-host">
+	<div id="abp01-listing-audit-log-window" class="modal modal-lg fade abp01-modal-window" tabindex="-1" aria-labelledby="abp01-listing-audit-log-window-title" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div id="abp01-listing-audit-log-window-content" class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="abp01-listing-audit-log-window-title"><?php echo esc_html__('Audit log', 'abp01-trip-summary'); ?><span id="abp01-listing-audit-log-window-title-extra"></span></h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php echo esc_attr__('Close', 'abp01-trip-summary'); ?>"></button>
+				</div>
+				<div class="modal-body">
+					<div id="abp01-audit-log-container-inner">
+						<!-- Content set by script -->
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button id="abp01-btn-close-listing-audit-log-window" type="button" class="btn btn-danger"><span class="dashicons dashicons-no"></span> <?php echo esc_html__('Close', 'abp01-trip-summary'); ?></button>
+				</div>
+			</div>
 		</div>
-		<div id="abp01-audit-log-container-inner" class="abp01-window-container-inner">
-			{{auditLogContent}}
-		</div>
 	</div>
-</script>
+</div>

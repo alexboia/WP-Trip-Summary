@@ -33,13 +33,17 @@
 	/**
 	 * @var \Abp01_ViewModel_PostAuditLogVm $data
 	 */
+
+	$tableCssClass = $data->forOverlay 
+		? 'abp01-admin-trip-summary-audit-log abp01-admin-trip-summary-audit-log-overlay table table-hover table-striped' 
+		: 'abp01-admin-trip-summary-audit-log abp01-admin-trip-summary-audit-log-post';
 ?>
 
 <?php do_action('abp01_before_trip_summary_audit_log', 
 	$data->postId, 
 	$data); ?>
 
-<table class="abp01-admin-trip-summary-audit-log">
+<table class="<?php echo esc_attr($tableCssClass); ?>">
 	<tbody>
 		<tr class="abp01-trip-summary-audit-log-section-title">
 			<td colspan="2"><h4><?php echo esc_html__('Trip summary info', 'abp01-trip-summary'); ?></h4></td>

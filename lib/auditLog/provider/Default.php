@@ -48,7 +48,7 @@ class Abp01_AuditLog_Provider_Default implements Abp01_AuditLog_Provider {
 	 * @param int $postId 
 	 * @return Abp01_AuditLog_Data 
 	 */
-	public function getAuditLogForPostId($postId) { 
+	public function getAuditLogForPostId(int $postId): Abp01_AuditLog_Data { 
 		if (empty($postId)) {
 			throw new InvalidArgumentException('Post ID may not be empty.');
 		}
@@ -64,7 +64,7 @@ class Abp01_AuditLog_Provider_Default implements Abp01_AuditLog_Provider {
 			$trackAuditLogData);
 	}
 
-	private function _retrieveInfoAuditLogData($postId) {
+	private function _retrieveInfoAuditLogData(int $postId) {
 		$db = $this->_env->getDb();
 
 		$infoTable = $this->_env

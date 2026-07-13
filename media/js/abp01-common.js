@@ -177,6 +177,8 @@
             isNullOrWhiteSpace: isNullOrWhiteSpace,
             kiteTemplate: kiteTemplate
         };
+        window.wpTripSummary = window.abp01;
     }
     $.abp01 = window.abp01;
+    $.wpTripSummary = window.wpTripSummary;
 })(jQuery);

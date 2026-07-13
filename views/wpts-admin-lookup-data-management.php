@@ -123,7 +123,7 @@
 
 						<div id="abp01-generic-action-result" class="abp01-alert-container"></div>
 
-						<table id="abp01-admin-lookup-listing" class="table table-striped">
+						<table id="abp01-admin-lookup-listing" class="table table-hover table-striped">
 							<thead>
 								<tr>
 									<th width="40%"><?php echo esc_html__('Default label', 'abp01-trip-summary'); ?></th>

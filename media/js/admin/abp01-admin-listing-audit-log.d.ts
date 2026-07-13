@@ -1,4 +1,3 @@
-<?php
 /**
  * Copyright (c) 2014-2026 Alexandru Boia and Contributors
  *
@@ -29,16 +28,18 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
- declare(strict_types=1);
+ /// <reference types="jquery" />
 
-if (!defined('ABP01_LOADED')) {
-	exit;
-}
+type WpTripSummaryListAuditLogReadyHandler = (success: boolean, content: string|null) => void;
 
-class Abp01_ViewModel_PostAuditLogVm extends \stdClass {
-	public int $postId;
+interface WpTripSummaryListingAuditLogContext {
+	ajaxBaseUrl: string|null;
+	auditLogNonce: string|null;
+	auditLogAjaxAction: string|null;
+ }
 
-	public Abp01_AuditLog_Data $auditLogData;
-
-	public bool $forOverlay;
-}
+interface Window {
+	abp01_auditLogAjaxBaseUrl: string|null;
+	abp01_auditLogNonce: string|null;
+	abp01_auditLogAjaxAction: string|null;
+ }

@@ -39,15 +39,15 @@ if (!defined('ABP01_LOADED')) {
  * @package WP-Trip-Summary
  */
 class Abp01_PluginModules_AdminTripSummaryAuditLogPluginModule extends Abp01_PluginModules_PluginModule {
-	const AUDIT_LOG_METABOX_REGISTRATION_HOOK_PRIORITY = 10;
+	const int AUDIT_LOG_METABOX_REGISTRATION_HOOK_PRIORITY = 10;
 
-	const AUDIT_LOG_METABOX_POSITION = 'side';
+	const string AUDIT_LOG_METABOX_POSITION = 'side';
 
-	const AUDIT_LOG_METABOX_PRIORITY = 'default';
+	const string AUDIT_LOG_METABOX_PRIORITY = 'default';
 
-	const AUDIT_LOG_POST_ROW_ACTIONS_HOOK_PRIORITY = 10;
+	const int AUDIT_LOG_POST_ROW_ACTIONS_HOOK_PRIORITY = 10;
 
-	const AUDIT_LOG_NONCE_URL_PARAM_NAME = 'abp01_nonce';
+	const string AUDIT_LOG_NONCE_URL_PARAM_NAME = 'abp01_nonce';
 	
 	private Abp01_View $_view;
 
@@ -186,9 +186,10 @@ class Abp01_PluginModules_AdminTripSummaryAuditLogPluginModule extends Abp01_Plu
 		echo $this->_renderAdminAuditLogForPostId($postId);
 	}
 
-	private function _renderAdminAuditLogForPostId(int $postId): string|false {
+	private function _renderAdminAuditLogForPostId(int $postId, bool $forOverlay = false): string|false {
 		$data = new Abp01_ViewModel_PostAuditLogVm();
 		$data->postId = $postId;
+		$data->forOverlay = $forOverlay;
 		$data->auditLogData = $postId  > 0 
 			? $this->_getAuditLogData($postId)
 			: $this->_getEmptyAuditLogData();
@@ -256,7 +257,7 @@ class Abp01_PluginModules_AdminTripSummaryAuditLogPluginModule extends Abp01_Plu
 			die;
 		}
 
-		echo $this->_renderAdminAuditLogForPostId($postId);
+		echo $this->_renderAdminAuditLogForPostId($postId, true);
 		die;
 	}
 }

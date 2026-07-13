@@ -72,21 +72,29 @@ interface WpTripSummaryLookupManagementL10N {
 	editItemTitle: string;
 }
 
+interface WpTripSummaryListingAuditLogL10N {
+	errFailedToLoadAuditLog: string;
+	msgWorking: string;
+}
+
 declare global {
 	type WpTripSummaryBusyToggler = (show: boolean, message?: string) => void;
 
 	interface Window { 
 		abp01: WpTripSummary; 
+		wpTripSummary: WpTripSummary;
 		abp01SettingsL10n: WpTripSummarySettingsL10N;
 		abp01MaintenanceL10n: WpTripSummaryMaintenanceL10N;
 		abp01AdminCommonL10n: WpTripSummaryAdminCommonL10N;
 		abp01AdminSystemLogL10n: WpTripSummaryAdminSystemLogsL10N;
 		abp01LookupMgmtL10n: WpTripSummaryLookupManagementL10N;
+		abp01ListingAuditLogL10n: WpTripSummaryListingAuditLogL10N;
 		kite: WpTripSummaryKiteJS;
 	}
 
 	interface JQueryStatic {
 		abp01: WpTripSummary;
+		wpTripSummary: WpTripSummary;
 	}
 
 	interface JQuery {

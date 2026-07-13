@@ -52,8 +52,10 @@
                 background: 'transparent'
             }, opts.style || {});
             return $.extend(style, {
-                left: ($me.width() || 0 - style.width) / 2,
-                top: ($me.height() || 0 - style.height) / 2
+                position: 'fixed',
+                left: '50%',
+                top: '50%',
+                transform: 'translate(-50%, -50%)'
             });
         }
         function hasHtml() {
@@ -82,12 +84,15 @@
             ].join('');
         }
         function show() {
-            var text = arguments.length == 1
+            const text = arguments.length == 1
                 ? arguments[0] || ''
                 : '';
+            const style = getStyle();
             $me.block({
                 message: $('#abp01-progress-container'),
-                css: getStyle(),
+                centerX: false,
+                centerY: false,
+                css: style,
                 baseZ: 9999999,
                 onBlock: function () {
                     $('#abp01-progress-label').html(text);

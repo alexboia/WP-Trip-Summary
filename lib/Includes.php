@@ -582,14 +582,15 @@ class Abp01_Includes {
 			)
 		),
 		self::JS_ABP01_LISTING_AUDIT_LOG => array(
-			'path' => 'media/js/abp01-admin-listing-audit-log.js',
+			'path' => 'media/js/admin/abp01-admin-listing-audit-log.js',
 			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::JS_JQUERY,
-				self::JS_JQUERY_BLOCKUI,
+				self::JS_BOOTSTRAP,
 				self::JS_URI_JS,
 				self::JS_ABP01_COMMON,
-				self::JS_ABP01_PROGRESS_OVERLAY
+				self::JS_ABP01_PROGRESS_MODAL,
+				self::JS_ABP01_MODAL
 			)
 		),
 		self::JS_ABP01_VIEWER_SHORTCODE_BLOCK => array(
@@ -609,7 +610,7 @@ class Abp01_Includes {
 		)
 	);
 
-	private static $_styles = array(
+	private static array $_styles = array(
 		self::STYLE_NPROGRESS => array(
 			'path' => 'media/js/3rdParty/nprogress/nprogress.css', 
 			'version' => '0.2.0'
@@ -824,7 +825,7 @@ class Abp01_Includes {
 			'alias' => self::STYLE_ADMIN_MAIN,
 			'deps' => array(
 				self::STYLE_ADMIN_AUDIT_LOG,
-				self::STYLE_NPROGRESS
+				self::STYLE_BOOTSTRAP
 			)
 		)
 	);
@@ -840,7 +841,7 @@ class Abp01_Includes {
 		'twentynineteen' => self::STYLE_FRONTEND_MAIN_TWENTY_NINETEEN
 	);
 
-	public static function configure($refPluginsPath, $scriptsInFooter) {
+	public static function configure(string $refPluginsPath, bool $scriptsInFooter) {
 		$includesManager = new Abp01_Includes_Manager(self::$_scripts, 
 			self::$_styles, 
 			$refPluginsPath, 

@@ -38,5 +38,5 @@ interface Abp01_AuditLog_Provider {
 	 * @param int $postId 
 	 * @return Abp01_AuditLog_Data
 	 */
-	function getAuditLogForPostId($postId);
+	function getAuditLogForPostId(int $postId): Abp01_AuditLog_Data;
 }

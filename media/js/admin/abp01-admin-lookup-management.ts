@@ -37,15 +37,18 @@
 /// <reference path="./abp01-admin-lookup-management.d.ts" />
 /// <reference types="lodash" />
 
-(function($) {
+(function($: JQueryStatic) {
 	"use strict";
 	
 	/**
 	 * Constants
 	 * */
 	const DEFAULT_LANG = '_default';
-	const LOOKUP_DELETE_INITIAL_REQUEST = '_lookup_delete_initial_request';
-	const LOOKUP_DELETE_INUSE_CONFIRMATION = '_lookup_delete_inuse_confirmation';
+	const LOOKUP_DELETE_INITIAL_REQUEST: WpTripSummaryLookupDataItemDeleteStage = WpTripSummaryLookupDataItemDeleteStage
+		.InitialRequest;
+	const LOOKUP_DELETE_INUSE_CONFIRMATION: WpTripSummaryLookupDataItemDeleteStage = WpTripSummaryLookupDataItemDeleteStage
+		.InUseConfirmation;
+
 	const EDIT_FORM_SELECTORS = {
 		FORM: '#abp01-edit-lookup-form',
 		TITLE_EXTRA: '#abp01-edit-lookup-window-title-extra',
@@ -104,12 +107,12 @@
 	}
 
 	function createPageBusyToggler(): WpTripSummaryBusyToggler {
-		return $.abp01.createBusyToggler('#wpwrap', 
+		return $.wpTripSummary.createBusyToggler('#wpwrap', 
 			window.abp01LookupMgmtL10n.msgWorking);
 	}
 
 	function createEditorBusyToggler(): WpTripSummaryBusyToggler {
-		return $.abp01.createBusyToggler('#abp01-edit-lookup-window-content', 
+		return $.wpTripSummary.createBusyToggler('#abp01-edit-lookup-window-content', 
 			window.abp01LookupMgmtL10n.msgWorking);
 	}
 

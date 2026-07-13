@@ -381,11 +381,16 @@ table.abp01-admin-trip-summary-audit-log tr.abp01-trip-summary-audit-log-section
 	color: rgb(60, 67, 74);
 }
 
-table.abp01-admin-trip-summary-audit-log h4 {
+table.abp01-admin-trip-summary-audit-log.abp01-admin-trip-summary-audit-log-post h4 {
 	padding: 8px;
 	background-color: #f8f8f8;
 	border-radius: 5px;
 	font-weight: bold;
+}
+
+table.abp01-admin-trip-summary-audit-log.abp01-admin-trip-summary-audit-log-overlay h4 {
+	font-size: 16px;
+	font-weight: 600;
 }
 
 @media (min-width: 782px) {

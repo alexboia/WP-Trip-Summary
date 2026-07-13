@@ -29,7 +29,9 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+declare(strict_types=1);
+
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
@@ -38,7 +40,7 @@ class Abp01_AuditLog_Data {
 
 	private string|null $_infoLastModifiedAt;
 
-	private string|null $_infoLastModifiedByUserId;
+	private int|null $_infoLastModifiedByUserId;
 
 	private string|null $_infoLastModifiedByUserName;
 
@@ -46,7 +48,7 @@ class Abp01_AuditLog_Data {
 
 	private string|null $_trackLastModifiedAt;
 
-	private string|null $_trackLastModifiedByUserId;
+	private int|null $_trackLastModifiedByUserId;
 
 	private string|null $_trackLastModifiedByUserName;
 
@@ -68,7 +70,7 @@ class Abp01_AuditLog_Data {
 			: null;
 
 		$this->_infoLastModifiedByUserId = isset($infoAuditLogData['route_data_last_modified_by'])
-			? $infoAuditLogData['route_data_last_modified_by']
+			? (int)$infoAuditLogData['route_data_last_modified_by']
 			: null;
 		$this->_infoLastModifiedByUserName = isset($infoAuditLogData['route_data_last_modified_by_name'])
 			? $infoAuditLogData['route_data_last_modified_by_name']
@@ -84,7 +86,7 @@ class Abp01_AuditLog_Data {
 			: null;
 
 		$this->_trackLastModifiedByUserId = isset($trackAuditLogData['route_track_modified_by'])
-			? $trackAuditLogData['route_track_modified_by']
+			? (int)$trackAuditLogData['route_track_modified_by']
 			: null;
 		$this->_trackLastModifiedByUserName = isset($trackAuditLogData['route_track_modified_by_name'])
 			? $trackAuditLogData['route_track_modified_by_name']
