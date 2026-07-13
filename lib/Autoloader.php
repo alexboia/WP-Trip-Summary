@@ -29,73 +29,78 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class Abp01_Autoloader {
-	private static $_libDir;
+declare(strict_types=1);
 
-	private static $_initialized = false;
+namespace WpTripSummary {
+	class Autoloader {
+		private static string $_libDir;
 
-	private static $_prefix = 'Abp01_';
+		private static bool $_initialized = false;
 
-	private static $_namespacePrefix = 'WpTripSummary\\';
+		private static string $_prefix = 'Abp01_';
 
-	private static $_3rdPartyPrefixes = array(
-		'StepanDalecky' => '3rdParty/kml-parser'
-	);
+		private static string $_namespacePrefix = 'WpTripSummary\\';
 
-	public static function init(string $libDir) {
-		if (!self::$_initialized) {
-			spl_autoload_register(array(__CLASS__, 'autoload'));
-			self::$_libDir = $libDir;
-			self::$_initialized = true;
+		private static $_3rdPartyPrefixes = array();
+
+		public static function init(string $libDir) {
+			if (!self::$_initialized) {
+				spl_autoload_register(array(__CLASS__, 'autoload'));
+				self::$_libDir = $libDir;
+				self::$_initialized = true;
+			}
 		}
-	}
 
-	private static function autoload(string $className) {
-		$classPath = null;
-		if (strpos($className, self::$_prefix) === 0) {
-			$classPath = str_replace(self::$_prefix, '', $className);
-			$classPath = self::_getRelativePath($classPath, '_');
-			$classPath = self::$_libDir . '/' . $classPath . '.php';
-		}  else if (strpos($className, self::$_namespacePrefix) === 0) {
-			$classPath = str_replace(self::$_namespacePrefix, '', $className);
-			$classPath = self::_getRelativePath($classPath, '\\');
-			$classPath = self::$_libDir . '/' . $classPath . '.php';		
-		} else {
-			$separator = '\\';
-			foreach (self::$_3rdPartyPrefixes as $prefix => $searchRelativeDir) {
-				$checkPrefix = $prefix . $separator;
-				if (strpos($className, $checkPrefix) === 0) {
-					$classPath = str_replace($checkPrefix, '', $className);
-					$classPath = self::_getRelativePath($classPath, $separator, null);
-					$classPath = self::$_libDir . '/' 
-						. $searchRelativeDir . '/' 
-						. $classPath . '.php';
+		private static function autoload(string $className): void {
+			$classPath = null;
+			//Old underscore based class scoping and naming - will eventually go away
+			if (strpos($className, self::$_prefix) === 0) {
+				$classPath = str_replace(self::$_prefix, '', $className);
+				$classPath = self::_getRelativePath($classPath, '_');
+				$classPath = self::$_libDir . '/' . $classPath . '.php';
+			//Namespace based classed scoping and naming - will eventually take over
+			}  else if (strpos($className, self::$_namespacePrefix) === 0) {
+				$classPath = str_replace(self::$_namespacePrefix, '', $className);
+				$classPath = self::_getRelativePath($classPath, '\\');
+				$classPath = self::$_libDir . '/' . $classPath . '.php';	
+			//Non-composer 3rd party stuff	
+			} else {
+				$separator = '\\';
+				foreach (self::$_3rdPartyPrefixes as $prefix => $searchRelativeDir) {
+					$checkPrefix = $prefix . $separator;
+					if (strpos($className, $checkPrefix) === 0) {
+						$classPath = str_replace($checkPrefix, '', $className);
+						$classPath = self::_getRelativePath($classPath, $separator, null);
+						$classPath = self::$_libDir . '/' 
+							. $searchRelativeDir . '/' 
+							. $classPath . '.php';
 
-					break;
+						break;
+					}
+				}
+
+				if (empty($classPath)) {
+					$classPath = self::$_libDir . '/3rdParty/' . $className . '.php';
 				}
 			}
-
-			if (empty($classPath)) {
-				$classPath = self::$_libDir . '/3rdParty/' . $className . '.php';
+			if (!empty($classPath) && file_exists($classPath)) {
+				require_once $classPath;
 			}
 		}
-		if (!empty($classPath) && file_exists($classPath)) {
-			require_once $classPath;
-		}
-	}
 
-	private static function _getRelativePath(string $className, string $separator = '_', ?string $transform = 'lcfirst'): string {
-		$classPath = array();
-		$pathParts = explode($separator, $className);
-		$className = array_pop($pathParts);
-		foreach ($pathParts as $namePart) {
-			if (!empty($transform) && is_callable($transform)) {
-				$namePart = $transform($namePart);
+		private static function _getRelativePath(string $className, string $separator = '_', ?string $transform = 'lcfirst'): string {
+			$classPath = array();
+			$pathParts = explode($separator, $className);
+			$className = array_pop($pathParts);
+			foreach ($pathParts as $namePart) {
+				if (!empty($transform) && is_callable($transform)) {
+					$namePart = $transform($namePart);
+				}
+				
+				$classPath[] = $namePart;
 			}
-			
-			$classPath[] = $namePart;
+			$classPath[] = $className;
+			return implode('/', $classPath);
 		}
-		$classPath[] = $className;
-		return implode('/', $classPath);
 	}
 }

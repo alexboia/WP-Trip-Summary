@@ -54,7 +54,7 @@ function abp01_are_translations_available() {
 function abp01_init_autoloaders() {
 	require_once ABP01_VENDOR_DIR . '/autoload.php';
 	require_once ABP01_LIB_DIR . '/Autoloader.php';
-	Abp01_Autoloader::init(ABP01_LIB_DIR);
+	\WpTripSummary\Autoloader::init(ABP01_LIB_DIR);
 	abp01_init_legacy_class_aliases();
 }
 
