@@ -18,3 +18,4 @@ wp-trip-summary.code-workspace
 .wpts-installed
 node_modules
 vendor
+vendor/composer
