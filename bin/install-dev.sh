@@ -39,21 +39,10 @@ check_and_install_tooling() {
         echo "PHP Unit exists at <$PHPUNIT_LOCATION>..."
     else
         echo "PHP Unit does not exist. Installing..."
-        #See https://phpunit.de/getting-started/phpunit-5.html for more information
-        wget -O phpunit-5.phar https://phar.phpunit.de/phpunit-5.phar
-        chmod +x phpunit-5.phar
-        mv phpunit-5.phar $TOOLS_DST_DIR/phpunit
-    fi
-
-    if [[ $PHPCOMPATINFO_LOCATION == /usr/local/bin* ]]
-    then
-        echo "PHP Compat Info exists at <$PHPCOMPATINFO_LOCATION>..."
-    else
-        echo "PHP Compat Info does not exist. Installing..."
-        #See http://php5.laurent-laville.org/compatinfo/manual/current/en/getting-started.html for more information
-        wget http://bartlett.laurent-laville.org/get/phpcompatinfo-5.0.12.phar
-        chmod +x phpcompatinfo-5.0.12.phar
-        mv phpcompatinfo-5.0.12.phar $TOOLS_DST_DIR/phpcompatinfo
+        #See https://phpunit.de/getting-started/phpunit-13.html for more information
+        wget -O phpunit-13.phar https://phar.phpunit.de/phpunit-13.phar
+        chmod +x phpunit-13.phar
+        mv phpunit-13.phar $TOOLS_DST_DIR/phpunit
     fi
 
     if [ ! -d $WPI18N_DIR ]

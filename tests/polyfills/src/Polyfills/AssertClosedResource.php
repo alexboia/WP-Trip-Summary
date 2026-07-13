@@ -2,7 +2,8 @@
 
 namespace Yoast\PHPUnitPolyfills\Polyfills;
 
-use PHPUnit\SebastianBergmann\Exporter\Exporter as Exporter_In_Phar;
+use PHPUnit\SebastianBergmann\Exporter\Exporter as Exporter_In_Phar_Old;
+use PHPUnitPHAR\SebastianBergmann\Exporter\Exporter as Exporter_In_Phar;
 use SebastianBergmann\Exporter\Exporter;
 use Yoast\PHPUnitPolyfills\Helpers\ResourceHelper;
 
@@ -13,6 +14,8 @@ use Yoast\PHPUnitPolyfills\Helpers\ResourceHelper;
  *
  * @link https://github.com/sebastianbergmann/phpunit/issues/4276
  * @link https://github.com/sebastianbergmann/phpunit/pull/4365
+ *
+ * @since 1.0.0
  */
 trait AssertClosedResource {
 
@@ -25,12 +28,14 @@ trait AssertClosedResource {
 	 * @return void
 	 */
 	public static function assertIsClosedResource( $actual, $message = '' ) {
-		if ( $message === '' ) {
-			$exporter = \class_exists( 'SebastianBergmann\Exporter\Exporter' ) ? new Exporter() : new Exporter_In_Phar();
-			$message  = \sprintf( 'Failed asserting that %s is of type "resource (closed)"', $exporter->export( $actual ) );
+		$exporter = self::getPHPUnitExporterObject();
+		$msg      = \sprintf( 'Failed asserting that %s is of type "resource (closed)"', $exporter->export( $actual ) );
+
+		if ( $message !== '' ) {
+			$msg = $message . \PHP_EOL . $msg;
 		}
 
-		static::assertTrue( ResourceHelper::isClosedResource( $actual ), $message );
+		static::assertTrue( ResourceHelper::isClosedResource( $actual ), $msg );
 	}
 
 	/**
@@ -42,16 +47,18 @@ trait AssertClosedResource {
 	 * @return void
 	 */
 	public static function assertIsNotClosedResource( $actual, $message = '' ) {
-		if ( $message === '' ) {
-			$exporter = \class_exists( 'SebastianBergmann\Exporter\Exporter' ) ? new Exporter() : new Exporter_In_Phar();
-			$type     = $exporter->export( $actual );
-			if ( $type === 'NULL' ) {
-				$type = 'resource (closed)';
-			}
-			$message = \sprintf( 'Failed asserting that %s is not of type "resource (closed)"', $type );
+		$exporter = self::getPHPUnitExporterObject();
+		$type     = $exporter->export( $actual );
+		if ( $type === 'NULL' ) {
+			$type = 'resource (closed)';
+		}
+		$msg = \sprintf( 'Failed asserting that %s is not of type "resource (closed)"', $type );
+
+		if ( $message !== '' ) {
+			$msg = $message . \PHP_EOL . $msg;
 		}
 
-		static::assertFalse( ResourceHelper::isClosedResource( $actual ), $message );
+		static::assertFalse( ResourceHelper::isClosedResource( $actual ), $msg );
 	}
 
 	/**
@@ -72,5 +79,24 @@ trait AssertClosedResource {
 	 */
 	public static function shouldClosedResourceAssertionBeSkipped( $actual ) {
 		return ( ResourceHelper::isResourceStateReliable( $actual ) === false );
+	}
+
+	/**
+	 * Helper function to obtain an instance of the Exporter class.
+	 *
+	 * @return Exporter|Exporter_In_Phar|Exporter_In_Phar_Old
+	 */
+	private static function getPHPUnitExporterObject() {
+		if ( \class_exists( Exporter::class ) ) {
+			// Composer install or really old PHAR files.
+			return new Exporter();
+		}
+		elseif ( \class_exists( Exporter_In_Phar::class ) ) {
+			// PHPUnit PHAR file for 8.5.38+, 9.6.19+, 10.5.17+ and 11.0.10+.
+			return new Exporter_In_Phar();
+		}
+
+		// PHPUnit PHAR file for < 8.5.38, < 9.6.19, < 10.5.17 and < 11.0.10.
+		return new Exporter_In_Phar_Old();
 	}
 }

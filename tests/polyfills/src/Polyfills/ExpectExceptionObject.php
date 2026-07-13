@@ -10,6 +10,8 @@ use Exception;
  * Introduced in PHPUnit 6.4.0.
  *
  * @link https://github.com/sebastianbergmann/phpunit/pull/2780
+ *
+ * @since 0.1.0
  */
 trait ExpectExceptionObject {
 
@@ -20,7 +22,7 @@ trait ExpectExceptionObject {
 	 *
 	 * @return void
 	 */
-	public function expectExceptionObject( Exception $exception ) {
+	final public function expectExceptionObject( Exception $exception ) {
 		$this->expectException( \get_class( $exception ) );
 		$this->expectExceptionMessage( $exception->getMessage() );
 		$this->expectExceptionCode( $exception->getCode() );

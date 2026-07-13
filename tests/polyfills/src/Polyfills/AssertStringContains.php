@@ -19,6 +19,8 @@ namespace Yoast\PHPUnitPolyfills\Polyfills;
  * @link https://github.com/sebastianbergmann/phpunit/issues/3422
  * @link https://github.com/sebastianbergmann/phpunit/issues/2520
  * @link https://github.com/sebastianbergmann/phpunit/pull/2778
+ *
+ * @since 0.1.0
  */
 trait AssertStringContains {
 
@@ -31,7 +33,7 @@ trait AssertStringContains {
 	 *
 	 * @return void
 	 */
-	public static function assertStringContainsString( $needle, $haystack, $message = '' ) {
+	final public static function assertStringContainsString( $needle, $haystack, $message = '' ) {
 		if ( $needle === '' ) {
 			static::assertSame( $needle, $needle, $message );
 			return;
@@ -49,7 +51,7 @@ trait AssertStringContains {
 	 *
 	 * @return void
 	 */
-	public static function assertStringContainsStringIgnoringCase( $needle, $haystack, $message = '' ) {
+	final public static function assertStringContainsStringIgnoringCase( $needle, $haystack, $message = '' ) {
 		if ( $needle === '' ) {
 			static::assertSame( $needle, $needle, $message );
 			return;
@@ -67,13 +69,14 @@ trait AssertStringContains {
 	 *
 	 * @return void
 	 */
-	public static function assertStringNotContainsString( $needle, $haystack, $message = '' ) {
+	final public static function assertStringNotContainsString( $needle, $haystack, $message = '' ) {
 		if ( $needle === '' ) {
-			if ( $message === '' ) {
-				$message = "Failed asserting that '{$haystack}' does not contain \"{$needle}\".";
+			$msg = "Failed asserting that '{$haystack}' does not contain \"\".";
+			if ( $message !== '' ) {
+				$msg = $message . \PHP_EOL . $msg;
 			}
 
-			static::fail( $message );
+			static::fail( $msg );
 		}
 
 		static::assertNotContains( $needle, $haystack, $message );
@@ -88,13 +91,14 @@ trait AssertStringContains {
 	 *
 	 * @return void
 	 */
-	public static function assertStringNotContainsStringIgnoringCase( $needle, $haystack, $message = '' ) {
+	final public static function assertStringNotContainsStringIgnoringCase( $needle, $haystack, $message = '' ) {
 		if ( $needle === '' ) {
-			if ( $message === '' ) {
-				$message = "Failed asserting that '{$haystack}' does not contain \"{$needle}\".";
+			$msg = "Failed asserting that '{$haystack}' does not contain \"\".";
+			if ( $message !== '' ) {
+				$msg = $message . \PHP_EOL . $msg;
 			}
 
-			static::fail( $message );
+			static::fail( $msg );
 		}
 
 		static::assertNotContains( $needle, $haystack, $message, true );

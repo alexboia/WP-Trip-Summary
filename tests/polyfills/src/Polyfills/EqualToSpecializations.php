@@ -3,6 +3,7 @@
 namespace Yoast\PHPUnitPolyfills\Polyfills;
 
 use PHPUnit\Framework\Constraint\IsEqual;
+use PHPUnit_Framework_Constraint_IsEqual;
 
 /**
  * Polyfill the Assert::equalToCanonicalizing(), Assert::equalToIgnoringCase() and
@@ -14,6 +15,8 @@ use PHPUnit\Framework\Constraint\IsEqual;
  * never deprecated but leads to unexpected behaviour as they are ignored in PHPUnit 9.0.0.
  *
  * @link https://github.com/sebastianbergmann/phpunit/commit/43c01a4e0c74a4bf019a8d879bced5146af2fbb6
+ *
+ * @since 1.0.0
  */
 trait EqualToSpecializations {
 
@@ -24,7 +27,7 @@ trait EqualToSpecializations {
 	 *
 	 * @return IsEqual|PHPUnit_Framework_Constraint_IsEqual An isEqual constraint instance.
 	 */
-	public static function equalToCanonicalizing( $value ) {
+	final public static function equalToCanonicalizing( $value ) {
 		return static::equalTo( $value, 0.0, 10, true, false );
 	}
 
@@ -35,7 +38,7 @@ trait EqualToSpecializations {
 	 *
 	 * @return IsEqual|PHPUnit_Framework_Constraint_IsEqual An isEqual constraint instance.
 	 */
-	public static function equalToIgnoringCase( $value ) {
+	final public static function equalToIgnoringCase( $value ) {
 		return static::equalTo( $value, 0.0, 10, false, true );
 	}
 
@@ -47,7 +50,7 @@ trait EqualToSpecializations {
 	 *
 	 * @return IsEqual|PHPUnit_Framework_Constraint_IsEqual An isEqual constraint instance.
 	 */
-	public static function equalToWithDelta( $value, $delta ) {
+	final public static function equalToWithDelta( $value, $delta ) {
 		return static::equalTo( $value, $delta, 10, false, false );
 	}
 }

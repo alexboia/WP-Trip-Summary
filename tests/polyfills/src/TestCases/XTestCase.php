@@ -2,22 +2,25 @@
 
 namespace Yoast\PHPUnitPolyfills\TestCases;
 
+use PHPUnit\Framework\Attributes\After;
+use PHPUnit\Framework\Attributes\AfterClass;
+use PHPUnit\Framework\Attributes\Before;
+use PHPUnit\Framework\Attributes\BeforeClass;
 use PHPUnit\Framework\TestCase as PHPUnit_TestCase;
 use Yoast\PHPUnitPolyfills\Helpers\AssertAttributeHelper;
 use Yoast\PHPUnitPolyfills\Polyfills\AssertClosedResource;
 use Yoast\PHPUnitPolyfills\Polyfills\AssertEqualsSpecializations;
-use Yoast\PHPUnitPolyfills\Polyfills\AssertFileDirectory;
 use Yoast\PHPUnitPolyfills\Polyfills\AssertFileEqualsSpecializations;
+use Yoast\PHPUnitPolyfills\Polyfills\AssertIgnoringLineEndings;
 use Yoast\PHPUnitPolyfills\Polyfills\AssertionRenames;
+use Yoast\PHPUnitPolyfills\Polyfills\AssertIsList;
 use Yoast\PHPUnitPolyfills\Polyfills\AssertIsType;
-use Yoast\PHPUnitPolyfills\Polyfills\AssertNumericType;
 use Yoast\PHPUnitPolyfills\Polyfills\AssertObjectEquals;
+use Yoast\PHPUnitPolyfills\Polyfills\AssertObjectProperty;
 use Yoast\PHPUnitPolyfills\Polyfills\AssertStringContains;
 use Yoast\PHPUnitPolyfills\Polyfills\EqualToSpecializations;
-use Yoast\PHPUnitPolyfills\Polyfills\ExpectException;
 use Yoast\PHPUnitPolyfills\Polyfills\ExpectExceptionMessageMatches;
 use Yoast\PHPUnitPolyfills\Polyfills\ExpectExceptionObject;
-use Yoast\PHPUnitPolyfills\Polyfills\ExpectPHPException;
 
 /**
  * Basic test case for use with PHPUnit cross-version.
@@ -29,24 +32,25 @@ use Yoast\PHPUnitPolyfills\Polyfills\ExpectPHPException;
  * `@after` and `@afterClass` annotations.
  * The naming of the overloaded methods is open as long as the method names don't conflict with
  * the PHPUnit native method names.
+ *
+ * @since 0.1.0
  */
 abstract class XTestCase extends PHPUnit_TestCase {
 
 	use AssertAttributeHelper;
 	use AssertClosedResource;
 	use AssertEqualsSpecializations;
-	use AssertFileDirectory;
 	use AssertFileEqualsSpecializations;
+	use AssertIgnoringLineEndings;
 	use AssertionRenames;
+	use AssertIsList;
 	use AssertIsType;
-	use AssertNumericType;
 	use AssertObjectEquals;
+	use AssertObjectProperty;
 	use AssertStringContains;
 	use EqualToSpecializations;
-	use ExpectException;
 	use ExpectExceptionMessageMatches;
 	use ExpectExceptionObject;
-	use ExpectPHPException;
 
 	/**
 	 * This method is called before the first test of this test class is run.
@@ -57,6 +61,7 @@ abstract class XTestCase extends PHPUnit_TestCase {
 	 *
 	 * @return void
 	 */
+	#[BeforeClass]
 	public static function setUpFixturesBeforeClass() {
 		parent::setUpBeforeClass();
 	}
@@ -70,6 +75,7 @@ abstract class XTestCase extends PHPUnit_TestCase {
 	 *
 	 * @return void
 	 */
+	#[Before]
 	protected function setUpFixtures() {
 		parent::setUp();
 	}
@@ -83,6 +89,7 @@ abstract class XTestCase extends PHPUnit_TestCase {
 	 *
 	 * @return void
 	 */
+	#[After]
 	protected function tearDownFixtures() {
 		parent::tearDown();
 	}
@@ -96,6 +103,7 @@ abstract class XTestCase extends PHPUnit_TestCase {
 	 *
 	 * @return void
 	 */
+	#[AfterClass]
 	public static function tearDownFixturesAfterClass() {
 		parent::tearDownAfterClass();
 	}

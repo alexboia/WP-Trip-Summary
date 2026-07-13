@@ -22,6 +22,8 @@ use Yoast\PHPUnitPolyfills\Exceptions\InvalidComparisonMethodException;
  * @link https://github.com/sebastianbergmann/phpunit/issues/4707
  * @link https://github.com/sebastianbergmann/phpunit/commit/1dba8c3a4b2dd04a3ff1869f75daaeb6757a14ee
  * @link https://github.com/sebastianbergmann/phpunit/commit/6099c5eefccfda860c889f575d58b5fe6cc10c83
+ *
+ * @since 1.0.0
  */
 trait AssertObjectEquals {
 
@@ -50,7 +52,7 @@ trait AssertObjectEquals {
 	 * @throws TypeError                        When any of the passed arguments do not meet the required type.
 	 * @throws InvalidComparisonMethodException When the comparator method does not comply with the requirements.
 	 */
-	public static function assertObjectEquals( $expected, $actual, $method = 'equals', $message = '' ) {
+	final public static function assertObjectEquals( $expected, $actual, $method = 'equals', $message = '' ) {
 		/*
 		 * Parameter input validation.
 		 * In PHPUnit this is done via PHP native type declarations. Emulating this for the polyfill.

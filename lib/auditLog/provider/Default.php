@@ -29,7 +29,9 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+declare(strict_types=1);
+
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
@@ -60,11 +62,13 @@ class Abp01_AuditLog_Provider_Default implements Abp01_AuditLog_Provider {
 		$infoAuditLogData = $this->_retrieveInfoAuditLogData($postId);
 		$trackAuditLogData = $this->_retrieveTrackAuditLogData($postId);
 
-		return new Abp01_AuditLog_Data($infoAuditLogData, 
-			$trackAuditLogData);
+		return new Abp01_AuditLog_Data(
+			$infoAuditLogData, 
+			$trackAuditLogData
+		);
 	}
 
-	private function _retrieveInfoAuditLogData(int $postId) {
+	private function _retrieveInfoAuditLogData(int $postId): array {
 		$db = $this->_env->getDb();
 
 		$infoTable = $this->_env
@@ -89,14 +93,14 @@ class Abp01_AuditLog_Provider_Default implements Abp01_AuditLog_Provider {
 		return $this->_coalesceAuditLogData($auditLogData);
 	}
 
-	private function _coalesceAuditLogData($auditLogData) {
+	private function _coalesceAuditLogData(?array $auditLogData): array {
 		if ($auditLogData == null) {
 			$auditLogData = array();
 		}
 		return $auditLogData;
 	}
 
-	private function _retrieveTrackAuditLogData($postId) {
+	private function _retrieveTrackAuditLogData(int $postId): array {
 		$db = $this->_env->getDb();
 
 		$trackTable = $this->_env

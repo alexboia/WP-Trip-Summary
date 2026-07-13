@@ -29,14 +29,12 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+declare(strict_types=1);
+
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
 interface Abp01_AuditLog_Provider {
-	/**
-	 * @param int $postId 
-	 * @return Abp01_AuditLog_Data
-	 */
 	function getAuditLogForPostId(int $postId): Abp01_AuditLog_Data;
 }

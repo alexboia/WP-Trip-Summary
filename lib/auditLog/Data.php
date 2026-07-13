@@ -93,7 +93,7 @@ class Abp01_AuditLog_Data {
 			: null;
 	}
 
-	public function asPlainObject() {
+	public function asPlainObject(): stdClass {
 		$data = new stdClass();
 
 		$data->infoCreatedAt = $this->getInfoCreatedAt();

@@ -7,30 +7,30 @@ namespace Composer\Autoload;
 class ComposerStaticInit2d18172b152e32bc3a112ed6ec9792eb
 {
     public static $prefixLengthsPsr4 = array (
-        'P' => 
+        'P' =>
         array (
             'Psr\\Log\\' => 8,
         ),
-        'M' => 
+        'M' =>
         array (
             'Monolog\\' => 8,
         ),
-        'K' => 
+        'K' =>
         array (
             'KamelPhp\\' => 9,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Psr\\Log\\' => 
+        'Psr\\Log\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/log/src',
         ),
-        'Monolog\\' => 
+        'Monolog\\' =>
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
-        'KamelPhp\\' => 
+        'KamelPhp\\' =>
         array (
             0 => __DIR__ . '/..' . '/myclar/kamel-php/src',
         ),

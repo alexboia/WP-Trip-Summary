@@ -9,7 +9,7 @@ use PHPUnit_Framework_TestSuite;
 use PHPUnit_Framework_Warning;
 
 /**
- * Basic TestListener implementation for use with PHPUnit 4.x and 5.x.
+ * Basic TestListener implementation for use with PHPUnit 5.x.
  *
  * This TestListener trait uses renamed (snakecase) methods for all standard methods in
  * a TestListener to get round the method signature changes in various PHPUnit versions.
@@ -20,8 +20,10 @@ use PHPUnit_Framework_Warning;
  * {@internal While in essence this trait is no different from the PHPUnit 6.x version, this
  * version is necessary as the class/interface name type declarations used in the PHPUnit 6.x
  * file are based on the namespaced names. As both the namespaced names as well as the
- * non-namespaced names exist in PHPUnit 4.8.36+/5.7.21+, we cannot create class aliases to
+ * non-namespaced names exist in PHPUnit 5.7.21+, we cannot create class aliases to
  * get round the signature mismatch and need this trait using the old names instead.}
+ *
+ * @since 0.2.0
  */
 trait TestListenerDefaultImplementation {
 
@@ -33,6 +35,8 @@ trait TestListenerDefaultImplementation {
 	 * @param PHPUnit_Framework_Test $test Test object.
 	 * @param Exception              $e    Instance of the error encountered.
 	 * @param float                  $time Execution time of this test.
+	 *
+	 * @return void
 	 */
 	public function addError( PHPUnit_Framework_Test $test, Exception $e, $time ) {
 		$this->add_error( $test, $e, $time );
@@ -46,6 +50,8 @@ trait TestListenerDefaultImplementation {
 	 * @param PHPUnit_Framework_Test    $test Test object.
 	 * @param PHPUnit_Framework_Warning $e    Instance of the warning encountered.
 	 * @param float                     $time Execution time of this test.
+	 *
+	 * @return void
 	 */
 	public function addWarning( PHPUnit_Framework_Test $test, PHPUnit_Framework_Warning $e, $time ) {
 		$this->add_warning( $test, $e, $time );
@@ -58,6 +64,8 @@ trait TestListenerDefaultImplementation {
 	 * @param PHPUnit_Framework_AssertionFailedError $e    Instance of the assertion failure
 	 *                                                     exception encountered.
 	 * @param float                                  $time Execution time of this test.
+	 *
+	 * @return void
 	 */
 	public function addFailure( PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time ) {
 		$this->add_failure( $test, $e, $time );
@@ -69,6 +77,8 @@ trait TestListenerDefaultImplementation {
 	 * @param PHPUnit_Framework_Test $test Test object.
 	 * @param Exception              $e    Instance of the incomplete test exception.
 	 * @param float                  $time Execution time of this test.
+	 *
+	 * @return void
 	 */
 	public function addIncompleteTest( PHPUnit_Framework_Test $test, Exception $e, $time ) {
 		$this->add_incomplete_test( $test, $e, $time );
@@ -80,6 +90,8 @@ trait TestListenerDefaultImplementation {
 	 * @param PHPUnit_Framework_Test $test Test object.
 	 * @param Exception              $e    Instance of the risky test exception.
 	 * @param float                  $time Execution time of this test.
+	 *
+	 * @return void
 	 */
 	public function addRiskyTest( PHPUnit_Framework_Test $test, Exception $e, $time ) {
 		$this->add_risky_test( $test, $e, $time );
@@ -91,6 +103,8 @@ trait TestListenerDefaultImplementation {
 	 * @param PHPUnit_Framework_Test $test Test object.
 	 * @param Exception              $e    Instance of the skipped test exception.
 	 * @param float                  $time Execution time of this test.
+	 *
+	 * @return void
 	 */
 	public function addSkippedTest( PHPUnit_Framework_Test $test, Exception $e, $time ) {
 		$this->add_skipped_test( $test, $e, $time );
@@ -100,6 +114,8 @@ trait TestListenerDefaultImplementation {
 	 * A test suite started.
 	 *
 	 * @param PHPUnit_Framework_TestSuite $suite Test suite object.
+	 *
+	 * @return void
 	 */
 	public function startTestSuite( PHPUnit_Framework_TestSuite $suite ) {
 		$this->start_test_suite( $suite );
@@ -109,6 +125,8 @@ trait TestListenerDefaultImplementation {
 	 * A test suite ended.
 	 *
 	 * @param PHPUnit_Framework_TestSuite $suite Test suite object.
+	 *
+	 * @return void
 	 */
 	public function endTestSuite( PHPUnit_Framework_TestSuite $suite ) {
 		$this->end_test_suite( $suite );
@@ -118,6 +136,8 @@ trait TestListenerDefaultImplementation {
 	 * A test started.
 	 *
 	 * @param PHPUnit_Framework_Test $test Test object.
+	 *
+	 * @return void
 	 */
 	public function startTest( PHPUnit_Framework_Test $test ) {
 		$this->start_test( $test );
@@ -128,6 +148,8 @@ trait TestListenerDefaultImplementation {
 	 *
 	 * @param PHPUnit_Framework_Test $test Test object.
 	 * @param float                  $time Execution time of this test.
+	 *
+	 * @return void
 	 */
 	public function endTest( PHPUnit_Framework_Test $test, $time ) {
 		$this->end_test( $test, $time );
