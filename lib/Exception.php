@@ -29,8 +29,13 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class Abp01_Exception extends Exception {
-	public function __construct($message, $code = 0, Throwable $previous = null) {
-		parent::__construct($message, $code, $previous);
+declare(strict_types=1);
+
+namespace WpTripSummary {
+    use Throwable;
+	class Exception extends \Exception {
+		public function __construct(string $message, int $code = 0, ?Throwable $previous = null) {
+			parent::__construct($message, $code, $previous);
+		}
 	}
 }

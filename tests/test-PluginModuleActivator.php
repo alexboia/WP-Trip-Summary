@@ -107,7 +107,7 @@ class PluginModuleActivatorTests extends WP_UnitTestCase {
 	 * @expectedException Abp01_PluginModules_Exception
 	 */
 	public function test_tryCreateModuleInstance_validModuleClass_someUnsupportedDependencies() {
-		$this->expectException(Abp01_PluginModules_Exception::class);
+		$this->expectException(Abp01_PluginModules_PluginModuleException::class);
 		$activator = $this->_getPluginModuleActivator();
 		$activator->createModuleInstance(RequiresSomeUnsupportedDependenciesSamplePluginModule::class);
 	}
@@ -116,7 +116,7 @@ class PluginModuleActivatorTests extends WP_UnitTestCase {
 	 * @expectedException Abp01_PluginModules_Exception
 	 */
 	public function test_tryCreateModuleInstance_validModuleClass_onlyUnsupportedDependencies() {
-		$this->expectException(Abp01_PluginModules_Exception::class);
+		$this->expectException(Abp01_PluginModules_PluginModuleException::class);
 		$activator = $this->_getPluginModuleActivator();
 		$activator->createModuleInstance(RequiresOnlyUnsupportedDependenciesSamplePluginModule::class);
 	}

@@ -29,9 +29,11 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
+
+use WpTripSummary\Env;
 
 /**
  * @package WP-Trip-Summary
@@ -78,7 +80,7 @@ class Abp01_PluginModules_PluginModuleHost implements Abp01_PluginMenuItemProvid
 		return $pluginModules;
 	}
 
-	private function _createModuleInstance($moduleClassName) {
+	private function _createModuleInstance(string $moduleClassName): ?Abp01_PluginModules_PluginModule {
 		$this->_logger->debug('Creating plugin module instance: <' . $moduleClassName . '>...');
 		return $this->_pluginModuleActivator->createModuleInstance($moduleClassName);
 	}
@@ -90,35 +92,30 @@ class Abp01_PluginModules_PluginModuleHost implements Abp01_PluginMenuItemProvid
 			$this);
 	}
 
-	private function _getDefaultInjectableServiceFactories() {
+	private function _getDefaultInjectableServiceFactories(): array {
 		return array(
-			Abp01_Plugin::class => function() {
-				return $this->_plugin;
-			},
-			Abp01_PluginModules_PluginModuleHost::class => function() {
-				return $this;
-			},
-			Abp01_Route_Track_Processor::class => function() {
-				return $this->getRouteTrackProcessor();
-			},
-			Abp01_Route_Track_FileNameProvider::class => function() {
-				return $this->getRouteTrackProcessor();
-			},
-			Abp01_Transfer_Uploader_FileValidatorProvider::class => function() {
-				return $this->getFileValidatorProvider();
-			},
-			Abp01_Route_Track_DocumentParser_Factory::class => function() {
-				return $this->getDocumentParserFactory();
-			},
-			Abp01_NonceProvider_DownloadTrackData::class => function() {
-				return $this->getTrackDownloadNonceProvider();
-			},
-			Abp01_NonceProvider_ReadTrackData::class => function() {
-				return $this->getReadTrackDataNonceProvider();
-			},
-			Abp01_Viewer_DataSource_Cache::class => function() {
-				return $this->getViewerDataSourceCache();
-			},
+			Env::class 
+				=> fn() => $this->getEnv(),
+			Abp01_Env::class 
+				=> fn() => $this->getEnv(),
+			Abp01_Plugin::class 
+				=> fn() => $this->_plugin,
+			Abp01_PluginModules_PluginModuleHost::class 
+				=> fn() => $this,
+			Abp01_Route_Track_Processor::class 
+				=> fn() => $this->getRouteTrackProcessor(),
+			Abp01_Route_Track_FileNameProvider::class 
+				=> fn() => $this->getRouteTrackProcessor(),
+			Abp01_Transfer_Uploader_FileValidatorProvider::class 
+				=> fn() => $this->getFileValidatorProvider(),
+			Abp01_Route_Track_DocumentParser_Factory::class 
+				=> fn() => $this->getDocumentParserFactory(),
+			Abp01_NonceProvider_DownloadTrackData::class 
+				=> fn() => $this->getTrackDownloadNonceProvider(),
+			Abp01_NonceProvider_ReadTrackData::class 
+				=> fn() => $this->getReadTrackDataNonceProvider(),
+			Abp01_Viewer_DataSource_Cache::class 
+				=> fn() => $this->getViewerDataSourceCache(),
 			Abp01_Viewer_DataSource::class => function() {
 				return $this->getViewerDataSource();
 			},
@@ -142,9 +139,6 @@ class Abp01_PluginModules_PluginModuleHost implements Abp01_PluginMenuItemProvid
 			},
 			Abp01_Settings::class => function() {
 				return $this->getSettings();
-			},
-			Abp01_Env::class => function() { 
-				return $this->getEnv();
 			},
 			Abp01_View::class => function() {
 				return $this->getView();
@@ -186,20 +180,20 @@ class Abp01_PluginModules_PluginModuleHost implements Abp01_PluginMenuItemProvid
 		return $menuItemsCollector->getCollectedMenuItems();
 	}
 
-	public function load() {
+	public function load(): void {
 		foreach ($this->_pluginModules as $module) {
 			$module->load();
 		}
 	}
 
 
-	public function init() {
+	public function init(): void {
 		foreach ($this->_pluginModules as $module) {
 			$module->init();
 		}
 	}
 
-	public function hasModule($moduleClass) {
+	public function hasModule(string $moduleClass): bool {
 		$hasModule = false;
 
 		foreach ($this->_pluginModules as $pluginModule) {

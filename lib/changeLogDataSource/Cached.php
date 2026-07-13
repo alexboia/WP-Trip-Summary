@@ -31,29 +31,25 @@
 
 declare(strict_types=1);
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
+use \WpTripSummary\Env;
+
 class Abp01_ChangeLogDataSource_Cached implements Abp01_ChangeLogDataSource {
-	const OPT_CHANGELOG_CACHE_KEY = 'abp01.option.changeLogCache';
-	
-	/**
-	 * @var Abp01_ChangeLogDataSource
-	 */
-	private $_dataSource;
+	const string OPT_CHANGELOG_CACHE_KEY = 'abp01.option.changeLogCache';
 
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+	private Abp01_ChangeLogDataSource $_dataSource;
 
-	public function __construct(Abp01_ChangeLogDataSource $dataSource, Abp01_Env $env) {
+	private Env $_env;
+
+	public function __construct(Abp01_ChangeLogDataSource $dataSource, Env $env) {
 		$this->_dataSource = $dataSource;
 		$this->_env = $env;
 	}
 
-	public static function clearCache() {
+	public static function clearCache(): void {
 		delete_option(self::OPT_CHANGELOG_CACHE_KEY);
 	}
 
@@ -71,11 +67,11 @@ class Abp01_ChangeLogDataSource_Cached implements Abp01_ChangeLogDataSource {
 		return $changeLog;
 	}
 
-	private function _readCachedChangeLog() {
+	private function _readCachedChangeLog(): mixed {
 		return get_option(self::OPT_CHANGELOG_CACHE_KEY, null);
 	}
 
-	private function _isCachedChangeLogValid($cachedChangeLog) {
+	private function _isCachedChangeLogValid(mixed $cachedChangeLog): bool {
 		return $cachedChangeLog !== null 
 			&& is_array($cachedChangeLog) 
 			&& isset($cachedChangeLog['_version'])
@@ -83,11 +79,11 @@ class Abp01_ChangeLogDataSource_Cached implements Abp01_ChangeLogDataSource {
 			&& $cachedChangeLog['_version'] == $this->_getCurrentVersion();
 	}
 
-	private function _getCurrentVersion() {
+	private function _getCurrentVersion(): string {
 		return $this->_env->getVersion();
 	}
 
-	private function _cacheChangeLogData($changeLog) {
+	private function _cacheChangeLogData(array $changeLog): void {
 		$changeLogCache = array(
 			'_version' => $this->_getCurrentVersion(),
 			'_data' => $changeLog

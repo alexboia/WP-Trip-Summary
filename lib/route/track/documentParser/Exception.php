@@ -33,7 +33,9 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
-class Abp01_Route_Track_DocumentParser_Exception extends Abp01_Exception {
+use WpTripSummary\Exception;
+
+class Abp01_Route_Track_DocumentParser_Exception extends Exception {
 	private $_category;
 	
 	public function __construct($message, $category = 0, $code = 0) {

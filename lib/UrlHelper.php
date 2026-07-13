@@ -29,28 +29,26 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+declare(strict_types=1);
+
+if (!defined('ABP01_LOADED')) {
     exit;
 }
 
-class Abp01_UrlHelper {
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+use \WpTripSummary\Env;
 
-	/**
-	 * @var Abp01_NonceProvider_DownloadTrackData
-	 */
-	private $_downloadTrackDataNonceProvider;
+class Abp01_UrlHelper {
+	private Env $_env;
+
+	private Abp01_NonceProvider_DownloadTrackData $_downloadTrackDataNonceProvider;
 
 	public function __construct(Abp01_NonceProvider_DownloadTrackData $downloadTrackDataNonceProvider, 
-		Abp01_Env $env) {
+		Env $env) {
 		$this->_env = $env;
 		$this->_downloadTrackDataNonceProvider = $downloadTrackDataNonceProvider;
 	}
 
-	public function constructAdminLookupUrl($lookupType) {
+	public function constructAdminLookupUrl(string $lookupType): string {
 		$url = menu_page_url(ABP01_LOOKUP_SUBMENU_SLUG, false);
 		if (!empty($lookupType)) {
 			$url = sprintf('%s&abp01_type=%s', $url, $lookupType);
@@ -58,7 +56,7 @@ class Abp01_UrlHelper {
 		return $url;
 	}
 
-	public function constructGpxTrackDownloadUrl($postId) {
+	public function constructGpxTrackDownloadUrl(int|string $postId): string {
 		return add_query_arg(array(
 			'action' => ABP01_ACTION_DOWNLOAD_TRACK,
 			'abp01_nonce_download' => $this->_downloadTrackDataNonceProvider->generateNonce($postId),

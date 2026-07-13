@@ -14,6 +14,9 @@ if (!defined('ABP01_LOADED')) {
 /**
  * @deprecated Use \WpTripSummary\Env instead.
  */
-class Abp01_Env extends \WpTripSummary\Env {
+class Abp01_Env extends \WpTripSummary\Env {}
 
-}
+/**
+ * @deprecated Use \WpTripSummary\Exception instead.
+ */
+class Abp01_Exception extends \WpTripSummary\Exception {}

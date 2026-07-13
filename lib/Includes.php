@@ -29,9 +29,11 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+if (!defined('ABP01_LOADED')) {
 	exit ;
 }
+
+use \WpTripSummary\Env;
 
 class Abp01_Includes {
 	const JS_MOXIE = 'moxiejs';
@@ -858,7 +860,7 @@ class Abp01_Includes {
 		return self::$_includesManager instanceof Abp01_Includes_Manager;
 	}
 
-	private static function _hasAltitudeProfile(Abp01_Env $env, Abp01_Settings $settings) {
+	private static function _hasAltitudeProfile(Env $env, Abp01_Settings $settings) {
 		return $settings->getShowAltitudeProfile();
 	}
 

@@ -29,29 +29,27 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+declare(strict_types=1);
+
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
+use \WpTripSummary\Env;
+
 class Abp01_Installer_Requirement_HasMysqlSpatialSupport implements Abp01_Installer_Requirement {
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+	private Env $_env;
 
-	/**
-	 * @var \Exception|null
-	 */
-	private $_lastError;
+	private \Exception|null $_lastError;
 
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_env = $env;
 	}
 	
 	/**
 	 * @return bool 
 	 */
-	public function isSatisfied() { 
+	public function isSatisfied(): bool { 
 		$this->_reset();
 
 		$result = false;
@@ -62,7 +60,9 @@ class Abp01_Installer_Requirement_HasMysqlSpatialSupport implements Abp01_Instal
 		}
 
 		try {
-			$haveGeometry = $db->rawQuery("SHOW VARIABLES WHERE Variable_name = 'have_geometry'");
+			$haveGeometry = $db->rawQuery(
+				"SHOW VARIABLES WHERE Variable_name = 'have_geometry'"
+			);
 		} catch (Exception $exc) {
 			$this->_lastError = $exc;
 			$haveGeometry = null;
@@ -77,7 +77,7 @@ class Abp01_Installer_Requirement_HasMysqlSpatialSupport implements Abp01_Instal
 		return $result;
 	}
 
-	private function _reset() {
+	private function _reset(): void {
 		$this->_lastError = null;
 	}
 

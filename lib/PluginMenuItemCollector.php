@@ -33,6 +33,8 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
+use WpTripSummary\Exception;
+
 class Abp01_PluginMenuItemCollector {
 	private $_menuItems = array();
 
@@ -55,31 +57,31 @@ class Abp01_PluginMenuItemCollector {
 
 	private function _ensureMenuItemValidOrThrow(array $menuItem) {
 		if (empty($menuItem['slug'])) {
-			throw new Abp01_Exception('Menu item must have a non-empty slug');
+			throw new Exception('Menu item must have a non-empty slug');
 		}
 
 		if (empty($menuItem['callback']) || !is_callable($menuItem['callback'])) {
-			throw new Abp01_Exception('Menu item must have a non-empty, valid callback');
+			throw new Exception('Menu item must have a non-empty, valid callback');
 		}
 
 		if (empty($menuItem['menuTitle'])) {
-			throw new Abp01_Exception('Menu item must have a non-empty menu title');
+			throw new Exception('Menu item must have a non-empty menu title');
 		}
 
 		if (empty($menuItem['pageTitle'])) {
-			throw new Abp01_Exception('Menu item must have a non-empty page title');
+			throw new Exception('Menu item must have a non-empty page title');
 		}
 
 		if (empty($menuItem['capability'])) {
-			throw new Abp01_Exception('Menu item must have a non-empty capability');
+			throw new Exception('Menu item must have a non-empty capability');
 		}
 		
 		if (!empty($menuItem['parent']) && !empty($menuItem['reRegisterAsChildWithMenuTitle'])) {
-			throw new Abp01_Exception('A child menu item cannot register itself as a child menu item');
+			throw new Exception('A child menu item cannot register itself as a child menu item');
 		}
 	}
 
-	private function _collectChildMenuItem($parentSlug, array $menuItem) {
+	private function _collectChildMenuItem(string $parentSlug, array $menuItem) {
 		//if the parent menu item has not yet been defined,
 		//  define a placeholder, so that we have where to store
 		//  the sub-menu item association

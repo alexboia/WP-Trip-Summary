@@ -29,34 +29,35 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+declare(strict_types=1);
+
+if (!defined('ABP01_LOADED')) {
     exit;
 }
 
+use \WpTripSummary\Env;
+
 class Abp01_Installer_DataProvider_LookupDefinitions {
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+	private Env $_env;
 
-	private $_cachedDefinitions = null;
+	private ?array $_cachedDefinitions = null;
 
-	private $_lastError;
+	private \LibXMLError|null|false $_lastError;
 
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_env = $env;	
 	}
 
-	public function read() {
+	public function read(): ?array {
 		$this->_clearLastError();
 		return $this->_readLookupDefinitions();
 	}
 
-	private function _clearLastError() {
+	private function _clearLastError(): void {
 		$this->_lastError = null;
 	}
 
-	private function _readLookupDefinitions() {
+	private function _readLookupDefinitions(): ?array {
 		if ($this->_cachedDefinitions === null) {			
 			$definitions = array();
 			$filePath = $this->_getLookupDefsFile();
@@ -94,7 +95,7 @@ class Abp01_Installer_DataProvider_LookupDefinitions {
 		return $this->_cachedDefinitions;
 	}
 
-	private function _getLookupDefsFile() {
+	private function _getLookupDefsFile(): string {
 		$env = $this->_env;
 		$dataDir = $env->getDataDir();
 
@@ -112,7 +113,7 @@ class Abp01_Installer_DataProvider_LookupDefinitions {
 		return $filePath;
 	}
 	
-	private function _parseDefinitions($xml, $category) {
+	private function _parseDefinitions(SimpleXMLElement $xml, string $category): array {
 		$lookup = array();
 		$node = $xml->{$category};
 		if (empty($node) || empty($node->lookup)) {
@@ -131,7 +132,7 @@ class Abp01_Installer_DataProvider_LookupDefinitions {
 		return $lookup;
 	}
 
-	private function _readLookupTranslations($xml) {
+	private function _readLookupTranslations(SimpleXMLElement $xml) {
 		$translations = array();
 		if (empty($xml->lang)) {
 			return array();
@@ -148,7 +149,7 @@ class Abp01_Installer_DataProvider_LookupDefinitions {
 		return $translations;
 	}
 
-	public function getLastError() {
+	public function getLastError(): LibXMLError|null|false {
 		return $this->_lastError;
 	}
 }

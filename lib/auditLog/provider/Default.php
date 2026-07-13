@@ -35,14 +35,12 @@ if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
+use \WpTripSummary\Env;
+
 class Abp01_AuditLog_Provider_Default implements Abp01_AuditLog_Provider {
+	private Env $_env;
 
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
-
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_env = $env;
 	}
 

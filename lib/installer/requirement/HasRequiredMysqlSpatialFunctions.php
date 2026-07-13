@@ -29,31 +29,26 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+declare(strict_types=1);
+
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
+use \WpTripSummary\Env;
+
 class Abp01_Installer_Requirement_HasRequiredMysqlSpatialFunctions implements Abp01_Installer_Requirement {
-	const EXPECTED_RESULT = 'POLYGON((1 2,3 2,3 4,1 4,1 2))';
+	const string EXPECTED_RESULT = 'POLYGON((1 2,3 2,3 4,1 4,1 2))';
 	
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+	private Env $_env;
 
-	/**
-	 * @var \Exception|null
-	 */
-	private $_lastError = null;
+	private \Exception|null $_lastError = null;
 
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_env = $env;
 	}
 
-	/**
-	 * @return bool 
-	 */
-	public function isSatisfied() { 
+	public function isSatisfied(): bool { 
 		$this->_reset();
 
 		$result = false;
@@ -65,10 +60,12 @@ class Abp01_Installer_Requirement_HasRequiredMysqlSpatialFunctions implements Ab
 		}
 
 		try {
-			$spatialTest = $db->rawQuery('SELECT ST_AsText(ST_Envelope(LINESTRING(
-				ST_GeomFromText(ST_AsText(POINT(1, 2)), 3857),
-				ST_GeomFromText(ST_AsText(POINT(3, 4)), 3857)
-			))) AS SPATIAL_TEST');
+			$spatialTest = $db->rawQuery(
+				'SELECT ST_AsText(ST_Envelope(LINESTRING(
+					ST_GeomFromText(ST_AsText(POINT(1, 2)), 3857),
+					ST_GeomFromText(ST_AsText(POINT(3, 4)), 3857)
+				))) AS SPATIAL_TEST'
+			);
 		} catch (Exception $exc) {
 			$this->_lastError = $exc;
 			$spatialTest = null;
@@ -85,10 +82,7 @@ class Abp01_Installer_Requirement_HasRequiredMysqlSpatialFunctions implements Ab
 		$this->_lastError = null;
 	}
 
-	/**
-	 * @return Exception|null 
-	 */
-	public function getLastError() {
+	public function getLastError(): ?Exception {
 		return $this->_lastError;
 	}
 }

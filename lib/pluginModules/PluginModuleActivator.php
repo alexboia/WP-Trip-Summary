@@ -80,7 +80,7 @@ class Abp01_PluginModules_PluginModuleActivator {
 			if ($parameterType != null) {
 				$dependencyClassNames[] = $this->_determineDependencyClassName($parameterType);
 			} else {
-				throw new Abp01_PluginModules_Exception('Not all parameters of module class <' . $moduleClass->getName() . '> constructor have type information');
+				throw new Abp01_PluginModules_PluginModuleException('Not all parameters of module class <' . $moduleClass->getName() . '> constructor have type information');
 			}
 		}
 
@@ -104,26 +104,26 @@ class Abp01_PluginModules_PluginModuleActivator {
 			: $type->__toString();
 	}
 
-	private function _createModuleDependencyInstances($dependencyClassNames) {
+	private function _createModuleDependencyInstances(array $dependencyClassNames) {
 		$dependencyInstances = array();
 
 		foreach ($dependencyClassNames as $dependencyClassName) {
 			if ($this->_isClassDependencyInjectable($dependencyClassName)) {
 				$dependencyInstances[] = $this->_createDependencyInstance($dependencyClassName);
 			} else {
-				throw new Abp01_PluginModules_Exception('Module dependency <' . $dependencyClassName . '> could not be resolved.');
+				throw new Abp01_PluginModules_PluginModuleException('Module dependency <' . $dependencyClassName . '> could not be resolved.');
 			}
 		}
 
 		return $dependencyInstances;
 	}
 
-	private function _isClassDependencyInjectable($dependencyClassName) {
+	private function _isClassDependencyInjectable(string $dependencyClassName) {
 		return !empty($dependencyClassName) 
 			&& isset($this->_injectableServiceFactories[$dependencyClassName]);
 	}
 
-	private function _createDependencyInstance($dependencyClassName) {
+	private function _createDependencyInstance(string $dependencyClassName) {
 		$dependencyFactory = $this->_injectableServiceFactories[$dependencyClassName];
 		return $dependencyFactory();
 	}

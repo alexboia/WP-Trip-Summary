@@ -29,21 +29,25 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+declare(strict_types=1);
+
+if (!defined('ABP01_LOADED')) {
     exit;
 }
 
+use \WpTripSummary\Env;
+
 class Abp01_FrontendTheme_Decorator extends Abp01_FrontendTheme_Default {
-    public function __construct(Abp01_Env $env) {
+    public function __construct(Env $env) {
         parent::__construct($env);
     }
 
-    public function includeFrontendViewerStyles() {
+    public function includeFrontendViewerStyles(): void {
         Abp01_Includes::enableStyleOverrideFromCurrentTheme();
         parent::includeFrontendViewerStyles();
     }
 
-    public function registerFrontendViewerHelpers() {
+    public function registerFrontendViewerHelpers(): void {
         $themeHelpers = $this->_getFrontendTemplateLocation('helpers/controls.frontend.php');
         
         if (is_readable($themeHelpers)) {
@@ -56,7 +60,7 @@ class Abp01_FrontendTheme_Decorator extends Abp01_FrontendTheme_Default {
         parent::registerFrontendViewerHelpers();
     }
 
-    public function renderTeaser(stdClass $data) {
+    public function renderTeaser(stdClass $data): string|false {
         $themeTeaser = $this->_getFrontendTemplateLocation('wpts-frontend-teaser.php');
 
         if (is_readable($themeTeaser)) {
@@ -68,7 +72,7 @@ class Abp01_FrontendTheme_Decorator extends Abp01_FrontendTheme_Default {
         }
     }
 
-    public function renderViewer(stdClass $data) {
+    public function renderViewer(stdClass $data): string|false {
         $themeViewer = $this->_getFrontendTemplateLocation('wpts-frontend.php');
 
         if (is_readable($themeViewer)) {
@@ -80,16 +84,16 @@ class Abp01_FrontendTheme_Decorator extends Abp01_FrontendTheme_Default {
         }
     }
 
-    public function getVersion() {
+    public function getVersion(): string {
         return parent::getVersion();
     }
 
-    private function _getFrontendTemplateLocation($file) {
+    private function _getFrontendTemplateLocation(string $file): string {
         $locations = $this->_getFrontendTemplateLocations();
         return wp_normalize_path($locations->theme . '/' . $file);
     }
 
-    private function _getFrontendTemplateLocations() {
+    private function _getFrontendTemplateLocations(): stdClass {
         return $this->_env->getFrontendTemplateLocations();
     }
 }

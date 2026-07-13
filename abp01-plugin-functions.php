@@ -59,7 +59,10 @@ function abp01_init_autoloaders() {
 }
 
 function abp01_init_legacy_class_aliases(): void {
-	abp01_legacy_class_alias(\WpTripSummary\Env::class, 'Abp01_Env');
+	abp01_legacy_class_alias(\WpTripSummary\Env::class, 
+		'Abp01_Env');
+	abp01_legacy_class_alias(\WpTripSummary\Exception::class, 
+		'Abp01_Exception');
 }
 
 function abp01_legacy_class_alias( string $newClass,string $legacyClass): void {

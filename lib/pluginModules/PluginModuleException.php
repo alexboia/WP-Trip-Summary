@@ -29,11 +29,13 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Exception;
+
  /**
   * @package WP-Trip-Summary
   */
-class Abp01_PluginModules_Exception extends Abp01_Exception {
-	public function __construct($message, $code = 0, Throwable $previous = null) {
+class Abp01_PluginModules_PluginModuleException extends Exception {
+	public function __construct(string $message, int $code = 0, ?Throwable $previous = null) {
 		parent::__construct($message, $code, $previous);
 	}
 }

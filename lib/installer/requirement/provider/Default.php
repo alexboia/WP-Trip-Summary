@@ -29,24 +29,25 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+declare(strict_types=1);
+
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
-class Abp01_Installer_Requirement_Provider_Default implements Abp01_Installer_Requirement_Provider {
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+use \WpTripSummary\Env;
 
-	public function __construct(Abp01_Env $env) {
+class Abp01_Installer_Requirement_Provider_Default implements Abp01_Installer_Requirement_Provider {
+	private Env $_env;
+
+	public function __construct(Env $env) {
 		$this->_env = $env;
 	}
 
 	/**
 	 * @return Abp01_Installer_Requirement_Descriptor[] 
 	 */
-	public function getRequirements() {
+	public function getRequirements(): array {
 		$env = $this->_env;
 		return array(
 			new Abp01_Installer_Requirement_Descriptor(

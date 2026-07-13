@@ -29,41 +29,42 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+declare(strict_types=1);
+
+if (!defined('ABP01_LOADED')) {
     exit;
 }
 
-class Abp01_FrontendTheme_Default implements Abp01_FrontendTheme {
-    /**
-     * @var Abp01_Env
-     */
-    protected $_env;
+use \WpTripSummary\Env;
 
-    public function __construct(Abp01_Env $env) {
+class Abp01_FrontendTheme_Default implements Abp01_FrontendTheme {
+    protected Env $_env;
+
+    public function __construct(Env $env) {
         $this->_env = $env;
     }
 
-    public function includeFrontendViewerStyles() {
+    public function includeFrontendViewerStyles(): void {
         Abp01_Includes::includeStyleFrontendMain();
     }
 
-    public function registerFrontendViewerHelpers() {
+    public function registerFrontendViewerHelpers(): void {
         require_once $this->_env->getViewHelpersFilePath('controls.frontend.php');
     }
 
-    public function renderTeaser(stdClass $data) {
+    public function renderTeaser(stdClass $data): string|false {
         ob_start();
         require $this->_env->getViewFilePath('wpts-frontend-teaser.php');
         return ob_get_clean();
     }
 
-    public function renderViewer(stdClass $data) {
+    public function renderViewer(stdClass $data): string|false {
         ob_start();
         require $this->_env->getViewFilePath('wpts-frontend.php');
         return ob_get_clean();
     }
 
-    public function getVersion() {
+    public function getVersion(): string {
         return $this->_env->getVersion();
     }
 }

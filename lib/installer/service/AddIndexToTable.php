@@ -29,26 +29,24 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+declare(strict_types=1);
+
+if (!defined('ABP01_LOADED')) {
     exit;
 }
 
+use \WpTripSummary\Env;
+
 class Abp01_Installer_Service_AddIndexToTable {
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+	private Env $_env;
 
-	/**
-	 * @var \Exception|\WP_Error|null
-	 */
-	private $_lastError;
+	private \Exception|\WP_Error|null $_lastError;
 
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_env = $env;
 	}
 
-	public function execute($tableName, $indexName, array $onColumnNames) {
+	public function execute(string $tableName, string $indexName, array $onColumnNames) {
 		$result = false;
 		$this->_lastError = null;
 
@@ -69,7 +67,7 @@ class Abp01_Installer_Service_AddIndexToTable {
 		return $result;
 	}
 
-	private function _buildColumnNamesSql(array $columnNames) {
+	private function _buildColumnNamesSql(array $columnNames): string {
 		$quotedColumnNames = array_map(function($columnName) {
 			return '`' . $columnName . '`';
 		}, $columnNames);
@@ -77,7 +75,7 @@ class Abp01_Installer_Service_AddIndexToTable {
 		return join(',', $quotedColumnNames);
 	}
 
-	public function getLastError() {
+	public function getLastError(): Exception|WP_Error|null {
 		return $this->_lastError;
 	}
 }

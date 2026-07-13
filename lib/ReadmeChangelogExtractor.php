@@ -33,6 +33,8 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
+use WpTripSummary\Exception;
+
 class Abp01_ReadmeChangelogExtractor {
 	const README_BEGIN_MARKER_PATTERN = '/==([\s]*)Changelog([\s]*)==/i';
 
@@ -67,7 +69,7 @@ class Abp01_ReadmeChangelogExtractor {
 		if ($filePointer) {
 			$this->_readmeFilePointer = $filePointer;
 		} else {
-			throw new Abp01_Exception('Readme file could not be open.');
+			throw new Exception('Readme file could not be open.');
 		}
 
 		while (($readmeLine = $this->_readCurrentLine()) !== false) {

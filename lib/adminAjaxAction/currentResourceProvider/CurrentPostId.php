@@ -29,17 +29,18 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+declare(strict_types=1);
+
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
-class Abp01_AdminAjaxAction_CurrentResourceProvider_CurrentPostId implements Abp01_AdminAjaxAction_CurrentResourceProvider {
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+use \WpTripSummary\Env;
 
-	private $_searchUrlParam = 'abp01_postId';
+class Abp01_AdminAjaxAction_CurrentResourceProvider_CurrentPostId implements Abp01_AdminAjaxAction_CurrentResourceProvider {
+	private Env $_env;
+
+	private string $_searchUrlParam = 'abp01_postId';
 
 	public function __construct($searchUrlParam = null) {
 		$this->_env = abp01_get_env();
@@ -48,7 +49,7 @@ class Abp01_AdminAjaxAction_CurrentResourceProvider_CurrentPostId implements Abp
 		}
 	}
 	
-	public function getCurrentResourceId() {
+	public function getCurrentResourceId(): ?int {
 		return $this->_env->getCurrentPostId($this->_searchUrlParam);
 	}
 }
