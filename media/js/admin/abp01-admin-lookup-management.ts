@@ -44,10 +44,8 @@
 	 * Constants
 	 * */
 	const DEFAULT_LANG = '_default';
-	const LOOKUP_DELETE_INITIAL_REQUEST: WpTripSummaryLookupDataItemDeleteStage = WpTripSummaryLookupDataItemDeleteStage
-		.InitialRequest;
-	const LOOKUP_DELETE_INUSE_CONFIRMATION: WpTripSummaryLookupDataItemDeleteStage = WpTripSummaryLookupDataItemDeleteStage
-		.InUseConfirmation;
+	const LOOKUP_DELETE_INITIAL_REQUEST: string = '_lookup_delete_initial_request';
+	const LOOKUP_DELETE_INUSE_CONFIRMATION: string = '_lookup_delete_inuse_confirmation';
 
 	const EDIT_FORM_SELECTORS = {
 		FORM: '#abp01-edit-lookup-form',
