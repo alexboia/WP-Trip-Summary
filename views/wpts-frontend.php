@@ -42,24 +42,33 @@
 <?php if ($data && ($data->info->exists || $data->track->exists)): ?>
 	<div id="abp01-techbox-frontend" class="abp01-techbox-frontend">
 		<div id="abp01-techbox-title" class="abp01-techbox-title">
-			<span class="abp01-techbox-icon"></span><?php echo esc_html__('Trip summary', 'abp01-trip-summary'); ?>
+			<span class="abp01-techbox-icon">
+				<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#8CF5D9" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+					<path d="M9 20l-5.5 2.5V6L9 3.5m0 16.5l6 2.5m-6-18.5l6-2.5m0 18.5l5.5-2.5V3.5L15 6m0 16.5V6"></path>
+				</svg>
+			</span>
+			<div class="abp01-techbox-title-area">
+				<span class="abp01-techbox-title-content"><?php echo esc_html__('Trip summary', 'abp01-trip-summary'); ?></span>
+				<span class="abp01-techbox-title-content-sub">Test subtitle</span>
+			</div>
+			<span class="abp01-techbox-badge">Badge - type</span>
 		</div>
 		<div id="abp01-techbox-wrapper" class="abp01-techbox-wrapper">
 			<?php if ($totalTabCount > 0): ?>
 				<ul id="abp01-techbox-tabs" class="abp01-techbox-tabs">
 					<?php if ($data->info->exists): ?>
-						<li id="abp01-tab-info" class="abp01-tab abp01-tab-info <?php echo abp01_frontend_viewer_maybe_full_tab_css_class($totalTabCount); ?>" style="width: <?php echo $tabWidth ;?>;">
+						<li id="abp01-tab-info" class="abp01-tab abp01-tab-info">
 							<a href="#abp01-techbox-info"><span class="dashicons dashicons-index-card"></span><?php echo esc_html__('Prosaic details', 'abp01-trip-summary'); ?></a>
 						</li>
 					<?php endif; ?>
 					<?php if ($data->track->exists): ?>
-						<li id="abp01-tab-map" class="abp01-tab abp01-tab-map <?php echo abp01_frontend_viewer_maybe_full_tab_css_class($totalTabCount); ?>" style="width: <?php echo $tabWidth ;?>;">
+						<li id="abp01-tab-map" class="abp01-tab abp01-tab-map">
 							<a href="#abp01-techbox-map"><span class="dashicons dashicons-chart-line"></span><?php echo esc_html__('Map', 'abp01-trip-summary'); ?></a>
 						</li>
 					<?php endif; ?>
 					<?php if ($hasAdditionalTabs): ?>
 						<?php foreach ($data->additionalTabs as $tabId => $tabInfo): ?>
-							<li id="<?php echo esc_attr($tabId); ?>" class="abp01-tab <?php echo esc_attr($tabId); ?> <?php echo abp01_frontend_viewer_maybe_full_tab_css_class($totalTabCount); ?>" style="width: <?php echo $tabWidth ;?>;">
+							<li id="<?php echo esc_attr($tabId); ?>" class="abp01-tab <?php echo esc_attr($tabId); ?>">
 								<a href="#<?php echo esc_attr($tabId) ?>-content"><span class="dashicons <?php echo !empty($tabInfo['icon']) ? esc_attr($tabInfo['icon']) : '' ?>"></span><?php echo esc_html($tabInfo['label']); ?></a>
 							</li> 
 						<?php endforeach; ?>

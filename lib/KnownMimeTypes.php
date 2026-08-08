@@ -34,7 +34,7 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_KnownMimeTypes {
-	public static function getGpxDocumentMimeTypes() {
+	public static function getGpxDocumentMimeTypes(): array {
 		return array(
 			'application/gpx', 
 			'application/x-gpx+xml', 
@@ -45,7 +45,7 @@ class Abp01_KnownMimeTypes {
 		);
 	}
 
-	public static function getGeoJsonDocumentMimeTypes() {
+	public static function getGeoJsonDocumentMimeTypes(): array {
 		return array(
 			'application/json',
 			'application/geo+json',
@@ -53,7 +53,7 @@ class Abp01_KnownMimeTypes {
 		);
 	}
 
-	public static function getKmlDocumentMimeTypes() {
+	public static function getKmlDocumentMimeTypes(): array {
 		return array(
 			'application/vnd.google-earth.kml+xml'
 		);

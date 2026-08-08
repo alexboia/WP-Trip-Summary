@@ -29,12 +29,12 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+if (!defined('ABP01_LOADED')) {
     exit;
 }
 
 class Abp01_FeatureStatus {
-	public static function tripSummaryLogEnabled() {
+	public static function tripSummaryLogEnabled(): bool {
 		$enabled = defined('ABP01_TRIP_SUMMARY_LOG_ENABLED')
 			? constant('ABP01_TRIP_SUMMARY_LOG_ENABLED') === true
 			: true;

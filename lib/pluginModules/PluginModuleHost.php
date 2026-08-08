@@ -116,48 +116,34 @@ class Abp01_PluginModules_PluginModuleHost implements Abp01_PluginMenuItemProvid
 				=> fn() => $this->getReadTrackDataNonceProvider(),
 			Abp01_Viewer_DataSource_Cache::class 
 				=> fn() => $this->getViewerDataSourceCache(),
-			Abp01_Viewer_DataSource::class => function() {
-				return $this->getViewerDataSource();
-			},
-			Abp01_Rest_DataSource::class => function() {
-				return $this->getRestDataSource();
-			},
-			Abp01_ChangeLogDataSource::class => function() {
-				return $this->getChangeLogDataSource();
-			},
-			Abp01_AuditLog_Provider::class => function() {
-				return $this->getAuditLogProvider();
-			},
-			Abp01_UrlHelper::class => function() {
-				return $this->getUrlHelper();
-			},
-			Abp01_Viewer::class => function() {
-				return $this->getViewer();
-			},
-			Abp01_MaintenanceTool_Registry::class => function() {
-				return $this->getMaintenanceToolRegistry();
-			},
-			Abp01_Settings::class => function() {
-				return $this->getSettings();
-			},
-			Abp01_View::class => function() {
-				return $this->getView();
-			},
-			Abp01_Route_Manager::class => function() {
-				return $this->getRouteManager();
-			},
-			Abp01_Route_Log_Manager::class => function() {
-				return $this->getRouteLogManager();
-			},
-			Abp01_Auth::class => function() {
-				return $this->getAuth();
-			},
-			Abp01_Logger_Manager::class => function() {
-				return $this->getLogManager();
-			},
-			Abp01_Logger::class => function() {
-				return $this->getLogger();
-			}
+			Abp01_Viewer_DataSource::class 
+				=> fn() => $this->getViewerDataSource(),
+			Abp01_Rest_DataSource::class 
+				=> fn() => $this->getRestDataSource(),
+			Abp01_ChangeLogDataSource::class 
+				=> fn() => $this->getChangeLogDataSource(),
+			Abp01_AuditLog_Provider::class 
+				=> fn() => $this->getAuditLogProvider(),
+			Abp01_UrlHelper::class 
+				=> fn() => $this->getUrlHelper(),
+			Abp01_Viewer::class 
+				=> fn() => $this->getViewer(),
+			Abp01_MaintenanceTool_Registry::class 
+				=> fn() => $this->getMaintenanceToolRegistry(),
+			Abp01_Settings::class 
+				=> fn() => $this->getSettings(),
+			Abp01_View::class 
+				=> fn() => $this->getView(),
+			Abp01_Route_Manager::class 
+				=> fn() => $this->getRouteManager(),
+			Abp01_Route_Log_Manager::class 
+				=> fn() => $this->getRouteLogManager(),
+			Abp01_Auth::class 
+				=> fn() => $this->getAuth(),
+			Abp01_Logger_Manager::class 
+				=> fn() => $this->getLogManager(),
+			Abp01_Logger::class 
+				=> fn() => $this->getLogger()
 		);
 	}
 

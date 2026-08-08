@@ -188,22 +188,6 @@ class Abp01_Includes {
 
 	const STYLE_FRONTEND_LOG_ENTRIES = 'abp01-frontend-log-entries-css';
 
-	const STYLE_FRONTEND_MAIN_TWENTY_TEN = 'abp01-frontend-main-twentyten-css';
-
-	const STYLE_FRONTEND_MAIN_TWENTY_ELEVEN = 'abp01-frontend-main-twentyeleven-css';
-
-	const STYLE_FRONTEND_MAIN_TWENTY_THIRTEEN = 'abp01-frontend-main-twentythirteen-css';
-
-	const STYLE_FRONTEND_MAIN_TWENTY_FOURTEEN = 'abp01-frontend-main-twentyfourteen-css';
-
-	const STYLE_FRONTEND_MAIN_TWENTY_FIFTEEN = 'abp01-frontend-main-twentyfifteen-css';
-
-	const STYLE_FRONTEND_MAIN_TWENTY_SIXTEEN = 'abp01-frontend-main-twentysixteen-css';
-
-	const STYLE_FRONTEND_MAIN_TWENTY_SEVENTEEN = 'abp01-frontend-main-twentyseventeen-css';
-
-	const STYLE_FRONTEND_MAIN_TWENTY_NINETEEN = 'abp01-frontend-main-twentynineteen-css';
-
 	/**
 	 * @var Abp01_Includes_Manager
 	 */
@@ -663,7 +647,7 @@ class Abp01_Includes {
 		),
 
 		self::STYLE_FRONTEND_MAIN => array(
-			'path' => 'media/css/abp01-frontend-main.css', 
+			'path' => 'media/css/abp01-frontend-main-modern.css', 
 			'version' => ABP01_VERSION,
 			'allowOverrideFromTheme' => true,
 			'deps' => array(
@@ -682,62 +666,6 @@ class Abp01_Includes {
 		), 
 		self::STYLE_FRONTEND_LOG_ENTRIES => array(
 			'path' => 'media/css/abp01-frontend-log-entries.css', 
-			'version' => ABP01_VERSION,
-			'deps' => array(
-				self::STYLE_FRONTEND_MAIN
-			)
-		),
-		self::STYLE_FRONTEND_MAIN_TWENTY_TEN => array(
-			'path' => 'media/css/twentyten/theme.css', 
-			'version' => ABP01_VERSION,
-			'deps' => array(
-				self::STYLE_FRONTEND_MAIN
-			)
-		),
-		self::STYLE_FRONTEND_MAIN_TWENTY_ELEVEN => array(
-			'path' => 'media/css/twentyeleven/theme.css', 
-			'version' => ABP01_VERSION,
-			'deps' => array(
-				self::STYLE_FRONTEND_MAIN
-			)
-		), 
-		self::STYLE_FRONTEND_MAIN_TWENTY_THIRTEEN => array(
-			'path' => 'media/css/twentythirteen/theme.css', 
-			'version' => ABP01_VERSION,
-			'deps' => array(
-				self::STYLE_FRONTEND_MAIN
-			)
-		),
-		self::STYLE_FRONTEND_MAIN_TWENTY_FIFTEEN => array(
-			'path' => 'media/css/twentyfifteen/theme.css', 
-			'version' => ABP01_VERSION,
-			'deps' => array(
-				self::STYLE_FRONTEND_MAIN
-			)
-		), 
-		self::STYLE_FRONTEND_MAIN_TWENTY_FOURTEEN => array(
-			'path' => 'media/css/twentyfourteen/theme.css', 
-			'version' => ABP01_VERSION,
-			'deps' => array(
-				self::STYLE_FRONTEND_MAIN
-			)
-		),
-		self::STYLE_FRONTEND_MAIN_TWENTY_SIXTEEN => array(
-			'path' => 'media/css/twentysixteen/theme.css', 
-			'version' => ABP01_VERSION,
-			'deps' => array(
-				self::STYLE_FRONTEND_MAIN
-			)
-		),
-		self::STYLE_FRONTEND_MAIN_TWENTY_SEVENTEEN => array(
-			'path' => 'media/css/twentyseventeen/theme.css', 
-			'version' => ABP01_VERSION,
-			'deps' => array(
-				self::STYLE_FRONTEND_MAIN
-			)
-		),
-		self::STYLE_FRONTEND_MAIN_TWENTY_NINETEEN => array(
-			'path' => 'media/css/twentynineteen/theme.css', 
 			'version' => ABP01_VERSION,
 			'deps' => array(
 				self::STYLE_FRONTEND_MAIN
@@ -832,16 +760,7 @@ class Abp01_Includes {
 		)
 	);
 
-	private static $_styleSlugsForThemeIds = array(
-		'twentyten' => self::STYLE_FRONTEND_MAIN_TWENTY_TEN,
-		'twentyeleven' => self::STYLE_FRONTEND_MAIN_TWENTY_ELEVEN,
-		'twentyfifteen' => self::STYLE_FRONTEND_MAIN_TWENTY_FIFTEEN,
-		'twentyfourteen' => self::STYLE_FRONTEND_MAIN_TWENTY_FOURTEEN,
-		'twentythirteen' => self::STYLE_FRONTEND_MAIN_TWENTY_THIRTEEN,
-		'twentysixteen' => self::STYLE_FRONTEND_MAIN_TWENTY_SIXTEEN,
-		'twentyseventeen' => self::STYLE_FRONTEND_MAIN_TWENTY_SEVENTEEN,
-		'twentynineteen' => self::STYLE_FRONTEND_MAIN_TWENTY_NINETEEN
-	);
+	private static $_styleSlugsForThemeIds = array();
 
 	public static function configure(string $refPluginsPath, bool $scriptsInFooter) {
 		$includesManager = new Abp01_Includes_Manager(self::$_scripts, 

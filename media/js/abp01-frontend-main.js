@@ -187,22 +187,38 @@
 
 	function initTabs() {
 		//init tabs controller and bind tab selection events
-		$ctrlTechboxTabs = $('#abp01-techbox-wrapper').easytabs({
+		$ctrlTechboxTabs = $('#abp01-techbox-wrapper');
+
+		$ctrlTechboxTabs.bind('easytabs:after', function(e, $clicked, $target, eventSettings) {
+			console.log($clicked);
+			const $parent = $clicked.parent();
+			const clickedTab = $parent.attr('id');
+
+			if ($clicked.hasClass('abp01-tab-active')) {
+				$clicked.removeClass('abp01-tab-active');
+			}
+
+			if (!$parent.hasClass('abp01-tab')) {
+				$parent.addClass('abp01-tab');
+			}
+
+			if (clickedTab == 'abp01-tab-map') {
+				initOrRefreshMap();
+			}
+		});
+
+		$ctrlTechboxTabs.bind('easytabs:initialised', function(e, $defaultTabLink, defaultPanel) {
+			if ($defaultTabLink.hasClass('abp01-tab-active')) {
+				$defaultTabLink.removeClass('abp01-tab-active');
+			}
+		});
+
+		$ctrlTechboxTabs = $ctrlTechboxTabs.easytabs({
 			animate : false,
 			tabActiveClass : 'abp01-tab-active',
 			panelActiveClass : 'abp01-tabContentActive',
 			tabs: '.abp01-tab',
 			updateHash : false
-		});
-
-		$ctrlTechboxTabs.bind('easytabs:after', function(e, $clicked, $target, eventSettings) {
-			var clickedTab = $clicked
-				.parent()
-				.attr('id');
-
-			if (clickedTab == 'abp01-tab-map') {
-				initOrRefreshMap();
-			}
 		});
 
 		//set initial tab
