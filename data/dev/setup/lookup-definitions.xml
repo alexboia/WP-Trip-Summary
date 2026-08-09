@@ -4,18 +4,22 @@
         <lookup default="Easy">
             <lang code="ro_RO">Ușor</lang>
             <lang code="fr_FR">Facile</lang>
+            <lang code="de_DE">Leicht</lang>
         </lookup>
         <lookup default="Medium">
             <lang code="ro_RO">Mediu</lang>
             <lang code="fr_FR">Moyen</lang>
+            <lang code="de_DE">Mittel</lang>
         </lookup>
         <lookup default="Hard">
             <lang code="ro_RO">Dificil</lang>
             <lang code="fr_FR">Difficile</lang>
+            <lang code="de_DE">Schwer</lang>
         </lookup>
         <lookup default="Medieval torture">
             <lang code="ro_RO">Tortură medievală</lang>
             <lang code="fr_FR">Torture médiévale</lang>
+            <lang code="de_DE">Mittelalterliche Folter</lang>
         </lookup>
     </difficultyLevel>
 
@@ -23,26 +27,32 @@
         <lookup default="Asphalt">
             <lang code="ro_RO">Asfalt</lang>
             <lang code="fr_FR">Asphalte</lang>
+            <lang code="de_DE">Asphalt</lang>
         </lookup>
         <lookup default="Concrete">
             <lang code="ro_RO">Plăci de beton</lang>
             <lang code="fr_FR">Dalles de béton</lang>
+            <lang code="de_DE">Betonplatten</lang>
         </lookup>
         <lookup default="Dust or dirt">
             <lang code="ro_RO">Pământ</lang>
             <lang code="fr_FR">Terre</lang>
+            <lang code="de_DE">Staub oder Erde</lang>
         </lookup>
         <lookup default="Grass">
             <lang code="ro_RO">Iarbă</lang>
             <lang code="fr_FR">Végétation</lang>
+            <lang code="de_DE">Gras</lang>
         </lookup>
         <lookup default="Stone pavement/Gravel">
             <lang code="ro_RO">Macadam</lang>
             <lang code="fr_FR">Macadam/gravier</lang>
+            <lang code="de_DE">Steinpflaster/Schotter</lang>
         </lookup>
         <lookup default="Loose rocks">
             <lang code="ro_RO">Piatră neașezată</lang>
             <lang code="fr_FR">Pierre déstabilisé</lang>
+            <lang code="de_DE">Loses Gestein</lang>
         </lookup>
     </pathSurfaceType>
 
@@ -50,18 +60,22 @@
         <lookup default="MTB">
             <lang code="ro_RO">MTB</lang>
             <lang code="fr_FR">VTT</lang>
+            <lang code="de_DE">Mountainbike</lang>
         </lookup>
         <lookup default="Road bike">
             <lang code="ro_RO">Cursieră</lang>
             <lang code="fr_FR">Vélo de route</lang>
+            <lang code="de_DE">Rennrad</lang>
         </lookup>
         <lookup default="Trekking">
             <lang code="ro_RO">Trekking</lang>
             <lang code="fr_FR">Vélo de trekking</lang>
+            <lang code="de_DE">Trekkingrad</lang>
         </lookup>
         <lookup default="City bike">
             <lang code="ro_RO">Bicicletă de oraș</lang>
             <lang code="fr_FR">Vélo de ville</lang>
+            <lang code="de_DE">Stadtrad</lang>
         </lookup>
     </bikeType>
 
@@ -69,10 +83,12 @@
         <lookup default="Simple line">
             <lang code="ro_RO">Linie simplă</lang>
             <lang code="fr_FR">Ligne de chemin de fer simple</lang>
+            <lang code="de_DE">Eingleisige Strecke</lang>
         </lookup>
         <lookup default="Double line">
             <lang code="ro_RO">Linie dublă</lang>
             <lang code="fr_FR">Ligne de chemin de fer double</lang>
+            <lang code="de_DE">Zweigleisige Strecke</lang>
         </lookup>
     </railroadLineType>
 
@@ -82,18 +98,22 @@
         <lookup default="In production">
             <lang code="ro_RO">În exploatare</lang>
             <lang code="fr_FR">En fonctionnement</lang>
+            <lang code="de_DE">In Betrieb</lang>
         </lookup>
         <lookup default="Closed">
             <lang code="ro_RO">Închisă</lang>
             <lang code="fr_FR">Hors service</lang>
+            <lang code="de_DE">Stillgelegt</lang>
         </lookup>
         <lookup default="Disbanded">
             <lang code="ro_RO">Desființată</lang>
             <lang code="fr_FR">Chemin de fer démantelé</lang>
+            <lang code="de_DE">Abgebaut</lang>
         </lookup>
         <lookup default="In rehabilitation">
             <lang code="ro_RO">În reabilitare</lang>
             <lang code="fr_FR">En réhabilitation</lang>
+            <lang code="de_DE">In Sanierung</lang>
         </lookup>
     </railroadLineStatus>
 
@@ -101,18 +121,22 @@
         <lookup default="Spring">
             <lang code="ro_RO">Primăvara</lang>
             <lang code="fr_FR">Printemps</lang>
+            <lang code="de_DE">Frühling</lang>
         </lookup>
         <lookup default="Summer">
             <lang code="ro_RO">Vara</lang>
             <lang code="fr_FR">Été</lang>
+            <lang code="de_DE">Sommer</lang>
         </lookup>
         <lookup default="Autumn">
             <lang code="ro_RO">Toamna</lang>
             <lang code="fr_FR">L'automne</lang>
+            <lang code="de_DE">Herbst</lang>
         </lookup>
         <lookup default="Winter">
             <lang code="ro_RO">Iarna</lang>
             <lang code="fr_FR">L'hiver</lang>
+            <lang code="de_DE">Winter</lang>
         </lookup>
     </recommendSeasons>
 
@@ -120,14 +144,17 @@
         <lookup default="Electrified">
             <lang code="ro_RO">Electrificată</lang>
             <lang code="fr_FR">Électrifié</lang>
+            <lang code="de_DE">Elektrifiziert</lang>
         </lookup>
         <lookup default="Not electrified">
             <lang code="ro_RO">Neelectrificată</lang>
             <lang code="fr_FR">Non électrifié</lang>
+            <lang code="de_DE">Nicht elektrifiziert</lang>
         </lookup>
         <lookup default="Partially electrified">
             <lang code="ro_RO">Partial electrificată</lang>
             <lang code="fr_FR">Partiellement électrifié</lang>
+            <lang code="de_DE">Teilweise elektrifiziert</lang>
         </lookup>
     </railroadElectrificationStatus>
 </lookup>
