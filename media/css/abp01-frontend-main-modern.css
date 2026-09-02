@@ -236,7 +236,7 @@
 .abp01-techbox-info li.abp01-info-item {
 	display: flex;
 	flex-direction: column;
-	gap: 7px;
+	gap: 4px;
 	padding: 16px 17px;
 	border: 1px solid var(--wpts-border-2);
 	border-radius: var(--wpts-radius-sm);
