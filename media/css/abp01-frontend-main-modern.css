@@ -63,6 +63,7 @@
 	box-shadow: var(--wpts-shadow);
 	-webkit-font-smoothing: antialiased;
 	background:#fff;
+	margin-bottom: 32px;
 }
 
 /* ---- Title bar ---- */
@@ -205,10 +206,16 @@
 	stroke: var(--wpts-navy); 
 }
 
-/* ---- Content -------------------------------------------------------------- */
-.abp01-techbox-content { padding: 26px 26px 8px; }
+/* ---- Content ---- */
+.abp01-techbox-content { 
+	padding: 18px 18px 8px; 
+}
 
-/* ---- Info (Prosaic details) ---------------------------------------------- */
+/* ---- Info (Prosaic details) ---- */
+.entry-content .abp01-techbox-info ul  {
+	margin-bottom: 0px;
+}
+
 .abp01-techbox-info > ul,
 .abp01-info-grid {
 	display: grid;
@@ -218,9 +225,15 @@
 	padding: 0;
 	list-style: none;
 }
+
 /* Each info item (the plugin outputs <li>; treat li as the card) */
+.entry-content li.abp01-info-item,
+.entry-content .abp01-techbox-info li.abp01-info-item {
+	margin: 0;
+}
+
 .abp01-info-item,
-.abp01-techbox-info li {
+.abp01-techbox-info li.abp01-info-item {
 	display: flex;
 	flex-direction: column;
 	gap: 7px;
@@ -260,7 +273,8 @@
 	background: var(--wpts-tint-warm); 
 }
 .abp01-info-item-icon-warm svg { 
-	stroke: var(--wpts-amber-ink); }
+	stroke: var(--wpts-amber-ink); 
+}
 
 .abp01-info-item-label {
 	font-family: var(--wpts-font-mono);
@@ -272,12 +286,40 @@
 .abp01-info-item-value {
 	font-family: var(--wpts-font-head);
 	font-weight: 600;
-	font-size: 18px;
+	font-size: 16px;
 	color: var(--wpts-value);
 	letter-spacing: -0.01em;
 }
 
-/* ---- Map ------------------------------------------------------------------ */
+.abp01-info-value .abp01-field-value-multi {
+    margin-right: 4px;
+}
+
+.abp01-info-value .abp01-field-value-multi.abp01-item-layout-vertical {
+    display: block;
+}
+
+.abp01-info-value .abp01-field-value-multi.abp01-item-layout-horizontal {
+    display: inline;
+}
+
+.abp01-info-value .abp01-field-value-show-more-txt {
+    margin-right: 2px;
+}
+
+.abp01-field-value-show-more a,
+.abp01-field-value-show-more a:visited,
+.abp01-field-value-show-more a:active {
+	background-color: var(--wpts-tint-teal);
+	text-decoration: none;
+	font-weight: normal;
+	padding: 5px;
+	border-radius: var(--wpts-radius-sm);
+	font-size: 13px;
+	margin-left: 6px;
+}
+
+/* ---- Map ---- */
 .abp01-map-container {
 	position: relative;
 	height: 340px; /* the plugin sets an inline height from settings->mapHeight */
@@ -389,7 +431,7 @@
 	text-decoration: none;
 }
 
-/* ---- Altitude profile ----------------------------------------------------- */
+/* ---- Altitude profile ---- */
 #abp01-altitude-profile-container {
 	margin-top: 16px;
 	border: 1px solid var(--wpts-border-2);
@@ -423,23 +465,51 @@
 	color: var(--wpts-muted);
 	padding-top: 2px;
 }
-/* Chart fill/stroke (SVG). Reuse for a JS charting lib's series colors. */
-.wpts-altitude-fill   { fill: var(--wpts-teal); }   /* apply with opacity in a gradient */
-.wpts-altitude-stroke { stroke: var(--wpts-navy); stroke-width: 2.2; fill: none; }
-.wpts-altitude-baseline { stroke: #E1E8ED; stroke-width: 1; }
 
-/* ---- Teaser (skip to story) ---------------------------------------------- */
-.abp01-techbox-content-skip-teaser { padding: 4px 26px 20px; }
-.abp01-techbox-content-skip-teaser a {
-	display: inline-flex;
-	align-items: center;
-	gap: 7px;
+/* Chart fill/stroke (SVG). Reuse for a JS charting lib's series colors. */
+.wpts-altitude-fill   { 
+	fill: var(--wpts-teal); 
+}   /* apply with opacity in a gradient */
+
+.wpts-altitude-stroke { 
+	stroke: var(--wpts-navy); stroke-width: 2.2; fill: none; 
+}
+.wpts-altitude-baseline { 
+	stroke: #E1E8ED; stroke-width: 1; 
+}
+
+/* ---- Teaser top (skip to info box) ---- */
+.abp01-techbox-teaser {
+	margin-bottom: 8px;
+}
+
+/* ---- Teaser bottom (skip to story) ---- */
+.abp01-techbox-teaser {
+	border-radius: var(--wpts-radius-sm);
+}
+
+.abp01-techbox-teaser,
+.abp01-techbox-content-skip-teaser { 
+	padding: 8px 26px 8px; 
+	color: var(--wpts-amber-ink); 
+	background-color: var(--wpts-tint-warm);
 	font-size: 13.5px;
 	font-weight: 600;
-	color: var(--wpts-teal);
-	text-decoration: none;
+	display: flex;
+	align-items: center;
+	gap: 7px;
 }
-.abp01-techbox-content-skip-teaser a:hover { color: var(--wpts-navy); }
+
+.abp01-techbox-teaser a,
+.abp01-techbox-content-skip-teaser a {
+	text-decoration: none;
+	color: var(--wpts-amber-ink); 
+	flex: 1;
+}
+
+.abp01-techbox-content-skip-teaser a {
+	text-align: center;
+}
 
 /* ---- Utility ---- */
 .abp01-clear { 

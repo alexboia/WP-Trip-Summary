@@ -58,12 +58,22 @@
 				<ul id="abp01-techbox-tabs" class="abp01-techbox-tabs">
 					<?php if ($data->info->exists): ?>
 						<li id="abp01-tab-info" class="abp01-tab abp01-tab-info">
-							<a href="#abp01-techbox-info"><span class="dashicons dashicons-index-card"></span><?php echo esc_html__('Prosaic details', 'abp01-trip-summary'); ?></a>
+							<a href="#abp01-techbox-info">
+								<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1793A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<path d="M4 5h16M4 12h16M4 19h10"/>
+								</svg>
+								<?php echo esc_html__('Prosaic details', 'abp01-trip-summary'); ?>
+							</a>
 						</li>
 					<?php endif; ?>
 					<?php if ($data->track->exists): ?>
 						<li id="abp01-tab-map" class="abp01-tab abp01-tab-map">
-							<a href="#abp01-techbox-map"><span class="dashicons dashicons-chart-line"></span><?php echo esc_html__('Map', 'abp01-trip-summary'); ?></a>
+							<a href="#abp01-techbox-map">
+								<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1793A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<path d="M9 20l-6 2V6l6-2 6 2 6-2v16l-6 2-6-2V4"/>
+								</svg>
+								<?php echo esc_html__('Map', 'abp01-trip-summary'); ?>
+							</a>
 						</li>
 					<?php endif; ?>
 					<?php if ($hasAdditionalTabs): ?>
@@ -118,7 +128,7 @@
 							</div>
 						</div>
 						<?php if ($data->settings->showAltitudeProfile): ?>
-							<div id="abp01-altitude-profile-container"></div>
+							<div id="abp01-altitude-profile-container" style="display: none;"></div>
 						<?php endif; ?>
 					</div>
 				<?php endif; ?>

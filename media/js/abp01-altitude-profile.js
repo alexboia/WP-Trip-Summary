@@ -230,6 +230,9 @@
         },
 
         _showProfileChart: function() {
+            var element = this._getContainerElement();
+            element.style.display = 'block';
+
             this._canvas = L.DomUtil.create('canvas', 'abp01-techbox-altitude-profile', 
                 this._chartContainer);
 
@@ -243,8 +246,15 @@
                 this._handleChartAreaLeave, 
                 this);
         },
+
+        _getContainerElement: function() {
+            return L.DomUtil.get(this._chartContainer);
+        },
         
         _hideProfileChart: function() {
+            var element = this._getContainerElement();
+            element.style.display = 'none';
+
             if (this._chart != null) {
                 //Remove the currently highlighted point from the map
                 this._removeCurrentHighlightedProfilePoint();

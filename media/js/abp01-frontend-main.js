@@ -190,7 +190,6 @@
 		$ctrlTechboxTabs = $('#abp01-techbox-wrapper');
 
 		$ctrlTechboxTabs.bind('easytabs:after', function(e, $clicked, $target, eventSettings) {
-			console.log($clicked);
 			const $parent = $clicked.parent();
 			const clickedTab = $parent.attr('id');
 

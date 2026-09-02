@@ -46,7 +46,10 @@ class Abp01_Route_Info {
 	private $_type;
 
 	//TODO: extract to separate class (eg. Abp01_Route_Info_Fields)
-	private static $_fields = array(
+	/**
+	 * @var array<string, array>
+	 */
+	private static array $_fields = array(
 		self::BIKE => array(
 			'bikeDistance' => array(
 				'type' => 'float',

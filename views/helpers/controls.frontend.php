@@ -95,7 +95,7 @@ if (!function_exists('abp01_render_info_item_value_more_link')) {
 }
 
 if (!function_exists('abp01_format_info_item_single_value')) {
-	function abp01_format_info_item_single_value($value, $suffix, $settings) {
+	function abp01_format_info_item_single_value($value, ?string $suffix, stdClass $settings) {
 		$fieldValue = abp01_extract_displayable_info_item_value($value);
 		if (!empty($suffix)) {
 			$fieldValue .= ' ' . $suffix;
@@ -109,7 +109,7 @@ if (!function_exists('abp01_format_info_item_single_value')) {
 }
 
 if (!function_exists('abp01_format_info_item_multi_value')) {
-	function abp01_format_info_item_multi_value($value, $suffix, $settings) {
+	function abp01_format_info_item_multi_value(array $value, ?string $suffix, stdClass $settings): string {
 		$fieldValue = '';
 		$fieldValueHtml = '';
 		
@@ -153,7 +153,7 @@ if (!function_exists('abp01_format_info_item_value')) {
 	 * @param string $suffix The suffix to append to the formatted value
 	 * @return string The formatted value
 	 */
-	function abp01_format_info_item_value($value, $suffix, $settings) {
+	function abp01_format_info_item_value($value, $suffix, stdClass $settings) {
 		$fieldValueHtml = '';
 
 		if (!empty($value)) {
@@ -184,17 +184,45 @@ if (!function_exists('abp01_display_info_item')) {
 	 * @param string $field The field to render
 	 * @param string $fieldLabel The label to use when rendering the field
 	 * @param string $suffix The suffix to use when rendering the field. Defaults to empty string.
-	 * @return string The formmated HTML output
+	 * 
+	 * @return void
 	 */
-	function abp01_display_info_item($data, $field, $fieldLabel, $suffix = '') {
+	function abp01_display_info_item(stdClass $data, string $field, string $fieldLabel, string $suffix = ''): void {
 		static $itemIndex = 0;
 		$settings = $data->settings;
-		$value = abp01_extract_value_from_frontend_data($data, $field);
+		$value = abp01_extract_value_from_frontend_data($data, 
+			$field);
+
 		if (!empty($value)) {
-			$fieldValue = abp01_format_info_item_value($value, $suffix, $settings);
-			$itemOutput = ('<li class="abp01-info-item ' . $field . ' ' . ($itemIndex % 2 == 0 ? 'abp01-item-even' : 'abp01-item-odd') . '">')
-				. ('<div class="abp01-info-label">' . esc_html($fieldLabel) . ':</div>')
-				. ('<div class="abp01-info-value">' . $fieldValue . '</div>')
+			$iconSvg = abp01_get_info_item_icon($field);
+			$fieldValue = abp01_format_info_item_value($value, 
+				$suffix, 
+				$settings);
+			
+			$cssClass = 'abp01-info-item ' 
+				. $field . ' ' 
+				. ($itemIndex % 2 == 0 
+					? 'abp01-item-even' 
+					: 'abp01-item-odd');
+
+			$isHighlighted = abp01_is_info_item_highlighted($field);
+			$iconCssClass = 'abp01-info-item-icon';
+
+			if ($isHighlighted === true) {
+				$cssClass .= ' abp01-info-item-warm';
+				$iconCssClass .= ' abp01-info-item-icon-warm';
+			}
+
+			$itemOutput = ('<li class="' . esc_attr($cssClass) . '">')
+				. ('<div class="abp01-info-item-head">')
+					. (!empty($iconSvg) 
+						? '<span class="' . $iconCssClass . '">' . $iconSvg . '</span>' 
+						: '')
+					. ('<span class="abp01-info-label abp01-info-item-label">' 
+							. esc_html($fieldLabel) 
+					. '</span>')
+				. ('</div>')
+				. ('<div class="abp01-info-value abp01-info-item-value">' . $fieldValue . '</div>')
 				. ('<div class="abp01-clear"></div>')
 				. '</li>';
 
@@ -204,6 +232,126 @@ if (!function_exists('abp01_display_info_item')) {
 		}
 
 		echo $itemOutput;
+	}
+}
+
+if (!function_exists('abp01_get_info_item_icon')) {
+	function abp01_get_info_item_icon(string $field): ?string {
+		if (empty($field)) {
+			return null;
+		}
+
+		$icons = abp01_get_info_item_icons();
+		$mapping = abp01_get_info_item_field_icon_mapping();
+
+		$iconSvgContents = null;
+		if (!empty($mapping[$field])) {
+			$iconKey = $mapping[$field];
+			if (!empty($iconKey) && !empty($icons[$iconKey])) {
+				$iconSvgContents = $icons[$iconKey];
+			}
+		}
+
+		if (empty($iconSvgContents)) {
+			return null;
+		}
+
+		return (
+			'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1793A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' .
+				$iconSvgContents . 
+			'</svg>'
+		);
+	}
+}
+
+if (!function_exists('abp01_get_info_item_field_icon_mapping')) {
+	function abp01_get_info_item_field_icon_mapping(): array {
+		static $mapping = null;
+
+		if ($mapping === null) {
+			$defaultMapping = array(
+				'bikeDistance' => 'distance',
+				'bikeTotalClimb' => 'climb',
+				'bikeDifficultyLevel' => 'gauge',
+				'bikeAccess' => 'access',
+				'bikeRecommendedSeasons' => 'season',
+				'bikePathSurfaceType' => 'surface',
+				'bikeBikeType' => 'bike',
+
+				'hikingDistance' => 'distance',
+				'hikingTotalClimb' => 'climb',
+				'hikingDifficultyLevel' => 'gauge',
+				'hikingAccess' => 'access',
+				'hikingRecommendedSeasons' => 'season',
+				'hikingSurfaceType' => 'surface',
+				'hikingRouteMarkers' => 'marker',
+
+				'trainRideDistance' => 'distance',
+				'trainRideChangeNumber' => 'swap',
+				'trainRideGauge' => 'gauge',
+				'trainRideOperator' => 'train',
+				'trainRideLineStatus' => 'line',
+				'trainRideElectrificationStatus' => 'power',
+				'trainRideLineType' => 'line'
+			);
+
+			$mapping = apply_filters('abp01_info_item_field_icon_mapping', 
+				$defaultMapping);
+
+			if (!is_array($mapping)) {
+				$mapping = $defaultMapping;
+			}
+		}
+
+		return $mapping;
+	}
+}
+
+if (!function_exists('abp01_is_info_item_highlighted')) {
+	function abp01_is_info_item_highlighted(string $field): bool {
+		if (empty($field)) {
+			return false;
+		}
+
+		$highlight = [
+			'bikeTotalClimb',
+			'bikeRecommendedSeasons',
+			'hikingTotalClimb',
+			'hikingRecommendedSeasons'
+		];
+
+		return in_array($field, $highlight);
+	}
+}
+
+if (!function_exists('abp01_get_info_item_icons')) {
+	function abp01_get_info_item_icons(): array {
+		static $icons = null;
+		if ($icons === null) {
+			$defaultIcons = array(
+				'distance' => '<path d="M3 8l13 13 5-5L8 3zM8 8l2 2M11 5l2 2M14 11l2 2"/>',
+				'climb' => '<path d="M3 20h18M6 20l6-12 4 7 3-4"/>',
+				'access' => '<path d="M12 21s-7-5.5-7-11a7 7 0 0114 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+				'season' => '<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',
+				'surface' => '<path d="M4 18l4-6 4 3 4-8 4 5M3 21h18"/>',
+				'bike' => '<circle cx="6" cy="17" r="3.2"/><circle cx="18" cy="17" r="3.2"/><path d="M6 17l4-7h5l3 7M9 7h3"/>',
+				'marker' => '<path d="M6 3v18M6 5l9 3-9 3"/>',
+				'train' => '<rect x="6" y="4" width="12" height="12" rx="3"/><path d="M6 10h12M9 20l-2 2M15 20l2 2"/><circle cx="9" cy="13" r="1"/><circle cx="15" cy="13" r="1"/>',
+				'gauge' => '<path d="M12 14a2 2 0 100-4 2 2 0 000 4zM4 20a8 8 0 0116 0"/>',
+				'swap' => '<path d="M7 4l-3 3 3 3M4 7h13M17 20l3-3-3-3M20 17H7"/>',
+				'power' => '<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
+				'line' => '<path d="M3 12h18M6 12V6M18 12v6"/>'
+			);
+
+			$icons = apply_filters('abp01_info_item_icons', 
+				$defaultIcons);
+
+			if (!is_array($icons)) {
+				$icons = $defaultIcons;
+			}
+		}
+
+		return $icons;
 	}
 }
 
@@ -238,13 +386,13 @@ if (!function_exists('abp01_count_frontend_viewer_tabs')) {
 }
 
 if (!function_exists('abp01_frontend_viewer_maybe_full_tab_css_class')) {
-	function abp01_frontend_viewer_maybe_full_tab_css_class($totalTabCount) {
+	function abp01_frontend_viewer_maybe_full_tab_css_class(int|float $totalTabCount): string {
 		return $totalTabCount === 1 ? 'abp01-full-tab' : '';
 	}
 }
 
 if (!function_exists('abp01_frontend_determine_viewer_tab_width')) {
-	function abp01_frontend_determine_viewer_tab_width($totalTabCount, $maxTabsPerRow = 3) {
+	function abp01_frontend_determine_viewer_tab_width(int|float $totalTabCount, int $maxTabsPerRow = 3): string {
 		if ($maxTabsPerRow <= 0) {
 			$maxTabsPerRow = 3;
 		}
