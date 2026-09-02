@@ -70,7 +70,7 @@ class Abp01_Viewer_DataSource_Default implements Abp01_Viewer_DataSource {
 		return $viewerData;
 	}
 
-	private function _getTripSummaryViewerData($postId) {
+	private function _getTripSummaryViewerData(int $postId): stdClass {
 		$viewerData = new stdClass();
 		$viewerData->postId = $postId;
 		$viewerData->info = $this->_getRouteInfoData($postId);
@@ -78,7 +78,7 @@ class Abp01_Viewer_DataSource_Default implements Abp01_Viewer_DataSource {
 		return $viewerData;
 	}
 
-	private function _getRouteInfoData($postId) {
+	private function _getRouteInfoData(int $postId): stdClass {
 		$routeInfoData = new stdClass();
 		$routeInfoData->exists = false;
 
@@ -88,6 +88,8 @@ class Abp01_Viewer_DataSource_Default implements Abp01_Viewer_DataSource {
 			$routeInfoData->isBikingTour = $routeInfo->isBikingTour();
 			$routeInfoData->isHikingTour = $routeInfo->isHikingTour();
 			$routeInfoData->isTrainRideTour = $routeInfo->isTrainRideTour();
+			$routeInfoData->type = $routeInfo->getType();
+			$routeInfoData->typeLabel = $this->_getTypeLabel($routeInfoData->type);
 
 			$valueTranslator = $this->_getRouteInfoValueTranslator();
 			foreach ($routeInfo->getData() as $field => $value) {
@@ -101,11 +103,24 @@ class Abp01_Viewer_DataSource_Default implements Abp01_Viewer_DataSource {
 		return $routeInfoData;
 	}
 
+	private function _getTypeLabel(string $type): ?string {
+		switch($type) {
+			case Abp01_Route_Info::BIKE:
+				return __('Biking', 'abp01-trip-summary');
+			case Abp01_Route_Info::HIKING:
+				return __('Hiking', 'abp01-trip-summary');
+			case Abp01_Route_Info::TRAIN_RIDE:
+				return __('Train Ride', 'abp01-trip-summary');
+			default:
+				return null;
+		}
+	}
+
 	private function _getRouteInfoValueTranslator() {
 		return new Abp01_Route_Info_ValueTranslator($this->_lookup);
 	}
 
-	private function _getRouteTrackData($postId) {
+	private function _getRouteTrackData(int $postId): stdClass {
 		$routeTrackData = new stdClass();
 		$track = $this->_routeManager->getRouteTrack($postId);
 

@@ -51,7 +51,9 @@
 				<span class="abp01-techbox-title-content"><?php echo esc_html__('Trip summary', 'abp01-trip-summary'); ?></span>
 				<span class="abp01-techbox-title-content-sub">Test subtitle</span>
 			</div>
-			<span class="abp01-techbox-badge">Badge - type</span>
+			<?php if (!empty($data->info->typeLabel)): ?>
+				<span class="abp01-techbox-badge"><?php echo esc_html($data->info->typeLabel); ?></span>
+			<?php endif; ?>
 		</div>
 		<div id="abp01-techbox-wrapper" class="abp01-techbox-wrapper">
 			<?php if ($totalTabCount > 0): ?>

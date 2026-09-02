@@ -94,7 +94,7 @@ class FrontendThemeDecoratorTests extends WP_UnitTestCase {
     }
 
     private function _assertFrontendMainStyledEnqueuedWithCorrectUrl() {
-        $expectendFrontendMainStyleUrl = $this->_getExpendedPluginThemeCssFileUrl('abp01-frontend-main.css');
+        $expectendFrontendMainStyleUrl = $this->_getExpendedPluginThemeCssFileUrl('abp01-frontend-main-modern.css');
         $actualFrontendMainStyleUrl = $this->_getEnqueuedStyleUrl(Abp01_Includes::STYLE_FRONTEND_MAIN);
         $this->assertEquals($expectendFrontendMainStyleUrl, $actualFrontendMainStyleUrl);
     }

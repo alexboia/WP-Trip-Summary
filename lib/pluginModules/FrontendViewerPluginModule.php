@@ -29,6 +29,8 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
@@ -74,7 +76,7 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 		Abp01_Settings $settings, 
 		Abp01_NonceProvider_ReadTrackData $readTrackDataNonceProvider, 
 		Abp01_NonceProvider_DownloadTrackData $downloadTrackDataNonceProvider, 
-		Abp01_Env $env, 
+		Env $env, 
 		Abp01_Auth $auth) {
 
 		parent::__construct($env, $auth);
@@ -188,7 +190,7 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 		add_shortcode(ABP01_VIEWER_SHORTCODE, array($this, 'renderViewerShortCode'));
 	}
 
-	public function addViewerToContent($postContent) {
+	public function addViewerToContent(?string $postContent): string|array|null {
 		$postContent = wpautop($postContent);
 
 		if ($this->_shouldAddViewer()) {
@@ -202,7 +204,7 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 		return $postContent;
 	}
 
-	private function _getViewerData($postId) {
+	private function _getViewerData($postId): stdClass {
 		$viewerData = $this->_viewerDataSource
 			->getTripSummaryViewerData($postId);
 

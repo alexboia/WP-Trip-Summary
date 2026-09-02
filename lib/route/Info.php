@@ -157,11 +157,11 @@ class Abp01_Route_Info {
 		)
 	);
 
-	public static function isTypeSupported($type) {
+	public static function isTypeSupported(string $type): bool {
 		return in_array($type, self::getSupportedTypes());
 	}
 
-	public static function getSupportedTypes() {
+	public static function getSupportedTypes(): array {
 		return array(
 			self::BIKE,
 			self::TRAIN_RIDE,
@@ -169,7 +169,7 @@ class Abp01_Route_Info {
 		);
 	}
 
-	public static function fromJson($type, $json) {
+	public static function fromJson(string $type, ?string $json): ?Abp01_Route_Info {
 		if (empty($json)) {
 			throw new InvalidArgumentException();
 		}
@@ -187,18 +187,18 @@ class Abp01_Route_Info {
 		return $routeDetails;
 	}
 
-	public function __construct($type) {
+	public function __construct(?string $type) {
 		if (empty($type) || !self::isTypeSupported($type)) {
 			throw new InvalidArgumentException();
 		}
 		$this->_type = $type;
 	}
 
-	public static function fromType($type) {
+	public static function fromType(?string $type): Abp01_Route_Info {
 		return new self($type);
 	}
 
-	private function _filterFieldValue($field, $value) {
+	private function _filterFieldValue(?string $field, mixed $value): mixed {
 		if (!$this->isFieldValid($field)) {
 			return null;
 		}
@@ -234,7 +234,7 @@ class Abp01_Route_Info {
 		);
 	}
 
-	private static function _getValidFieldsForType($type) {
+	private static function _getValidFieldsForType($type): ?array {
 		if (!self::isTypeSupported($type)) {
 			return null;
 		}
@@ -258,17 +258,17 @@ class Abp01_Route_Info {
 		}
 	}
 
-	public function isFieldValid($field) {
+	public function isFieldValid(string $field): bool {
 		$validFields = $this->_getValidFields();
 		return array_key_exists($field, $validFields);
 	}
 
-	public function __set($k, $v) {
+	public function __set(string $k, mixed $v) {
 		$this->_assertKeyValid($k);
 		$this->_data[$k] = $this->_filterFieldValue($k, $v);
 	}
 
-	public function __get($k) {
+	public function __get(string $k): mixed {
 		$this->_assertKeyValid($k);
 		return isset($this->_data[$k]) ? $this->_data[$k] : null;
 	}
@@ -284,7 +284,7 @@ class Abp01_Route_Info {
 		}
 	}
 
-	public function removeLookupValue($lookupCategory, $lookupId) {
+	public function removeLookupValue(string $lookupCategory, mixed $lookupId) {
 		foreach (self::$_fields[$this->_type] as $fieldName => $def) {
 			if (isset($def['lookup']) && $def['lookup'] == $lookupCategory) {
 				$currentValue = isset($this->_data[$fieldName]) 
@@ -310,11 +310,11 @@ class Abp01_Route_Info {
 		}
 	}
 
-	public function isLookupKey($field) {
+	public function isLookupKey(string $field): bool {
 		return !empty($this->getLookupKey($field));
 	}
 
-	public static function getAllLookupFieldsForType($type) {
+	public static function getAllLookupFieldsForType(?string $type): ?array {
 		if (empty($type) || !self::isTypeSupported($type))  {
 			return null;
 		}
@@ -334,7 +334,7 @@ class Abp01_Route_Info {
 		return self::getAllLookupFieldsForType($this->_type);
 	}
 
-	public static function getLookupKeyForType($type, $field) {
+	public static function getLookupKeyForType(?string $type, ?string $field): mixed {
 		if (empty($type) || !self::isTypeSupported($type) || empty($field))  {
 			return null;
 		}
@@ -350,15 +350,15 @@ class Abp01_Route_Info {
 			: null;
 	}
 
-	public function getLookupKey($field) {
+	public function getLookupKey(?string $field): mixed {
 		return self::getLookupKeyForType($this->_type, $field);
 	}
 
-	public function getData() {
+	public function getData(): array {
 		return $this->_data;
 	}
 
-	public function getLookupData() {
+	public function getLookupData(): array {
 		$lookupData = array();
 		foreach ($this->getData() as $field => $value) {
 			if ($this->isLookupKey($field)) {
@@ -368,27 +368,27 @@ class Abp01_Route_Info {
 		return $lookupData;
 	}
 
-	public function isBikingTour() {
+	public function isBikingTour(): bool {
 		return $this->_type == self::BIKE;
 	}
 
-	public function isHikingTour() {
+	public function isHikingTour(): bool {
 		return $this->_type == self::HIKING;
 	}
 
-	public function isTrainRideTour() {
+	public function isTrainRideTour(): bool {
 		return $this->_type == self::TRAIN_RIDE;
 	}
 
-	public function getValidFieldNamesForType($type) {
+	public function getValidFieldNamesForType(?string $type): array {
 		return array_keys(self::_getValidFieldsForType($type));
 	}
 
-	public function getValidFieldNames() {
+	public function getValidFieldNames(): array {
 		return array_keys($this->_getValidFields());
 	}
 
-	public static function getValidFieldsForType($type) {
+	public static function getValidFieldsForType(?string $type): ?array {
 		return self::_getValidFieldsForType($type);
 	}
 

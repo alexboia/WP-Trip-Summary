@@ -41,7 +41,7 @@ if (!function_exists('abp01_extract_value_from_frontend_data')) {
 	 * @param string $field The field to extract from $data->info
 	 * @return mixed|null The field value or null if not found
 	 */
-	function abp01_extract_value_from_frontend_data($data, $field) {
+	function abp01_extract_value_from_frontend_data(stdClass $data, string $field): mixed {
 		if ($data->info && isset($data->info->$field)) {
 			return $data->info->$field;
 		} else {
@@ -51,7 +51,7 @@ if (!function_exists('abp01_extract_value_from_frontend_data')) {
 }
 
 if (!function_exists('abp01_extract_displayable_info_item_value')) {
-	function abp01_extract_displayable_info_item_value($rawValue) {
+	function abp01_extract_displayable_info_item_value(mixed $rawValue): string {
 		return esc_html(is_object($rawValue) 
 			? $rawValue->label 
 			: $rawValue);
@@ -59,7 +59,7 @@ if (!function_exists('abp01_extract_displayable_info_item_value')) {
 }
 
 if (!function_exists('abp01_render_info_item_value_part')) {
-	function abp01_render_info_item_value_part($fieldValue, $valueIndex, $showCount, $layoutCssClass) {
+	function abp01_render_info_item_value_part(?string $fieldValue, int $valueIndex, int $showCount, ?string $layoutCssClass): string {
 		$shouldBeHidden = $showCount > 0 && ($valueIndex >= $showCount);
 
 		$displayCssClass = $shouldBeHidden 
@@ -81,7 +81,7 @@ if (!function_exists('abp01_render_info_item_value_part')) {
 }
 
 if (!function_exists('abp01_render_info_item_value_more_link')) {
-	function abp01_render_info_item_value_more_link($countRemaining, $layoutCssClass) {
+	function abp01_render_info_item_value_more_link(int $countRemaining, ?string $layoutCssClass): string {
 		return sprintf(
 				'<span class="abp01-field-value-multi %s abp01-field-value-show-more">'  
 					. '<span class="abp01-field-value-show-more-txt">%s</span>'  
@@ -95,7 +95,7 @@ if (!function_exists('abp01_render_info_item_value_more_link')) {
 }
 
 if (!function_exists('abp01_format_info_item_single_value')) {
-	function abp01_format_info_item_single_value($value, ?string $suffix, stdClass $settings) {
+	function abp01_format_info_item_single_value(string|stdClass|null $value, ?string $suffix, stdClass $settings) {
 		$fieldValue = abp01_extract_displayable_info_item_value($value);
 		if (!empty($suffix)) {
 			$fieldValue .= ' ' . $suffix;
@@ -153,7 +153,7 @@ if (!function_exists('abp01_format_info_item_value')) {
 	 * @param string $suffix The suffix to append to the formatted value
 	 * @return string The formatted value
 	 */
-	function abp01_format_info_item_value($value, $suffix, stdClass $settings) {
+	function abp01_format_info_item_value(mixed $value, ?string $suffix, stdClass $settings) {
 		$fieldValueHtml = '';
 
 		if (!empty($value)) {
@@ -356,7 +356,7 @@ if (!function_exists('abp01_get_info_item_icons')) {
 }
 
 if (!function_exists('abp01_frontend_viewer_has_additional_tabs')) {
-	function abp01_frontend_viewer_has_additional_tabs(stdClass $data) {
+	function abp01_frontend_viewer_has_additional_tabs(stdClass $data): bool {
 		$hasAdditionalTabs = !empty($data->additionalTabs) 
 			&& is_array($data->additionalTabs);
 
@@ -365,7 +365,7 @@ if (!function_exists('abp01_frontend_viewer_has_additional_tabs')) {
 }
 
 if (!function_exists('abp01_count_frontend_viewer_tabs')) {
-	function abp01_count_frontend_viewer_tabs(stdClass $data) {
+	function abp01_count_frontend_viewer_tabs(stdClass $data): int {
 		$totalTabCount = 0;
 		$hasAdditionalTabs = abp01_frontend_viewer_has_additional_tabs($data);
 

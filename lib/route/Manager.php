@@ -42,9 +42,14 @@ interface Abp01_Route_Manager {
 
 	function deleteRouteTrack($postId);
 
+	/**
+	 * @param int $postId 
+	 * @return Abp01_Route_Info
+	 */
 	function getRouteInfo($postId);
 
 	/**
+	 * @param int $postId
 	 * @return Abp01_Route_Track
 	 */
 	function getRouteTrack($postId);
