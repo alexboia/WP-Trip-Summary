@@ -29,26 +29,22 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
 class Abp01_Installer_Step_UninstallSchema implements Abp01_Installer_Step {
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+	private Env $_env;
 
-	/**
-	 * @var Exception|\WP_Error|null
-	 */
-	private $_lastError;
+	private Exception|\WP_Error|null $_lastError;
 
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_env = $env;
 	}
 
-    public function execute() { 
+    public function execute(): bool { 
 		$this->_lastError = null;
 		return $this->_uninstallSchema();
 	}
@@ -64,11 +60,11 @@ class Abp01_Installer_Step_UninstallSchema implements Abp01_Installer_Step {
 		return $result;
 	}
 
-    public function getLastError() { 
+    public function getLastError(): Exception|WP_Error|null { 
 		return $this->_lastError;
 	}
 
-	private function _getTablesToUninstall() {
+	private function _getTablesToUninstall(): array {
 		$ownTables = array(
 			$this->_getRouteDetailsLookupTableName(),
 			$this->_getRouteDetailsTableName(),
@@ -93,7 +89,7 @@ class Abp01_Installer_Step_UninstallSchema implements Abp01_Installer_Step {
 		return $finalTables;
 	}
 
-	private function _dropTable($tableName) {
+	private function _dropTable(string $tableName): bool {
 		$result = false;
 
 		try {
@@ -107,27 +103,27 @@ class Abp01_Installer_Step_UninstallSchema implements Abp01_Installer_Step {
 		return $result;
 	}
 
-	private function _getRouteTrackTableName() {
+	private function _getRouteTrackTableName(): string {
 		return $this->_env->getRouteTrackTableName();
 	}
 
-	private function _getRouteDetailsTableName() {
+	private function _getRouteDetailsTableName(): string {
 		return $this->_env->getRouteDetailsTableName();
 	}
 
-	private function _getLookupLangTableName() {
+	private function _getLookupLangTableName(): string {
 		return $this->_env->getLookupLangTableName();
 	}
 
-	private function _getLookupTableName() {
+	private function _getLookupTableName(): string {
 		return $this->_env->getLookupTableName();
 	}
 
-	private function _getRouteDetailsLookupTableName() {
+	private function _getRouteDetailsLookupTableName(): string {
 		return $this->_env->getRouteDetailsLookupTableName();
 	}
 
-	private function _getRouteLogTableName() {
+	private function _getRouteLogTableName(): string {
 		return $this->_env->getRouteLogTableName();
 	}
 }

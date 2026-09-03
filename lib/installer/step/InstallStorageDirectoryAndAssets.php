@@ -29,29 +29,31 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
 class Abp01_Installer_Step_InstallStorageDirectoryAndAssets implements Abp01_Installer_Step {
-	private $_lastError = null;
+	private mixed $_lastError = null;
 
-	private $_rootStorageDir;
+	private string $_rootStorageDir;
 
-	private $_tracksStorageDir;
+	private string $_tracksStorageDir;
 
-	private $_cacheStorageDir;
+	private string $_cacheStorageDir;
 
-	private $_logStorageDir;
+	private string $_logStorageDir;
 
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_rootStorageDir = $env->getRootStorageDir();
 		$this->_tracksStorageDir = $env->getTracksStorageDir();
 		$this->_cacheStorageDir = $env->getCacheStorageDir();
 		$this->_logStorageDir = $env->getLogStorageDir();
 	}
 
-    public function execute() { 
+    public function execute(): bool { 
 		$result = false;
 		if ($this->_ensureStorageDirectories()) {
 			$result = $this->_installStorageDirsSecurityAssets();
@@ -59,7 +61,7 @@ class Abp01_Installer_Step_InstallStorageDirectoryAndAssets implements Abp01_Ins
 		return $result;
 	}
 
-	private function _ensureStorageDirectories() {
+	private function _ensureStorageDirectories(): bool {
 		$service = new Abp01_Installer_Service_CreateStorageDirectories($this->_rootStorageDir, 
 			$this->_tracksStorageDir, 
 			$this->_cacheStorageDir,
@@ -67,7 +69,7 @@ class Abp01_Installer_Step_InstallStorageDirectoryAndAssets implements Abp01_Ins
 		return $service->execute();
 	}
 
-	private function _installStorageDirsSecurityAssets() {
+	private function _installStorageDirsSecurityAssets(): bool {
 		$service = new Abp01_Installer_Service_CreateStorageDirsSecurityAssets($this->_rootStorageDir, 
 			$this->_tracksStorageDir, 
 			$this->_cacheStorageDir,
@@ -76,7 +78,7 @@ class Abp01_Installer_Step_InstallStorageDirectoryAndAssets implements Abp01_Ins
 		return $service->execute();
 	}
 
-    public function getLastError() { 
+    public function getLastError(): mixed { 
 		return $this->_lastError;
 	}
 }

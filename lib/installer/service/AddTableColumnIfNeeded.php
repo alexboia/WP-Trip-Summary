@@ -29,28 +29,32 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
 class Abp01_Installer_Service_AddTableColumnIfNeeded {
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+	private Env $_env;
 
-	/**
-	 * @var \Exception|\WP_Error|null
-	 */
-	private $_lastError;
+	private \Exception|\WP_Error|null $_lastError;
 
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_env = $env;
 	}
 
-	public function execute($tableName, 
-		$columnName, 
-		array $properties = array()) { 
+	/**
+	 * @param array{
+	 *     columnType?: string,
+	 *     notNull?: bool,
+	 *     defaultValue?: mixed,
+	 *     afterColumn?: string
+	 * } $properties
+	 */
+	public function execute(string $tableName,
+		string $columnName,
+		array $properties = array()): bool {
 		$this->_lastError = null;
 		
 		$columnType = !empty($properties['columnType'])
@@ -77,12 +81,12 @@ class Abp01_Installer_Service_AddTableColumnIfNeeded {
 			$afterColumn);
 	}
 
-	private function _addColumnToTable($tableName, 
-		$columnName, 
-		$columnType, 
-		$notNull, 
-		$defaultValue, 
-		$afterColumn) {
+	private function _addColumnToTable(string $tableName,
+		string $columnName,
+		string $columnType,
+		bool $notNull,
+		mixed $defaultValue,
+		string|false $afterColumn): bool {
 		$result = false;
 
 		try {
@@ -108,7 +112,7 @@ class Abp01_Installer_Service_AddTableColumnIfNeeded {
 		return $result;
 	}
 
-	private function _columnExists($tableName, $columnName) {
+	private function _columnExists(string $tableName, string $columnName): bool {
 		$metaDb = $this->_env
 			->getMetaDb();
 
@@ -122,12 +126,12 @@ class Abp01_Installer_Service_AddTableColumnIfNeeded {
 			> 0;
 	}
 
-	private function _buildAddColumnSql($tableName, 
-		$columnName, 
-		$columnType, 
-		$notNull, 
-		$defaultValue, 
-		$afterColumn) {
+	private function _buildAddColumnSql(string $tableName,
+		string $columnName,
+		string $columnType,
+		bool $notNull,
+		mixed $defaultValue,
+		string|false $afterColumn): string {
 		$addColumnSql = 
 			"ALTER TABLE `" . $tableName . 
 			"` COLUMN `" . $columnName . 
@@ -152,7 +156,7 @@ class Abp01_Installer_Service_AddTableColumnIfNeeded {
 		return $addColumnSql;
 	}
 
-	public function getLastError() { 
+	public function getLastError(): \Exception|\WP_Error|null {
 		return $this->_lastError;
 	}
 }

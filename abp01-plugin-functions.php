@@ -65,9 +65,9 @@ function abp01_init_legacy_class_aliases(): void {
 		'Abp01_Exception');
 }
 
-function abp01_legacy_class_alias( string $newClass,string $legacyClass): void {
+function abp01_legacy_class_alias (string $newClass,string $legacyClass): void {
     if (!class_exists($legacyClass, false)) {
-        class_alias($newClass, $legacyClass);
+        class_alias($newClass, $legacyClass, true);
     }
 }
 

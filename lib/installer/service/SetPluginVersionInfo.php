@@ -34,13 +34,13 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Installer_Service_SetPluginVersionInfo {
-	private $_version;
+	private string $_version;
 
-	public function __construct($version) {
+	public function __construct(string $version) {
 		$this->_version = $version;
 	}
 
-	public function execute() {
+	public function execute(): bool {
 		update_option(Abp01_Installer_Constants::OPT_VERSION, $this->_version);
 		return true;
 	}

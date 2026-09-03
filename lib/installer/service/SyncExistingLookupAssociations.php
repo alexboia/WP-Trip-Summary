@@ -29,21 +29,20 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
 class Abp01_Installer_Service_SyncExistingLookupAssociations {
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+	private Env $_env;
 	
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_env = $env;
 	}
 
-	public function execute() {
+	public function execute(): bool {
 		$db = $this->_env->getDb();
 		if (!$db) {
 			return false;
@@ -151,7 +150,7 @@ class Abp01_Installer_Service_SyncExistingLookupAssociations {
 		return true;
 	}
 
-	private function _addLookupAssociation($db, $tableName, $postId, $lookupId) {
+	private function _addLookupAssociation(MysqliDb $db, string $tableName, int $postId, int $lookupId): void {
 		if (is_array($lookupId)) {
 			foreach ($lookupId as $id) {
 				$this->_addLookupAssociation($db, $tableName, $postId, $id);
@@ -164,11 +163,11 @@ class Abp01_Installer_Service_SyncExistingLookupAssociations {
 		}
 	}
 
-	private function _getRouteDetailsTableName() {
+	private function _getRouteDetailsTableName(): string {
 		return $this->_env->getRouteDetailsTableName();
 	}
 
-	private function _getRouteDetailsLookupTableName() {
+	private function _getRouteDetailsLookupTableName(): string {
 		return $this->_env->getRouteDetailsLookupTableName();
 	}
 }

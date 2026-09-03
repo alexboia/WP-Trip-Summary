@@ -29,6 +29,8 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
@@ -37,22 +39,16 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
  * @package WP-Trip-Summary
  */
 abstract class Abp01_PluginModules_PluginModule {
-	/**
-	 * @var Abp01_Auth
-	 */
-	protected $_auth;
+	protected Abp01_Auth $_auth;
 
-	/**
-	 * @var Abp01_Env
-	 */
-	protected $_env;
+	protected Env $_env;
 
-	public function __construct(Abp01_Env $env, Abp01_Auth $auth) {
+	public function __construct(Env $env, Abp01_Auth $auth) {
 		$this->_env = $env;
 		$this->_auth = $auth;
 	}
 
-	protected function _cantEditPostTripSummary($post): bool {
+	protected function _cantEditPostTripSummary(mixed $post): bool {
 		if (empty($post)) {
 			throw new InvalidArgumentException('Post information may not be empty!');
 		}
@@ -105,7 +101,7 @@ abstract class Abp01_PluginModules_PluginModule {
 		return abp01_get_plugin()->getLookupForCurrentLang();
 	}
 
-	protected function _formatDbDate($dbDate) {
+	protected function _formatDbDate(?string $dbDate): string|int|false {
 		return mysql2date(get_option('date_format'), $dbDate, true);
 	}
 

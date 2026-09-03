@@ -40,36 +40,18 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
  */
 class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules_PluginModule {
 	const FRONTEND_VIEWER_CONTENT_HOOK_PRIORITY = 0;
-	
-	/**
-	 * @var Abp01_Viewer
-	 */
-	private $_viewer;
 
-	/**
-	 * @var Abp01_Settings
-	 */
-	private $_settings;
+	private Abp01_Viewer $_viewer;
 
-	/**
-	 * @var Abp01_NonceProvider_ReadTrackData
-	 */
-	private $_readTrackDataNonceProvider;
+	private Abp01_Settings $_settings;
 
-	/**
-	 * @var Abp01_NonceProvider_DownloadTrackData
-	 */
-	private $_downloadTrackDataNonceProvider;
+	private Abp01_NonceProvider_ReadTrackData $_readTrackDataNonceProvider;
 
-	/**
-	 * @var Abp01_Viewer_DataSource
-	 */
-	private $_viewerDataSource;
+	private Abp01_NonceProvider_DownloadTrackData $_downloadTrackDataNonceProvider;
 
-	/**
-	 * @var Abp01_TripSummaryShortcodeBlockType
-	 */
-	private $_tripSummaryShortCodeBlockType;
+	private Abp01_Viewer_DataSource $_viewerDataSource;
+
+	private Abp01_TripSummaryShortcodeBlockType $_tripSummaryShortCodeBlockType;
 
 	public function __construct(Abp01_Viewer_DataSource $viewerDataSource, 
 		Abp01_Viewer $viewer, 
@@ -128,7 +110,7 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 		}
 	}
 
-	private function _shouldEnqueueWebPageAssets() {
+	private function _shouldEnqueueWebPageAssets(): bool {
 		static $addViewerScripts = null;
 	
 		if ($addViewerScripts === null) {
@@ -142,11 +124,11 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 		return $addViewerScripts;
 	}
 
-	private function _shouldAddViewer() {
+	private function _shouldAddViewer(): bool {
 		return is_single() || is_page();
 	}
 
-	private function _postHasAnyTripSummaryData($postId) {
+	private function _postHasAnyTripSummaryData(int $postId): bool {
 		$hasData = false;
 		$statusInfo = $this->_viewerDataSource->getTripSummaryStatusInfo($postId);
 	
@@ -164,7 +146,7 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 		}
 	}
 
-	private function _getFrontendViewerScriptTranslations() {
+	private function _getFrontendViewerScriptTranslations(): array {
 		return Abp01_TranslatedScriptMessages::getFrontendViewerScriptTranslations();
 	}
 
@@ -204,7 +186,7 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 		return $postContent;
 	}
 
-	private function _getViewerData($postId): stdClass {
+	private function _getViewerData(int $postId): stdClass {
 		$viewerData = $this->_viewerDataSource
 			->getTripSummaryViewerData($postId);
 
@@ -226,14 +208,14 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 		return $viewerData;
 	}
 
-	private function _getAdditionalTabs($postId) {
+	private function _getAdditionalTabs(int $postId): ?array {
 		$additionalTabs = array();
 		return apply_filters('abp01_additional_frontend_viewer_tabs', 
 			$additionalTabs, 
 			$postId);
 	}
 
-	public function renderViewerShortCode($attributes) {
+	public function renderViewerShortCode($attributes): ?string {
 		$content = '';
 		$postId = $this->_getCurrentPostId();
 	

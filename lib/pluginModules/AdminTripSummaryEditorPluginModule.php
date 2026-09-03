@@ -29,6 +29,8 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
@@ -47,70 +49,32 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 
 	const LAUNCHER_METABOX_PRIORITY = 'high';
 	
-	/**
-	 * @var Abp01_Route_Manager
-	 */
-	private $_routeManager;
+	private Abp01_Route_Manager $_routeManager;
 
-	/**
-	 * @var Abp01_Route_Track_Processor
-	 */
-	private $_routeTrackProcessor;
+	private Abp01_Route_Track_Processor $_routeTrackProcessor;
 
-	/**
-	 * @var Abp01_NonceProvider_ReadTrackData
-	 */
-	private $_readTrackDataNonceProvider;
+	private Abp01_NonceProvider_ReadTrackData $_readTrackDataNonceProvider;
 
-	/**
-	 * @var Abp01_UrlHelper
-	 */
-	private $_urlHelper;
 
-	/**
-	 * @var Abp01_Viewer_DataSource_Cache
-	 */
-	private $_viewerDataSourceCache;
+	private Abp01_UrlHelper $_urlHelper;
 
-	/**
-	 * @var Abp01_View
-	 */
-	private $_view;
+	private Abp01_Viewer_DataSource_Cache $_viewerDataSourceCache;
 
-	/**
-	 * @var Abp01_AdminAjaxAction
-	 */
-	private $_saveRouteInfoAjaxAction;
+	private Abp01_View $_view;
 
-	/**
-	 * @var Abp01_AdminAjaxAction
-	 */
-	private $_removeRouteInfoAjaxAction;
+	private Abp01_AdminAjaxAction $_saveRouteInfoAjaxAction;
 
-	/**
-	 * @var Abp01_AdminAjaxAction
-	 */
-	private $_uploadRouteTrackAjaxAction;
+	private Abp01_AdminAjaxAction $_removeRouteInfoAjaxAction;
 
-	/**
-	 * @var Abp01_AdminAjaxAction
-	 */
-	private $_removeRouteTrackAjaxAction;
+	private Abp01_AdminAjaxAction $_uploadRouteTrackAjaxAction;
 
-	/**
-	 * @var Abp01_Transfer_Uploader_FileValidatorProvider
-	 */
-	private $_fileValidatorProvider;
+	private Abp01_AdminAjaxAction $_removeRouteTrackAjaxAction;
 
-	/**
-	 * @var Abp01_TripSummaryShortcodeBlockType
-	 */
-	private $_tripSummaryShortCodeBlockType;
+	private Abp01_Transfer_Uploader_FileValidatorProvider $_fileValidatorProvider;
 
-	/**
-	 * @var Abp01_Logger
-	 */
-	private $_logger;
+	private Abp01_TripSummaryShortcodeBlockType $_tripSummaryShortCodeBlockType;
+
+	private Abp01_Logger $_logger;
 
 	public function __construct(Abp01_Route_Manager $routeManager,
 		Abp01_Route_Track_Processor $routeTrackProcessor,
@@ -120,7 +84,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		Abp01_View $view,
 		Abp01_UrlHelper $urlHelper,
 		Abp01_Logger $logger,
-		Abp01_Env $env, 
+		Env $env, 
 		Abp01_Auth $auth) {
 		parent::__construct($env, $auth);
 
@@ -203,7 +167,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		}
 	}
 
-	private function _shouldEnqueueWebPageAssets($strictPostTypeCheck) {
+	private function _shouldEnqueueWebPageAssets(bool $strictPostTypeCheck) {
 		$isEditingPost = $strictPostTypeCheck
 			? $this->_env->isEditingWpPost(Abp01_AvailabilityHelper::getTripSummaryAvailableForPostTypes()) 
 			: $this->_env->isEditingWpPost();
@@ -212,7 +176,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 			&& $this->_canEditCurrentPostTripSummary();
 	}
 
-	private function _isClassicEditorActive() {
+	private function _isClassicEditorActive(): bool {
 		return $this->_env->isPluginActive(self::CLASSIC_EDITOR_PLUGIN_SLUG);
 	}
 
@@ -222,7 +186,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		}
 	}
 
-	private function _canRegisterWpBlockTypes() {
+	private function _canRegisterWpBlockTypes(): bool {
 		return function_exists('register_block_type');
 	}
 
@@ -250,7 +214,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		}
 	}
 
-	private function _getAdminTripSummaryEditorScriptTranslations() {
+	private function _getAdminTripSummaryEditorScriptTranslations(): array {
 		return Abp01_TranslatedScriptMessages::getAdminTripSummaryEditorScriptTranslations();
 	}
 
@@ -266,7 +230,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 			2);
 	}
 
-	public function registerClassicEditorButtons($buttons) {
+	public function registerClassicEditorButtons(?array $buttons): ?array {
 		if ($this->_isClassicEditorActive()) {
 			$buttons = array_merge($buttons, array(
 				'abp01_insert_viewer_shortcode'
@@ -276,21 +240,21 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		return $buttons;
 	}
 
-	public function registerClassicEditorPlugins($plugins) {
+	public function registerClassicEditorPlugins(?array $plugins): ?array {
 		if ($this->_isClassicEditorActive()) {
 			$plugins['abp01_viewer_shortcode'] = Abp01_Includes::getClassicEditorViewerShortcodePluginUrl();
 		}
 		return $plugins;
 	}
 
-	public function registerClassicEditorSettings($settings) {
+	public function registerClassicEditorSettings(?array $settings): ?array {
 		if ($this->_isClassicEditorActive()) {
 			$settings['abp01_viewer_short_code_name'] = ABP01_VIEWER_SHORTCODE;
 		}
 		return $settings;
 	}
 
-	public function registerAdminEditorLauncherMetaboxes($postType, $post) {
+	public function registerAdminEditorLauncherMetaboxes(?string $postType, mixed $post) {
 		if ($this->_shouldRegisterAdminEditorLauncherMetaboxes($postType, $post)) {
 			add_meta_box('abp01-enhanced-editor-launcher-metabox', 
 				__('Trip summary', 'abp01-trip-summary'),
@@ -306,12 +270,12 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		}
 	}
 
-	private function _shouldRegisterAdminEditorLauncherMetaboxes($postType, $post) {
+	private function _shouldRegisterAdminEditorLauncherMetaboxes(?string $postType, mixed $post): bool {
 		return Abp01_AvailabilityHelper::isEditorAvailableForPostType($postType) 
 			&& $this->_cantEditPostTripSummary($post);
 	}
 
-	public function addAdminEditor($post, $args) {
+	public function addAdminEditor(mixed $post, $args) {
 		if ($this->_cantEditPostTripSummary($post)) {
 			$this->_addAdminEditorForm($post, $args);
 			$this->_addAdminEditorLauncher($post, $args);
@@ -387,15 +351,15 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		echo $this->_view->renderAdminTripSummaryEditor($data);
 	}
 
-	private function _createLookupForCurrentLang() {
+	private function _createLookupForCurrentLang(): Abp01_Lookup {
         return new Abp01_Lookup();
     }
 
-	private function _constructAdminLookupUrl($lookupType) {
+	private function _constructAdminLookupUrl(?string $lookupType): string {
 		return $this->_urlHelper->constructAdminLookupUrl($lookupType);
 	}
 
-	private function _addAdminEditorLauncher($post, $args) {
+	private function _addAdminEditorLauncher(mixed $post, mixed $args) {
 		$postId = intval($post->ID);
 
 		$data = new stdClass();
@@ -407,7 +371,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		echo $this->_view->renderAdminTripSummaryEditorLauncherMetabox($data);
 	}
 
-	public function saveRouteInfo() {
+	public function saveRouteInfo(): stdClass {
 		$postId = $this->_getCurrentPostId();
 		$type = Abp01_InputFiltering::getPOSTValueOrDie('type');
 		$context = array(
@@ -444,7 +408,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		return $response;
 	}
 
-	public function removeRouteInfo() {
+	public function removeRouteInfo(): stdClass {
 		$postId = $this->_getCurrentPostId();
 		$response = abp01_get_ajax_response();
 		$context = array(
@@ -472,7 +436,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		return $response;
 	}
 
-	public function uploadRouteTrack() {
+	public function uploadRouteTrack(): stdClass {
 		$postId = $this->_getCurrentPostId();
 		$uploader = $this->_createUploader($postId);
 		$context = array(
@@ -502,13 +466,13 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		return $response;
 	}
 
-	private function _createUploader($destination) {
-		$config = $this->_constructUploaderConfig($destination);
+	private function _createUploader(int $postId): Abp01_Transfer_Uploader {
+		$config = $this->_constructUploaderConfig($postId);
 		$uploader = new Abp01_Transfer_Uploader($this->_logger, $config);
 		return $uploader;
 	}
 
-	private function _constructUploaderConfig($postId) {
+	private function _constructUploaderConfig(int $postId): Abp01_Transfer_Uploader_Config {
 		$fileNameProvider = $this->_constructFileNameProvider($postId);
 
 		if (ABP01_TRACK_UPLOAD_CHUNK_SIZE > 0) {
@@ -528,7 +492,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		return $config;
 	}
 
-	private function _constructFileNameProvider($postId) {
+	private function _constructFileNameProvider(int $postId): Abp01_Transfer_Uploader_FileNameProvider_Track {
 		return new Abp01_Transfer_Uploader_FileNameProvider_Track($this->_routeTrackProcessor, 
 			$postId);
 	}
@@ -545,7 +509,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 			: 0;
 	}
 
-	private function _processUploadedFile($postId, $uploadedTrackFilePath, $uploadedTrackFileMimeType) {
+	private function _processUploadedFile(int $postId, ?string $uploadedTrackFilePath, ?string $uploadedTrackFileMimeType): int {
 		$status = Abp01_Transfer_Uploader::UPLOAD_OK;
 
 		try {
@@ -569,7 +533,7 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 		return $status;
 	}
 
-	public function removeRouteTrack() {
+	public function removeRouteTrack(): stdClass {
 		$postId = $this->_getCurrentPostId();
 		$response = abp01_get_ajax_response();
 		$context = array(

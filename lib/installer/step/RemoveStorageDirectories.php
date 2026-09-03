@@ -29,26 +29,25 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
 class Abp01_Installer_Step_RemoveStorageDirectories implements Abp01_Installer_Step {
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+	private Env $_env;
 
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_env = $env;
 	}
 
-    public function execute() { 
+    public function execute(): bool { 
 		$service = new Abp01_Installer_Service_RemoveStorageDirectories($this->_env);
 		return $service->execute();
 	}
 
-    public function getLastError() { 
+    public function getLastError(): null { 
 		return null;
 	}
 }

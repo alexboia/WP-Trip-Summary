@@ -29,29 +29,25 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
 class Abp01_Installer_Service_InstallLookupDataTranslationsForLanguage {
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+	private Env $_env;
 
-	private $_lastError = null;
+	private LibXMLError|bool|null $_lastError = null;
 
-	/**
-	 * @var Abp01_Installer_DataProvider_LookupDefinitions
-	 */
-	private $_lookupDataProvider;
+	private Abp01_Installer_DataProvider_LookupDefinitions $_lookupDataProvider;
 
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_env = $env;
 		$this->_lookupDataProvider = new Abp01_Installer_DataProvider_LookupDefinitions($env);
 	}
 
-	public function execute($langCode) {
+	public function execute(string $langCode): bool {
 		$db = $this->_env->getDb();
 		$table = $this->_getLookupTableName();
 		$langTable = $this->_getLookupLangTableName();
@@ -88,21 +84,21 @@ class Abp01_Installer_Service_InstallLookupDataTranslationsForLanguage {
 		return true;
 	}
 
-	private function _readLookupDefinitions() {
+	private function _readLookupDefinitions(): ?array {
 		$lookupDefinitions = $this->_lookupDataProvider->read();
 		$this->_lastError = $this->_lookupDataProvider->getLastError();
 		return $lookupDefinitions;
 	}
 
-	private function _getLookupTableName() {
+	private function _getLookupTableName(): string {
 		return $this->_env->getLookupTableName();
 	}
 
-	private function _getLookupLangTableName() {
+	private function _getLookupLangTableName(): string {
 		return $this->_env->getLookupLangTableName();
 	}
 
-	public function getLastError() {
+	public function getLastError(): LibXMLError|bool|null {
 		return $this->_lastError;
 	}
 }

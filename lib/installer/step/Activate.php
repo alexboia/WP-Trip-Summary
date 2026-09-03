@@ -29,33 +29,25 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
 class Abp01_Installer_Step_Activate implements Abp01_Installer_Step {
-	/**
-	 * @var \Exception|\WP_Error
-	 */
-	private $_lastError;
+	private \Exception|\WP_Error|null $_lastError;
 
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+	private Env $_env;
 
-	/**
-	 * @var bool
-	 */
-	private $_installLookupData;
+	private bool $_installLookupData;
 
-	public function __construct(Abp01_Env $env, $installLookupData) {
+	public function __construct(Env $env, bool $installLookupData) {
 		$this->_env = $env;
-		$this->_installLookupData = 
-			($installLookupData === true);
+		$this->_installLookupData = ($installLookupData === true);
 	}
 
-    public function execute() { 
+    public function execute(): bool { 
 		$this->_reset();
 		try {
 			if (!$this->_installStorageDirectoryAndAssets()) {
@@ -89,23 +81,23 @@ class Abp01_Installer_Step_Activate implements Abp01_Installer_Step {
 		return false;
 	}
 
-	private function _installStorageDirectoryAndAssets() {
+	private function _installStorageDirectoryAndAssets(): bool {
 		$step = new Abp01_Installer_Step_InstallStorageDirectoryAndAssets($this->_env);
 		return $this->_executeStep($step);
 	}
 
-	private function _executeStep(Abp01_Installer_Step $step) {
+	private function _executeStep(Abp01_Installer_Step $step): mixed {
 		$result = $step->execute();
 		$this->_lastError = $step->getLastError();
 		return $result;
 	}
 
-	private function _removeStorageDirectories() {
+	private function _removeStorageDirectories(): bool {
 		$step = new Abp01_Installer_Step_RemoveStorageDirectories($this->_env);
 		return $this->_executeStep($step);
 	}
 
-	private function _installSchema() {
+	private function _installSchema(): bool {
 		$step = new Abp01_Installer_Step_InstallSchema($this->_env);
 		$result = $this->_executeStep($step);
 
@@ -116,12 +108,12 @@ class Abp01_Installer_Step_Activate implements Abp01_Installer_Step {
 		return $result;
 	}
 
-	private function _uninstallSchema() {
+	private function _uninstallSchema(): bool {
 		$step = new Abp01_Installer_Step_UninstallSchema($this->_env);
 		return $this->_executeStep($step);
 	}
 
-	private function _installData() {
+	private function _installData(): bool {
 		if (!$this->_installLookupData) {
 			return true;
 		}
@@ -130,21 +122,21 @@ class Abp01_Installer_Step_Activate implements Abp01_Installer_Step {
 		return $this->_executeStep($step);
 	}
 
-	private function _createCapabilities() {
+	private function _createCapabilities(): bool {
 		$step = new Abp01_Installer_Step_CreateCapabilities();
 		return $this->_executeStep($step);
 	}
 
-	private function _reset() {
+	private function _reset(): void {
 		$this->_lastError = null;
 	}
 
-	private function _setCurrentVersion() {
+	private function _setCurrentVersion(): bool {
 		$step = new Abp01_Installer_Step_SetCurrentVersion($this->_env);
 		return $this->_executeStep($step);
 	}
 
-    public function getLastError() { 
+    public function getLastError(): Exception|WP_Error|null { 
 		return $this->_lastError;
 	}
 }

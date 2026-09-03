@@ -29,21 +29,20 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
 class Abp01_Installer_Service_CreateDbTable {
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+	private Env $_env;
 
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_env = $env;
 	}
 
-	public function execute($tableName, $definition) {
+	public function execute(string $tableName, string $definition): bool {
 		$db = $this->_env->getDb();
 		if (!$db) {
 			return false;
@@ -71,15 +70,15 @@ class Abp01_Installer_Service_CreateDbTable {
 		return empty($lastError);
 	}
 
-	private function _getDefaultCharset() {
+	private function _getDefaultCharset(): string {
 		return $this->_env->getDbCharset();
 	}
 
-	private function _getCollate() {
+	private function _getCollate(): string {
 		return $this->_env->getDbCollate();
 	}
 
-	private function _getEngine() {
+	private function _getEngine(): string {
 		return 'MyISAM';
 	}
 }

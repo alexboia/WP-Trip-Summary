@@ -29,21 +29,20 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
 class Abp01_Installer_Service_FixLegacyRoutePathsInDb {
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+	private Env $_env;
 
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_env = $env;
 	}
 
-	public function execute() {
+	public function execute(): bool {
 		$db = $this->_env->getDb();
 		$routesTable = $this->_getRouteTrackTableName();
 
@@ -56,7 +55,7 @@ class Abp01_Installer_Service_FixLegacyRoutePathsInDb {
 		return empty(trim($db->getLastError()));
 	}
 
-	private function _getRouteTrackTableName() {
+	private function _getRouteTrackTableName(): string {
 		return $this->_env->getRouteTrackTableName();
 	}
 }

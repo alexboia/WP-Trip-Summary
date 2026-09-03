@@ -29,27 +29,23 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
 class Abp01_Installer_Service_MoveTrackDataFilesFromLegacyDirectories {
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+	private Env $_env;
 
-	/**
-	 * @var Abp01_Installer_Service_RemoveDirectoryAndContents
-	 */
-	private $_removeDirectoryAndContentsService;
+	private Abp01_Installer_Service_RemoveDirectoryAndContents $_removeDirectoryAndContentsService;
 
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_env = $env;
 		$this->_removeDirectoryAndContentsService = new Abp01_Installer_Service_RemoveDirectoryAndContents();
 	}
 
-	public function execute() {
+	public function execute(): bool {
 		$result = true;
 
 		$legacyTracksStorageDir = wp_normalize_path(sprintf('%s/storage', 
@@ -74,7 +70,7 @@ class Abp01_Installer_Service_MoveTrackDataFilesFromLegacyDirectories {
 		return $result;
 	}
 
-	private function _cleanLegacyStorageDirectory($legacyDirectoryPath, $newDirectoryPath, $searchExtension) {
+	private function _cleanLegacyStorageDirectory(string $legacyDirectoryPath, string $newDirectoryPath, string $searchExtension): bool {
 		$failedCount = 0;
 		$moveFiles = glob($legacyDirectoryPath . DIRECTORY_SEPARATOR . '*.' . $searchExtension);
 
@@ -100,7 +96,7 @@ class Abp01_Installer_Service_MoveTrackDataFilesFromLegacyDirectories {
 		}
 	}
 
-	private function _removeDirectoryAndContents($directoryPath) {
+	private function _removeDirectoryAndContents(string $directoryPath): bool {
 		return $this->_removeDirectoryAndContentsService
 			->excecute($directoryPath);
 	}

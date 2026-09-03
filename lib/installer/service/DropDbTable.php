@@ -29,21 +29,20 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
 }
 
 class Abp01_Installer_Service_DropDbTable {
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+	private Env $_env;
 
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_env = $env;
 	}
 
-	public function execute($tableName) {
+	public function execute(string $tableName): array|false {
 		$db = $this->_env->getDb();
 		return $db != null 
 			? $db->rawQuery('DROP TABLE IF EXISTS `' . $tableName . '`', null) 
