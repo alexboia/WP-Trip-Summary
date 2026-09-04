@@ -49,7 +49,7 @@ class Abp01_Installer_Step_UninstallSchema implements Abp01_Installer_Step {
 		return $this->_uninstallSchema();
 	}
 
-	private function _uninstallSchema() {
+	private function _uninstallSchema(): bool {
 		$result = true;
 		$tables = $this->_getTablesToUninstall();
 

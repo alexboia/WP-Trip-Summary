@@ -29,17 +29,16 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+declare(strict_types = 1);
+
+if (!defined('ABP01_LOADED')) {
 	exit ;
 }
 
 interface Abp01_MaintenanceTool {
-	/**
-	 * @return Abp01_MaintenanceTool_Result
-	 */
-	function execute(array $parameters = array());
+	function execute(array $parameters = array()): Abp01_MaintenanceTool_Result;
 
-	function getId();
+	function getId(): string;
 
-	function getName();
+	function getName(): string;
 }

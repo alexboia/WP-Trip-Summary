@@ -29,23 +29,22 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
 class Abp01_Installer_Step_Uninstall implements Abp01_Installer_Step {
-	/**
-	 * @var \Exception|\WP_Error
-	 */
-	private $_lastError;
+	private \Exception|\WP_Error|null $_lastError;
 
-	private $_env;
+	private Env $_env;
 
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_env = $env;
 	}
 	
-    public function execute() { 
+    public function execute(): bool { 
 		$this->_reset();
 		try {
 			return $this->_deactivate()
@@ -71,36 +70,36 @@ class Abp01_Installer_Step_Uninstall implements Abp01_Installer_Step {
 		return $result;
 	}
 
-	private function _purgeSettings() {
+	private function _purgeSettings(): bool {
 		$step = new Abp01_Installer_Step_PurgeSettings();
 		return $this->_executeStep($step);
 	}
 
-	private function _purgeChangeLogCache() {
+	private function _purgeChangeLogCache(): bool {
 		Abp01_ChangeLogDataSource_Cached::clearCache();
 		return true;
 	}
 
-	private function _uninstallSchema() {
+	private function _uninstallSchema(): bool {
 		$step = new Abp01_Installer_Step_UninstallSchema($this->_env);
 		return $this->_executeStep($step);
 	}
 
-	private function _removeStorageDirectories() {
+	private function _removeStorageDirectories(): bool {
 		$step = new Abp01_Installer_Step_RemoveStorageDirectories($this->_env);
 		return $this->_executeStep($step);
 	}
 
-	private function _uninstallVersion() {
+	private function _uninstallVersion(): bool {
 		$step = new Abp01_Installer_Step_UnsetCurrentVersion();
 		return $this->_executeStep($step);
 	}
 
-	private function _reset() {
+	private function _reset(): void {
 		$this->_lastError = null;
 	}
 
-    public function getLastError() { 
+    public function getLastError(): Exception|WP_Error|null { 
 		return $this->_lastError;
 	}
 }

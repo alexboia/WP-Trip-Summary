@@ -29,31 +29,33 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+declare(strict_types = 1);
+
+if (!defined('ABP01_LOADED')) {
 	exit ;
 }
 
 class Abp01_MaintenanceTool_Result {
-	private $_successful;
+	private bool $_successful;
 	
-	private $_data = array();
+	private array $_data = array();
 
-	public function __construct($successful, array $data = array()) {
+	public function __construct(bool $successful, array $data = array()) {
 		$this->_successful = $successful;
 		$this->_data = $data;
 	}
 
-	public function getItem($key) {
+	public function getItem(string $key): mixed {
 		return isset($this->_data[$key])
 			? $this->_data[$key]
 			: null;
 	}
 
-	public function getData() {
+	public function getData(): array {
 		return $this->_data;
 	}
 
-	public function wasSuccessful() {
+	public function wasSuccessful(): bool {
 		return $this->_successful;
 	}
 }

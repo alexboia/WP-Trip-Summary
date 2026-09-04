@@ -1,32 +1,61 @@
 <?php
+/**
+ * Copyright (c) 2014-2026 Alexandru Boia and Contributors
+ *
+ * Redistribution and use in source and binary forms, with or without modification, 
+ * are permitted provided that the following conditions are met:
+ * 
+ *	1. Redistributions of source code must retain the above copyright notice, 
+ *		this list of conditions and the following disclaimer.
+ *
+ * 	2. Redistributions in binary form must reproduce the above copyright notice, 
+ *		this list of conditions and the following disclaimer in the documentation 
+ *		and/or other materials provided with the distribution.
+ *
+ *	3. Neither the name of the copyright holder nor the names of its contributors 
+ *		may be used to endorse or promote products derived from this software without 
+ *		specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+ * IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY 
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) 
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
+ * OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+declare(strict_types = 1);
+
+if (!defined('ABP01_LOADED')) {
+	exit;
+}
+
+use WpTripSummary\Env;
+
 class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
-	/**
-	 * @var Abp01_Route_Log_Manager_Default
-	 */
-	private static $_instance = null;
+	private static Abp01_Route_Log_Manager_Default|null $_instance = null;
 
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+	private Env $_env;
 
-	private $_adminLogCache = array();
+	private array $_adminLogCache = array();
 
 	private function __construct() {
-		$this->_env = Abp01_Env::getInstance();
+		$this->_env = Env::getInstance();
 	}
 
-	/**
-	 * @return Abp01_Route_Log_Manager_Default 
-	 */
-	public static function getInstance() {
+	public static function getInstance(): Abp01_Route_Log_Manager_Default {
 		if (self::$_instance == null) {
 			self::$_instance = new self();
 		}
 		return self::$_instance;
 	}
 
-	public function getAdminLog($postId) {
+	public function getAdminLog(int|string $postId): Abp01_Route_Log {
 		$postId = intval($postId);
 		if ($postId <= 0) {
 			throw new InvalidArgumentException();
@@ -60,7 +89,7 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 		}
 	}
 
-	private function _toRouteLog($postId, array $rawLogEntriesData) {
+	private function _toRouteLog(int $postId, array $rawLogEntriesData): Abp01_Route_Log {
 		$logEntries = array();
 		foreach ($rawLogEntriesData as $rle) {
 			$logEntries[] = Abp01_Route_Log_Entry::fromDbArray($rle);
@@ -69,7 +98,7 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 		return new Abp01_Route_Log($postId, $logEntries);
 	}
 
-	public function getPublicLog($postId) {
+	public function getPublicLog(int|string $postId): Abp01_Route_Log {
 		$postId = intval($postId);
 		if ($postId <= 0) {
 			throw new InvalidArgumentException();
@@ -90,7 +119,7 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 		}
 	}
 
-	public function saveLogEntry(Abp01_Route_Log_Entry $logEntry) {
+	public function saveLogEntry(Abp01_Route_Log_Entry $logEntry): bool {
 		$db = $this->_env->getDb();
 		$table = $this->_env->getRouteLogTableName();
 
@@ -112,7 +141,7 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 		}
 	}
 
-    public function deleteLog($postId) { 
+    public function deleteLog(int|string $postId): bool { 
 		$postId = intval($postId);
 		if ($postId <= 0) {
 			throw new InvalidArgumentException();
@@ -129,7 +158,7 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 		return ($db->delete($table) !== false);
 	}
 
-	public function deleteLogEntry($postId, $logEntryId) {
+	public function deleteLogEntry(int|string $postId, int|string $logEntryId): bool {
 		$postId = intval($postId);
 		if ($postId <= 0) {
 			throw new InvalidArgumentException();
@@ -153,7 +182,7 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 		return ($db->delete($table) !== false);
 	}
 
-	public function clearAllLogEntries() {
+	public function clearAllLogEntries(): void {
 		$db = $this->_env->getDb();
 		$table = $this->_env->getRouteLogTableName();
 
@@ -161,7 +190,7 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 		$this->_adminLogCache = array();
 	}
 
-	public function getLogEntryById($postId, $logEntryId) {
+	public function getLogEntryById(int|string $postId, int|string $logEntryId): ?Abp01_Route_Log_Entry {
 		$postId = intval($postId);
 		if ($postId <= 0) {
 			throw new InvalidArgumentException();
@@ -186,7 +215,7 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 		return Abp01_Route_Log_Entry::fromDbArray($result);
 	}
 
-	public function getLastUsedVehicle($postId) {
+	public function getLastUsedVehicle(int|string $postId): string {
 		$postId = intval($postId);
 		if ($postId <= 0) {
 			return '';
@@ -200,7 +229,7 @@ class Abp01_Route_Log_Manager_Default implements Abp01_Route_Log_Manager {
 
 		$result = $db->getOne($table, 'log_vehicle');
 		if (!empty($result) && !empty($result['log_vehicle'])) {
-			return $result['log_vehicle'];
+			return (string)$result['log_vehicle'];
 		} else {
 			return '';
 		}

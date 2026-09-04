@@ -1,52 +1,54 @@
 <?php
+/**
+ * Copyright (c) 2014-2026 Alexandru Boia and Contributors
+ *
+ * Redistribution and use in source and binary forms, with or without modification, 
+ * are permitted provided that the following conditions are met:
+ * 
+ *	1. Redistributions of source code must retain the above copyright notice, 
+ *		this list of conditions and the following disclaimer.
+ *
+ * 	2. Redistributions in binary form must reproduce the above copyright notice, 
+ *		this list of conditions and the following disclaimer in the documentation 
+ *		and/or other materials provided with the distribution.
+ *
+ *	3. Neither the name of the copyright holder nor the names of its contributors 
+ *		may be used to endorse or promote products derived from this software without 
+ *		specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+ * IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY 
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) 
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
+ * OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+declare(strict_types = 1);
+
+if (!defined('ABP01_LOADED')) {
+	exit;
+}
+
 interface Abp01_Route_Log_Manager {
-	/**
-	 * @param int $postId 
-	 * @return Abp01_Route_Log
-	 */
-	function getAdminLog($postId);
+	function getAdminLog(int|string $postId): Abp01_Route_Log;
 
-	/**
-	 * @param int $postId 
-	 * @return Abp01_Route_Log
-	 */
-	function getPublicLog($postId);
+	function getPublicLog(int|string $postId): Abp01_Route_Log;
 
-	/**
-	 * @param Abp01_Route_Log_Entry $logEntry 
-	 * @return bool
-	 */
-	function saveLogEntry(Abp01_Route_Log_Entry $logEntry);
+	function saveLogEntry(Abp01_Route_Log_Entry $logEntry): bool;
 
-	/**
-	 * @param int $postId 
-	 * @return bool
-	 */
-	function deleteLog($postId);
+	function deleteLog(int|string $postId): bool;
 
-	/**
-	 * @param Abp01_Route_Log_Entry $logEntry 
-	 * @param int $postId
-	 * @param int $logEntryId
-	 * @return bool
-	 */
-	function deleteLogEntry($postId, $logEntryId);
+	function deleteLogEntry(int|string $postId, int|string $logEntryId): bool;
 
-	/**
-	 * @return void
-	 */
-	function clearAllLogEntries();
+	function clearAllLogEntries(): void;
 
-	/**
-	 * @param int $postId 
-	 * @param int $logEntryId 
-	 * @return Abp01_Route_Log_Entry
-	 */
-	function getLogEntryById($postId, $logEntryId);
+	function getLogEntryById(int|string $postId, int|string $logEntryId): ?Abp01_Route_Log_Entry;
 
-	/**
-	 * @param int $postId 
-	 * @return string
-	 */
-	function getLastUsedVehicle($postId);
+	function getLastUsedVehicle(int|string $postId): ?string;
 }

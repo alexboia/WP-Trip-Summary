@@ -38,5 +38,5 @@ interface Abp01_Route_Track_FileNameProvider {
 
 	function constructTempTrackFilePathForPostId($postId, $trackFileMimeType);
 
-	function constructTrackFilePath(Abp01_Route_Track $track);
+	function constructTrackFilePath(Abp01_Route_Track $track): string;
 }

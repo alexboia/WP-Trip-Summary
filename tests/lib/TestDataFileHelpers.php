@@ -29,9 +29,11 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
- trait TestDataFileHelpers {
+use WpTripSummary\Env;
+
+trait TestDataFileHelpers {
 	protected static function _ensureActualPluginDirectoriesAndAssetsCreated() {
-		$env = Abp01_Env::getInstance();
+		$env = Env::getInstance();
 		$directoriesService = new Abp01_Installer_Service_CreateStorageDirectories($env->getRootStorageDir(), 
 			$env->getTracksStorageDir(), 
 			$env->getCacheStorageDir(),
@@ -47,7 +49,7 @@
 		$securityAssetsService->execute();
 	}
 
-	protected static function _ensurePluginTestDirectoriesCreated() {
+	protected static function _ensurePluginTestDirectoriesCreated(): void {
 		list($rootStorageDir, $tracksStorageDir, $cacheStorageDir, $logStorageDir) = 
 			self::_getTestPluginStorageDirectories();
 
@@ -68,7 +70,7 @@
 		}
 	}
 
-	protected static function _ensurePluginTestDirectoriesRemoved() {
+	protected static function _ensurePluginTestDirectoriesRemoved(): void {
 		list($rootStorageDir, $tracksStorageDir, $cacheStorageDir, $logStorageDir) = 
 			self::_getTestPluginStorageDirectories();
 
@@ -93,7 +95,7 @@
 		}
 	}
 
-	protected static function _removeFiles($directory) {
+	protected static function _removeFiles(string $directory): void {
 		$files = scandir($directory);
 		if (!empty($files)) {
 			foreach ($files as $f) {
@@ -109,7 +111,7 @@
 		}
 	}
 
-	protected static function _getTestPluginStorageDirectories() {
+	protected static function _getTestPluginStorageDirectories(): array {
 		$rootTestDataDir = self::_determineTestDataDir();
 		$rootStorageDir = $rootTestDataDir . '/storage';
 		$tracksStorageDir = $rootStorageDir . '/tracks';
@@ -122,8 +124,8 @@
 			$logStorageDir);
 	}
 
-	protected static function _getActualPluginStorageDirectories() {
-		$env = Abp01_Env::getInstance();
+	protected static function _getActualPluginStorageDirectories(): array {
+		$env = Env::getInstance();
 		return array(
 			$env->getRootStorageDir(), 
 			$env->getTracksStorageDir(), 
@@ -132,29 +134,29 @@
 		);
 	}
 
-	protected static function _deleteAllDataFiles($fileNames) {
+	protected static function _deleteAllDataFiles(array $fileNames): void {
 		foreach ($fileNames as $fileName) {
 			self::_deleteDataFile($fileName);
 		}
 	}
 
-	protected static function _deleteDataFile($fileName) {
+	protected static function _deleteDataFile(string $fileName): void {
 		unlink(self::_determineDataFilePath($fileName));
 	}
 
-	protected static function _writeTestDataFileContents($fileName, $contents) {
+	protected static function _writeTestDataFileContents(string $fileName, string $contents): void {
 		file_put_contents(self::_determineDataFilePath($fileName), $contents);
 	}
 	
-	protected static function _readTestDataFileContents($fileName) {
+	protected static function _readTestDataFileContents(string $fileName): string|bool {
 		return file_get_contents(self::_determineDataFilePath($fileName));
 	}
 
-	protected static function _determineDataFilePath($fileName) {
+	protected static function _determineDataFilePath(string $fileName): string {
 		return wp_normalize_path(self::_determineTestDataDir() . '/' . $fileName);
 	}
 
-	protected static function _determineTestDataDir() {
+	protected static function _determineTestDataDir(): string {
 		return wp_normalize_path(self::_getRootTestsDir() . '/' . 'assets');
 	}
 

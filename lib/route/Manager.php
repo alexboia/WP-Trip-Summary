@@ -62,7 +62,7 @@ interface Abp01_Route_Manager {
 
 	function getTripSummaryRouteTypeInfo($postIds);
 
-	function getAllPostsWithRouteTracks();
+	function getAllPostsWithRouteTracks(): array;
 
 	function clearAll();
 }

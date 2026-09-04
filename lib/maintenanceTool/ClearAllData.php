@@ -29,46 +29,45 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+declare(strict_types = 1);
+
+use WpTripSummary\Env;
+
+if (!defined('ABP01_LOADED')) {
 	exit ;
 }
 
 class Abp01_MaintenanceTool_ClearAllData implements Abp01_MaintenanceTool {
-	/**
-	 * @var Abp01_MaintenanceTool_Helper_Files
-	 */
-	private $_filesHelper;
+	private Abp01_MaintenanceTool_Helper_Files $_filesHelper;
 
-	/**
-	 * @var Abp01_Route_Manager
-	 */
-	private $_routeManager;
+	private Abp01_Route_Manager $_routeManager;
 
-	public function __construct(Abp01_Route_Manager $routeManager, Abp01_Env $env) {
+	public function __construct(Abp01_Route_Manager $routeManager, Env $env) {
 		$this->_routeManager = $routeManager;
 		$this->_filesHelper = new Abp01_MaintenanceTool_Helper_Files($env);
 	}
 
-    public function execute(array $parameters = array()) { 
+    public function execute(array $parameters = array()): Abp01_MaintenanceTool_Result { 
 		$this->_clearDbData();
 		$this->_clearAllFiles();
 		return new Abp01_MaintenanceTool_Result(true);
 	}
 
-	private function _clearDbData() {
+	private function _clearDbData(): void {
 		$this->_routeManager->clearAll();
 	}
 
-	private function _clearAllFiles() {
+	private function _clearAllFiles(): void {
 		$this->_filesHelper->clearCacheFiles();
 		$this->_filesHelper->clearTrackFiles();
 	}
 
-    public function getName() { 
-		return __('Clear all trip summary related data (cannot be undone)', 'abp01-trip-summary');
+    public function getName(): string { 
+		return __('Clear all trip summary related data (cannot be undone)', 'abp01-trip-summary')
+			?? 'Clear all trip summary related data (cannot be undone)';
 	}
 
-	public function getId() {
+	public function getId(): string {
 		return 'clear-all-data';
 	}
 }

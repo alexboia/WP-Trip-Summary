@@ -29,33 +29,27 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+declare(strict_types = 1);
+
+if (!defined('ABP01_LOADED')) {
 	exit ;
 }
 
 class Abp01_MaintenanceTool_DetectMissingTracks implements Abp01_MaintenanceTool {
-	/**
-	 * @var Abp01_Route_Manager
-	 */
-	private $_routeManager;
+	private Abp01_Route_Manager $_routeManager;
 
-	/**
-	 * @var Abp01_Route_Track_FileNameProvider
-	 */
-	private $_trackFileNameProvider;
+	private Abp01_Route_Track_FileNameProvider $_trackFileNameProvider;
 
-	/**
-	 * @var Abp01_PostInfoProvider
-	 */
-	private $_postInfoProvider;
+	private Abp01_PostInfoProvider $_postInfoProvider;
 	
-	public function __construct(Abp01_Route_Manager $routeManager, Abp01_Route_Track_FileNameProvider $trackFileNameProvider) {
+	public function __construct(Abp01_Route_Manager $routeManager, 
+			Abp01_Route_Track_FileNameProvider $trackFileNameProvider) {
 		$this->_routeManager = $routeManager;
 		$this->_trackFileNameProvider = $trackFileNameProvider;		
 		$this->_postInfoProvider = new Abp01_PostInfoProvider();
 	}
 
-	public function execute(array $parameters = array()) { 
+	public function execute(array $parameters = array()): Abp01_MaintenanceTool_Result { 
 		$shouldFixDb = isset($parameters['fixDb'])
 			? $parameters['fixDb'] === true
 			: false;
@@ -73,11 +67,12 @@ class Abp01_MaintenanceTool_DetectMissingTracks implements Abp01_MaintenanceTool
 		));
 	}
 
-	private function _getPostIdsWithRouteTracks() {
-		return $this->_routeManager->getAllPostsWithRouteTracks();
+	private function _getPostIdsWithRouteTracks(): array {
+		$postIds = $this->_routeManager->getAllPostsWithRouteTracks();
+		return array_map('intval', $postIds);
 	}
 
-	private function _testPostsForTrackFiles($postIds) {
+	private function _testPostsForTrackFiles(array $postIds): array {
 		$postsWithMissingTrackFiles = array();
 		foreach ($postIds as $postId) {
 			$trackFilePath = $this->_constructTrackFilePath($postId);
@@ -88,32 +83,33 @@ class Abp01_MaintenanceTool_DetectMissingTracks implements Abp01_MaintenanceTool
 		return $postsWithMissingTrackFiles;
 	}
 
-	private function _constructTrackFilePath($postId) {
+	private function _constructTrackFilePath(int $postId): string {
 		$track = $this->_getTrack($postId);
 		return $this->_trackFileNameProvider->constructTrackFilePath($track);
 	}
 
-	private function _getTrack($postId) {
+	private function _getTrack(int $postId): Abp01_Route_Track {
 		return $this->_routeManager
 			->getRouteTrack($postId);
 	}
 
-	private function _fixDbForMissingTrackFiles($postIdsWithRouteTracks) {
+	private function _fixDbForMissingTrackFiles(array $postIdsWithRouteTracks): void {
 		foreach ($postIdsWithRouteTracks as $postId) {
 			$this->_routeManager->deleteRouteTrack($postId);
 		}
 	}
 
-	private function _getPostsInfo($postIds) {
+	private function _getPostsInfo(array $postIds): array {
 		return $this->_postInfoProvider
 			->getInfoForPostIds($postIds);
 	}
 
-	public function getName() { 
-		return __('Detect missing track files', 'abp01-trip-summary');
+	public function getName(): string { 
+		return __('Detect missing track files', 'abp01-trip-summary')
+			?? 'Detect missing track files';
 	}
 
-	public function getId() {
+	public function getId(): string {
 		return 'detect-missing-track-files';
 	}
 }

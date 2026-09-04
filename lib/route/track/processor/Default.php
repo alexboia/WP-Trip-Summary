@@ -404,7 +404,7 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
 		return $this->_constructTrackFilePathForPostId($postId, self::DEFAULT_FILE_EXTENSION);
 	}
 
-	public function constructTrackFilePath(Abp01_Route_Track $track) {
+	public function constructTrackFilePath(Abp01_Route_Track $track): string {
 		return $this->_constructTrackFilePath($track->getFileName());
 	}
 }

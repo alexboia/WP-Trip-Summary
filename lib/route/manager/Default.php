@@ -473,7 +473,7 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 		return $rawRouteTypeInfoData;
 	}
 
-	public function getAllPostsWithRouteTracks() {
+	public function getAllPostsWithRouteTracks(): array {
 		$postIds = array();
 
 		$db = $this->_env->getDb();

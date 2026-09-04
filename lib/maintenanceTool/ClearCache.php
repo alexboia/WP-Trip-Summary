@@ -29,32 +29,34 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+declare(strict_types = 1);
+
+use WpTripSummary\Env;
+
+if (!defined('ABP01_LOADED')) {
 	exit ;
 }
 
 class Abp01_MaintenanceTool_ClearCache implements Abp01_MaintenanceTool {
-	const CLEAR_CACHE_FILES_GLOB_PATTERN = 'track*.cache';
+	public const string CLEAR_CACHE_FILES_GLOB_PATTERN = 'track*.cache';
 
-	/**
-	 * @var Abp01_MaintenanceTool_Helper_Files
-	 */
-	private $_filesHelper;
+	private Abp01_MaintenanceTool_Helper_Files $_filesHelper;
 	
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_filesHelper = new Abp01_MaintenanceTool_Helper_Files($env);
 	}
 
-	public function execute(array $parameters = array()) { 
+	public function execute(array $parameters = array()): Abp01_MaintenanceTool_Result { 
 		$this->_filesHelper->clearCacheFiles();
 		return new Abp01_MaintenanceTool_Result(true);
 	}
 
-	public function getName() { 
-		return __('Clear track data cache', 'abp01-trip-summary');
+	public function getName(): string { 
+		return __('Clear track data cache', 'abp01-trip-summary') 
+			?? 'Clear track data cache';
 	}
 
-	public function getId() {
+	public function getId(): string {
 		return 'clear-cache';
 	}
 }

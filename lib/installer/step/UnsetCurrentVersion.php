@@ -34,12 +34,12 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Installer_Step_UnsetCurrentVersion implements Abp01_Installer_Step {
-	public function execute() { 
+	public function execute(): bool { 
 		$service = new Abp01_Installer_Service_RemovePluginVersionInfo();
 		return $service->execute();
 	}
 
-	public function getLastError() { 
+	public function getLastError(): null { 
 		return null;
 	}
 }

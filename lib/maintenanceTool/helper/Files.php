@@ -29,27 +29,29 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit ;
 }
 
 class Abp01_MaintenanceTool_Helper_Files {
-	const CLEAR_CACHE_FILES_GLOB_PATTERN = 'track*.cache';
+	public const string CLEAR_CACHE_FILES_GLOB_PATTERN = 'track*.cache';
 
-	const CLEAR_GPX_TRACK_FILES_GLOB_PATTERN = 'track*.gpx';
+	public const string CLEAR_GPX_TRACK_FILES_GLOB_PATTERN = 'track*.gpx';
 
-	const CLEAR_GEOJSON_TRACK_FILES_GLOB_PATTERN = 'track*.geojson';
+	public const string CLEAR_GEOJSON_TRACK_FILES_GLOB_PATTERN = 'track*.geojson';
 
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+	private Env $_env;
 
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_env = $env;
 	}
 
-	public function clearTrackFiles() {
+	/**
+	 * @return string[]
+	 */
+	public function clearTrackFiles(): array {
 		$clearGpxTrackFilesGlobPath = $this->_constructClearGpxTrackFilesGlobPath();
 		$removedGpxFiles = $this->_deleteFilesByGlobPattern($clearGpxTrackFilesGlobPath);
 
@@ -68,35 +70,35 @@ class Abp01_MaintenanceTool_Helper_Files {
 		return $removedFiles;
 	}
 
-	private function _constructClearGpxTrackFilesGlobPath() {
+	private function _constructClearGpxTrackFilesGlobPath(): string {
 		$cacheStorageDir = $this->_getTrackStorageDir();
 		return wp_normalize_path($cacheStorageDir . '/' . self::CLEAR_GPX_TRACK_FILES_GLOB_PATTERN);
 	}
 
-	private function _getTrackStorageDir() {
+	private function _getTrackStorageDir(): string {
 		return $this->_env->getTracksStorageDir();
 	}
 
-	private function _constructClearGeojsonTrackFilesGlobPath() {
+	private function _constructClearGeojsonTrackFilesGlobPath(): string {
 		$cacheStorageDir = $this->_getTrackStorageDir();
 		return wp_normalize_path($cacheStorageDir . '/' . self::CLEAR_GEOJSON_TRACK_FILES_GLOB_PATTERN);
 	}
 
-	public function clearCacheFiles() {
+	public function clearCacheFiles(): ?array {
 		$clearFilesGlobPath = $this->_constructClearCacheFilesGlobPath();
 		return $this->_deleteFilesByGlobPattern($clearFilesGlobPath);
 	}
 
-	private function _constructClearCacheFilesGlobPath() {
+	private function _constructClearCacheFilesGlobPath(): string {
 		$cacheStorageDir = $this->_getCacheStorageDir();
 		return wp_normalize_path($cacheStorageDir . '/' . self::CLEAR_CACHE_FILES_GLOB_PATTERN);
 	}
 
-	private function _getCacheStorageDir() {
+	private function _getCacheStorageDir(): string {
 		return $this->_env->getCacheStorageDir();
 	}
 
-	private function _deleteFilesByGlobPattern($globPathPattern) {
+	private function _deleteFilesByGlobPattern(string $globPathPattern): ?array {
 		return abp01_delete_files_by_glob_pattern($globPathPattern);
 	}
 }

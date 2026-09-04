@@ -29,7 +29,9 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+declare(strict_types = 1);
+
+if (!defined('ABP01_LOADED')) {
 	exit ;
 }
 
@@ -37,17 +39,23 @@ class Abp01_MaintenanceTool_Registry {
 	/**
 	 * @var Abp01_MaintenanceTool[]
 	 */
-	private $_tools = array();
+	private array $_tools = array();
 
-	public function registerTool(Abp01_MaintenanceTool $tool) {
+	public function registerTool(Abp01_MaintenanceTool $tool): void {
 		$this->_tools[$tool->getId()] = $tool;
 	}
 
-	public function getRegisteredTools() {
+	/**
+	 * @return Abp01_MaintenanceTool[]
+	 */
+	public function getRegisteredTools(): array {
 		return $this->_tools;
 	}
 
-	public function getRegisteredToolsInfo() {
+	/**
+	 * @return array<string, string>
+	 */
+	public function getRegisteredToolsInfo(): array {
 		$info = array();
 		foreach ($this->getRegisteredTools() as $t) {
 			$info[$t->getId()] = $t->getName();
@@ -55,12 +63,7 @@ class Abp01_MaintenanceTool_Registry {
 		return $info;
 	}
 
-	/**
-	 * @param string $id 
-	 * @param array $parameters 
-	 * @return Abp01_MaintenanceTool_Result 
-	 */
-	public function executeTool($id, array $parameters = array()) {
+	public function executeTool(string $id, array $parameters = array()): Abp01_MaintenanceTool_Result {
 		if (empty($id)) {
 			throw new InvalidArgumentException('Tool ID may not be empty.');
 		}
@@ -73,7 +76,7 @@ class Abp01_MaintenanceTool_Registry {
 		return $tool->execute($parameters);
 	}
 
-	public function isToolRegistered($id) {
+	public function isToolRegistered(string $id): bool {
 		return !empty($id) && isset($this->_tools[$id]);
 	}
 }
