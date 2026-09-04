@@ -1,0 +1,1624 @@
+{
+    "Abp01_ChangeLogDataSource": {
+        "newClass": "WpTripSummary\\ChangeLogDataSource",
+        "filePath": "lib/ChangeLogDataSource.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations",
+            "dependency-injection participant"
+        ]
+    },
+    "Abp01_FrontendTheme": {
+        "newClass": "WpTripSummary\\FrontendTheme",
+        "filePath": "lib/FrontendTheme.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations"
+        ]
+    },
+    "Abp01_Logger": {
+        "newClass": "WpTripSummary\\Logger",
+        "filePath": "lib/Logger.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations",
+            "dependency-injection participant"
+        ]
+    },
+    "Abp01_MaintenanceTool": {
+        "newClass": "WpTripSummary\\MaintenanceTool",
+        "filePath": "lib/MaintenanceTool.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations"
+        ]
+    },
+    "Abp01_NonceProvider": {
+        "newClass": "WpTripSummary\\NonceProvider",
+        "filePath": "lib/NonceProvider.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations"
+        ]
+    },
+    "Abp01_PluginMenuItemProvider": {
+        "newClass": "WpTripSummary\\PluginMenuItemProvider",
+        "filePath": "lib/PluginMenuItemProvider.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations"
+        ]
+    },
+    "Abp01_Validate": {
+        "newClass": "WpTripSummary\\Validate",
+        "filePath": "lib/Validate.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations"
+        ]
+    },
+    "Abp01_AdminAjaxAction_AuthorizationProvider": {
+        "newClass": "WpTripSummary\\AdminAjaxAction\\AuthorizationProvider",
+        "filePath": "lib/adminAjaxAction/AuthorizationProvider.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations"
+        ]
+    },
+    "Abp01_AdminAjaxAction_CurrentResourceProvider": {
+        "newClass": "WpTripSummary\\AdminAjaxAction\\CurrentResourceProvider",
+        "filePath": "lib/adminAjaxAction/CurrentResourceProvider.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations"
+        ]
+    },
+    "Abp01_AuditLog_Provider": {
+        "newClass": "WpTripSummary\\AuditLog\\Provider",
+        "filePath": "lib/auditLog/Provider.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations",
+            "dependency-injection participant"
+        ]
+    },
+    "Abp01_Includes_DependencySelector": {
+        "newClass": "WpTripSummary\\Includes\\DependencySelector",
+        "filePath": "lib/includes/DependencySelector.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations"
+        ]
+    },
+    "Abp01_Includes_PathRewriter": {
+        "newClass": "WpTripSummary\\Includes\\PathRewriter",
+        "filePath": "lib/includes/PathRewriter.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations"
+        ]
+    },
+    "Abp01_Installer_Requirement": {
+        "newClass": "WpTripSummary\\Installer\\Requirement",
+        "filePath": "lib/installer/Requirement.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations"
+        ]
+    },
+    "Abp01_Installer_Step": {
+        "newClass": "WpTripSummary\\Installer\\Step",
+        "filePath": "lib/installer/Step.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations"
+        ]
+    },
+    "Abp01_Rest_DataSource": {
+        "newClass": "WpTripSummary\\Rest\\DataSource",
+        "filePath": "lib/rest/DataSource.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations",
+            "dependency-injection participant"
+        ]
+    },
+    "Abp01_Route_Manager": {
+        "newClass": "WpTripSummary\\Route\\Manager",
+        "filePath": "lib/route/Manager.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations",
+            "dependency-injection participant"
+        ]
+    },
+    "Abp01_Transfer_FileDownloader": {
+        "newClass": "WpTripSummary\\Transfer\\FileDownloader",
+        "filePath": "lib/transfer/FileDownloader.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations"
+        ]
+    },
+    "Abp01_Validate_File": {
+        "newClass": "WpTripSummary\\Validate\\File",
+        "filePath": "lib/validate/File.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations"
+        ]
+    },
+    "Abp01_Validation_Rule": {
+        "newClass": "WpTripSummary\\Validation\\Rule",
+        "filePath": "lib/validation/Rule.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations"
+        ]
+    },
+    "Abp01_Viewer_DataSource": {
+        "newClass": "WpTripSummary\\Viewer\\DataSource",
+        "filePath": "lib/viewer/DataSource.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations",
+            "dependency-injection participant"
+        ]
+    },
+    "Abp01_Display_PostListing_ColumnDataSource": {
+        "newClass": "WpTripSummary\\Display\\PostListing\\ColumnDataSource",
+        "filePath": "lib/display/postListing/ColumnDataSource.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations"
+        ]
+    },
+    "Abp01_Display_PostListing_Customization": {
+        "newClass": "WpTripSummary\\Display\\PostListing\\Customization",
+        "filePath": "lib/display/postListing/Customization.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations"
+        ]
+    },
+    "Abp01_Display_PostListing_FilterDataSource": {
+        "newClass": "WpTripSummary\\Display\\PostListing\\FilterDataSource",
+        "filePath": "lib/display/postListing/FilterDataSource.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations"
+        ]
+    },
+    "Abp01_Display_PostListing_FilterProcessor": {
+        "newClass": "WpTripSummary\\Display\\PostListing\\FilterProcessor",
+        "filePath": "lib/display/postListing/FilterProcessor.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations"
+        ]
+    },
+    "Abp01_Installer_Requirement_Provider": {
+        "newClass": "WpTripSummary\\Installer\\Requirement\\Provider",
+        "filePath": "lib/installer/requirement/Provider.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations"
+        ]
+    },
+    "Abp01_Route_Log_Manager": {
+        "newClass": "WpTripSummary\\Route\\Log\\Manager",
+        "filePath": "lib/route/log/Manager.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations",
+            "dependency-injection participant"
+        ]
+    },
+    "Abp01_Route_Track_DocumentParser": {
+        "newClass": "WpTripSummary\\Route\\Track\\DocumentParser",
+        "filePath": "lib/route/track/DocumentParser.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations"
+        ]
+    },
+    "Abp01_Route_Track_FileNameProvider": {
+        "newClass": "WpTripSummary\\Route\\Track\\FileNameProvider",
+        "filePath": "lib/route/track/FileNameProvider.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations",
+            "dependency-injection participant"
+        ]
+    },
+    "Abp01_Route_Track_Processor": {
+        "newClass": "WpTripSummary\\Route\\Track\\Processor",
+        "filePath": "lib/route/track/Processor.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations",
+            "dependency-injection participant"
+        ]
+    },
+    "Abp01_Transfer_Uploader_FileNameProvider": {
+        "newClass": "WpTripSummary\\Transfer\\Uploader\\FileNameProvider",
+        "filePath": "lib/transfer/uploader/FileNameProvider.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations"
+        ]
+    },
+    "Abp01_Viewer_DataSource_Cache": {
+        "newClass": "WpTripSummary\\Viewer\\DataSource\\Cache",
+        "filePath": "lib/viewer/dataSource/Cache.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations",
+            "dependency-injection participant"
+        ]
+    },
+    "Abp01_Installer_Step_Update_Interface": {
+        "newClass": "WpTripSummary\\Installer\\Step\\Update\\Interface",
+        "filePath": "lib/installer/step/update/Interface.php",
+        "status": "pending",
+        "potentialIssues": [
+            "interface: migrate before implementations"
+        ]
+    },
+    "Abp01_UnitSystem": {
+        "newClass": "WpTripSummary\\UnitSystem",
+        "filePath": "lib/UnitSystem.php",
+        "status": "pending",
+        "potentialIssues": [
+            "abstract base type: migrate before subclasses"
+        ]
+    },
+    "Abp01_PluginModules_PluginModule": {
+        "newClass": "WpTripSummary\\PluginModules\\PluginModule",
+        "filePath": "lib/pluginModules/PluginModule.php",
+        "status": "pending",
+        "potentialIssues": [
+            "abstract base type: migrate before subclasses"
+        ]
+    },
+    "Abp01_UnitSystem_Value": {
+        "newClass": "WpTripSummary\\UnitSystem\\Value",
+        "filePath": "lib/unitSystem/Value.php",
+        "status": "pending",
+        "potentialIssues": [
+            "abstract base type: migrate before subclasses"
+        ]
+    },
+    "Abp01_Display_PostListing_Filter": {
+        "newClass": "WpTripSummary\\Display\\PostListing\\Filter",
+        "filePath": "lib/display/postListing/Filter.php",
+        "status": "pending",
+        "potentialIssues": [
+            "abstract base type: migrate before subclasses"
+        ]
+    },
+    "Abp01_Installer_Service_BaseCreateStorageDirSecurityAssets": {
+        "newClass": "WpTripSummary\\Installer\\Service\\BaseCreateStorageDirSecurityAssets",
+        "filePath": "lib/installer/service/BaseCreateStorageDirSecurityAssets.php",
+        "status": "pending",
+        "potentialIssues": [
+            "abstract base type: migrate before subclasses"
+        ]
+    },
+    "Abp01_AdminAjaxAction": {
+        "newClass": "WpTripSummary\\AdminAjaxAction",
+        "filePath": "lib/AdminAjaxAction.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Auth": {
+        "newClass": "WpTripSummary\\Auth",
+        "filePath": "lib/Auth.php",
+        "status": "pending",
+        "potentialIssues": [
+            "dependency-injection participant"
+        ]
+    },
+    "Abp01_AvailabilityHelper": {
+        "newClass": "WpTripSummary\\AvailabilityHelper",
+        "filePath": "lib/AvailabilityHelper.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_ConversionHelper": {
+        "newClass": "WpTripSummary\\ConversionHelper",
+        "filePath": "lib/ConversionHelper.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_FeatureStatus": {
+        "newClass": "WpTripSummary\\FeatureStatus",
+        "filePath": "lib/FeatureStatus.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Includes": {
+        "newClass": "WpTripSummary\\Includes",
+        "filePath": "lib/Includes.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_InputFiltering": {
+        "newClass": "WpTripSummary\\InputFiltering",
+        "filePath": "lib/InputFiltering.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer": {
+        "newClass": "WpTripSummary\\Installer",
+        "filePath": "lib/Installer.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_KnownMimeTypes": {
+        "newClass": "WpTripSummary\\KnownMimeTypes",
+        "filePath": "lib/KnownMimeTypes.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Locale": {
+        "newClass": "WpTripSummary\\Locale",
+        "filePath": "lib/Locale.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Lookup": {
+        "newClass": "WpTripSummary\\Lookup",
+        "filePath": "lib/Lookup.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Plugin": {
+        "newClass": "WpTripSummary\\Plugin",
+        "filePath": "lib/Plugin.php",
+        "status": "pending",
+        "potentialIssues": [
+            "dependency-injection participant"
+        ]
+    },
+    "Abp01_PluginMenu": {
+        "newClass": "WpTripSummary\\PluginMenu",
+        "filePath": "lib/PluginMenu.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_PluginMenuItemCollector": {
+        "newClass": "WpTripSummary\\PluginMenuItemCollector",
+        "filePath": "lib/PluginMenuItemCollector.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_PluginMeta": {
+        "newClass": "WpTripSummary\\PluginMeta",
+        "filePath": "lib/PluginMeta.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_PostInfoProvider": {
+        "newClass": "WpTripSummary\\PostInfoProvider",
+        "filePath": "lib/PostInfoProvider.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_ReadmeChangelogExtractor": {
+        "newClass": "WpTripSummary\\ReadmeChangelogExtractor",
+        "filePath": "lib/ReadmeChangelogExtractor.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Settings": {
+        "newClass": "WpTripSummary\\Settings",
+        "filePath": "lib/Settings.php",
+        "status": "pending",
+        "potentialIssues": [
+            "dependency-injection participant"
+        ]
+    },
+    "Abp01_SettingsValuesDataProvider": {
+        "newClass": "WpTripSummary\\SettingsValuesDataProvider",
+        "filePath": "lib/SettingsValuesDataProvider.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_TranslatedScriptMessages": {
+        "newClass": "WpTripSummary\\TranslatedScriptMessages",
+        "filePath": "lib/TranslatedScriptMessages.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_TripSummaryShortcodeBlockType": {
+        "newClass": "WpTripSummary\\TripSummaryShortcodeBlockType",
+        "filePath": "lib/TripSummaryShortcodeBlockType.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_UrlHelper": {
+        "newClass": "WpTripSummary\\UrlHelper",
+        "filePath": "lib/UrlHelper.php",
+        "status": "pending",
+        "potentialIssues": [
+            "dependency-injection participant"
+        ]
+    },
+    "Abp01_View": {
+        "newClass": "WpTripSummary\\View",
+        "filePath": "lib/View.php",
+        "status": "pending",
+        "potentialIssues": [
+            "dependency-injection participant"
+        ]
+    },
+    "Abp01_Viewer": {
+        "newClass": "WpTripSummary\\Viewer",
+        "filePath": "lib/Viewer.php",
+        "status": "pending",
+        "potentialIssues": [
+            "dependency-injection participant"
+        ]
+    },
+    "Abp01_AuditLog_Data": {
+        "newClass": "WpTripSummary\\AuditLog\\Data",
+        "filePath": "lib/auditLog/Data.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_ChangeLogDataSource_Cached": {
+        "newClass": "WpTripSummary\\ChangeLogDataSource\\Cached",
+        "filePath": "lib/changeLogDataSource/Cached.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_ChangeLogDataSource_ReadMe": {
+        "newClass": "WpTripSummary\\ChangeLogDataSource\\ReadMe",
+        "filePath": "lib/changeLogDataSource/ReadMe.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_FrontendTheme_Decorator": {
+        "newClass": "WpTripSummary\\FrontendTheme\\Decorator",
+        "filePath": "lib/frontendTheme/Decorator.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_FrontendTheme_Default": {
+        "newClass": "WpTripSummary\\FrontendTheme\\Default",
+        "filePath": "lib/frontendTheme/Default.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Includes_CallbackDependencySelector": {
+        "newClass": "WpTripSummary\\Includes\\CallbackDependencySelector",
+        "filePath": "lib/includes/CallbackDependencySelector.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Includes_FrontendStylePerThemePathRewriter": {
+        "newClass": "WpTripSummary\\Includes\\FrontendStylePerThemePathRewriter",
+        "filePath": "lib/includes/FrontendStylePerThemePathRewriter.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Includes_Manager": {
+        "newClass": "WpTripSummary\\Includes\\Manager",
+        "filePath": "lib/includes/Manager.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Includes_MaybeLeafletPluginScriptPathRewriter": {
+        "newClass": "WpTripSummary\\Includes\\MaybeLeafletPluginScriptPathRewriter",
+        "filePath": "lib/includes/MaybeLeafletPluginScriptPathRewriter.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Includes_NoopPathRewriter": {
+        "newClass": "WpTripSummary\\Includes\\NoopPathRewriter",
+        "filePath": "lib/includes/NoopPathRewriter.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Includes_UnconditionalDependencySelector": {
+        "newClass": "WpTripSummary\\Includes\\UnconditionalDependencySelector",
+        "filePath": "lib/includes/UnconditionalDependencySelector.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Constants": {
+        "newClass": "WpTripSummary\\Installer\\Constants",
+        "filePath": "lib/installer/Constants.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Context": {
+        "newClass": "WpTripSummary\\Installer\\Context",
+        "filePath": "lib/installer/Context.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_RequirementStatusCode": {
+        "newClass": "WpTripSummary\\Installer\\RequirementStatusCode",
+        "filePath": "lib/installer/RequirementStatusCode.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Io_DirectoryAssetInstaller": {
+        "newClass": "WpTripSummary\\Io\\DirectoryAssetInstaller",
+        "filePath": "lib/io/DirectoryAssetInstaller.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Io_FileInfo": {
+        "newClass": "WpTripSummary\\Io\\FileInfo",
+        "filePath": "lib/io/FileInfo.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Io_HtAccessDirectives": {
+        "newClass": "WpTripSummary\\Io\\HtAccessDirectives",
+        "filePath": "lib/io/HtAccessDirectives.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Io_IndexPhpDirectives": {
+        "newClass": "WpTripSummary\\Io\\IndexPhpDirectives",
+        "filePath": "lib/io/IndexPhpDirectives.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Logger_Config": {
+        "newClass": "WpTripSummary\\Logger\\Config",
+        "filePath": "lib/logger/Config.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Logger_FileInfo": {
+        "newClass": "WpTripSummary\\Logger\\FileInfo",
+        "filePath": "lib/logger/FileInfo.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Logger_Manager": {
+        "newClass": "WpTripSummary\\Logger\\Manager",
+        "filePath": "lib/logger/Manager.php",
+        "status": "pending",
+        "potentialIssues": [
+            "dependency-injection participant"
+        ]
+    },
+    "Abp01_Logger_MonologLogger": {
+        "newClass": "WpTripSummary\\Logger\\MonologLogger",
+        "filePath": "lib/logger/MonologLogger.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_MaintenanceTool_ClearAllData": {
+        "newClass": "WpTripSummary\\MaintenanceTool\\ClearAllData",
+        "filePath": "lib/maintenanceTool/ClearAllData.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_MaintenanceTool_ClearCache": {
+        "newClass": "WpTripSummary\\MaintenanceTool\\ClearCache",
+        "filePath": "lib/maintenanceTool/ClearCache.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_MaintenanceTool_DetectMissingTracks": {
+        "newClass": "WpTripSummary\\MaintenanceTool\\DetectMissingTracks",
+        "filePath": "lib/maintenanceTool/DetectMissingTracks.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_MaintenanceTool_Registry": {
+        "newClass": "WpTripSummary\\MaintenanceTool\\Registry",
+        "filePath": "lib/maintenanceTool/Registry.php",
+        "status": "pending",
+        "potentialIssues": [
+            "dependency-injection participant"
+        ]
+    },
+    "Abp01_MaintenanceTool_Result": {
+        "newClass": "WpTripSummary\\MaintenanceTool\\Result",
+        "filePath": "lib/maintenanceTool/Result.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_NonceProvider_Default": {
+        "newClass": "WpTripSummary\\NonceProvider\\Default",
+        "filePath": "lib/nonceProvider/Default.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_NonceProvider_DownloadTrackData": {
+        "newClass": "WpTripSummary\\NonceProvider\\DownloadTrackData",
+        "filePath": "lib/nonceProvider/DownloadTrackData.php",
+        "status": "pending",
+        "potentialIssues": [
+            "dependency-injection participant"
+        ]
+    },
+    "Abp01_NonceProvider_None": {
+        "newClass": "WpTripSummary\\NonceProvider\\None",
+        "filePath": "lib/nonceProvider/None.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_NonceProvider_ReadTrackData": {
+        "newClass": "WpTripSummary\\NonceProvider\\ReadTrackData",
+        "filePath": "lib/nonceProvider/ReadTrackData.php",
+        "status": "pending",
+        "potentialIssues": [
+            "dependency-injection participant"
+        ]
+    },
+    "Abp01_PluginModules_AboutPagePluginModule": {
+        "newClass": "WpTripSummary\\PluginModules\\AboutPagePluginModule",
+        "filePath": "lib/pluginModules/AboutPagePluginModule.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_PluginModules_AdminTripSummaryAuditLogPluginModule": {
+        "newClass": "WpTripSummary\\PluginModules\\AdminTripSummaryAuditLogPluginModule",
+        "filePath": "lib/pluginModules/AdminTripSummaryAuditLogPluginModule.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_PluginModules_AdminTripSummaryEditorPluginModule": {
+        "newClass": "WpTripSummary\\PluginModules\\AdminTripSummaryEditorPluginModule",
+        "filePath": "lib/pluginModules/AdminTripSummaryEditorPluginModule.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_PluginModules_DownloadTrackDataPluginModule": {
+        "newClass": "WpTripSummary\\PluginModules\\DownloadTrackDataPluginModule",
+        "filePath": "lib/pluginModules/DownloadTrackDataPluginModule.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_PluginModules_FrontendViewerPluginModule": {
+        "newClass": "WpTripSummary\\PluginModules\\FrontendViewerPluginModule",
+        "filePath": "lib/pluginModules/FrontendViewerPluginModule.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_PluginModules_GetTrackDataPluginModule": {
+        "newClass": "WpTripSummary\\PluginModules\\GetTrackDataPluginModule",
+        "filePath": "lib/pluginModules/GetTrackDataPluginModule.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_PluginModules_JsonLdFrontendDataPluginModule": {
+        "newClass": "WpTripSummary\\PluginModules\\JsonLdFrontendDataPluginModule",
+        "filePath": "lib/pluginModules/JsonLdFrontendDataPluginModule.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_PluginModules_LookupDataManagementPluginModule": {
+        "newClass": "WpTripSummary\\PluginModules\\LookupDataManagementPluginModule",
+        "filePath": "lib/pluginModules/LookupDataManagementPluginModule.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_PluginModules_MaintenancePluginModule": {
+        "newClass": "WpTripSummary\\PluginModules\\MaintenancePluginModule",
+        "filePath": "lib/pluginModules/MaintenancePluginModule.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_PluginModules_PluginListingPageCustomizationPluginModule": {
+        "newClass": "WpTripSummary\\PluginModules\\PluginListingPageCustomizationPluginModule",
+        "filePath": "lib/pluginModules/PluginListingPageCustomizationPluginModule.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_PluginModules_PluginModuleActivator": {
+        "newClass": "WpTripSummary\\PluginModules\\PluginModuleActivator",
+        "filePath": "lib/pluginModules/PluginModuleActivator.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_PluginModules_PluginModuleException": {
+        "newClass": "WpTripSummary\\PluginModules\\PluginModuleException",
+        "filePath": "lib/pluginModules/PluginModuleException.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_PluginModules_PluginModuleHost": {
+        "newClass": "WpTripSummary\\PluginModules\\PluginModuleHost",
+        "filePath": "lib/pluginModules/PluginModuleHost.php",
+        "status": "pending",
+        "potentialIssues": [
+            "dependency-injection participant"
+        ]
+    },
+    "Abp01_PluginModules_PostListingCustomizationPluginModule": {
+        "newClass": "WpTripSummary\\PluginModules\\PostListingCustomizationPluginModule",
+        "filePath": "lib/pluginModules/PostListingCustomizationPluginModule.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_PluginModules_RestApiEnhancementsPluginModule": {
+        "newClass": "WpTripSummary\\PluginModules\\RestApiEnhancementsPluginModule",
+        "filePath": "lib/pluginModules/RestApiEnhancementsPluginModule.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_PluginModules_RouteLogPluginModule": {
+        "newClass": "WpTripSummary\\PluginModules\\RouteLogPluginModule",
+        "filePath": "lib/pluginModules/RouteLogPluginModule.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_PluginModules_SettingsPluginModule": {
+        "newClass": "WpTripSummary\\PluginModules\\SettingsPluginModule",
+        "filePath": "lib/pluginModules/SettingsPluginModule.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_PluginModules_SystemLogsManagementPluginModule": {
+        "newClass": "WpTripSummary\\PluginModules\\SystemLogsManagementPluginModule",
+        "filePath": "lib/pluginModules/SystemLogsManagementPluginModule.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_PluginModules_TeaserTextsSyncPluginModule": {
+        "newClass": "WpTripSummary\\PluginModules\\TeaserTextsSyncPluginModule",
+        "filePath": "lib/pluginModules/TeaserTextsSyncPluginModule.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_PluginModules_TripStatsPluginModule": {
+        "newClass": "WpTripSummary\\PluginModules\\TripStatsPluginModule",
+        "filePath": "lib/pluginModules/TripStatsPluginModule.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_Info": {
+        "newClass": "WpTripSummary\\Route\\Info",
+        "filePath": "lib/route/Info.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_Log": {
+        "newClass": "WpTripSummary\\Route\\Log",
+        "filePath": "lib/route/Log.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_SphericalMercator": {
+        "newClass": "WpTripSummary\\Route\\SphericalMercator",
+        "filePath": "lib/route/SphericalMercator.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_Track": {
+        "newClass": "WpTripSummary\\Route\\Track",
+        "filePath": "lib/route/Track.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_Type": {
+        "newClass": "WpTripSummary\\Route\\Type",
+        "filePath": "lib/route/Type.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Settings_PredefinedTileLayer": {
+        "newClass": "WpTripSummary\\Settings\\PredefinedTileLayer",
+        "filePath": "lib/settings/PredefinedTileLayer.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Transfer_FileDownloaderWithScriptTermination": {
+        "newClass": "WpTripSummary\\Transfer\\FileDownloaderWithScriptTermination",
+        "filePath": "lib/transfer/FileDownloaderWithScriptTermination.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Transfer_SimpleFileDownloader": {
+        "newClass": "WpTripSummary\\Transfer\\SimpleFileDownloader",
+        "filePath": "lib/transfer/SimpleFileDownloader.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Transfer_TrackFileDownloader": {
+        "newClass": "WpTripSummary\\Transfer\\TrackFileDownloader",
+        "filePath": "lib/transfer/TrackFileDownloader.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Transfer_Uploader": {
+        "newClass": "WpTripSummary\\Transfer\\Uploader",
+        "filePath": "lib/transfer/Uploader.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_UnitSystem_Imperial": {
+        "newClass": "WpTripSummary\\UnitSystem\\Imperial",
+        "filePath": "lib/unitSystem/Imperial.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_UnitSystem_Metric": {
+        "newClass": "WpTripSummary\\UnitSystem\\Metric",
+        "filePath": "lib/unitSystem/Metric.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Validate_GeoJsonDocument": {
+        "newClass": "WpTripSummary\\Validate\\GeoJsonDocument",
+        "filePath": "lib/validate/GeoJsonDocument.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Validate_GpxDocument": {
+        "newClass": "WpTripSummary\\Validate\\GpxDocument",
+        "filePath": "lib/validate/GpxDocument.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Validate_HexColourCode": {
+        "newClass": "WpTripSummary\\Validate\\HexColourCode",
+        "filePath": "lib/validate/HexColourCode.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Validate_InitialViewerTab": {
+        "newClass": "WpTripSummary\\Validate\\InitialViewerTab",
+        "filePath": "lib/validate/InitialViewerTab.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Validate_KmlDocument": {
+        "newClass": "WpTripSummary\\Validate\\KmlDocument",
+        "filePath": "lib/validate/KmlDocument.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Validate_NotEmpty": {
+        "newClass": "WpTripSummary\\Validate\\NotEmpty",
+        "filePath": "lib/validate/NotEmpty.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Validate_Regex": {
+        "newClass": "WpTripSummary\\Validate\\Regex",
+        "filePath": "lib/validate/Regex.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Validate_TileLayerUrl": {
+        "newClass": "WpTripSummary\\Validate\\TileLayerUrl",
+        "filePath": "lib/validate/TileLayerUrl.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Validate_UnitSystem": {
+        "newClass": "WpTripSummary\\Validate\\UnitSystem",
+        "filePath": "lib/validate/UnitSystem.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Validate_Url": {
+        "newClass": "WpTripSummary\\Validate\\Url",
+        "filePath": "lib/validate/Url.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Validate_ViewerItemLayout": {
+        "newClass": "WpTripSummary\\Validate\\ViewerItemLayout",
+        "filePath": "lib/validate/ViewerItemLayout.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Validation_Chain": {
+        "newClass": "WpTripSummary\\Validation\\Chain",
+        "filePath": "lib/validation/Chain.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_ViewModel_AboutPageVm": {
+        "newClass": "WpTripSummary\\ViewModel\\AboutPageVm",
+        "filePath": "lib/viewModel/AboutPageVm.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_ViewModel_PostAuditLogVm": {
+        "newClass": "WpTripSummary\\ViewModel\\PostAuditLogVm",
+        "filePath": "lib/viewModel/PostAuditLogVm.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_ViewModel_SimpleScriptsInfoVm": {
+        "newClass": "WpTripSummary\\ViewModel\\SimpleScriptsInfoVm",
+        "filePath": "lib/viewModel/SimpleScriptsInfoVm.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_AdminAjaxAction_AuthorizationProvider_AlwaysTrue": {
+        "newClass": "WpTripSummary\\AdminAjaxAction\\AuthorizationProvider\\AlwaysTrue",
+        "filePath": "lib/adminAjaxAction/authorizationProvider/AlwaysTrue.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_AdminAjaxAction_AuthorizationProvider_Callback": {
+        "newClass": "WpTripSummary\\AdminAjaxAction\\AuthorizationProvider\\Callback",
+        "filePath": "lib/adminAjaxAction/authorizationProvider/Callback.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_AdminAjaxAction_AuthorizationProvider_Simple": {
+        "newClass": "WpTripSummary\\AdminAjaxAction\\AuthorizationProvider\\Simple",
+        "filePath": "lib/adminAjaxAction/authorizationProvider/Simple.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_AdminAjaxAction_CurrentResourceProvider_CurrentPostId": {
+        "newClass": "WpTripSummary\\AdminAjaxAction\\CurrentResourceProvider\\CurrentPostId",
+        "filePath": "lib/adminAjaxAction/currentResourceProvider/CurrentPostId.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_AdminAjaxAction_CurrentResourceProvider_None": {
+        "newClass": "WpTripSummary\\AdminAjaxAction\\CurrentResourceProvider\\None",
+        "filePath": "lib/adminAjaxAction/currentResourceProvider/None.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_AuditLog_Provider_Default": {
+        "newClass": "WpTripSummary\\AuditLog\\Provider\\Default",
+        "filePath": "lib/auditLog/provider/Default.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Display_PostListing_Column": {
+        "newClass": "WpTripSummary\\Display\\PostListing\\Column",
+        "filePath": "lib/display/postListing/Column.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Display_PostListing_ColumnCustomization": {
+        "newClass": "WpTripSummary\\Display\\PostListing\\ColumnCustomization",
+        "filePath": "lib/display/postListing/ColumnCustomization.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Display_PostListing_FilterCustomization": {
+        "newClass": "WpTripSummary\\Display\\PostListing\\FilterCustomization",
+        "filePath": "lib/display/postListing/FilterCustomization.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Display_PostListing_FilterDropdown": {
+        "newClass": "WpTripSummary\\Display\\PostListing\\FilterDropdown",
+        "filePath": "lib/display/postListing/FilterDropdown.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Display_PostListing_RouteTypeFilterDataSource": {
+        "newClass": "WpTripSummary\\Display\\PostListing\\RouteTypeFilterDataSource",
+        "filePath": "lib/display/postListing/RouteTypeFilterDataSource.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Display_PostListing_RouteTypeFilterDecorator": {
+        "newClass": "WpTripSummary\\Display\\PostListing\\RouteTypeFilterDecorator",
+        "filePath": "lib/display/postListing/RouteTypeFilterDecorator.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Display_PostListing_RouteTypeFilterProcessor": {
+        "newClass": "WpTripSummary\\Display\\PostListing\\RouteTypeFilterProcessor",
+        "filePath": "lib/display/postListing/RouteTypeFilterProcessor.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Display_PostListing_TripSummaryRouteTypeColumn": {
+        "newClass": "WpTripSummary\\Display\\PostListing\\TripSummaryRouteTypeColumn",
+        "filePath": "lib/display/postListing/TripSummaryRouteTypeColumn.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Display_PostListing_TripSummaryRouteTypeColumnsDecorator": {
+        "newClass": "WpTripSummary\\Display\\PostListing\\TripSummaryRouteTypeColumnsDecorator",
+        "filePath": "lib/display/postListing/TripSummaryRouteTypeColumnsDecorator.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Display_PostListing_TripSummaryRouteTypeDataSource": {
+        "newClass": "WpTripSummary\\Display\\PostListing\\TripSummaryRouteTypeDataSource",
+        "filePath": "lib/display/postListing/TripSummaryRouteTypeDataSource.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Display_PostListing_TripSummaryStatusColumn": {
+        "newClass": "WpTripSummary\\Display\\PostListing\\TripSummaryStatusColumn",
+        "filePath": "lib/display/postListing/TripSummaryStatusColumn.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Display_PostListing_TripSummaryStatusColumnDataSource": {
+        "newClass": "WpTripSummary\\Display\\PostListing\\TripSummaryStatusColumnDataSource",
+        "filePath": "lib/display/postListing/TripSummaryStatusColumnDataSource.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Display_PostListing_TripSummaryStatusColumnsDecorator": {
+        "newClass": "WpTripSummary\\Display\\PostListing\\TripSummaryStatusColumnsDecorator",
+        "filePath": "lib/display/postListing/TripSummaryStatusColumnsDecorator.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_DataProvider_LookupDefinitions": {
+        "newClass": "WpTripSummary\\Installer\\DataProvider\\LookupDefinitions",
+        "filePath": "lib/installer/dataProvider/LookupDefinitions.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Requirement_Checker": {
+        "newClass": "WpTripSummary\\Installer\\Requirement\\Checker",
+        "filePath": "lib/installer/requirement/Checker.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Requirement_Descriptor": {
+        "newClass": "WpTripSummary\\Installer\\Requirement\\Descriptor",
+        "filePath": "lib/installer/requirement/Descriptor.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Requirement_HasLibXml": {
+        "newClass": "WpTripSummary\\Installer\\Requirement\\HasLibXml",
+        "filePath": "lib/installer/requirement/HasLibXml.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Requirement_HasMysqlSpatialSupport": {
+        "newClass": "WpTripSummary\\Installer\\Requirement\\HasMysqlSpatialSupport",
+        "filePath": "lib/installer/requirement/HasMysqlSpatialSupport.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Requirement_HasMysqli": {
+        "newClass": "WpTripSummary\\Installer\\Requirement\\HasMysqli",
+        "filePath": "lib/installer/requirement/HasMysqli.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Requirement_HasRequiredMysqlSpatialFunctions": {
+        "newClass": "WpTripSummary\\Installer\\Requirement\\HasRequiredMysqlSpatialFunctions",
+        "filePath": "lib/installer/requirement/HasRequiredMysqlSpatialFunctions.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Requirement_RequiredVersion": {
+        "newClass": "WpTripSummary\\Installer\\Requirement\\RequiredVersion",
+        "filePath": "lib/installer/requirement/RequiredVersion.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Service_AddIndexToTable": {
+        "newClass": "WpTripSummary\\Installer\\Service\\AddIndexToTable",
+        "filePath": "lib/installer/service/AddIndexToTable.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Service_AddTableColumnIfNeeded": {
+        "newClass": "WpTripSummary\\Installer\\Service\\AddTableColumnIfNeeded",
+        "filePath": "lib/installer/service/AddTableColumnIfNeeded.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Service_ClearChangeLogCache": {
+        "newClass": "WpTripSummary\\Installer\\Service\\ClearChangeLogCache",
+        "filePath": "lib/installer/service/ClearChangeLogCache.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Service_CreateCapabilities": {
+        "newClass": "WpTripSummary\\Installer\\Service\\CreateCapabilities",
+        "filePath": "lib/installer/service/CreateCapabilities.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Service_CreateDbTable": {
+        "newClass": "WpTripSummary\\Installer\\Service\\CreateDbTable",
+        "filePath": "lib/installer/service/CreateDbTable.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Service_CreateLogStorageDirSecurityAssets": {
+        "newClass": "WpTripSummary\\Installer\\Service\\CreateLogStorageDirSecurityAssets",
+        "filePath": "lib/installer/service/CreateLogStorageDirSecurityAssets.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Service_CreateRootStorageDirSecurityAssets": {
+        "newClass": "WpTripSummary\\Installer\\Service\\CreateRootStorageDirSecurityAssets",
+        "filePath": "lib/installer/service/CreateRootStorageDirSecurityAssets.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Service_CreateStorageDirectories": {
+        "newClass": "WpTripSummary\\Installer\\Service\\CreateStorageDirectories",
+        "filePath": "lib/installer/service/CreateStorageDirectories.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Service_CreateStorageDirsSecurityAssets": {
+        "newClass": "WpTripSummary\\Installer\\Service\\CreateStorageDirsSecurityAssets",
+        "filePath": "lib/installer/service/CreateStorageDirsSecurityAssets.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Service_CreateTracksStorageDirSecurityAssets": {
+        "newClass": "WpTripSummary\\Installer\\Service\\CreateTracksStorageDirSecurityAssets",
+        "filePath": "lib/installer/service/CreateTracksStorageDirSecurityAssets.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Service_DropDbTable": {
+        "newClass": "WpTripSummary\\Installer\\Service\\DropDbTable",
+        "filePath": "lib/installer/service/DropDbTable.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Service_FixLegacyRoutePathsInDb": {
+        "newClass": "WpTripSummary\\Installer\\Service\\FixLegacyRoutePathsInDb",
+        "filePath": "lib/installer/service/FixLegacyRoutePathsInDb.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Service_InstallLookupData": {
+        "newClass": "WpTripSummary\\Installer\\Service\\InstallLookupData",
+        "filePath": "lib/installer/service/InstallLookupData.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Service_InstallLookupDataTranslationsForLanguage": {
+        "newClass": "WpTripSummary\\Installer\\Service\\InstallLookupDataTranslationsForLanguage",
+        "filePath": "lib/installer/service/InstallLookupDataTranslationsForLanguage.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Service_MoveTrackDataFilesFromLegacyDirectories": {
+        "newClass": "WpTripSummary\\Installer\\Service\\MoveTrackDataFilesFromLegacyDirectories",
+        "filePath": "lib/installer/service/MoveTrackDataFilesFromLegacyDirectories.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Service_PurgeSettings": {
+        "newClass": "WpTripSummary\\Installer\\Service\\PurgeSettings",
+        "filePath": "lib/installer/service/PurgeSettings.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Service_RemoveCapabilities": {
+        "newClass": "WpTripSummary\\Installer\\Service\\RemoveCapabilities",
+        "filePath": "lib/installer/service/RemoveCapabilities.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Service_RemoveDirectoryAndContents": {
+        "newClass": "WpTripSummary\\Installer\\Service\\RemoveDirectoryAndContents",
+        "filePath": "lib/installer/service/RemoveDirectoryAndContents.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Service_RemovePluginVersionInfo": {
+        "newClass": "WpTripSummary\\Installer\\Service\\RemovePluginVersionInfo",
+        "filePath": "lib/installer/service/RemovePluginVersionInfo.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Service_RemoveStorageDirectories": {
+        "newClass": "WpTripSummary\\Installer\\Service\\RemoveStorageDirectories",
+        "filePath": "lib/installer/service/RemoveStorageDirectories.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Service_RunInstallHook": {
+        "newClass": "WpTripSummary\\Installer\\Service\\RunInstallHook",
+        "filePath": "lib/installer/service/RunInstallHook.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Service_SetPluginVersionInfo": {
+        "newClass": "WpTripSummary\\Installer\\Service\\SetPluginVersionInfo",
+        "filePath": "lib/installer/service/SetPluginVersionInfo.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Service_SyncExistingLookupAssociations": {
+        "newClass": "WpTripSummary\\Installer\\Service\\SyncExistingLookupAssociations",
+        "filePath": "lib/installer/service/SyncExistingLookupAssociations.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_Activate": {
+        "newClass": "WpTripSummary\\Installer\\Step\\Activate",
+        "filePath": "lib/installer/step/Activate.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_CreateCapabilities": {
+        "newClass": "WpTripSummary\\Installer\\Step\\CreateCapabilities",
+        "filePath": "lib/installer/step/CreateCapabilities.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_Deactivate": {
+        "newClass": "WpTripSummary\\Installer\\Step\\Deactivate",
+        "filePath": "lib/installer/step/Deactivate.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_InstallData": {
+        "newClass": "WpTripSummary\\Installer\\Step\\InstallData",
+        "filePath": "lib/installer/step/InstallData.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_InstallSchema": {
+        "newClass": "WpTripSummary\\Installer\\Step\\InstallSchema",
+        "filePath": "lib/installer/step/InstallSchema.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_InstallStorageDirectoryAndAssets": {
+        "newClass": "WpTripSummary\\Installer\\Step\\InstallStorageDirectoryAndAssets",
+        "filePath": "lib/installer/step/InstallStorageDirectoryAndAssets.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_PurgeChangeLogCache": {
+        "newClass": "WpTripSummary\\Installer\\Step\\PurgeChangeLogCache",
+        "filePath": "lib/installer/step/PurgeChangeLogCache.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_PurgeSettings": {
+        "newClass": "WpTripSummary\\Installer\\Step\\PurgeSettings",
+        "filePath": "lib/installer/step/PurgeSettings.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_RemoveCapabilities": {
+        "newClass": "WpTripSummary\\Installer\\Step\\RemoveCapabilities",
+        "filePath": "lib/installer/step/RemoveCapabilities.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_RemoveStorageDirectories": {
+        "newClass": "WpTripSummary\\Installer\\Step\\RemoveStorageDirectories",
+        "filePath": "lib/installer/step/RemoveStorageDirectories.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_RunPostInstallHooks": {
+        "newClass": "WpTripSummary\\Installer\\Step\\RunPostInstallHooks",
+        "filePath": "lib/installer/step/RunPostInstallHooks.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_RunPostUninstallHooks": {
+        "newClass": "WpTripSummary\\Installer\\Step\\RunPostUninstallHooks",
+        "filePath": "lib/installer/step/RunPostUninstallHooks.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_RunPreInstallHooks": {
+        "newClass": "WpTripSummary\\Installer\\Step\\RunPreInstallHooks",
+        "filePath": "lib/installer/step/RunPreInstallHooks.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_RunPreUninstallHooks": {
+        "newClass": "WpTripSummary\\Installer\\Step\\RunPreUninstallHooks",
+        "filePath": "lib/installer/step/RunPreUninstallHooks.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_SetCurrentVersion": {
+        "newClass": "WpTripSummary\\Installer\\Step\\SetCurrentVersion",
+        "filePath": "lib/installer/step/SetCurrentVersion.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_Uninstall": {
+        "newClass": "WpTripSummary\\Installer\\Step\\Uninstall",
+        "filePath": "lib/installer/step/Uninstall.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_UninstallSchema": {
+        "newClass": "WpTripSummary\\Installer\\Step\\UninstallSchema",
+        "filePath": "lib/installer/step/UninstallSchema.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_UnsetCurrentVersion": {
+        "newClass": "WpTripSummary\\Installer\\Step\\UnsetCurrentVersion",
+        "filePath": "lib/installer/step/UnsetCurrentVersion.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_Update": {
+        "newClass": "WpTripSummary\\Installer\\Step\\Update",
+        "filePath": "lib/installer/step/Update.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Table_Definitions": {
+        "newClass": "WpTripSummary\\Installer\\Table\\Definitions",
+        "filePath": "lib/installer/table/Definitions.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_MaintenanceTool_Helper_Files": {
+        "newClass": "WpTripSummary\\MaintenanceTool\\Helper\\Files",
+        "filePath": "lib/maintenanceTool/helper/Files.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Rest_DataSource_Default": {
+        "newClass": "WpTripSummary\\Rest\\DataSource\\Default",
+        "filePath": "lib/rest/dataSource/Default.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_Info_ValueTranslator": {
+        "newClass": "WpTripSummary\\Route\\Info\\ValueTranslator",
+        "filePath": "lib/route/info/ValueTranslator.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_Log_Entry": {
+        "newClass": "WpTripSummary\\Route\\Log\\Entry",
+        "filePath": "lib/route/log/Entry.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_Manager_Default": {
+        "newClass": "WpTripSummary\\Route\\Manager\\Default",
+        "filePath": "lib/route/manager/Default.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_Track_AltitudeProfile": {
+        "newClass": "WpTripSummary\\Route\\Track\\AltitudeProfile",
+        "filePath": "lib/route/track/AltitudeProfile.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_Track_Bbox": {
+        "newClass": "WpTripSummary\\Route\\Track\\Bbox",
+        "filePath": "lib/route/track/Bbox.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_Track_Constants": {
+        "newClass": "WpTripSummary\\Route\\Track\\Constants",
+        "filePath": "lib/route/track/Constants.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_Track_Coordinate": {
+        "newClass": "WpTripSummary\\Route\\Track\\Coordinate",
+        "filePath": "lib/route/track/Coordinate.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_Track_Document": {
+        "newClass": "WpTripSummary\\Route\\Track\\Document",
+        "filePath": "lib/route/track/Document.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_Track_Info": {
+        "newClass": "WpTripSummary\\Route\\Track\\Info",
+        "filePath": "lib/route/track/Info.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_Track_Line": {
+        "newClass": "WpTripSummary\\Route\\Track\\Line",
+        "filePath": "lib/route/track/Line.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_Track_Part": {
+        "newClass": "WpTripSummary\\Route\\Track\\Part",
+        "filePath": "lib/route/track/Part.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_Track_Point": {
+        "newClass": "WpTripSummary\\Route\\Track\\Point",
+        "filePath": "lib/route/track/Point.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Transfer_Uploader_Config": {
+        "newClass": "WpTripSummary\\Transfer\\Uploader\\Config",
+        "filePath": "lib/transfer/uploader/Config.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Transfer_Uploader_FileValidatorProvider": {
+        "newClass": "WpTripSummary\\Transfer\\Uploader\\FileValidatorProvider",
+        "filePath": "lib/transfer/uploader/FileValidatorProvider.php",
+        "status": "pending",
+        "potentialIssues": [
+            "dependency-injection participant"
+        ]
+    },
+    "Abp01_UnitSystem_Value_Distance": {
+        "newClass": "WpTripSummary\\UnitSystem\\Value\\Distance",
+        "filePath": "lib/unitSystem/value/Distance.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_UnitSystem_Value_Height": {
+        "newClass": "WpTripSummary\\UnitSystem\\Value\\Height",
+        "filePath": "lib/unitSystem/value/Height.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_UnitSystem_Value_Length": {
+        "newClass": "WpTripSummary\\UnitSystem\\Value\\Length",
+        "filePath": "lib/unitSystem/value/Length.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Validation_Rule_Composite": {
+        "newClass": "WpTripSummary\\Validation\\Rule\\Composite",
+        "filePath": "lib/validation/rule/Composite.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Validation_Rule_Simple": {
+        "newClass": "WpTripSummary\\Validation\\Rule\\Simple",
+        "filePath": "lib/validation/rule/Simple.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Viewer_DataSource_Default": {
+        "newClass": "WpTripSummary\\Viewer\\DataSource\\Default",
+        "filePath": "lib/viewer/dataSource/Default.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Requirement_Provider_Collection": {
+        "newClass": "WpTripSummary\\Installer\\Requirement\\Provider\\Collection",
+        "filePath": "lib/installer/requirement/provider/Collection.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Requirement_Provider_Default": {
+        "newClass": "WpTripSummary\\Installer\\Requirement\\Provider\\Default",
+        "filePath": "lib/installer/requirement/provider/Default.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_Update_UpdateTo021": {
+        "newClass": "WpTripSummary\\Installer\\Step\\Update\\UpdateTo021",
+        "filePath": "lib/installer/step/update/UpdateTo021.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_Update_UpdateTo022": {
+        "newClass": "WpTripSummary\\Installer\\Step\\Update\\UpdateTo022",
+        "filePath": "lib/installer/step/update/UpdateTo022.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_Update_UpdateTo024": {
+        "newClass": "WpTripSummary\\Installer\\Step\\Update\\UpdateTo024",
+        "filePath": "lib/installer/step/update/UpdateTo024.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_Update_UpdateTo027": {
+        "newClass": "WpTripSummary\\Installer\\Step\\Update\\UpdateTo027",
+        "filePath": "lib/installer/step/update/UpdateTo027.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_Update_UpdateTo029": {
+        "newClass": "WpTripSummary\\Installer\\Step\\Update\\UpdateTo029",
+        "filePath": "lib/installer/step/update/UpdateTo029.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_Update_UpdateTo02Beta": {
+        "newClass": "WpTripSummary\\Installer\\Step\\Update\\UpdateTo02Beta",
+        "filePath": "lib/installer/step/update/UpdateTo02Beta.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_Update_UpdateTo030": {
+        "newClass": "WpTripSummary\\Installer\\Step\\Update\\UpdateTo030",
+        "filePath": "lib/installer/step/update/UpdateTo030.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Installer_Step_Update_UpdateTo032": {
+        "newClass": "WpTripSummary\\Installer\\Step\\Update\\UpdateTo032",
+        "filePath": "lib/installer/step/update/UpdateTo032.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_Log_Manager_Default": {
+        "newClass": "WpTripSummary\\Route\\Log\\Manager\\Default",
+        "filePath": "lib/route/log/manager/Default.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_Track_DocumentParser_ErrorCode": {
+        "newClass": "WpTripSummary\\Route\\Track\\DocumentParser\\ErrorCode",
+        "filePath": "lib/route/track/documentParser/ErrorCode.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_Track_DocumentParser_Exception": {
+        "newClass": "WpTripSummary\\Route\\Track\\DocumentParser\\Exception",
+        "filePath": "lib/route/track/documentParser/Exception.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_Track_DocumentParser_Factory": {
+        "newClass": "WpTripSummary\\Route\\Track\\DocumentParser\\Factory",
+        "filePath": "lib/route/track/documentParser/Factory.php",
+        "status": "pending",
+        "potentialIssues": [
+            "dependency-injection participant"
+        ]
+    },
+    "Abp01_Route_Track_DocumentParser_GeoJson": {
+        "newClass": "WpTripSummary\\Route\\Track\\DocumentParser\\GeoJson",
+        "filePath": "lib/route/track/documentParser/GeoJson.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_Track_DocumentParser_Gpx": {
+        "newClass": "WpTripSummary\\Route\\Track\\DocumentParser\\Gpx",
+        "filePath": "lib/route/track/documentParser/Gpx.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_Track_DocumentParser_Kml": {
+        "newClass": "WpTripSummary\\Route\\Track\\DocumentParser\\Kml",
+        "filePath": "lib/route/track/documentParser/Kml.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_Track_Processor_Default": {
+        "newClass": "WpTripSummary\\Route\\Track\\Processor\\Default",
+        "filePath": "lib/route/track/processor/Default.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Transfer_Uploader_FileNameProvider_Track": {
+        "newClass": "WpTripSummary\\Transfer\\Uploader\\FileNameProvider\\Track",
+        "filePath": "lib/transfer/uploader/fileNameProvider/Track.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Viewer_DataSource_Cache_WpTransients": {
+        "newClass": "WpTripSummary\\Viewer\\DataSource\\Cache\\WpTransients",
+        "filePath": "lib/viewer/dataSource/cache/WpTransients.php",
+        "status": "pending",
+        "potentialIssues": []
+    },
+    "Abp01_Route_Track_DocumentParser_Kml_LibKmlProcessorDelegate": {
+        "newClass": "WpTripSummary\\Route\\Track\\DocumentParser\\Kml\\LibKmlProcessorDelegate",
+        "filePath": "lib/route/track/documentParser/kml/LibKmlProcessorDelegate.php",
+        "status": "pending",
+        "potentialIssues": []
+    }
+}

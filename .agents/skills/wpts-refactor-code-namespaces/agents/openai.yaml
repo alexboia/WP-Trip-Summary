@@ -1,0 +1,4 @@
+interface:
+  display_name: "Refactor WPTS PHP Code"
+  short_description: "Migrate namespaces and add safe PHP types"
+  default_prompt: "Use $wpts-refactor-code-namespaces to migrate a WPTS class or add conservative type hints on demand."
