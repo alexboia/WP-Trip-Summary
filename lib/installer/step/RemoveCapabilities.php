@@ -39,12 +39,12 @@ class Abp01_Installer_Step_RemoveCapabilities implements Abp01_Installer_Step {
 	 */
 	private $_lastError;
 
-    public function execute() { 
+    public function execute(): bool { 
 		$this->_lastError = null;
 		return $this->_removeCapabilities();
 	}
 
-	private function _removeCapabilities() {
+	private function _removeCapabilities(): bool {
 		$result = false;
 
 		try {
@@ -57,7 +57,7 @@ class Abp01_Installer_Step_RemoveCapabilities implements Abp01_Installer_Step {
 		return $result;
 	}
 
-    public function getLastError() { 
+    public function getLastError(): Exception|WP_Error|null { 
 		return $this->_lastError;
 	}
 }

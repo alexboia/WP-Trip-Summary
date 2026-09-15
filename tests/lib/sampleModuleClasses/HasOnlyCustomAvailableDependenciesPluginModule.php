@@ -1,4 +1,7 @@
 <?php
+
+use WpTripSummary\Env;
+
 /**
  * Copyright (c) 2014-2026 Alexandru Boia and Contributors
  *
@@ -30,12 +33,9 @@
  */
 
 class HasOnlyCustomAvailableDependenciesPluginModule extends Abp01_PluginModules_PluginModule {
-    /**
-     * @var SamplePluginModuleDependency
-     */
-    private $_dep;
+    private SamplePluginModuleDependency $_dep;
 
-    public function __construct(SamplePluginModuleDependency $dep, Abp01_Env $env, Abp01_Auth $auth) {
+    public function __construct(SamplePluginModuleDependency $dep, Env $env, Abp01_Auth $auth) {
         parent::__construct($env, $auth);
 
         $this->_dep = $dep;

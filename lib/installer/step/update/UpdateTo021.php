@@ -29,21 +29,20 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+use WpTripSummary\Env;
+
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
 class Abp01_Installer_Step_Update_UpdateTo021 implements Abp01_Installer_Step_Update_Interface {
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+	private Env $_env;
 
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_env = $env;
 	}
 
-	public function execute() { 
+	public function execute(): bool { 
 		$result = true;
 
 		//1. Ensure storage directories
@@ -69,7 +68,7 @@ class Abp01_Installer_Step_Update_UpdateTo021 implements Abp01_Installer_Step_Up
 		return $result;
 	}
 
-	private function _ensureStorageDirectories() {
+	private function _ensureStorageDirectories(): bool {
 		$rootStorageDir = $this->_env->getRootStorageDir();
 		$tracksStorageDir = $this->_env->getTracksStorageDir();
 		$cacheStorageDir = $this->_env->getCacheStorageDir();
@@ -83,21 +82,21 @@ class Abp01_Installer_Step_Update_UpdateTo021 implements Abp01_Installer_Step_Up
 		return $service->execute();
 	}
 
-	private function _moveTrackDataFiles() {
+	private function _moveTrackDataFiles(): bool {
 		$service = new Abp01_Installer_Service_MoveTrackDataFilesFromLegacyDirectories($this->_env);
 		return $service->execute();
 	}
 
-	private function _fixRoutePathsInDb() {
+	private function _fixRoutePathsInDb(): bool {
 		$service = new Abp01_Installer_Service_FixLegacyRoutePathsInDb($this->_env);
 		return $service->execute();
 	}
 
-	public function getLastError() { 
+	public function getLastError(): null { 
 		return null;
 	}
 
-	public function getTargetVersion() {
+	public function getTargetVersion(): string {
 		return '0.2.1';
 	}
 }

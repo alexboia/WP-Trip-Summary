@@ -1,4 +1,7 @@
 <?php
+
+use WpTripSummary\Env;
+
 /**
  * Copyright (c) 2014-2026 Alexandru Boia and Contributors
  *
@@ -30,9 +33,9 @@
  */
 
 class RequiresSomeUnsupportedDependenciesSamplePluginModule extends Abp01_PluginModules_PluginModule {
-    private $_wpQuery;
+    private WP_Query $_wpQuery;
 
-    public function __construct(WP_Query $wpQuery, Abp01_Env $env, Abp01_Auth $auth) {
+    public function __construct(WP_Query $wpQuery, Env $env, Abp01_Auth $auth) {
         parent::__construct($env, $auth);
         $this->_wpQuery = $wpQuery;
         SamplePluginModuleCreationState::reportModuleConstructed(__CLASS__, func_get_args());
@@ -42,7 +45,7 @@ class RequiresSomeUnsupportedDependenciesSamplePluginModule extends Abp01_Plugin
         SamplePluginModuleCallState::reportModuleLoadCalled(__CLASS__);
     }
 
-    public function hasWpQuery() {
+    public function hasWpQuery(): bool {
         return !empty($this->_wpQuery);
     }
 }

@@ -31,6 +31,8 @@
 
 declare(strict_types=1);
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED')) {
 	exit;
 }
@@ -57,7 +59,7 @@ class Abp01_PluginModules_AdminTripSummaryAuditLogPluginModule extends Abp01_Plu
     
 	public function __construct(Abp01_AuditLog_Provider $provider, 
 			Abp01_View $view, 
-			Abp01_Env $env, 
+			Env $env, 
 			Abp01_Auth $auth) {
 		parent::__construct($env, $auth);
 		$this->_provider = $provider;
@@ -205,16 +207,16 @@ class Abp01_PluginModules_AdminTripSummaryAuditLogPluginModule extends Abp01_Plu
 		return Abp01_AuditLog_Data::empty();
 	}
 
-	private function _registerPostRowActions() {
-		add_action('post_row_actions', 
+	private function _registerPostRowActions(): void {
+		add_filter('post_row_actions', 
 			array($this, 'addPostRowActions'), 
 			self::AUDIT_LOG_POST_ROW_ACTIONS_HOOK_PRIORITY, 
 			2);
 	}
 
-	public function addPostRowActions(array $actions, \WP_Post|null $post) {
+	public function addPostRowActions(array $actions, \WP_Post|null $post): ?array {
 		if (!$post) {
-			return;
+			return $actions;
 		}
 
 		$postId = intval($post->ID);
@@ -228,20 +230,20 @@ class Abp01_PluginModules_AdminTripSummaryAuditLogPluginModule extends Abp01_Plu
 		return $actions;
 	}
 
-	private function _renderViewTripSummaryAuditLogLink(int|string $postId) {
+	private function _renderViewTripSummaryAuditLogLink(int|string $postId): string {
 		return '<a class="abp01-admin-listing-audit-log-link" href="javascript:void(0);" data-post="' . esc_attr($postId) . '">' 
 			. esc_html__('Trip summary audit log', 'abp01-trip-summary') 
 		. '</a>';
 	}
 
-	private function _registerTripSummaryListingAuditLogInlineScripts() {
+	private function _registerTripSummaryListingAuditLogInlineScripts(): void {
 		add_action(
 			'in_admin_footer', 
 			array($this, 'renderTripSummaryListingAuditLogInlineScripts')
 		);
 	}
 
-	public function renderTripSummaryListingAuditLogInlineScripts() {
+	public function renderTripSummaryListingAuditLogInlineScripts(): void {
 		if ($this->_shouldEnqueueListingAuditLogScripts()) {
 			$data = new Abp01_ViewModel_SimpleScriptsInfoVm();
 			$data->ajaxBaseUrl = $this->_env->getAjaxBaseUrl();
@@ -251,7 +253,7 @@ class Abp01_PluginModules_AdminTripSummaryAuditLogPluginModule extends Abp01_Plu
 		}
 	}
 
-	public function getAuditLogContents() {
+	public function getAuditLogContents(): never {
 		$postId = $this->_getCurrentPostId();
 		if (empty($postId)) {
 			die;

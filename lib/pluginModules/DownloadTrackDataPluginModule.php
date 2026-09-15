@@ -29,7 +29,9 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+use WpTripSummary\Env;
+
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
@@ -37,31 +39,19 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
  * @package WP-Trip-Summary
  */
 class Abp01_PluginModules_DownloadTrackDataPluginModule extends Abp01_PluginModules_PluginModule {
-	/**
-	 * @var Abp01_Settings
-	 */
-	private $_settings;
+	private Abp01_Settings $_settings;
 
-	/**
-	 * @var Abp01_AdminAjaxAction
-	 */
-	private $_downloadGpxTrackDataAction;
+	private Abp01_AdminAjaxAction $_downloadGpxTrackDataAction;
 
-	/**
-	 * @var Abp01_Route_Manager
-	 */
-	private $_routeManager;
+	private Abp01_Route_Manager $_routeManager;
 
-	/**
-	 * @var Abp01_Route_Track_FileNameProvider
-	 */
-	private $_trackFileNameProvider;
+	private Abp01_Route_Track_FileNameProvider $_trackFileNameProvider;
 
 	public function __construct(Abp01_Route_Manager $routeManager,
 		Abp01_Route_Track_FileNameProvider $trackFileNameProvider,
 		Abp01_NonceProvider_DownloadTrackData $downloadTrackDataNonceProvider, 
 		Abp01_Settings $settings, 
-		Abp01_Env $env, 
+		Env $env, 
 		Abp01_Auth $auth) {
 
 		parent::__construct($env, $auth);
@@ -73,7 +63,7 @@ class Abp01_PluginModules_DownloadTrackDataPluginModule extends Abp01_PluginModu
 		$this->_initAjaxActions($downloadTrackDataNonceProvider);
 	}
 
-	private function _initAjaxActions(Abp01_NonceProvider_DownloadTrackData $trackDownloadNonceProvider) {
+	private function _initAjaxActions(Abp01_NonceProvider_DownloadTrackData $trackDownloadNonceProvider): void {
 		$this->_downloadGpxTrackDataAction = 
 			Abp01_AdminAjaxAction::create(ABP01_ACTION_DOWNLOAD_TRACK, array($this, 'downloadGpxTrack'))
 				->useCurrentResourceProvider(new Abp01_AdminAjaxAction_CurrentResourceProvider_CurrentPostId())
@@ -86,12 +76,12 @@ class Abp01_PluginModules_DownloadTrackDataPluginModule extends Abp01_PluginModu
 		$this->_registerAjaxActions();
 	}
 
-	private function _registerAjaxActions() {
+	private function _registerAjaxActions(): void {
 		$this->_downloadGpxTrackDataAction
 			->register();
 	}
 
-	public function downloadGpxTrack() {
+	public function downloadGpxTrack(): never {
 		$postId = $this->_getCurrentPostId();
 		if (empty($postId)) {
 			die;
@@ -104,16 +94,16 @@ class Abp01_PluginModules_DownloadTrackDataPluginModule extends Abp01_PluginModu
 		die;
 	}
 
-	private function _trackDataAllowedBySettings() {
+	private function _trackDataAllowedBySettings(): bool {
 		return $this->_settings->getAllowTrackDownload();
 	}
 
-	private function _sendGpxTrackDataFileForPostId($postId) {
+	private function _sendGpxTrackDataFileForPostId(int|string $postId): void {
 		$trackFileDownloader = $this->_createTrackFileDownloader();
 		$trackFileDownloader->sendTrackFileForPostId($postId);
 	}
 
-	private function _createTrackFileDownloader() {
+	private function _createTrackFileDownloader(): Abp01_Transfer_TrackFileDownloader {
 		return new Abp01_Transfer_TrackFileDownloader($this->_routeManager, 
 			$this->_trackFileNameProvider);
 	}

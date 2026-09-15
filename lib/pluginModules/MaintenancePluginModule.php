@@ -29,7 +29,9 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+use WpTripSummary\Env;
+
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
@@ -37,24 +39,15 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
  * @package WP-Trip-Summary
  */
 class Abp01_PluginModules_MaintenancePluginModule extends Abp01_PluginModules_PluginModule {
-	/**
-	 * @var Abp01_MaintenanceTool_Registry
-	 */
-	private $_registry;
+	private Abp01_MaintenanceTool_Registry $_registry;
 
-	/**
-	 * @var Abp01_View
-	 */
-	private $_view;
+	private Abp01_View $_view;
 
-	/**
-	 * @var Abp01_AdminAjaxAction
-	 */
-	private $_executeToolAction;
+	private Abp01_AdminAjaxAction $_executeToolAction;
 
 	public function __construct(Abp01_MaintenanceTool_Registry $registry,
 		Abp01_View $view,
-		Abp01_Env $env, 
+		Env $env, 
 		Abp01_Auth $auth) {
 		parent::__construct($env, $auth);
 		$this->_registry = $registry;
@@ -109,11 +102,11 @@ class Abp01_PluginModules_MaintenancePluginModule extends Abp01_PluginModules_Pl
 		}
 	}
 
-	private function _getAdminMaintenanceScriptTranslations() {
+	private function _getAdminMaintenanceScriptTranslations(): array {
 		return Abp01_TranslatedScriptMessages::getAdminMaintenanceScriptTranslations();
 	}
 
-	public function getMenuItems() {
+	public function getMenuItems(): array {
 		return array(
 			array(
 				'slug' => ABP01_MAINTENANCE_SUBMENU_SLUG,
@@ -126,7 +119,7 @@ class Abp01_PluginModules_MaintenancePluginModule extends Abp01_PluginModules_Pl
 		);
 	}
 
-	public function displayMaintenancePage() {
+	public function displayMaintenancePage(): void {
 		if (!$this->_currentUserCanManagePluginSettings()) {
 			die;
 		}
@@ -147,7 +140,7 @@ class Abp01_PluginModules_MaintenancePluginModule extends Abp01_PluginModules_Pl
 		return $this->_registry->getRegisteredToolsInfo();
 	}
 
-	public function executeTool() {
+	public function executeTool(): stdClass {
 		$toolId = $this->_getToolIdFromHttpGet();
 		if (!$this->_registry->isToolRegistered($toolId)) {
 			die;
@@ -163,11 +156,11 @@ class Abp01_PluginModules_MaintenancePluginModule extends Abp01_PluginModules_Pl
 		return $response;
 	}
 
-	private function _getToolIdFromHttpGet() {
+	private function _getToolIdFromHttpGet(): ?string {
 		return Abp01_InputFiltering::getFilteredGETValue('abp01_tool_id');
 	}
 
-	private function _renderToolResult($toolId, Abp01_MaintenanceTool_Result $result) {
+	private function _renderToolResult(string $toolId, Abp01_MaintenanceTool_Result $result): string|null|bool {
 		$data = new stdClass();
 		$data->result = $result->getData();
 		$renderedResult = $this->_view->renderAdminMaintenanceToolResult($toolId, 

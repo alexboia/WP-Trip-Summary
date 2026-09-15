@@ -29,14 +29,14 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
 interface Abp01_Route_Track_FileNameProvider {
-	function constructTrackFilePathForPostId($postId, $trackFileMimeType);
+	function constructTrackFilePathForPostId(int|null $postId, string $trackFileMimeType): string;
 
-	function constructTempTrackFilePathForPostId($postId, $trackFileMimeType);
+	function constructTempTrackFilePathForPostId(int $postId, string $trackFileMimeType): string;
 
 	function constructTrackFilePath(Abp01_Route_Track $track): string;
 }

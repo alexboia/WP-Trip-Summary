@@ -47,7 +47,7 @@ class Abp01_Installer_Step_RemoveStorageDirectories implements Abp01_Installer_S
 		return $service->execute();
 	}
 
-    public function getLastError(): null { 
+    public function getLastError(): \Exception|\WP_Error|null { 
 		return null;
 	}
 }

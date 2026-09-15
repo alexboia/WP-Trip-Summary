@@ -43,11 +43,11 @@ class Abp01_Installer_Step_RunPreUninstallHooks implements Abp01_Installer_Step 
 		$this->_service = new Abp01_Installer_Service_RunInstallHook('abp01_installer_do_pre_uninstall', $context);
 	}
 
-    public function execute() { 
+    public function execute(): bool { 
 		return $this->_service->execute();
 	}
 
-    public function getLastError() { 
+    public function getLastError(): \Exception|\WP_Error|null { 
 		return $this->_service->getLastError();
 	}
 }

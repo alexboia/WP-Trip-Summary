@@ -29,32 +29,28 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
 class Abp01_Installer_Step_Update implements Abp01_Installer_Step {
+	public const string OPT_VERSION = Abp01_Installer_Constants::OPT_VERSION;
 
-	const OPT_VERSION = Abp01_Installer_Constants::OPT_VERSION;
+	private \Exception|\WP_Error|null $_lastError = null;
 
-	/**
-	 * @var \Exception|\WP_Error|null
-	 */
-	private $_lastError;
+	private Env $_env;
 
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
-
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_env = $env;
 	}
 
-    public function execute() { 
+    public function execute(): bool { 
 		$result = true;
 		$version = $this->_getVersion();
 		$installedVersion = $this->_getInstalledVersion();
+		$this->_lastError = null;
 
 		if ($this->_isUpdatedNeeded($version, $installedVersion)) {
 			$result = $this->_update($version, $installedVersion);
@@ -63,7 +59,7 @@ class Abp01_Installer_Step_Update implements Abp01_Installer_Step {
 		return $result;
 	}
 
-	private function _update($version, $installedVersion) {
+	private function _update(?string $version, ?string $installedVersion): bool {
 		$result = true;
 		$steps = $this->_computeRequiredSteps($installedVersion);
 
@@ -80,7 +76,7 @@ class Abp01_Installer_Step_Update implements Abp01_Installer_Step {
 	/**
 	 * @return Abp01_Installer_Step[] 
 	 */
-	private function _computeRequiredSteps($installedVersion) {
+	private function _computeRequiredSteps(string|null $installedVersion): array {
 		$steps = array(
 			new Abp01_Installer_Step_Update_UpdateTo02Beta($this->_env),
 			new Abp01_Installer_Step_Update_UpdateTo021($this->_env),
@@ -106,21 +102,21 @@ class Abp01_Installer_Step_Update implements Abp01_Installer_Step {
 		return $steps;
 	}
 
-	private function _executeUpdateStep(Abp01_Installer_Step $step) {
+	private function _executeUpdateStep(Abp01_Installer_Step $step): bool {
 		$result = $step->execute();
 		$this->_lastError = $step->getLastError();
 		return $result;
 	}
 
-	private function _getVersion() {
+	private function _getVersion(): string {
 		return $this->_env->getVersion();
 	}
 
-	private function _isUpdatedNeeded($version, $installedVersion) {
+	private function _isUpdatedNeeded(?string $version, ?string $installedVersion): bool {
 		return $version != $installedVersion;
 	}
 
-	private function _getInstalledVersion() {
+	private function _getInstalledVersion(): ?string {
 		$version = null;
 		if (function_exists('get_option')) {
 			$version = get_option(self::OPT_VERSION, null);
@@ -128,7 +124,7 @@ class Abp01_Installer_Step_Update implements Abp01_Installer_Step {
 		return $version;
 	}
 
-    public function getLastError() { 
+    public function getLastError(): Exception|WP_Error|null { 
 		return $this->_lastError;
 	}
 }

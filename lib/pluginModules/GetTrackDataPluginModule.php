@@ -29,6 +29,8 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
@@ -37,31 +39,19 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
  * @package WP-Trip-Summary
  */
 class Abp01_PluginModules_GetTrackDataPluginModule extends Abp01_PluginModules_PluginModule {
-	/**
-	 * @var Abp01_Settings
-	 */
-	private $_settings;
+	private Abp01_Settings $_settings;
 
-	/**
-	 * @var Abp01_Route_Manager
-	 */
-	private $_routeManager;
+	private Abp01_Route_Manager $_routeManager;
 
-	/**
-	 * @var Abp01_Route_Track_Processor
-	 */
-	private $_routeTrackProcessor;
+	private Abp01_Route_Track_Processor $_routeTrackProcessor;
 
-	/**
-	 * @var Abp01_AdminAjaxAction
-	 */
-	private $_getTrackDataAjaxAction;
+	private Abp01_AdminAjaxAction $_getTrackDataAjaxAction;
 
 	public function __construct(Abp01_Route_Manager $routeManager, 
 		Abp01_Route_Track_Processor $routeTrackProcessor,
 		Abp01_NonceProvider_ReadTrackData $readTrackDataNonceProvider,
 		Abp01_Settings $settings, 
-		Abp01_Env $env, 
+		Env $env, 
 		Abp01_Auth $auth) {
 
 		parent::__construct($env, $auth);
@@ -73,7 +63,7 @@ class Abp01_PluginModules_GetTrackDataPluginModule extends Abp01_PluginModules_P
 		$this->_initAjaxActions($readTrackDataNonceProvider);
 	}
 
-	private function _initAjaxActions(Abp01_NonceProvider_ReadTrackData $readTrackDataNonceProvider) {
+	private function _initAjaxActions(Abp01_NonceProvider_ReadTrackData $readTrackDataNonceProvider): void {
 		$this->_getTrackDataAjaxAction = 
 			Abp01_AdminAjaxAction::create(ABP01_ACTION_GET_TRACK, array($this, 'getTrackData'))
 				->useCurrentResourceProvider(new Abp01_AdminAjaxAction_CurrentResourceProvider_CurrentPostId())
@@ -86,12 +76,12 @@ class Abp01_PluginModules_GetTrackDataPluginModule extends Abp01_PluginModules_P
 		$this->_registerAjaxActions();
 	}
 
-	private function _registerAjaxActions() {
+	private function _registerAjaxActions(): void {
 		$this->_getTrackDataAjaxAction
 			->register();
 	}
 
-	public function getTrackData() {
+	public function getTrackData(): stdClass {
 		$postId = $this->_getCurrentPostId();
 		if (empty($postId)) {
 			die;

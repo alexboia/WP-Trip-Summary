@@ -59,12 +59,12 @@ class Abp01_Installer_Step_Uninstall implements Abp01_Installer_Step {
 		return false;
 	}
 
-	private function _deactivate() {
+	private function _deactivate(): bool {
 		$step = new Abp01_Installer_Step_Deactivate();
 		return $this->_executeStep($step);
 	}
 
-	private function _executeStep(Abp01_Installer_Step $step) {
+	private function _executeStep(Abp01_Installer_Step $step): bool {
 		$result = $step->execute();
 		$this->_lastError = $step->getLastError();
 		return $result;

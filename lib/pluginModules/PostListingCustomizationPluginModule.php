@@ -29,7 +29,9 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+use WpTripSummary\Env;
+
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
@@ -37,7 +39,7 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
  * @package WP-Trip-Summary
  */
 class Abp01_PluginModules_PostListingCustomizationPluginModule extends Abp01_PluginModules_PluginModule {
-	public function __construct(Abp01_Env $env, Abp01_Auth $auth) {
+	public function __construct(Env $env, Abp01_Auth $auth) {
 		parent::__construct($env, $auth);
 	}
 
@@ -46,27 +48,33 @@ class Abp01_PluginModules_PostListingCustomizationPluginModule extends Abp01_Plu
 		$this->_registerPostListingCustomizations();
 	}
 
-	private function _registerWebPageAssets() {
-		add_action('admin_enqueue_scripts', array($this, 'onAdminEnqueueStyles'));
+	private function _registerWebPageAssets(): void {
+		add_action(
+			'admin_enqueue_scripts', 
+			array($this, 'onAdminEnqueueStyles')
+		);
 	}
 
-	public function onAdminEnqueueStyles() {
+	public function onAdminEnqueueStyles(): void {
 		if ($this->_shouldAddPostListingStyles()) {
 			Abp01_Includes::includeStyleAdminPostsListing();
 		}
 	}
 
-	private function _shouldAddPostListingStyles() {
+	private function _shouldAddPostListingStyles(): bool {
 		return $this->_env->isListingWpPosts();
 	}
 
-	private function _registerPostListingCustomizations() {
+	private function _registerPostListingCustomizations(): void {
 		foreach ($this->_getPostListingCustomizations() as $customization) {
 			$customization->apply();
 		}
 	}
 
-	private function _getPostListingCustomizations() {
+	/**
+	 * @return Abp01_Display_PostListing_Customization[]
+	 */
+	private function _getPostListingCustomizations(): array {
 		return array(
 			new Abp01_Display_PostListing_TripSummaryStatusColumnsDecorator(),
 			new Abp01_Display_PostListing_TripSummaryRouteTypeColumnsDecorator(),

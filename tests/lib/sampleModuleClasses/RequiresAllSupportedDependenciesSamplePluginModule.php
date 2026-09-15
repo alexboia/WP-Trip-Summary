@@ -1,4 +1,7 @@
 <?php
+
+use WpTripSummary\Env;
+
 /**
  * Copyright (c) 2014-2026 Alexandru Boia and Contributors
  *
@@ -30,19 +33,19 @@
  */
 
 class RequiresAllSupportedDependenciesSamplePluginModule extends Abp01_PluginModules_PluginModule {
-    private $_settings; 
+    private Abp01_Settings $_settings; 
 
-    private $_routeManager; 
+    private Abp01_Route_Manager $_routeManager; 
 
-    private $_view;
+    private Abp01_View $_view;
     
-    private $_pluginModuleHost;
+    private Abp01_PluginModules_PluginModuleHost $_pluginModuleHost;
    
     public function __construct(Abp01_PluginModules_PluginModuleHost $pluginModuleHost, 
         Abp01_Settings $settings, 
         Abp01_Route_Manager $routeManager, 
         Abp01_View $view, 
-        Abp01_Env $env,
+        Env $env,
         Abp01_Auth $auth) {
 
         parent::__construct($env, $auth);
@@ -59,27 +62,27 @@ class RequiresAllSupportedDependenciesSamplePluginModule extends Abp01_PluginMod
         SamplePluginModuleCallState::reportModuleLoadCalled(__CLASS__);
     }
 
-    public function hasPluginModuleHost() {
+    public function hasPluginModuleHost(): bool {
         return !empty($this->_pluginModuleHost);
     }
 
-    public function hasAuth() {
+    public function hasAuth(): bool {
         return !empty($this->_auth);
     }
 
-    public function hasSettings() {
+    public function hasSettings(): bool {
         return !empty($this->_settings);
     }
 
-    public function hasEnv() {
+    public function hasEnv(): bool {
         return !empty($this->_env);
     }
 
-    public function hasRouteManager() {
+    public function hasRouteManager(): bool {
         return !empty($this->_routeManager);
     }
 
-    public function hasView() {
+    public function hasView(): bool {
         return !empty($this->_view);
     }
 }

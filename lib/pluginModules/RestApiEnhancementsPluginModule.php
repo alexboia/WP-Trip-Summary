@@ -29,7 +29,9 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+use WpTripSummary\Env;
+
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
@@ -37,13 +39,10 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
  * @package WP-Trip-Summary
  */
 class Abp01_PluginModules_RestApiEnhancementsPluginModule extends Abp01_PluginModules_PluginModule {
-	/**
-	 * @var Abp01_Rest_DataSource
-	 */
-	private $_restDataSource;
+	private Abp01_Rest_DataSource $_restDataSource;
 	
 	public function __construct(Abp01_Rest_DataSource $restDataSource, 
-			Abp01_Env $env, 
+			Env $env, 
 			Abp01_Auth $auth) {
 		parent::__construct($env, $auth);
 		
@@ -55,18 +54,18 @@ class Abp01_PluginModules_RestApiEnhancementsPluginModule extends Abp01_PluginMo
 			array($this, 'initRestApi'));
 	}
 
-	public function initRestApi() {
+	public function initRestApi(): void {
 		if ($this->_shouldAddTripSummaryToRestApi()) {
 			$this->_registerTripSummaryRestApiFields();
 		}		
 	}
 
-	private function _shouldAddTripSummaryToRestApi() {
+	private function _shouldAddTripSummaryToRestApi(): bool {
 		return apply_filters('abp01_add_trip_summary_to_rest_api', 
-			true);
+			true) === true;
 	}
 
-	private function _registerTripSummaryRestApiFields() {
+	private function _registerTripSummaryRestApiFields(): void {
 		$objectTypes = Abp01_AvailabilityHelper::getTripSummaryAvailableForPostTypes();
 		register_rest_field($objectTypes, 'wpts_trip_summary', array(
 			'get_callback' => function($object, $fieldName, $request, $objectType) {
@@ -83,13 +82,20 @@ class Abp01_PluginModules_RestApiEnhancementsPluginModule extends Abp01_PluginMo
 		));
 	}
 
-	private function _getTripSummaryFieldData($object, $fieldName, $request, $objectType) {
+	private function _getTripSummaryFieldData(mixed $object, 
+		string $fieldName, 
+		WP_REST_Request $request, 
+		string $objectType): ?array {
+
+		if (!is_array($object)) {
+			return null;
+		}
+
 		$postId = $this->_getObjectId($object);
 		if ($postId <= 0) {
 			return null;
 		}
 
-		/** @var WP_REST_Request $request */
 		$requestPostId = intval($request->get_param('id'));
 		if (!$this->_shouldAddTripSummaryToRestApiListing() && $postId !== $requestPostId) {
 			return null;
@@ -98,7 +104,7 @@ class Abp01_PluginModules_RestApiEnhancementsPluginModule extends Abp01_PluginMo
 		return $this->_getTripSummaryData($postId);
 	}
 
-	private function _getObjectId($object) {
+	private function _getObjectId(array $object): int {
 		return  isset($object['id']) 
 			? intval($object['id']) 
 			: 0;
@@ -109,7 +115,7 @@ class Abp01_PluginModules_RestApiEnhancementsPluginModule extends Abp01_PluginMo
 			false);
 	}
 
-	private function _getTripSummaryData($postId) {
+	private function _getTripSummaryData(int $postId): array {
 		return $this->_restDataSource
 			->getPostTripSummaryData($postId);
 	}

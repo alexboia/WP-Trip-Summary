@@ -29,36 +29,32 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+use WpTripSummary\Env;
+
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
 class Abp01_Installer_Step_Update_UpdateTo029 implements Abp01_Installer_Step_Update_Interface {
 
-	private $_lastError;
+	private \Exception|WP_Error|null $_lastError = null;
 
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+	private Env $_env;
 
-	/**
-	 * @var Abp01_Installer_Table_Definitions
-	 */
-	private $_tableDefs;
+	private Abp01_Installer_Table_Definitions $_tableDefs;
 
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_env = $env;
 		$this->_tableDefs = new Abp01_Installer_Table_Definitions($env);
 	}
 
-    public function execute() { 
+    public function execute(): bool { 
 		$this->_lastError = null;
 		$this->_createTable($this->_getRouteLogTableName(), $this->_getRouteLogTableDefinition());
 		return empty($this->_lastError);
 	}
 
-	private function _createTable($tableName, $tableDef) {
+	private function _createTable(string $tableName, string $tableDef): bool {
 		$result = false;
 		try {
 			$service = new Abp01_Installer_Service_CreateDbTable($this->_env);
@@ -69,19 +65,19 @@ class Abp01_Installer_Step_Update_UpdateTo029 implements Abp01_Installer_Step_Up
 		return $result;
 	}
 
-	private function _getRouteLogTableDefinition() {
+	private function _getRouteLogTableDefinition(): string {
 		return $this->_tableDefs->getRouteLogTableDefinition();
 	}
 
-	private function _getRouteLogTableName() {
+	private function _getRouteLogTableName(): string {
 		return $this->_env->getRouteLogTableName();
 	}
 
-    public function getLastError() { 
+    public function getLastError(): Exception|WP_Error|null { 
 		return $this->_lastError;
 	}
 
-	public function getTargetVersion() { 
+	public function getTargetVersion(): string { 
 		return '0.2.9';
 	}
 }

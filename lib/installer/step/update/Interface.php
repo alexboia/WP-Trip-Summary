@@ -34,5 +34,5 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 interface Abp01_Installer_Step_Update_Interface extends Abp01_Installer_Step {
-	function getTargetVersion();
+	function getTargetVersion(): string;
 }

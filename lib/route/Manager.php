@@ -34,35 +34,27 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 interface Abp01_Route_Manager {
-	function saveRouteInfo($postId, Abp01_Route_Info $info, $currentUserId);
+	function saveRouteInfo(int|string $postId, Abp01_Route_Info $info, int|string $currentUserId): bool;
 
-	function deleteRouteInfo($postId);
+	function deleteRouteInfo(int|string $postId): bool;
 
-	function saveRouteTrack(Abp01_Route_Track $track, $currentUserId);
+	function saveRouteTrack(Abp01_Route_Track $track, int|string $currentUserId): bool;
 
-	function deleteRouteTrack($postId);
+	function deleteRouteTrack(int|string $postId): bool;
 
-	/**
-	 * @param int $postId 
-	 * @return Abp01_Route_Info
-	 */
-	function getRouteInfo($postId);
+	function getRouteInfo(int|string $postId): ?Abp01_Route_Info;
 
-	/**
-	 * @param int $postId
-	 * @return Abp01_Route_Track
-	 */
-	function getRouteTrack($postId);
+	function getRouteTrack(int|string $postId): ?Abp01_Route_Track;
 
-	function hasRouteTrack($postId);
+	function hasRouteTrack(int|string $postId): bool;
 
-	function hasRouteInfo($postId);
+	function hasRouteInfo(int|string $postId): bool;
 
-	function getTripSummaryStatusInfo($postIds);
+	function getTripSummaryStatusInfo(array $postIds): array;
 
-	function getTripSummaryRouteTypeInfo($postIds);
+	function getTripSummaryRouteTypeInfo(array $postIds): array;
 
 	function getAllPostsWithRouteTracks(): array;
 
-	function clearAll();
+	function clearAll(): void;
 }

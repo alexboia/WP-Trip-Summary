@@ -73,7 +73,7 @@ class ViewTests extends WP_UnitTestCase {
             'abp01FrontendL10n');
     }
 
-    private function _assertScriptEnqueuedWithTranslations($handle) {
+    private function _assertScriptEnqueuedWithTranslations(string $handle) {
         $this->assertTrue(wp_script_is($handle, 'enqueued'));
         if (func_num_args() > 1) {
             for ($i = 1; $i < func_num_args(); $i ++) {
@@ -237,13 +237,14 @@ class ViewTests extends WP_UnitTestCase {
         $this->_assertAdminAboutPageBasicStructureCorrect($aboutPage);
     }
 
-    private function _assertAdminAboutPageBasicStructureCorrect($aboutPage) {
-        $this->assertStringContainsString('<div id="abp01-about-page">', $aboutPage);
-        $this->assertStringContainsString('<div id="abp01-about-summary">', $aboutPage);
-        $this->assertStringContainsString('<div id="abp01-about-logo">', $aboutPage);
+    private function _assertAdminAboutPageBasicStructureCorrect(string $aboutPage) {
+        $this->assertStringContainsString('<div id="abp01-about-page" class="abp01-bootstrap abp01-page">', $aboutPage);
+        $this->assertStringContainsString('<h2 class="abp01-page-title">', $aboutPage);
+        $this->assertStringContainsString('<div id="abp01-admin-help-plugin-info-container" class="abp01-page-side-bar-content">', $aboutPage);
         $this->assertStringContainsString('<div id="abp01-about-info">', $aboutPage);
+        $this->assertStringContainsString('<table id="abp01-about-info-listing" class="table table-hover table-striped">', $aboutPage);
         $this->assertStringContainsString('<div id="abp01-about-actions">', $aboutPage);
-        $this->assertStringContainsString('<div id="abp01-about-changelog">', $aboutPage);
+        $this->assertStringContainsString('<div class="abp01-rounded-container abp01-page-workspace-inner">', $aboutPage);
     }
 
     public function test_canRenderAdminLookupPage() {
@@ -271,15 +272,15 @@ class ViewTests extends WP_UnitTestCase {
         $this->assertStringContainsString('</script>', $lookupPage);
     }
 
-    private function _assertAdminLookupPageBasicStructureCorrect($lookupPage) {
-        $this->assertStringContainsString('<div id="abp01-admin-lookup-page">', $lookupPage);
-        $this->assertStringContainsString('<div id="abp01-admin-lookup-container">', $lookupPage);
-        $this->assertStringContainsString('<div id="abp01-admin-lookup-control-container">', $lookupPage);
-        $this->assertStringContainsString('<div id="abp01-lookup-item-form" style="display: none;">', $lookupPage);
-        $this->assertStringContainsString('<div id="abp01-lookup-item-form" style="display: none;">', $lookupPage); 
-        $this->assertStringContainsString('<div id="abp01-lookup-item-delete-form" style="display: none;">', $lookupPage);
-        $this->assertStringContainsString('<div id="abp01-admin-lookup-listing-container">', $lookupPage);
-        $this->assertStringContainsString('<script id="tpl-abp01-progress-container" type="text/x-kite">', $lookupPage);
+    private function _assertAdminLookupPageBasicStructureCorrect(string $lookupPage) {
+        $this->assertStringContainsString('<div id="abp01-admin-lookup-page" class="abp01-bootstrap abp01-page">', $lookupPage);
+        $this->assertStringContainsString('<div id="abp01-edit-lookup-window" class="modal modal-lg fade abp01-modal-window" tabindex="-1" aria-labelledby="abp01-edit-lookup-window-title" aria-hidden="true">', $lookupPage);
+        $this->assertStringContainsString('<div id="abp01-admin-lookup-data-menu-container" class="abp01-page-side-bar-content">', $lookupPage);
+        $this->assertStringContainsString('<div class="abp01-lookup-data-mgmt-context-item-container-link">', $lookupPage);
+        $this->assertStringContainsString('<div class="abp01-lookup-data-mgmt-context-item-container">', $lookupPage); 
+        $this->assertStringContainsString('<div class="abp01-rounded-container abp01-page-workspace-inner">', $lookupPage);
+        $this->assertStringContainsString('<table id="abp01-admin-lookup-listing" class="table table-hover table-striped">', $lookupPage);
+        $this->assertStringContainsString('<script id="tpl-abp01-lookupDataRow" type="text/x-kite">', $lookupPage);
     }
 
     public function test_canRenderAdminTripSummaryEditor() {

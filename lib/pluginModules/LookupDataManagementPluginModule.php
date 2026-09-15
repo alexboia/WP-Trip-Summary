@@ -29,6 +29,8 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
@@ -45,37 +47,19 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 
 	const LOOKUP_INUSE_ITEM_NONCE_URL_PARAM_NAME = 'abp01_nonce_lookup_force_remove';
 
-	/**
-	 * @var Abp01_View
-	 */
-	private $_view;
+	private Abp01_View $_view;
 
-	/**
-	 * @var Abp01_AdminAjaxAction
-	 */
-	private $_getLookupDataItemsAjaxAction;
+	private Abp01_AdminAjaxAction $_getLookupDataItemsAjaxAction;
 
-	/**
-	 * @var Abp01_AdminAjaxAction
-	 */
-	private $_addLookupDataItemAjaxAction;
+	private Abp01_AdminAjaxAction $_addLookupDataItemAjaxAction;
 
-	/**
-	 * @var Abp01_AdminAjaxAction
-	 */
-	private $_editLookupDataItemAjaxAction;
+	private Abp01_AdminAjaxAction $_editLookupDataItemAjaxAction;
 
-	/**
-	 * @var Abp01_AdminAjaxAction
-	 */
-	private $_deleteLookupDataItemAjaxAction;
+	private Abp01_AdminAjaxAction $_deleteLookupDataItemAjaxAction;
 
-	/**
-	 * @var Abp01_NonceProvider_Default
-	 */
-	private $_inUseLookupItemRemovalNonceProvider;
+	private Abp01_NonceProvider_Default $_inUseLookupItemRemovalNonceProvider;
 
-	public function __construct(Abp01_View $view, Abp01_Env $env, Abp01_Auth $auth) {
+	public function __construct(Abp01_View $view, Env $env, Abp01_Auth $auth) {
 		parent::__construct($env, $auth);
 
 		$this->_view = $view;
@@ -84,7 +68,7 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 		$this->_initAjaxActions();
 	}
 
-	private function _getAvailableLookupCategories() {
+	private function _getAvailableLookupCategories(): array {
 		$availableCategories = array();
 		foreach (Abp01_Lookup::getSupportedCategories() as $category) {
 			$availableCategories[$category] = abp01_get_lookup_type_label($category);
@@ -92,7 +76,7 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 		return $availableCategories;
 	}
 
-	private function _getAvailableLookupLanguages() {
+	private function _getAvailableLookupLanguages(): array {
 		return Abp01_Lookup::getSupportedLanguages();
 	}
 
@@ -103,7 +87,7 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 		);
 	}
 
-	private function _initAjaxActions() {
+	private function _initAjaxActions(): void {
 		$authCallback = $this->_createManagePluginSettingsAuthCallback();
 
 		$this->_getLookupDataItemsAjaxAction = 
@@ -136,7 +120,7 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 		$this->_registerWebPageAssets();
 	}
 
-	private function _registerAjaxActions() {
+	private function _registerAjaxActions(): void {
 		$this->_getLookupDataItemsAjaxAction
 			->register();
 		$this->_addLookupDataItemAjaxAction
@@ -147,7 +131,7 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 			->register();
 	}
 
-	private function _registerWebPageAssets() {
+	private function _registerWebPageAssets(): void {
 		add_action('admin_enqueue_scripts', 
 			array($this, 'onAdminEnqueueStyles'), 
 			self::ADMIN_ENQUEUE_STYLES_HOOK_PRIORITY);
@@ -157,32 +141,32 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 			self::ADMIN_ENQUEUE_SCRIPTS_HOOK_PRIORITY);
 	}
 
-	public function onAdminEnqueueStyles() {
+	public function onAdminEnqueueStyles(): void {
 		if ($this->_shouldEnqueueWebPageAssets()) {
 			Abp01_Includes::includeStyleAdminLookupManagement();
 		}
 	}
 
-	private function _shouldEnqueueWebPageAssets() {
+	private function _shouldEnqueueWebPageAssets(): bool {
 		return $this->_isViewingLookupDataManagementPage() 
 			&& $this->_currentUserCanManagePluginSettings();
 	}
 
-	private function _isViewingLookupDataManagementPage() {
+	private function _isViewingLookupDataManagementPage(): bool {
 		return $this->_env->isAdminPage(ABP01_LOOKUP_SUBMENU_SLUG);
 	}
 
-	public function onAdminEnqueueScripts() {
+	public function onAdminEnqueueScripts(): void {
 		if ($this->_shouldEnqueueWebPageAssets()) {
 			Abp01_Includes::includeScriptAdminLookupMgmt($this->_getAdminLookupScriptTranslations());
 		}
 	}
 
-	private function _getAdminLookupScriptTranslations() {
+	private function _getAdminLookupScriptTranslations(): array {
 		return Abp01_TranslatedScriptMessages::getAdminLookupScriptTranslations();
 	}
 
-	public function getMenuItems() {
+	public function getMenuItems(): array {
         return array(
 			array(
 				'slug' => ABP01_LOOKUP_SUBMENU_SLUG,
@@ -195,7 +179,7 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 		);
     }
 
-	public function displayAdminLookupDataPage() {
+	public function displayAdminLookupDataPage(): void {
 		if (!$this->_currentUserCanManagePluginSettings()) {
 			die;
 		}
@@ -211,8 +195,8 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 		$data->controls->selectedCategory = $this->_determineInitialSelectedCategory($availableCategories);
 
 		$data->controls->availableLanguages = $availableLookupLanguages;
-		$data->controls->selectedLanguage = 
-			$this->_determineIntialSelectedLanguageCode($availableLookupLanguages);
+		$data->controls->selectedLanguage = $this
+			->_determineIntialSelectedLanguageCode($availableLookupLanguages);
 
 		//set current context
 		$data->context = new stdClass();
@@ -237,7 +221,7 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 		echo $this->_view->renderAdminLookupPage($data);
 	}
 
-	private function _determineIntialSelectedLanguageCode($availableLookupLanguages) {
+	private function _determineIntialSelectedLanguageCode(array $availableLookupLanguages): string {
 		$langCode = $this->_readInitialSelectedLanguageCodeFromUrl();
 
 		if (!$this->_isLanguageCodeSupported($langCode, $availableLookupLanguages)) {
@@ -253,35 +237,38 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 			: null;
 	}
 
-	private function _isLanguageCodeSupported($langCode, $availableLookupLanguages) {
+	private function _isLanguageCodeSupported(string $langCode, array $availableLookupLanguages): bool {
 		return !empty($langCode) && array_key_exists($langCode, $availableLookupLanguages);
 	}
 
-	private function _determineInitialSelectedCategory($availableCategories) {
+	private function _determineInitialSelectedCategory(array $availableCategories): ?string {
 		$category = $this->_readInitialSelectedCategoryCodeFromUrl();
 
 		if (!$this->_isLookupCategorySupported($category, $availableCategories)) {
 			$category = $this->_getDefaultSelectedLookupCategory($availableCategories);
+			if ($category === false) {
+				$category = null;
+			}
 		}
 
 		return $category;
 	}
 
-	private function _readInitialSelectedCategoryCodeFromUrl() {
+	private function _readInitialSelectedCategoryCodeFromUrl(): ?string {
 		return isset($_GET['abp01_type']) 
 			? $_GET['abp01_type'] 
 			: null;
 	}
 
-	private function _isLookupCategorySupported($category, $availableCategories) {
+	private function _isLookupCategorySupported(string $category, array $availableCategories): bool {
 		return array_key_exists($category, $availableCategories);
 	}
 
-	private function _getDefaultSelectedLookupCategory($availableCategories) {
+	private function _getDefaultSelectedLookupCategory(array $availableCategories): string|bool|null {
 		return current($availableCategories);
 	}
 
-	public function getLookupDataItems() {
+	public function getLookupDataItems(): stdClass {
 		$forLang = Abp01_InputFiltering::getGETvalueOrDie('lang', 
 			array('Abp01_Lookup', 'isLanguageSupported'));
 
@@ -301,11 +288,11 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 		return $response;
 	}
 
-	private function _createLookup($forLang) {
+	private function _createLookup(string $forLang): Abp01_Lookup {
 		return new Abp01_Lookup($forLang);
 	}
 
-	public function addLookupDataItem() {
+	public function addLookupDataItem(): stdClass {
 		$response = abp01_get_ajax_response(array(
 			'item' => null
 		));
@@ -352,37 +339,37 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 		return $response;
 	}
 
-	private function _getLookupLanguageFromHttpPostOrDie() {
+	private function _getLookupLanguageFromHttpPostOrDie(): mixed {
 		return Abp01_InputFiltering::getPOSTValueOrDie('lang', 
 			array('Abp01_Lookup', 'isLanguageSupported'));
 	}
 
-	private function _getLookupCategoryFromHttpPostOrDie() {
+	private function _getLookupCategoryFromHttpPostOrDie(): mixed {
 		return Abp01_InputFiltering::getPOSTValueOrDie('type', 
 			array('Abp01_Lookup', 'isTypeSupported'));
 	}
 
-	private function _getDefaultLabelFromHttpPost() {
+	private function _getDefaultLabelFromHttpPost(): ?string {
 		return Abp01_InputFiltering::getFilteredPOSTValue('defaultLabel');
 	}
 
-	private function _getTranslatedLabelFromHttpPost() {
+	private function _getTranslatedLabelFromHttpPost(): ?string {
 		return Abp01_InputFiltering::getFilteredPOSTValue('translatedLabel');
 	}
 
-	private function _createDefaultLabelValidationRule() {
+	private function _createDefaultLabelValidationRule(): Abp01_Validation_Rule_Simple {
 		return new Abp01_Validation_Rule_Simple(
 			new Abp01_Validate_NotEmpty(false),
 			esc_html__('The default label is mandatory', 'abp01-trip-summary')
 		);
 	}
 
-	private function _shouldCreateLookupItemTranslation($lang, $translatedLabel) {
+	private function _shouldCreateLookupItemTranslation(string $lang, ?string $translatedLabel): bool {
 		return !Abp01_Lookup::isDefaultLanguage($lang) 
 			&& !empty($translatedLabel);
 	}
 
-	public function editLookupDataItem() {
+	public function editLookupDataItem(): stdClass {
 		$response = abp01_get_ajax_response();
 
 		$id = $this->_getLookupItemIdFromHttpPostOrDie();
@@ -426,15 +413,16 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 		return $response;
 	}
 
-	private function _getLookupItemIdFromHttpPostOrDie() {
-		return Abp01_InputFiltering::getPOSTValueOrDie('id', 
-			'is_numeric');
+	private function _getLookupItemIdFromHttpPostOrDie(): int|null {
+		$id = Abp01_InputFiltering::getPOSTValueOrDie('id', 'is_numeric');
+		return $id !== null ? intval($id) : null;
 	}
 
-	public function deleteLookupDataItem() {
+	public function deleteLookupDataItem(): stdClass {
 		$id = $this->_getLookupItemIdFromHttpPostOrDie();
 		$forLang = $this->_getLookupLanguageFromHttpPostOrDie();
 
+		$id = intval($id);
 		if ($this->_shouldOnlyDeleteLookupItemTranslation($forLang)) {
 			$response = $this->_deleteLookupItemTranslation($id, $forLang);
 		} else {
@@ -444,14 +432,14 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 		return $response;
 	}
 
-	private function _shouldOnlyDeleteLookupItemTranslation($forLang) {
+	private function _shouldOnlyDeleteLookupItemTranslation(string $forLang): bool {
 		$onlyDeleteTranslation = Abp01_InputFiltering::getPOSTValueOrDie('deleteOnlyLang') 
 			=== 'true';
 		return $onlyDeleteTranslation 
 			&& !Abp01_Lookup::isDefaultLanguage($forLang);
 	}
 
-	private function _deleteLookupItemTranslation($id, $forLang) {
+	private function _deleteLookupItemTranslation(int $id, string $forLang): stdClass {
 		$response = abp01_get_ajax_response();
 		$lookup = $this->_createLookup($forLang);
 
@@ -464,7 +452,7 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 		return $response;
 	}
 
-	private function _deleteEntireLookupItem($id, $forLang) {
+	private function _deleteEntireLookupItem(int $id, string $forLang): stdClass {
 		$response = abp01_get_ajax_response(array(
 			'requiresConfirmation' => false,
 			'confirmationNonce' => null
@@ -506,17 +494,17 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 		return $response;
 	}
 
-	private function _requestHasInUseLookupRemovalNonce() {
+	private function _requestHasInUseLookupRemovalNonce(): bool {
 		return $this->_inUseLookupItemRemovalNonceProvider
 			->hasNonceInCurrentContext();
 	}
 
-	private function _verifyInuseLookupRemovalNonce($lookupId) {
+	private function _verifyInuseLookupRemovalNonce(int $lookupId): bool {
 		return $this->_inUseLookupItemRemovalNonceProvider
 			->validateNonce($lookupId);
 	}
 
-	function _generateInuseLookupRemovalNonce($lookupId) {
+	function _generateInuseLookupRemovalNonce(int $lookupId): string {
 		return $this->_inUseLookupItemRemovalNonceProvider
 			->generateNonce($lookupId);
 	}

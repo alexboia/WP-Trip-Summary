@@ -96,8 +96,6 @@ class Abp01_PluginModules_PluginModuleHost implements Abp01_PluginMenuItemProvid
 		return array(
 			Env::class 
 				=> fn() => $this->getEnv(),
-			Abp01_Env::class 
-				=> fn() => $this->getEnv(),
 			Abp01_Plugin::class 
 				=> fn() => $this->_plugin,
 			Abp01_PluginModules_PluginModuleHost::class 

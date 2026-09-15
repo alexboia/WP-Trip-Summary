@@ -94,12 +94,12 @@ class FrontendThemeDecoratorTests extends WP_UnitTestCase {
     }
 
     private function _assertFrontendMainStyledEnqueuedWithCorrectUrl() {
-        $expectendFrontendMainStyleUrl = $this->_getExpendedPluginThemeCssFileUrl('abp01-frontend-main-modern.css');
+        $expectendFrontendMainStyleUrl = $this->_getExpectedPluginThemeCssFileUrl('abp01-frontend-main-modern.css');
         $actualFrontendMainStyleUrl = $this->_getEnqueuedStyleUrl(Abp01_Includes::STYLE_FRONTEND_MAIN);
         $this->assertEquals($expectendFrontendMainStyleUrl, $actualFrontendMainStyleUrl);
     }
 
-    private function _getExpendedPluginThemeCssFileUrl($pluginCssFile) {
+    private function _getExpectedPluginThemeCssFileUrl($pluginCssFile) {
         $pluginViewerTemplateUrl = $this->_getCurrentPluginViewerTemplateUrl();
         return $pluginViewerTemplateUrl . '/media/css/' . $pluginCssFile;
     }

@@ -29,7 +29,9 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+use WpTripSummary\Env;
+
+if (!defined('ABP01_LOADED')) {
     exit;
 }
 
@@ -47,12 +49,11 @@ class Abp01_PluginModules_TeaserTextsSyncPluginModule extends Abp01_PluginModule
 
 	const ADMIN_FOOTER_LOADED_HOOK_PRIORITY = 1;
 
-	/**
-	 * @var Abp01_Settings
-	 */
-	private $_settings;
+	private Abp01_Settings $_settings;
 
-	public function __construct(Abp01_Settings $settings, Abp01_Env $env, Abp01_Auth $auth) {
+	public function __construct(Abp01_Settings $settings, 
+			Env $env, 
+			Abp01_Auth $auth) {
 		parent::__construct($env, $auth);
 		$this->_settings = $settings;
 	}
@@ -67,14 +68,14 @@ class Abp01_PluginModules_TeaserTextsSyncPluginModule extends Abp01_PluginModule
 			self::ADMIN_FOOTER_LOADED_HOOK_PRIORITY);
 	}
 
-	public function onLanguageUpdatedQueueTeaserSyncRequest($oldValue, $value, $optName) {
+	public function onLanguageUpdatedQueueTeaserSyncRequest(mixed $oldValue, mixed $value, ?string $optName) {
 		//When the WPLANG updated hook is triggered, 
 		//	the new text domain is not yet loaded.
 		//Thus, it's no point in resetting the teasers at this point, 
 		//	since the values corresponding to the previous locale will be pulled.
 		//The solution is to queue a flag that says it needs to be updated at a later point in time,
 		//	which currently is when the footer is being generated, for lack of a better time and place.
-		$shouldQueueTeaserSyncRequest = $optName == 'WPLANG' 
+		$shouldQueueTeaserSyncRequest = $optName === 'WPLANG' 
 			&& $this->_isSavingWpOptions();
 
 		if ($shouldQueueTeaserSyncRequest) {
@@ -82,32 +83,32 @@ class Abp01_PluginModules_TeaserTextsSyncPluginModule extends Abp01_PluginModule
 		}
 	}
 
-	private function _queueTeaserTextsSyncRequest() {
+	private function _queueTeaserTextsSyncRequest(): void {
 		set_transient(self::RESET_TEASER_TEXT_MARKER_TRANSIENT_KEY, 
 			self::RESET_TEASER_TEXT_MARKER_TRANSIENT_VALUE, 
 			self::RESET_TEASER_TEXT_MARKER_TRANSIENT_DURATION);
 	}
 
-	public function onAdminFooterLoadedCheckForTeaserSyncRequest() {
+	public function onAdminFooterLoadedCheckForTeaserSyncRequest(): void {
 		$syncTeaserTextsRequested = $this->_dequeueTeaserTextsSyncRequest();
 		if ($syncTeaserTextsRequested) {
 			$this->_syncTeaserTexts();
 		}
 	}
 
-	private function _dequeueTeaserTextsSyncRequest() {
+	private function _dequeueTeaserTextsSyncRequest(): bool {
 		$maybeTeaserTextsDequeueRequest = get_transient(self::RESET_TEASER_TEXT_MARKER_TRANSIENT_KEY);
 		delete_transient(self::RESET_TEASER_TEXT_MARKER_TRANSIENT_KEY);
 		return $maybeTeaserTextsDequeueRequest === self::RESET_TEASER_TEXT_MARKER_TRANSIENT_VALUE;
 	}
 
-	private function _syncTeaserTexts() {
+	private function _syncTeaserTexts(): void {
 		$this->_settings->syncTopTeaserTextWithCurrentLocale();
 		$this->_settings->syncBottomTeaserTextWithCurrentLocale();
 		$this->_settings->saveSettings();
 	}
 
-	private function _isSavingWpOptions() {
+	private function _isSavingWpOptions(): bool {
 		return $this->_env->isSavingWpOptions();
 	}
 }

@@ -29,7 +29,9 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+use WpTripSummary\Env;
+
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
@@ -37,7 +39,7 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
  * @package WP-Trip-Summary
  */
 class Abp01_PluginModules_PluginListingPageCustomizationPluginModule extends Abp01_PluginModules_PluginModule {
-	public function __construct(Abp01_Env $env, Abp01_Auth $auth) {
+	public function __construct(Env $env, Abp01_Auth $auth) {
 		parent::__construct($env, $auth);
 	}
 
@@ -48,7 +50,7 @@ class Abp01_PluginModules_PluginListingPageCustomizationPluginModule extends Abp
 			2);
 	}
 
-	public function registerPluginRowMeta(array $links, string $file) {
+	public function registerPluginRowMeta(array $links, string $file): array {
 		if ($this->_isThisPlugin($file)) {
 			$links[] = 
 				'<a href="' . esc_attr($this->_getSettingsPageUrl()) . '" target="_blank">' 
@@ -62,15 +64,15 @@ class Abp01_PluginModules_PluginListingPageCustomizationPluginModule extends Abp
 		return $links;
 	}
 
-	private function _isThisPlugin($file) {
+	private function _isThisPlugin(string $file): bool {
 		return $file === plugin_basename(ABP01_PLUGIN_MAIN);
 	}
 
-	private function _getSettingsPageUrl() {
+	private function _getSettingsPageUrl(): ?string {
 		return $this->_env->getAdminPageUrl(ABP01_MAIN_MENU_SLUG);
 	}
 
-	private function _getMaintenancePageUrl() {
+	private function _getMaintenancePageUrl(): ?string {
 		return $this->_env->getAdminPageUrl(ABP01_MAINTENANCE_SUBMENU_SLUG);
 	}
 }

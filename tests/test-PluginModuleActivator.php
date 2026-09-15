@@ -1,5 +1,6 @@
 <?php
 
+use WpTripSummary\Env;
 use Yoast\PHPUnitPolyfills\Polyfills\ExpectException;
 
 /**
@@ -90,7 +91,6 @@ class PluginModuleActivatorTests extends WP_UnitTestCase {
 		$this->assertTrue($moduleInstance->hasSettings());
 		$this->assertTrue($moduleInstance->hasRouteManager());
 		$this->assertTrue($moduleInstance->hasEnv());
-		$this->assertTrue($moduleInstance->hasHelp());
 	}
 
 	public function test_canCreateModuleInstance_validModuleClass_someSupportedDependencies() {
@@ -99,8 +99,6 @@ class PluginModuleActivatorTests extends WP_UnitTestCase {
 
 		$this->assertNotNull($moduleInstance);
 		$this->assertTrue($moduleInstance instanceof RequiresOneSupportedDependencySamplePluginModule);
-
-		$this->assertTrue($moduleInstance->hasHelp());
 	}
 
 	/**
@@ -157,7 +155,7 @@ class PluginModuleActivatorTests extends WP_UnitTestCase {
 			Abp01_Settings::class => function() {
 				return abp01_get_settings();
 			},
-			Abp01_Env::class => function() { 
+			Env::class => function() { 
 				return abp01_get_env();
 			},
 			Abp01_Auth::class => function() {

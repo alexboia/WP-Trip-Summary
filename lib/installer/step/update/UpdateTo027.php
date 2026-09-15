@@ -29,27 +29,23 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
 class Abp01_Installer_Step_Update_UpdateTo027 implements Abp01_Installer_Step_Update_Interface {
-	/**
-	 * @var Abp01_Installer_Service_AddTableColumnIfNeeded
-	 */
-	private $_service;
+	private Abp01_Installer_Service_AddTableColumnIfNeeded $_service;
 
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+	private Env $_env;
 
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_service = new Abp01_Installer_Service_AddTableColumnIfNeeded($env);
 		$this->_env = $env;
 	}
 
-	public function execute() { 
+	public function execute(): bool { 
 		return $this->_service->execute(
 			$this->_getRouteTrackTableName(), 
 			'route_track_file_mime_type', 
@@ -61,15 +57,15 @@ class Abp01_Installer_Step_Update_UpdateTo027 implements Abp01_Installer_Step_Up
 			));
 	}
 
-	private function _getRouteTrackTableName() {
+	private function _getRouteTrackTableName(): string {
 		return $this->_env->getRouteTrackTableName();
 	}
 
-	public function getLastError() { 
+	public function getLastError(): Exception|WP_Error|null { 
 		return $this->_service->getLastError();
 	}
 
-	public function getTargetVersion() {
+	public function getTargetVersion(): string {
 		return '0.2.7';
 	}
 }

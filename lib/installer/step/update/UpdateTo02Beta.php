@@ -29,29 +29,29 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+declare(strict_types = 1);
+
+use WpTripSummary\Env;
+
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
 class Abp01_Installer_Step_Update_UpdateTo02Beta implements Abp01_Installer_Step_Update_Interface {
+	private Env $_env;
 
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
+	private \Exception|\WP_Error|null $_lastError = null;
 
-	private $_lastError = null;
-
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_env = $env;
 	}
 
-    public function execute() { 
+    public function execute(): bool { 
 		$this->_lastError = null;
 		return $this->_updateTo02Beta();
 	}
 
-	private function _updateTo02Beta() {
+	private function _updateTo02Beta(): bool {
 		try {
 			if ($this->_createRouteDetailsLookupTable()) {
 				return $this->_syncExistingLookupAssociations();
@@ -65,7 +65,7 @@ class Abp01_Installer_Step_Update_UpdateTo02Beta implements Abp01_Installer_Step
 		return false;
 	}
 
-	private function _createRouteDetailsLookupTable() {
+	private function _createRouteDetailsLookupTable(): bool {
 		$service = new Abp01_Installer_Step_InstallSchema($this->_env);
 		$service->onlyTables(array( $this->_getRouteDetailsLookupTableName() ));
 		$result = $service->execute();
@@ -73,20 +73,20 @@ class Abp01_Installer_Step_Update_UpdateTo02Beta implements Abp01_Installer_Step
 		return $result;
 	}
 
-	private function _getRouteDetailsLookupTableName() {
+	private function _getRouteDetailsLookupTableName(): string {
 		return $this->_env->getRouteDetailsLookupTableName();
 	}
 
-	private function _syncExistingLookupAssociations() {
+	private function _syncExistingLookupAssociations(): bool {
 		$service = new Abp01_Installer_Service_SyncExistingLookupAssociations($this->_env);
 		return $service->execute();
 	}
 
-    public function getLastError() { 
+    public function getLastError(): Exception|WP_Error|null { 
 		return $this->_lastError;
 	}
 
-	public function getTargetVersion() {
+	public function getTargetVersion(): string {
 		return '0.2b';
 	}
 }

@@ -1,0 +1,60 @@
+{
+  "$schema": "./lot.schema.json",
+  "lot": {
+    "pluginVersion": "0.3.4",
+    "status": "pending",
+    "objective": "Migrate a coherent validation slice, starting with contracts and base rules before their implementations.",
+    "classes": [
+      {
+        "className": "Abp01_Validate",
+        "filePath": "lib/Validate.php",
+        "notes": "Root validation contract. Migrate before every implementation in this lot and verify external implementers remain compatible through the legacy interface alias."
+      },
+      {
+        "className": "Abp01_Validate_File",
+        "filePath": "lib/validate/File.php",
+        "notes": "File-validation contract extending Validate. Migrate after the root contract and before document validators in later lots."
+      },
+      {
+        "className": "Abp01_Validation_Rule",
+        "filePath": "lib/validation/Rule.php",
+        "notes": "Validation-rule contract. Migrate before Simple, Composite, and Chain."
+      },
+      {
+        "className": "Abp01_Validation_Rule_Simple",
+        "filePath": "lib/validation/rule/Simple.php",
+        "notes": "Basic Rule implementation with focused test coverage. Verify callback signatures conservatively."
+      },
+      {
+        "className": "Abp01_Validation_Rule_Composite",
+        "filePath": "lib/validation/rule/Composite.php",
+        "notes": "Composite Rule implementation. Preserve the accepted rule collection shape and evaluation order."
+      },
+      {
+        "className": "Abp01_Validation_Chain",
+        "filePath": "lib/validation/Chain.php",
+        "notes": "Consumer of validation rules. Migrate after the Rule contract and implementations, preserving chain order and error behavior."
+      },
+      {
+        "className": "Abp01_Validate_NotEmpty",
+        "filePath": "lib/validate/NotEmpty.php",
+        "notes": "Small leaf implementation of Validate. Preserve WordPress-style empty-value semantics."
+      },
+      {
+        "className": "Abp01_Validate_Regex",
+        "filePath": "lib/validate/Regex.php",
+        "notes": "Leaf validator using regular-expression configuration. Verify nullable matches and preg_match return handling before typing."
+      },
+      {
+        "className": "Abp01_Validate_Url",
+        "filePath": "lib/validate/Url.php",
+        "notes": "Base URL validator with focused tests and a subclass in this lot. Migrate before TileLayerUrl and preserve its extension contract."
+      },
+      {
+        "className": "Abp01_Validate_TileLayerUrl",
+        "filePath": "lib/validate/TileLayerUrl.php",
+        "notes": "Url subclass with focused tests. Migrate after Url and verify both new and legacy inheritance checks."
+      }
+    ]
+  }
+}

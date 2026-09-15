@@ -1,0 +1,35 @@
+{
+  "$schema": "./lot.schema.json",
+  "lot": {
+    "pluginVersion": "0.3.3",
+    "status": "pending",
+    "objective": "Validate the namespace migration workflow on five low-coupling top-level utility classes.",
+    "classes": [
+      {
+        "className": "Abp01_PluginMeta",
+        "filePath": "lib/PluginMeta.php",
+        "notes": "Small constant holder with few references. Keep OPT_VERSION untyped while PHP 8.0 remains supported. Use it to validate aliases, shims, and constant references."
+      },
+      {
+        "className": "Abp01_FeatureStatus",
+        "filePath": "lib/FeatureStatus.php",
+        "notes": "Stateless feature flag with one primary consumer and an already typed boolean return value. Preserve the WordPress filter contract."
+      },
+      {
+        "className": "Abp01_KnownMimeTypes",
+        "filePath": "lib/KnownMimeTypes.php",
+        "notes": "Stateless static utility with stable array-returning methods. Update parser, processor, and validator-provider references while retaining the legacy alias."
+      },
+      {
+        "className": "Abp01_ConversionHelper",
+        "filePath": "lib/ConversionHelper.php",
+        "notes": "Small utility covered by focused tests. Preserve support for both integer and floating-point byte values when adding parameter and return types."
+      },
+      {
+        "className": "Abp01_Locale",
+        "filePath": "lib/Locale.php",
+        "notes": "Top-level WordPress integration utility with one main consumer. Verify the WordPress return contracts before adding array and string return types."
+      }
+    ]
+  }
+}

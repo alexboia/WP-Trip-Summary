@@ -29,7 +29,9 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+use WpTripSummary\Env;
+
+if (!defined('ABP01_LOADED')) {
     exit;
 }
 
@@ -37,25 +39,16 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
  * @package WP-Trip-Summary
  */
 class Abp01_PluginModules_JsonLdFrontendDataPluginModule extends Abp01_PluginModules_PluginModule {
-	/**
-	 * @var Abp01_Settings
-	 */
-	private $_settings;
+	private Abp01_Settings $_settings;
 
-	/**
-	 * @var Abp01_Viewer_DataSource
-	 */
-	private $_viewerDataSource;
+	private Abp01_Viewer_DataSource $_viewerDataSource;
 
-	/**
-	 * @var Abp01_View
-	 */
-	private $_view;
+	private Abp01_View $_view;
 	
 	public function __construct(Abp01_Settings $settings, 
 		Abp01_Viewer_DataSource $viewerDataSource, 
 		Abp01_View $view, 
-		Abp01_Env $env, 
+		Env $env, 
 		Abp01_Auth $auth) {
 		parent::__construct($env, $auth);
 
@@ -70,11 +63,11 @@ class Abp01_PluginModules_JsonLdFrontendDataPluginModule extends Abp01_PluginMod
 		}
 	}
 
-	private function _jsonLdFrontendDataEnabled() {
+	private function _jsonLdFrontendDataEnabled(): bool {
 		return $this->_settings->getEnableJsonLdFrontenData();
 	}
 
-	public function includeJsonLdFrontendData() {
+	public function includeJsonLdFrontendData(): void {
 		if ($this->_isPostDetailsPage()) {
 			$postId = $this->_getCurrentPostId();
 			if ($postId > 0) {
@@ -83,11 +76,11 @@ class Abp01_PluginModules_JsonLdFrontendDataPluginModule extends Abp01_PluginMod
 		}
 	}
 
-	private function _isPostDetailsPage() {
+	private function _isPostDetailsPage(): bool {
 		return is_single() || is_page();
 	}
 
-	private function _includeJsonLdFrontendData($postId) {
+	private function _includeJsonLdFrontendData(int $postId): void {
 		$viewerData = $this->_getTripSummaryViewerData($postId);
 		if ($this->_hasTrackData($viewerData)) {
 			/** @var WP_Post $post */
@@ -103,17 +96,17 @@ class Abp01_PluginModules_JsonLdFrontendDataPluginModule extends Abp01_PluginMod
 		}
 	}
 
-	private function _getTripSummaryViewerData($postId) {
+	private function _getTripSummaryViewerData(int $postId): stdClass {
 		return  $this->_viewerDataSource->getTripSummaryViewerData($postId);
 	}
 
-	private function _hasTrackData($viewerData) {
+	private function _hasTrackData(stdClass $viewerData): bool {
 		return !empty($viewerData) 
 			&& !empty($viewerData->track) 
 			&& $viewerData->track->exists;
 	}
 
-	private function _renderJsonLdFrontendData(stdClass $data) {
+	private function _renderJsonLdFrontendData(stdClass $data): string|bool {
 		return $this->_view->renderJsonLdFrontendData($data);
 	}
 }

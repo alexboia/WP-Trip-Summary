@@ -175,7 +175,7 @@ class CommonFunctionsTests extends WP_UnitTestCase {
 		}
 	}
 
-	private function _generateFakePostsWithUnsupportedData($count) {
+	private function _generateFakePostsWithUnsupportedData(int $count) {
 		$faker = $this->_getFaker();
 		$posts = array();
 		$postIds = array();
@@ -185,7 +185,7 @@ class CommonFunctionsTests extends WP_UnitTestCase {
 			: $faker->randomNumber() % 2 == 0;
 
 		for ($i = 0; $i < $count; $i++) {
-			if ($invalidPostCount > 0) {
+			if (is_int($invalidPostCount) && $invalidPostCount > 0) {
 				$invalidPostCount --;
 				$posts[] = $this->_generateInvalidPostData();
 			} else {

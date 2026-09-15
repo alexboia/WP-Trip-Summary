@@ -8,6 +8,31 @@ description: Migrate PHP classes in the WP Trip Summary plugin from legacy Abp01
 Work only inside the WP Trip Summary plugin containing `abp01-plugin-main.php` and `lib/`.
 Preserve behavior and backward compatibility. Treat namespace migration and type-hint-only work as separate workflows; perform only the workflow requested by the user.
 
+## Release lot gate
+
+Do not modify production PHP code through this skill until a migration lot exists for the plugin's current version.
+
+1. Read the current version from both the `Version` header in `abp01-plugin-main.php` and `ABP01_VERSION` in `abp01-plugin-header.php`. Stop and report the mismatch if they differ.
+2. Load `lots/lot-<PluginVersion>.json` and validate its structure against `lots/lot.schema.json`. Stop and ask for a lot to be defined if the file is missing or invalid.
+3. Load `class-list.json` as the single source of truth for each class's target name and migration status. A lot intentionally does not duplicate those fields.
+4. Work only on classes listed in the current lot and present in `class-list.json`. If the requested class is absent from either file, stop and ask whether the planning data should be amended; do not silently move work between releases.
+5. Before modifying a listed class, set its status in `class-list.json` to `in_progress` and set the lot status to `working`. Set the class status to `complete` only after all required validation passes.
+6. Set the lot status to `complete` only when every class referenced by that lot has status `complete` in `class-list.json`. Do not start a future-version lot while its version is not current.
+
+This gate applies both to namespace migrations and to type-hint-only work performed through this skill.
+
+### Expanding an existing lot
+
+Treat adding classes to an existing release lot as a scope change, not as a routine JSON edit.
+
+1. Always require an explicit motivation from the developer before changing the lot. If the request does not already contain one, stop and ask for it.
+2. Test and challenge the motivation against the release objective, actual class dependencies, implementation and testing effort, regression risk, and whether the work can remain in the next planned lot.
+3. Inspect the relevant code and planning metadata where useful; do not accept urgency, convenience, or fear of losing context as sufficient justification without examining the tradeoffs.
+4. Explicitly present the disadvantages of expansion, including the larger review surface, increased regression risk, additional testing, possible release delay, harder rollback or bisection, and disruption of the planned migration order.
+5. Recommend accepting, rejecting, or narrowing the expansion. Do not edit the lot until the developer has seen this assessment and explicitly confirms the scope change.
+
+If the developer includes a motivation in the initial request, treat it as the required motivation and proceed directly to testing and challenging it rather than asking the same question again.
+
 ## Naming convention
 
 Convert the legacy PEAR-style name into namespace segments while preserving the final symbol name:
@@ -51,11 +76,13 @@ Use this workflow when the user asks only for type hints. Do not add a namespace
 
 1. Inspect every caller, override, implementation, parent declaration, and returned value relevant to the methods being typed.
 2. Add native parameter, property, and return types when the runtime contract is clear.
-3. Use nullable or union types when the implementation genuinely supports multiple values. Use `mixed` only when narrowing would misrepresent the contract.
-4. Use PHPDoc for array shapes, generic collections, callable signatures, or details that native PHP types cannot express.
-5. Account for WordPress filters, options, request values, and extension points, which may supply loosely typed values.
-6. Do not change method behavior while adding types. Flag unrelated bugs instead of silently fixing them.
-7. Avoid widening the diff into dependent classes. Type a dependent declaration only when required for compatibility or explicitly requested.
+3. Treat an unambiguous `@var` annotation on a `private` property as sufficient evidence for immediate conversion to a native property type. For example, convert an `@var Abp01_AdminAjaxAction` property to `private Abp01_AdminAjaxAction $property;`. Reflect `null` or other declared alternatives in the native type, and verify that initialization is compatible. Remove a PHPDoc block that becomes entirely redundant; preserve any useful description or type detail that native syntax cannot express.
+4. Type class constants from their declared values when the value has an unambiguous type and the project's minimum supported PHP version is 8.3 or newer. Before adding the type, inspect declarations of the same constant throughout parent classes, child classes, and implemented or extended interfaces. Emit a clear warning when any declaration in that inheritance chain has a value of a different type, and do not introduce an incompatible native type until the conflict is resolved. When the minimum PHP version is below 8.3, report that typed class constants are unavailable and leave them untyped unless the user explicitly authorizes raising the compatibility baseline.
+5. Use nullable or union types when the implementation genuinely supports multiple values. Use `mixed` only when narrowing would misrepresent the contract.
+6. Use PHPDoc for array shapes, generic collections, callable signatures, or details that native PHP types cannot express.
+7. Account for WordPress filters, options, request values, and extension points, which may supply loosely typed values.
+8. Do not change method behavior while adding types. Flag unrelated bugs instead of silently fixing them.
+9. Avoid widening the diff into dependent classes. Type a dependent declaration only when required for compatibility or explicitly requested.
 
 ## Conservative typing rules
 
@@ -64,6 +91,7 @@ Use this workflow when the user asks only for type hints. Do not add a namespace
 - Initialize typed properties, or make them nullable when they may be read before assignment.
 - Before enabling strict types, inspect scalar calls made from the affected file; WordPress commonly supplies numeric and boolean values as strings.
 - Preserve `false`, `null`, `WP_Error`, and other sentinel values present in the real contract.
+- Infer a constant type only from a value whose resulting type is statically clear. Inspect expressions, inherited constants, and filtered or environment-derived values instead of guessing.
 - Prefer a precise PHPDoc contract over an unsafe native declaration.
 
 ## Migration inventory

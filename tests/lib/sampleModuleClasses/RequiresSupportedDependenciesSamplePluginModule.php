@@ -1,4 +1,7 @@
 <?php
+
+use WpTripSummary\Env;
+
 /**
  * Copyright (c) 2014-2026 Alexandru Boia and Contributors
  *
@@ -30,16 +33,16 @@
  */
 
 class RequiresSupportedDependenciesSamplePluginModule extends Abp01_PluginModules_PluginModule {
-    private $_settings; 
+    private Abp01_Settings $_settings; 
 
-    private $_routeManager; 
+    private Abp01_Route_Manager $_routeManager; 
 
-    private $_view;
+    private Abp01_View $_view;
     
     public function __construct(Abp01_Settings $settings, 
         Abp01_Route_Manager $routeManager, 
         Abp01_View $view, 
-        Abp01_Env $env,
+        Env $env,
         Abp01_Auth $auth) {
 
         parent::__construct($env, $auth);

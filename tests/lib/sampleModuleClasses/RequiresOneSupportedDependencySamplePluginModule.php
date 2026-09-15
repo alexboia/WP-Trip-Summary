@@ -1,4 +1,7 @@
 <?php
+
+use WpTripSummary\Env;
+
 /**
  * Copyright (c) 2014-2026 Alexandru Boia and Contributors
  *
@@ -30,7 +33,7 @@
  */
 
 class RequiresOneSupportedDependencySamplePluginModule extends Abp01_PluginModules_PluginModule {
-    public function __construct(Abp01_Env $env, Abp01_Auth $auth) {
+    public function __construct(Env $env, Abp01_Auth $auth) {
         parent::__construct($env, $auth);
         SamplePluginModuleCreationState::reportModuleConstructed(__CLASS__, func_get_args());
     }

@@ -34,10 +34,7 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 interface Abp01_Installer_Step {
-	function execute();
+	function execute(): bool;
 
-	/**
-	 * @return \Exception|\WP_Error|null
-	 */
-	function getLastError();
+	function getLastError(): \Exception|\WP_Error|null;
 }

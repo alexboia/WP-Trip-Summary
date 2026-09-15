@@ -1,4 +1,7 @@
 <?php
+
+use WpTripSummary\Env;
+
 /**
  * Copyright (c) 2014-2026 Alexandru Boia and Contributors
  *
@@ -89,7 +92,7 @@ trait IncludesTestDataHelpers {
 			$depHandleId = $sourceDepsHandlesIds[$iDepHandle];
 			$depsHandles[] = array(
 				'handle' => $depHandleId,
-				'if' => function(Abp01_Env $env, Abp01_Settings $settings) use($depHandleId, $selectDepsHandlesIds) {
+				'if' => function(Env $env, Abp01_Settings $settings) use($depHandleId, $selectDepsHandlesIds) {
 					return in_array($depHandleId, $selectDepsHandlesIds);
 				}
 			);
@@ -113,7 +116,7 @@ trait IncludesTestDataHelpers {
 		$depsHandles = $this->_generateTestDependencyHandlesWithoutCallbackConditions();
 		$countDepsHandles = count($depsHandles);
 		for ($iDepHandle = 0; $iDepHandle < $countDepsHandles; $iDepHandle++) {
-			$depsHandles[$iDepHandle]['if'] = function(Abp01_Env $env, Abp01_Settings $settings) use ($result) {
+			$depsHandles[$iDepHandle]['if'] = function(Env $env, Abp01_Settings $settings) use ($result) {
 				return $result;
 			};
 		}

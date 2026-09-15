@@ -29,31 +29,29 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+use WpTripSummary\Env;
+
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
 class Abp01_Installer_Step_Update_UpdateTo032 implements Abp01_Installer_Step_Update_Interface {
+	private Env $_env;
 
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
-
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_env = $env;
 	}
 	
-	public function getTargetVersion() { 
+	public function getTargetVersion(): string { 
 		return '0.3.2';
 	}
 
-	public function execute() { 
+	public function execute(): bool { 
 		return $this->_ensureStorageDirectories() 
 			&& $this->_installStorageDirsSecurityAssets();
 	}
 
-	private function _ensureStorageDirectories() {
+	private function _ensureStorageDirectories(): bool {
 		$rootStorageDir = $this->_env->getRootStorageDir();
 		$logStorageDir = $this->_env->getLogStorageDir();
 
@@ -63,13 +61,13 @@ class Abp01_Installer_Step_Update_UpdateTo032 implements Abp01_Installer_Step_Up
 		return $service->execute();
 	}
 
-	private function _installStorageDirsSecurityAssets() {
+	private function _installStorageDirsSecurityAssets(): bool {
 		$logStorageDir = $this->_env->getLogStorageDir();
 		$createLogAssetsService = new Abp01_Installer_Service_CreateLogStorageDirSecurityAssets($logStorageDir);
 		return $createLogAssetsService->execute();
 	}
 
-	public function getLastError() { 
-		null;
+	public function getLastError(): \Exception|\WP_Error|null { 
+		return null;
 	}
 }

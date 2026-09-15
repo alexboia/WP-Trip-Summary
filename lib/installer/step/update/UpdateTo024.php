@@ -29,27 +29,25 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
 class Abp01_Installer_Step_Update_UpdateTo024 implements Abp01_Installer_Step_Update_Interface {
+	private Env $_env;
 
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
-
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_env = $env;
 	}
 
-    public function execute() { 
+    public function execute(): bool { 
 		return $this->_addLookupCategoryIndexToLookupTable() 
 			&& $this->_installDataTranslationsForFrenchLanguage();
 	}
 
-	private function _addLookupCategoryIndexToLookupTable() {
+	private function _addLookupCategoryIndexToLookupTable(): bool {
 		$service = new Abp01_Installer_Service_AddIndexToTable($this->_env);
 		return $service->execute($this->_getLookupTableName(), 
 			'lookup_category', 
@@ -58,20 +56,20 @@ class Abp01_Installer_Step_Update_UpdateTo024 implements Abp01_Installer_Step_Up
 			));
 	}
 
-	private function _installDataTranslationsForFrenchLanguage() {
+	private function _installDataTranslationsForFrenchLanguage(): bool {
 		$service = new Abp01_Installer_Service_InstallLookupDataTranslationsForLanguage($this->_env);
 		return $service->execute('fr_FR');
 	}
 
-	private function _getLookupTableName() {
+	private function _getLookupTableName(): string {
 		return $this->_env->getLookupTableName();
 	}
 
-    public function getLastError() { 
+    public function getLastError(): null { 
 		return null;
 	}
 
-	public function getTargetVersion() {
+	public function getTargetVersion(): string {
 		return '0.2.4';
 	}
 }

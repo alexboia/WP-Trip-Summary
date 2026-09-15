@@ -29,7 +29,9 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+use WpTripSummary\Env;
+
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
@@ -41,34 +43,19 @@ class Abp01_PluginModules_SystemLogsManagementPluginModule extends Abp01_PluginM
 
 	const DEFAULT_MAX_CHARACTERS_PER_LINE = 512;
 
-	/**
-	 * @var Abp01_View
-	 */
-	private $_view;
+	private Abp01_View $_view;
 
-	/**
-	 * @var Abp01_Logger_Manager
-	 */
-	private $_logManager;
+	private Abp01_Logger_Manager $_logManager;
 
-	/**
-	 * @var Abp01_AdminAjaxAction
-	 */
-	private $_getLogFileContentsAjaxAction;
+	private Abp01_AdminAjaxAction $_getLogFileContentsAjaxAction;
 
-	/**
-	 * @var Abp01_AdminAjaxAction
-	 */
-	private $_downloadLogFileAjaxAction;
+	private Abp01_AdminAjaxAction $_downloadLogFileAjaxAction;
 
-	/**
-	 * @var Abp01_AdminAjaxAction
-	 */
-	private $_deleteLogFileAjaxAction;
+	private Abp01_AdminAjaxAction $_deleteLogFileAjaxAction;
 
 	public function __construct(Abp01_Logger_Manager $logManager,
 		Abp01_View $view,
-		Abp01_Env $env, 
+		Env $env, 
 		Abp01_Auth $auth) {
 		parent::__construct($env, $auth);
 
@@ -133,7 +120,7 @@ class Abp01_PluginModules_SystemLogsManagementPluginModule extends Abp01_PluginM
 		}
 	}
 
-	private function _getAdminSystemLogsManagementTranslations() {
+	private function _getAdminSystemLogsManagementTranslations(): array {
 		return Abp01_TranslatedScriptMessages::getAdminSystemLogsManagementTranslations();
 	}
 
@@ -239,7 +226,7 @@ class Abp01_PluginModules_SystemLogsManagementPluginModule extends Abp01_PluginM
 		return $response;
 	}
 
-	private function _getFileIdFromHttpGet() {
+	private function _getFileIdFromHttpGet(): ?string {
 		return Abp01_InputFiltering::getFilteredGETValue('abp01_fileId');
 	}
 
@@ -289,7 +276,7 @@ class Abp01_PluginModules_SystemLogsManagementPluginModule extends Abp01_PluginM
 		die;
 	}
 
-	private function _createDefaultFileDownloaderInstance() {
+	private function _createDefaultFileDownloaderInstance(): Abp01_Transfer_FileDownloaderWithScriptTermination {
 		return new Abp01_Transfer_FileDownloaderWithScriptTermination(
 			new Abp01_Transfer_SimpleFileDownloader()
 		);

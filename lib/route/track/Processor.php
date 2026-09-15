@@ -34,11 +34,11 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 interface Abp01_Route_Track_Processor extends Abp01_Route_Track_FileNameProvider {
-	function processInitialTrackSourceFile($postId, $trackFilePath, $trackFileMimeType);
+	function processInitialTrackSourceFile(int|null $postId, string|null $trackFilePath, string|null $trackFileMimeType): Abp01_Route_Track;
 
-	function deleteTrackFiles($postId);
+	function deleteTrackFiles(int $postId): void;
 
-	function getOrCreateDisplayableAltitudeProfile(Abp01_Route_Track $track, $targetSystem, $stepPoints = 10);
+	function getOrCreateDisplayableAltitudeProfile(Abp01_Route_Track $track, string|Abp01_UnitSystem $targetSystem, int $stepPoints = 10): ?Abp01_Route_Track_AltitudeProfile;
 
     function getOrCreateDisplayableTrackDocument(Abp01_Route_Track $track);
 }

@@ -29,7 +29,9 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+use WpTripSummary\Env;
+
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
@@ -44,40 +46,22 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 	const LOG_METABOX_POSITION = 'normal';
 
 	const LOG_METABOX_PRIORITY = 'high';
-	
-	/**
-	 * @var Abp01_Route_Log_Manager
-	 */
-	private $_routeLogManager;
 
-	/**
-	 * @var Abp01_View
-	 */
-	private $_view;
+	private Abp01_Route_Log_Manager $_routeLogManager;
 
-	/**
-	 * @var Abp01_AdminAjaxAction
-	 */
-	private $_saveRouteLogEntryAjaxAction;
+	private Abp01_View $_view;
 
-	/**
-	 * @var Abp01_AdminAjaxAction
-	 */
-	private $_deleteRouteLogEntryAjaxAction;
+	private Abp01_AdminAjaxAction $_saveRouteLogEntryAjaxAction;
 
-	/**
-	 * @var Abp01_AdminAjaxAction
-	 */
-	private $_deleteAllRouteLogEntriesAjaxAction;
+	private Abp01_AdminAjaxAction $_deleteRouteLogEntryAjaxAction;
 
-	/**
-	 * @var Abp01_AdminAjaxAction
-	 */
-	private $_getAdminRouteLogEntryByIdAjaxAction;
+	private Abp01_AdminAjaxAction $_deleteAllRouteLogEntriesAjaxAction;
+
+	private Abp01_AdminAjaxAction $_getAdminRouteLogEntryByIdAjaxAction;
 
 	public function __construct(Abp01_Route_Log_Manager $routeLogManager,
 			Abp01_View $view, 
-			Abp01_Env $env, 
+			Env $env, 
 			Abp01_Auth $auth) {
 		parent::__construct($env, $auth);
 		
@@ -87,7 +71,7 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 		$this->_initAjaxActions();
 	}
 
-	private function _initAjaxActions() {
+	private function _initAjaxActions(): void {
 		$authCallback = $this->_createEditCurrentPostTripSummaryAuthCallback();
 		$currentResourceProvider = new Abp01_AdminAjaxAction_CurrentResourceProvider_CurrentPostId();
 
@@ -131,7 +115,7 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 		}
 	}
 
-	private function _registerAjaxActions() {
+	private function _registerAjaxActions(): void {
 		$this->_saveRouteLogEntryAjaxAction
 			->register();
 		$this->_deleteRouteLogEntryAjaxAction
@@ -142,7 +126,7 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 			->register();
 	}
 
-	private function _registerWebPageAssets() {
+	private function _registerWebPageAssets(): void {
 		if (!is_admin()) {
 			add_action('wp_enqueue_scripts', 
 				array($this, 'onFrontendEnqueueStyles'));
@@ -151,21 +135,21 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 		}
 	}
 
-	public function onFrontendEnqueueStyles() {
+	public function onFrontendEnqueueStyles(): void {
 		if ($this->_shouldEnqueueWebPageAssets()) {
 			Abp01_Includes::includeStyleFrontendLogEntries();
 		}
 	}
 
-	private function _shouldEnqueueWebPageAssets() {
+	private function _shouldEnqueueWebPageAssets(): bool {
 		return is_single() || is_page();
 	}
 
-	public function onFrontendEnqueueScripts() {
+	public function onFrontendEnqueueScripts(): void {
 		return;
 	}
 
-	private function _registerAdminWebPageAssets() {
+	private function _registerAdminWebPageAssets(): void {
 		if (is_admin()) {
 			add_action('admin_enqueue_scripts', 
 				array($this, 'onAdminEnqueueStyles'));
@@ -174,33 +158,33 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 		}
 	}
 
-	public function onAdminEnqueueStyles() {
+	public function onAdminEnqueueStyles(): void {
 		if ($this->_shouldEnqueueAdminWebPageAssets(true)) {
 			Abp01_Includes::includeStyleAdminLogEntries();
 		}
 	}
 
-	private function _shouldEnqueueAdminWebPageAssets() {
+	private function _shouldEnqueueAdminWebPageAssets(): bool {
 		$isEditingPost = $this->_env->isEditingWpPost(Abp01_AvailabilityHelper::getTripSummaryAvailableForPostTypes());
 		return $isEditingPost
 			&& $this->_canEditCurrentPostTripSummary();
 	}
 
-	public function onAdminEnqueueScripts() {
+	public function onAdminEnqueueScripts(): void {
 		if ($this->_shouldEnqueueAdminWebPageAssets(true)) {
 			Abp01_Includes::includeScriptAdminLogEntries($this->_getAdminTripSummaryAdminLogEntriesTranslations());
 		}
 	}
 
-	private function _getAdminTripSummaryAdminLogEntriesTranslations() {
+	private function _getAdminTripSummaryAdminLogEntriesTranslations(): array {
 		return Abp01_TranslatedScriptMessages::getAdminTripSummaryAdminLogEntriesTranslations();
 	}
 
-	private function _tripSummaryLogEnabled() {
+	private function _tripSummaryLogEnabled(): bool {
 		return Abp01_FeatureStatus::tripSummaryLogEnabled();
 	}
 
-	private function _setupViewer() {
+	private function _setupViewer(): void {
 		add_filter('abp01_additional_frontend_viewer_tabs', 
 			array($this, 'addRouteLogFrontendViewerTab'), 
 			10, 
@@ -212,7 +196,7 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 			3);
 	}
 
-	public function addRouteLogFrontendViewerTab(array $additionalTabs, $postId) {
+	public function addRouteLogFrontendViewerTab(array $additionalTabs, ?int $postId): array {
 		$additionalTabs['abp01-route-log'] = array(
 			'icon' => 'dashicons-welcome-write-blog',
 			'label' => __('Log','abp01-trip-summary')
@@ -221,7 +205,7 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 		return $additionalTabs;
 	}
 
-	public function renderRouteLogFrontendViewerTabContent($tabId, array $tabInfo, stdClass $viewerData) {
+	public function renderRouteLogFrontendViewerTabContent(?string $tabId, array $tabInfo, stdClass $viewerData) {
 		if ($tabId != 'abp01-route-log') {
 			return;
 		}
@@ -249,7 +233,7 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 			2);
 	}
 
-	public function registerAdminEditorLogMetaboxes($postType, $post) { 
+	public function registerAdminEditorLogMetaboxes(string $postType, mixed $post) { 
 		if ($this->_shouldRegisterAdminEditorLogMetaboxes($postType, $post)) {
 			add_meta_box('abp01-enhanced-editor-log-metabox', 
 				__('Trip summary log', 'abp01-trip-summary'),
@@ -265,12 +249,12 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 		}
 	}
 
-	private function _shouldRegisterAdminEditorLogMetaboxes($postType, $post) {
+	private function _shouldRegisterAdminEditorLogMetaboxes(string $postType, mixed $post) {
 		return Abp01_AvailabilityHelper::isEditorAvailableForPostType($postType) 
 			&& $this->_cantEditPostTripSummary($post);
 	}
 
-	private function _setupEditorLauncherStatusItem() {
+	private function _setupEditorLauncherStatusItem(): void {
 		add_action('abp01_editor_launcher_metabox_after_status', 
 			array($this, 'addEditorLauncherStatusItem'), 
 			10, 
@@ -293,13 +277,13 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 		echo $this->_view->renderAdminTripSummaryLogEditorMetaboxStatusItem($data);
 	}
 
-	public function addAdminLogEditor($post, $args) {
+	public function addAdminLogEditor(mixed $post, mixed $args) {
 		if ($this->_cantEditPostTripSummary($post)) {
 			$this->_addAdminLogEditorForm($post, $args);
 		}
 	}
 
-	private function _addAdminLogEditorForm($post, $args) {
+	private function _addAdminLogEditorForm(mixed $post, mixed $args) {
 		$postId = intval($post->ID);
 		
 		$data = new stdClass();
@@ -313,16 +297,16 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 		$data->defaultDate = $this->_getDefaultDate($postId);
 		$data->defaultVehicle = $this->_getDefaultVehicle($postId);
 
-		$data->saveRouteLogEntryNonce = $this->_saveRouteLogEntryAjaxAction->generateNonce($postId);
+		$data->saveRouteLogEntryNonce = $this->_saveRouteLogEntryAjaxAction->generateNonce();
 		$data->ajaxSaveRouteLogEntryAction = ABP01_ACTION_SAVE_ROUTE_LOG_ENTRY_FOR_POST;
 
-		$data->deleteRouteLogEntryNonce = $this->_deleteRouteLogEntryAjaxAction->generateNonce($postId);
+		$data->deleteRouteLogEntryNonce = $this->_deleteRouteLogEntryAjaxAction->generateNonce();
 		$data->ajaxDeleteRouteLogEntryAction = ABP01_ACTION_DELETE_ROUTE_LOG_ENTRY_FOR_POST;
 
-		$data->deleteAllRouteLogEntriesNonce = $this->_deleteAllRouteLogEntriesAjaxAction->generateNonce($postId);
+		$data->deleteAllRouteLogEntriesNonce = $this->_deleteAllRouteLogEntriesAjaxAction->generateNonce();
 		$data->ajaxDeleteAllRouteLogEntriesAction = ABP01_ACTION_DELETE_ALL_ROUTE_LOG_ENTRIES_FOR_POST;
 
-		$data->getAdminLogEntryByIdNonce = $this->_getAdminRouteLogEntryByIdAjaxAction->generateNonce($postId);
+		$data->getAdminLogEntryByIdNonce = $this->_getAdminRouteLogEntryByIdAjaxAction->generateNonce();
 		$data->ajaxGetAdminlogEntryByIdAction = ABP01_ACTION_GET_ADMIN_LOG_ENTRY_FOR_POST;
 
 		$data->ajaxUrl = $this->_getAjaxBaseUrl();
@@ -331,31 +315,31 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 		echo $this->_view->renderAdminTripSummaryLogEditor($data);
 	}
 
-	private function _getDefaultLogEntryRider($postId) {
+	private function _getDefaultLogEntryRider(int $postId): ?string {
 		$user = wp_get_current_user();
 		$displayName = $user->display_name;
-		return apply_filters('abp01_trip_summary_route_log_default_entry_rider', 
+		return (string)(apply_filters('abp01_trip_summary_route_log_default_entry_rider', 
 			$displayName, 
-			$postId);
+			$postId) ?? "");
 	}
 
-	private function _getDefaultDate($postId) {
+	private function _getDefaultDate(int $postId): ?string {
 		$defaultDate = date('Y-m-d');
-		return apply_filters('abp01_trip_summary_route_log_default_entry_date', 
+		return (string)(apply_filters('abp01_trip_summary_route_log_default_entry_date', 
 			$defaultDate, 
-			$postId);
+			$postId) ?? "");
 	}
 
-	private function _getDefaultVehicle($postId) {
+	private function _getDefaultVehicle(int $postId): ?string {
 		$defaultVehicle = $this->_routeLogManager
 			->getLastUsedVehicle($postId);
 
-		return apply_filters('abp01_trip_summary_route_log_default_entry_vehicle', 
+		return (string)(apply_filters('abp01_trip_summary_route_log_default_entry_vehicle', 
 			$defaultVehicle, 
-			$postId);
+			$postId) ?? "");
 	}
 
-	public function saveRouteLogEntry() {
+	public function saveRouteLogEntry(): stdClass {
 		$postId = $this->_getCurrentPostId();
 		if (empty($postId)) {
 			die;
@@ -378,15 +362,22 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 			$logEntry->createdBy = get_current_user_id();
 		}
 
-		$logEntry->rider = Abp01_InputFiltering::getFilteredPOSTValue('abp01_log_rider', 'trim');
-		$logEntry->date = Abp01_InputFiltering::getFilteredPOSTValue('abp01_log_date', 'trim');
-		$logEntry->timeInHours = Abp01_InputFiltering::getFilteredPOSTValue('abp01_log_time', 'intval');
+		$logEntry->rider = Abp01_InputFiltering::getFilteredPOSTValue('abp01_log_rider', 
+			'trim');
+		$logEntry->date = Abp01_InputFiltering::getFilteredPOSTValue('abp01_log_date', 
+			'trim');
+		$logEntry->timeInHours = Abp01_InputFiltering::getFilteredPOSTValue('abp01_log_time', 
+			'intval');
 
-		$logEntry->vehicle = Abp01_InputFiltering::getFilteredPOSTValue('abp01_log_vehicle', 'trim');
-		$logEntry->gear = Abp01_InputFiltering::getFilteredPOSTValue('abp01_log_gear', 'trim');
-		$logEntry->notes = Abp01_InputFiltering::getFilteredPOSTValue('abp01_log_notes', 'trim');
-		$logEntry->isPublic = Abp01_InputFiltering::getFilteredPOSTValue('abp01_log_ispublic', 'strtolower') 
-			=== 'yes';
+		$logEntry->vehicle = Abp01_InputFiltering::getFilteredPOSTValue('abp01_log_vehicle', 
+			'trim');
+		$logEntry->gear = Abp01_InputFiltering::getFilteredPOSTValue('abp01_log_gear', 
+			'trim');
+		$logEntry->notes = Abp01_InputFiltering::getFilteredPOSTValue('abp01_log_notes', 
+			'trim');
+		$logEntry->isPublic = Abp01_InputFiltering::getFilteredPOSTValue('abp01_log_ispublic', 
+			'strtolower') 
+				=== 'yes';
 
 		$logEntry->lastUpdatedBy = get_current_user_id();
 		if ($logEntry->timeInHours < 0) {
@@ -432,7 +423,7 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 		return $response;
 	}
 
-	private function _getFormattedLogEntryData(Abp01_Route_Log_Entry $logEntry) {
+	private function _getFormattedLogEntryData(Abp01_Route_Log_Entry $logEntry): stdClass {
 		$formatted = new stdClass();
 		$formatted->date = abp01_format_db_date($logEntry->date, false);
 		$formatted->timeInHours = abp01_format_time_in_hours($logEntry->timeInHours);
@@ -442,28 +433,28 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 		return $formatted;
 	}
 
-	private function _getLogEntryRiderValidationRule() {
+	private function _getLogEntryRiderValidationRule(): Abp01_Validation_Rule_Simple {
 		return new Abp01_Validation_Rule_Simple(
 			new Abp01_Validate_NotEmpty(false),
 			esc_html__('The log entry rider is mandatory', 'abp01-trip-summary')
 		);
 	}
 
-	private function _getLogEntryDateValidationRule() {
+	private function _getLogEntryDateValidationRule(): Abp01_Validation_Rule_Simple {
 		return new Abp01_Validation_Rule_Simple(
 			new Abp01_Validate_Regex('/^([\\d]{4})-([\\d]{2})-([\\d]{2})$/', false),
 			esc_html__('A valid log entry date is mandatory', 'abp01-trip-summary')
 		);
 	}
 
-	private function _getLogEntryVehicleValidationRule() {
+	private function _getLogEntryVehicleValidationRule(): Abp01_Validation_Rule_Simple {
 		return new Abp01_Validation_Rule_Simple(
 			new Abp01_Validate_NotEmpty(false),
 			esc_html__('The log entry vehicle is mandatory', 'abp01-trip-summary')
 		);
 	}
 
-	public function deleteRouteLogEntry() {
+	public function deleteRouteLogEntry(): stdClass {
 		$postId = $this->_getCurrentPostId();
 		if (empty($postId)) {
 			die;
@@ -484,7 +475,7 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 		return $response;
 	}
 
-	public function deleteAllRouteLogEntries() {
+	public function deleteAllRouteLogEntries(): stdClass {
 		$postId = $this->_getCurrentPostId();
 		if (empty($postId)) {
 			die;
@@ -500,7 +491,7 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 		return $response;
 	}
 
-	public function getAdminRouteLogEntryById() {
+	public function getAdminRouteLogEntryById(): stdClass {
 		$postId = $this->_getCurrentPostId();
 		if (empty($postId)) {
 			die;

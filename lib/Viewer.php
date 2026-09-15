@@ -85,11 +85,14 @@ class Abp01_Viewer {
 		return $availableTabs;
 	}
 
-	public static function isTabSupported($tab) {
+	public static function isTabSupported(?string $tab): bool {
 		return in_array($tab, array_keys(self::getAvailableTabs()));
 	}
 
-	public static function getAvailableItemLayouts() {
+	/**
+	 * @return array <string, string>
+	 */
+	public static function getAvailableItemLayouts(): array {
 		return array(
 			self::ITEM_LAYOUT_HORIZONTAL => __('Horizontally', 'abp01-trip-summary'), 
 			self::ITEM_LAYOUT_VERTICAL => __('Vertically', 'abp01-trip-summary')

@@ -29,7 +29,9 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+use WpTripSummary\Env;
+
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
@@ -41,20 +43,15 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
 	const KML_FILE_EXTENSION = 'kml';
 
 	const DEFAULT_FILE_EXTENSION = 'dat';
-	
-	/**
-	 * @var Abp01_Env
-	 */
-	private $_env;
 
-	/**
-	 * @var Abp01_Route_Track_DocumentParser_Factory
-	 */
-	private $_documentParserFactory;
+	private Env $_env;
+
+	private Abp01_Route_Track_DocumentParser_Factory $_documentParserFactory;
 
 	private $_trackFileMapTypesToExtensionsMapping = array();
 
-	public function __construct(Abp01_Route_Track_DocumentParser_Factory $documentParserFactory, Abp01_Env $env) {
+	public function __construct(Abp01_Route_Track_DocumentParser_Factory $documentParserFactory, 
+			Env $env) {
 		$this->_documentParserFactory = $documentParserFactory;
 		$this->_env = $env;
 
@@ -66,13 +63,15 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
 			Abp01_KnownMimeTypes::getKmlDocumentMimeTypes());
 	}
 
-	private function _registerExtensionForMimeTypes($extension, array $mimeTypes) {
+	private function _registerExtensionForMimeTypes(string $extension, array $mimeTypes): void {
 		foreach ($mimeTypes as $mimeType) {
 			$this->_trackFileMapTypesToExtensionsMapping[$mimeType] = $extension;
 		}
 	}
 
-	public function processInitialTrackSourceFile($postId, $trackFilePath, $trackFileMimeType) {
+	public function processInitialTrackSourceFile(int|null $postId, 
+		string|null $trackFilePath, 
+		string|null $trackFileMimeType): Abp01_Route_Track {
 		if (empty($postId)) {
 			throw new InvalidArgumentException('Post id may not be empty');
 		}
@@ -106,10 +105,7 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
 		return $track;
 	}
 
-	/**
-	 * @return Abp01_Route_Track_Document|null
-	 */
-	private function _getOriginalTrackDocument($postId) {
+	private function _getOriginalTrackDocument(int|null $postId): Abp01_Route_Track_Document|null {
 		$originalTrackDocumentFilePath = $this->_constructOriginalTrackDocumentFilePath($postId);
 		if (is_readable($originalTrackDocumentFilePath)) {
 			$documentContents = file_get_contents($originalTrackDocumentFilePath);
@@ -119,17 +115,13 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
 		}
 	}
 
-	/**
-	 * @return Abp01_Route_Track_Document
-	 * @throws InvalidArgumentException 
-	 */
-	private function _processTrackSourceFile($trackFilePath, $trackFileMimeType) {
+	private function _processTrackSourceFile(string $trackFilePath, string $trackFileMimeType): Abp01_Route_Track_Document {
 		$trackFileContents = file_get_contents($trackFilePath);
 		$documentParser = $this->_getSourceTrackFileDocumentParser($trackFileMimeType);
 		return $documentParser->parse($trackFileContents);
 	}
 
-	private function _storeOriginalTrackDocument($postId, Abp01_Route_Track_Document $originalDocument) {
+	private function _storeOriginalTrackDocument(int $postId, Abp01_Route_Track_Document $originalDocument): void {
 		$originalTrackDocumentFilePath = $this->_constructOriginalTrackDocumentFilePath($postId);
 		$documentContents = $originalDocument->serializeDocument();
 
@@ -138,32 +130,25 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
 			LOCK_EX);
 	}
 
-	private function _standardizeTrackFileMimeType($trackFileMimeType) {
+	private function _standardizeTrackFileMimeType(string $trackFileMimeType): string|null {
 		$documentParser = $this->_getSourceTrackFileDocumentParser($trackFileMimeType);
 		return $documentParser->getDefaultMimeType();
 	}
 
-	private function _constructOriginalTrackDocumentFilePath($postId) {
+	private function _constructOriginalTrackDocumentFilePath(int $postId): string {
 		$trackProfileFileName = $this->_constructOriginalTrackDocumentFileName($postId);
 		return $this->_constructTrackCacheFilePath($trackProfileFileName);
 	}
 
-	private function _constructOriginalTrackDocumentFileName($postId) {
+	private function _constructOriginalTrackDocumentFileName(int $postId): string {
 		return sprintf('track-original-%d.cache', $postId);
 	}
 
-	/**
-	 * @return Abp01_Route_Track_DocumentParser
-	 */
-	private function _getSourceTrackFileDocumentParser($trackFileMimeType) {
+	private function _getSourceTrackFileDocumentParser(string $trackFileMimeType): ?Abp01_Route_Track_DocumentParser {
 		return $this->_documentParserFactory->resolveDocumentParser($trackFileMimeType);
 	}
 
-	/**
-	 * @return Abp01_Route_Track_AltitudeProfile
-	 * @throws InvalidArgumentException 
-	 */
-	public function getOrCreateDisplayableAltitudeProfile(Abp01_Route_Track $track, $targetSystem, $stepPoints = 10) {
+	public function getOrCreateDisplayableAltitudeProfile(Abp01_Route_Track $track, string|Abp01_UnitSystem $targetSystem, int $stepPoints = 10): ?Abp01_Route_Track_AltitudeProfile {
 		if ($stepPoints <= 0) {
 			throw new InvalidArgumentException('Number of points to step over must be greater than 0');
 		}
@@ -187,12 +172,15 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
 		return $trackProfileDocument;
 	}
 
-	private function _isTrackProfileUseable($profileDocument, $targetSystemInstance, $stepPoints) {
+	private function _isTrackProfileUseable(?Abp01_Route_Track_AltitudeProfile $profileDocument, 
+		Abp01_UnitSystem $targetSystemInstance, 
+		int $stepPoints): bool {
 		return ($profileDocument instanceof Abp01_Route_Track_AltitudeProfile) 
-			&& $profileDocument->hasBeenGeneratedFor($targetSystemInstance, $stepPoints);
+			&& $profileDocument->hasBeenGeneratedFor($targetSystemInstance, 
+				$stepPoints);
 	}
 
-	private function _getTrackProfileDocument($postId) {
+	private function _getTrackProfileDocument(int $postId): ?Abp01_Route_Track_AltitudeProfile {
 		$path = $this->_constructTrackProfileDocumentCacheFilePath($postId);
 		if (empty($path) || !is_readable($path)) {
 			return null;
@@ -202,7 +190,7 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
 		return Abp01_Route_Track_AltitudeProfile::fromSerializedDocument($contents);
 	}
 
-	private function _createUnitSystemInstanceOrThrow($unitSystem) {
+	private function _createUnitSystemInstanceOrThrow(string $unitSystem): Abp01_UnitSystem {
         if (!Abp01_UnitSystem::isSupported($unitSystem)) {
             throw new InvalidArgumentException('Unsupported unit system: "' . $unitSystem . '"');
         }
@@ -210,7 +198,7 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
         return Abp01_UnitSystem::create($unitSystem);
     }
 
-	private function _storeTrackProfileDocument($postId, Abp01_Route_Track_AltitudeProfile $trackProfileDocument) {
+	private function _storeTrackProfileDocument(int $postId, Abp01_Route_Track_AltitudeProfile $trackProfileDocument): void {
 		//Ensure the storage directory structure exists
 		abp01_ensure_storage_directory();
 
@@ -222,11 +210,7 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
 		}
 	}
 
-	/**
-	 * @return Abp01_Route_Track_Document|null
-	 * @throws InvalidArgumentException 
-	 */
-	public function getOrCreateDisplayableTrackDocument(Abp01_Route_Track $track) {
+	public function getOrCreateDisplayableTrackDocument(Abp01_Route_Track $track): Abp01_Route_Track_Document|null {
 		$simplifiedTrackDocument = $this->_getSimplifiedTrackDocument($track->getPostId());
 
 		if (!($simplifiedTrackDocument instanceof Abp01_Route_Track_Document)) {
@@ -253,7 +237,7 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
 		return $simplifiedTrackDocument;
 	}
 
-	private function _getSimplifiedTrackDocument($postId) {
+	private function _getSimplifiedTrackDocument(int $postId): ?Abp01_Route_Track_Document {
 		$filePath = $this->_constructTrackDocumentCacheFilePath($postId);
 		if (empty($filePath) || !is_readable($filePath)) {
 			return null;
@@ -273,7 +257,7 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
 		return $simplifiedTrackDocument;
 	}
 
-	private function _storeSimplifiedTrackDocument($postId, Abp01_Route_Track_Document $trackDocument) {
+	private function _storeSimplifiedTrackDocument(int $postId, Abp01_Route_Track_Document $trackDocument): void {
 		//Ensure the storage directory structure exists
 		abp01_ensure_storage_directory();
 
@@ -288,7 +272,7 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
 		wp_cache_delete($postId, 'abp01_cached_track_documents');
 	}
 
-	public function deleteTrackFiles($postId) {
+	public function deleteTrackFiles(int $postId): void {
 		//delete track file
 		$trackFilePathPattern = $this->_constructGlobTrackFilePath($postId);
 		$this->_deleteFilesByGlobPattern($trackFilePathPattern);
@@ -298,71 +282,71 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
 		$this->_deleteFilesByGlobPattern($cacheFilePattern);
 	}
 
-	private function _constructGlobTrackFilePath($postId) {
+	private function _constructGlobTrackFilePath(int $postId): string {
 		$globTrackFileName = $this->_constructGlobTrackFileName($postId);
 		return $this->_constructTrackFilePath($globTrackFileName);
 	}
 
-	private function _constructGlobTrackFileName($postId) {
+	private function _constructGlobTrackFileName(int $postId): string {
 		return $this->_constructTrackFileName($postId, '*');
 	}
 
-	private function _constructTrackFileName($postId, $extension) {
+	private function _constructTrackFileName(int $postId, string $extension): string {
 		return sprintf('track-%d.%s', 
 			$postId, 
 			$extension);
 	}
 
-	private function _constructTrackFilePath($trackFileName) {
+	private function _constructTrackFilePath(string $trackFileName): string {
 		$tracksStorageDir = $this->_getTracksStorageDir();
 		return wp_normalize_path($tracksStorageDir . '/' . $trackFileName);
 	}
 
-	private function _getTracksStorageDir() {
+	private function _getTracksStorageDir(): string {
 		return $this->_env->getTracksStorageDir();
 	}
 
-	private function _constructGlobTrackCacheFilePath($postId) {
+	private function _constructGlobTrackCacheFilePath(int $postId): string {
 		$globTrackCacheFileName = $this->_constructGlobTrackCacheFileName($postId);
 		return $this->_constructTrackCacheFilePath($globTrackCacheFileName);
 	}
 
-	private function _constructTrackCacheFilePath($fileName) {
+	private function _constructTrackCacheFilePath(string $fileName): string {
 		$cacheStorageDir = $this->_getCacheStorageDir();
 		return wp_normalize_path($cacheStorageDir . '/' . $fileName);
 	}
 
-	private function _getCacheStorageDir() {
+	private function _getCacheStorageDir(): string {
 		return $this->_env->getCacheStorageDir();
 	}
 
-	private function _constructGlobTrackCacheFileName($postId) {
+	private function _constructGlobTrackCacheFileName(int $postId): string {
 		return sprintf('track*-%d.cache', $postId);
 	}
 
-	private function _deleteFilesByGlobPattern($globPathPattern) {
+	private function _deleteFilesByGlobPattern(string $globPathPattern): void {
 		abp01_delete_files_by_glob_pattern($globPathPattern);
 	}
 
-	private function _constructTrackDocumentCacheFilePath($postId) {
+	private function _constructTrackDocumentCacheFilePath(int $postId): string {
 		$trackDocumentCacheFileName = $this->_constructTrackDocumentCacheFileName($postId);
 		return $this->_constructTrackCacheFilePath($trackDocumentCacheFileName);
 	}
 
-	private function _constructTrackDocumentCacheFileName($postId) {
+	private function _constructTrackDocumentCacheFileName(int $postId): string {
 		return sprintf('track-%d.cache', $postId);
 	}
 
-	private function _constructTrackProfileDocumentCacheFilePath($postId) {
+	private function _constructTrackProfileDocumentCacheFilePath(int $postId): string {
 		$trackProfileFileName = $this->_constructTrackProfileCacheFileName($postId);
 		return $this->_constructTrackCacheFilePath($trackProfileFileName);
 	}
 
-	private function _constructTrackProfileCacheFileName($postId) {
+	private function _constructTrackProfileCacheFileName(int $postId): string {
 		return sprintf('track-profile-%d.cache', $postId);
 	}
 
-	public function constructTrackFilePathForPostId($postId, $trackFileMimeType) {
+	public function constructTrackFilePathForPostId(int|null $postId, string $trackFileMimeType): string {
 		if (empty($postId)) {
 			throw new InvalidArgumentException('Post id may not be empty');
 		}
@@ -379,20 +363,20 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
 		return $this->_constructTrackFilePathForPostId($postId, $extension);
 	}
 
-	private function _resolveFileExtensionForMimeType($trackFileMimeType) {
+	private function _resolveFileExtensionForMimeType(string $trackFileMimeType): string {
 		return isset($this->_trackFileMapTypesToExtensionsMapping[$trackFileMimeType])
 			? $this->_trackFileMapTypesToExtensionsMapping[$trackFileMimeType]
 			: self::DEFAULT_FILE_EXTENSION;
 	}
 
-	private function _constructTrackFilePathForPostId($postId, $extension) {
+	private function _constructTrackFilePathForPostId(int $postId, string $extension): string {
 		$trackFileName = $this->_constructTrackFileName($postId, 
 			$extension);
 
 		return $this->_constructTrackFilePath($trackFileName);
 	}
 
-	public function constructTempTrackFilePathForPostId($postId, $trackFileMimeType) {
+	public function constructTempTrackFilePathForPostId(int $postId, string $trackFileMimeType): string {
 		if (empty($postId)) {
 			throw new InvalidArgumentException('Post id may not be empty');
 		}

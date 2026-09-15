@@ -29,18 +29,20 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+use WpTripSummary\Env;
+
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
 class Abp01_Installer_Table_Definitions {
-	private $_env;
+	private Env $_env;
 
-	public function __construct(Abp01_Env $env) {
+	public function __construct(Env $env) {
 		$this->_env = $env;
 	}
 
-	public function getRouteTrackTableDefinition() {
+	public function getRouteTrackTableDefinition(): string {
 		return "CREATE TABLE IF NOT EXISTS `" . $this->getRouteTrackTableName() . "` (
 			`post_ID` BIGINT(20) UNSIGNED NOT NULL,
 			`route_track_file` LONGTEXT NOT NULL,
@@ -58,7 +60,7 @@ class Abp01_Installer_Table_Definitions {
 		)";
 	}
 
-	public function getRouteDetailsTableDefinition() {
+	public function getRouteDetailsTableDefinition(): string {
 		return "CREATE TABLE IF NOT EXISTS `" . $this->getRouteDetailsTableName() . "` (
 			`post_ID` BIGINT(10) UNSIGNED NOT NULL,
 			`route_type` VARCHAR(150) NOT NULL,
@@ -70,7 +72,7 @@ class Abp01_Installer_Table_Definitions {
 		)";
 	}
 
-	public function getLookupLangTableDefinition() {
+	public function getLookupLangTableDefinition(): string {
 		return "CREATE TABLE IF NOT EXISTS `" . $this->getLookupLangTableName() . "` (
 			`ID` INT(10) UNSIGNED NOT NULL,
 			`lookup_lang` VARCHAR(10) NOT NULL,
@@ -79,7 +81,7 @@ class Abp01_Installer_Table_Definitions {
 		)";
 	}
 
-	public function getLookupTableDefinition() {
+	public function getLookupTableDefinition(): string {
 		return "CREATE TABLE IF NOT EXISTS `" . $this->getLookupTableName() . "` (
 			`ID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 			`lookup_category` VARCHAR(150) NOT NULL,
@@ -88,7 +90,7 @@ class Abp01_Installer_Table_Definitions {
 		)";
 	}
 
-	public function getRouteDetailsLookupTableDefinition() {
+	public function getRouteDetailsLookupTableDefinition(): string {
 		return "CREATE TABLE IF NOT EXISTS `" . $this->getRouteDetailsLookupTableName() . "` (
 			`post_ID` BIGINT(10) UNSIGNED NOT NULL,
 			`lookup_ID` INT(10) UNSIGNED NOT NULL,
@@ -96,7 +98,7 @@ class Abp01_Installer_Table_Definitions {
 		)";
 	}
 
-	public function getRouteLogTableDefinition() {
+	public function getRouteLogTableDefinition(): string {
 		return "CREATE TABLE IF NOT EXISTS `" . $this->getRouteLogTableName() . "` (
 			`log_ID` BIGINT(20) NOT NULL AUTO_INCREMENT,
 			`log_post_ID` BIGINT(20) NOT NULL,
@@ -116,27 +118,27 @@ class Abp01_Installer_Table_Definitions {
 		)";
 	}
 
-	public function getRouteTrackTableName() {
+	public function getRouteTrackTableName(): string {
 		return $this->_env->getRouteTrackTableName();
 	}
 
-	public function getRouteDetailsTableName() {
+	public function getRouteDetailsTableName(): string {
 		return $this->_env->getRouteDetailsTableName();
 	}
 
-	public function getLookupLangTableName() {
+	public function getLookupLangTableName(): string {
 		return $this->_env->getLookupLangTableName();
 	}
 
-	public function getLookupTableName() {
+	public function getLookupTableName(): string {
 		return $this->_env->getLookupTableName();
 	}
 
-	public function getRouteDetailsLookupTableName() {
+	public function getRouteDetailsLookupTableName(): string {
 		return $this->_env->getRouteDetailsLookupTableName();
 	}
 
-	public function getRouteLogTableName() {
+	public function getRouteLogTableName(): string {
 		return $this->_env->getRouteLogTableName();
 	}
 }

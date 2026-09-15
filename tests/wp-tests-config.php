@@ -4,7 +4,18 @@
 if ( defined( 'WP_RUN_CORE_TESTS' ) && constant('WP_RUN_CORE_TESTS') == true ) {
 	define( 'ABSPATH', dirname( __FILE__ ) . '/build/' );
 } else {
-	define( 'ABSPATH', '/tmp/wordpress/' );
+	// Read the environment here too: WordPress runs its installer in a separate PHP process.
+	$_wp_core_dir = getenv('WP_CORE_DIR') ?: rtrim(sys_get_temp_dir(), '/\\') . '/wordpress';
+	define( 'ABSPATH', rtrim(str_replace('\\', '/', $_wp_core_dir), '/') . '/' );
+	unset($_wp_core_dir);
+}
+
+if (!is_readable(ABSPATH . 'wp-settings.php')) {
+	fwrite(STDERR, sprintf(
+		'WordPress core not found in "%s". Set WP_CORE_DIR to a WordPress installation containing wp-settings.php.%s',
+		ABSPATH,
+		PHP_EOL));
+	exit(1);
 }
 
 /*

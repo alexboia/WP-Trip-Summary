@@ -29,43 +29,22 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
 }
 
 class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
-	/**
-	 * The route manager singleton instance
-	 * 
-	 * @var Abp01_Route_Manager_Default
-	 * */
-	private static $_instance = null;
+	private static Abp01_Route_Manager_Default|null $_instance = null;
 
-	/**
-	 * The last error that occured during a route manager operation
-	 * 
-	 * @var Exception|WP_Error
-	 */
-	private $_lastError = null;
+	private Exception|WP_Error|null $_lastError = null;
 
-	/**
-	 * @var Abp01_Env The environment accessor instance
-	 * */
-	private $_env = null;
+	private Env|null $_env = null;
 
-	/**
-	 * The projection being used to process coordinates
-	 * 
-	 * @var Abp01_Route_SphericalMercator
-	 * */
-	private  $_proj = null;
+	private Abp01_Route_SphericalMercator|null $_proj = null;
 
-	/**
-	 * Retrieves the route manager singleton instance
-	 * 
-	 * @return Abp01_Route_Manager_Default
-	 * */
-	public static function getInstance() {
+	public static function getInstance(): Abp01_Route_Manager_Default {
 		if (self::$_instance == null) {
 			self::$_instance = new self();
 		}
@@ -73,11 +52,11 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 	}
 
 	private function __construct() {
-		$this->_env = Abp01_Env::getInstance();
+		$this->_env = Env::getInstance();
 		$this->_proj = new Abp01_Route_SphericalMercator();
 	}
 
-	private function _deleteLookupDataAssociation($db, $postId) {
+	private function _deleteLookupDataAssociation(MysqliDb $db, int $postId): bool {
 		$tableName = $this->_env->getRouteDetailsLookupTableName();
 		$db->where('post_ID', $postId);
 		$db->delete($tableName);
@@ -86,7 +65,7 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 		return empty($lastError);
 	}
 
-	private function _updateLookupDataAssociation($db, $postId, Abp01_Route_Info $info) {
+	private function _updateLookupDataAssociation(MysqliDb $db, int $postId, Abp01_Route_Info $info): bool {
 		$tableName = $this->_env->getRouteDetailsLookupTableName();
 
 		//clear all previous associations
@@ -124,10 +103,15 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 		return true;
 	}
 
-	public function saveRouteInfo($postId, Abp01_Route_Info $info, $currentUserId) {
+	public function saveRouteInfo(int|string $postId, Abp01_Route_Info $info, int|string $currentUserId): bool {
 		$postId = intval($postId);
 		if ($postId <= 0 || $info == null) {
 			throw new InvalidArgumentException();
+		}
+
+		$currentUserId = intval($currentUserId);
+		if ($currentUserId < 0) {
+			$currentUserId = 0;
 		}
 
 		$db = $this->_env->getDb();
@@ -166,11 +150,12 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 		return $success;
 	}
 
-	public function deleteRouteInfo($postId) {
+	public function deleteRouteInfo(int|string $postId): bool {
 		$postId = intval($postId);
 		if ($postId <= 0) {
 			throw new InvalidArgumentException();
 		}
+
 		if (!$this->hasRouteInfo($postId)) {
 			return true;
 		}
@@ -194,10 +179,15 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 		}
 	}
 
-	public function saveRouteTrack(Abp01_Route_Track $track, $currentUserId) {
+	public function saveRouteTrack(Abp01_Route_Track $track, int|string $currentUserId): bool {
 		$postId = intval($track->getPostId());
 		if ($postId <= 0) {
 			throw new InvalidArgumentException('Invalid post ID: "' . $postId . '"');
+		}
+
+		$currentUserId = intval($currentUserId);
+		if ($currentUserId < 0) {
+			$currentUserId = 0;
 		}
 
 		$proj = $this->_proj;
@@ -243,11 +233,13 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 		}
 	}
 
-	public function deleteRouteTrack($postId) {
+	public function deleteRouteTrack(int|string $postId): bool {
 		$postId = intval($postId);
 		if ($postId <= 0) {
 			throw new InvalidArgumentException();
 		}
+
+
 		if (!$this->hasRouteTrack($postId)) {
 			return true;
 		}
@@ -263,7 +255,7 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 		}
 	}
 
-	public function getRouteInfo($postId) {
+	public function getRouteInfo(int|string $postId): ?Abp01_Route_Info {
 		$postId = intval($postId);
 		if ($postId <= 0) {
 			throw new InvalidArgumentException();
@@ -293,10 +285,7 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 		return Abp01_Route_Info::fromJson($type, $json);
 	}
 
-	/**
-	 * @return Abp01_Route_Track
-	 */
-	public function getRouteTrack($postId) {
+	public function getRouteTrack(int|string $postId): ?Abp01_Route_Track {
 		$postId = intval($postId);
 		if ($postId <= 0) {
 			throw new InvalidArgumentException();
@@ -348,7 +337,7 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 		}
 	}
 
-	public function hasRouteTrack($postId) {
+	public function hasRouteTrack(int|string $postId): bool {
 		$postId = intval($postId);
 		if ($postId <= 0) {
 			throw new InvalidArgumentException();
@@ -366,7 +355,7 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 		return false;
 	}
 
-	public function hasRouteInfo($postId) {
+	public function hasRouteInfo(int|string $postId): bool {
 		$postId = intval($postId);
 		if ($postId <= 0) {
 			throw new InvalidArgumentException();
@@ -384,7 +373,7 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 		return false;
 	}
 
-	public function getTripSummaryStatusInfo($postIds) {
+	public function getTripSummaryStatusInfo(array $postIds): array {
 		if (!is_array($postIds)) {
 			$postIds = array($postIds);
 		}
@@ -403,7 +392,7 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 		return $allStatusInfo;
 	}
 
-	private function _queryForTripSummaryStatusInfoData($postIds) {
+	private function _queryForTripSummaryStatusInfoData(array $postIds): array {
 		$db = $this->_env->getDb();
 
 		$postsTable = $this->_env
@@ -431,7 +420,7 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 		return $rawStatusInfoData;
 	}
 
-	private function _getTripSummaryStatusInfoFromDbRow(array $row) {
+	private function _getTripSummaryStatusInfoFromDbRow(array $row): array {
 		return array(
 			'has_route_details' 
 				=> intval($row['has_route_details']) === 1,
@@ -440,7 +429,7 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 		);
 	}
 
-	function getTripSummaryRouteTypeInfo($postIds) {
+	function getTripSummaryRouteTypeInfo(array $postIds): array {
 		if (!is_array($postIds)) {
 			$postIds = array($postIds);
 		}
@@ -458,7 +447,7 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 		return $allRouteTypeInfoData;
 	}
 
-	private function _queryForRouteTypeInfoData($postIds) {
+	private function _queryForRouteTypeInfoData(array $postIds): array {
 		$db = $this->_env->getDb();
 		$infoTable = $this->_env->getRouteDetailsTableName();
 
@@ -490,7 +479,7 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 		return $postIds;
 	}
 
-	public function clearAll() {
+	public function clearAll(): void {
 		$db = $this->_env->getDb();
 
 		$trackTable = $this->_env
@@ -508,7 +497,7 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 			null);
 	}
 
-	public function getLastError() {
+	public function getLastError(): Exception|WP_Error|null {
 		return $this->_lastError;
 	}
 }

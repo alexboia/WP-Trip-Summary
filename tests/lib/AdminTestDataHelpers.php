@@ -98,10 +98,10 @@ trait AdminTestDataHelpers {
 		return $data;
 	}
 
-	protected function _generateAboutPageData() {
+	protected function _generateAboutPageData(): Abp01_ViewModel_AboutPageVm {
 		$faker = $this->_getFaker();
 
-		$data = new stdClass();
+		$data = new Abp01_ViewModel_AboutPageVm();
 		$data->pluginLogoPath = $faker->imageUrl();
 		$data->pluginData = $this->_generateAboutPagePluginData();
 		$data->envData = $this->_generateAboutPageEnvData();

@@ -6,70 +6,135 @@ if ($argc < 2) {
 	exit(1);
 }
 
-$pluginRoot = realpath($argv[1]);
-if ($pluginRoot === false || !is_dir($pluginRoot . DIRECTORY_SEPARATOR . 'lib')) {
-	fwrite(STDERR, "The supplied path is not a WPTS plugin root.\n");
-	exit(1);
+function getValidPluginRootOrExit(array $argv): string {
+	$pluginRoot = realpath($argv[1]);
+	if ($pluginRoot === false || !is_dir($pluginRoot . DIRECTORY_SEPARATOR . 'lib')) {
+		fwrite(STDERR, "The supplied path is not a WPTS plugin root.\n");
+		exit(1);
+	}
+	return $pluginRoot;
 }
 
-$outputFile = $argv[2] ?? dirname(__DIR__) . DIRECTORY_SEPARATOR . 'class-list.json';
-$existing = is_file($outputFile)
-	? json_decode((string) file_get_contents($outputFile), true)
-	: array();
-$existing = is_array($existing) ? $existing : array();
+function getOutputFile(array $argv): string {
+	return $argv[2] ?? dirname(__DIR__) 
+		. DIRECTORY_SEPARATOR 
+		. 'class-list.json';
+}
 
-$libRoot = $pluginRoot . DIRECTORY_SEPARATOR . 'lib';
-$iterator = new RecursiveIteratorIterator(
-	new RecursiveDirectoryIterator($libRoot, FilesystemIterator::SKIP_DOTS)
-);
-$symbols = array();
-$injectablesFile = $libRoot . DIRECTORY_SEPARATOR . 'pluginModules' . DIRECTORY_SEPARATOR . 'PluginModuleHost.php';
-$injectables = is_file($injectablesFile) ? (string) file_get_contents($injectablesFile) : '';
+function readExistingJson(string $outputFile): array {
+	$existing = is_file($outputFile)
+		? json_decode((string) file_get_contents($outputFile), true)
+		: array();
+	
+	$existing = is_array($existing) 
+		? $existing 
+		: array();
 
-foreach ($iterator as $file) {
-	if (!$file->isFile() || strtolower($file->getExtension()) !== 'php') {
-		continue;
-	}
+	return $existing;
+}
 
-	$absolutePath = $file->getPathname();
-	$relativePath = str_replace('\\', '/', substr($absolutePath, strlen($pluginRoot) + 1));
-	if (str_starts_with($relativePath, 'lib/3rdParty/')) {
-		continue;
-	}
+function getInjectableFilesSpecString(string $libRoot): string {
+	$injectablesFile = $libRoot . DIRECTORY_SEPARATOR 
+		. 'pluginModules' 
+		. DIRECTORY_SEPARATOR 
+		. 'PluginModuleHost.php';
 
-	$contents = (string) file_get_contents($absolutePath);
-	if (!preg_match('/^(?:(abstract|final)\s+)?(class|interface|trait)\s+(Abp01_[A-Za-z0-9_]+)/m', $contents, $match)) {
-		continue;
-	}
+	$injectables = is_file($injectablesFile) 
+		? (string) file_get_contents($injectablesFile) 
+		: '';	
 
-	$modifier = $match[1] ?? '';
-	$kind = $match[2];
-	$legacyName = $match[3];
-	$nameParts = explode('_', substr($legacyName, strlen('Abp01_')));
-	$newClass = 'WpTripSummary\\' . implode('\\', $nameParts);
-	$issues = array();
+	return $injectables;
+}
 
-	if ($kind === 'interface') {
-		$issues[] = 'interface: migrate before implementations';
-	} elseif ($modifier === 'abstract') {
-		$issues[] = 'abstract base type: migrate before subclasses';
-	}
-	if (str_contains($injectables, $legacyName . '::class')) {
-		$issues[] = 'dependency-injection participant';
-	}
-
-	$previous = $existing[$legacyName] ?? array();
-	$symbols[$legacyName] = array(
-		'newClass' => $newClass,
-		'filePath' => $relativePath,
-		'status' => $previous['status'] ?? 'pending',
-		'potentialIssues' => array_values(array_unique(array_merge(
-			$previous['potentialIssues'] ?? array(),
-			$issues
-		))),
-		'_priority' => $kind === 'interface' ? 0 : ($modifier === 'abstract' ? 1 : 2),
+function computeRelativePath(string $absolutePath, string $pluginRoot): string {
+	return str_replace('\\', 
+		'/', 
+		substr($absolutePath, 
+			strlen($pluginRoot) + 1)
 	);
 }
+
+function shouldIgnorePath(string $relativePath): bool {
+	$ignorePaths = array(
+		'lib/3rdParty/'
+	);
+
+	foreach ($ignorePaths as $ignorePath) {
+		if (str_starts_with($relativePath, $ignorePath)) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+function findReplaceableSymbols(string $pluginRoot): array {
+	$symbols = array();
+
+	$libRoot = $pluginRoot . DIRECTORY_SEPARATOR . 'lib';
+	$iterator = new RecursiveIteratorIterator(
+		new RecursiveDirectoryIterator(
+			$libRoot, 
+			FilesystemIterator::SKIP_DOTS
+		)
+	);
+
+	$injectables = getInjectableFilesSpecString($libRoot);
+
+	foreach ($iterator as $file) {
+		if (!$file->isFile() || strtolower($file->getExtension()) !== 'php') {
+			continue;
+		}
+
+		$absolutePath = $file->getPathname();
+		$relativePath = computeRelativePath($absolutePath, $pluginRoot);
+
+		if (shouldIgnorePath($relativePath)) {
+			continue;
+		}
+
+		$contents = (string) file_get_contents($absolutePath);
+		if (!preg_match('/^(?:(abstract|final)\s+)?(class|interface|trait)\s+(Abp01_[A-Za-z0-9_]+)/m', $contents, $match)) {
+			continue;
+		}
+
+		$modifier = $match[1] ?? '';
+		$kind = $match[2];
+		$legacyName = $match[3];
+		$nameParts = explode('_', substr($legacyName, strlen('Abp01_')));
+		$newClass = 'WpTripSummary\\' . implode('\\', $nameParts);
+		$issues = array();
+
+		if ($kind === 'interface') {
+			$issues[] = 'interface: migrate before implementations';
+		} elseif ($modifier === 'abstract') {
+			$issues[] = 'abstract base type: migrate before subclasses';
+		}
+		if (str_contains($injectables, $legacyName . '::class')) {
+			$issues[] = 'dependency-injection participant';
+		}
+
+		$previous = $existing[$legacyName] ?? array();
+		$symbols[$legacyName] = array(
+			'newClass' => $newClass,
+			'filePath' => $relativePath,
+			'status' => $previous['status'] ?? 'pending',
+			'potentialIssues' => array_values(array_unique(array_merge(
+				$previous['potentialIssues'] ?? array(),
+				$issues
+			))),
+			'_priority' => $kind === 'interface' ? 0 : ($modifier === 'abstract' ? 1 : 2),
+		);
+	}
+
+	return $symbols;
+}
+
+$pluginRoot = getValidPluginRootOrExit($argv);
+$outputFile = getOutputFile($argv);
+
+$existing = readExistingJson($outputFile);
+$symbols = findReplaceableSymbols($pluginRoot);
 
 foreach ($existing as $legacyName => $previous) {
 	if (!isset($symbols[$legacyName]) && ($previous['status'] ?? null) === 'complete') {

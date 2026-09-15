@@ -441,8 +441,8 @@ class Abp01_Settings {
 		return $this;
 	}
 
-	public function getAllowTrackDownload() {
-		return $this->_getOption(self::OPT_ALLOW_TRACK_DOWNLOAD, 'boolean', true);
+	public function getAllowTrackDownload(): bool {
+		return $this->_getOption(self::OPT_ALLOW_TRACK_DOWNLOAD, 'boolean', true) === true;
 	}
 
 	public function setAllowTrackDownload($allowTrackDownload) {
@@ -545,8 +545,8 @@ class Abp01_Settings {
 		$this->_setOption(self::OPT_JSONLD_ENABLED, 'boolean', $enable === true);
 	}
 
-	public function getEnableJsonLdFrontenData() {
-		return $this->_getOption(self::OPT_JSONLD_ENABLED, 'boolean', false);
+	public function getEnableJsonLdFrontenData(): bool {
+		return $this->_getOption(self::OPT_JSONLD_ENABLED, 'boolean', false) === true;
 	}
 
 	public function getMinimumAllowedMapHeight() {

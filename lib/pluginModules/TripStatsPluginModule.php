@@ -29,16 +29,18 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+use WpTripSummary\Env;
+
+if (!defined('ABP01_LOADED')) {
     exit;
 }
 
 class Abp01_PluginModules_TripStatsPluginModule extends Abp01_PluginModules_PluginModule {
-	public function __construct(Abp01_Env $env, Abp01_Auth $auth) {
+	public function __construct(Env $env, Abp01_Auth $auth) {
 		parent::__construct($env, $auth);
 	}
 
 	public function load(): void {
-		
+		return;
 	}
 }

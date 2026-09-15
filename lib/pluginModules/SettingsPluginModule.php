@@ -29,6 +29,8 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED')) {
 	exit;
 }
@@ -47,22 +49,16 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
 
 	const DEFAULT_TRACK_LINE_WEIGHT = 3;
 
-	/**
-	 * @var Abp01_View
-	 */
-	private $_view;
+	private Abp01_View $_view;
 
-	/**
-	 * @var Abp01_Settings
-	 */
-	private $_settings;
+	private Abp01_Settings $_settings;
 
-	/**
-	 * @var Abp01_AdminAjaxAction
-	 */
-	private $_saveSettingsAjaxAction;
+	private Abp01_AdminAjaxAction $_saveSettingsAjaxAction;
 
-	public function __construct(Abp01_Settings $settings, Abp01_View $view, Abp01_Env $env, Abp01_Auth $auth) {
+	public function __construct(Abp01_Settings $settings, 
+			Abp01_View $view, 
+			Env $env, 
+			Abp01_Auth $auth) {
 		parent::__construct($env, $auth);
 
 		$this->_settings = $settings;
@@ -71,7 +67,7 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
 		$this->_initAjaxActions();
 	}
 
-	private function _initAjaxActions() {
+	private function _initAjaxActions(): void {
 		$authCallback = $this->_createManagePluginSettingsAuthCallback();
 
 		$this->_saveSettingsAjaxAction = 
@@ -86,12 +82,12 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
 		$this->_registerWebPageAssets();
 	}
 
-	private function _registerAjaxActions() {
+	private function _registerAjaxActions(): void {
 		$this->_saveSettingsAjaxAction
 			->register();
 	}
 
-	public function getMenuItems() {
+	public function getMenuItems(): array {
 		return array(
 			array(
 				'slug' => ABP01_MAIN_MENU_SLUG,
@@ -106,7 +102,7 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
 		);
 	}
 
-	public function displayAdminSettingsPage() {
+	public function displayAdminSettingsPage(): void {
 		if (!$this->_currentUserCanManagePluginSettings()) {
 			die;
 		}
@@ -127,7 +123,7 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
 		echo $this->_view->renderAdminSettingsPage($data);
 	}
 
-	private function _registerWebPageAssets() {
+	private function _registerWebPageAssets(): void {
 		add_action('admin_enqueue_scripts', 
 			array($this, 'onAdminEnqueueStyles'), 
 			self::ADMIN_ENQUEUE_STYLES_HOOK_PRIORITY);
@@ -137,32 +133,32 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
 			self::ADMIN_ENQUEUE_SCRIPTS_HOOK_PRIORITY);
 	}
 
-	public function onAdminEnqueueStyles() {
+	public function onAdminEnqueueStyles(): void {
 		if ($this->_shouldEnqueueWebPageAssets()) {
 			Abp01_Includes::includeStyleAdminSettings();
 		}
 	}
 
-	private function _shouldEnqueueWebPageAssets() {
+	private function _shouldEnqueueWebPageAssets(): bool {
 		return $this->_isViewingSettingsPage() 
 			&& $this->_currentUserCanManagePluginSettings();
 	}
 
-	private function _isViewingSettingsPage() {
+	private function _isViewingSettingsPage(): bool {
 		return $this->_env->isAdminPage(ABP01_MAIN_MENU_SLUG);
 	}
 
-	public function onAdminEnqueueScripts() {
+	public function onAdminEnqueueScripts(): void {
 		if ($this->_shouldEnqueueWebPageAssets()) {
 			Abp01_Includes::includeScriptAdminSettings($this->_getAdminSettingsScriptTranslations());
 		}
 	}
 
-	private function _getAdminSettingsScriptTranslations() {
+	private function _getAdminSettingsScriptTranslations(): array {
 		return Abp01_TranslatedScriptMessages::getAdminSettingsScriptTranslations();
 	}
 
-	public function saveSettings() {
+	public function saveSettings(): stdClass {
 		$response = abp01_get_ajax_response();
 
 		$unitSystem = Abp01_InputFiltering::getFilteredPOSTValue('unitSystem');
@@ -223,7 +219,7 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
 		return $response;
 	}
 
-	private function _readTileLayerFromHttpPost() {
+	private function _readTileLayerFromHttpPost(): stdClass {
 		$tileLayer = new stdClass();
 		$tileLayer->url = Abp01_InputFiltering::getFilteredPOSTValue('tileLayerUrl');
 		$tileLayer->attributionUrl = Abp01_InputFiltering::getFilteredPOSTValue('tileLayerAttributionUrl');
@@ -232,35 +228,35 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
 		return $tileLayer;
 	}
 
-	private function _createUnitSystemValidationRule() {
+	private function _createUnitSystemValidationRule(): Abp01_Validation_Rule_Simple {
 		return new Abp01_Validation_Rule_Simple(
 			new Abp01_Validate_UnitSystem(), 
 			esc_html__('Unsupported unit system', 'abp01-trip-summary')
 		);
 	}
 
-	private function _createInitialViewerTabValidationRule() {
+	private function _createInitialViewerTabValidationRule(): Abp01_Validation_Rule_Simple {
 		return new Abp01_Validation_Rule_Simple(
 			new Abp01_Validate_InitialViewerTab(),
 			esc_html__('Unsupported viewer tab', 'abp01-trip-summary')
 		);
 	}
 
-	private function _createViewerItemLayoutValidationRule() {
+	private function _createViewerItemLayoutValidationRule(): Abp01_Validation_Rule_Simple {
 		return new Abp01_Validation_Rule_Simple(
 			new Abp01_Validate_ViewerItemLayout(),
 			esc_html__('Unsupported viewer item layout', 'abp01-trip-summary')
 		);
 	}
 
-	private function _createTrackLineColurValidationRule() {
+	private function _createTrackLineColurValidationRule(): Abp01_Validation_Rule_Simple {
 		return new Abp01_Validation_Rule_Simple(
 			new Abp01_Validate_HexColourCode(true),
 			esc_html__('The track line colour is not a valid HEX colour code', 'abp01-trip-summary')
 		);
 	}
 
-	private function _createTileLayerValidationRule(stdClass $tileLayer) {
+	private function _createTileLayerValidationRule(stdClass $tileLayer): Abp01_Validation_Rule_Composite {
 		$rules = array(
 			'url' => array(
 				new Abp01_Validation_Rule_Simple(
@@ -290,12 +286,12 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
 		return new Abp01_Validation_Rule_Composite($rules);
 	}
 
-	private function _tileLayerRequiesApiKey(stdClass $tileLayer) {
+	private function _tileLayerRequiesApiKey(stdClass $tileLayer): bool {
 		return $tileLayer->url != null 
 			&& stripos($tileLayer->url, '{apiKey}') !== false;
 	}
 
-	private function _readBoundedTrackLineWeightFromHttpPost() {
+	private function _readBoundedTrackLineWeightFromHttpPost(): int {
 		$minAllowedTrackLineWeight = $this->_settings
 			->getMinimumAllowedTrackLineWeight();
 
@@ -305,7 +301,7 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
 		return $trackLineWeight;
 	}
 
-	private function _readBoundedMapHeightFromHttpPost() {
+	private function _readBoundedMapHeightFromHttpPost(): int {
 		$minAllowedMapHeight = $this->_settings
 			->getMinimumAllowedMapHeight();
 
@@ -315,7 +311,7 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
 		return $mapHeight;
 	}
 
-	private function _readBoundedViewerItemValueDisplayCountFromHttpPost() {
+	private function _readBoundedViewerItemValueDisplayCountFromHttpPost(): int {
 		$minViewerItemDisplayCount = $this->_settings
 			->getMinimumViewerItemValueDisplayCount();
 

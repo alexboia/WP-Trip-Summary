@@ -36,28 +36,32 @@ class ExpectedLookupData {
 				'default' => 'Easy',
 				'translations' => array(
 					'ro_RO' => 'Ușor',
-					'fr_FR' => 'Facile'
+					'fr_FR' => 'Facile',
+					'de_DE' => 'Leicht'
 				)
 			),
 			array(
 				'default' => 'Medium',
 				'translations' => array(
 					'ro_RO' => 'Mediu',
-					'fr_FR' => 'Moyen'
+					'fr_FR' => 'Moyen',
+					'de_DE' => 'Mittel'
 				)
 			),
 			array(
 				'default' => 'Hard',
 				'translations' => array(
 					'ro_RO' => 'Dificil',
-					'fr_FR' => 'Difficile'
+					'fr_FR' => 'Difficile',
+					'de_DE' => 'Schwer'
 				)
 			),
 			array(
 				'default' => 'Medieval torture',
 				'translations' => array(
 					'ro_RO' => 'Tortură medievală',
-					'fr_FR' => 'Torture médiévale'
+					'fr_FR' => 'Torture médiévale',
+					'de_DE' => 'Mittelalterliche Folter'
 				)
 			)
 		),
@@ -67,42 +71,48 @@ class ExpectedLookupData {
 				'default' => 'Asphalt',
 				'translations' => array(
 					'ro_RO' => 'Asfalt',
-					'fr_FR' => 'Asphalte'
+					'fr_FR' => 'Asphalte',
+					'de_DE' => 'Asphalt'
 				)
 			),
 			array(
 				'default' => 'Concrete',
 				'translations' => array(
 					'ro_RO' => 'Plăci de beton',
-					'fr_FR' => 'Dalles de béton'
+					'fr_FR' => 'Dalles de béton',
+					'de_DE' => 'Betonplatten'
 				)
 			),
 			array(
 				'default' => 'Dust or dirt',
 				'translations' => array(
 					'ro_RO' => 'Pământ',
-					'fr_FR' => 'Terre'
+					'fr_FR' => 'Terre',
+					'de_DE' => 'Staub oder Erde'
 				)
 			),
 			array(
 				'default' => 'Grass',
 				'translations' => array(
 					'ro_RO' => 'Iarbă',
-					'fr_FR' => 'Végétation'
+					'fr_FR' => 'Végétation',
+					'de_DE' => 'Gras'
 				)
 			),
 			array(
 				'default' => 'Stone pavement/Gravel',
 				'translations' => array(
 					'ro_RO' => 'Macadam',
-					'fr_FR' => 'Macadam/gravier'
+					'fr_FR' => 'Macadam/gravier',
+					'de_DE' => 'Steinpflaster/Schotter'
 				)
 			),
 			array(
 				'default' => 'Loose rocks',
 				'translations' => array(
 					'ro_RO' => 'Piatră neașezată',
-					'fr_FR' => 'Pierre déstabilisé'
+					'fr_FR' => 'Pierre déstabilisé',
+					'de_DE' => 'Loses Gestein'
 				)
 			)
 		),
@@ -112,28 +122,32 @@ class ExpectedLookupData {
 				'default' => 'MTB',
 				'translations' => array(
 					'ro_RO' => 'MTB',
-					'fr_FR' => 'VTT'
+					'fr_FR' => 'VTT',
+					'de_DE' => 'Mountainbike'
 				)
 			),
 			array(
 				'default' => 'Road bike',
 				'translations' => array(
 					'ro_RO' => 'Cursieră',
-					'fr_FR' => 'Vélo de route'
+					'fr_FR' => 'Vélo de route',
+					'de_DE' => 'Rennrad'
 				)
 			),
 			array(
 				'default' => 'Trekking',
 				'translations' => array(
 					'ro_RO' => 'Trekking',
-					'fr_FR' => 'Vélo de trekking'
+					'fr_FR' => 'Vélo de trekking',
+					'de_DE' => 'Trekkingrad'
 				)
 			),
 			array(
 				'default' => 'City bike',
 				'translations' => array(
 					'ro_RO' => 'Bicicletă de oraș',
-					'fr_FR' => 'Vélo de ville'
+					'fr_FR' => 'Vélo de ville',
+					'de_DE' => 'Stadtrad'
 				)
 			)
 		),
@@ -143,14 +157,16 @@ class ExpectedLookupData {
 				'default' => 'Simple line',
 				'translations' => array(
 					'ro_RO' => 'Linie simplă',
-					'fr_FR' => 'Ligne de chemin de fer simple'
+					'fr_FR' => 'Ligne de chemin de fer simple',
+					'de_DE' => 'Eingleisige Strecke'
 				)
 			),
 			array(
 				'default' => 'Double line',
 				'translations' => array(
 					'ro_RO' => 'Linie dublă',
-					'fr_FR' => 'Ligne de chemin de fer double'
+					'fr_FR' => 'Ligne de chemin de fer double',
+					'de_DE' => 'Zweigleisige Strecke'
 				)
 			)
 		),
@@ -162,28 +178,32 @@ class ExpectedLookupData {
 				'default' => 'In production',
 				'translations' => array(
 					'ro_RO' => 'În exploatare',
-					'fr_FR' => 'En fonctionnement'
+					'fr_FR' => 'En fonctionnement',
+					'de_DE' => 'In Betrieb'
 				)
 			),
 			array(
 				'default' => 'Closed',
 				'translations' => array(
 					'ro_RO' => 'Închisă',
-					'fr_FR' => 'Hors service'
+					'fr_FR' => 'Hors service',
+					'de_DE' => 'Stillgelegt'
 				)
 			),
 			array(
 				'default' => 'Disbanded',
 				'translations' => array(
 					'ro_RO' => 'Desființată',
-					'fr_FR' => 'Chemin de fer démantelé'
+					'fr_FR' => 'Chemin de fer démantelé',
+					'de_DE' => 'Abgebaut'
 				)
 			),
 			array(
 				'default' => 'In rehabilitation',
 				'translations' => array(
 					'ro_RO' => 'În reabilitare',
-					'fr_FR' => 'En réhabilitation'
+					'fr_FR' => 'En réhabilitation',
+					'de_DE' => 'In Sanierung'
 				)
 			)
 		),
@@ -193,28 +213,32 @@ class ExpectedLookupData {
 				'default' => 'Spring',
 				'translations' => array(
 					'ro_RO' => 'Primăvara',
-					'fr_FR' => 'Printemps'
+					'fr_FR' => 'Printemps',
+					'de_DE' => 'Frühling'
 				)
 			),
 			array(
 				'default' => 'Summer',
 				'translations' => array(
 					'ro_RO' => 'Vara',
-					'fr_FR' => 'Été'
+					'fr_FR' => 'Été',
+					'de_DE' => 'Sommer'
 				)
 			),
 			array(
 				'default' => 'Autumn',
 				'translations' => array(
 					'ro_RO' => 'Toamna',
-					'fr_FR' => 'L\'automne'
+					'fr_FR' => 'L\'automne',
+					'de_DE' => 'Herbst'
 				)
 			),
 			array(
 				'default' => 'Winter',
 				'translations' => array(
 					'ro_RO' => 'Iarna',
-					'fr_FR' => 'L\'hiver'
+					'fr_FR' => 'L\'hiver',
+					'de_DE' => 'Winter'
 				)
 			)
 		),
@@ -224,21 +248,24 @@ class ExpectedLookupData {
 				'default' => 'Electrified',
 				'translations' => array(
 					'ro_RO' => 'Electrificată',
-					'fr_FR' => 'Électrifié'
+					'fr_FR' => 'Électrifié',
+					'de_DE' => 'Elektrifiziert'
 				)
 			),
 			array(
 				'default' => 'Not electrified',
 				'translations' => array(
 					'ro_RO' => 'Neelectrificată',
-					'fr_FR' => 'Non électrifié'
+					'fr_FR' => 'Non électrifié',
+					'de_DE' => 'Nicht elektrifiziert'
 				)
 			),
 			array(
 				'default' => 'Partially electrified',
 				'translations' => array(
 					'ro_RO' => 'Partial electrificată',
-					'fr_FR' => 'Partiellement électrifié'
+					'fr_FR' => 'Partiellement électrifié',
+					'de_DE' => 'Teilweise elektrifiziert'
 				)
 			)
 		)

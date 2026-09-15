@@ -34,12 +34,9 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Installer_Step_Deactivate implements Abp01_Installer_Step {
-	/**
-	 * @var \Exception|\WP_Error
-	 */
-	private $_lastError;
+	private \Exception|\WP_Error|null $_lastError = null;
 
-    public function execute() { 
+    public function execute(): bool { 
 		$this->_reset();
 		try {
 			return $this->_removeCapabilities();
@@ -64,7 +61,7 @@ class Abp01_Installer_Step_Deactivate implements Abp01_Installer_Step {
 		return $result;
 	}
 
-    public function getLastError() { 
-		$this->_lastError;
+    public function getLastError(): \Exception|\WP_Error|null { 
+		return $this->_lastError;
 	}
 }

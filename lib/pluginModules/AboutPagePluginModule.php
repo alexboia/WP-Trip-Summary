@@ -29,6 +29,8 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Env;
+
 if (!defined('ABP01_LOADED')) {
 	exit;
 }
@@ -43,7 +45,7 @@ class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_Plug
 
 	public function __construct(Abp01_ChangeLogDataSource $changeLogDataSource, 
 		Abp01_View $view, 
-		Abp01_Env $env, 
+		Env $env, 
 		Abp01_Auth $auth) {
 
 		parent::__construct($env, $auth);
@@ -77,7 +79,7 @@ class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_Plug
 		);
 	}
 
-	public function displayAdminAboutPage() {
+	public function displayAdminAboutPage(): void {
 		$data = new Abp01_ViewModel_AboutPageVm();
 		$data->pluginLogoPath = $this->_getPluginLogoPath();
 		$data->pluginData = $this->_getPluginData();
@@ -102,17 +104,17 @@ class Abp01_PluginModules_AboutPagePluginModule extends Abp01_PluginModules_Plug
 		);
 	}
 
-	private function _registerAdditionalPluginHeadersProvider() {
+	private function _registerAdditionalPluginHeadersProvider(): void {
 		add_filter('extra_plugin_headers', 
 			array($this, 'registerAdditionalPluginHeaders'));
 	}
 
-	private function _registerWebPageAssets() {
+	private function _registerWebPageAssets(): void {
 		add_action('admin_enqueue_scripts', 
 			array($this, 'onAdminEnqueueStyles'));
 	}
 
-	public function onAdminEnqueueStyles() {
+	public function onAdminEnqueueStyles(): void {
 		if ($this->_shouldEnqueueWebPageAssets()) {
 			Abp01_Includes::includeStyleAdminAbout();
 		}

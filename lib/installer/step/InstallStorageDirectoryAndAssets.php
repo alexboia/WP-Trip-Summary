@@ -78,7 +78,7 @@ class Abp01_Installer_Step_InstallStorageDirectoryAndAssets implements Abp01_Ins
 		return $service->execute();
 	}
 
-    public function getLastError(): mixed { 
+    public function getLastError(): \Exception|\WP_Error|null { 
 		return $this->_lastError;
 	}
 }

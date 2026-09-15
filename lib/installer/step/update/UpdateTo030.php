@@ -29,17 +29,17 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
 class Abp01_Installer_Step_Update_UpdateTo030 implements Abp01_Installer_Step_Update_Interface {
 
-	public function getTargetVersion() { 
+	public function getTargetVersion(): string { 
 		return '0.3.0';
 	}
 
-	public function execute() { 
+	public function execute(): bool { 
 		$path = ABP01_LIB_DIR . '/route/log/Manager';
 		$changeToPath = ABP01_LIB_DIR . '/route/log/manager';
 		if (is_dir($path)) {
@@ -51,7 +51,7 @@ class Abp01_Installer_Step_Update_UpdateTo030 implements Abp01_Installer_Step_Up
 		return true;
 	}
 
-	public function getLastError() { 
-		null;
+	public function getLastError(): \Exception|\WP_Error|null { 
+		return null;
 	}
 }

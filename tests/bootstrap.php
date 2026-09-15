@@ -70,13 +70,21 @@ require_once WPTS_TESTS_ROOT . '/lib/RouteLogTestHelpers.php';
 $_tests_dir = getenv('WP_TESTS_DIR');
 if (!$_tests_dir) {
 	$_tests_dir = '/tmp/wordpress-tests-lib';
+	if (!is_dir($_tests_dir)) {
+		$_tests_dir = getenv('WP_PHPUNIT__DIR') ?: $_tests_dir;
+	}
 }
 
-if (is_dir($_tests_dir)) {
-	require_once $_tests_dir . '/includes/functions.php';
-} else {
-	die('Test directory not found');
+if (!is_readable($_tests_dir . '/includes/functions.php')
+	|| !is_readable($_tests_dir . '/includes/bootstrap.php')) {
+	fwrite(STDERR, sprintf(
+		'WordPress test library not found in "%s". Set WP_TESTS_DIR to a directory containing includes/functions.php and includes/bootstrap.php, or run composer install to install wp-phpunit/wp-phpunit.%s',
+		$_tests_dir,
+		PHP_EOL));
+	exit(1);
 }
+
+require_once $_tests_dir . '/includes/functions.php';
 
 if (!defined( 'WP_CORE_DIR')) {
 	$_wp_core_dir = getenv('WP_CORE_DIR');
@@ -172,16 +180,11 @@ function _include_asserts() {
 	});
 }
 
-function _sync_wp_tests_config(string $testsDir) {
+function _configure_wp_tests_config() {
 	$thisConfig = _get_tests_base_dir() . '/wp-tests-config.php';
-	$runtimeConfig = $testsDir . '/wp-tests-config.php';
 
-	if (is_readable($thisConfig)) {
-		echo sprintf('Local wp-tests-config.php found. Overriding %s.%s', 
-			$runtimeConfig, 
-			PHP_EOL);
-
-		file_put_contents($runtimeConfig, file_get_contents($thisConfig));
+	if (!defined('WP_TESTS_CONFIG_FILE_PATH') && is_readable($thisConfig)) {
+		define('WP_TESTS_CONFIG_FILE_PATH', $thisConfig);
 	}
 }
 
@@ -190,7 +193,7 @@ function _register_setup_actions() {
 	tests_add_filter('setup_theme', '_manually_install_plugin');
 }
 
-_sync_wp_tests_config($_tests_dir);
+_configure_wp_tests_config();
 _register_setup_actions();
 
 require $_tests_dir . '/includes/bootstrap.php';
