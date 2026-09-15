@@ -29,17 +29,21 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED')) {
-    exit;
-}
+declare(strict_types=1);
 
-class Abp01_FeatureStatus {
-	public static function tripSummaryLogEnabled(): bool {
-		$enabled = defined('ABP01_TRIP_SUMMARY_LOG_ENABLED')
-			? constant('ABP01_TRIP_SUMMARY_LOG_ENABLED') === true
-			: true;
+namespace WpTripSummary {
+	if (!defined('ABP01_LOADED')) {
+		exit;
+	}
 
-		return apply_filters('abp01_trip_summary_log_enabled', $enabled) 
-			=== true; 
+	class FeatureStatus {
+		public static function tripSummaryLogEnabled(): bool {
+			$enabled = defined('ABP01_TRIP_SUMMARY_LOG_ENABLED')
+				? constant('ABP01_TRIP_SUMMARY_LOG_ENABLED') === true
+				: true;
+
+			return apply_filters('abp01_trip_summary_log_enabled', $enabled)
+				=== true;
+		}
 	}
 }

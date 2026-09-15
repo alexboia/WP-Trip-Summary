@@ -20,3 +20,28 @@ class Abp01_Env extends \WpTripSummary\Env {}
  * @deprecated Use \WpTripSummary\Exception instead.
  */
 class Abp01_Exception extends \WpTripSummary\Exception {}
+
+/**
+ * @deprecated Use \WpTripSummary\PluginMeta instead.
+ */
+class Abp01_PluginMeta extends \WpTripSummary\PluginMeta {}
+
+/**
+ * @deprecated Use \WpTripSummary\FeatureStatus instead.
+ */
+class Abp01_FeatureStatus extends \WpTripSummary\FeatureStatus {}
+
+/**
+ * @deprecated Use \WpTripSummary\KnownMimeTypes instead.
+ */
+class Abp01_KnownMimeTypes extends \WpTripSummary\KnownMimeTypes {}
+
+/**
+ * @deprecated Use \WpTripSummary\ConversionHelper instead.
+ */
+class Abp01_ConversionHelper extends \WpTripSummary\ConversionHelper {}
+
+/**
+ * @deprecated Use \WpTripSummary\Locale instead.
+ */
+class Abp01_Locale extends \WpTripSummary\Locale {}

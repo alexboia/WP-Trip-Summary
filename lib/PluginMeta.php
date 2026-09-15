@@ -1,4 +1,9 @@
 <?php
-class Abp01_PluginMeta {
-	const OPT_VERSION = 'abp01.option.version';
+
+declare(strict_types=1);
+
+namespace WpTripSummary {
+	class PluginMeta {
+		public const string OPT_VERSION = 'abp01.option.version';
+	}
 }

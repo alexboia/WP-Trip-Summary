@@ -1,0 +1,114 @@
+<?php
+/**
+ * Copyright (c) 2014-2026 Alexandru Boia and Contributors
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ *  1. Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *
+ *  2. Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *
+ *  3. Neither the name of the copyright holder nor the names of its contributors
+ *     may be used to endorse or promote products derived from this software without
+ *     specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+use WpTripSummary\FeatureStatus;
+
+class FeatureStatusTests extends WP_UnitTestCase {
+	private const FILTER_NAME = 'abp01_trip_summary_log_enabled';
+
+	public function test_tripSummaryLogIsEnabledByDefault(): void {
+		$this->_skipWhenFeatureConstantIsDefined();
+
+		$this->assertTrue(FeatureStatus::tripSummaryLogEnabled());
+	}
+
+	public function test_tripSummaryLogCanBeDisabledByFilter(): void {
+		$this->_skipWhenFeatureConstantIsDefined();
+
+		$filter = static function($enabled) {
+			return false;
+		};
+
+		add_filter(self::FILTER_NAME, $filter);
+		try {
+			$this->assertFalse(FeatureStatus::tripSummaryLogEnabled());
+		} finally {
+			remove_filter(self::FILTER_NAME, $filter);
+		}
+	}
+
+	/**
+	 * @dataProvider provideFilteredFeatureStatuses
+	 */
+	public function test_tripSummaryLogAcceptsOnlyLiteralTrueFromFilter($filteredStatus, bool $expected): void {
+		$this->_skipWhenFeatureConstantIsDefined();
+
+		$filter = static function($enabled) use ($filteredStatus) {
+			return $filteredStatus;
+		};
+
+		add_filter(self::FILTER_NAME, $filter);
+		try {
+			$this->assertSame($expected, FeatureStatus::tripSummaryLogEnabled());
+		} finally {
+			remove_filter(self::FILTER_NAME, $filter);
+		}
+	}
+
+	public function provideFilteredFeatureStatuses(): array {
+		return array(
+			'literal true' => array(true, true),
+			'literal false' => array(false, false),
+			'integer one' => array(1, false),
+			'non-empty string' => array('true', false),
+			'null' => array(null, false),
+		);
+	}
+
+	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function test_tripSummaryLogCanBeControlledWhenDisabledByConstant(): void {
+		$this->_skipWhenFeatureConstantIsDefined();
+		define('ABP01_TRIP_SUMMARY_LOG_ENABLED', false);
+
+		$this->assertFalse(FeatureStatus::tripSummaryLogEnabled());
+
+		$filter = static function($enabled) {
+			return true;
+		};
+
+		add_filter(self::FILTER_NAME, $filter);
+		try {
+			$this->assertTrue(FeatureStatus::tripSummaryLogEnabled());
+		} finally {
+			remove_filter(self::FILTER_NAME, $filter);
+		}
+	}
+
+	private function _skipWhenFeatureConstantIsDefined(): void {
+		if (defined('ABP01_TRIP_SUMMARY_LOG_ENABLED')) {
+			$this->markTestSkipped(
+				'ABP01_TRIP_SUMMARY_LOG_ENABLED must not be predefined for this test.'
+			);
+		}
+	}
+}

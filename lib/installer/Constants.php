@@ -34,5 +34,5 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Installer_Constants {
-	const OPT_VERSION = Abp01_PluginMeta::OPT_VERSION;
+	const OPT_VERSION = \WpTripSummary\PluginMeta::OPT_VERSION;
 }

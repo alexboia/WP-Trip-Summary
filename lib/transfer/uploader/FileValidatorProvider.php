@@ -38,11 +38,11 @@ class Abp01_Transfer_Uploader_FileValidatorProvider {
 
 	public function __construct() {
 		$this->registerValidatorForMimeTypes(new Abp01_Validate_GpxDocument(), 
-			Abp01_KnownMimeTypes::getGpxDocumentMimeTypes());
+			\WpTripSummary\KnownMimeTypes::getGpxDocumentMimeTypes());
 		$this->registerValidatorForMimeTypes(new Abp01_Validate_GeoJsonDocument(), 
-			Abp01_KnownMimeTypes::getGeoJsonDocumentMimeTypes());
+			\WpTripSummary\KnownMimeTypes::getGeoJsonDocumentMimeTypes());
 		$this->registerValidatorForMimeTypes(new Abp01_Validate_KmlDocument(), 
-			Abp01_KnownMimeTypes::getKmlDocumentMimeTypes());
+			\WpTripSummary\KnownMimeTypes::getKmlDocumentMimeTypes());
 	}
 
 	public function registerValidatorForMimeTypes(Abp01_Validate_File $validatorInstance, array $mimeTypes) {

@@ -144,8 +144,12 @@ foreach ($existing as $legacyName => $previous) {
 }
 
 uasort($symbols, static function(array $left, array $right): int {
-	return array($left['_priority'], substr_count($left['filePath'], '/'), $left['filePath'])
-		<=> array($right['_priority'], substr_count($right['filePath'], '/'), $right['filePath']);
+	return array($left['_priority'], 
+			substr_count($left['filePath'], '/'), 
+			$left['filePath'])
+		<=> array($right['_priority'], 
+			substr_count($right['filePath'], '/'), 
+			$right['filePath']);
 });
 
 foreach ($symbols as &$symbol) {

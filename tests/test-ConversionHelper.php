@@ -29,51 +29,53 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\ConversionHelper;
+
 class ConversionHelperTests extends WP_UnitTestCase {
 	use GenericTestHelpers;
 
 	public function test_canConvert_whenInBytes() {
-		$formatted = Abp01_ConversionHelper::getByteSizeDescription(0);
+		$formatted = ConversionHelper::getByteSizeDescription(0);
 		$this->assertEquals('0B', $formatted);
 
-		$formatted = Abp01_ConversionHelper::getByteSizeDescription(500);
+		$formatted = ConversionHelper::getByteSizeDescription(500);
 		$this->assertEquals('500B', $formatted);
 
-		$formatted = Abp01_ConversionHelper::getByteSizeDescription(1023);
+		$formatted = ConversionHelper::getByteSizeDescription(1023);
 		$this->assertEquals('1023B', $formatted);
 
-		$formatted = Abp01_ConversionHelper::getByteSizeDescription(1024);
+		$formatted = ConversionHelper::getByteSizeDescription(1024);
 		$this->assertEquals('1024B', $formatted);
 	}
 
 	public function test_canConvert_whenInKiloBytes() {
-		$formatted = Abp01_ConversionHelper::getByteSizeDescription(1026);
+		$formatted = ConversionHelper::getByteSizeDescription(1026);
 		$this->assertEquals('1KB', $formatted);
 
-		$formatted = Abp01_ConversionHelper::getByteSizeDescription(1028);
+		$formatted = ConversionHelper::getByteSizeDescription(1028);
 		$this->assertEquals('1KB', $formatted);
 
-		$formatted = Abp01_ConversionHelper::getByteSizeDescription(2048);
+		$formatted = ConversionHelper::getByteSizeDescription(2048);
 		$this->assertEquals('2KB', $formatted);
 
-		$formatted = Abp01_ConversionHelper::getByteSizeDescription(1048576);
+		$formatted = ConversionHelper::getByteSizeDescription(1048576);
 		$this->assertEquals('1024KB', $formatted);
 	}
 
 	public function test_canConvert_whenInMegaBytes() {
-		$formatted = Abp01_ConversionHelper::getByteSizeDescription(1048577);
+		$formatted = ConversionHelper::getByteSizeDescription(1048577);
 		$this->assertEquals('1MB', $formatted);
 
-		$formatted = Abp01_ConversionHelper::getByteSizeDescription(10485770);
+		$formatted = ConversionHelper::getByteSizeDescription(10485770);
 		$this->assertEquals('10MB', $formatted);
 
-		$formatted = Abp01_ConversionHelper::getByteSizeDescription(11 * 1024 * 1024);
+		$formatted = ConversionHelper::getByteSizeDescription(11 * 1024 * 1024);
 		$this->assertEquals('11MB', $formatted);
 
-		$formatted = Abp01_ConversionHelper::getByteSizeDescription(6.6 * 1024 * 1024);
+		$formatted = ConversionHelper::getByteSizeDescription(6.6 * 1024 * 1024);
 		$this->assertEquals('6.6MB', $formatted);
 
-		$formatted = Abp01_ConversionHelper::getByteSizeDescription(1024 * 1024 * 1024);
+		$formatted = ConversionHelper::getByteSizeDescription(1024 * 1024 * 1024);
 		$this->assertEquals('1024MB', $formatted);
 	}
 }

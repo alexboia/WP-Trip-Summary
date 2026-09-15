@@ -56,11 +56,11 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
 		$this->_env = $env;
 
 		$this->_registerExtensionForMimeTypes(self::GPX_FILE_EXTENSION, 
-			Abp01_KnownMimeTypes::getGpxDocumentMimeTypes());
+			\WpTripSummary\KnownMimeTypes::getGpxDocumentMimeTypes());
 		$this->_registerExtensionForMimeTypes(self::GEOJSON_FILE_EXTENSION, 
-			Abp01_KnownMimeTypes::getGeoJsonDocumentMimeTypes());
+			\WpTripSummary\KnownMimeTypes::getGeoJsonDocumentMimeTypes());
 		$this->_registerExtensionForMimeTypes(self::KML_FILE_EXTENSION, 
-			Abp01_KnownMimeTypes::getKmlDocumentMimeTypes());
+			\WpTripSummary\KnownMimeTypes::getKmlDocumentMimeTypes());
 	}
 
 	private function _registerExtensionForMimeTypes(string $extension, array $mimeTypes): void {

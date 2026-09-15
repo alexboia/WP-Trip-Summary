@@ -29,32 +29,37 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit;
-}
+declare(strict_types=1);
 
-class Abp01_ConversionHelper {
-	public static function getByteSizeDescription($sizeBytes) {
-		$size = $sizeBytes;
-		$suffix = array(
-			'B',
-			'KB',
-			'MB',
-			'GB',
-			'TB',
-			'PB',
-			'EB',
-			'ZB',
-			'YB'
-		);
+namespace WpTripSummary {
+	if (!defined('ABP01_LOADED')) {
+		exit;
+	}
 
-		$i = 0;
-		while (($size / 1024) > 1) {
-			$size = $size / 1024;
-			$i++;
+	class ConversionHelper {
+		public static function getByteSizeDescription(int|float $sizeBytes): string {
+			$size = $sizeBytes;
+			$suffix = array(
+				'B',
+				'KB',
+				'MB',
+				'GB',
+				'TB',
+				'PB',
+				'EB',
+				'ZB',
+				'YB'
+			);
+
+			$i = 0;
+			while (($size / 1024) > 1) {
+				$size = $size / 1024;
+				$i++;
+			}
+
+			$sizeAsString = (string)$size;
+			return round((float)substr($sizeAsString, 0, strpos($sizeAsString, '.') + 4), 2)
+				. $suffix[$i];
 		}
-
-		return round(substr($size, 0, strpos($size, '.') + 4), 2) 
-			. $suffix[$i];
 	}
 }

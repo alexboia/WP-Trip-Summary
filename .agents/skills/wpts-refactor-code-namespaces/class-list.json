@@ -328,13 +328,13 @@
     "Abp01_ConversionHelper": {
         "newClass": "WpTripSummary\\ConversionHelper",
         "filePath": "lib/ConversionHelper.php",
-        "status": "pending",
+        "status": "complete",
         "potentialIssues": []
     },
     "Abp01_FeatureStatus": {
         "newClass": "WpTripSummary\\FeatureStatus",
         "filePath": "lib/FeatureStatus.php",
-        "status": "pending",
+        "status": "complete",
         "potentialIssues": []
     },
     "Abp01_Includes": {
@@ -358,13 +358,13 @@
     "Abp01_KnownMimeTypes": {
         "newClass": "WpTripSummary\\KnownMimeTypes",
         "filePath": "lib/KnownMimeTypes.php",
-        "status": "pending",
+        "status": "complete",
         "potentialIssues": []
     },
     "Abp01_Locale": {
         "newClass": "WpTripSummary\\Locale",
         "filePath": "lib/Locale.php",
-        "status": "pending",
+        "status": "complete",
         "potentialIssues": []
     },
     "Abp01_Lookup": {
@@ -396,7 +396,7 @@
     "Abp01_PluginMeta": {
         "newClass": "WpTripSummary\\PluginMeta",
         "filePath": "lib/PluginMeta.php",
-        "status": "pending",
+        "status": "complete",
         "potentialIssues": []
     },
     "Abp01_PostInfoProvider": {

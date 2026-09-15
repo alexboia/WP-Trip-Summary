@@ -140,7 +140,7 @@ class Abp01_Io_FileInfo {
 			return null;
 		}
 
-		return Abp01_ConversionHelper::getByteSizeDescription($sizeBytes);
+		return \WpTripSummary\ConversionHelper::getByteSizeDescription($sizeBytes);
 	}
 
 	public function getLastModified(): int|bool {

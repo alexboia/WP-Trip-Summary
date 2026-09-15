@@ -268,7 +268,7 @@ class Abp01_Lookup {
 			self::EN_US_LANGUAGE_CODE => 'English (United States)'
 		);
 		
-		$systemLanguages = Abp01_Locale::getSystemLocales();
+		$systemLanguages = \WpTripSummary\Locale::getSystemLocales();
 		$languages = array_merge($languages, $systemLanguages);
 
 		return $languages;

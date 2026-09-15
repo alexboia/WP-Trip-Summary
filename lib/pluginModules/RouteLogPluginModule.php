@@ -181,7 +181,7 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 	}
 
 	private function _tripSummaryLogEnabled(): bool {
-		return Abp01_FeatureStatus::tripSummaryLogEnabled();
+		return \WpTripSummary\FeatureStatus::tripSummaryLogEnabled();
 	}
 
 	private function _setupViewer(): void {

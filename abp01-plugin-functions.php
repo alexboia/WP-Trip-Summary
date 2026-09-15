@@ -63,6 +63,16 @@ function abp01_init_legacy_class_aliases(): void {
 		'Abp01_Env');
 	abp01_legacy_class_alias(\WpTripSummary\Exception::class, 
 		'Abp01_Exception');
+	abp01_legacy_class_alias(\WpTripSummary\PluginMeta::class,
+		'Abp01_PluginMeta');
+	abp01_legacy_class_alias(\WpTripSummary\FeatureStatus::class,
+		'Abp01_FeatureStatus');
+	abp01_legacy_class_alias(\WpTripSummary\KnownMimeTypes::class,
+		'Abp01_KnownMimeTypes');
+	abp01_legacy_class_alias(\WpTripSummary\ConversionHelper::class,
+		'Abp01_ConversionHelper');
+	abp01_legacy_class_alias(\WpTripSummary\Locale::class,
+		'Abp01_Locale');
 }
 
 function abp01_legacy_class_alias (string $newClass,string $legacyClass): void {

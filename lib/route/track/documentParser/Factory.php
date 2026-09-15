@@ -38,13 +38,13 @@ class Abp01_Route_Track_DocumentParser_Factory {
 
 	public function __construct() {
 		$this->registerDocumentParserForMimeTypes(Abp01_Route_Track_DocumentParser_Gpx::class, 
-			Abp01_KnownMimeTypes::getGpxDocumentMimeTypes());
+			\WpTripSummary\KnownMimeTypes::getGpxDocumentMimeTypes());
 
 		$this->registerDocumentParserForMimeTypes(Abp01_Route_Track_DocumentParser_GeoJson::class, 
-			Abp01_KnownMimeTypes::getGeoJsonDocumentMimeTypes());
+			\WpTripSummary\KnownMimeTypes::getGeoJsonDocumentMimeTypes());
 
 		$this->registerDocumentParserForMimeTypes(Abp01_Route_Track_DocumentParser_Kml::class, 
-			Abp01_KnownMimeTypes::getKmlDocumentMimeTypes());
+			\WpTripSummary\KnownMimeTypes::getKmlDocumentMimeTypes());
 	}
 
 	public function registerDocumentParserForMimeTypes($documentParserClass, array $mimeTypes) {

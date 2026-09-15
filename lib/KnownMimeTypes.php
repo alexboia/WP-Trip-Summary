@@ -29,33 +29,46 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
-}
+declare(strict_types=1);
 
-class Abp01_KnownMimeTypes {
-	public static function getGpxDocumentMimeTypes(): array {
-		return array(
-			'application/gpx', 
-			'application/x-gpx+xml', 
-			'application/xml-gpx', 
-			'application/xml', 
-			'application/gpx+xml',
-			'text/xml'
-		);
+namespace WpTripSummary {
+	if (!defined('ABP01_LOADED')) {
+	    exit;
 	}
 
-	public static function getGeoJsonDocumentMimeTypes(): array {
-		return array(
-			'application/json',
-			'application/geo+json',
-			'application/vnd.geo+json'
-		);
-	}
+	class KnownMimeTypes {
+		/**
+		 * @return string[]
+		 */
+		public static function getGpxDocumentMimeTypes(): array {
+			return array(
+				'application/gpx',
+				'application/x-gpx+xml',
+				'application/xml-gpx',
+				'application/xml',
+				'application/gpx+xml',
+				'text/xml'
+			);
+		}
 
-	public static function getKmlDocumentMimeTypes(): array {
-		return array(
-			'application/vnd.google-earth.kml+xml'
-		);
+		/**
+		 * @return string[]
+		 */
+		public static function getGeoJsonDocumentMimeTypes(): array {
+			return array(
+				'application/json',
+				'application/geo+json',
+				'application/vnd.geo+json'
+			);
+		}
+
+		/**
+		 * @return string[]
+		 */
+		public static function getKmlDocumentMimeTypes(): array {
+			return array(
+				'application/vnd.google-earth.kml+xml'
+			);
+		}
 	}
 }

@@ -29,29 +29,36 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit;
-}
+declare(strict_types=1);
 
-class Abp01_Locale {
-	public static function getSystemLocales() {
-		if (!function_exists('wp_get_available_translations')) {
-			require_once ABSPATH . 'wp-admin/includes/translation-install.php';
-		}
-
-		$translations = array(
-			'en_US' => 'English (United States)'
-		);
-		
-		$systemTranslations = wp_get_available_translations();
-		foreach ($systemTranslations as $tx) {
-			$translations[$tx['language']] = sprintf('%s (%s)', $tx['english_name'], $tx['native_name']);
-		}
-
-		return $translations;
+namespace WpTripSummary {
+	if (!defined('ABP01_LOADED')) {
+		exit;
 	}
 
-	public static function getCurrentLocale() {
-		return get_locale();
+	class Locale {
+		/**
+		 * @return array<string, string>
+		 */
+		public static function getSystemLocales(): array {
+			if (!function_exists('wp_get_available_translations')) {
+				require_once ABSPATH . 'wp-admin/includes/translation-install.php';
+			}
+
+			$translations = array(
+				'en_US' => 'English (United States)'
+			);
+
+			$systemTranslations = wp_get_available_translations();
+			foreach ($systemTranslations as $tx) {
+				$translations[$tx['language']] = sprintf('%s (%s)', $tx['english_name'], $tx['native_name']);
+			}
+
+			return $translations;
+		}
+
+		public static function getCurrentLocale(): string {
+			return get_locale();
+		}
 	}
 }
