@@ -1,0 +1,4 @@
+interface:
+  display_name: "WPTS Hook Documentation"
+  short_description: "Inventory and document WPTS WordPress hooks"
+  default_prompt: "Use $wpts-document-hooks to inventory and document the plugin hooks."

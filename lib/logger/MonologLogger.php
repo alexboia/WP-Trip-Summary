@@ -80,7 +80,7 @@ class Abp01_Logger_MonologLogger implements Abp01_Logger {
 		if ($this->_config->isDebugLoggingEnabled()) {
 			$debugRotatingFileHandler = new RotatingFileHandler($this->_config->getDebugLogFile(), 
 				$this->_config->getMaxLogFiles(), 
-				Logger::DEBUG);
+				\Monolog\Level::Debug);
 
 			$debugRotatingFileHandler->setFormatter($formatter);
 			$logger->pushHandler($debugRotatingFileHandler);
@@ -89,7 +89,7 @@ class Abp01_Logger_MonologLogger implements Abp01_Logger {
 		if ($this->_config->isErrorLoggingEnabled()) {
 			$errorRotatingFileHandler = new RotatingFileHandler($this->_config->getErrorLogFile(), 
 				$this->_config->getMaxLogFiles(), 
-				Logger::WARNING, 
+				\Monolog\Level::Warning, 
 				false);
 
 			$errorRotatingFileHandler->setFormatter($formatter);
@@ -100,7 +100,7 @@ class Abp01_Logger_MonologLogger implements Abp01_Logger {
 	private function _createSimpleLogHandlers(Logger $logger, FormatterInterface $formatter) {
 		if ($this->_config->isDebugLoggingEnabled()) {
 			$debugStreamFileHandler = new StreamHandler($this->_config->getDebugLogFile(),  
-				Logger::DEBUG);
+				\Monolog\Level::Debug);
 
 			$debugStreamFileHandler->setFormatter($formatter);
 			$logger->pushHandler($debugStreamFileHandler);
@@ -108,7 +108,7 @@ class Abp01_Logger_MonologLogger implements Abp01_Logger {
 
 		if ($this->_config->isErrorLoggingEnabled()) {
 			$errorStreamFileHandler = new StreamHandler($this->_config->getErrorLogFile(), 
-				Logger::WARNING);
+				\Monolog\Level::Warning);
 
 			$errorStreamFileHandler->setFormatter($formatter);
 			$logger->pushHandler($errorStreamFileHandler);

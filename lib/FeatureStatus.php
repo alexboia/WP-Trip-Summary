@@ -42,6 +42,19 @@ namespace WpTripSummary {
 				? constant('ABP01_TRIP_SUMMARY_LOG_ENABLED') === true
 				: true;
 
+			
+			/**
+			 * Filters whether the trip summary log feature should be made available.
+			 * Initial value is either the value of boolean constant ABP01_TRIP_SUMMARY_LOG_ENABLED, 
+			 * if defined, or true if not defined.
+			 * 
+			 * Result is converted to boolean.
+			 * 
+			 * @since 0.3.2
+			 * @category Trip Summary Management
+			 * 
+			 * @param bool $enabled Whether or not trip summary log is available
+			 */
 			return apply_filters('abp01_trip_summary_log_enabled', $enabled)
 				=== true;
 		}

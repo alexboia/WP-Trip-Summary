@@ -197,19 +197,44 @@ function abp01_get_log_manager() {
 
 function abp01_get_logger_config() {
 	$env = abp01_get_env();
-	$defaultRotateLogs = defined('ABP01_LOGS_ROTATE') 
-		? constant('ABP01_LOGS_ROTATE') 
+	$rotateLogs = defined('ABP01_LOGS_ROTATE') 
+		? (constant('ABP01_LOGS_ROTATE') === true)
 		: true;
 
+	/**
+	 * Filters whether or not to rotate logs. 
+	 * Initial value is either the value of boolean constant ABP01_LOGS_ROTATE, 
+	 * if defined, or true by default
+	 * 
+	 * @since 0.3.2
+	 * @category Log Management
+	 * 
+	 * @param bool $rotateLogs Whether logs should rotated or not
+	 */
 	$rotateLogs = apply_filters('abp01_get_logger_config_rotate_logs', 
-		$defaultRotateLogs) === true;
+		$rotateLogs) === true;
 
 	$defaultMaxLogFiles = defined('ABP01_LOGS_MAX_LOG_FILES')
 		? intval(constant('ABP01_LOGS_MAX_LOG_FILES'))
 		: 10;
 
+	$maxLogFiles = $defaultMaxLogFiles;
+
+	/**
+	 * Filters the number of log files to retain (0 = no limit).
+	 * Initial and default value is either the value of the integer constant ABP01_LOGS_MAX_LOG_FILES, 
+	 * if defined, or 10 by default.
+	 * 
+	 * Automatically converted to integer. 
+	 * If less than 0, it will reset to the default value.
+	 * 
+	 * @since 0.3.2
+	 * @category Log Management
+	 * 
+	 * @var int $maxLogFiles The maximum number of log files
+	 */
 	$maxLogFiles = intval(apply_filters('abp01_get_logger_config_max_log_files', 
-		$defaultMaxLogFiles));
+		$maxLogFiles));
 
 	if ($maxLogFiles <= 0) {
 		$maxLogFiles = $defaultMaxLogFiles;
@@ -224,7 +249,7 @@ function abp01_get_logger_config() {
 }
 
 if (!function_exists('write_log')) {
-	function write_log ($message)  {
+	function write_log (mixed $message): void  {
 	   if (is_array($message) || is_object($message)) {
 			ob_start();
 			var_dump($message);
@@ -242,7 +267,7 @@ if (!function_exists('write_log')) {
  * @param int $executionTimeMinutes The execution time in minutes, to raise the limit to. Defaults to 5 minutes.
  * @return void
  */
-function abp01_increase_limits($executionTimeMinutes = 5) {
+function abp01_increase_limits(int $executionTimeMinutes = 5): void {
 	if (function_exists('set_time_limit')) {
 		@set_time_limit($executionTimeMinutes * 60);
 	}
@@ -264,7 +289,7 @@ function abp01_increase_limits($executionTimeMinutes = 5) {
  * 
  * @return void
  */
-function abp01_enable_error_reporting() {
+function abp01_enable_error_reporting(): void {
 	if (function_exists('ini_set')) {
 		ini_set('display_errors', 1);
 		ini_set('display_startup_errors', 1);
@@ -513,14 +538,22 @@ function abp01_get_lookup_type_label($type) {
 	
 	if ($translations === null) {
 		$translations = array(
-			Abp01_Lookup::BIKE_TYPE => esc_html__('Bike type', 'abp01-trip-summary'),
-			Abp01_Lookup::DIFFICULTY_LEVEL => esc_html__('Difficulty level', 'abp01-trip-summary'),
-			Abp01_Lookup::PATH_SURFACE_TYPE => esc_html__('Path surface type', 'abp01-trip-summary'),
-			Abp01_Lookup::RAILROAD_ELECTRIFICATION => esc_html__('Railroad electrification status', 'abp01-trip-summary'),
-			Abp01_Lookup::RAILROAD_LINE_STATUS => esc_html__('Railroad line status', 'abp01-trip-summary'),
-			Abp01_Lookup::RAILROAD_LINE_TYPE => esc_html__('Railroad line type', 'abp01-trip-summary'),
-			Abp01_Lookup::RAILROAD_OPERATOR => esc_html__('Railroad operators', 'abp01-trip-summary'),
-			Abp01_Lookup::RECOMMEND_SEASONS => esc_html__('Recommended seasons', 'abp01-trip-summary')
+			Abp01_Lookup::BIKE_TYPE 
+				=> esc_html__('Bike type', 'abp01-trip-summary'),
+			Abp01_Lookup::DIFFICULTY_LEVEL 
+				=> esc_html__('Difficulty level', 'abp01-trip-summary'),
+			Abp01_Lookup::PATH_SURFACE_TYPE 
+				=> esc_html__('Path surface type', 'abp01-trip-summary'),
+			Abp01_Lookup::RAILROAD_ELECTRIFICATION 
+				=> esc_html__('Railroad electrification status', 'abp01-trip-summary'),
+			Abp01_Lookup::RAILROAD_LINE_STATUS 
+				=> esc_html__('Railroad line status', 'abp01-trip-summary'),
+			Abp01_Lookup::RAILROAD_LINE_TYPE 
+				=> esc_html__('Railroad line type', 'abp01-trip-summary'),
+			Abp01_Lookup::RAILROAD_OPERATOR 
+				=> esc_html__('Railroad operators', 'abp01-trip-summary'),
+			Abp01_Lookup::RECOMMEND_SEASONS 
+				=> esc_html__('Recommended seasons', 'abp01-trip-summary')
 		);
 	}
 
@@ -528,6 +561,18 @@ function abp01_get_lookup_type_label($type) {
 		? $translations[$type] 
 		: null;
 
+	/**
+	 * Filters the label for a lookup type. 
+	 * The initial value is the already translated lookup type label.
+	 * 
+	 * @see Abp01_Lookup
+	 * 
+	 * @since 0.3.2
+	 * @category Lookup Types Management
+	 * 
+	 * @param string $translatedLabel The translated label for the lookup type
+	 * @param string $type The lookup type, as defined by the Abp01_Lookup class.
+	 */
 	$filteredTranslatedLabel = apply_filters('abp01_get_lookup_type_label', 
 		$translatedLabel, 
 		$type);
@@ -607,7 +652,7 @@ if (!function_exists('abp01_send_header')) {
 
 if (!function_exists('abp01_set_http_response_code')) {
 	/**
-	 * Set the HTTP response code. Essentially a rapper over the native http_response_code() function, 
+	 * Set the HTTP response code. Essentially a wrapper over the native http_response_code() function, 
 	 * 	but with the notable difference that it only supports 
 	 * 	setting the http response code.
 	 * 
@@ -643,26 +688,55 @@ function abp01_format_timestamp($timestamp, $withTime = true) {
 	return wp_date($format, $timestamp);
 }
 
-function abp01_format_db_date($dbDate, $withTime = true) {
+function abp01_format_db_date(?string $dbDate, bool $withTime = true): null|string|int|bool {
+	if (empty($dbDate)) {
+		return null;
+	}
+
 	$format = abp01_determine_date_format($withTime);
 	return mysql2date($format, $dbDate, true);
 }
 
-function abp01_format_time_in_hours($timeInHours) {
+function abp01_format_time_in_hours(int|float|string $timeInHours): string {
+	if (!is_int($timeInHours) && !is_float($timeInHours)) {
+		$timeInHours = stripos($timeInHours, '.') !== false 
+			? floatval($timeInHours) 
+			: intval($timeInHours);
+	}
+
 	return !empty($timeInHours) 
 		? $timeInHours . ' ' . _n('hour', 'hours', $timeInHours, 'abp01-trip-summary') 
 		: '-';
 }
 
-function abp01_determine_date_format($withTime) {
+function abp01_determine_date_format(bool $withTime): ?string {
 	$format = get_option('date_format');
 	if ($withTime) {
 		$format .= ' ' . get_option('time_format');
 	}
 
-	return apply_filters('abp01_determine_date_format', 
+	/**
+	 * Filters the date format used by the plug-in, optionally including time format.
+	 * Initial value is the format as returned by date_format option, 
+	 * as well as time_format option, if time format is also required.
+	 * 
+	 * If result is empty, the initial value will be used.
+	 * 
+	 * @since 0.3.2
+	 * @category Time Management
+	 * 
+	 * @param string $format The date format
+	 * @param bool $withTime Whether or not to include time format as well
+	 */
+	$dateFormat = apply_filters('abp01_determine_date_format', 
 		$format, 
 		$withTime);
+
+	if (empty($dateFormat)) {
+		$dateFormat = $format;
+	}
+
+	return (string)$dateFormat;
 }
 
 function abp01_run() {

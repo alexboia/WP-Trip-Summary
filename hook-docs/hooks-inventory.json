@@ -1,0 +1,894 @@
+{
+    "schemaVersion": 1,
+    "prefix": "abp01_",
+    "scanScope": [
+        "*.php",
+        "lib/**/*.php",
+        "views/**/*.php"
+    ],
+    "summary": {
+        "totalDispatches": 47,
+        "documented": 5,
+        "undocumented": 42,
+        "unresolvedDynamic": 0
+    },
+    "documentedHooks": [
+        {
+            "hookName": "abp01_get_logger_config_rotate_logs",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_get_logger_config_rotate_logs'",
+            "arguments": [
+                "$rotateLogs"
+            ],
+            "file": "abp01-plugin-functions.php",
+            "line": 214,
+            "enclosingClass": null,
+            "enclosingFunction": "abp01_get_logger_config",
+            "documentationStatus": "documented",
+            "docCommentLine": 204,
+            "docComment": "/**\n\t * Filters whether or not to rotate logs. \n\t * Initial value is either the value of boolean constant ABP01_LOGS_ROTATE, \n\t * if defined, or true by default\n\t * \n\t * @since 0.3.2\n\t * @category Log Management\n\t * \n\t * @param bool $rotateLogs Whether logs should rotated or not\n\t */",
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_get_logger_config_max_log_files",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_get_logger_config_max_log_files'",
+            "arguments": [
+                "$maxLogFiles"
+            ],
+            "file": "abp01-plugin-functions.php",
+            "line": 236,
+            "enclosingClass": null,
+            "enclosingFunction": "abp01_get_logger_config",
+            "documentationStatus": "documented",
+            "docCommentLine": 223,
+            "docComment": "/**\n\t * Filters the number of log files to retain (0 = no limit).\n\t * Initial and default value is either the value of the integer constant ABP01_LOGS_MAX_LOG_FILES, \n\t * if defined, or 10 by default.\n\t * \n\t * Automatically converted to integer. \n\t * If less than 0, it will reset to the default value.\n\t * \n\t * @since 0.3.2\n\t * @category Log Management\n\t * \n\t * @var int $maxLogFiles The maximum number of log files\n\t */",
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_get_lookup_type_label",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_get_lookup_type_label'",
+            "arguments": [
+                "$translatedLabel",
+                "$type"
+            ],
+            "file": "abp01-plugin-functions.php",
+            "line": 576,
+            "enclosingClass": null,
+            "enclosingFunction": "abp01_get_lookup_type_label",
+            "documentationStatus": "documented",
+            "docCommentLine": 564,
+            "docComment": "/**\n\t * Filters the label for a lookup type. \n\t * The initial value is the already translated lookup type label.\n\t * \n\t * @see Abp01_Lookup\n\t * \n\t * @since 0.3.2\n\t * @category Lookup Types Management\n\t * \n\t * @param string $translatedLabel The translated label for the lookup type\n\t * @param string $type The lookup type, as defined by the Abp01_Lookup class.\n\t */",
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_determine_date_format",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_determine_date_format'",
+            "arguments": [
+                "$format",
+                "$withTime"
+            ],
+            "file": "abp01-plugin-functions.php",
+            "line": 731,
+            "enclosingClass": null,
+            "enclosingFunction": "abp01_determine_date_format",
+            "documentationStatus": "documented",
+            "docCommentLine": 718,
+            "docComment": "/**\n\t * Filters the date format used by the plug-in, optionally including time format.\n\t * Initial value is the format as returned by date_format option, \n\t * as well as time_format option, if time format is also required.\n\t * \n\t * If result is empty, the initial value will be used.\n\t * \n\t * @since 0.3.2\n\t * @category Time Management\n\t * \n\t * @param string $format The date format\n\t * @param bool $withTime Whether or not to include time format as well\n\t */",
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_trip_summary_available_for_post_types",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_trip_summary_available_for_post_types'",
+            "arguments": [
+                "$postTypes"
+            ],
+            "file": "lib/AvailabilityHelper.php",
+            "line": 64,
+            "enclosingClass": "Abp01_AvailabilityHelper",
+            "enclosingFunction": "getTripSummaryAvailableForPostTypes",
+            "documentationStatus": "documented",
+            "docCommentLine": 54,
+            "docComment": "/**\n\t\t * Filters the post types for which trip summary is available.\n\t\t * Initial value is [ 'post', 'page' ].\n\t\t * Can be empty, but must be array. If non-array returned, initial value will be used.\n\t\t * \n\t\t * @since 0.3.2\n\t\t * @category Trip Summary Management\n\t\t * \n\t\t * @param string[] $postTypes The post types for which trip summary is available\n\t\t */",
+            "prefixEvidence": true
+        }
+    ],
+    "undocumentedHooks": [
+        {
+            "hookName": "abp01_trip_summary_log_enabled",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_trip_summary_log_enabled'",
+            "arguments": [
+                "$enabled"
+            ],
+            "file": "lib/FeatureStatus.php",
+            "line": 45,
+            "enclosingClass": "FeatureStatus",
+            "enclosingFunction": "tripSummaryLogEnabled",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_enable_clear_cache_maintenance_tool",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_enable_clear_cache_maintenance_tool'",
+            "arguments": [
+                "true"
+            ],
+            "file": "lib/Plugin.php",
+            "line": 451,
+            "enclosingClass": "Abp01_Plugin",
+            "enclosingFunction": "_shouldAddClearCacheTool",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_enable_clear_all_data_maintenance_tool",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_enable_clear_all_data_maintenance_tool'",
+            "arguments": [
+                "true"
+            ],
+            "file": "lib/Plugin.php",
+            "line": 455,
+            "enclosingClass": "Abp01_Plugin",
+            "enclosingFunction": "_shouldAddClearAllDataTool",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_enable_detect_missing_tracks_maintenance_tool",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_enable_detect_missing_tracks_maintenance_tool'",
+            "arguments": [
+                "true"
+            ],
+            "file": "lib/Plugin.php",
+            "line": 459,
+            "enclosingClass": "Abp01_Plugin",
+            "enclosingFunction": "_shouldAddDetectMissingTracksTool",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_get_additional_maintenance_tools",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_get_additional_maintenance_tools'",
+            "arguments": [
+                "array()"
+            ],
+            "file": "lib/Plugin.php",
+            "line": 463,
+            "enclosingClass": "Abp01_Plugin",
+            "enclosingFunction": "_getAdditionalMaintenanceTools",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_get_frotend_theme_class",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_get_frotend_theme_class'",
+            "arguments": [
+                "'Abp01_FrontendTheme_Decorator'"
+            ],
+            "file": "lib/View.php",
+            "line": 79,
+            "enclosingClass": "Abp01_View",
+            "enclosingFunction": "_determineThemeClass",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_additional_frontend_viewer_tabs",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_additional_frontend_viewer_tabs'",
+            "arguments": [
+                "array()",
+                "null"
+            ],
+            "file": "lib/Viewer.php",
+            "line": 65,
+            "enclosingClass": "Abp01_Viewer",
+            "enclosingFunction": "getAvailableTabs",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_formatted_route_tyle_listing_label",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_formatted_route_tyle_listing_label'",
+            "arguments": [
+                "$formatted",
+                "$postId",
+                "$routeType",
+                "$routeTypeLabel"
+            ],
+            "file": "lib/display/postListing/TripSummaryRouteTypeColumn.php",
+            "line": 58,
+            "enclosingClass": "Abp01_Display_PostListing_TripSummaryRouteTypeColumn",
+            "enclosingFunction": "_formatRouteTypeLabel",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_unformatted_route_type_label",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_unformatted_route_type_label'",
+            "arguments": [
+                "$routeTypeLabel",
+                "$postId",
+                "$routeType"
+            ],
+            "file": "lib/display/postListing/TripSummaryRouteTypeColumn.php",
+            "line": 73,
+            "enclosingClass": "Abp01_Display_PostListing_TripSummaryRouteTypeColumn",
+            "enclosingFunction": "_getRouteTypeLabel",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_install_tables_definitions",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_install_tables_definitions'",
+            "arguments": [
+                "array()",
+                "$ownTables"
+            ],
+            "file": "lib/installer/step/InstallSchema.php",
+            "line": 93,
+            "enclosingClass": "Abp01_Installer_Step_InstallSchema",
+            "enclosingFunction": "_getTablesToInstall",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_installer_do_post_install",
+            "kind": "action",
+            "dispatcher": "Abp01_Installer_Service_RunInstallHook",
+            "resolution": "static",
+            "nameExpression": "'abp01_installer_do_post_install'",
+            "arguments": [
+                "$context"
+            ],
+            "file": "lib/installer/step/RunPostInstallHooks.php",
+            "line": 43,
+            "enclosingClass": "Abp01_Installer_Step_RunPostInstallHooks",
+            "enclosingFunction": "__construct",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_installer_do_post_uninstall",
+            "kind": "action",
+            "dispatcher": "Abp01_Installer_Service_RunInstallHook",
+            "resolution": "static",
+            "nameExpression": "'abp01_installer_do_post_uninstall'",
+            "arguments": [
+                "$context"
+            ],
+            "file": "lib/installer/step/RunPostUninstallHooks.php",
+            "line": 43,
+            "enclosingClass": "Abp01_Installer_Step_RunPostUninstallHooks",
+            "enclosingFunction": "__construct",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_installer_do_pre_install",
+            "kind": "action",
+            "dispatcher": "Abp01_Installer_Service_RunInstallHook",
+            "resolution": "static",
+            "nameExpression": "'abp01_installer_do_pre_install'",
+            "arguments": [
+                "$context"
+            ],
+            "file": "lib/installer/step/RunPreInstallHooks.php",
+            "line": 43,
+            "enclosingClass": "Abp01_Installer_Step_RunPreInstallHooks",
+            "enclosingFunction": "__construct",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_installer_do_pre_uninstall",
+            "kind": "action",
+            "dispatcher": "Abp01_Installer_Service_RunInstallHook",
+            "resolution": "static",
+            "nameExpression": "'abp01_installer_do_pre_uninstall'",
+            "arguments": [
+                "$context"
+            ],
+            "file": "lib/installer/step/RunPreUninstallHooks.php",
+            "line": 43,
+            "enclosingClass": "Abp01_Installer_Step_RunPreUninstallHooks",
+            "enclosingFunction": "__construct",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_install_tables_definitions",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_install_tables_definitions'",
+            "arguments": [
+                "array()",
+                "$ownTables"
+            ],
+            "file": "lib/installer/step/UninstallSchema.php",
+            "line": 77,
+            "enclosingClass": "Abp01_Installer_Step_UninstallSchema",
+            "enclosingFunction": "_getTablesToUninstall",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_get_logger_class",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_get_logger_class'",
+            "arguments": [
+                "$defaultLoggerClass"
+            ],
+            "file": "lib/logger/Manager.php",
+            "line": 62,
+            "enclosingClass": "Abp01_Logger_Manager",
+            "enclosingFunction": "_createLogger",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_customize_monolog_logger",
+            "kind": "action",
+            "dispatcher": "do_action",
+            "resolution": "static",
+            "nameExpression": "'abp01_customize_monolog_logger'",
+            "arguments": [
+                "$logger"
+            ],
+            "file": "lib/logger/MonologLogger.php",
+            "line": 72,
+            "enclosingClass": "Abp01_Logger_MonologLogger",
+            "enclosingFunction": "_getOrCreateLogger",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_additional_frontend_viewer_tabs",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_additional_frontend_viewer_tabs'",
+            "arguments": [
+                "$additionalTabs",
+                "$postId"
+            ],
+            "file": "lib/pluginModules/FrontendViewerPluginModule.php",
+            "line": 213,
+            "enclosingClass": "Abp01_PluginModules_FrontendViewerPluginModule",
+            "enclosingFunction": "_getAdditionalTabs",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_render_maintenance_tool_result",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_render_maintenance_tool_result'",
+            "arguments": [
+                "$renderedResult",
+                "$toolId",
+                "$result"
+            ],
+            "file": "lib/pluginModules/MaintenancePluginModule.php",
+            "line": 169,
+            "enclosingClass": "Abp01_PluginModules_MaintenancePluginModule",
+            "enclosingFunction": "_renderToolResult",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_get_injectable_service_factories",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_get_injectable_service_factories'",
+            "arguments": [
+                "$defaultInjectables",
+                "$this"
+            ],
+            "file": "lib/pluginModules/PluginModuleHost.php",
+            "line": 90,
+            "enclosingClass": "Abp01_PluginModules_PluginModuleHost",
+            "enclosingFunction": "_getInjectableServiceFactories",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_add_trip_summary_to_rest_api",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_add_trip_summary_to_rest_api'",
+            "arguments": [
+                "true"
+            ],
+            "file": "lib/pluginModules/RestApiEnhancementsPluginModule.php",
+            "line": 64,
+            "enclosingClass": "Abp01_PluginModules_RestApiEnhancementsPluginModule",
+            "enclosingFunction": "_shouldAddTripSummaryToRestApi",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_add_trip_summary_to_rest_api_listing",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_add_trip_summary_to_rest_api_listing'",
+            "arguments": [
+                "false"
+            ],
+            "file": "lib/pluginModules/RestApiEnhancementsPluginModule.php",
+            "line": 114,
+            "enclosingClass": "Abp01_PluginModules_RestApiEnhancementsPluginModule",
+            "enclosingFunction": "_shouldAddTripSummaryToRestApiListing",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_should_render_frontend_route_log_statistics",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_should_render_frontend_route_log_statistics'",
+            "arguments": [
+                "true",
+                "$viewerData"
+            ],
+            "file": "lib/pluginModules/RouteLogPluginModule.php",
+            "line": 225,
+            "enclosingClass": "Abp01_PluginModules_RouteLogPluginModule",
+            "enclosingFunction": "_shouldRenderFrontendRouteLogStatistics",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_trip_summary_route_log_default_entry_rider",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_trip_summary_route_log_default_entry_rider'",
+            "arguments": [
+                "$displayName",
+                "$postId"
+            ],
+            "file": "lib/pluginModules/RouteLogPluginModule.php",
+            "line": 321,
+            "enclosingClass": "Abp01_PluginModules_RouteLogPluginModule",
+            "enclosingFunction": "_getDefaultLogEntryRider",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_trip_summary_route_log_default_entry_date",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_trip_summary_route_log_default_entry_date'",
+            "arguments": [
+                "$defaultDate",
+                "$postId"
+            ],
+            "file": "lib/pluginModules/RouteLogPluginModule.php",
+            "line": 328,
+            "enclosingClass": "Abp01_PluginModules_RouteLogPluginModule",
+            "enclosingFunction": "_getDefaultDate",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_trip_summary_route_log_default_entry_vehicle",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_trip_summary_route_log_default_entry_vehicle'",
+            "arguments": [
+                "$defaultVehicle",
+                "$postId"
+            ],
+            "file": "lib/pluginModules/RouteLogPluginModule.php",
+            "line": 337,
+            "enclosingClass": "Abp01_PluginModules_RouteLogPluginModule",
+            "enclosingFunction": "_getDefaultVehicle",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_trip_summary_log_before_save_entry",
+            "kind": "action",
+            "dispatcher": "do_action",
+            "resolution": "static",
+            "nameExpression": "'abp01_trip_summary_log_before_save_entry'",
+            "arguments": [
+                "$postId",
+                "$logEntry"
+            ],
+            "file": "lib/pluginModules/RouteLogPluginModule.php",
+            "line": 395,
+            "enclosingClass": "Abp01_PluginModules_RouteLogPluginModule",
+            "enclosingFunction": "saveRouteLogEntry",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_trip_summary_log_after_save_entry",
+            "kind": "action",
+            "dispatcher": "do_action",
+            "resolution": "static",
+            "nameExpression": "'abp01_trip_summary_log_after_save_entry'",
+            "arguments": [
+                "$postId",
+                "$logEntry",
+                "$response->success"
+            ],
+            "file": "lib/pluginModules/RouteLogPluginModule.php",
+            "line": 418,
+            "enclosingClass": "Abp01_PluginModules_RouteLogPluginModule",
+            "enclosingFunction": "saveRouteLogEntry",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_max_displayable_log_file_size",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_max_displayable_log_file_size'",
+            "arguments": [
+                "$maxSize"
+            ],
+            "file": "lib/pluginModules/SystemLogsManagementPluginModule.php",
+            "line": 237,
+            "enclosingClass": "Abp01_PluginModules_SystemLogsManagementPluginModule",
+            "enclosingFunction": "_getMaxDisplayableLogSize",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_log_file_display_tail_line_count",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_log_file_display_tail_line_count'",
+            "arguments": [
+                "$tailLineCount"
+            ],
+            "file": "lib/pluginModules/SystemLogsManagementPluginModule.php",
+            "line": 254,
+            "enclosingClass": "Abp01_PluginModules_SystemLogsManagementPluginModule",
+            "enclosingFunction": "_getLogFileTailLineCount",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_predefined_tile_layers",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "self::FILTER_HOOK_GET_PREDEFINED_TILE_LAYERS",
+            "arguments": [
+                "$predefinedTileLayers"
+            ],
+            "file": "lib/settings/PredefinedTileLayer.php",
+            "line": 204,
+            "enclosingClass": "Abp01_Settings_PredefinedTileLayer",
+            "enclosingFunction": "getPredefinedTileLayers",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_default_tile_layer_id",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "self::FILTER_HOOK_GET_DEFAULT_TILE_LAYER_ID",
+            "arguments": [
+                "self::TL_OPEN_STREET_MAP",
+                "$allTileLayerIds"
+            ],
+            "file": "lib/settings/PredefinedTileLayer.php",
+            "line": 233,
+            "enclosingClass": "Abp01_Settings_PredefinedTileLayer",
+            "enclosingFunction": "getDefaultTileLayer",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_get_track_file_downloader",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_get_track_file_downloader'",
+            "arguments": [
+                "$defaultInstance"
+            ],
+            "file": "lib/transfer/TrackFileDownloader.php",
+            "line": 91,
+            "enclosingClass": "Abp01_Transfer_TrackFileDownloader",
+            "enclosingFunction": "_getFinalFileDownloaderInstance",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_info_item_field_icon_mapping",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_info_item_field_icon_mapping'",
+            "arguments": [
+                "$defaultMapping"
+            ],
+            "file": "views/helpers/controls.frontend.php",
+            "line": 298,
+            "enclosingClass": null,
+            "enclosingFunction": "abp01_get_info_item_field_icon_mapping",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_info_item_icons",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_info_item_icons'",
+            "arguments": [
+                "$defaultIcons"
+            ],
+            "file": "views/helpers/controls.frontend.php",
+            "line": 346,
+            "enclosingClass": null,
+            "enclosingFunction": "abp01_get_info_item_icons",
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_before_trip_summary_audit_log",
+            "kind": "action",
+            "dispatcher": "do_action",
+            "resolution": "static",
+            "nameExpression": "'abp01_before_trip_summary_audit_log'",
+            "arguments": [
+                "$data->postId",
+                "$data"
+            ],
+            "file": "views/wpts-audit-log.php",
+            "line": 42,
+            "enclosingClass": null,
+            "enclosingFunction": null,
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_after_trip_summary_info_audit_log",
+            "kind": "action",
+            "dispatcher": "do_action",
+            "resolution": "static",
+            "nameExpression": "'abp01_after_trip_summary_info_audit_log'",
+            "arguments": [
+                "$data->postId",
+                "$data"
+            ],
+            "file": "views/wpts-audit-log.php",
+            "line": 76,
+            "enclosingClass": null,
+            "enclosingFunction": null,
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_after_trip_summary_track_audit_log",
+            "kind": "action",
+            "dispatcher": "do_action",
+            "resolution": "static",
+            "nameExpression": "'abp01_after_trip_summary_track_audit_log'",
+            "arguments": [
+                "$data->postId",
+                "$data"
+            ],
+            "file": "views/wpts-audit-log.php",
+            "line": 108,
+            "enclosingClass": null,
+            "enclosingFunction": null,
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_after_trip_summary_audit_log",
+            "kind": "action",
+            "dispatcher": "do_action",
+            "resolution": "static",
+            "nameExpression": "'abp01_after_trip_summary_audit_log'",
+            "arguments": [
+                "$data->postId",
+                "$data"
+            ],
+            "file": "views/wpts-audit-log.php",
+            "line": 114,
+            "enclosingClass": null,
+            "enclosingFunction": null,
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_editor_launcher_metabox_before_status",
+            "kind": "action",
+            "dispatcher": "do_action",
+            "resolution": "static",
+            "nameExpression": "'abp01_editor_launcher_metabox_before_status'",
+            "arguments": [
+                "$data"
+            ],
+            "file": "views/wpts-editor-launcher-metabox.php",
+            "line": 36,
+            "enclosingClass": null,
+            "enclosingFunction": null,
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_editor_launcher_metabox_after_status",
+            "kind": "action",
+            "dispatcher": "do_action",
+            "resolution": "static",
+            "nameExpression": "'abp01_editor_launcher_metabox_after_status'",
+            "arguments": [
+                "$data"
+            ],
+            "file": "views/wpts-editor-launcher-metabox.php",
+            "line": 61,
+            "enclosingClass": null,
+            "enclosingFunction": null,
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_additional_frontend_viewer_tab_content",
+            "kind": "action",
+            "dispatcher": "do_action",
+            "resolution": "static",
+            "nameExpression": "'abp01_additional_frontend_viewer_tab_content'",
+            "arguments": [
+                "$tabId",
+                "$tabInfo",
+                "$data"
+            ],
+            "file": "views/wpts-frontend.php",
+            "line": 140,
+            "enclosingClass": null,
+            "enclosingFunction": null,
+            "documentationStatus": "missing",
+            "docCommentLine": null,
+            "docComment": null,
+            "prefixEvidence": true
+        }
+    ],
+    "unresolvedDispatchers": []
+}

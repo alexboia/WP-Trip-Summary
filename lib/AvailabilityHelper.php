@@ -34,22 +34,39 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_AvailabilityHelper {
-	const POST_TYPE_POST = 'post';
+	public const string POST_TYPE_POST = 'post';
 
-	const POST_TYPE_PAGE = 'page';
+	public const string POST_TYPE_PAGE = 'page';
 
-	public static function isEditorAvailableForPostType($postType) {
+	public static function isEditorAvailableForPostType(string $postType): bool {
 		return in_array($postType, self::getTripSummaryAvailableForPostTypes());
 	}
 
-	public static function getTripSummaryAvailableForPostTypes() {
+	/**
+	 * @return string[]
+	 */
+	public static function getTripSummaryAvailableForPostTypes(): array {
 		$postTypes = array(
 			self::POST_TYPE_POST, 
 			self::POST_TYPE_PAGE
 		);
 
+		/**
+		 * Filters the post types for which trip summary is available.
+		 * Initial value is [ 'post', 'page' ].
+		 * Can be empty, but must be array. If non-array returned, initial value will be used.
+		 * 
+		 * @since 0.3.2
+		 * @category Trip Summary Management
+		 * 
+		 * @param string[] $postTypes The post types for which trip summary is available
+		 */
 		$filteredPostTypes = apply_filters('abp01_trip_summary_available_for_post_types', 
 			$postTypes);
+
+		if (!is_array($filteredPostTypes)) {
+			$filteredPostTypes = $postTypes;
+		}
 
 		return $filteredPostTypes;
 	}
