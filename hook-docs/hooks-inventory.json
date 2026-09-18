@@ -8,8 +8,8 @@
     ],
     "summary": {
         "totalDispatches": 46,
-        "documented": 14,
-        "undocumented": 32,
+        "documented": 16,
+        "undocumented": 30,
         "unresolvedDynamic": 0
     },
     "documentedHooks": [
@@ -272,9 +272,7 @@
             "docCommentLine": 90,
             "docComment": "/**\r\n\t\t * Filters the unformatted (i.e. no HTML) route type label displayed in the post listing.\r\n\t\t * Initial value is the translated route type label, a dash when no route type\r\n\t\t * is assigned, or null when the route type is unknown.\r\n\t\t * \r\n\t\t * If the return value is not a string, the initial value will be used.\r\n\t\t *\r\n\t\t * @since 0.3.2\r\n\t\t * @category Trip Summary Management\r\n\t\t *\r\n\t\t * @param string|null $routeTypeLabel The unformatted route type label.\r\n\t\t * @param int|null $postId The post identifier.\r\n\t\t * @param string $routeType The route type code, or an empty string when none is assigned.\r\n\t\t */",
             "prefixEvidence": true
-        }
-    ],
-    "undocumentedHooks": [
+        },
         {
             "hookName": "abp01_install_tables_definitions",
             "kind": "filter",
@@ -286,14 +284,35 @@
                 "$ownTables"
             ],
             "file": "lib/installer/step/InstallSchema.php",
-            "line": 93,
+            "line": 107,
             "enclosingClass": "Abp01_Installer_Step_InstallSchema",
             "enclosingFunction": "_getTablesToInstall",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 93,
+            "docComment": "/**\n\t\t * Filters custom database table definitions installed alongside the built-in tables.\n\t\t * Initial value is an empty array. Each entry must use the table name as its key\n\t\t * and a CREATE TABLE statement as its value.\n\t\t *\n\t\t * Non-array results are discarded. Built-in definitions are merged afterwards,\n\t\t * so a custom definition cannot override a built-in table with the same name.\n\t\t *\n\t\t * @since 0.3.0\n\t\t * @category Installer\n\t\t *\n\t\t * @param array<string, string> $customTables Custom table definitions keyed by table name.\n\t\t * @param array<string, string> $ownTables Built-in table definitions keyed by table name.\n\t\t */",
             "prefixEvidence": true
         },
+        {
+            "hookName": "abp01_uninstall_table_names",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_uninstall_table_names'",
+            "arguments": [
+                "array()",
+                "$ownTables"
+            ],
+            "file": "lib/installer/step/UninstallSchema.php",
+            "line": 91,
+            "enclosingClass": "Abp01_Installer_Step_UninstallSchema",
+            "enclosingFunction": "_getTablesToUninstall",
+            "documentationStatus": "documented",
+            "docCommentLine": 77,
+            "docComment": "/**\r\n\t\t * Filters custom database table names dropped during uninstallation.\r\n\t\t * Initial value is an empty array. Return an associative array whose values are\r\n\t\t * table names.\r\n\t\t *\r\n\t\t * Custom tables are dropped in the order provided.\r\n\t\t * Empty or non-array results are ignored, and built-in tables are always dropped.\r\n\t\t *\r\n\t\t * @since 0.3.3\r\n\t\t * @category Installer\r\n\t\t *\r\n\t\t * @param array<string, mixed> $customTables Custom table names.\r\n\t\t * @param string[] $ownTables Built-in table names in drop order.\r\n\t\t */",
+            "prefixEvidence": true
+        }
+    ],
+    "undocumentedHooks": [
         {
             "hookName": "abp01_installer_do_post_install",
             "kind": "action",
@@ -361,25 +380,6 @@
             "line": 43,
             "enclosingClass": "Abp01_Installer_Step_RunPreUninstallHooks",
             "enclosingFunction": "__construct",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
-            "prefixEvidence": true
-        },
-        {
-            "hookName": "abp01_install_tables_definitions",
-            "kind": "filter",
-            "dispatcher": "apply_filters",
-            "resolution": "static",
-            "nameExpression": "'abp01_install_tables_definitions'",
-            "arguments": [
-                "array()",
-                "$ownTables"
-            ],
-            "file": "lib/installer/step/UninstallSchema.php",
-            "line": 77,
-            "enclosingClass": "Abp01_Installer_Step_UninstallSchema",
-            "enclosingFunction": "_getTablesToUninstall",
             "documentationStatus": "missing",
             "docCommentLine": null,
             "docComment": null,

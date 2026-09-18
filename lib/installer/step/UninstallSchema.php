@@ -31,7 +31,7 @@
 
 use WpTripSummary\Env;
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
@@ -74,16 +74,32 @@ class Abp01_Installer_Step_UninstallSchema implements Abp01_Installer_Step {
 			$this->_getRouteLogTableName()
 		);
 
-		$customTables = apply_filters('abp01_install_tables_definitions', 
-			array(), 
+		/**
+		 * Filters custom database table names dropped during uninstallation.
+		 * Initial value is an empty array. Return an associative array whose values are
+		 * table names.
+		 *
+		 * Custom tables are dropped in the order provided.
+		 * Empty or non-array results are ignored, and built-in tables 
+		 * are always appended to the final list, 
+		 * so they are always dropped from the databasae.
+		 *
+		 * @since 0.3.3
+		 * @category Installer
+		 *
+		 * @param array<string, mixed> $customTables Custom table names.
+		 * @param string[] $ownTables Built-in table names in drop order.
+		 */
+		$customTables = apply_filters('abp01_uninstall_table_names',
+			array(),
 			$ownTables);
 
-		if (!empty($customTables) && is_array($customTables)) {
-			$customTables = array_keys($customTables);
-			$customTables = array_reverse($customTables);
-		} else {
+		if (!is_array($customTables)) {
 			$customTables = array();
 		}
+
+		$customTables = array_filter($customTables, fn(mixed $tableName): bool 
+			=> !empty($tableName) && is_string($tableName));
 
 		$finalTables = array_merge($customTables, $ownTables);		
 		return $finalTables;

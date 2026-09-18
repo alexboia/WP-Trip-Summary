@@ -90,8 +90,22 @@ class Abp01_Installer_Step_InstallSchema implements Abp01_Installer_Step {
 				=> $this->_getRouteLogTableDefinition()
 		);
 
-		$customTables = apply_filters('abp01_install_tables_definitions', 
-			array(), 
+		/**
+		 * Filters custom database table definitions installed alongside the built-in tables.
+		 * Initial value is an empty array. Each entry must use the table name as its key
+		 * and a CREATE TABLE statement as its value.
+		 *
+		 * Non-array results are discarded. Built-in definitions are merged afterwards,
+		 * so a custom definition cannot override a built-in table with the same name.
+		 *
+		 * @since 0.3.0
+		 * @category Installer
+		 *
+		 * @param array<string, string> $customTables Custom table definitions keyed by table name.
+		 * @param array<string, string> $ownTables Built-in table definitions keyed by table name.
+		 */
+		$customTables = apply_filters('abp01_install_tables_definitions',
+			array(),
 			$ownTables);
 
 		if (!is_array($customTables)) {
