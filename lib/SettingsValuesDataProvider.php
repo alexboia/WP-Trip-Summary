@@ -46,7 +46,7 @@ class Abp01_SettingsValuesDataProvider {
 	}
 
 	public function getAvailableViewerTabs() {
-		return Abp01_Viewer::getAvailableTabs();
+		return Abp01_Viewer::getAvailableTabsInfo();
 	}
 
 	public function getAvailableItemLayouts() {

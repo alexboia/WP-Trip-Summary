@@ -209,10 +209,7 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 	}
 
 	private function _getAdditionalTabs(int $postId): ?array {
-		$additionalTabs = array();
-		return apply_filters('abp01_additional_frontend_viewer_tabs', 
-			$additionalTabs, 
-			$postId);
+		return Abp01_Viewer::getAdditionalTabs($postId);
 	}
 
 	public function renderViewerShortCode($attributes): ?string {

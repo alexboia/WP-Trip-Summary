@@ -42,6 +42,28 @@ Every hook doc-comment has exactly one `@category` tag. The category identifies 
 - Categorize a class-wrapped hook by the logical hook contract, not by the wrapper class.
 - If no existing category fits, record a proposed category and its evidence in the draft, then obtain developer confirmation before inserting it.
 
+## PSR-4 instability
+
+Use the project-owned instability tag when a filter exposes a migration-sensitive plug-in class contract, including a concrete class instance or a scalar value that semantically contains a class identifier. Place it after `@category` and before `@param` tags, using the exact text below:
+
+```php
+/**
+ * Filters the class used as the frontend theme decorator.
+ *
+ * @since 0.3.2
+ * @category Front-end Viewer
+ * @unstable Susceptible to breaking changes due to PSR-4 migration
+ *
+ * @param string $frontendThemeClass The fully qualified theme decorator class name.
+ */
+$frontendThemeClass = apply_filters(
+    'abp01_get_frotend_theme_class',
+    'Abp01_FrontendTheme_Decorator'
+);
+```
+
+Do not add the tag solely because the enclosing implementation class is being migrated. The filtered value or another documented argument must expose a class-dependent contract that can break. Document the current runtime contract, and remove the tag only after the public contract is stable and the migration-sensitive compatibility decision has been resolved.
+
 ## Class-wrapped dispatcher
 
 A registered class wrapper is documented exactly like its direct WordPress equivalent. Place the comment immediately before the `new` expression that performs the logical dispatch:
@@ -74,6 +96,8 @@ location: relative/path.php:123
 summary: Filters ...
 category: RouteLog
 categoryStatus: existing | proposed
+unstableTagRequired: true | false
+unstableReason: Plug-in class identifier changes during PSR-4 migration, or null when stable.
 parameters:
   - position: 1
     expression: $enabled

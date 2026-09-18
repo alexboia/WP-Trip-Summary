@@ -94,7 +94,7 @@ trait SettingsDataHelpers {
         $settings->trackLineColour = '#FFCC00';
         $settings->trackLineWeight = 10;
         $settings->mapHeight = 1111;
-        $settings->initialViewerTab = $faker->randomElement(array_keys(Abp01_Viewer::getAvailableTabs()));
+        $settings->initialViewerTab = $faker->randomElement(array_keys(Abp01_Viewer::getAvailableTabsInfo()));
         $settings->showMinMaxAltitude = true;
 		$settings->showAltitudeProfile = false;
         $settings->viewerItemLayout = $faker->randomElement(array_keys(Abp01_Viewer::getAvailableItemLayouts()));

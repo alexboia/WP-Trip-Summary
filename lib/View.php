@@ -76,10 +76,26 @@ class Abp01_View {
 	}
 
 	private function _determineThemeClass(): string {
-		$frontendThemeClass = (string)apply_filters('abp01_get_frotend_theme_class', 'Abp01_FrontendTheme_Decorator');
-		if (!$this->_isThemeClassValid($frontendThemeClass)) {
+		/**
+		 * Filters the class used as theme decorator. 
+		 * Must implement Abp01_FrontendTheme. 
+		 * If the result is not a string or the string does not represent a valid class, 
+		 * the default theme decorator is used: Abp01_FrontendTheme_Decorator.
+		 * 
+		 * @since 0.3.2
+		 * @category Front-end Viewer
+		 * @unstable Susceptible to breaking changes due to PSR-4 migration
+		 * 
+		 * @param string $frontendThemeClass The theme class decorator FQN
+		 */
+		$frontendThemeClass = apply_filters('abp01_get_frotend_theme_class', 
+			'Abp01_FrontendTheme_Decorator');
+
+		if (!is_string($frontendThemeClass) 
+			|| !$this->_isThemeClassValid($frontendThemeClass)) {
 			$frontendThemeClass = 'Abp01_FrontendTheme_Decorator';
 		}
+
 		return $frontendThemeClass;
 	}
 

@@ -58,7 +58,7 @@ class SettingsTests extends WP_UnitTestCase {
 	}
 
 	public function test_trySetInvalidInitialViewerTab() {
-		foreach (Abp01_Viewer::getAvailableTabs() as $key => $label) {
+		foreach (Abp01_Viewer::getAvailableTabsInfo() as $key => $label) {
 			$this->_testWhensettingInvalidInitialViewerTabTheOldOneIsPreserved($key);
 		}
 	}

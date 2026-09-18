@@ -416,7 +416,7 @@ class Abp01_Plugin {
 		return $this->_viewerDataSourceCache;
 	}
 
-	public function getMaintenanceToolRegistry() {
+	public function getMaintenanceToolRegistry(): Abp01_MaintenanceTool_Registry {
 		if ($this->_maintenanceToolRegistry === null) {
 			$registry = new Abp01_MaintenanceTool_Registry();
 			
@@ -436,9 +436,7 @@ class Abp01_Plugin {
 
 			$additionalTools = $this->_getAdditionalMaintenanceTools();
 			foreach ($additionalTools as $t) {
-				if ($t instanceof Abp01_MaintenanceTool) {
-					$registry->registerTool($t);
-				}
+				$registry->registerTool($t);
 			}
 
 			$this->_maintenanceToolRegistry = 
@@ -447,43 +445,100 @@ class Abp01_Plugin {
 		return $this->_maintenanceToolRegistry;
 	}
 
-	private function _shouldAddClearCacheTool() {
-		return apply_filters('abp01_enable_clear_cache_maintenance_tool', true);
+	private function _shouldAddClearCacheTool(): bool {
+		/**
+		 * Filters whether the built-in clear track data cache maintenance tool is available.
+		 * Initial value is true. Only the boolean value true keeps the tool available.
+		 *
+		 * @since 0.2.8
+		 * @category Maintenance Tools
+		 *
+		 * @param bool $enabled Whether the clear track data cache maintenance tool is available.
+		 */
+		return apply_filters('abp01_enable_clear_cache_maintenance_tool', true) 
+			=== true;
 	}
 
-	private function _shouldAddClearAllDataTool() {
-		return apply_filters('abp01_enable_clear_all_data_maintenance_tool', true);
+	private function _shouldAddClearAllDataTool(): bool {
+		/**
+		 * Filters whether the built-in clear all trip summary data maintenance tool is available.
+		 * Initial value is true. Only the boolean value true keeps the tool available.
+		 *
+		 * @since 0.2.8
+		 * @category Maintenance Tools
+		 *
+		 * @param bool $enabled Whether the clear all trip summary data maintenance tool is available.
+		 */
+		return apply_filters('abp01_enable_clear_all_data_maintenance_tool', true) 
+			=== true;
 	}
 
-	private function _shouldAddDetectMissingTracksTool() {
-		return apply_filters('abp01_enable_detect_missing_tracks_maintenance_tool', true);
+	private function _shouldAddDetectMissingTracksTool(): bool {
+		/**
+		 * Filters whether the built-in detect missing track files maintenance tool is available.
+		 * Initial value is true. Only the boolean value true keeps the tool available.
+		 *
+		 * @since 0.2.8
+		 * @category Maintenance Tools
+		 *
+		 * @param bool $enabled Whether the detect missing track files maintenance tool is available.
+		 */
+		return apply_filters('abp01_enable_detect_missing_tracks_maintenance_tool', true) 
+			=== true;
 	}
 
-	private function _getAdditionalMaintenanceTools() {
-		return apply_filters('abp01_get_additional_maintenance_tools', array());
+	/**
+	 * @return Abp01_MaintenanceTool[]
+	 */
+	private function _getAdditionalMaintenanceTools(): array {
+		$tools = array();
+
+		/**
+		 * Filters the list of additional maintenance tools, on top of the built-in ones.
+		 * Initial value is an empty array.
+		 * If result is not an array, it will be reset to an empty array.
+		 * Entries which are not instance of Abp01_MaintenanceTool will be removed, nulls included.
+		 * 
+		 * @see Abp01_MaintenanceTool
+		 * @since 0.3.2
+		 * @category Maintenance Tools
+		 * 
+		 * @param Abp01_MaintenanceTool[] $tools The current list of additional tools.
+		 */
+		$tools = apply_filters('abp01_get_additional_maintenance_tools', 
+			$tools);
+
+		if (!is_array($tools)) {
+			$tools = array();
+		}
+
+		$tools = array_filter($tools, fn($tool): bool 
+			=> $tool instanceof Abp01_MaintenanceTool);
+
+		return array_values($tools);
 	}
 
-	public function getLookupForCurrentLang() {
+	public function getLookupForCurrentLang(): Abp01_Lookup {
 		return new Abp01_Lookup();
 	}
 
-	public function getLogManager() {
+	public function getLogManager(): Abp01_Logger_Manager {
 		return abp01_get_log_manager();
 	}
 
-	public function getRouteManager() {
+	public function getRouteManager(): Abp01_Route_Manager {
 		return abp01_get_route_manager();
 	}
 
-	public function getRouteLogManager() {
+	public function getRouteLogManager(): Abp01_Route_Log_Manager {
 		return abp01_get_route_log_manager();
 	}
 
-	public function getView() {
+	public function getView(): Abp01_View {
 		return abp01_get_view();
 	}
 
-	public function getSettings() {
+	public function getSettings(): Abp01_Settings {
 		return abp01_get_settings();
 	}
 
@@ -491,7 +546,7 @@ class Abp01_Plugin {
 		return abp01_get_env();
 	}
 
-	public function getAuth() {
+	public function getAuth(): Abp01_Auth {
 		return abp01_get_auth();
 	}
 }

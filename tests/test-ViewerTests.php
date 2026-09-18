@@ -33,7 +33,7 @@ class ViewerTests extends WP_UnitTestCase {
     use GenericTestHelpers;
 
     public function test_canGetAvailableTabs() {
-        $availableTabs = Abp01_Viewer::getAvailableTabs();
+        $availableTabs = Abp01_Viewer::getAvailableTabsInfo();
 
         $this->assertNotEmpty($availableTabs);
         $this->assertEquals(3, count($availableTabs));
@@ -42,14 +42,14 @@ class ViewerTests extends WP_UnitTestCase {
     }
 
     public function test_canCheckIfTabIsSupport_validTabName() {
-        foreach (Abp01_Viewer::getAvailableTabs() as $tab => $label) {
+        foreach (Abp01_Viewer::getAvailableTabsInfo() as $tab => $label) {
             $this->assertTrue(Abp01_Viewer::isTabSupported($tab));
         }
     }
 
     public function test_tryCheckIfTabIsSupport_invalidTabName() {
         $faker = $this->_getFaker();
-        $validTabs = array_keys(Abp01_Viewer::getAvailableTabs());
+        $validTabs = array_keys(Abp01_Viewer::getAvailableTabsInfo());
 
         for ($i = 0; $i < 10; $i ++) {
             $invalidTab = $faker->randomAscii;

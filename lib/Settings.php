@@ -566,7 +566,7 @@ class Abp01_Settings {
 	}
 
 	public static function getAllowedViewerTabs() {
-		return Abp01_Viewer::getAvailableTabs();
+		return Abp01_Viewer::getAvailableTabsInfo();
 	}
 
 	public static function getAllowedItemLayouts() {

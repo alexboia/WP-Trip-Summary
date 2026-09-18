@@ -49,31 +49,68 @@ class Abp01_Display_PostListing_TripSummaryRouteTypeColumn extends Abp01_Display
 			$label);
 	}
 
-	private function _formatRouteTypeLabel($postId, $routeType, $routeTypeLabel) {
-		$cssClass = sprintf('abp01-route-type-cell abp01-route-type-cell-%s', !empty($routeType) 
-			? esc_attr($routeType)
-			: 'none');
+	private function _formatRouteTypeLabel(?int $postId, ?string $routeType, ?string $routeTypeLabel) {
+		$cssClass = sprintf('abp01-route-type-cell abp01-route-type-cell-%s', 
+			!empty($routeType) 
+				? esc_attr($routeType)
+				: 'none');
+
 		$formatted = '<span class="' . $cssClass . '">' . $routeTypeLabel . '</span>';
 
-		return apply_filters('abp01_formatted_route_tyle_listing_label', 
+		/**
+		 * Filters the formatted route type label displayed in the post listing.
+		 * Initial value is a span containing the unformatted label, with the base
+		 * CSS class abp01-route-type-cell and a route-specific or none modifier class.
+		 *
+		 * @since 0.3.2
+		 * @category Trip Summary Management
+		 *
+		 * @param string $formatted The formatted route type label HTML.
+		 * @param int|null $postId The post identifier.
+		 * @param string|null $routeType The route type code, or null/empty when none is assigned.
+		 * @param string|null $routeTypeLabel The unformatted route type label after filtering.
+		 */
+		$filteredFormattedLabel = apply_filters('abp01_formatted_route_type_listing_label', 
 			$formatted, 
 			$postId, 
 			$routeType, 
 			$routeTypeLabel);
+
+		return $filteredFormattedLabel;
 	}
 
-	private function _getRouteTypeLabel($postId, $routeType) {
+	private function _getRouteTypeLabel(?int $postId, ?string $routeType): ?string {
 		$routeTypeLabel = '';
 		if (!empty($routeType)) {
 			$routeTypeLabel = Abp01_Route_Type::getTypeLabel($routeType);
 		} else {
 			$routeTypeLabel = '-';
-		}		
+		}
 
-		return apply_filters('abp01_unformatted_route_type_label', 
-			$routeTypeLabel, 
+		/**
+		 * Filters the unformatted (i.e. no HTML) route type label displayed in the post listing.
+		 * Initial value is the translated route type label, a dash when no route type
+		 * is assigned, or null when the route type is unknown.
+		 * 
+		 * If the return value is not a string, the initial value will be used.
+		 *
+		 * @since 0.3.2
+		 * @category Trip Summary Management
+		 *
+		 * @param string|null $routeTypeLabel The unformatted route type label.
+		 * @param int|null $postId The post identifier.
+		 * @param string $routeType The route type code, or an empty string when none is assigned.
+		 */
+		$filteredRouteTypeLabel = apply_filters('abp01_unformatted_route_type_label',
+			$routeTypeLabel,
 			$postId,
 			$routeType);
+
+		if (!is_string($filteredRouteTypeLabel)) {
+			$filteredRouteTypeLabel = $routeTypeLabel;
+		}
+
+		return $filteredRouteTypeLabel;
 	}
 
 	public function renderLabel() {

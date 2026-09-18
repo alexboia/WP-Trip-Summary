@@ -7,9 +7,9 @@
         "views/**/*.php"
     ],
     "summary": {
-        "totalDispatches": 47,
-        "documented": 5,
-        "undocumented": 42,
+        "totalDispatches": 46,
+        "documented": 14,
+        "undocumented": 32,
         "unresolvedDynamic": 0
     },
     "documentedHooks": [
@@ -104,9 +104,7 @@
             "docCommentLine": 54,
             "docComment": "/**\n\t\t * Filters the post types for which trip summary is available.\n\t\t * Initial value is [ 'post', 'page' ].\n\t\t * Can be empty, but must be array. If non-array returned, initial value will be used.\n\t\t * \n\t\t * @since 0.3.2\n\t\t * @category Trip Summary Management\n\t\t * \n\t\t * @param string[] $postTypes The post types for which trip summary is available\n\t\t */",
             "prefixEvidence": true
-        }
-    ],
-    "undocumentedHooks": [
+        },
         {
             "hookName": "abp01_trip_summary_log_enabled",
             "kind": "filter",
@@ -117,12 +115,12 @@
                 "$enabled"
             ],
             "file": "lib/FeatureStatus.php",
-            "line": 45,
+            "line": 58,
             "enclosingClass": "FeatureStatus",
             "enclosingFunction": "tripSummaryLogEnabled",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 46,
+            "docComment": "/**\r\n\t\t\t * Filters whether the trip summary log feature should be made available.\r\n\t\t\t * Initial value is either the value of boolean constant ABP01_TRIP_SUMMARY_LOG_ENABLED, \r\n\t\t\t * if defined, or true if not defined.\r\n\t\t\t * \r\n\t\t\t * Result is converted to boolean.\r\n\t\t\t * \r\n\t\t\t * @since 0.3.2\r\n\t\t\t * @category Trip Summary Management\r\n\t\t\t * \r\n\t\t\t * @param bool $enabled Whether or not trip summary log is available\r\n\t\t\t */",
             "prefixEvidence": true
         },
         {
@@ -135,12 +133,12 @@
                 "true"
             ],
             "file": "lib/Plugin.php",
-            "line": 451,
+            "line": 458,
             "enclosingClass": "Abp01_Plugin",
             "enclosingFunction": "_shouldAddClearCacheTool",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 449,
+            "docComment": "/**\n\t\t * Filters whether the built-in clear track data cache maintenance tool is available.\n\t\t * Initial value is true. Only the boolean value true keeps the tool available.\n\t\t *\n\t\t * @since 0.2.8\n\t\t * @category Maintenance Tools\n\t\t *\n\t\t * @param bool $enabled Whether the clear track data cache maintenance tool is available.\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -153,12 +151,12 @@
                 "true"
             ],
             "file": "lib/Plugin.php",
-            "line": 455,
+            "line": 472,
             "enclosingClass": "Abp01_Plugin",
             "enclosingFunction": "_shouldAddClearAllDataTool",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 463,
+            "docComment": "/**\n\t\t * Filters whether the built-in clear all trip summary data maintenance tool is available.\n\t\t * Initial value is true. Only the boolean value true keeps the tool available.\n\t\t *\n\t\t * @since 0.2.8\n\t\t * @category Maintenance Tools\n\t\t *\n\t\t * @param bool $enabled Whether the clear all trip summary data maintenance tool is available.\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -171,12 +169,12 @@
                 "true"
             ],
             "file": "lib/Plugin.php",
-            "line": 459,
+            "line": 486,
             "enclosingClass": "Abp01_Plugin",
             "enclosingFunction": "_shouldAddDetectMissingTracksTool",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 477,
+            "docComment": "/**\n\t\t * Filters whether the built-in detect missing track files maintenance tool is available.\n\t\t * Initial value is true. Only the boolean value true keeps the tool available.\n\t\t *\n\t\t * @since 0.2.8\n\t\t * @category Maintenance Tools\n\t\t *\n\t\t * @param bool $enabled Whether the detect missing track files maintenance tool is available.\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -186,15 +184,15 @@
             "resolution": "static",
             "nameExpression": "'abp01_get_additional_maintenance_tools'",
             "arguments": [
-                "array()"
+                "$tools"
             ],
             "file": "lib/Plugin.php",
-            "line": 463,
+            "line": 508,
             "enclosingClass": "Abp01_Plugin",
             "enclosingFunction": "_getAdditionalMaintenanceTools",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 496,
+            "docComment": "/**\n\t\t * Filters the list of additional maintenance tools, on top of the built-in ones.\n\t\t * Initial value is an empty array.\n\t\t * If result is not an array, it will be reset to an empty array.\n\t\t * Entries which are not instance of Abp01_MaintenanceTool will be removed, nulls included.\n\t\t * \n\t\t * @see Abp01_MaintenanceTool\n\t\t * @since 0.3.2\n\t\t * @category Maintenance Tools\n\t\t * \n\t\t * @param Abp01_MaintenanceTool[] $tools The current list of additional tools.\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -207,12 +205,12 @@
                 "'Abp01_FrontendTheme_Decorator'"
             ],
             "file": "lib/View.php",
-            "line": 79,
+            "line": 91,
             "enclosingClass": "Abp01_View",
             "enclosingFunction": "_determineThemeClass",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 79,
+            "docComment": "/**\n\t\t * Filters the class used as theme decorator. \n\t\t * Must implement Abp01_FrontendTheme. \n\t\t * If the result is not a string or the string does not represent a valid class, \n\t\t * the default theme decorator is used: Abp01_FrontendTheme_Decorator.\n\t\t * \n\t\t * @since 0.3.2\n\t\t * @category Front-end Viewer\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\n\t\t * \n\t\t * @param string $frontendThemeClass The theme class decorator FQN\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -223,23 +221,23 @@
             "nameExpression": "'abp01_additional_frontend_viewer_tabs'",
             "arguments": [
                 "array()",
-                "null"
+                "$postId"
             ],
             "file": "lib/Viewer.php",
-            "line": 65,
+            "line": 102,
             "enclosingClass": "Abp01_Viewer",
-            "enclosingFunction": "getAvailableTabs",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "enclosingFunction": "getAdditionalTabs",
+            "documentationStatus": "documented",
+            "docCommentLine": 84,
+            "docComment": "/**\n\t\t * Filters the additional front-end viewer tabs.\n\t\t * It cannot be used to modify the existing ones.\n\t\t * \n\t\t * Must be an array with tab codes as keys and, for each key, \n\t\t * an array with a mandatory \"label\" key as values. \n\t\t * Other keys are valid, but left alone.\n\t\t * \n\t\t * Post ID can be an positive integer or a null value.\n\t\t * If a null value is passed, all available tabs should be provided, \n\t\t * since this is called from the settings page where the default selected tab is configured.\n\t\t * \n\t\t * @since 0.3.2\n\t\t * @category Front-end Viewer\n\t\t * \n\t\t * @param array<string, array> $additionaTabs The list of additional tabs\n\t\t * @param ?int $postId The post ID or null\n\t\t */",
             "prefixEvidence": true
         },
         {
-            "hookName": "abp01_formatted_route_tyle_listing_label",
+            "hookName": "abp01_formatted_route_type_listing_label",
             "kind": "filter",
             "dispatcher": "apply_filters",
             "resolution": "static",
-            "nameExpression": "'abp01_formatted_route_tyle_listing_label'",
+            "nameExpression": "'abp01_formatted_route_type_listing_label'",
             "arguments": [
                 "$formatted",
                 "$postId",
@@ -247,12 +245,12 @@
                 "$routeTypeLabel"
             ],
             "file": "lib/display/postListing/TripSummaryRouteTypeColumn.php",
-            "line": 58,
+            "line": 73,
             "enclosingClass": "Abp01_Display_PostListing_TripSummaryRouteTypeColumn",
             "enclosingFunction": "_formatRouteTypeLabel",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 60,
+            "docComment": "/**\r\n\t\t * Filters the formatted route type label displayed in the post listing.\r\n\t\t * Initial value is a span containing the unformatted label, with the base\r\n\t\t * CSS class abp01-route-type-cell and a route-specific or none modifier class.\r\n\t\t *\r\n\t\t * @since 0.3.2\r\n\t\t * @category Trip Summary Management\r\n\t\t *\r\n\t\t * @param string $formatted The formatted route type label HTML.\r\n\t\t * @param int|null $postId The post identifier.\r\n\t\t * @param string|null $routeType The route type code, or null/empty when none is assigned.\r\n\t\t * @param string|null $routeTypeLabel The unformatted route type label after filtering.\r\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -267,14 +265,16 @@
                 "$routeType"
             ],
             "file": "lib/display/postListing/TripSummaryRouteTypeColumn.php",
-            "line": 73,
+            "line": 104,
             "enclosingClass": "Abp01_Display_PostListing_TripSummaryRouteTypeColumn",
             "enclosingFunction": "_getRouteTypeLabel",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 90,
+            "docComment": "/**\r\n\t\t * Filters the unformatted (i.e. no HTML) route type label displayed in the post listing.\r\n\t\t * Initial value is the translated route type label, a dash when no route type\r\n\t\t * is assigned, or null when the route type is unknown.\r\n\t\t * \r\n\t\t * If the return value is not a string, the initial value will be used.\r\n\t\t *\r\n\t\t * @since 0.3.2\r\n\t\t * @category Trip Summary Management\r\n\t\t *\r\n\t\t * @param string|null $routeTypeLabel The unformatted route type label.\r\n\t\t * @param int|null $postId The post identifier.\r\n\t\t * @param string $routeType The route type code, or an empty string when none is assigned.\r\n\t\t */",
             "prefixEvidence": true
-        },
+        }
+    ],
+    "undocumentedHooks": [
         {
             "hookName": "abp01_install_tables_definitions",
             "kind": "filter",
@@ -416,25 +416,6 @@
             "line": 72,
             "enclosingClass": "Abp01_Logger_MonologLogger",
             "enclosingFunction": "_getOrCreateLogger",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
-            "prefixEvidence": true
-        },
-        {
-            "hookName": "abp01_additional_frontend_viewer_tabs",
-            "kind": "filter",
-            "dispatcher": "apply_filters",
-            "resolution": "static",
-            "nameExpression": "'abp01_additional_frontend_viewer_tabs'",
-            "arguments": [
-                "$additionalTabs",
-                "$postId"
-            ],
-            "file": "lib/pluginModules/FrontendViewerPluginModule.php",
-            "line": 213,
-            "enclosingClass": "Abp01_PluginModules_FrontendViewerPluginModule",
-            "enclosingFunction": "_getAdditionalTabs",
             "documentationStatus": "missing",
             "docCommentLine": null,
             "docComment": null,
