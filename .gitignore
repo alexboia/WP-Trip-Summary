@@ -19,3 +19,4 @@ wp-trip-summary.code-workspace
 node_modules
 vendor
 vendor/composer
+.compatibility

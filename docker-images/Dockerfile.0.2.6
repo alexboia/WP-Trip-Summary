@@ -1,0 +1,51 @@
+# syntax=docker/dockerfile:1.7
+
+ARG WORDPRESS_RUNTIME_IMAGE=wordpress:7.1.1-php8.4-apache
+ARG WORDPRESS_VERSION=7.1.1
+ARG WPTS_RELEASE=0.2.6
+ARG WPTS_PLUGIN_VERSION=0.2.6
+ARG WPTS_PACKAGE_SOURCE=wordpress-directory
+ARG WPTS_PACKAGE_URL=https://downloads.wordpress.org/plugin/wp-trip-summary.0.2.6.zip
+ARG THEME_REF=a00d2b581dd25148c1ed48230ec3eb3768fdc122
+ARG THEME_VERSION=13.7
+ARG WP_CLI_VERSION=2.12.0
+
+FROM alpine:3.20 AS assets
+RUN apk add --no-cache ca-certificates curl unzip
+COPY --chmod=0755 install-release.sh /usr/local/bin/install-release
+ARG WPTS_PACKAGE_URL
+ARG THEME_REF
+ARG WP_CLI_VERSION
+ARG WORDPRESS_VERSION
+RUN install-release "$WPTS_PACKAGE_URL" "$THEME_REF" "$WP_CLI_VERSION" "$WORDPRESS_VERSION"
+
+FROM ${WORDPRESS_RUNTIME_IMAGE}
+ARG WORDPRESS_RUNTIME_IMAGE
+ARG WORDPRESS_VERSION
+ARG WPTS_RELEASE
+ARG WPTS_PLUGIN_VERSION
+ARG WPTS_PACKAGE_SOURCE
+ARG WPTS_PACKAGE_URL
+ARG THEME_REF
+ARG THEME_VERSION
+LABEL org.opencontainers.image.title="WP Trip Summary ${WPTS_RELEASE} test site" \
+	org.opencontainers.image.version="${WPTS_RELEASE}" \
+	org.opencontainers.image.source="https://github.com/alexboia/WP-Trip-Summary" \
+	com.alexboia.wpts.plugin-version="${WPTS_PLUGIN_VERSION}" \
+	com.alexboia.wpts.package-source="${WPTS_PACKAGE_SOURCE}" \
+	com.alexboia.wpts.package-url="${WPTS_PACKAGE_URL}" \
+	com.alexboia.wpts.wordpress-version="${WORDPRESS_VERSION}" \
+	com.alexboia.wpts.wordpress-runtime-image="${WORDPRESS_RUNTIME_IMAGE}" \
+	com.alexboia.wpts.theme-ref="${THEME_REF}" \
+	com.alexboia.wpts.theme-version="${THEME_VERSION}"
+ENV WPTS_RELEASE="${WPTS_RELEASE}" \
+	WPTS_EXPECTED_PLUGIN_VERSION="${WPTS_PLUGIN_VERSION}" \
+	WPTS_EXPECTED_WORDPRESS_VERSION="${WORDPRESS_VERSION}"
+RUN find /usr/src/wordpress -mindepth 1 -maxdepth 1 ! -name 'wp-config-docker.php' -exec rm -rf '{}' +
+COPY --from=assets --chown=www-data:www-data /opt/wpts-assets/wordpress /usr/src/wordpress
+COPY --from=assets --chown=www-data:www-data /opt/wpts-assets/plugins/wp-trip-summary /usr/src/wordpress/wp-content/plugins/wp-trip-summary
+COPY --from=assets --chown=www-data:www-data /opt/wpts-assets/themes/wp-alexboia-net /usr/src/wordpress/wp-content/themes/wp-alexboia-net
+COPY --from=assets /opt/wpts-assets/bin/wp /usr/local/bin/wp
+COPY --chmod=0755 docker-entrypoint-wpts.sh /usr/local/bin/docker-entrypoint-wpts
+ENTRYPOINT ["docker-entrypoint-wpts"]
+CMD ["apache2-foreground"]

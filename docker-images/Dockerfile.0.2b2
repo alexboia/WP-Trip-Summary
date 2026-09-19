@@ -1,0 +1,84 @@
+# syntax=docker/dockerfile:1.7
+
+# This first Dockerfile is intentionally more heavily commented. The other
+# release Dockerfiles use the same two-stage layout with different versions.
+
+# 0.2b cannot be parsed by PHP 8 because a bundled dependency uses the old
+# curly-brace string-offset syntax. The newest official WordPress image still
+# providing PHP 7.4 is therefore used only as the Apache/PHP runtime. The
+# current WordPress core selected below is copied over it during the build.
+ARG WORDPRESS_RUNTIME_IMAGE=wordpress:6.1.1-php7.4-apache
+ARG WORDPRESS_VERSION=7.1.1
+
+# Keep both release identifiers: the GitHub release is called 0.2b2, while the
+# version declared inside its plug-in header is 0.2b.
+ARG WPTS_RELEASE=0.2b2
+ARG WPTS_PLUGIN_VERSION=0.2b
+ARG WPTS_PACKAGE_SOURCE=github-release
+ARG WPTS_PACKAGE_URL=https://github.com/alexboia/WP-Trip-Summary/releases/download/0.2b2/wp-trip-summary.0.2b.zip
+
+# Theme 13.6 is the last revision before the theme introduced PHP 8-only union
+# types. A commit hash makes the build repeatable even if the branch changes.
+ARG THEME_REF=57c8105a18b1bf5b1c421ff091ef529695e3d1f6
+ARG THEME_VERSION=13.6
+ARG WP_CLI_VERSION=2.12.0
+
+# The temporary assets stage downloads and normalizes the plug-in, theme,
+# WordPress core, and WP-CLI. Alpine is used so the old PHP runtime image never
+# needs to contact an archived Debian package repository during the build.
+FROM alpine:3.20 AS assets
+RUN apk add --no-cache ca-certificates curl unzip
+COPY --chmod=0755 install-release.sh /usr/local/bin/install-release
+ARG WPTS_PACKAGE_URL
+ARG THEME_REF
+ARG WP_CLI_VERSION
+ARG WORDPRESS_VERSION
+RUN install-release \
+	"$WPTS_PACKAGE_URL" \
+	"$THEME_REF" \
+	"$WP_CLI_VERSION" \
+	"$WORDPRESS_VERSION"
+
+# The final stage retains the official WordPress Apache configuration and
+# entrypoint from the selected runtime image.
+FROM ${WORDPRESS_RUNTIME_IMAGE}
+ARG WORDPRESS_RUNTIME_IMAGE
+ARG WORDPRESS_VERSION
+ARG WPTS_RELEASE
+ARG WPTS_PLUGIN_VERSION
+ARG WPTS_PACKAGE_SOURCE
+ARG WPTS_PACKAGE_URL
+ARG THEME_REF
+ARG THEME_VERSION
+LABEL org.opencontainers.image.title="WP Trip Summary ${WPTS_RELEASE} test site" \
+	org.opencontainers.image.version="${WPTS_RELEASE}" \
+	org.opencontainers.image.source="https://github.com/alexboia/WP-Trip-Summary" \
+	com.alexboia.wpts.plugin-version="${WPTS_PLUGIN_VERSION}" \
+	com.alexboia.wpts.package-source="${WPTS_PACKAGE_SOURCE}" \
+	com.alexboia.wpts.package-url="${WPTS_PACKAGE_URL}" \
+	com.alexboia.wpts.wordpress-version="${WORDPRESS_VERSION}" \
+	com.alexboia.wpts.wordpress-runtime-image="${WORDPRESS_RUNTIME_IMAGE}" \
+	com.alexboia.wpts.theme-ref="${THEME_REF}" \
+	com.alexboia.wpts.theme-version="${THEME_VERSION}"
+
+# The startup wrapper checks both versions after installation, which catches a
+# wrong archive or a failed WordPress core overlay early.
+ENV WPTS_RELEASE="${WPTS_RELEASE}" \
+	WPTS_EXPECTED_PLUGIN_VERSION="${WPTS_PLUGIN_VERSION}" \
+	WPTS_EXPECTED_WORDPRESS_VERSION="${WORDPRESS_VERSION}"
+
+# Preserve wp-config-docker.php from the official image, replace its bundled
+# WordPress core with 7.1.1, then add the selected plug-in and theme.
+RUN find /usr/src/wordpress -mindepth 1 -maxdepth 1 \
+	! -name 'wp-config-docker.php' \
+	-exec rm -rf '{}' +
+COPY --from=assets --chown=www-data:www-data /opt/wpts-assets/wordpress /usr/src/wordpress
+COPY --from=assets --chown=www-data:www-data /opt/wpts-assets/plugins/wp-trip-summary /usr/src/wordpress/wp-content/plugins/wp-trip-summary
+COPY --from=assets --chown=www-data:www-data /opt/wpts-assets/themes/wp-alexboia-net /usr/src/wordpress/wp-content/themes/wp-alexboia-net
+COPY --from=assets /opt/wpts-assets/bin/wp /usr/local/bin/wp
+COPY --chmod=0755 docker-entrypoint-wpts.sh /usr/local/bin/docker-entrypoint-wpts
+
+# The wrapper delegates normal container initialization to the official
+# WordPress entrypoint, then installs and activates the requested components.
+ENTRYPOINT ["docker-entrypoint-wpts"]
+CMD ["apache2-foreground"]

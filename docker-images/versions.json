@@ -1,0 +1,168 @@
+{
+  "generatedAt": "2026-09-20",
+  "sourcePolicy": "Prefer the WordPress Plugin Directory package when it is downloadable; otherwise use the GitHub release asset.",
+  "runtimePolicy": "Use WordPress 7.1.1 for every release and the highest PHP branch validated without modifying the published plugin package.",
+  "wordpressVersion": "7.1.1",
+  "wpCliVersion": "2.12.0",
+  "phpCompatibilityCheck": {
+    "validator": "PHP 8.4.0 CLI syntax check over every PHP file in each release package",
+    "php74Reason": "Releases through 0.2.4 contain curly-brace string-offset syntax in lib/3rdParty/MimeReader.php, which PHP 8 rejects at parse time.",
+    "php84Reason": "Every PHP file in releases 0.2.5 and newer passes PHP 8.4 syntax validation. Full container activation still requires a running Docker daemon."
+  },
+  "theme": {
+    "repository": "https://github.com/alexboia/WP-AlexBoia-NET-Theme",
+    "php7": {
+      "version": "13.6",
+      "ref": "57c8105a18b1bf5b1c421ff091ef529695e3d1f6"
+    },
+    "php8": {
+      "version": "13.7",
+      "ref": "a00d2b581dd25148c1ed48230ec3eb3768fdc122"
+    }
+  },
+  "releases": [
+    {
+      "release": "0.2b2",
+      "pluginVersion": "0.2b",
+      "dockerfile": "Dockerfile.0.2b2",
+      "wordpressVersion": "7.1.1",
+      "phpVersion": "7.4",
+      "wordpressRuntimeImage": "wordpress:6.1.1-php7.4-apache",
+      "packageSource": "github-release",
+      "packageUrl": "https://github.com/alexboia/WP-Trip-Summary/releases/download/0.2b2/wp-trip-summary.0.2b.zip",
+      "themeRef": "57c8105a18b1bf5b1c421ff091ef529695e3d1f6"
+    },
+    {
+      "release": "0.2.0",
+      "pluginVersion": "0.2.0",
+      "dockerfile": "Dockerfile.0.2.0",
+      "wordpressVersion": "7.1.1",
+      "phpVersion": "7.4",
+      "wordpressRuntimeImage": "wordpress:6.1.1-php7.4-apache",
+      "packageSource": "github-release",
+      "packageUrl": "https://github.com/alexboia/WP-Trip-Summary/releases/download/0.2.0/wp-trip-summary.0.2.0.zip",
+      "themeRef": "57c8105a18b1bf5b1c421ff091ef529695e3d1f6"
+    },
+    {
+      "release": "0.2.1",
+      "pluginVersion": "0.2.1",
+      "dockerfile": "Dockerfile.0.2.1",
+      "wordpressVersion": "7.1.1",
+      "phpVersion": "7.4",
+      "wordpressRuntimeImage": "wordpress:6.1.1-php7.4-apache",
+      "packageSource": "wordpress-directory",
+      "packageUrl": "https://downloads.wordpress.org/plugin/wp-trip-summary.0.2.1%EF%80%8D.zip",
+      "themeRef": "57c8105a18b1bf5b1c421ff091ef529695e3d1f6"
+    },
+    {
+      "release": "0.2.2",
+      "pluginVersion": "0.2.2",
+      "dockerfile": "Dockerfile.0.2.2",
+      "wordpressVersion": "7.1.1",
+      "phpVersion": "7.4",
+      "wordpressRuntimeImage": "wordpress:6.1.1-php7.4-apache",
+      "packageSource": "wordpress-directory",
+      "packageUrl": "https://downloads.wordpress.org/plugin/wp-trip-summary.0.2.2.zip",
+      "themeRef": "57c8105a18b1bf5b1c421ff091ef529695e3d1f6"
+    },
+    {
+      "release": "0.2.3",
+      "pluginVersion": "0.2.3",
+      "dockerfile": "Dockerfile.0.2.3",
+      "wordpressVersion": "7.1.1",
+      "phpVersion": "7.4",
+      "wordpressRuntimeImage": "wordpress:6.1.1-php7.4-apache",
+      "packageSource": "wordpress-directory",
+      "packageUrl": "https://downloads.wordpress.org/plugin/wp-trip-summary.0.2.3.zip",
+      "themeRef": "57c8105a18b1bf5b1c421ff091ef529695e3d1f6"
+    },
+    {
+      "release": "0.2.4",
+      "pluginVersion": "0.2.4",
+      "dockerfile": "Dockerfile.0.2.4",
+      "wordpressVersion": "7.1.1",
+      "phpVersion": "7.4",
+      "wordpressRuntimeImage": "wordpress:6.1.1-php7.4-apache",
+      "packageSource": "wordpress-directory",
+      "packageUrl": "https://downloads.wordpress.org/plugin/wp-trip-summary.0.2.4.zip",
+      "themeRef": "57c8105a18b1bf5b1c421ff091ef529695e3d1f6"
+    },
+    {
+      "release": "0.2.5",
+      "pluginVersion": "0.2.5",
+      "dockerfile": "Dockerfile.0.2.5",
+      "wordpressVersion": "7.1.1",
+      "phpVersion": "8.4",
+      "wordpressRuntimeImage": "wordpress:7.1.1-php8.4-apache",
+      "packageSource": "wordpress-directory",
+      "packageUrl": "https://downloads.wordpress.org/plugin/wp-trip-summary.0.2.5.zip",
+      "themeRef": "a00d2b581dd25148c1ed48230ec3eb3768fdc122"
+    },
+    {
+      "release": "0.2.6",
+      "pluginVersion": "0.2.6",
+      "dockerfile": "Dockerfile.0.2.6",
+      "wordpressVersion": "7.1.1",
+      "phpVersion": "8.4",
+      "wordpressRuntimeImage": "wordpress:7.1.1-php8.4-apache",
+      "packageSource": "wordpress-directory",
+      "packageUrl": "https://downloads.wordpress.org/plugin/wp-trip-summary.0.2.6.zip",
+      "themeRef": "a00d2b581dd25148c1ed48230ec3eb3768fdc122"
+    },
+    {
+      "release": "0.2.7",
+      "pluginVersion": "0.2.7",
+      "dockerfile": "Dockerfile.0.2.7",
+      "wordpressVersion": "7.1.1",
+      "phpVersion": "8.4",
+      "wordpressRuntimeImage": "wordpress:7.1.1-php8.4-apache",
+      "packageSource": "github-release",
+      "packageUrl": "https://github.com/alexboia/WP-Trip-Summary/releases/download/0.2.7/wp-trip-summary.0.2.7.zip",
+      "themeRef": "a00d2b581dd25148c1ed48230ec3eb3768fdc122"
+    },
+    {
+      "release": "0.2.8",
+      "pluginVersion": "0.2.8",
+      "dockerfile": "Dockerfile.0.2.8",
+      "wordpressVersion": "7.1.1",
+      "phpVersion": "8.4",
+      "wordpressRuntimeImage": "wordpress:7.1.1-php8.4-apache",
+      "packageSource": "wordpress-directory",
+      "packageUrl": "https://downloads.wordpress.org/plugin/wp-trip-summary.0.2.8.zip",
+      "themeRef": "a00d2b581dd25148c1ed48230ec3eb3768fdc122"
+    },
+    {
+      "release": "0.3.0",
+      "pluginVersion": "0.3.0",
+      "dockerfile": "Dockerfile.0.3.0",
+      "wordpressVersion": "7.1.1",
+      "phpVersion": "8.4",
+      "wordpressRuntimeImage": "wordpress:7.1.1-php8.4-apache",
+      "packageSource": "wordpress-directory",
+      "packageUrl": "https://downloads.wordpress.org/plugin/wp-trip-summary.0.3.0.zip",
+      "themeRef": "a00d2b581dd25148c1ed48230ec3eb3768fdc122"
+    },
+    {
+      "release": "0.3.1",
+      "pluginVersion": "0.3.1",
+      "dockerfile": "Dockerfile.0.3.1",
+      "wordpressVersion": "7.1.1",
+      "phpVersion": "8.4",
+      "wordpressRuntimeImage": "wordpress:7.1.1-php8.4-apache",
+      "packageSource": "wordpress-directory",
+      "packageUrl": "https://downloads.wordpress.org/plugin/wp-trip-summary.0.3.1.zip",
+      "themeRef": "a00d2b581dd25148c1ed48230ec3eb3768fdc122"
+    },
+    {
+      "release": "0.3.2",
+      "pluginVersion": "0.3.2",
+      "dockerfile": "Dockerfile.0.3.2",
+      "wordpressVersion": "7.1.1",
+      "phpVersion": "8.4",
+      "wordpressRuntimeImage": "wordpress:7.1.1-php8.4-apache",
+      "packageSource": "wordpress-directory",
+      "packageUrl": "https://downloads.wordpress.org/plugin/wp-trip-summary.0.3.2.zip",
+      "themeRef": "a00d2b581dd25148c1ed48230ec3eb3768fdc122"
+    }
+  ]
+}

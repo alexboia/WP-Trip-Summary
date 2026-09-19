@@ -1,0 +1,38 @@
+services:
+  database:
+    image: mysql:5.7.44
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_PASSWORD: root
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+    volumes:
+      - database_data:/var/lib/mysql
+
+  wordpress:
+    build:
+      context: .
+      dockerfile: ${WPTS_DOCKERFILE:-Dockerfile.0.3.2}
+    depends_on:
+      database:
+        condition: service_healthy
+    ports:
+      - "${WPTS_PORT:-8080}:80"
+    environment:
+      WORDPRESS_DB_HOST: database:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WPTS_SITE_URL: http://localhost:${WPTS_PORT:-8080}
+      WPTS_SITE_TITLE: ${WPTS_SITE_TITLE:-WP Trip Summary release}
+      WPTS_ADMIN_USER: ${WPTS_ADMIN_USER:-wpts}
+      WPTS_ADMIN_PASSWORD: ${WPTS_ADMIN_PASSWORD:-wpts-change-me}
+      WPTS_ADMIN_EMAIL: ${WPTS_ADMIN_EMAIL:-wpts@example.test}
+
+volumes:
+  database_data:
