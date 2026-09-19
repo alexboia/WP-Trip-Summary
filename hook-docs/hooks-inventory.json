@@ -8,8 +8,8 @@
     ],
     "summary": {
         "totalDispatches": 46,
-        "documented": 20,
-        "undocumented": 26,
+        "documented": 22,
+        "undocumented": 24,
         "unresolvedDynamic": 0
     },
     "documentedHooks": [
@@ -382,9 +382,7 @@
             "docCommentLine": 77,
             "docComment": "/**\r\n\t\t * Filters custom database table names dropped during uninstallation.\r\n\t\t * Initial value is an empty array. Return an associative array whose values are\r\n\t\t * table names.\r\n\t\t *\r\n\t\t * Custom tables are dropped in the order provided.\r\n\t\t * Empty or non-array results are ignored, and built-in tables \r\n\t\t * are always appended to the final list, \r\n\t\t * so they are always dropped from the databasae.\r\n\t\t *\r\n\t\t * @since 0.3.3\r\n\t\t * @category Installer\r\n\t\t *\r\n\t\t * @param array<string, mixed> $customTables Custom table names.\r\n\t\t * @param string[] $ownTables Built-in table names in drop order.\r\n\t\t */",
             "prefixEvidence": true
-        }
-    ],
-    "undocumentedHooks": [
+        },
         {
             "hookName": "abp01_get_logger_class",
             "kind": "filter",
@@ -395,12 +393,12 @@
                 "$defaultLoggerClass"
             ],
             "file": "lib/logger/Manager.php",
-            "line": 62,
+            "line": 76,
             "enclosingClass": "Abp01_Logger_Manager",
             "enclosingFunction": "_createLogger",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 62,
+            "docComment": "/**\r\n\t\t * Filters the class used to create the plug-in logger.\r\n\t\t *\r\n\t\t * The initial value is Abp01_Logger_MonologLogger. A custom class must be a\r\n\t\t * concrete implementation of Abp01_Logger and accept an Abp01_Logger_Config\r\n\t\t * instance as its constructor argument. Unsupported or non-instantiable classes\r\n\t\t * are ignored and the default logger is used instead.\r\n\t\t *\r\n\t\t * @since 0.3.1\r\n\t\t * @category Log Management\r\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t *\r\n\t\t * @param string $loggerClass The logger implementation class name.\r\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -413,14 +411,16 @@
                 "$logger"
             ],
             "file": "lib/logger/MonologLogger.php",
-            "line": 72,
+            "line": 83,
             "enclosingClass": "Abp01_Logger_MonologLogger",
             "enclosingFunction": "_getOrCreateLogger",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 72,
+            "docComment": "/**\r\n\t\t\t * Fires after the Monolog logger has been configured and before it is cached for use.\r\n\t\t\t *\r\n\t\t\t * Callbacks can customize the logger instance by adding or changing handlers,\r\n\t\t\t * processors, and other Monolog configuration.\r\n\t\t\t *\r\n\t\t\t * @since 0.3.2\r\n\t\t\t * @category Log Management\r\n\t\t\t *\r\n\t\t\t * @param \\Monolog\\Logger $logger The configured Monolog logger instance.\r\n\t\t\t */",
             "prefixEvidence": true
-        },
+        }
+    ],
+    "undocumentedHooks": [
         {
             "hookName": "abp01_render_maintenance_tool_result",
             "kind": "filter",

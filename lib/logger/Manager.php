@@ -29,7 +29,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
@@ -59,6 +59,20 @@ class Abp01_Logger_Manager {
 
 	private function _createLogger(): void {
 		$defaultLoggerClass = Abp01_Logger_MonologLogger::class;
+		/**
+		 * Filters the class used to create the plug-in logger.
+		 *
+		 * The initial value is Abp01_Logger_MonologLogger. A custom class must be a
+		 * concrete implementation of Abp01_Logger and accept an Abp01_Logger_Config
+		 * instance as its constructor argument. Unsupported or non-instantiable classes
+		 * are ignored and the default logger is used instead.
+		 *
+		 * @since 0.3.1
+		 * @category Log Management
+		 * @unstable Susceptible to breaking changes due to PSR-4 migration
+		 *
+		 * @param string $loggerClass The logger implementation class name.
+		 */
 		$loggerClass = apply_filters('abp01_get_logger_class', $defaultLoggerClass);
 
 		$implementsInterface = in_array(Abp01_Logger::class, 
@@ -132,12 +146,16 @@ class Abp01_Logger_Manager {
 		return $logFiles;
 	}
 
-	private function _maybeLogFile($filePath) {
+	private function _maybeLogFile(?string $filePath): bool {
+		if (empty($filePath)) {
+			return false;
+		}
+
 		$filePathInfo = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
 		return !empty($filePathInfo) && $filePathInfo === 'log';
 	}
 
-	public function getLogFileById($logFileId): Abp01_Logger_FileInfo|null {
+	public function getLogFileById(?string $logFileId): Abp01_Logger_FileInfo|null {
 		if (empty($logFileId)) {
 			return null;
 		}
@@ -145,7 +163,7 @@ class Abp01_Logger_Manager {
 		$logFiles = $this->getLogFiles();
 
 		/**
-		 * @var Abp01_Logger_FileInfo $foundFile
+		 * @var Abp01_Logger_FileInfo|null $foundFile
 		 */
 		$foundFile = null;
 		foreach ($logFiles as $logFile) {
@@ -158,7 +176,7 @@ class Abp01_Logger_Manager {
 		return $foundFile;
 	}
 
-	public function deleteLogFileById($logFileId): bool {
+	public function deleteLogFileById(?string $logFileId): bool {
 		if (empty($logFileId)) {
 			return false;
 		}
@@ -172,15 +190,15 @@ class Abp01_Logger_Manager {
 		return @unlink($filePath);
 	}
 
-	public function isDebugLoggingEnabled() {
+	public function isDebugLoggingEnabled(): bool {
 		return $this->_config->isDebugLoggingEnabled();
 	}
 
-	public function isErrorLoggingEnabled() {
+	public function isErrorLoggingEnabled(): bool {
 		return $this->_config->isErrorLoggingEnabled();
 	}
 
-	public function getConfig() {
+	public function getConfig(): Abp01_Logger_Config {
 		return $this->_config;
 	}
 }

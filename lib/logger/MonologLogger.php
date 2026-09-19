@@ -42,9 +42,9 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Logger_MonologLogger implements Abp01_Logger {
-	private $_logger = null;
+	private \Monolog\Logger|null $_logger = null;
 
-	private $_config;
+	private Abp01_Logger_Config $_config;
 
 	public function __construct(Abp01_Logger_Config $config) {
 		$this->_config = $config;
@@ -69,6 +69,17 @@ class Abp01_Logger_MonologLogger implements Abp01_Logger {
 				$logger->pushHandler(new BrowserConsoleHandler());
 			}
 
+			/**
+			 * Fires after the Monolog logger has been configured and before it is cached for use.
+			 *
+			 * Callbacks can customize the logger instance by adding or changing handlers,
+			 * processors, and other Monolog configuration.
+			 *
+			 * @since 0.3.2
+			 * @category Log Management
+			 *
+			 * @param \Monolog\Logger $logger The configured Monolog logger instance.
+			 */
 			do_action('abp01_customize_monolog_logger', $logger);		
 			$this->_logger = $logger;
 		}
