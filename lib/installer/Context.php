@@ -34,17 +34,28 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Installer_Context {
+	/**
+	 * 
+	 * @var array<string, \Exception|WP_Error|null>
+	 */
 	private $_errors = array();
 
-	private $_hookErrors = array();
+	/**
+	 * 
+	 * @var array<string, \Exception|WP_Error|null>
+	 */
+	private array $_hookErrors = array();
+
+	private \Exception|WP_Error|null $_lastError = null;
 
 	/**
 	 * @param string $key
 	 * @param \Exception|WP_Error $error 
 	 * @return void 
 	 */
-	public function pushError($key, $error) {
+	public function pushError($key, \Exception|WP_Error $error) {
 		$this->_errors[$key] = $error;
+		$this->_lastError = $error;
 	}
 
 	public function getErrors() {
@@ -60,8 +71,9 @@ class Abp01_Installer_Context {
 	 * @param \Exception|WP_Error $error 
 	 * @return void 
 	 */
-	public function pushHookError($key, $error) {
+	public function pushHookError($key, \Exception|WP_Error $error) {
 		$this->_hookErrors[$key] = $error;
+		$this->_lastError = $error;
 	}
 
 	public function getHookErrors() {
@@ -79,5 +91,10 @@ class Abp01_Installer_Context {
 	public function reset() {
 		$this->_errors = array();
 		$this->_hookErrors = array();
+		$this->_lastError = null;
+	}
+
+	public function getLastError(): \Exception|WP_Error|null {
+		return $this->_lastError;
 	}
 }

@@ -29,51 +29,46 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
 class Abp01_Installer_Service_RunInstallHook {
-	/**
-	 * @var \Exception|\WP_Error|null
-	 */
-	private $_lastError;
+	private \Exception|\WP_Error|null $_lastError;
 
-	/**
-	 * @var Abp01_Installer_Context
-	 */
-	private $_context;
-	
-	/**
-	 * @var string
-	 */
-	private $_hookName;
+	private Abp01_Installer_Context $_context;
 
-	/**
-	 * @param string $hookName 
-	 * @param Abp01_Installer_Context $context 
-	 * @return void 
-	 */
-	public function __construct($hookName, Abp01_Installer_Context $context) {
+	private string $_hookName;
+
+	public function __construct(string $hookName, Abp01_Installer_Context $context) {
 		$this->_hookName = $hookName;
 		$this->_context = $context;
 	}
 
-    public function execute() { 
-		$this->_lastError = null;
+    public function execute(): bool { 
+		$this->_reset();
 		$this->_runHooks();
-		return true;
+		return !$this->hasError();
 	}
 
-	private function _runHooks() {
+	private function _runHooks(): void {
 		try {
 			do_action($this->_hookName, $this->_context);	
-		} catch (Exception $exc) {
-			$this->_lastError = $exc;
+		} catch (Throwable $hookError) {
+			$this->_context->pushHookError($this->_hookName, $hookError);
+			$this->_lastError = $hookError;
 		}
 	}
 
-    public function getLastError() { 
+    public function getLastError(): Exception|WP_Error|null { 
 		return $this->_lastError;
+	}
+
+	private function _reset(): void {
+		$this->_lastError = null;
+	}
+
+	public function hasError(): bool {
+		return $this->_lastError !== null;
 	}
 }

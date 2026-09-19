@@ -40,7 +40,24 @@ class Abp01_Installer_Step_RunPostInstallHooks implements Abp01_Installer_Step {
 	private $_service;
 
 	public function __construct(Abp01_Installer_Context $context) {
-		$this->_service = new Abp01_Installer_Service_RunInstallHook('abp01_installer_do_post_install', $context);
+		/**
+		 * Fires after the plug-in installation attempt has finished.
+		 *
+		 * The hook runs after either a successful or failed installation, provided the
+		 * pre-install hook allowed the process to start. Callbacks can inspect the context
+		 * to determine the installation result and access any collected errors. An uncaught
+		 * callback exception is recorded as a hook error but does not change that result.
+		 *
+		 * @since 0.3.0
+		 * @category Installer
+		 * @unstable Susceptible to breaking changes due to PSR-4 migration
+		 *
+		 * @param Abp01_Installer_Context $context Installer context containing the completed operation status and collected errors.
+		 */
+		$this->_service = new Abp01_Installer_Service_RunInstallHook(
+			'abp01_installer_do_post_install',
+			$context
+		);
 	}
 
     public function execute(): bool { 

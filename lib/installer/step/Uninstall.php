@@ -46,6 +46,29 @@ class Abp01_Installer_Step_Uninstall implements Abp01_Installer_Step {
 	
     public function execute(): bool { 
 		$this->_reset();
+		$context = new Abp01_Installer_Context();
+		
+		$preUnInstallOk = $this->_executeHookStep(
+			new Abp01_Installer_Step_RunPreUninstallHooks($context),
+			$context
+		);
+
+		if (!$preUnInstallOk || !$context->isSuccessful()) {
+			return false;
+		}
+
+		$result = $this->_uninstall();
+		$this->_recordStepError($context, $result);
+
+		$this->_executeHookStep(
+			new Abp01_Installer_Step_RunPostUninstallHooks($context),
+			$context
+		);
+
+		return $result;
+	}
+
+	private function _uninstall(): bool {
 		try {
 			return $this->_deactivate()
 				&& $this->_uninstallSchema()
@@ -57,6 +80,36 @@ class Abp01_Installer_Step_Uninstall implements Abp01_Installer_Step {
 			$this->_lastError = $e;
 		}
 		return false;
+	}
+
+	private function _executeHookStep(Abp01_Installer_Step $step, 
+		Abp01_Installer_Context $context): bool {
+		
+		$result = $step->execute();
+		$error = $step->getLastError();
+
+		if ($error !== null) {
+			$context->pushHookError(get_class($step), $error);
+		}
+
+		return $result;
+	}
+
+	private function _recordStepError(Abp01_Installer_Context $context, 
+		bool $result): void {
+		if ($result) {
+			return;
+		}
+
+		$error = $this->_lastError;
+		if ($error === null) {
+			$error = new RuntimeException(sprintf(
+				'%s failed without reporting an error.',
+				get_class($this)
+			));
+		}
+
+		$context->pushError(get_class($this), $error);
 	}
 
 	private function _deactivate(): bool {

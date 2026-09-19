@@ -8,8 +8,8 @@
     ],
     "summary": {
         "totalDispatches": 46,
-        "documented": 16,
-        "undocumented": 30,
+        "documented": 20,
+        "undocumented": 26,
         "unresolvedDynamic": 0
     },
     "documentedHooks": [
@@ -293,27 +293,6 @@
             "prefixEvidence": true
         },
         {
-            "hookName": "abp01_uninstall_table_names",
-            "kind": "filter",
-            "dispatcher": "apply_filters",
-            "resolution": "static",
-            "nameExpression": "'abp01_uninstall_table_names'",
-            "arguments": [
-                "array()",
-                "$ownTables"
-            ],
-            "file": "lib/installer/step/UninstallSchema.php",
-            "line": 91,
-            "enclosingClass": "Abp01_Installer_Step_UninstallSchema",
-            "enclosingFunction": "_getTablesToUninstall",
-            "documentationStatus": "documented",
-            "docCommentLine": 77,
-            "docComment": "/**\r\n\t\t * Filters custom database table names dropped during uninstallation.\r\n\t\t * Initial value is an empty array. Return an associative array whose values are\r\n\t\t * table names.\r\n\t\t *\r\n\t\t * Custom tables are dropped in the order provided.\r\n\t\t * Empty or non-array results are ignored, and built-in tables are always dropped.\r\n\t\t *\r\n\t\t * @since 0.3.3\r\n\t\t * @category Installer\r\n\t\t *\r\n\t\t * @param array<string, mixed> $customTables Custom table names.\r\n\t\t * @param string[] $ownTables Built-in table names in drop order.\r\n\t\t */",
-            "prefixEvidence": true
-        }
-    ],
-    "undocumentedHooks": [
-        {
             "hookName": "abp01_installer_do_post_install",
             "kind": "action",
             "dispatcher": "Abp01_Installer_Service_RunInstallHook",
@@ -323,12 +302,12 @@
                 "$context"
             ],
             "file": "lib/installer/step/RunPostInstallHooks.php",
-            "line": 43,
+            "line": 57,
             "enclosingClass": "Abp01_Installer_Step_RunPostInstallHooks",
             "enclosingFunction": "__construct",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 43,
+            "docComment": "/**\r\n\t\t * Fires after the plug-in installation attempt has finished.\r\n\t\t *\r\n\t\t * The hook runs after either a successful or failed installation, provided the\r\n\t\t * pre-install hook allowed the process to start. Callbacks can inspect the context\r\n\t\t * to determine the installation result and access any collected errors. An uncaught\r\n\t\t * callback exception is recorded as a hook error but does not change that result.\r\n\t\t *\r\n\t\t * @since 0.3.0\r\n\t\t * @category Installer\r\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t *\r\n\t\t * @param Abp01_Installer_Context $context Installer context containing the completed operation status and collected errors.\r\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -341,12 +320,12 @@
                 "$context"
             ],
             "file": "lib/installer/step/RunPostUninstallHooks.php",
-            "line": 43,
+            "line": 54,
             "enclosingClass": "Abp01_Installer_Step_RunPostUninstallHooks",
             "enclosingFunction": "__construct",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 43,
+            "docComment": "/**\r\n\t\t * Fires after the plug-in uninstallation process has finished.\r\n\t\t * Callbacks can inspect the installer context to determine whether the operation\r\n\t\t * completed successfully and access any collected errors.\r\n\t\t *\r\n\t\t * @since 0.3.0\r\n\t\t * @category Installer\r\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t *\r\n\t\t * @param Abp01_Installer_Context $context The current installer context.\r\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -359,12 +338,12 @@
                 "$context"
             ],
             "file": "lib/installer/step/RunPreInstallHooks.php",
-            "line": 43,
+            "line": 56,
             "enclosingClass": "Abp01_Installer_Step_RunPreInstallHooks",
             "enclosingFunction": "__construct",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 43,
+            "docComment": "/**\r\n\t\t * Fires before the plug-in installation process starts.\r\n\t\t *\r\n\t\t * Callbacks can inspect or modify the installer context. Adding an operation\r\n\t\t * error to the context prevents installation from starting. An uncaught callback\r\n\t\t * exception is captured as a hook error and also aborts installation.\r\n\t\t *\r\n\t\t * @since 0.3.0\r\n\t\t * @category Installer\r\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t *\r\n\t\t * @param Abp01_Installer_Context $context Mutable installer context used to determine whether installation may proceed.\r\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -377,14 +356,35 @@
                 "$context"
             ],
             "file": "lib/installer/step/RunPreUninstallHooks.php",
-            "line": 43,
+            "line": 54,
             "enclosingClass": "Abp01_Installer_Step_RunPreUninstallHooks",
             "enclosingFunction": "__construct",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 43,
+            "docComment": "/**\r\n\t\t * Fires before the plug-in uninstallation process starts.\r\n\t\t * Callbacks can inspect the installer context to determine whether the operation\r\n\t\t * currently has any errors.\r\n\t\t *\r\n\t\t * @since 0.3.0\r\n\t\t * @category Installer\r\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t *\r\n\t\t * @param Abp01_Installer_Context $context The current installer context.\r\n\t\t */",
             "prefixEvidence": true
         },
+        {
+            "hookName": "abp01_uninstall_table_names",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_uninstall_table_names'",
+            "arguments": [
+                "array()",
+                "$ownTables"
+            ],
+            "file": "lib/installer/step/UninstallSchema.php",
+            "line": 93,
+            "enclosingClass": "Abp01_Installer_Step_UninstallSchema",
+            "enclosingFunction": "_getTablesToUninstall",
+            "documentationStatus": "documented",
+            "docCommentLine": 77,
+            "docComment": "/**\r\n\t\t * Filters custom database table names dropped during uninstallation.\r\n\t\t * Initial value is an empty array. Return an associative array whose values are\r\n\t\t * table names.\r\n\t\t *\r\n\t\t * Custom tables are dropped in the order provided.\r\n\t\t * Empty or non-array results are ignored, and built-in tables \r\n\t\t * are always appended to the final list, \r\n\t\t * so they are always dropped from the databasae.\r\n\t\t *\r\n\t\t * @since 0.3.3\r\n\t\t * @category Installer\r\n\t\t *\r\n\t\t * @param array<string, mixed> $customTables Custom table names.\r\n\t\t * @param string[] $ownTables Built-in table names in drop order.\r\n\t\t */",
+            "prefixEvidence": true
+        }
+    ],
+    "undocumentedHooks": [
         {
             "hookName": "abp01_get_logger_class",
             "kind": "filter",

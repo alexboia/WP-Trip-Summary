@@ -41,7 +41,7 @@ For each documented occurrence, compare the doc-comment with the invocation:
 
 - Verify action versus filter terminology, argument count and order, pass-by-reference behavior, and the value returned by a filter.
 - Require one `@category` tag and verify that its value describes the hook's functional domain rather than its dispatcher mechanism or whether it is an action or filter.
-- For filters whose public contract can break during PSR-4 migration, require exactly `@unstable Susceptible to breaking changes due to PSR-4 migration`. Treat a missing required tag or a stale tag on a stable filter as an incomplete contract, not as missing documentation.
+- For hooks whose public contract can break during PSR-4 migration, require exactly `@unstable Susceptible to breaking changes due to PSR-4 migration`. Apply this rule uniformly to actions and filters, including class-wrapped dispatchers. Treat a missing required tag or a stale tag on a stable hook as an incomplete contract, not as missing documentation.
 - Trace each argument to its origin and inspect callbacks registered inside the plugin when they provide additional contract evidence.
 - Report duplicate dispatch sites for the same name and require their public contracts, `@category` values, and instability markers to agree.
 - Classify a doc-comment without `@category` as incomplete documentation, separately from a missing doc-comment. Do not overwrite a useful comment wholesale when adding the tag or making another focused correction is sufficient.
@@ -56,7 +56,7 @@ Use `Fires` for actions and `Filters` for filters. Describe when the hook runs a
 
 Add exactly one `@category` tag to every new or updated hook doc-comment and include the proposed category in every draft record. Reuse the exact spelling and casing of an established project category when the hook belongs to it. Base a class-wrapped hook's category on the logical subsystem it exposes, not on the wrapper class. When no existing category clearly applies, infer a concise functional category from code context, mark it as proposed, and request developer confirmation before inserting it; do not invent a project-wide taxonomy during an unrelated documentation task.
 
-When a filter meets the PSR-4 instability criteria below, add the project-owned tag `@unstable Susceptible to breaking changes due to PSR-4 migration` after `@category` and before the parameter block. Use this exact tag text once. Do not add it merely because the enclosing class or file is scheduled for migration.
+When a hook meets the PSR-4 instability criteria below, add the project-owned tag `@unstable Susceptible to breaking changes due to PSR-4 migration` after `@category` and before the parameter block. Use this exact tag text once. Do not add it merely because the enclosing class or file is scheduled for migration.
 
 Do not insert drafts into production files unless the user asks to add or update inline hook documentation. An inventory or audit request is read-only apart from an explicitly requested report file.
 
@@ -64,16 +64,16 @@ Do not insert drafts into production files unless the user asks to add or update
 
 Use `./hook-docs/hooks-inventory.json` as the source inventory for generated hook documentation. Write all generated Markdown files under `./hook-docs/`; do not place generated documentation in the skill directory or alongside production PHP files. When no output filename was requested, choose a descriptive `.md` filename within that directory and report it explicitly.
 
-Refresh the inventory before generating or regenerating Markdown. Keep the generated documentation consistent with the inventory's hook kind, arguments, locations, documentation status, dispatcher, category, and instability marker. Surface `@unstable` filters clearly in the Markdown so consumers can distinguish migration-sensitive contracts. A class-wrapped hook is presented like the equivalent direct action or filter; the wrapper mechanism may be included as provenance, but it must not create a separate public hook entry.
+Refresh the inventory before generating or regenerating Markdown. Keep the generated documentation consistent with the inventory's hook kind, arguments, locations, documentation status, dispatcher, category, and instability marker. Surface `@unstable` hooks clearly in the Markdown so consumers can distinguish migration-sensitive contracts. A class-wrapped hook is presented like the equivalent direct action or filter; the wrapper mechanism may be included as provenance, but it must not create a separate public hook entry.
 
 ## Transitional class types
 
 Treat a hook argument whose type is a plugin-owned concrete class as a potentially unstable public contract while namespace migration is in progress.
 
 - Check `.agents/skills/wpts-refactor-code-namespaces/class-list.json` when it exists and record the legacy name, target name, and migration status in the draft evidence.
-- Mark a filter as unstable when its filtered value or another public argument is a plug-in-owned concrete class, or when a scalar value semantically carries a plug-in class identifier such as a fully qualified class name. `abp01_get_frotend_theme_class` is the canonical scalar example.
+- Mark an action or filter as unstable when a public argument or filtered value is a plug-in-owned concrete class, or when a scalar value semantically carries a plug-in class identifier such as a fully qualified class name. `abp01_get_frotend_theme_class` is the canonical scalar example.
 - Prefer an existing stable interface or value shape only when the runtime contract actually guarantees it. Do not invent an abstraction to make the documentation look stable.
-- Document the currently accepted runtime type or class identifier; do not pre-emptively substitute the planned PSR-4 target or publish the legacy and target names as a union. Flag the draft as `transitional` and add the exact `@unstable` tag when inserting or updating the filter doc-comment.
+- Document the currently accepted runtime type or class identifier; do not pre-emptively substitute the planned PSR-4 target or publish the legacy and target names as a union. Flag the draft as `transitional` and add the exact `@unstable` tag when inserting or updating the hook doc-comment.
 - Account for runtime legacy aliases, but still flag code that depends on textual class names through `get_class()`, reflection, serialization, or persisted values.
 - Stable scalar types, array shapes, WordPress types, and already settled interfaces may be documented immediately when supported by evidence.
 

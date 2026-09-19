@@ -44,7 +44,7 @@ Every hook doc-comment has exactly one `@category` tag. The category identifies 
 
 ## PSR-4 instability
 
-Use the project-owned instability tag when a filter exposes a migration-sensitive plug-in class contract, including a concrete class instance or a scalar value that semantically contains a class identifier. Place it after `@category` and before `@param` tags, using the exact text below:
+Use the project-owned instability tag when an action or filter exposes a migration-sensitive plug-in class contract, including a concrete class instance or a scalar value that semantically contains a class identifier. Apply the rule identically to direct and class-wrapped dispatchers. Place the tag after `@category` and before `@param` tags, using the exact text below:
 
 ```php
 /**
@@ -62,7 +62,7 @@ $frontendThemeClass = apply_filters(
 );
 ```
 
-Do not add the tag solely because the enclosing implementation class is being migrated. The filtered value or another documented argument must expose a class-dependent contract that can break. Document the current runtime contract, and remove the tag only after the public contract is stable and the migration-sensitive compatibility decision has been resolved.
+Do not add the tag solely because the enclosing implementation class is being migrated. A documented action argument, filter argument, or filtered value must expose a class-dependent contract that can break. Document the current runtime contract, and remove the tag only after the public contract is stable and the migration-sensitive compatibility decision has been resolved.
 
 ## Class-wrapped dispatcher
 
@@ -72,8 +72,9 @@ A registered class wrapper is documented exactly like its direct WordPress equiv
 /**
  * Fires before the plug-in installation begins.
  *
- * @since 0.3.3
+ * @since 0.3.0
  * @category Installer
+ * @unstable Susceptible to breaking changes due to PSR-4 migration
  *
  * @param Abp01_Installer_Context $context The current installation context.
  */

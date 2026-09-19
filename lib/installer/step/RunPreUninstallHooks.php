@@ -29,7 +29,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
@@ -40,7 +40,21 @@ class Abp01_Installer_Step_RunPreUninstallHooks implements Abp01_Installer_Step 
 	private $_service;
 
 	public function __construct(Abp01_Installer_Context $context) {
-		$this->_service = new Abp01_Installer_Service_RunInstallHook('abp01_installer_do_pre_uninstall', $context);
+		/**
+		 * Fires before the plug-in uninstallation process starts.
+		 * Callbacks can inspect the installer context to determine whether the operation
+		 * currently has any errors.
+		 *
+		 * @since 0.3.0
+		 * @category Installer
+		 * @unstable Susceptible to breaking changes due to PSR-4 migration
+		 *
+		 * @param Abp01_Installer_Context $context The current installer context.
+		 */
+		$this->_service = new Abp01_Installer_Service_RunInstallHook(
+			'abp01_installer_do_pre_uninstall',
+			$context
+		);
 	}
 
     public function execute(): bool { 
