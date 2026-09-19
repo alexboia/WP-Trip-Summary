@@ -166,6 +166,21 @@ class Abp01_PluginModules_MaintenancePluginModule extends Abp01_PluginModules_Pl
 		$renderedResult = $this->_view->renderAdminMaintenanceToolResult($toolId, 
 			$data);
 
+		/**
+		 * Filters the rendered content returned after a maintenance tool has executed.
+		 *
+		 * The initial value is the rendered result template, an empty string when no
+		 * matching result template exists, or false when rendering fails. Returning an
+		 * empty or false value prevents result content from being displayed.
+		 *
+		 * @since 0.2.8
+		 * @category Maintenance Tools
+		 * @unstable Susceptible to breaking changes due to PSR-4 migration
+		 *
+		 * @param string|false $renderedResult The rendered maintenance tool result.
+		 * @param string $toolId The executed maintenance tool identifier.
+		 * @param Abp01_MaintenanceTool_Result $result The maintenance tool execution result.
+		 */
 		$filteredRenderedResult = apply_filters('abp01_render_maintenance_tool_result', 
 			$renderedResult, 
 			$toolId, 

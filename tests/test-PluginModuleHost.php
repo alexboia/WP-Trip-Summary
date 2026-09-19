@@ -91,6 +91,29 @@ class PluginModuleHostTests extends WP_UnitTestCase {
         )));
     }
 
+    public function test_providesBuiltInDependencies_whenInjectableServiceFactoriesFilterReturnsNonArray() {
+        $this->_assertProvidesBuiltInDependenciesWhenFilterReturns(null);
+    }
+
+    public function test_providesBuiltInDependencies_whenInjectableServiceFactoriesFilterReturnsEmptyArray() {
+        $this->_assertProvidesBuiltInDependenciesWhenFilterReturns(array());
+    }
+
+    private function _assertProvidesBuiltInDependenciesWhenFilterReturns($filteredFactories) {
+        $filter = function() use ($filteredFactories) {
+            return $filteredFactories;
+        };
+
+        add_filter('abp01_get_injectable_service_factories', $filter, 999, 2);
+
+        try {
+            $pluginHost = $this->_getPluginHost();
+            $this->assertTrue($pluginHost->hasModule(RequiresAllSupportedDependenciesSamplePluginModule::class));
+        } finally {
+            remove_filter('abp01_get_injectable_service_factories', $filter, 999);
+        }
+    }
+
     private function _registerCustomInjectableServiceFactories() {
         add_filter('abp01_get_injectable_service_factories', 
             array($this, 'createSamplePluginModuleDependency'), 

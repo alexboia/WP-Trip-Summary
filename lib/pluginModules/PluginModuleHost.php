@@ -85,11 +85,34 @@ class Abp01_PluginModules_PluginModuleHost implements Abp01_PluginMenuItemProvid
 		return $this->_pluginModuleActivator->createModuleInstance($moduleClassName);
 	}
 
-	private function _getInjectableServiceFactories() {
+	/**
+	 * @return array<string, callable>
+	 */
+	private function _getInjectableServiceFactories(): array {
 		$defaultInjectables = $this->_getDefaultInjectableServiceFactories();
-		return apply_filters('abp01_get_injectable_service_factories', 
+
+		/**
+		 * Filters the service factories available for plugin module dependency injection.
+		 *
+		 * The array is keyed by dependency class name. Each value is a zero-argument
+		 * callable that returns the corresponding service instance. Callbacks may add,
+		 * replace, or remove factories before the plugin module activator is created.
+		 * An empty array or a value of another type is ignored in favor of the defaults.
+		 *
+		 * @since 0.2.6
+		 * @category Plugin Modules
+		 * @unstable Susceptible to breaking changes due to PSR-4 migration
+		 *
+		 * @param array<string, callable> $defaultInjectables The default service factories keyed by dependency class name.
+		 * @param Abp01_PluginModules_PluginModuleHost $pluginModuleHost The plugin module host requesting the factories.
+		 */
+		$injectableServiceFactories = apply_filters('abp01_get_injectable_service_factories',
 			$defaultInjectables, 
 			$this);
+
+		return is_array($injectableServiceFactories) && !empty($injectableServiceFactories)
+			? $injectableServiceFactories
+			: $defaultInjectables;
 	}
 
 	private function _getDefaultInjectableServiceFactories(): array {

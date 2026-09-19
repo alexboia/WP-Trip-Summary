@@ -8,8 +8,8 @@
     ],
     "summary": {
         "totalDispatches": 46,
-        "documented": 22,
-        "undocumented": 24,
+        "documented": 26,
+        "undocumented": 20,
         "unresolvedDynamic": 0
     },
     "documentedHooks": [
@@ -418,9 +418,7 @@
             "docCommentLine": 72,
             "docComment": "/**\r\n\t\t\t * Fires after the Monolog logger has been configured and before it is cached for use.\r\n\t\t\t *\r\n\t\t\t * Callbacks can customize the logger instance by adding or changing handlers,\r\n\t\t\t * processors, and other Monolog configuration.\r\n\t\t\t *\r\n\t\t\t * @since 0.3.2\r\n\t\t\t * @category Log Management\r\n\t\t\t *\r\n\t\t\t * @param \\Monolog\\Logger $logger The configured Monolog logger instance.\r\n\t\t\t */",
             "prefixEvidence": true
-        }
-    ],
-    "undocumentedHooks": [
+        },
         {
             "hookName": "abp01_render_maintenance_tool_result",
             "kind": "filter",
@@ -433,12 +431,12 @@
                 "$result"
             ],
             "file": "lib/pluginModules/MaintenancePluginModule.php",
-            "line": 169,
+            "line": 184,
             "enclosingClass": "Abp01_PluginModules_MaintenancePluginModule",
             "enclosingFunction": "_renderToolResult",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 169,
+            "docComment": "/**\r\n\t\t * Filters the rendered content returned after a maintenance tool has executed.\r\n\t\t *\r\n\t\t * The initial value is the rendered result template, an empty string when no\r\n\t\t * matching result template exists, or false when rendering fails. Returning an\r\n\t\t * empty or false value prevents result content from being displayed.\r\n\t\t *\r\n\t\t * @since 0.2.8\r\n\t\t * @category Maintenance Tools\r\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t *\r\n\t\t * @param string|false $renderedResult The rendered maintenance tool result.\r\n\t\t * @param string $toolId The executed maintenance tool identifier.\r\n\t\t * @param Abp01_MaintenanceTool_Result $result The maintenance tool execution result.\r\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -452,12 +450,12 @@
                 "$this"
             ],
             "file": "lib/pluginModules/PluginModuleHost.php",
-            "line": 90,
+            "line": 109,
             "enclosingClass": "Abp01_PluginModules_PluginModuleHost",
             "enclosingFunction": "_getInjectableServiceFactories",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 94,
+            "docComment": "/**\n\t\t * Filters the service factories available for plugin module dependency injection.\n\t\t *\n\t\t * The array is keyed by dependency class name. Each value is a zero-argument\n\t\t * callable that returns the corresponding service instance. Callbacks may add,\n\t\t * replace, or remove factories before the plugin module activator is created.\n\t\t * An empty array or a value of another type is ignored in favor of the defaults.\n\t\t *\n\t\t * @since 0.2.6\n\t\t * @category Plugin Modules\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\n\t\t *\n\t\t * @param array<string, callable> $defaultInjectables The default service factories keyed by dependency class name.\n\t\t * @param Abp01_PluginModules_PluginModuleHost $pluginModuleHost The plugin module host requesting the factories.\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -470,12 +468,12 @@
                 "true"
             ],
             "file": "lib/pluginModules/RestApiEnhancementsPluginModule.php",
-            "line": 64,
+            "line": 72,
             "enclosingClass": "Abp01_PluginModules_RestApiEnhancementsPluginModule",
             "enclosingFunction": "_shouldAddTripSummaryToRestApi",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 64,
+            "docComment": "/**\r\n\t\t * Filters whether or not to add the trip summary endpoint to the WP REST APIs.\r\n\t\t * True by default.\r\n\t\t * \r\n\t\t * @since 0.3.0\r\n\t\t * \r\n\t\t * @param bool $shouldAddTripSummaryToRestAPI True if it should be added, false otherwise\r\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -488,14 +486,16 @@
                 "false"
             ],
             "file": "lib/pluginModules/RestApiEnhancementsPluginModule.php",
-            "line": 114,
+            "line": 132,
             "enclosingClass": "Abp01_PluginModules_RestApiEnhancementsPluginModule",
             "enclosingFunction": "_shouldAddTripSummaryToRestApiListing",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 124,
+            "docComment": "/**\r\n\t\t * Filters whether to add trip summary data for each post when the request is for a post listing.\r\n\t\t * Default false.\r\n\t\t * \r\n\t\t * @since 0.3.0\r\n\t\t * \r\n\t\t * @param bool $shouldAddTripSummaryToRestApiListing True to add, false otherwise.\r\n\t\t */",
             "prefixEvidence": true
-        },
+        }
+    ],
+    "undocumentedHooks": [
         {
             "hookName": "abp01_should_render_frontend_route_log_statistics",
             "kind": "filter",

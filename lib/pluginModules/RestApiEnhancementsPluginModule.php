@@ -61,6 +61,15 @@ class Abp01_PluginModules_RestApiEnhancementsPluginModule extends Abp01_PluginMo
 	}
 
 	private function _shouldAddTripSummaryToRestApi(): bool {
+		/**
+		 * Filters whether or not to add the trip summary endpoint to the WP REST APIs.
+		 * True by default.
+		 * 
+		 * @since 0.3.0
+		 * @category REST API
+		 * 
+		 * @param bool $shouldAddTripSummaryToRestAPI True if it should be added, false otherwise
+		 */
 		return apply_filters('abp01_add_trip_summary_to_rest_api', 
 			true) === true;
 	}
@@ -96,6 +105,8 @@ class Abp01_PluginModules_RestApiEnhancementsPluginModule extends Abp01_PluginMo
 			return null;
 		}
 
+		//If not an explicit single post data request, 
+		//	data addition is conditioned by an additonal check
 		$requestPostId = intval($request->get_param('id'));
 		if (!$this->_shouldAddTripSummaryToRestApiListing() && $postId !== $requestPostId) {
 			return null;
@@ -110,9 +121,18 @@ class Abp01_PluginModules_RestApiEnhancementsPluginModule extends Abp01_PluginMo
 			: 0;
 	}
 
-	private function _shouldAddTripSummaryToRestApiListing() {
+	private function _shouldAddTripSummaryToRestApiListing(): bool {
+		/**
+		 * Filters whether to add trip summary data for each post when the request is for a post listing.
+		 * Default false.
+		 * 
+		 * @since 0.3.0
+		 * @category REST API
+		 * 
+		 * @param bool $shouldAddTripSummaryToRestApiListing True to add, false otherwise.
+		 */
 		return apply_filters('abp01_add_trip_summary_to_rest_api_listing', 
-			false);
+			false) === true;
 	}
 
 	private function _getTripSummaryData(int $postId): array {
