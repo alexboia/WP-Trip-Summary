@@ -35,9 +35,11 @@ class RunPostInstallHooksInstallerStepTests extends WP_UnitTestCase {
 		$context = new Abp01_Installer_Context();
 		$operationError = new RuntimeException('Installation failed.');
 		$context->pushError('installation', $operationError);
+		
 		$receivedContext = null;
 		$callCount = 0;
-		$callback = static function($actualContext) use (&$receivedContext, &$callCount): void {
+
+		$callback = static function(Abp01_Installer_Context $actualContext) use (&$receivedContext, &$callCount): void {
 			$receivedContext = $actualContext;
 			$callCount++;
 		};

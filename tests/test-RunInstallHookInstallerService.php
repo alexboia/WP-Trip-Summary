@@ -31,11 +31,13 @@
 class RunInstallHookInstallerServiceTests extends WP_UnitTestCase {
 	private const HOOK_NAME = 'abp01_test_installer_hook';
 
+	private const CUSTOM_HOOK_ERROR_KEY = 'abp01_test_installer_hook-my-hook-error';
+
 	public function test_executeDispatchesHookWithContext(): void {
 		$context = new Abp01_Installer_Context();
 		$receivedContext = null;
 		$callCount = 0;
-		$callback = static function($actualContext) use (&$receivedContext, &$callCount): void {
+		$callback = static function(Abp01_Installer_Context $actualContext) use (&$receivedContext, &$callCount): void {
 			$receivedContext = $actualContext;
 			$callCount++;
 		};
@@ -51,9 +53,11 @@ class RunInstallHookInstallerServiceTests extends WP_UnitTestCase {
 		$this->assertTrue($result);
 		$this->assertSame(1, $callCount);
 		$this->assertSame($context, $receivedContext);
+
 		$this->assertFalse($service->hasError());
 		$this->assertNull($service->getLastError());
 		$this->assertFalse($context->hasHookErrors());
+		$this->assertTrue($context->isSuccessful());
 	}
 
 	/**
@@ -63,6 +67,7 @@ class RunInstallHookInstallerServiceTests extends WP_UnitTestCase {
 	public function test_executeCapturesCallbackExceptionAsHookError(): void {
 		$context = new Abp01_Installer_Context();
 		$expectedError = new RuntimeException('Hook callback failed.');
+
 		$callback = static function() use ($expectedError): void {
 			throw $expectedError;
 		};
@@ -79,9 +84,41 @@ class RunInstallHookInstallerServiceTests extends WP_UnitTestCase {
 		$this->assertFalse($result);
 		$this->assertTrue($service->hasError());
 		$this->assertSame($expectedError, $service->getLastError());
+
 		$this->assertArrayHasKey(self::HOOK_NAME, $hookErrors);
 		$this->assertSame($expectedError, $hookErrors[self::HOOK_NAME]);
 		$this->assertSame($expectedError, $context->getLastError());
-		$this->assertTrue($context->isSuccessful());
+		$this->assertFalse($context->isSuccessful());
+	}
+
+	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function test_executeHookRegistersOwnError(): void {
+		$context = new Abp01_Installer_Context();
+		$expectedError = new RuntimeException('Hook callback failed.');
+
+		$callback = static function(Abp01_Installer_Context $actualContext) use ($expectedError): void {
+			$actualContext->pushHookError(self::CUSTOM_HOOK_ERROR_KEY, $expectedError);
+		};
+
+		add_action(self::HOOK_NAME, $callback);
+		try {
+			$service = new Abp01_Installer_Service_RunInstallHook(self::HOOK_NAME, $context);
+			$result = $service->execute();
+		} finally {
+			remove_action(self::HOOK_NAME, $callback);
+		}
+
+		$hookErrors = $context->getHookErrors();
+		$this->assertTrue($result);
+		$this->assertFalse($service->hasError());		
+		$this->assertNull($service->getLastError());
+
+		$this->assertArrayHasKey(self::CUSTOM_HOOK_ERROR_KEY, $hookErrors);
+		$this->assertSame($expectedError, $hookErrors[self::CUSTOM_HOOK_ERROR_KEY]);
+		$this->assertSame($expectedError, $context->getLastError());
+		$this->assertFalse($context->isSuccessful());
 	}
 }

@@ -35,7 +35,8 @@ class RunPreInstallHooksInstallerStepTests extends WP_UnitTestCase {
 		$context = new Abp01_Installer_Context();
 		$receivedContext = null;
 		$callCount = 0;
-		$callback = static function($actualContext) use (&$receivedContext, &$callCount): void {
+
+		$callback = static function(Abp01_Installer_Context $actualContext) use (&$receivedContext, &$callCount): void {
 			$receivedContext = $actualContext;
 			$callCount++;
 		};

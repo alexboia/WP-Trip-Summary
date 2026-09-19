@@ -85,7 +85,7 @@ class Abp01_Installer_Context {
 	}
 
 	public function isSuccessful() {
-		return !$this->hasErrors();
+		return !$this->hasErrors() && !$this->hasHookErrors();
 	}
 
 	public function reset() {
