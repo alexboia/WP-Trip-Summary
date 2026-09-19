@@ -34,10 +34,7 @@ if (!defined('ABP01_LOADED')) {
 }
 
 class Abp01_Installer_Step_RunPostInstallHooks implements Abp01_Installer_Step {
-	/**
-	 * @var Abp01_Installer_Service_RunInstallHook
-	 */
-	private $_service;
+	private Abp01_Installer_Service_RunInstallHook $_service;
 
 	public function __construct(Abp01_Installer_Context $context) {
 		/**
