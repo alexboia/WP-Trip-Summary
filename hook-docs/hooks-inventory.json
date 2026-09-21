@@ -8,8 +8,8 @@
     ],
     "summary": {
         "totalDispatches": 47,
-        "documented": 38,
-        "undocumented": 9,
+        "documented": 43,
+        "undocumented": 4,
         "unresolvedDynamic": 0
     },
     "documentedHooks": [
@@ -720,6 +720,100 @@
             "docCommentLine": 91,
             "docComment": "/**\n\t\t * Filters the track file download channel for a given post.\n\t\t * Must be a valid Abp01_Transfer_FileDownloader instance.\n\t\t * If an invalid value is provided, then the default downloader is used.\n\t\t * \n\t\t * @since 0.3.3\n\t\t * @category Trip Summary Management\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\n\t\t * \n\t\t * @param Abp01_Transfer_FileDownloader $trackFileDownloaderInstance The current track file downloader instance\n\t\t * @param int $postId The current post ID\n\t\t */",
             "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_info_item_icons",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_info_item_icons'",
+            "arguments": [
+                "$defaultIcons"
+            ],
+            "file": "views/helpers/controls.frontend.php",
+            "line": 360,
+            "enclosingClass": null,
+            "enclosingFunction": "abp01_get_info_item_icons",
+            "documentationStatus": "documented",
+            "docCommentLine": 346,
+            "docComment": "/**\r\n\t\t\t * Filters the SVG element markup used for front-end trip summary information icons.\r\n\t\t\t *\r\n\t\t\t * The array is keyed by icon identifier and each value contains the inner markup\r\n\t\t\t * inserted unescaped into the common 24x24 SVG wrapper. Icon identifiers are\r\n\t\t\t * resolved through the info item field-to-icon mapping. The filtered array is\r\n\t\t\t * cached for the remainder of the request. A non-array result is ignored in favor\r\n\t\t\t * of the defaults. Callbacks must provide trusted SVG element markup.\r\n\t\t\t *\r\n\t\t\t * @since 0.3.3\r\n\t\t\t * @category Front-end Viewer\r\n\t\t\t *\r\n\t\t\t * @param array<string, string> $defaultIcons The default raw SVG inner markup keyed by icon identifier.\r\n\t\t\t */",
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_before_trip_summary_audit_log",
+            "kind": "action",
+            "dispatcher": "do_action",
+            "resolution": "static",
+            "nameExpression": "'abp01_before_trip_summary_audit_log'",
+            "arguments": [
+                "$data->postId",
+                "$data"
+            ],
+            "file": "views/wpts-audit-log.php",
+            "line": 55,
+            "enclosingClass": null,
+            "enclosingFunction": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 43,
+            "docComment": "/**\n * Fires immediately before the trip summary audit log table is rendered.\n *\n * Callback output is rendered before the opening table element.\n *\n * @since 0.3.0\n * @category Trip Summary Management\n * @unstable Susceptible to breaking changes due to PSR-4 migration\n *\n * @param int $postId The ID of the post whose trip summary audit log is being rendered.\n * @param Abp01_ViewModel_PostAuditLogVm $data The audit log view model and rendering context.\n */",
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_after_trip_summary_info_audit_log",
+            "kind": "action",
+            "dispatcher": "do_action",
+            "resolution": "static",
+            "nameExpression": "'abp01_after_trip_summary_info_audit_log'",
+            "arguments": [
+                "$data->postId",
+                "$data"
+            ],
+            "file": "views/wpts-audit-log.php",
+            "line": 103,
+            "enclosingClass": null,
+            "enclosingFunction": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 90,
+            "docComment": "/**\n\t\t * Fires after the trip summary information audit rows have been rendered.\n\t\t *\n\t\t * The hook runs inside the table body, immediately before the track audit\n\t\t * section. Callback output should consist of valid table row elements.\n\t\t *\n\t\t * @since 0.3.0\n\t\t * @category Trip Summary Management\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\n\t\t *\n\t\t * @param int $postId The ID of the post whose trip summary audit log is being rendered.\n\t\t * @param Abp01_ViewModel_PostAuditLogVm $data The audit log view model and rendering context.\n\t\t */",
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_after_trip_summary_track_audit_log",
+            "kind": "action",
+            "dispatcher": "do_action",
+            "resolution": "static",
+            "nameExpression": "'abp01_after_trip_summary_track_audit_log'",
+            "arguments": [
+                "$data->postId",
+                "$data"
+            ],
+            "file": "views/wpts-audit-log.php",
+            "line": 149,
+            "enclosingClass": null,
+            "enclosingFunction": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 136,
+            "docComment": "/**\n\t\t * Fires after the trip summary track audit rows have been rendered.\n\t\t *\n\t\t * The hook runs inside the table body, immediately before its closing tag.\n\t\t * Callback output should consist of valid table row elements.\n\t\t *\n\t\t * @since 0.3.0\n\t\t * @category Trip Summary Management\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\n\t\t *\n\t\t * @param int $postId The ID of the post whose trip summary audit log is being rendered.\n\t\t * @param Abp01_ViewModel_PostAuditLogVm $data The audit log view model and rendering context.\n\t\t */",
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_after_trip_summary_audit_log",
+            "kind": "action",
+            "dispatcher": "do_action",
+            "resolution": "static",
+            "nameExpression": "'abp01_after_trip_summary_audit_log'",
+            "arguments": [
+                "$data->postId",
+                "$data"
+            ],
+            "file": "views/wpts-audit-log.php",
+            "line": 168,
+            "enclosingClass": null,
+            "enclosingFunction": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 156,
+            "docComment": "/**\n * Fires immediately after the trip summary audit log table has been rendered.\n *\n * Callback output is rendered after the closing table element.\n *\n * @since 0.3.0\n * @category Trip Summary Management\n * @unstable Susceptible to breaking changes due to PSR-4 migration\n *\n * @param int $postId The ID of the post whose trip summary audit log is being rendered.\n * @param Abp01_ViewModel_PostAuditLogVm $data The audit log view model and rendering context.\n */",
+            "prefixEvidence": true
         }
     ],
     "undocumentedHooks": [
@@ -736,100 +830,6 @@
             "line": 298,
             "enclosingClass": null,
             "enclosingFunction": "abp01_get_info_item_field_icon_mapping",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
-            "prefixEvidence": true
-        },
-        {
-            "hookName": "abp01_info_item_icons",
-            "kind": "filter",
-            "dispatcher": "apply_filters",
-            "resolution": "static",
-            "nameExpression": "'abp01_info_item_icons'",
-            "arguments": [
-                "$defaultIcons"
-            ],
-            "file": "views/helpers/controls.frontend.php",
-            "line": 346,
-            "enclosingClass": null,
-            "enclosingFunction": "abp01_get_info_item_icons",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
-            "prefixEvidence": true
-        },
-        {
-            "hookName": "abp01_before_trip_summary_audit_log",
-            "kind": "action",
-            "dispatcher": "do_action",
-            "resolution": "static",
-            "nameExpression": "'abp01_before_trip_summary_audit_log'",
-            "arguments": [
-                "$data->postId",
-                "$data"
-            ],
-            "file": "views/wpts-audit-log.php",
-            "line": 42,
-            "enclosingClass": null,
-            "enclosingFunction": null,
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
-            "prefixEvidence": true
-        },
-        {
-            "hookName": "abp01_after_trip_summary_info_audit_log",
-            "kind": "action",
-            "dispatcher": "do_action",
-            "resolution": "static",
-            "nameExpression": "'abp01_after_trip_summary_info_audit_log'",
-            "arguments": [
-                "$data->postId",
-                "$data"
-            ],
-            "file": "views/wpts-audit-log.php",
-            "line": 76,
-            "enclosingClass": null,
-            "enclosingFunction": null,
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
-            "prefixEvidence": true
-        },
-        {
-            "hookName": "abp01_after_trip_summary_track_audit_log",
-            "kind": "action",
-            "dispatcher": "do_action",
-            "resolution": "static",
-            "nameExpression": "'abp01_after_trip_summary_track_audit_log'",
-            "arguments": [
-                "$data->postId",
-                "$data"
-            ],
-            "file": "views/wpts-audit-log.php",
-            "line": 108,
-            "enclosingClass": null,
-            "enclosingFunction": null,
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
-            "prefixEvidence": true
-        },
-        {
-            "hookName": "abp01_after_trip_summary_audit_log",
-            "kind": "action",
-            "dispatcher": "do_action",
-            "resolution": "static",
-            "nameExpression": "'abp01_after_trip_summary_audit_log'",
-            "arguments": [
-                "$data->postId",
-                "$data"
-            ],
-            "file": "views/wpts-audit-log.php",
-            "line": 114,
-            "enclosingClass": null,
-            "enclosingFunction": null,
             "documentationStatus": "missing",
             "docCommentLine": null,
             "docComment": null,

@@ -39,7 +39,20 @@
 		: 'abp01-admin-trip-summary-audit-log abp01-admin-trip-summary-audit-log-post';
 ?>
 
-<?php do_action('abp01_before_trip_summary_audit_log', 
+<?php
+/**
+ * Fires immediately before the trip summary audit log table is rendered.
+ *
+ * Callback output is rendered before the opening table element.
+ *
+ * @since 0.3.0
+ * @category Trip Summary Management
+ * @unstable Susceptible to breaking changes due to PSR-4 migration
+ *
+ * @param int $postId The ID of the post whose trip summary audit log is being rendered.
+ * @param Abp01_ViewModel_PostAuditLogVm $data The audit log view model and rendering context.
+ */
+do_action('abp01_before_trip_summary_audit_log',
 	$data->postId, 
 	$data); ?>
 
@@ -73,7 +86,21 @@
 			</td>
 		</tr>
 
-		<?php do_action('abp01_after_trip_summary_info_audit_log', 
+		<?php
+		/**
+		 * Fires after the trip summary information audit rows have been rendered.
+		 *
+		 * The hook runs inside the table body, immediately before the track audit
+		 * section. Callback output should consist of valid table row elements.
+		 *
+		 * @since 0.3.0
+		 * @category Trip Summary Management
+		 * @unstable Susceptible to breaking changes due to PSR-4 migration
+		 *
+		 * @param int $postId The ID of the post whose trip summary audit log is being rendered.
+		 * @param Abp01_ViewModel_PostAuditLogVm $data The audit log view model and rendering context.
+		 */
+		do_action('abp01_after_trip_summary_info_audit_log',
 			$data->postId, 
 			$data); ?>
 
@@ -105,12 +132,39 @@
 			</td>
 		</tr>
 
-		<?php do_action('abp01_after_trip_summary_track_audit_log', 
+		<?php
+		/**
+		 * Fires after the trip summary track audit rows have been rendered.
+		 *
+		 * The hook runs inside the table body, immediately before its closing tag.
+		 * Callback output should consist of valid table row elements.
+		 *
+		 * @since 0.3.0
+		 * @category Trip Summary Management
+		 * @unstable Susceptible to breaking changes due to PSR-4 migration
+		 *
+		 * @param int $postId The ID of the post whose trip summary audit log is being rendered.
+		 * @param Abp01_ViewModel_PostAuditLogVm $data The audit log view model and rendering context.
+		 */
+		do_action('abp01_after_trip_summary_track_audit_log',
 			$data->postId, 
 			$data); ?>
 	</tbody>
 </table>
 
-<?php do_action('abp01_after_trip_summary_audit_log', 
+<?php
+/**
+ * Fires immediately after the trip summary audit log table has been rendered.
+ *
+ * Callback output is rendered after the closing table element.
+ *
+ * @since 0.3.0
+ * @category Trip Summary Management
+ * @unstable Susceptible to breaking changes due to PSR-4 migration
+ *
+ * @param int $postId The ID of the post whose trip summary audit log is being rendered.
+ * @param Abp01_ViewModel_PostAuditLogVm $data The audit log view model and rendering context.
+ */
+do_action('abp01_after_trip_summary_audit_log',
 	$data->postId, 
 	$data); ?>

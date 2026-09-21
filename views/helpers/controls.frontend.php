@@ -343,10 +343,24 @@ if (!function_exists('abp01_get_info_item_icons')) {
 				'line' => '<path d="M3 12h18M6 12V6M18 12v6"/>'
 			);
 
-			$icons = apply_filters('abp01_info_item_icons', 
+			/**
+			 * Filters the SVG element markup used for front-end trip summary information icons.
+			 *
+			 * The array is keyed by icon identifier and each value contains the inner markup
+			 * inserted unescaped into the common 24x24 SVG wrapper. Icon identifiers are
+			 * resolved through the info item field-to-icon mapping. The filtered array is
+			 * cached for the remainder of the request. A non-array result is ignored in favor
+			 * of the defaults. Callbacks must provide trusted SVG element markup.
+			 *
+			 * @since 0.3.3
+			 * @category Front-end Viewer
+			 *
+			 * @param array<string, string> $defaultIcons The default raw SVG inner markup keyed by icon identifier.
+			 */
+			$icons = apply_filters('abp01_info_item_icons',
 				$defaultIcons);
 
-			if (!is_array($icons)) {
+			if (!is_array($icons) || empty($icons)) {
 				$icons = $defaultIcons;
 			}
 		}
