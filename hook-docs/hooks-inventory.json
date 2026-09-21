@@ -8,8 +8,8 @@
     ],
     "summary": {
         "totalDispatches": 47,
-        "documented": 35,
-        "undocumented": 12,
+        "documented": 37,
+        "undocumented": 10,
         "unresolvedDynamic": 0
     },
     "documentedHooks": [
@@ -664,9 +664,7 @@
             "docCommentLine": 267,
             "docComment": "/**\n\t\t * Filters the number of trailing lines displayed for an oversized log file.\n\t\t *\n\t\t * The initial value is 512, or the value of the\n\t\t * ABP01_LOG_FILE_DISPLAY_TAIL_LINE_COUNT constant when defined. The filtered\n\t\t * value is converted to an integer; zero and negative values fall back to 512.\n\t\t * This value also contributes to the default maximum displayable file size.\n\t\t *\n\t\t * @since 0.3.2\n\t\t * @category Log Management\n\t\t *\n\t\t * @param int $tailLineCount The number of trailing log lines to display.\n\t\t */",
             "prefixEvidence": true
-        }
-    ],
-    "undocumentedHooks": [
+        },
         {
             "hookName": "abp01_predefined_tile_layers",
             "kind": "filter",
@@ -677,12 +675,12 @@
                 "$predefinedTileLayers"
             ],
             "file": "lib/settings/PredefinedTileLayer.php",
-            "line": 204,
+            "line": 240,
             "enclosingClass": "Abp01_Settings_PredefinedTileLayer",
-            "enclosingFunction": "getPredefinedTileLayers",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "enclosingFunction": "_filterAvailablePredefinedTileLayers",
+            "documentationStatus": "documented",
+            "docCommentLine": 223,
+            "docComment": "/**\n\t\t * Filters the list of available pre-defined tile layers offered \n\t\t * \tas options when configuring the tile layer used for the viewer.\n\t\t * The return value must be a non-empty array \n\t\t * \tof Abp01_Settings_PredefinedTileLayer instances.\n\t\t * \n\t\t * Invalid elements are fitlered out.\n\t\t * \n\t\t * If the resulting value is a empty array, \n\t\t * \tthe default list is used instead.\n\t\t * \n\t\t * @since 0.3.2\n\t\t * @category Settings - Trip Summary Map\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\n\t\t * \n\t\t * @param Abp01_Settings_PredefinedTileLayer[] $predefinedTileLayer The list of pre-defined tile layers.\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -696,14 +694,16 @@
                 "$allTileLayerIds"
             ],
             "file": "lib/settings/PredefinedTileLayer.php",
-            "line": 233,
+            "line": 291,
             "enclosingClass": "Abp01_Settings_PredefinedTileLayer",
-            "enclosingFunction": "getDefaultTileLayer",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "enclosingFunction": "_getDefaultTileLayerId",
+            "documentationStatus": "documented",
+            "docCommentLine": 276,
+            "docComment": "/**\n\t\t * Filters the identifier of the pre-defined tile layer selected by default.\n\t\t *\n\t\t * The initial value is \"open-street-map\". Callbacks also receive the identifiers\n\t\t * available after the pre-defined tile layer list has been filtered. The result\n\t\t * must be a non-empty string identifying one of those layers. An empty or\n\t\t * non-string result falls back to \"open-street-map\"; an unknown non-empty string\n\t\t * causes default tile layer resolution to fail.\n\t\t *\n\t\t * @since 0.2.7\n\t\t * @category Settings - Trip Summary Map\n\t\t *\n\t\t * @param string $defaultTileLayerId The default pre-defined tile layer identifier.\n\t\t * @param string[] $allTileLayerIds The available pre-defined tile layer identifiers.\n\t\t */",
             "prefixEvidence": true
-        },
+        }
+    ],
+    "undocumentedHooks": [
         {
             "hookName": "abp01_get_track_file_downloader",
             "kind": "filter",

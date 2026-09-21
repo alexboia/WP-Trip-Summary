@@ -29,7 +29,9 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+use WpTripSummary\Exception;
+
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
@@ -38,45 +40,54 @@ class Abp01_Settings_PredefinedTileLayer {
 
 	const FILTER_HOOK_GET_PREDEFINED_TILE_LAYERS = 'abp01_predefined_tile_layers';
 
-	const TL_OPEN_STREET_MAP = 'open-street-map';
+	public const string TL_OPEN_STREET_MAP = 'open-street-map';
 
-	const TL_TF_OPENCYCLEMAP = 'tf-open-cycle-map';
+	public const string TL_TF_OPENCYCLEMAP = 'tf-open-cycle-map';
 
-	const TL_TF_TRANSPORT = 'tf-transport';
+	public const string TL_TF_TRANSPORT = 'tf-transport';
 
-	const TL_TF_LANDSCAPE = 'tf-landscape';
+	public const string TL_TF_LANDSCAPE = 'tf-landscape';
 
-	const TL_TF_OUTDOORS = 'tf-outdoors';
+	public const string TL_TF_OUTDOORS = 'tf-outdoors';
 
-	const TL_TF_TRANSPORT_DARK = 'tf-transport-dark';
+	public const string TL_TF_TRANSPORT_DARK = 'tf-transport-dark';
 
-	const TL_TF_SPINAL_MAP = 'tf-spinal-map';
+	public const string TL_TF_SPINAL_MAP = 'tf-spinal-map';
 
-	const TL_TF_PIONEER = 'tf-pioneer';
+	public const string TL_TF_PIONEER = 'tf-pioneer';
 
-	const TL_TF_MOBILE_ATLAS = 'tf-mobile-atlas';
+	public const string TL_TF_MOBILE_ATLAS = 'tf-mobile-atlas';
 
-	const TL_TF_NEIGHBOORHOOD = 'tf-neighbourhood';
+	public const string TL_TF_NEIGHBOORHOOD = 'tf-neighbourhood';
 
-	const TL_TF_ATLAS = 'tf-atlas';
+	public const string TL_TF_ATLAS = 'tf-atlas';
 
-	private $_id;
+	private ?string $_id;
 
-	private $_label;
+	private ?string $_label;
 
-	private $_url;
+	private ?string $_url;
 
-	private $_attributionTxt;
+	private ?string $_attributionTxt;
 
-	private $_attributionUrl;
+	private ?string $_attributionUrl;
 
-	private $_infoUrl = null;
+	private ?string $_infoUrl = null;
 
-	private $_apiKeyRequired;
+	private bool $_apiKeyRequired;
 
-	private static $_predefinedTileLayers = null;
+	/**
+	 * @var null|Abp01_Settings_PredefinedTileLayer[]
+	 */
+	private static ?array $_predefinedTileLayers = null;
 
-	public function __construct($id, $label, $url, $attributionTxt, $attributionUrl, $infoUrl = null) {
+	public function __construct(?string $id, 
+		?string $label, 
+		?string $url, 
+		?string $attributionTxt, 
+		?string $attributionUrl, 
+		?string $infoUrl = null) {
+
 		if (empty($id)) {
 			throw new InvalidArgumentException('Tile layer id may not be empty.');
 		}
@@ -98,19 +109,15 @@ class Abp01_Settings_PredefinedTileLayer {
 		$this->_apiKeyRequired = $this->_tileLayerUrlHasApiKeyPlaceholder($url);
 	}
 
-	private function _tileLayerUrlHasApiKeyPlaceholder($url) {
-		return strpos($url, '{apiKey}') !== false;
+	private function _tileLayerUrlHasApiKeyPlaceholder(?string $url): bool {
+		return !empty($url) && strpos($url, '{apiKey}') !== false;
 	}
 
-	public static function isPredefinedTileLayerSupported($id) {
+	public static function isPredefinedTileLayerSupported(?string $id): bool {
 		return !empty(self::getPredefinedTileLayer($id));
 	}
 
-	/**
-	 * @return Abp01_Settings_PredefinedTileLayer|null 
-	 * @throws Abp01_Exception 
-	 */
-	public static function getPredefinedTileLayer($id) {
+	public static function getPredefinedTileLayer(?string $id): ?Abp01_Settings_PredefinedTileLayer {
 		if (empty($id)) {
 			return null;
 		}
@@ -201,47 +208,98 @@ class Abp01_Settings_PredefinedTileLayer {
 					'https://www.thunderforest.com/maps/transport-dark/'),
 			);
 
-			$predefinedTileLayers = apply_filters(self::FILTER_HOOK_GET_PREDEFINED_TILE_LAYERS, 
-				$predefinedTileLayers);
-
-			self::_validatePredefinedTileLayers($predefinedTileLayers);
+			$predefinedTileLayers = self::_filterAvailablePredefinedTileLayers($predefinedTileLayers);
 			self::$_predefinedTileLayers = $predefinedTileLayers;
 		}
 
 		return self::$_predefinedTileLayers;
 	}
 
+	/**
+	 * @param Abp01_Settings_PredefinedTileLayer[] $predefinedTileLayers 
+	 * @return Abp01_Settings_PredefinedTileLayer[]
+	 */
+	private static function _filterAvailablePredefinedTileLayers(array $predefinedTileLayers): array {
+		/**
+		 * Filters the list of available pre-defined tile layers offered 
+		 * 	as options when configuring the tile layer used for the viewer.
+		 * The return value must be a non-empty array 
+		 * 	of Abp01_Settings_PredefinedTileLayer instances.
+		 * 
+		 * Invalid elements are fitlered out.
+		 * 
+		 * If the resulting value is a empty array, 
+		 * 	the default list is used instead.
+		 * 
+		 * @since 0.3.2
+		 * @category Settings - Trip Summary Map
+		 * @unstable Susceptible to breaking changes due to PSR-4 migration
+		 * 
+		 * @param Abp01_Settings_PredefinedTileLayer[] $predefinedTileLayer The list of pre-defined tile layers.
+		 */
+		$finalTileLayers = apply_filters(self::FILTER_HOOK_GET_PREDEFINED_TILE_LAYERS, 
+			$predefinedTileLayers);
+
+		if (!is_array($finalTileLayers)) {
+			$finalTileLayers = array();
+		}
+
+		$finalTileLayers = array_filter($finalTileLayers, 
+			fn(mixed $tileLayer): bool => 
+				is_object($tileLayer) && $tileLayer instanceof self);
+
+		if (empty($finalTileLayers)) {
+			$finalTileLayers = $predefinedTileLayers;
+		}
+
+		return $finalTileLayers;
+	}
+
 	public static function clearPredefinedTileLayersCache() {
 		self::$_predefinedTileLayers = null;
 	}
 
-	private static function _validatePredefinedTileLayers(array $predefinedTileLayers) {
-		foreach ($predefinedTileLayers as $layer) {
-			if (!($layer instanceof Abp01_Settings_PredefinedTileLayer)) {
-				throw new Abp01_Exception('A predefined tile layer must be an instance of <' . __CLASS__ . '> class');
-			}
-		}
-	}
-
-	/**
-	 * @return Abp01_Settings_PredefinedTileLayer|null 
-	 * @throws Abp01_Exception 
-	 */
-	public static function getDefaultTileLayer() {
+	public static function getDefaultTileLayer(): ?Abp01_Settings_PredefinedTileLayer {
 		$allTileLayerIds = array_keys(self::getPredefinedTileLayers());
-
-		$defaultTileLayeId = apply_filters(self::FILTER_HOOK_GET_DEFAULT_TILE_LAYER_ID, 
-			self::TL_OPEN_STREET_MAP, 
-			$allTileLayerIds);
+		$defaultTileLayeId = self::_getDefaultTileLayerId($allTileLayerIds);
 
 		if (!self::isPredefinedTileLayerSupported($defaultTileLayeId)) {
-			throw new Abp01_Exception('Unsupported pre-defined tile layer id <' . $defaultTileLayeId . '> used for default tile layer');
+			throw new Exception(
+				'Unsupported pre-defined tile layer id <' . $defaultTileLayeId . '> used for default tile layer'
+			);
 		}
 
 		return self::getPredefinedTileLayer($defaultTileLayeId);
 	}
 
-	public function getTileLayerObject() {
+	private static function _getDefaultTileLayerId(array $allTileLayerIds): string {
+		/**
+		 * Filters the identifier of the pre-defined tile layer selected by default.
+		 *
+		 * The initial value is "open-street-map". Callbacks also receive the identifiers
+		 * available after the pre-defined tile layer list has been filtered. The result
+		 * must be a non-empty string identifying one of those layers. An empty or
+		 * non-string result falls back to "open-street-map"; an unknown non-empty string
+		 * causes default tile layer resolution to fail.
+		 *
+		 * @since 0.2.7
+		 * @category Settings - Trip Summary Map
+		 *
+		 * @param string $defaultTileLayerId The default pre-defined tile layer identifier.
+		 * @param string[] $allTileLayerIds The available pre-defined tile layer identifiers.
+		 */
+		$defaultTileLayeId = apply_filters(self::FILTER_HOOK_GET_DEFAULT_TILE_LAYER_ID, 
+			self::TL_OPEN_STREET_MAP, 
+			$allTileLayerIds);
+
+		if (empty($defaultTileLayeId) || !is_string($defaultTileLayeId)) {
+			$defaultTileLayeId = self::TL_OPEN_STREET_MAP;
+		}
+
+		return $defaultTileLayeId;
+	}
+
+	public function getTileLayerObject(): stdClass {
 		$tileLayer = new stdClass();
 		$tileLayer->url = $this->_url;
 		$tileLayer->attributionTxt = $this->_attributionTxt;
@@ -250,7 +308,7 @@ class Abp01_Settings_PredefinedTileLayer {
 		return $tileLayer;
 	}
 
-	public function asPlainObject() {
+	public function asPlainObject(): stdClass {
 		$predefinedTileLayerInfo = new stdClass();
 		$predefinedTileLayerInfo->id = $this->getId();
 		$predefinedTileLayerInfo->label = $this->getLabel();
@@ -260,31 +318,31 @@ class Abp01_Settings_PredefinedTileLayer {
 		return $predefinedTileLayerInfo;
 	}
 
-	public function getId() {
+	public function getId(): ?string {
 		return $this->_id;
 	}
 
-	public function getLabel() {
+	public function getLabel(): ?string {
 		return $this->_label;
 	}
 
-	public function getUrl() {
+	public function getUrl(): ?string {
 		return $this->_url;
 	}
 
-	public function getAttributionText() {
+	public function getAttributionText(): ?string {
 		return $this->_attributionTxt;
 	}
 
-	public function getAttributionUrl() {
+	public function getAttributionUrl(): ?string {
 		return $this->_attributionUrl;
 	}
 
-	public function getInfoUrl() {
+	public function getInfoUrl(): ?string {
 		return $this->_infoUrl;
 	}
 
-	public function isApiKeyRequired() {
+	public function isApiKeyRequired(): bool {
 		return $this->_apiKeyRequired;
 	}
 }

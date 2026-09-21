@@ -29,6 +29,8 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Exception;
+
 class PredefinedTileLayerTests extends WP_UnitTestCase {
 	use GenericTestHelpers;
 
@@ -53,7 +55,7 @@ class PredefinedTileLayerTests extends WP_UnitTestCase {
 		$this->_runPredefinedTileLayerCreationTest(true);
 	}
 
-	private function _runPredefinedTileLayerCreationTest($withApieKeyPlaceholderInUrl) {
+	private function _runPredefinedTileLayerCreationTest(bool $withApieKeyPlaceholderInUrl) {
 		$faker = $this->_getFaker();
 		$id = $faker->uuid;
 		$label = $faker->words(3, true);
@@ -92,7 +94,7 @@ class PredefinedTileLayerTests extends WP_UnitTestCase {
 			$predefinedTileLayer->isApiKeyRequired());
 	}
 
-	private function _addApiKeyPlaceholderToUrl($url) {
+	private function _addApiKeyPlaceholderToUrl(string $url): string {
 		if (stripos($url, '{apiKey}') === false) {
 			$modifiedUrl = $url[strlen($url) - 1] != '/' 
 				? ($url . '/') 
@@ -104,7 +106,7 @@ class PredefinedTileLayerTests extends WP_UnitTestCase {
 		return $modifiedUrl;
 	}
 
-	private function _stripApiKeyPlaceholderFromUrl($url) {
+	private function _stripApiKeyPlaceholderFromUrl(string $url): string {
 		$faker = $this->_getFaker();
 		$modifiedUrl = str_ireplace('{apiKey}', 
 			$faker->uuid, 
@@ -116,6 +118,32 @@ class PredefinedTileLayerTests extends WP_UnitTestCase {
 		$this->_runPredefinedTileLayerCreationTest(false);
 	}
 
+	/**
+	 * @dataProvider provideEmptyRequiredConstructorArguments
+	 */
+	public function test_cannotCreate_withEmptyRequiredConstructorArgument(?string $id,
+		?string $label,
+		?string $url) {
+		$this->expectException(InvalidArgumentException::class);
+
+		new Abp01_Settings_PredefinedTileLayer($id,
+			$label,
+			$url,
+			'attribution',
+			'https://example.com/attribution');
+	}
+
+	public function provideEmptyRequiredConstructorArguments(): array {
+		return array(
+			'null id' => array(null, 'Layer', 'https://example.com/{z}/{x}/{y}.png'),
+			'empty id' => array('', 'Layer', 'https://example.com/{z}/{x}/{y}.png'),
+			'null label' => array('layer-id', null, 'https://example.com/{z}/{x}/{y}.png'),
+			'empty label' => array('layer-id', '', 'https://example.com/{z}/{x}/{y}.png'),
+			'null URL' => array('layer-id', 'Layer', null),
+			'empty URL' => array('layer-id', 'Layer', ''),
+		);
+	}
+
 	public function test_canGetPredefinedTileLayers_noFilters() {
 		$expectedLayerIds = $this->_getExpectedDefaultPredefinedTileLayerIds();
 		$predefinedTileLayers = Abp01_Settings_PredefinedTileLayer::getPredefinedTileLayers();
@@ -124,7 +152,23 @@ class PredefinedTileLayerTests extends WP_UnitTestCase {
 			$predefinedTileLayers);
 	}
 
-	private function _assertPredefinedTileLayersMatchesExpectedIds($expectedIds, array $predefinedTileLayers) {
+	public function test_defaultPredefinedTileLayers_haveConsistentDefinitions() {
+		$predefinedTileLayers = Abp01_Settings_PredefinedTileLayer::getPredefinedTileLayers();
+
+		foreach ($predefinedTileLayers as $layerId => $predefinedTileLayer) {
+			$this->assertInstanceOf(Abp01_Settings_PredefinedTileLayer::class,
+				$predefinedTileLayer);
+			$this->assertSame($layerId, $predefinedTileLayer->getId());
+			$this->assertNotEmpty($predefinedTileLayer->getLabel());
+			$this->assertNotEmpty($predefinedTileLayer->getUrl());
+			$this->assertSame(
+				strpos($predefinedTileLayer->getUrl(), '{apiKey}') !== false,
+				$predefinedTileLayer->isApiKeyRequired()
+			);
+		}
+	}
+
+	private function _assertPredefinedTileLayersMatchesExpectedIds(array $expectedIds, array $predefinedTileLayers) {
 		$this->assertEquals(count($expectedIds), 
 			count($predefinedTileLayers));
 
@@ -135,7 +179,7 @@ class PredefinedTileLayerTests extends WP_UnitTestCase {
 		}
 	}
 
-	private function _getExpectedDefaultPredefinedTileLayerIds() {
+	private function _getExpectedDefaultPredefinedTileLayerIds(): array {
 		return array(
 			Abp01_Settings_PredefinedTileLayer::TL_OPEN_STREET_MAP,
 			Abp01_Settings_PredefinedTileLayer::TL_TF_ATLAS,
@@ -199,7 +243,78 @@ class PredefinedTileLayerTests extends WP_UnitTestCase {
 			$predefinedTileLayers);
 	}
 
-	private function _generateRandomPredefinedTileLayer($withApieKeyInUrl) {
+	public function test_canGetPredefinedTileLayers_withFilters_filtersOutInvalidEntries() {
+		$validLayer = $this->_generateRandomPredefinedTileLayer(false);
+
+		add_filter(Abp01_Settings_PredefinedTileLayer::FILTER_HOOK_GET_PREDEFINED_TILE_LAYERS,
+			function($predefinedTileLayers) use ($validLayer) {
+				$predefinedTileLayers[$validLayer->getId()] = $validLayer;
+				$predefinedTileLayers['invalid-null'] = null;
+				$predefinedTileLayers['invalid-string'] = 'not-a-tile-layer';
+				$predefinedTileLayers['invalid-object'] = new stdClass();
+
+				return $predefinedTileLayers;
+			});
+
+		$predefinedTileLayers = Abp01_Settings_PredefinedTileLayer::getPredefinedTileLayers();
+
+		$this->assertArrayHasKey($validLayer->getId(), $predefinedTileLayers);
+		$this->assertSame($validLayer, $predefinedTileLayers[$validLayer->getId()]);
+		$this->assertArrayNotHasKey('invalid-null', $predefinedTileLayers);
+		$this->assertArrayNotHasKey('invalid-string', $predefinedTileLayers);
+		$this->assertArrayNotHasKey('invalid-object', $predefinedTileLayers);
+	}
+
+	/**
+	 * @dataProvider provideInvalidPredefinedTileLayerFilterResults
+	 */
+	public function test_canGetPredefinedTileLayers_withFilters_fallsBackWhenResultIsInvalid($filteredValue) {
+		add_filter(Abp01_Settings_PredefinedTileLayer::FILTER_HOOK_GET_PREDEFINED_TILE_LAYERS,
+			function($predefinedTileLayers) use ($filteredValue) {
+				return $filteredValue;
+			});
+
+		$predefinedTileLayers = Abp01_Settings_PredefinedTileLayer::getPredefinedTileLayers();
+
+		$this->_assertPredefinedTileLayersMatchesExpectedIds(
+			$this->_getExpectedDefaultPredefinedTileLayerIds(),
+			$predefinedTileLayers
+		);
+	}
+
+	public function provideInvalidPredefinedTileLayerFilterResults(): array {
+		return array(
+			'null' => array(null),
+			'false' => array(false),
+			'string' => array('not-an-array'),
+			'empty array' => array(array()),
+			'only invalid entries' => array(array('invalid' => new stdClass())),
+		);
+	}
+
+	public function test_predefinedTileLayers_areCachedUntilCacheIsCleared() {
+		$filterCallCount = 0;
+
+		add_filter(Abp01_Settings_PredefinedTileLayer::FILTER_HOOK_GET_PREDEFINED_TILE_LAYERS,
+			function($predefinedTileLayers) use (&$filterCallCount) {
+				$filterCallCount ++;
+				return $predefinedTileLayers;
+			});
+
+		$firstResult = Abp01_Settings_PredefinedTileLayer::getPredefinedTileLayers();
+		$secondResult = Abp01_Settings_PredefinedTileLayer::getPredefinedTileLayers();
+
+		$this->assertSame(1, $filterCallCount);
+		$this->assertSame($firstResult, $secondResult);
+
+		Abp01_Settings_PredefinedTileLayer::clearPredefinedTileLayersCache();
+		$thirdResult = Abp01_Settings_PredefinedTileLayer::getPredefinedTileLayers();
+
+		$this->assertSame(2, $filterCallCount);
+		$this->assertNotSame($firstResult, $thirdResult);
+	}
+
+	private function _generateRandomPredefinedTileLayer(bool $withApieKeyInUrl): Abp01_Settings_PredefinedTileLayer {
 		$faker = $this->_getFaker();
 		$id = $faker->uuid;
 		$label = $faker->words(3, true);
@@ -251,11 +366,25 @@ class PredefinedTileLayerTests extends WP_UnitTestCase {
 		}
 	}
 
+	public function test_canDetermineWhetherPredefinedTileLayerIsSupported() {
+		foreach ($this->_getExpectedDefaultPredefinedTileLayerIds() as $expectedId) {
+			$this->assertTrue(
+				Abp01_Settings_PredefinedTileLayer::isPredefinedTileLayerSupported($expectedId)
+			);
+		}
+
+		$this->assertFalse(Abp01_Settings_PredefinedTileLayer::isPredefinedTileLayerSupported(null));
+		$this->assertFalse(Abp01_Settings_PredefinedTileLayer::isPredefinedTileLayerSupported(''));
+		$this->assertFalse(
+			Abp01_Settings_PredefinedTileLayer::isPredefinedTileLayerSupported($this->_getFaker()->uuid)
+		);
+	}
+
 	public function test_canGetDefaultTileLayer_noFilters() {
 		$this->_assertDefaultTileLayerIs(Abp01_Settings_PredefinedTileLayer::TL_OPEN_STREET_MAP);
 	}
 
-	private function _assertDefaultTileLayerIs($expectedDefaultTileLayerId) {
+	private function _assertDefaultTileLayerIs(string $expectedDefaultTileLayerId) {
 		$defaultTileLayer = Abp01_Settings_PredefinedTileLayer::getDefaultTileLayer();
 		$this->assertNotNull($defaultTileLayer);
 		$this->assertEquals($expectedDefaultTileLayerId, 
@@ -275,6 +404,65 @@ class PredefinedTileLayerTests extends WP_UnitTestCase {
 		}
 	}
 
+	/**
+	 * @dataProvider provideEmptyOrNonStringDefaultTileLayerIds
+	 */
+	public function test_canGetDefaultTileLayer_withFilters_fallsBackForEmptyOrNonStringResult($filteredValue) {
+		add_filter(Abp01_Settings_PredefinedTileLayer::FILTER_HOOK_GET_DEFAULT_TILE_LAYER_ID,
+			function($defaultTileLayerId) use ($filteredValue) {
+				return $filteredValue;
+			});
+
+		$this->_assertDefaultTileLayerIs(Abp01_Settings_PredefinedTileLayer::TL_OPEN_STREET_MAP);
+	}
+
+	public function provideEmptyOrNonStringDefaultTileLayerIds(): array {
+		return array(
+			'null' => array(null),
+			'empty string' => array(''),
+			'zero' => array(0),
+			'false' => array(false),
+			'array' => array(array()),
+			'object' => array(new stdClass()),
+		);
+	}
+
+	public function test_canGetDefaultTileLayer_withFilters_receivesFilteredIdsAndSelectsCustomLayer() {
+		$customLayer = $this->_generateRandomPredefinedTileLayer(false);
+		$receivedDefaultLayerId = null;
+		$receivedTileLayerIds = null;
+
+		add_filter(Abp01_Settings_PredefinedTileLayer::FILTER_HOOK_GET_PREDEFINED_TILE_LAYERS,
+			function($predefinedTileLayers) use ($customLayer) {
+				$predefinedTileLayers[$customLayer->getId()] = $customLayer;
+				return $predefinedTileLayers;
+			});
+
+		add_filter(Abp01_Settings_PredefinedTileLayer::FILTER_HOOK_GET_DEFAULT_TILE_LAYER_ID,
+			function($defaultTileLayerId, $allTileLayerIds) use (
+				$customLayer,
+				&$receivedDefaultLayerId,
+				&$receivedTileLayerIds
+			) {
+				$receivedDefaultLayerId = $defaultTileLayerId;
+				$receivedTileLayerIds = $allTileLayerIds;
+				return $customLayer->getId();
+			},
+			10,
+			2);
+
+		$defaultTileLayer = Abp01_Settings_PredefinedTileLayer::getDefaultTileLayer();
+		$receivedTileLayerIds = $receivedTileLayerIds ?? array();
+
+		$this->assertSame(Abp01_Settings_PredefinedTileLayer::TL_OPEN_STREET_MAP,
+			$receivedDefaultLayerId);
+
+		$this->assertContains($customLayer->getId(), 
+			$receivedTileLayerIds);
+		$this->assertSame($customLayer, 
+			$defaultTileLayer);
+	}
+
 	public function test_canGetDefaultTileLayer_withFilters_filterReturnsInvalidId() {
 		$faker = $this->_getFaker();
 		for ($i = 0; $i < 10; $i ++) {
@@ -288,11 +476,11 @@ class PredefinedTileLayerTests extends WP_UnitTestCase {
 
 			try {
 				$defaultTileLayer = Abp01_Settings_PredefinedTileLayer::getDefaultTileLayer();
-			} catch (Abp01_Exception $exc) {
+			} catch (Exception $exc) {
 				$thrownException = $exc;
 			}
 
-			$this->assertInstanceOf(Abp01_Exception::class, $thrownException);
+			$this->assertInstanceOf(Exception::class, $thrownException);
 			$this->_removeAllFilterHooks();
 		}
 	}
@@ -301,7 +489,7 @@ class PredefinedTileLayerTests extends WP_UnitTestCase {
 		$this->_runToLayerObjectConversionTests(true);
 	}
 
-	private function _runToLayerObjectConversionTests($withApieKeyPlaceholderInUrl) {
+	private function _runToLayerObjectConversionTests(bool $withApieKeyPlaceholderInUrl) {
 		$predefinedTileLayer = $this->_generateRandomPredefinedTileLayer($withApieKeyPlaceholderInUrl);
 		$tileLayerObj = $predefinedTileLayer->getTileLayerObject();
 		$this->assertNotNull($tileLayerObj);
@@ -319,7 +507,7 @@ class PredefinedTileLayerTests extends WP_UnitTestCase {
 		$this->_runToPlainObjectConversionTests(true);
 	}
 
-	private function _runToPlainObjectConversionTests($withApieKeyPlaceholderInUrl) {
+	private function _runToPlainObjectConversionTests(bool $withApieKeyPlaceholderInUrl) {
 		$predefinedTileLayer = $this->_generateRandomPredefinedTileLayer($withApieKeyPlaceholderInUrl);
 		$plainObj = $predefinedTileLayer->asPlainObject();
 		
