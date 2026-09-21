@@ -59,14 +59,19 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 
 	private Abp01_AdminAjaxAction $_getAdminRouteLogEntryByIdAjaxAction;
 
+	private Abp01_Logger $_logger;
+
 	public function __construct(Abp01_Route_Log_Manager $routeLogManager,
 			Abp01_View $view, 
 			Env $env, 
-			Abp01_Auth $auth) {
+			Abp01_Auth $auth, 
+			Abp01_Logger $logger) {
+
 		parent::__construct($env, $auth);
 		
 		$this->_routeLogManager = $routeLogManager;
 		$this->_view = $view;
+		$this->_logger = $logger;
 
 		$this->_initAjaxActions();
 	}
@@ -206,7 +211,7 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 	}
 
 	public function renderRouteLogFrontendViewerTabContent(?string $tabId, array $tabInfo, stdClass $viewerData) {
-		if ($tabId != 'abp01-route-log') {
+		if ($tabId !== 'abp01-route-log') {
 			return;
 		}
 
@@ -214,20 +219,31 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 		$log = $this->_routeLogManager->getPublicLog($postId);
 
 		$data = new stdClass();
-		$data->showStatistics = $this->_shouldRenderFrontendRouteLogStatistics($viewerData);
+		$data->showMeta = $this->_shouldRenderFrontendRouteLogMeta($viewerData);
 		$data->hasLogEntries = $log->hasLogEntries();
 		$data->log = $log->toPlainObject();
 
 		echo $this->_view->renderRouteLogFrontendViewerTabContent($data);
 	}
 
-	private function _shouldRenderFrontendRouteLogStatistics(stdClass $viewerData) {
-		return apply_filters('abp01_should_render_frontend_route_log_statistics', 
+	private function _shouldRenderFrontendRouteLogMeta(stdClass $viewerData): bool {
+		/**
+		 * Whether or not to display metadata information for each trip summary route log item.
+		 * Defaults to true. Result is converted to boolean.
+		 * 
+		 * @since 0.3.2
+		 * @category Front-end Viewer
+		 * @unstable Susceptible to breaking changes due to PSR-4 migration
+		 * 
+		 * @param bool $showMeta True to show the metadata information, false otherwise
+		 * @param stdClass $viewerData
+		 */
+		return apply_filters('abp01_should_render_frontend_route_log_meta', 
 			true, 
-			$viewerData);
+			$viewerData) === true;
 	}
 
-	private function _registerEditorControls() {
+	private function _registerEditorControls(): void {
 		add_action('add_meta_boxes', array($this, 'registerAdminEditorLogMetaboxes'), 
 			self::LOG_METABOX_REGISTRATION_HOOK_PRIORITY, 
 			2);
@@ -318,6 +334,20 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 	private function _getDefaultLogEntryRider(int $postId): ?string {
 		$user = wp_get_current_user();
 		$displayName = $user->display_name;
+
+		/**
+		 * Filters the rider used to prefill a new trip summary route log entry.
+		 *
+		 * The initial value is the display name of the current WordPress user.
+		 * A null result is normalized to an empty string and the final result is
+		 * converted to string.
+		 *
+		 * @since 0.3.0
+		 * @category Trip Summary Management
+		 *
+		 * @param string $displayName The current WordPress user's display name.
+		 * @param int $postId The ID of the post whose route log is being edited.
+		 */
 		return (string)(apply_filters('abp01_trip_summary_route_log_default_entry_rider', 
 			$displayName, 
 			$postId) ?? "");
@@ -325,6 +355,19 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 
 	private function _getDefaultDate(int $postId): ?string {
 		$defaultDate = date('Y-m-d');
+
+		/**
+		 * Filters the date used to prefill a new trip summary route log entry.
+		 *
+		 * The initial value is the current date in Y-m-d format. A null result is
+		 * normalized to an empty string and the final result is converted to string.
+		 *
+		 * @since 0.3.0
+		 * @category Trip Summary Management
+		 *
+		 * @param string $defaultDate The current date in Y-m-d format.
+		 * @param int $postId The ID of the post whose route log is being edited.
+		 */
 		return (string)(apply_filters('abp01_trip_summary_route_log_default_entry_date', 
 			$defaultDate, 
 			$postId) ?? "");
@@ -334,6 +377,19 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 		$defaultVehicle = $this->_routeLogManager
 			->getLastUsedVehicle($postId);
 
+		/**
+		 * Filters the vehicle used to prefill a new trip summary route log entry.
+		 *
+		 * The initial value is the last vehicle recorded for the post, or null when
+		 * no vehicle is available. A null result is normalized to an empty string
+		 * and the final result is converted to string.
+		 *
+		 * @since 0.3.0
+		 * @category Trip Summary Management
+		 *
+		 * @param string|null $defaultVehicle The last vehicle recorded for the post, if available.
+		 * @param int $postId The ID of the post whose route log is being edited.
+		 */
 		return (string)(apply_filters('abp01_trip_summary_route_log_default_entry_vehicle', 
 			$defaultVehicle, 
 			$postId) ?? "");
@@ -392,19 +448,22 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 		$validationChain->addInputValidationRule($logEntry->vehicle, 
 			$this->_getLogEntryVehicleValidationRule());
 
-		do_action('abp01_trip_summary_log_before_save_entry', 
-			$postId, 
-			$logEntry);
-
 		$response = abp01_get_ajax_response(array(
 			'logEntry' => null,
 			'formattedLogEntry' => null
 		));
 
-		if (!$validationChain->isInputValid()) {
+		$isValid = $this->_filterLogEntryValidation($postId, 
+			$logEntry, 
+			$validationChain->isInputValid());
+
+		if (!$isValid) {
 			$response->message = $validationChain->getLastValidationMessage();
 			return $response;
 		}
+
+		$this->_onBeforeSave($postId, 
+			$logEntry);
 
 		if ($this->_routeLogManager->saveLogEntry($logEntry)) {
 			$logEntry = $this->_routeLogManager->getLogEntryById($postId, $logEntry->id);
@@ -415,12 +474,98 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 			$response->message = __('The log entry could not be saved.', 'abp01-trip-summary');
 		}
 
-		do_action('abp01_trip_summary_log_after_save_entry', 
-			$postId, 
+		$this->_onAfterSave($postId, 
 			$logEntry, 
-			$response->success);
+			$response->success === true);
 
 		return $response;
+	}
+
+	private function _filterLogEntryValidation(int $postId, Abp01_Route_Log_Entry $logEntry, bool $initiallyValid) {
+		$isValid = $initiallyValid;
+
+		try {
+			/**
+			 * Allows custom validation for trip summary route log entries.
+			 * Result is converted such that only boolean true is considered valid.
+			 * 
+			 * @since 0.3.3
+			 * @category Trip Summary Management
+			 * @unstable Susceptible to breaking changes due to PSR-4 migration
+			 * 
+			 * @param bool $isValid Whether the log entry is valid or no
+			 * @param int $postId The post identifier
+			 * @param \Abp01_Route_Log_Entry $logEntry The log entry to validate
+			 */
+			$isValid = apply_filters('abp01_trip_summary_log_validate', 
+				$isValid, 
+				$postId, 
+			$logEntry) === true;
+		} catch (Throwable $error) {
+			$this->_logger->exception(
+				'Error validating route log entry.', 
+				$error, 
+				compact($postId, 
+					$logEntry, 
+					$initiallyValid)
+			);
+		}
+
+		return $isValid;
+	}
+
+	private function _onBeforeSave(int $postId, Abp01_Route_Log_Entry $logEntry): void {
+		try {
+			/**
+			 * Fired before a trip summary log entry is saved. 
+			 * Callbacks receive the current post identifier 
+			 * and the log entry instance.
+			 * 
+			 * @since 0.3.0
+			 * @category Trip Summary Management
+			 * @unstable Susceptible to breaking changes due to PSR-4 migration
+			 * 
+			 * @param int $postId The post identifier
+			 * @param \Abp01_Route_Log_Entry $logEntry The log entry instance that is about to be saved
+			 */
+			do_action('abp01_trip_summary_log_before_save_entry', 
+				$postId, 
+				$logEntry);
+		} catch (\Throwable $error) {
+			$this->_logger->exception(
+				'Error running <abp01_trip_summary_log_before_save_entry> action hook.', 
+				$error,
+				compact($postId, $logEntry)
+			);
+		}
+	}
+
+	private function _onAfterSave(int $postId, Abp01_Route_Log_Entry $logEntry, bool $success): void {
+		try {
+			/**
+			 * Fired after a trip summary log entry has been saved. 
+			 * Callbacks receive the current post identifier, 
+			 * the log entry instance and whether the operation succeeded or not.
+			 * 
+			 * @since 0.3.0
+			 * @category Trip Summary Management
+			 * @unstable Susceptible to breaking changes due to PSR-4 migration
+			 * 
+			 * @param int $postId The post identifier
+			 * @param \Abp01_Route_Log_Entry $logEntry The log entry instance that is about to be saved
+			 * @param bool $success Whether the operation suceeded or not
+			 */
+			do_action('abp01_trip_summary_log_after_save_entry', 
+				$postId, 
+				$logEntry, 
+				$success);
+		} catch (Throwable $error) {
+			$this->_logger->exception(
+				'Error running <abp01_trip_summary_log_after_save_entry> action hook.', 
+				$error,
+				compact($postId, $logEntry, $success)
+			);
+		}
 	}
 
 	private function _getFormattedLogEntryData(Abp01_Route_Log_Entry $logEntry): stdClass {

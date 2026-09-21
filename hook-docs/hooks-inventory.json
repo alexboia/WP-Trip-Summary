@@ -7,9 +7,9 @@
         "views/**/*.php"
     ],
     "summary": {
-        "totalDispatches": 46,
-        "documented": 26,
-        "undocumented": 20,
+        "totalDispatches": 47,
+        "documented": 33,
+        "undocumented": 14,
         "unresolvedDynamic": 0
     },
     "documentedHooks": [
@@ -302,11 +302,11 @@
                 "$context"
             ],
             "file": "lib/installer/step/RunPostInstallHooks.php",
-            "line": 57,
+            "line": 54,
             "enclosingClass": "Abp01_Installer_Step_RunPostInstallHooks",
             "enclosingFunction": "__construct",
             "documentationStatus": "documented",
-            "docCommentLine": 43,
+            "docCommentLine": 40,
             "docComment": "/**\r\n\t\t * Fires after the plug-in installation attempt has finished.\r\n\t\t *\r\n\t\t * The hook runs after either a successful or failed installation, provided the\r\n\t\t * pre-install hook allowed the process to start. Callbacks can inspect the context\r\n\t\t * to determine the installation result and access any collected errors. An uncaught\r\n\t\t * callback exception is recorded as a hook error but does not change that result.\r\n\t\t *\r\n\t\t * @since 0.3.0\r\n\t\t * @category Installer\r\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t *\r\n\t\t * @param Abp01_Installer_Context $context Installer context containing the completed operation status and collected errors.\r\n\t\t */",
             "prefixEvidence": true
         },
@@ -320,11 +320,11 @@
                 "$context"
             ],
             "file": "lib/installer/step/RunPostUninstallHooks.php",
-            "line": 54,
+            "line": 51,
             "enclosingClass": "Abp01_Installer_Step_RunPostUninstallHooks",
             "enclosingFunction": "__construct",
             "documentationStatus": "documented",
-            "docCommentLine": 43,
+            "docCommentLine": 40,
             "docComment": "/**\r\n\t\t * Fires after the plug-in uninstallation process has finished.\r\n\t\t * Callbacks can inspect the installer context to determine whether the operation\r\n\t\t * completed successfully and access any collected errors.\r\n\t\t *\r\n\t\t * @since 0.3.0\r\n\t\t * @category Installer\r\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t *\r\n\t\t * @param Abp01_Installer_Context $context The current installer context.\r\n\t\t */",
             "prefixEvidence": true
         },
@@ -338,11 +338,11 @@
                 "$context"
             ],
             "file": "lib/installer/step/RunPreInstallHooks.php",
-            "line": 56,
+            "line": 53,
             "enclosingClass": "Abp01_Installer_Step_RunPreInstallHooks",
             "enclosingFunction": "__construct",
             "documentationStatus": "documented",
-            "docCommentLine": 43,
+            "docCommentLine": 40,
             "docComment": "/**\r\n\t\t * Fires before the plug-in installation process starts.\r\n\t\t *\r\n\t\t * Callbacks can inspect or modify the installer context. Adding an operation\r\n\t\t * error to the context prevents installation from starting. An uncaught callback\r\n\t\t * exception is captured as a hook error and also aborts installation.\r\n\t\t *\r\n\t\t * @since 0.3.0\r\n\t\t * @category Installer\r\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t *\r\n\t\t * @param Abp01_Installer_Context $context Mutable installer context used to determine whether installation may proceed.\r\n\t\t */",
             "prefixEvidence": true
         },
@@ -356,11 +356,11 @@
                 "$context"
             ],
             "file": "lib/installer/step/RunPreUninstallHooks.php",
-            "line": 54,
+            "line": 51,
             "enclosingClass": "Abp01_Installer_Step_RunPreUninstallHooks",
             "enclosingFunction": "__construct",
             "documentationStatus": "documented",
-            "docCommentLine": 43,
+            "docCommentLine": 40,
             "docComment": "/**\r\n\t\t * Fires before the plug-in uninstallation process starts.\r\n\t\t * Callbacks can inspect the installer context to determine whether the operation\r\n\t\t * currently has any errors.\r\n\t\t *\r\n\t\t * @since 0.3.0\r\n\t\t * @category Installer\r\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t *\r\n\t\t * @param Abp01_Installer_Context $context The current installer context.\r\n\t\t */",
             "prefixEvidence": true
         },
@@ -468,12 +468,12 @@
                 "true"
             ],
             "file": "lib/pluginModules/RestApiEnhancementsPluginModule.php",
-            "line": 72,
+            "line": 73,
             "enclosingClass": "Abp01_PluginModules_RestApiEnhancementsPluginModule",
             "enclosingFunction": "_shouldAddTripSummaryToRestApi",
             "documentationStatus": "documented",
             "docCommentLine": 64,
-            "docComment": "/**\r\n\t\t * Filters whether or not to add the trip summary endpoint to the WP REST APIs.\r\n\t\t * True by default.\r\n\t\t * \r\n\t\t * @since 0.3.0\r\n\t\t * \r\n\t\t * @param bool $shouldAddTripSummaryToRestAPI True if it should be added, false otherwise\r\n\t\t */",
+            "docComment": "/**\r\n\t\t * Filters whether or not to add the trip summary endpoint to the WP REST APIs.\r\n\t\t * True by default.\r\n\t\t * \r\n\t\t * @since 0.3.0\r\n\t\t * @category REST API\r\n\t\t * \r\n\t\t * @param bool $shouldAddTripSummaryToRestAPI True if it should be added, false otherwise\r\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -486,33 +486,31 @@
                 "false"
             ],
             "file": "lib/pluginModules/RestApiEnhancementsPluginModule.php",
-            "line": 132,
+            "line": 134,
             "enclosingClass": "Abp01_PluginModules_RestApiEnhancementsPluginModule",
             "enclosingFunction": "_shouldAddTripSummaryToRestApiListing",
             "documentationStatus": "documented",
-            "docCommentLine": 124,
-            "docComment": "/**\r\n\t\t * Filters whether to add trip summary data for each post when the request is for a post listing.\r\n\t\t * Default false.\r\n\t\t * \r\n\t\t * @since 0.3.0\r\n\t\t * \r\n\t\t * @param bool $shouldAddTripSummaryToRestApiListing True to add, false otherwise.\r\n\t\t */",
+            "docCommentLine": 125,
+            "docComment": "/**\r\n\t\t * Filters whether to add trip summary data for each post when the request is for a post listing.\r\n\t\t * Default false.\r\n\t\t * \r\n\t\t * @since 0.3.0\r\n\t\t * @category REST API\r\n\t\t * \r\n\t\t * @param bool $shouldAddTripSummaryToRestApiListing True to add, false otherwise.\r\n\t\t */",
             "prefixEvidence": true
-        }
-    ],
-    "undocumentedHooks": [
+        },
         {
-            "hookName": "abp01_should_render_frontend_route_log_statistics",
+            "hookName": "abp01_should_render_frontend_route_log_meta",
             "kind": "filter",
             "dispatcher": "apply_filters",
             "resolution": "static",
-            "nameExpression": "'abp01_should_render_frontend_route_log_statistics'",
+            "nameExpression": "'abp01_should_render_frontend_route_log_meta'",
             "arguments": [
                 "true",
                 "$viewerData"
             ],
             "file": "lib/pluginModules/RouteLogPluginModule.php",
-            "line": 225,
+            "line": 241,
             "enclosingClass": "Abp01_PluginModules_RouteLogPluginModule",
-            "enclosingFunction": "_shouldRenderFrontendRouteLogStatistics",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "enclosingFunction": "_shouldRenderFrontendRouteLogMeta",
+            "documentationStatus": "documented",
+            "docCommentLine": 230,
+            "docComment": "/**\r\n\t\t * Whether or not to display metadata information for each trip summary route log item.\r\n\t\t * Defaults to true. Result is converted to boolean.\r\n\t\t * \r\n\t\t * @since 0.3.2\r\n\t\t * @category Front-end Viewer\r\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t * \r\n\t\t * @param bool $showMeta True to show the metadata information, false otherwise\r\n\t\t * @param stdClass $viewerData\r\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -526,12 +524,12 @@
                 "$postId"
             ],
             "file": "lib/pluginModules/RouteLogPluginModule.php",
-            "line": 321,
+            "line": 351,
             "enclosingClass": "Abp01_PluginModules_RouteLogPluginModule",
             "enclosingFunction": "_getDefaultLogEntryRider",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 338,
+            "docComment": "/**\r\n\t\t * Filters the rider used to prefill a new trip summary route log entry.\r\n\t\t *\r\n\t\t * The initial value is the display name of the current WordPress user.\r\n\t\t * A null result is normalized to an empty string and the final result is\r\n\t\t * converted to string.\r\n\t\t *\r\n\t\t * @since 0.3.0\r\n\t\t * @category Trip Summary Management\r\n\t\t *\r\n\t\t * @param string $displayName The current WordPress user's display name.\r\n\t\t * @param int $postId The ID of the post whose route log is being edited.\r\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -545,12 +543,12 @@
                 "$postId"
             ],
             "file": "lib/pluginModules/RouteLogPluginModule.php",
-            "line": 328,
+            "line": 371,
             "enclosingClass": "Abp01_PluginModules_RouteLogPluginModule",
             "enclosingFunction": "_getDefaultDate",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 359,
+            "docComment": "/**\r\n\t\t * Filters the date used to prefill a new trip summary route log entry.\r\n\t\t *\r\n\t\t * The initial value is the current date in Y-m-d format. A null result is\r\n\t\t * normalized to an empty string and the final result is converted to string.\r\n\t\t *\r\n\t\t * @since 0.3.0\r\n\t\t * @category Trip Summary Management\r\n\t\t *\r\n\t\t * @param string $defaultDate The current date in Y-m-d format.\r\n\t\t * @param int $postId The ID of the post whose route log is being edited.\r\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -564,12 +562,32 @@
                 "$postId"
             ],
             "file": "lib/pluginModules/RouteLogPluginModule.php",
-            "line": 337,
+            "line": 393,
             "enclosingClass": "Abp01_PluginModules_RouteLogPluginModule",
             "enclosingFunction": "_getDefaultVehicle",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 380,
+            "docComment": "/**\r\n\t\t * Filters the vehicle used to prefill a new trip summary route log entry.\r\n\t\t *\r\n\t\t * The initial value is the last vehicle recorded for the post, or null when\r\n\t\t * no vehicle is available. A null result is normalized to an empty string\r\n\t\t * and the final result is converted to string.\r\n\t\t *\r\n\t\t * @since 0.3.0\r\n\t\t * @category Trip Summary Management\r\n\t\t *\r\n\t\t * @param string|null $defaultVehicle The last vehicle recorded for the post, if available.\r\n\t\t * @param int $postId The ID of the post whose route log is being edited.\r\n\t\t */",
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_trip_summary_log_validate",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_trip_summary_log_validate'",
+            "arguments": [
+                "$isValid",
+                "$postId",
+                "$logEntry"
+            ],
+            "file": "lib/pluginModules/RouteLogPluginModule.php",
+            "line": 500,
+            "enclosingClass": "Abp01_PluginModules_RouteLogPluginModule",
+            "enclosingFunction": "_filterLogEntryValidation",
+            "documentationStatus": "documented",
+            "docCommentLine": 488,
+            "docComment": "/**\r\n\t\t\t * Allows custom validation for trip summary route log entries.\r\n\t\t\t * Result is converted such that only boolean true is considered valid.\r\n\t\t\t * \r\n\t\t\t * @since 0.3.3\r\n\t\t\t * @category Trip Summary Management\r\n\t\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t\t * \r\n\t\t\t * @param bool $isValid Whether the log entry is valid or no\r\n\t\t\t * @param int $postId The post identifier\r\n\t\t\t * @param \\Abp01_Route_Log_Entry $logEntry The log entry to validate\r\n\t\t\t */",
             "prefixEvidence": true
         },
         {
@@ -583,12 +601,12 @@
                 "$logEntry"
             ],
             "file": "lib/pluginModules/RouteLogPluginModule.php",
-            "line": 395,
+            "line": 531,
             "enclosingClass": "Abp01_PluginModules_RouteLogPluginModule",
-            "enclosingFunction": "saveRouteLogEntry",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "enclosingFunction": "_onBeforeSave",
+            "documentationStatus": "documented",
+            "docCommentLine": 519,
+            "docComment": "/**\r\n\t\t\t * Fired before a trip summary log entry is saved. \r\n\t\t\t * Callbacks receive the current post identifier \r\n\t\t\t * and the log entry instance.\r\n\t\t\t * \r\n\t\t\t * @since 0.3.0\r\n\t\t\t * @category Trip Summary Management\r\n\t\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t\t * \r\n\t\t\t * @param int $postId The post identifier\r\n\t\t\t * @param \\Abp01_Route_Log_Entry $logEntry The log entry instance that is about to be saved\r\n\t\t\t */",
             "prefixEvidence": true
         },
         {
@@ -600,17 +618,19 @@
             "arguments": [
                 "$postId",
                 "$logEntry",
-                "$response->success"
+                "$success"
             ],
             "file": "lib/pluginModules/RouteLogPluginModule.php",
-            "line": 418,
+            "line": 558,
             "enclosingClass": "Abp01_PluginModules_RouteLogPluginModule",
-            "enclosingFunction": "saveRouteLogEntry",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "enclosingFunction": "_onAfterSave",
+            "documentationStatus": "documented",
+            "docCommentLine": 545,
+            "docComment": "/**\r\n\t\t\t * Fired after a trip summary log entry has been saved. \r\n\t\t\t * Callbacks receive the current post identifier, \r\n\t\t\t * the log entry instance and whether the operation succeeded or not.\r\n\t\t\t * \r\n\t\t\t * @since 0.3.0\r\n\t\t\t * @category Trip Summary Management\r\n\t\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t\t * \r\n\t\t\t * @param int $postId The post identifier\r\n\t\t\t * @param \\Abp01_Route_Log_Entry $logEntry The log entry instance that is about to be saved\r\n\t\t\t * @param bool $success Whether the operation suceeded or not\r\n\t\t\t */",
             "prefixEvidence": true
-        },
+        }
+    ],
+    "undocumentedHooks": [
         {
             "hookName": "abp01_max_displayable_log_file_size",
             "kind": "filter",
