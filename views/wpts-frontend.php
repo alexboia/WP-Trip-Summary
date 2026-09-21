@@ -137,7 +137,24 @@
 				<?php if ($hasAdditionalTabs): ?>
 					<?php foreach ($data->additionalTabs as $tabId => $tabInfo): ?>
 						<div id="<?php echo esc_attr($tabId) ?>-content" class="abp01-additional-tab <?php echo esc_attr($tabId) ?>-content" style="display: none;">
-							<?php do_action('abp01_additional_frontend_viewer_tab_content', 
+							<?php
+							/**
+							 * Fires when the content container for an additional front-end viewer tab is rendered.
+							 *
+							 * The action fires once for every tab registered through the
+							 * abp01_additional_frontend_viewer_tabs filter. Callbacks should inspect the tab
+							 * identifier and output safe HTML only for the tabs they handle. The output is
+							 * rendered directly inside the corresponding tab content container.
+							 *
+							 * @since 0.3.0
+							 * @category Front-end Viewer
+							 * @see abp01_additional_frontend_viewer_tabs for registering additional tabs.
+							 *
+							 * @param string $tabId The identifier of the additional tab being rendered.
+							 * @param array<string, mixed> $tabInfo The registered tab information, including its label and optional icon.
+							 * @param stdClass $data The complete front-end viewer data for the current post.
+							 */
+							do_action('abp01_additional_frontend_viewer_tab_content',
 								$tabId, 
 								$tabInfo, 
 								$data); ?>

@@ -28,12 +28,26 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-		defined('ABP01_LOADED') or die;
+	defined('ABP01_LOADED') or die;
+
+	/** @var stdClass $data */
 ?>
 
 <div id="abp01-editor-launcher-root">
 	<div id="abp01-editor-launcher-status">
-		<?php do_action('abp01_editor_launcher_metabox_before_status', $data); ?>
+		<?php
+		/**
+		 * Fires before the built-in status items in the trip summary editor launcher metabox.
+		 *
+		 * Callback output is rendered directly inside the status container, before the
+		 * trip summary information and track status items.
+		 *
+		 * @since 0.3.0
+		 * @category Trip Summary Management
+		 *
+		 * @param stdClass $data The editor launcher context containing the post ID, trip summary availability flags, and track download URL.
+		 */
+		do_action('abp01_editor_launcher_metabox_before_status', $data); ?>
 		<div id="abp01-editor-launcher-status-trip-summary-info" class="abp01-editor-launcher-status-item">
 			<span class="launcher-icon dashicons <?php echo $data->hasRouteInfo 
 					? 'dashicons-yes-alt' 
@@ -58,7 +72,19 @@
 				data-select-tab="abp01-form-map"
 				class="status-text launch-editor-trigger"><?php echo esc_html__('Trip summary track', 'abp01-trip-summary'); ?></a>
 		</div>
-		<?php do_action('abp01_editor_launcher_metabox_after_status', $data); ?>
+		<?php
+		/**
+		 * Fires after the built-in status items in the trip summary editor launcher metabox.
+		 *
+		 * Callback output is rendered directly inside the status container, after the
+		 * trip summary information and track status items and before the container closes.
+		 *
+		 * @since 0.3.0
+		 * @category Trip Summary Management
+		 *
+		 * @param stdClass $data The editor launcher context containing the post ID, trip summary availability flags, and track download URL.
+		 */
+		do_action('abp01_editor_launcher_metabox_after_status', $data); ?>
 	</div>
 	<div id="abp01-editor-launcher-actions">
 		<div class="quick-actions">
