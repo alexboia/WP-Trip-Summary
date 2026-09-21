@@ -29,67 +29,80 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+if (!defined('ABP01_LOADED')) {
 	exit ;
 }
 
 class Abp01_Transfer_TrackFileDownloader {
-	/**
-	 * @var Abp01_Route_Manager
-	 */
-	private $_routeManager;
+	private Abp01_Route_Manager $_routeManager;
 
-	/**
-	 * @var Abp01_Route_Track_FileNameProvider
-	 */
-	private $_trackFileNameProvider;
+	private Abp01_Route_Track_FileNameProvider $_trackFileNameProvider;
 
-	public function __construct(Abp01_Route_Manager $routeManager, Abp01_Route_Track_FileNameProvider $trackFileNameProvider) {
+	public function __construct(Abp01_Route_Manager $routeManager, 
+		Abp01_Route_Track_FileNameProvider $trackFileNameProvider) {
 		$this->_routeManager = $routeManager;
 		$this->_trackFileNameProvider = $trackFileNameProvider;
 	}
 
-	public function sendTrackFileForPostId($postId) {
+	public function sendTrackFileForPostId(int|string|null $postId): void {
 		if (!$this->_isValidPostId($postId)) {
 			throw new InvalidArgumentException('Invalid post identifier given');
 		}
 
+		$postId = intval($postId);
 		$track = $this->_getTrack($postId);
+
 		$trackFilePath = $this->_trackFileNameProvider->constructTrackFilePath($track);
 		$trackFileMimeType = $track->getFileMimeType();
 
-		$this->_sendFileWithMimeType($trackFilePath, 
+		$this->_sendFileWithMimeType($postId, 
+			$trackFilePath, 
 			$trackFileMimeType);
 	}
 
-	private function _isValidPostId($postId) {
-		return !empty($postId) && is_numeric($postId) && $postId > 0;
+	private function _isValidPostId(int|string|null $postId): bool {
+		return !empty($postId) && is_numeric($postId) && intval($postId) > 0;
 	}
 
-	private function _getTrack($postId) {
+	private function _getTrack(int $postId): ?Abp01_Route_Track {
 		return $this->_routeManager
 			->getRouteTrack($postId);
 	}
 
-	private function _sendFileWithMimeType($trackFile, $withMimeType) {
-		$this->_createFileDownloader()
-			->sendFileWithMimeType($trackFile, $withMimeType);
+	private function _sendFileWithMimeType(int $postId, string $trackFile, string $withMimeType): void {
+		$this->_createFileDownloader($postId)
+			->sendFileWithMimeType($trackFile, 
+				$withMimeType);
 	}
 
-	private function _createFileDownloader() {
+	private function _createFileDownloader(int $postId): Abp01_Transfer_FileDownloader {
 		$defaultInstance = $this->_createDefaultFileDownloaderInstance();
-		return $this->_getFinalFileDownloaderInstance($defaultInstance);
+		return $this->_getFinalFileDownloaderInstance($postId, 
+			$defaultInstance);
 	}
 
-	private function _createDefaultFileDownloaderInstance() {
+	private function _createDefaultFileDownloaderInstance(): Abp01_Transfer_FileDownloader {
 		return new Abp01_Transfer_FileDownloaderWithScriptTermination(
 			new Abp01_Transfer_SimpleFileDownloader()
 		);
 	}
 
-	private function _getFinalFileDownloaderInstance(Abp01_Transfer_FileDownloader $defaultInstance) {
+	private function _getFinalFileDownloaderInstance(int $postId, Abp01_Transfer_FileDownloader $defaultInstance): Abp01_Transfer_FileDownloader {
+		/**
+		 * Filters the track file download channel for a given post.
+		 * Must be a valid Abp01_Transfer_FileDownloader instance.
+		 * If an invalid value is provided, then the default downloader is used.
+		 * 
+		 * @since 0.3.3
+		 * @category Trip Summary Management
+		 * @unstable Susceptible to breaking changes due to PSR-4 migration
+		 * 
+		 * @param Abp01_Transfer_FileDownloader $trackFileDownloaderInstance The current track file downloader instance
+		 * @param int $postId The current post ID
+		 */
 		$finalInstance = apply_filters('abp01_get_track_file_downloader', 
-			$defaultInstance);
+			$defaultInstance,
+			$postId);
 
 		if (!$this->_isValidFileDownloaderInstance($finalInstance)) {
 			$finalInstance = $defaultInstance;
@@ -98,7 +111,7 @@ class Abp01_Transfer_TrackFileDownloader {
 		return $finalInstance;
 	}
 
-	private function _isValidFileDownloaderInstance($instance) {
+	private function _isValidFileDownloaderInstance(mixed $instance): bool {
 		return $instance instanceof Abp01_Transfer_FileDownloader;
 	}
 }

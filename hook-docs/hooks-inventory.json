@@ -8,8 +8,8 @@
     ],
     "summary": {
         "totalDispatches": 47,
-        "documented": 37,
-        "undocumented": 10,
+        "documented": 38,
+        "undocumented": 9,
         "unresolvedDynamic": 0
     },
     "documentedHooks": [
@@ -701,9 +701,7 @@
             "docCommentLine": 276,
             "docComment": "/**\n\t\t * Filters the identifier of the pre-defined tile layer selected by default.\n\t\t *\n\t\t * The initial value is \"open-street-map\". Callbacks also receive the identifiers\n\t\t * available after the pre-defined tile layer list has been filtered. The result\n\t\t * must be a non-empty string identifying one of those layers. An empty or\n\t\t * non-string result falls back to \"open-street-map\"; an unknown non-empty string\n\t\t * causes default tile layer resolution to fail.\n\t\t *\n\t\t * @since 0.2.7\n\t\t * @category Settings - Trip Summary Map\n\t\t *\n\t\t * @param string $defaultTileLayerId The default pre-defined tile layer identifier.\n\t\t * @param string[] $allTileLayerIds The available pre-defined tile layer identifiers.\n\t\t */",
             "prefixEvidence": true
-        }
-    ],
-    "undocumentedHooks": [
+        },
         {
             "hookName": "abp01_get_track_file_downloader",
             "kind": "filter",
@@ -711,17 +709,20 @@
             "resolution": "static",
             "nameExpression": "'abp01_get_track_file_downloader'",
             "arguments": [
-                "$defaultInstance"
+                "$defaultInstance",
+                "$postId"
             ],
             "file": "lib/transfer/TrackFileDownloader.php",
-            "line": 91,
+            "line": 103,
             "enclosingClass": "Abp01_Transfer_TrackFileDownloader",
             "enclosingFunction": "_getFinalFileDownloaderInstance",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 91,
+            "docComment": "/**\n\t\t * Filters the track file download channel for a given post.\n\t\t * Must be a valid Abp01_Transfer_FileDownloader instance.\n\t\t * If an invalid value is provided, then the default downloader is used.\n\t\t * \n\t\t * @since 0.3.3\n\t\t * @category Trip Summary Management\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\n\t\t * \n\t\t * @param Abp01_Transfer_FileDownloader $trackFileDownloaderInstance The current track file downloader instance\n\t\t * @param int $postId The current post ID\n\t\t */",
             "prefixEvidence": true
-        },
+        }
+    ],
+    "undocumentedHooks": [
         {
             "hookName": "abp01_info_item_field_icon_mapping",
             "kind": "filter",
