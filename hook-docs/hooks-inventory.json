@@ -8,8 +8,8 @@
     ],
     "summary": {
         "totalDispatches": 47,
-        "documented": 43,
-        "undocumented": 4,
+        "documented": 44,
+        "undocumented": 3,
         "unresolvedDynamic": 0
     },
     "documentedHooks": [
@@ -722,6 +722,24 @@
             "prefixEvidence": true
         },
         {
+            "hookName": "abp01_info_item_field_icon_mapping",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_info_item_field_icon_mapping'",
+            "arguments": [
+                "$defaultMapping"
+            ],
+            "file": "views/helpers/controls.frontend.php",
+            "line": 317,
+            "enclosingClass": null,
+            "enclosingFunction": "abp01_get_info_item_field_icon_mapping",
+            "documentationStatus": "documented",
+            "docCommentLine": 298,
+            "docComment": "/**\r\n\t\t\t * Filters the icon identifier assigned to each front-end trip summary information field.\r\n\t\t\t *\r\n\t\t\t * The array is keyed by information field name and each value is an icon identifier.\r\n\t\t\t * Built-in identifiers are represented by the ABP01_INFO_ITEM_ICON_* constants.\r\n\t\t\t * Custom identifiers may also be used when matching trusted SVG markup is registered\r\n\t\t\t * through the abp01_info_item_icons filter. A field mapped to an identifier that is\r\n\t\t\t * not present in the icon registry is rendered without an icon.\r\n\t\t\t *\r\n\t\t\t * The filtered mapping is cached for the remainder of the request. A non-array result\r\n\t\t\t * is ignored in favor of the defaults; an empty array intentionally disables all icons.\r\n\t\t\t *\r\n\t\t\t * @since 0.3.3\r\n\t\t\t * @category Front-end Viewer\r\n\t\t\t * @see abp01-plugin-header.php for the constants representing built-in icon identifiers.\r\n\t\t\t * @see abp01_info_item_icons for registering built-in or custom icon markup.\r\n\t\t\t *\r\n\t\t\t * @param array<string, string> $defaultMapping The default icon identifiers keyed by information field name.\r\n\t\t\t */",
+            "prefixEvidence": true
+        },
+        {
             "hookName": "abp01_info_item_icons",
             "kind": "filter",
             "dispatcher": "apply_filters",
@@ -731,12 +749,12 @@
                 "$defaultIcons"
             ],
             "file": "views/helpers/controls.frontend.php",
-            "line": 360,
+            "line": 392,
             "enclosingClass": null,
             "enclosingFunction": "abp01_get_info_item_icons",
             "documentationStatus": "documented",
-            "docCommentLine": 346,
-            "docComment": "/**\r\n\t\t\t * Filters the SVG element markup used for front-end trip summary information icons.\r\n\t\t\t *\r\n\t\t\t * The array is keyed by icon identifier and each value contains the inner markup\r\n\t\t\t * inserted unescaped into the common 24x24 SVG wrapper. Icon identifiers are\r\n\t\t\t * resolved through the info item field-to-icon mapping. The filtered array is\r\n\t\t\t * cached for the remainder of the request. A non-array result is ignored in favor\r\n\t\t\t * of the defaults. Callbacks must provide trusted SVG element markup.\r\n\t\t\t *\r\n\t\t\t * @since 0.3.3\r\n\t\t\t * @category Front-end Viewer\r\n\t\t\t *\r\n\t\t\t * @param array<string, string> $defaultIcons The default raw SVG inner markup keyed by icon identifier.\r\n\t\t\t */",
+            "docCommentLine": 377,
+            "docComment": "/**\r\n\t\t\t * Filters the SVG element markup used for front-end trip summary information icons.\r\n\t\t\t *\r\n\t\t\t * The array is keyed by icon identifier and each value contains the inner markup\r\n\t\t\t * inserted unescaped into the common 24x24 SVG wrapper. Icon identifiers are\r\n\t\t\t * resolved through the info item field-to-icon mapping. The filtered array is\r\n\t\t\t * cached for the remainder of the request. A non-array result is ignored in favor\r\n\t\t\t * of the defaults. Callbacks must provide trusted SVG element markup.\r\n\t\t\t *\r\n\t\t\t * @since 0.3.3\r\n\t\t\t * @category Front-end Viewer\r\n\t\t\t * @see abp01-plugin-header.php for ABP01_INFO_ITEM_ICON_* constants that represent built-in icon names.\r\n\t\t\t *\r\n\t\t\t * @param array<string, string> $defaultIcons The default raw SVG inner markup keyed by icon identifier.\r\n\t\t\t */",
             "prefixEvidence": true
         },
         {
@@ -817,24 +835,6 @@
         }
     ],
     "undocumentedHooks": [
-        {
-            "hookName": "abp01_info_item_field_icon_mapping",
-            "kind": "filter",
-            "dispatcher": "apply_filters",
-            "resolution": "static",
-            "nameExpression": "'abp01_info_item_field_icon_mapping'",
-            "arguments": [
-                "$defaultMapping"
-            ],
-            "file": "views/helpers/controls.frontend.php",
-            "line": 298,
-            "enclosingClass": null,
-            "enclosingFunction": "abp01_get_info_item_field_icon_mapping",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
-            "prefixEvidence": true
-        },
         {
             "hookName": "abp01_editor_launcher_metabox_before_status",
             "kind": "action",

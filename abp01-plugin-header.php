@@ -382,6 +382,90 @@ define('ABP01_STATUS_ERR', 1);
  */
 define('ABP01_STATUS_WARN', 2);
 
+/**
+ * The identifier of the distance icon used by trip summary information items.
+ *
+ * @var string
+ */
+define('ABP01_INFO_ITEM_ICON_DISTANCE', 'distance');
+
+/**
+ * The identifier of the climb icon used by trip summary information items.
+ *
+ * @var string
+ */
+define('ABP01_INFO_ITEM_ICON_CLIMB', 'climb');
+
+/**
+ * The identifier of the access icon used by trip summary information items.
+ *
+ * @var string
+ */
+define('ABP01_INFO_ITEM_ICON_ACCESS', 'access');
+
+/**
+ * The identifier of the season icon used by trip summary information items.
+ *
+ * @var string
+ */
+define('ABP01_INFO_ITEM_ICON_SEASON', 'season');
+
+/**
+ * The identifier of the surface icon used by trip summary information items.
+ *
+ * @var string
+ */
+define('ABP01_INFO_ITEM_ICON_SURFACE', 'surface');
+
+/**
+ * The identifier of the bike icon used by trip summary information items.
+ *
+ * @var string
+ */
+define('ABP01_INFO_ITEM_ICON_BIKE', 'bike');
+
+/**
+ * The identifier of the marker icon used by trip summary information items.
+ *
+ * @var string
+ */
+define('ABP01_INFO_ITEM_ICON_MARKER', 'marker');
+
+/**
+ * The identifier of the train icon used by trip summary information items.
+ *
+ * @var string
+ */
+define('ABP01_INFO_ITEM_ICON_TRAIN', 'train');
+
+/**
+ * The identifier of the gauge icon used by trip summary information items.
+ *
+ * @var string
+ */
+define('ABP01_INFO_ITEM_ICON_GAUGE', 'gauge');
+
+/**
+ * The identifier of the swap icon used by trip summary information items.
+ *
+ * @var string
+ */
+define('ABP01_INFO_ITEM_ICON_SWAP', 'swap');
+
+/**
+ * The identifier of the power icon used by trip summary information items.
+ *
+ * @var string
+ */
+define('ABP01_INFO_ITEM_ICON_POWER', 'power');
+
+/**
+ * The identifier of the line icon used by trip summary information items.
+ *
+ * @var string
+ */
+define('ABP01_INFO_ITEM_ICON_LINE', 'line');
+
 if (!defined('ABP01_POST_TRIP_SUMMARY_DATA_CACHE_EXPIRATION_SECONDS')) {
 	/**
 	 * The number of seconds that trip summary data is cached. 

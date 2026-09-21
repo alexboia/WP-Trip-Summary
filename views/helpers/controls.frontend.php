@@ -270,35 +270,54 @@ if (!function_exists('abp01_get_info_item_field_icon_mapping')) {
 
 		if ($mapping === null) {
 			$defaultMapping = array(
-				'bikeDistance' => 'distance',
-				'bikeTotalClimb' => 'climb',
-				'bikeDifficultyLevel' => 'gauge',
-				'bikeAccess' => 'access',
-				'bikeRecommendedSeasons' => 'season',
-				'bikePathSurfaceType' => 'surface',
-				'bikeBikeType' => 'bike',
+				'bikeDistance' => ABP01_INFO_ITEM_ICON_DISTANCE,
+				'bikeTotalClimb' => ABP01_INFO_ITEM_ICON_CLIMB,
+				'bikeDifficultyLevel' => ABP01_INFO_ITEM_ICON_GAUGE,
+				'bikeAccess' => ABP01_INFO_ITEM_ICON_ACCESS,
+				'bikeRecommendedSeasons' => ABP01_INFO_ITEM_ICON_SEASON,
+				'bikePathSurfaceType' => ABP01_INFO_ITEM_ICON_SURFACE,
+				'bikeBikeType' => ABP01_INFO_ITEM_ICON_BIKE,
 
-				'hikingDistance' => 'distance',
-				'hikingTotalClimb' => 'climb',
-				'hikingDifficultyLevel' => 'gauge',
-				'hikingAccess' => 'access',
-				'hikingRecommendedSeasons' => 'season',
-				'hikingSurfaceType' => 'surface',
-				'hikingRouteMarkers' => 'marker',
+				'hikingDistance' => ABP01_INFO_ITEM_ICON_DISTANCE,
+				'hikingTotalClimb' => ABP01_INFO_ITEM_ICON_CLIMB,
+				'hikingDifficultyLevel' => ABP01_INFO_ITEM_ICON_GAUGE,
+				'hikingAccess' => ABP01_INFO_ITEM_ICON_ACCESS,
+				'hikingRecommendedSeasons' => ABP01_INFO_ITEM_ICON_SEASON,
+				'hikingSurfaceType' => ABP01_INFO_ITEM_ICON_SURFACE,
+				'hikingRouteMarkers' => ABP01_INFO_ITEM_ICON_MARKER,
 
-				'trainRideDistance' => 'distance',
-				'trainRideChangeNumber' => 'swap',
-				'trainRideGauge' => 'gauge',
-				'trainRideOperator' => 'train',
-				'trainRideLineStatus' => 'line',
-				'trainRideElectrificationStatus' => 'power',
-				'trainRideLineType' => 'line'
+				'trainRideDistance' => ABP01_INFO_ITEM_ICON_DISTANCE,
+				'trainRideChangeNumber' => ABP01_INFO_ITEM_ICON_SWAP,
+				'trainRideGauge' => ABP01_INFO_ITEM_ICON_GAUGE,
+				'trainRideOperator' => ABP01_INFO_ITEM_ICON_TRAIN,
+				'trainRideLineStatus' => ABP01_INFO_ITEM_ICON_LINE,
+				'trainRideElectrificationStatus' => ABP01_INFO_ITEM_ICON_POWER,
+				'trainRideLineType' => ABP01_INFO_ITEM_ICON_LINE
 			);
 
+			/**
+			 * Filters the icon identifier assigned to each front-end trip summary information field.
+			 *
+			 * The array is keyed by information field name and each value is an icon identifier.
+			 * Built-in identifiers are represented by the ABP01_INFO_ITEM_ICON_* constants.
+			 * Custom identifiers may also be used when matching trusted SVG markup is registered
+			 * through the abp01_info_item_icons filter. A field mapped to an identifier that is
+			 * not present in the icon registry is rendered without an icon.
+			 *
+			 * The filtered mapping is cached for the remainder of the request. A non-array result
+			 * is ignored in favor of the defaults; an empty array intentionally disables all icons.
+			 *
+			 * @since 0.3.3
+			 * @category Front-end Viewer
+			 * @see abp01-plugin-header.php for the constants representing built-in icon identifiers.
+			 * @see abp01_info_item_icons for registering built-in or custom icon markup.
+			 *
+			 * @param array<string, string> $defaultMapping The default icon identifiers keyed by information field name.
+			 */
 			$mapping = apply_filters('abp01_info_item_field_icon_mapping', 
 				$defaultMapping);
 
-			if (!is_array($mapping)) {
+			if (!is_array($mapping) || empty($mapping)) {
 				$mapping = $defaultMapping;
 			}
 		}
@@ -329,18 +348,30 @@ if (!function_exists('abp01_get_info_item_icons')) {
 		static $icons = null;
 		if ($icons === null) {
 			$defaultIcons = array(
-				'distance' => '<path d="M3 8l13 13 5-5L8 3zM8 8l2 2M11 5l2 2M14 11l2 2"/>',
-				'climb' => '<path d="M3 20h18M6 20l6-12 4 7 3-4"/>',
-				'access' => '<path d="M12 21s-7-5.5-7-11a7 7 0 0114 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
-				'season' => '<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',
-				'surface' => '<path d="M4 18l4-6 4 3 4-8 4 5M3 21h18"/>',
-				'bike' => '<circle cx="6" cy="17" r="3.2"/><circle cx="18" cy="17" r="3.2"/><path d="M6 17l4-7h5l3 7M9 7h3"/>',
-				'marker' => '<path d="M6 3v18M6 5l9 3-9 3"/>',
-				'train' => '<rect x="6" y="4" width="12" height="12" rx="3"/><path d="M6 10h12M9 20l-2 2M15 20l2 2"/><circle cx="9" cy="13" r="1"/><circle cx="15" cy="13" r="1"/>',
-				'gauge' => '<path d="M12 14a2 2 0 100-4 2 2 0 000 4zM4 20a8 8 0 0116 0"/>',
-				'swap' => '<path d="M7 4l-3 3 3 3M4 7h13M17 20l3-3-3-3M20 17H7"/>',
-				'power' => '<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
-				'line' => '<path d="M3 12h18M6 12V6M18 12v6"/>'
+				ABP01_INFO_ITEM_ICON_DISTANCE
+					=> '<path d="M3 8l13 13 5-5L8 3zM8 8l2 2M11 5l2 2M14 11l2 2"/>',
+				ABP01_INFO_ITEM_ICON_CLIMB
+					=> '<path d="M3 20h18M6 20l6-12 4 7 3-4"/>',
+				ABP01_INFO_ITEM_ICON_ACCESS
+					=> '<path d="M12 21s-7-5.5-7-11a7 7 0 0114 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+				ABP01_INFO_ITEM_ICON_SEASON
+					=> '<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',
+				ABP01_INFO_ITEM_ICON_SURFACE
+					=> '<path d="M4 18l4-6 4 3 4-8 4 5M3 21h18"/>',
+				ABP01_INFO_ITEM_ICON_BIKE
+					=> '<circle cx="6" cy="17" r="3.2"/><circle cx="18" cy="17" r="3.2"/><path d="M6 17l4-7h5l3 7M9 7h3"/>',
+				ABP01_INFO_ITEM_ICON_MARKER
+					=> '<path d="M6 3v18M6 5l9 3-9 3"/>',
+				ABP01_INFO_ITEM_ICON_TRAIN
+					=> '<rect x="6" y="4" width="12" height="12" rx="3"/><path d="M6 10h12M9 20l-2 2M15 20l2 2"/><circle cx="9" cy="13" r="1"/><circle cx="15" cy="13" r="1"/>',
+				ABP01_INFO_ITEM_ICON_GAUGE
+					=> '<path d="M12 14a2 2 0 100-4 2 2 0 000 4zM4 20a8 8 0 0116 0"/>',
+				ABP01_INFO_ITEM_ICON_SWAP
+					=> '<path d="M7 4l-3 3 3 3M4 7h13M17 20l3-3-3-3M20 17H7"/>',
+				ABP01_INFO_ITEM_ICON_POWER
+					=> '<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
+				ABP01_INFO_ITEM_ICON_LINE
+					=> '<path d="M3 12h18M6 12V6M18 12v6"/>'
 			);
 
 			/**
@@ -354,6 +385,7 @@ if (!function_exists('abp01_get_info_item_icons')) {
 			 *
 			 * @since 0.3.3
 			 * @category Front-end Viewer
+			 * @see abp01-plugin-header.php for ABP01_INFO_ITEM_ICON_* constants that represent built-in icon names.
 			 *
 			 * @param array<string, string> $defaultIcons The default raw SVG inner markup keyed by icon identifier.
 			 */
