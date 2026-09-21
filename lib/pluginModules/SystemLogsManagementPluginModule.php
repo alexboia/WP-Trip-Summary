@@ -231,10 +231,23 @@ class Abp01_PluginModules_SystemLogsManagementPluginModule extends Abp01_PluginM
 	}
 
 	private function _getMaxDisplayableLogSize(): int {
-		$tailLineCount = $this->_getLogFileTailLineCount();		
+		$tailLineCount = $this->_getLogFileTailLineCount();
 		$maxSize = $defaultMaxSize = $tailLineCount * self::DEFAULT_MAX_CHARACTERS_PER_LINE;
 
-		$maxSize = intval(apply_filters('abp01_max_displayable_log_file_size', 
+		/**
+		 * Filters the maximum log file size that the system logs viewer displays in full.
+		 *
+		 * The initial value, in bytes, is the effective log tail line count multiplied
+		 * by 512. Files exceeding the resulting size are trimmed and only their trailing
+		 * lines are displayed. The filtered value is converted to an integer; zero and
+		 * negative values are ignored in favor of the initial value.
+		 *
+		 * @since 0.3.2
+		 * @category Log Management
+		 *
+		 * @param int $maxSize The maximum file size, in bytes, to display in full.
+		 */
+		$maxSize = intval(apply_filters('abp01_max_displayable_log_file_size',
 			$maxSize));
 
 		if ($maxSize <= 0) {
@@ -251,7 +264,20 @@ class Abp01_PluginModules_SystemLogsManagementPluginModule extends Abp01_PluginM
 			$tailLineCount = intval(constant('ABP01_LOG_FILE_DISPLAY_TAIL_LINE_COUNT'));
 		}
 
-		$tailLineCount = intval(apply_filters('abp01_log_file_display_tail_line_count', 
+		/**
+		 * Filters the number of trailing lines displayed for an oversized log file.
+		 *
+		 * The initial value is 512, or the value of the
+		 * ABP01_LOG_FILE_DISPLAY_TAIL_LINE_COUNT constant when defined. The filtered
+		 * value is converted to an integer; zero and negative values fall back to 512.
+		 * This value also contributes to the default maximum displayable file size.
+		 *
+		 * @since 0.3.2
+		 * @category Log Management
+		 *
+		 * @param int $tailLineCount The number of trailing log lines to display.
+		 */
+		$tailLineCount = intval(apply_filters('abp01_log_file_display_tail_line_count',
 			$tailLineCount));
 
 		if ($tailLineCount <= 0) {

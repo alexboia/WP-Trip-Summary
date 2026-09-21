@@ -8,8 +8,8 @@
     ],
     "summary": {
         "totalDispatches": 47,
-        "documented": 33,
-        "undocumented": 14,
+        "documented": 35,
+        "undocumented": 12,
         "unresolvedDynamic": 0
     },
     "documentedHooks": [
@@ -628,9 +628,7 @@
             "docCommentLine": 545,
             "docComment": "/**\r\n\t\t\t * Fired after a trip summary log entry has been saved. \r\n\t\t\t * Callbacks receive the current post identifier, \r\n\t\t\t * the log entry instance and whether the operation succeeded or not.\r\n\t\t\t * \r\n\t\t\t * @since 0.3.0\r\n\t\t\t * @category Trip Summary Management\r\n\t\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t\t * \r\n\t\t\t * @param int $postId The post identifier\r\n\t\t\t * @param \\Abp01_Route_Log_Entry $logEntry The log entry instance that is about to be saved\r\n\t\t\t * @param bool $success Whether the operation suceeded or not\r\n\t\t\t */",
             "prefixEvidence": true
-        }
-    ],
-    "undocumentedHooks": [
+        },
         {
             "hookName": "abp01_max_displayable_log_file_size",
             "kind": "filter",
@@ -641,12 +639,12 @@
                 "$maxSize"
             ],
             "file": "lib/pluginModules/SystemLogsManagementPluginModule.php",
-            "line": 237,
+            "line": 250,
             "enclosingClass": "Abp01_PluginModules_SystemLogsManagementPluginModule",
             "enclosingFunction": "_getMaxDisplayableLogSize",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 237,
+            "docComment": "/**\n\t\t * Filters the maximum log file size that the system logs viewer displays in full.\n\t\t *\n\t\t * The initial value, in bytes, is the effective log tail line count multiplied\n\t\t * by 512. Files exceeding the resulting size are trimmed and only their trailing\n\t\t * lines are displayed. The filtered value is converted to an integer; zero and\n\t\t * negative values are ignored in favor of the initial value.\n\t\t *\n\t\t * @since 0.3.2\n\t\t * @category Log Management\n\t\t *\n\t\t * @param int $maxSize The maximum file size, in bytes, to display in full.\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -659,14 +657,16 @@
                 "$tailLineCount"
             ],
             "file": "lib/pluginModules/SystemLogsManagementPluginModule.php",
-            "line": 254,
+            "line": 280,
             "enclosingClass": "Abp01_PluginModules_SystemLogsManagementPluginModule",
             "enclosingFunction": "_getLogFileTailLineCount",
-            "documentationStatus": "missing",
-            "docCommentLine": null,
-            "docComment": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 267,
+            "docComment": "/**\n\t\t * Filters the number of trailing lines displayed for an oversized log file.\n\t\t *\n\t\t * The initial value is 512, or the value of the\n\t\t * ABP01_LOG_FILE_DISPLAY_TAIL_LINE_COUNT constant when defined. The filtered\n\t\t * value is converted to an integer; zero and negative values fall back to 512.\n\t\t * This value also contributes to the default maximum displayable file size.\n\t\t *\n\t\t * @since 0.3.2\n\t\t * @category Log Management\n\t\t *\n\t\t * @param int $tailLineCount The number of trailing log lines to display.\n\t\t */",
             "prefixEvidence": true
-        },
+        }
+    ],
+    "undocumentedHooks": [
         {
             "hookName": "abp01_predefined_tile_layers",
             "kind": "filter",
