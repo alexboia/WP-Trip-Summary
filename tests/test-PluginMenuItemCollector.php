@@ -29,6 +29,8 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+use WpTripSummary\Exception;
+
 class PluginMenuItemCollectorTests extends WP_UnitTestCase {
 	public function test_canCollectMenuItems_parentsOnly_oneAtATime_validMenuItems() {
 		$collector = new Abp01_PluginMenuItemCollector();
@@ -179,11 +181,11 @@ class PluginMenuItemCollectorTests extends WP_UnitTestCase {
 			$raisedException = null;
 			try {
 				$collector->collectMenuItems(array($invalidMenuItem));
-			} catch (Abp01_Exception $exc) {
+			} catch (Exception $exc) {
 				$raisedException = $exc;
 			}
 			
-			$this->assertInstanceOf(Abp01_Exception::class, $raisedException);
+			$this->assertInstanceOf(Exception::class, $raisedException);
 			$this->assertEquals(0, count($collector->getCollectedMenuItems()));
 		}
 	}
