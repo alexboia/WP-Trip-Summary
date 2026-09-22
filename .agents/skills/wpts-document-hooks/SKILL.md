@@ -25,6 +25,22 @@ The extractor scans production PHP entry points, `lib/` excluding `lib/3rdParty/
 
 Inspect every unresolved dispatcher manually. Trace constructor arguments, property assignments, constants, and callers until each concrete `abp01_*` hook name is found or explicitly record why it cannot be resolved. Do not silently omit dynamic hooks.
 
+## Parse documented hook blocks
+
+Use the parser helper when structured access to inline hook documentation is more useful than reading raw `docComment` strings from the inventory:
+
+```text
+php .agents/skills/wpts-document-hooks/scripts/parse-hook-doc.php --pretty
+```
+
+It reads `./hook-docs/hooks-inventory.json` by default and emits deterministic JSON containing occurrence provenance, parsed descriptions and tags, parameters, warnings, and occurrences without usable doc-comments. Parsed parameter records preserve pass-by-reference and variadic semantics in the `byReference` and `variadic` fields. To inspect one hook without loading the entire documentation inventory, use:
+
+```text
+php .agents/skills/wpts-document-hooks/scripts/parse-hook-doc.php --hook=abp01_example_hook --pretty
+```
+
+Pass an inventory path as the positional argument only when processing a non-canonical fixture or report. Use `--output=<file>` when a persisted derived report is explicitly needed; do not overwrite the canonical inventory with parser output.
+
 ## Treat dispatchers uniformly
 
 After detection, treat a direct WordPress dispatcher and a registered class-wrapped dispatcher as the same kind of public hook occurrence. Apply the same inventory, contract assessment, documentation, categorization, duplicate-consistency, and validation rules regardless of whether the dispatch statement is `do_action(...)`, `apply_filters(...)`, or `new <registered-wrapper>(...)`.
@@ -90,4 +106,10 @@ After changing the extractor, run:
 
 ```text
 php .agents/skills/wpts-document-hooks/tests/extract-hooks-test.php
+```
+
+After changing `HookDoc`, `HookDocParser`, or `parse-hook-doc.php`, run:
+
+```text
+php .agents/skills/wpts-document-hooks/tests/parse-hook-doc-test.php
 ```
