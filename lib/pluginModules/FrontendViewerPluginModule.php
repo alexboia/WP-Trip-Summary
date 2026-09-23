@@ -134,7 +134,8 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 	
 		if (!empty($statusInfo[$postId])) {
 			$statusInfo = $statusInfo[$postId];
-			$hasData = ($statusInfo['has_route_details'] || $statusInfo['has_route_track']);
+			$hasData = ($statusInfo['has_route_details'] 
+				|| $statusInfo['has_route_track']);
 		}
 
 		return $hasData;

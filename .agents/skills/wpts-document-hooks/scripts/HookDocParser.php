@@ -292,6 +292,8 @@ namespace WpTripSummary\Skills\WpDocumentHooks {
 		}
 
 		private function _maybeUnknownTagLine(string $cleanLine): void {
+			//Unknown tag, commit previous, mark current state 
+			//	as ignoring whatever this is
 			if (str_starts_with($cleanLine, '@')
 				&& preg_match('/^@(category|since|see|unstable|param)(?:\s|$)/i', $cleanLine) !== 1) {
 				$this->_commitCurrent();
@@ -332,13 +334,20 @@ namespace WpTripSummary\Skills\WpDocumentHooks {
 				return '';
 			}
 
-			$hasOpeningMarker = str_starts_with($processLine, '/**')
-				|| str_starts_with($processLine, '/*');
+			//Allow for flexible open markers
+			$startsWithSlashTwo = str_starts_with($processLine, '/**');
+			$startsWithSlashOne = str_starts_with($processLine, '/*');
+
+			$hasOpeningMarker = $startsWithSlashTwo
+				|| $startsWithSlashOne;
+
 			if ($hasOpeningMarker) {
-				$markerLength = str_starts_with($processLine, '/**') ? 3 : 2;
-				$processLine = ltrim(substr($processLine, $markerLength));
+				$markerLength = $startsWithSlashTwo ? 3 : 2;
+				$processLine = ltrim(substr($processLine, 
+					$markerLength));
 			}
 
+			//Remove close marker
 			if (str_ends_with($processLine, '*/')) {
 				$processLine = rtrim(substr($processLine, 0, -2));
 			}
