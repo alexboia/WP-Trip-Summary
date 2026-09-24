@@ -6,96 +6,92 @@ require_once __DIR__ . '/LicenseHeaderReader.php';
 require_once __DIR__ . '/LicenseHeaderGenerator.php';
 require_once __DIR__ . '/LicenseHeaderUpdater.php';
 
-const ACTION_READ = 'read';
-const ACTION_UPDATE = 'update';
-
-use WpTripSummary\Skills\WpCodingConventions\LicenseHeader;
 use WpTripSummary\Skills\WpCodingConventions\LicenseHeaderReader;
 use WpTripSummary\Skills\WpCodingConventions\LicenseHeaderUpdater;
 
-function wptsLicenseHeaderUtilityUsage(): never {
-	fwrite(STDERR, "Usage: php license-header-utility.php <file> [--read] [--full] [--json]\n");
-	exit(2);
-}
-
-function wptsExtractLicenseHeader(string $file, bool $json, bool $full): never {
-	if (!is_readable($file)) {
-		fwrite(STDERR, "File $file is not readable.\n");
-		exit(1);
-	}
-
-	$reader = new LicenseHeaderReader($file);
-	$headerInfo = $reader->read();
-
-	if ($headerInfo !== null) {
-		if (!$json) {
-			if ($full) {
-				echo "\nFile $file has license header " 
-					. "at offset $headerInfo->offset " 
-					. "for year $headerInfo->year. " 
-					. "Contents: \n" . $headerInfo->normalizedHeader() . "\n";
-			} else {
-				echo "\nFile $file has license header " 
-					. "at offset $headerInfo->offset " 
-					. "for year $headerInfo->year.\n";
-			}			
-		}  else {
-			echo "\n" . $headerInfo->toJson() . "\n";
-		}
-	} else {
-		echo "No license header found in file: $file";
-	}
-
-	exit(0);
-}
-
-function wptsUpdateLicenseHeader(string $file, ?int $year): never {
-	if (!is_readable($file)) {
-		fwrite(STDERR, "File $file is not readable.\n");
-		exit(1);
-	}
-
-	if ($year === null || $year <= 0) {
-		$year = intval(date("Y"));
-	}
-
-	$updater = new LicenseHeaderUpdater($file);
-	$updater->update($year);
-	
-	exit(0);
+function wptsLicenseHeaderUtilityUsage(int $exitCode = 2): never {
+	$stream = $exitCode === 0 ? STDOUT : STDERR;
+	fwrite($stream, "Usage: php license-header-utility.php <file> [--read [--full|--json] | --check | --update [--dry-run]] [--year=YYYY]\n" .
+		"Default action: --read. Default year: current year. --year applies to --check and --update.\n" .
+		"--check exits 1 for a missing/outdated header; --dry-run prints updated source without writing.\n" .
+		"--update supports PHP/PHTML, JS, TS and CSS files and never decreases the existing year.\n");
+	exit($exitCode);
 }
 
 $file = null;
 $full = false;
 $json = false;
-$action = ACTION_READ;
-$arguments = array_slice($argv, 1);
+$dryRun = false;
+$action = null;
+$year = null;
 
-foreach ($arguments as $argument) {
-	if ($argument === '--full') {
+foreach (array_slice($argv, 1) as $argument) {
+	if ($argument === '--help') {
+		wptsLicenseHeaderUtilityUsage(0);
+	} else if ($argument === '--full') {
 		$full = true;
 	} else if ($argument === '--json') {
 		$json = true;
-	} else if ($argument === '--read') {
-		$action = ACTION_READ;
-	} else if ($argument === '--update') {
-		$action = ACTION_UPDATE;
-	} else if ($file === null) {
+	} else if ($argument === '--dry-run') {
+		$dryRun = true;
+	} else if (in_array($argument, array('--read', '--check', '--update'), true)) {
+		if ($action !== null) {
+			wptsLicenseHeaderUtilityUsage();
+		}
+		$action = substr($argument, 2);
+	} else if (preg_match('/^--year=(\d{4})$/', $argument, $matches)) {
+		$year = intval($matches[1]);
+		if ($year < 2014) {
+			wptsLicenseHeaderUtilityUsage();
+		}
+	} else if (!str_starts_with($argument, '--') && $file === null) {
 		$file = $argument;
 	} else {
 		wptsLicenseHeaderUtilityUsage();
 	}
 }
 
-if (empty($file)) {
+$action = $action ?? 'read';
+if (empty($file)
+	|| ($dryRun && $action !== 'update')
+	|| (($full || $json) && $action !== 'read')
+	|| ($full && $json)
+	|| ($year !== null && $action === 'read')) {
 	wptsLicenseHeaderUtilityUsage();
 }
+$year = $year ?? intval(date('Y'));
 
-switch ($action) {
-	case ACTION_READ:
-		wptsExtractLicenseHeader($file, $json, $full);
-		break;
-	case ACTION_UPDATE:
-		wptsUpdateLicenseHeader($file, null);
-		break;
+try {
+	if ($action === 'update') {
+		$updater = new LicenseHeaderUpdater($file);
+		if ($dryRun) {
+			echo $updater->preview($year);
+		} else {
+			$changed = $updater->update($year);
+			echo ($changed ? 'Updated' : 'Unchanged') . " license header: $file\n";
+		}
+		exit(0);
+	}
+
+	$reader = new LicenseHeaderReader($file);
+	$header = $reader->read();
+	if ($action === 'check') {
+		$current = $header !== null && $header->year >= $year;
+		echo ($current ? 'Current' : 'Missing or outdated') . " license header: $file\n";
+		exit($current ? 0 : 1);
+	}
+
+	if ($json) {
+		echo ($header !== null ? $header->toJson() : 'null') . "\n";
+	} else if ($header === null) {
+		echo "No license header found in file: $file\n";
+	} else {
+		echo "File $file has license header at offset $header->offset for year $header->year.\n";
+		if ($full) {
+			echo $header->normalizedHeader() . "\n";
+		}
+	}
+} catch (Throwable $error) {
+	fwrite(STDERR, $error->getMessage() . "\n");
+	exit(1);
 }

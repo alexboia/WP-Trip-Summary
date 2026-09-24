@@ -1,140 +1,141 @@
 <?php
 namespace WpTripSummary\Skills\WpCodingConventions {
-
-    use InvalidArgumentException;
+	use InvalidArgumentException;
+	use RuntimeException;
 
 	class LicenseHeaderUpdater {
 		private string $_sourceFile;
-		
+
+		private string $_templateFile;
+
 		public function __construct(string $sourceFile) {
-			if (empty($sourceFile)) {
-				throw new InvalidArgumentException('Empty source file name specified.');
+			if (!is_file($sourceFile) || !is_readable($sourceFile)) {
+				throw new InvalidArgumentException('Invalid or unreadable source file: ' . $sourceFile);
 			}
 
-			if (!is_readable($sourceFile)) {
-				throw new InvalidArgumentException('Invalid source file specified.');
+			$extension = strtolower(pathinfo($sourceFile, PATHINFO_EXTENSION));
+			if (!in_array($extension, array('php', 'phtml', 'js', 'ts', 'css'), true)) {
+				throw new InvalidArgumentException('Unsupported source file extension: ' . $extension);
 			}
 
 			$this->_sourceFile = $sourceFile;
+			$this->_templateFile = __DIR__ . '/../references/.license-header';
 		}
 
-		public function update(int $toYear) {
-			$currentHeader = $this->_getCurrentLicenseHeader();
-			$fileContents = file_get_contents($this->_sourceFile);
+		public function update(int $toYear): bool {
+			$contents = $this->_readSource();
+			$updated = $this->preview($toYear);
 
-			$strip = 0;
-			$insertOffset = -1;
-			$insertContents = array();
-			$isPhpFile = $this->_isPhpFile();
-			$beginNewLineCount = 0;
-			$endingNewLineCount = 1;
-			$needsPHPTags = false;
-			
-			if ($currentHeader === null) {
-				$context = array();
-				$insertOffset = $this->_getInsertOffset($fileContents, 
-					$isPhpFile,
-					$context);
-
-				//No opening PHP tag
-				if ($isPhpFile) {
-					if ($insertOffset === 0) {
-						$needsPHPTags = true;
-						$beginNewLineCount = 1;
-					} else if(!$context['cleanOpenMarker']) {
-						$beginNewLineCount = 2;
-					}
-				}
-			} else {
-				$insertOffset = $currentHeader->offset;
-				$strip = $currentHeader->length;
+			if ($updated === $contents) {
+				return false;
 			}
 
-			$beginNewLines = $beginNewLineCount > 0 
-				? str_repeat("\n", $beginNewLineCount) 
-				: "";
-
-			$endingNewLines = $endingNewLineCount > 0 
-				? str_repeat("\n", $endingNewLineCount)
-				: "";
-
-			if ($needsPHPTags) {
-				$insertContents[] = "<?php$beginNewLines";
-			} else {
-				$insertContents[] = $beginNewLines;
+			if (@file_put_contents($this->_sourceFile, $updated) 
+					!== strlen($updated)) {
+				throw new RuntimeException('Could not write source file: ' 
+					. $this->_sourceFile);
 			}
 
-			$insertContents[] = $this->_generateLicenseHeader($toYear);
-			$insertContents[] = $endingNewLines;
-			if ($needsPHPTags) {
-				$insertContents[] = "?>\n";
-			}
-
-			$finalContents = ""; 
-			if ($insertOffset > 0) {
-				$finalContents = substr($fileContents, 
-				0, 
-				$insertOffset);	
-			}
-
-			$finalContents .= join("", $insertContents);
-			$finalContents .= substr($fileContents, 
-					$insertOffset + $strip);
-
-			file_put_contents($this->_sourceFile, 
-				$finalContents);
+			return true;
 		}
 
-		private function _getCurrentLicenseHeader(): ?LicenseHeader {
+		private function _getCurrentHeader(): ?LicenseHeader {
 			$reader = new LicenseHeaderReader($this->_sourceFile);
 			return $reader->read();
 		}
 
-		private function _getInsertOffset(string $contents, bool $isPhpFile, array &$context): int {
-			if (!$isPhpFile) {
-				return 0;
-			}
+		private function _generateHeaderText(int $toYear, string $newLine): string {
+			$generator = new LicenseHeaderGenerator($this->_templateFile);
+			
+			$header = $generator->generate($toYear);
+			$header = str_replace("\r\n", "\n", 
+				$header);
+			$header = str_replace("\n", $newLine, 
+				$header);
 
-			$offset = -1;
-			$searchMarkers = ['<?php', '<?'];
+			return $header;
+		}
 
-			foreach ($searchMarkers as $marker) {
-				$index = stripos($contents, $marker);
-				if ($index !== false) {
-					$offset = ($index + strlen($marker));
-					break;
-				}
-			}
-
-			$context['cleanOpenMarker'] = true;
-			if ($offset < 0) {
-				return 0;
-			}
-
-			$cursor = $offset;
-			$length = strlen($contents);
-
-			while ($cursor < $length) {
-				if ($contents[$cursor] !== "\n") {
-					$context['cleanOpenMarker'] = false;
-				}
-				$cursor ++;
-			}
-
-			return $offset;
+		private function _determineNewLine(string $contents) {
+			return str_contains($contents, "\r\n") ? "\r\n" : "\n";
 		}
 
 		private function _isPhpFile(): bool {
-			return stripos($this->_sourceFile, '.php') 
-					!== false 
-				|| stripos($this->_sourceFile, '.phtml') 
-					!== false;
+			$extension = strtolower(pathinfo($this->_sourceFile, 
+				PATHINFO_EXTENSION));
+
+			$isPhpFile = in_array($extension, 
+				array('php', 'phtml'),
+				true);
+
+			return $isPhpFile;
 		}
 
-		private function _generateLicenseHeader(int $forYear): string {
-			$template = realpath(__DIR__ . '/../references/.license-header');
-			$generator = new LicenseHeaderGenerator($template);
-			return $generator->generate($forYear);
+		public function preview(int $toYear): string {
+			if ($toYear < 2014 || $toYear > 9999) {
+				throw new InvalidArgumentException('License year must be between 2014 and 9999.');
+			}
+
+			$contents = $this->_readSource();
+			$currentHeader = $this->_getCurrentHeader();
+
+			$newLine = $this->_determineNewLine($contents);
+			$headerText = $this->_generateHeaderText($toYear, $newLine);
+
+			if ($currentHeader !== null) {
+				return substr_replace($contents, 
+					$headerText, 
+					$currentHeader->offset, 
+					$currentHeader->length);
+			}
+
+			$isPhpFile = $this->_isPhpFile();
+			if (!$isPhpFile) {
+				return $headerText . $newLine . $contents;
+			}
+
+			$offset = 0;
+			foreach (token_get_all($contents) as $token) {
+				$text = is_array($token) 
+					? $token[1] 
+					: $token;
+
+				if (is_array($token) && $token[0] === T_OPEN_TAG) {
+					$offset += strlen(rtrim($text));
+					$remainder = substr($contents, $offset);
+					$separator = $this->_remainderNeedsNewLine($remainder)
+						? $newLine
+						: "";
+
+					return substr($contents, 0, $offset) 
+						. $newLine 
+						. $headerText 
+						. $separator 
+						. $remainder;
+				}
+				$offset += strlen($text);
+			}
+
+			//A PHP template containing only markup needs a separate PHP comment block.
+			return '<?php' 
+					. $newLine 
+					. $headerText 
+					. $newLine 
+				. '?>' 
+				. $contents;
+		}
+
+		private function _readSource(): string {
+			$contents = @file_get_contents($this->_sourceFile);
+			if ($contents === false) {
+				throw new RuntimeException('Could not read source file: ' . $this->_sourceFile);
+			}
+			return $contents;
+		}
+
+		private function _remainderNeedsNewLine(string $remainder):bool {
+			return !str_starts_with($remainder, "\n") 
+				&& !str_starts_with($remainder, "\r\n");
 		}
 	}
 }

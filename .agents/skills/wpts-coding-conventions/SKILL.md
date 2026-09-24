@@ -33,8 +33,11 @@ Follow the existing subsystem placement and filename pattern. PHP class filename
 
 ## License header and PHP file layout
 
-- New plugin and test source files (PHP, JavaScript, TypeScript and CSS) must include the [license header](references/.license-header). Replace `$CURRENT_YEAR$` with the current year. Build/utility scripts, configuration, package and manifest files are exempt.
-- Put the PHP license header immediately after `<?php`. Preserve existing notices when editing a file.
+- Use [license-header-utility.php](scripts/license-header-utility.php) for license maintenance on plugin and test source files (PHP/PHTML, JavaScript, TypeScript and CSS). It generates missing headers from the [license template](references/.license-header) and advances existing copyright years while preserving the notice text.
+- For a new source file, create its initial contents first (including `<?php` for PHP code), then run the utility with `--update`. For an existing source file changed by the task, run `--update` as part of the edit. The default is the current year; repeated runs are a no-op and later years are never reduced.
+- Limit updates to source files in the task. Build/utility scripts, configuration, package/manifest files, dependencies and generated assets are exempt. The utility's intentionally missing/outdated license fixtures under `tests/license-header-files/` within this skill are test data; do not normalize their headers.
+- For a review without edits, use `--read` or `--check`. Use `--update --dry-run` when a preview is useful. Inspect the diff after writing and use `--check` to verify the result. See [commands and options](references/examples.md#license-header-utility).
+- Insert new PHP headers immediately after `<?php`. Existing headers keep their location, including after the WordPress plugin metadata comment or a strict-types directive; preserve existing notices when editing a file.
 - PHP library files omit the closing `?>`; templates close and reopen PHP around markup.
 - Preserve the file's bootstrap guard. Runtime files commonly check `ABP01_LOADED`; the plugin header checks `ABSPATH`. Test files run through the test bootstrap and do not acquire runtime guards.
 - Where strict typing is used, place `declare(strict_types=1);` after the license and before the namespace. It is not universal in legacy files; adding it can change behavior and is not a formatting edit.
@@ -107,3 +110,12 @@ See [templates](references/examples.md#templates), [browser scripts and types](r
 - Keep setup, assertions and cleanup consistent with the neighboring suite. Restore hooks, global state and database changes introduced by a test. Data-driven tests use `@dataProvider` where already established.
 
 See [test examples](references/examples.md#tests).
+
+After changing the license utility, run its standalone tests from the plugin root with PHP 8.2 or newer (the utility uses a readonly class; WordPress is not required):
+
+```text
+php .agents/skills/wpts-coding-conventions/tests/license-header-test.php
+php .agents/skills/wpts-coding-conventions/tests/license-header-utility-test.php
+```
+
+The runners exercise the supplied fixtures on temporary copies, check LF/CRLF preservation and repeat updates, lint updated PHP, and verify CLI output and exit codes. They leave the fixtures unchanged.
