@@ -1,0 +1,4 @@
+interface:
+  display_name: "WPTS Coding Conventions Documentation"
+  short_description: "Rules for creating and editing existing plug-in source code: PHP, CSS, JavaScript/TypeScript"
+  default_prompt: "Use $wpts-coding-conventions to create new plug-in source code or edit existing plug-in source code."
