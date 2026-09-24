@@ -21,9 +21,9 @@ General block and indentation rules apply across languages; PHP arrays, namespac
 
 ## License header utility
 
-Run [license-header-utility.php](../scripts/license-header-utility.php) from the plugin root with PHP 8.2 or newer. It works without loading WordPress. Paths with spaces must be quoted.
+Run [license-header-utility.php](../scripts/license-header-utility.php) from the plugin root with PHP 8.2 or newer and tokenizer enabled. Keep the normal PHP configuration loaded, without `-n`. It works without loading WordPress. Paths with spaces must be quoted.
 
-After creating a new source file or modifying an existing one, insert the missing license or advance its year:
+After creating a new source file or modifying an existing one, synchronize the full license with the template and target year, even if the existing year is already correct:
 
 ```text
 php .agents/skills/wpts-coding-conventions/scripts/license-header-utility.php lib/Example.php --update
@@ -45,15 +45,15 @@ php .agents/skills/wpts-coding-conventions/scripts/license-header-utility.php li
 | `--read` | Default action; report the recognized project license and its year |
 | `--full` | Include the full comment in a text read report |
 | `--json` | Return header metadata as JSON, or JSON `null` if absent |
-| `--check` | Exit successfully when the header exists and its year is at least the target year; otherwise exit 1 |
-| `--update` | Insert a missing header or update only the year of an existing project notice |
+| `--check` | Exit successfully when the full header matches the template rendered for the target year; otherwise exit 1 |
+| `--update` | Insert a missing header or replace an existing project notice with the full rendered template |
 | `--dry-run` | With `--update`, print the proposed file contents without writing |
-| `--year=YYYY` | Override the current-year target for `--update` or `--check`; useful for reproducible tests |
+| `--year=YYYY` | Set the exact target year for `--update` or `--check`, including earlier years; default is the current year |
 | `--help` | Print usage and exit successfully |
 
 Read reports keep the comment's `offset` and `length` in original file bytes; the JSON `header` text normalizes CRLF to LF and includes the closing `*/`. Successful reads exit 0 even when no header is found; use `--check` when presence matters. Invalid arguments exit 2; file errors exit 1 and go to stderr.
 
-Updates support `.php`, `.phtml`, `.js`, `.ts` (including `.d.ts`) and `.css`. They preserve existing code, other comments and LF/CRLF line endings. A current or later year produces no write. Existing notices are not replaced with the template, and WordPress plugin metadata is retained. The recognizer targets this project's `Copyright (c) 2014-YYYY Alexandru Boia and Contributors` block comment, not arbitrary license formats.
+Updates support `.php`, `.phtml`, `.js`, `.ts` (including `.d.ts`) and `.css`. They replace the entire recognized project license, including any text within it that differs from the template. Code, other comments, WordPress plugin metadata and LF/CRLF line endings are retained. No write occurs only when the generated result already matches the file. The recognizer targets this project's `Copyright (c) 2014-YYYY Alexandru Boia and Contributors` block comment, not arbitrary license formats.
 
 Apply updates only to authored source files being changed. Skip utility/build scripts, configuration, third-party code, generated assets and fixtures deliberately testing missing or old licenses. Browser comment recognition is a simple block-comment scan, not a JavaScript or CSS parser.
 

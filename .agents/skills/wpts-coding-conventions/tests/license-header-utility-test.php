@@ -15,7 +15,9 @@ function runLicenseHeaderCli(array $arguments, int $expectedExitCode = 0): array
 
 	assertLicenseHeaderSame($expectedExitCode, 
 		$result['exitCode'],
-		'Unexpected CLI status for ' . implode(' ', $arguments) . "\n" . $result['error']);
+		'Unexpected CLI status for ' 
+			. implode(' ', $arguments) . "\n" 
+			. $result['error']);
 	
 	if ($expectedExitCode === 0) {
 		assertLicenseHeaderSame('', 
@@ -89,6 +91,35 @@ withLicenseHeaderTestDirectory(function(string $directory): void {
 		file_get_contents($file), 
 		'Repeated CLI update must not change the file.');
 
+	$outdated = str_replace('Redistribution and use in source and binary forms',
+		'Outdated license wording',
+		$before);
+	
+	assertLicenseHeaderSame(false, 
+		$outdated === $before,
+		'Test source should contain modified license text.');
+
+	file_put_contents($file, $outdated);
+	
+	runLicenseHeaderCli(array($file, '--check', '--year=2030'), 
+		1);
+	assertLicenseHeaderSame($outdated, 
+		file_get_contents($file),
+		'Checking the template must not modify the file.');
+
+	runLicenseHeaderCli(array($file, '--update', '--year=2030'));
+	assertLicenseHeaderSame($before, 
+		file_get_contents($file),
+		'Update should restore the full template even when the year is already correct.');
+
+	runLicenseHeaderCli(array($file, 
+		'--check', 
+		'--year=2030'));
+	runLicenseHeaderCli(array($file, 
+			'--check', 
+			'--year=2029'), 
+		1);
+
 	$currentFile = $directory . '/current.php';
 	file_put_contents($currentFile, $source);
 	runLicenseHeaderCli(array($currentFile, '--update'));
@@ -101,7 +132,7 @@ withLicenseHeaderTestDirectory(function(string $directory): void {
 	runLicenseHeaderCli(array($currentFile, 
 		'--check'));
 
-	foreach (array(
+	$withInvalidOptions = array(
 		array(),
 		array($file, '--unknown'),
 		array($file, '--update', '--year=invalid'),
@@ -109,10 +140,13 @@ withLicenseHeaderTestDirectory(function(string $directory): void {
 		array($file, '--read', '--update'),
 		array($file, '--dry-run'),
 		array($file, '--update', '--json')
-	) as $arguments) {
+	);
+
+	foreach ($withInvalidOptions as $arguments) {
 		runLicenseHeaderCli($arguments, 
 			2);
 	}
+
 	assertLicenseHeaderSame($before, 
 		file_get_contents($file), 
 		'Invalid arguments must not modify the target.');

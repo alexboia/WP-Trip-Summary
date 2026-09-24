@@ -13,8 +13,8 @@ function wptsLicenseHeaderUtilityUsage(int $exitCode = 2): never {
 	$stream = $exitCode === 0 ? STDOUT : STDERR;
 	fwrite($stream, "Usage: php license-header-utility.php <file> [--read [--full|--json] | --check | --update [--dry-run]] [--year=YYYY]\n" .
 		"Default action: --read. Default year: current year. --year applies to --check and --update.\n" .
-		"--check exits 1 for a missing/outdated header; --dry-run prints updated source without writing.\n" .
-		"--update supports PHP/PHTML, JS, TS and CSS files and never decreases the existing year.\n");
+		"--check exits 1 when the header differs from the template/year; --dry-run prints updated source without writing.\n" .
+		"--update synchronizes the full header with the template and target year in PHP/PHTML, JS, TS and CSS files.\n");
 	exit($exitCode);
 }
 
@@ -73,14 +73,15 @@ try {
 		exit(0);
 	}
 
-	$reader = new LicenseHeaderReader($file);
-	$header = $reader->read();
 	if ($action === 'check') {
-		$current = $header !== null && $header->year >= $year;
-		echo ($current ? 'Current' : 'Missing or outdated') . " license header: $file\n";
+		$updater = new LicenseHeaderUpdater($file);
+		$current = $updater->preview($year) === file_get_contents($file);
+		echo ($current ? 'Current' : 'Missing or different from template/year') . " license header: $file\n";
 		exit($current ? 0 : 1);
 	}
 
+	$reader = new LicenseHeaderReader($file);
+	$header = $reader->read();
 	if ($json) {
 		echo ($header !== null ? $header->toJson() : 'null') . "\n";
 	} else if ($header === null) {
