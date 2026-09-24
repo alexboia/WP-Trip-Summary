@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 const WPTS_HOOK_DISPATCHERS = array(
@@ -451,7 +450,9 @@ $root = null;
 $prefix = 'abp01_';
 $outputFile = null;
 $pretty = false;
-foreach (array_slice($argv, 1) as $argument) {
+$arguments = array_slice($argv, 1);
+
+foreach ($arguments as $argument) {
 	if ($argument === '--pretty') {
 		$pretty = true;
 	} elseif (str_starts_with($argument, '--prefix=')) {

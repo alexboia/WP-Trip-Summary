@@ -7,6 +7,10 @@ namespace WpTripSummary\Skills\WpCodingConventions {
 		private string $_sourceFile;
 
 		public function __construct(string $sourceFile){
+			if (empty($sourceFile)) {
+				throw new InvalidArgumentException('Empty source file name specified.');
+			}
+
 			if (!is_readable($sourceFile)) {
 				throw new InvalidArgumentException('Invalid source file specified.');
 			}
@@ -21,27 +25,34 @@ namespace WpTripSummary\Skills\WpCodingConventions {
 					!== false;
 		}
 
-		private function _isCommentStartLine(string $cleanLine): bool {  
-			$startsWithSlashTwo = str_starts_with($cleanLine, '/**');
-			$startsWithSlashOne = str_starts_with($cleanLine, '/*');
+		private function _getCommentStartIndex(string $line): int {
+			$markers = ['/**', '/*'];
+			foreach ($markers as $marker) {
+				$index = stripos($line, $marker);
+				if ($index !== false) {
+					return $index;
+				}
+			}
 
-			$isCommentStart = $startsWithSlashOne || $startsWithSlashTwo;
-			return $isCommentStart;
+			return -1;
 		}
 
-		private function _isCommentEndLine(string $cleanLine): bool {
-			return str_ends_with($cleanLine, '*/');
+		private function _getCommentEndIndex(string $line): int {
+			$index = stripos($line, '*/');
+			return $index !== false ? $index : -1;
 		}
 
-		private function _hasOpeningPhpTag(string $cleanLine): bool {
-			return stripos($cleanLine,'<?php') !== false
-				|| stripos($cleanLine,'<?') !== false;
+		private function _hasOpeningPhpTag(string $line): bool {
+			return stripos($line,'<?php') !== false
+				|| stripos($line,'<?') !== false;
 		}
 
-		public function read(): ?string {
+		public function read(): ?LicenseHeader {
 			$lines = file($this->_sourceFile);
 			
-			if ($lines === false || !is_array($lines) || empty($lines)) {
+			if ($lines === false 
+				|| !is_array($lines) 
+				|| empty($lines)) {
 				return null;
 			}
 
@@ -50,48 +61,84 @@ namespace WpTripSummary\Skills\WpCodingConventions {
 			$licenseHeaderLines = array();
 			$maybeLicenseHeader = false;
 
+			$cursor = 0;
+			$originalOffset = -1;
+			$originalLength = 0;
+
 			foreach ($lines as $line) {
-				$cleanLine = trim($line);
-				$hasOpeningPhpTag = $this->_hasOpeningPhpTag($cleanLine);
+				$length = strlen($line);
+				$hasOpeningPhpTag = $this->_hasOpeningPhpTag($line);
 
 				if (!$canStartReadingLicenseHeader && $hasOpeningPhpTag) {
 					$canStartReadingLicenseHeader = true;
+					$cursor += $length;
 					continue;
 				}
 
 				if (!$canStartReadingLicenseHeader) {
+					$cursor += $length;
 					continue;
 				}
 
-				$isCommentStart = $this->_isCommentStartLine($cleanLine);
+				$commentStartIndex = $this->_getCommentStartIndex($line);
+				$isCommentStart = $commentStartIndex >= 0;
+
 				if ($isCommentStart) {
-					$licenseHeaderLines[] = $cleanLine;
+					$initialHeaderLine = substr($line, $commentStartIndex);
+					$licenseHeaderLines[] = $initialHeaderLine;
+
+					$originalOffset = $cursor + $commentStartIndex;
+					$originalLength += strlen($initialHeaderLine);
+
 					$maybeLicenseHeader = true;
+
 					continue;
+				} else {
+					$cursor += $length;
 				}
 
 				if (!$maybeLicenseHeader) {
 					continue;
 				}
 
-				$licenseHeaderLines[] = $cleanLine;
+				$endCommentIndex = $this->_getCommentEndIndex($line);
+				$isCommentEnd = $endCommentIndex >= 0;
 
-				$isCommentEnd = $this->_isCommentEndLine($cleanLine);
 				if ($isCommentEnd) {
 					$maybeLicenseHeader = false;
+					$originalLength += ($endCommentIndex + 2);
 					break;
+				} else {
+					$licenseHeaderLines[] = $line;
+					$originalLength += $length;
 				}
 			}
 
+			if (empty($licenseHeaderLines)) {
+				return null;
+			}
+
+			$licenseHeaderYear = 0;
 			$validLicenseHeader = false;
 			foreach ($licenseHeaderLines as $licenseHeaderLine) {
-				if (preg_match('/Copyright \(c\) 2014-([\d]{4}) ((\w+)\s*)+ and Contributors/i', $licenseHeaderLine)) {
+				$matches = array();
+				if (preg_match('/Copyright \(c\) 2014-([\d]{4}) ([\w+\s]+) and Contributors/i', 
+					$licenseHeaderLine, 
+					$matches)) {
+					$licenseHeaderYear = intval($matches[1]);
 					$validLicenseHeader = true;
 				}
 			}
 
-			return $validLicenseHeader
-				? join("\n", $licenseHeaderLines)
+			$licenseHeader = $validLicenseHeader
+				? join("", $licenseHeaderLines)
+				: null;
+
+			return !empty($licenseHeader) 
+				? new LicenseHeader($licenseHeader, 
+					$originalOffset, 
+					$originalLength,
+					$licenseHeaderYear)
 				: null;
 		}
 	}

@@ -3,7 +3,7 @@ namespace WpTripSummary\Skills\WpCodingConventions {
 
     use InvalidArgumentException;
 
-	class LicenseHeader {
+	class LicenseHeaderGenerator {
 		private string $_licenseHeaderTemplateFile;
 
 		private ?string $_licenseHeaderTemplate = null;
@@ -41,7 +41,7 @@ namespace WpTripSummary\Skills\WpCodingConventions {
 			return $this->_licenseHeaderTemplate;
 		}
 
-		public function generateForCurrentYear(int $year): string {
+		public function generateForCurrentYear(): string {
 			return $this->generate(intval(date('Y')));
 		}
 	}
