@@ -29,15 +29,12 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+if (!defined('ABP01_LOADED')) {
 	exit;
 }
 
 class Abp01_Installer_Service_CreateRootStorageDirSecurityAssets extends Abp01_Installer_Service_BaseCreateStorageDirSecurityAssets {
-	/**
-	 * @var string
-	 */
-	private $_rootStorageDir;
+	private string $_rootStorageDir;
 
 	public function __construct(string $rootStorageDir) {
 		$this->_rootStorageDir = $rootStorageDir;
