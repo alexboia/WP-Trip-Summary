@@ -142,6 +142,103 @@ textarea.abp01-code-reading-area {
 	resize: none;
 }
 
+/* Reusable code blocks */
+
+.abp01-bootstrap .wpts-code-container {
+	min-width: 0;
+	max-width: 100%;
+	margin-bottom: 16px;
+	overflow: hidden;
+	border: 1px solid var(--wpts-border-neutral3);
+	border-radius: 5px;
+	background-color: #f6f7f7;
+	color: #1d2327;
+}
+
+.abp01-bootstrap .wpts-code-toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 8px;
+	padding: 8px 12px;
+	border-bottom: 1px solid var(--wpts-border-neutral3);
+	background-color: #fff;
+}
+
+.abp01-bootstrap .wpts-code-copy-status {
+	min-width: 0;
+	font-size: 12px;
+	line-height: 1.5;
+	overflow-wrap: anywhere;
+}
+
+.abp01-bootstrap .wpts-code-copy-status.wpts-code-copy-error {
+	color: #b32d2e;
+}
+
+.abp01-bootstrap .wpts-code-copy {
+	display: inline-flex;
+	flex-shrink: 0;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	padding: 0;
+	border: 1px solid var(--wpts-border-neutral3);
+	border-radius: 4px;
+	background-color: #fff;
+	color: var(--wpts-primary);
+	cursor: pointer;
+}
+
+.abp01-bootstrap .wpts-code-copy:hover {
+	border-color: var(--wpts-primary);
+	background-color: #f0f6fc;
+	color: var(--wpts-primary-hover);
+}
+
+.abp01-bootstrap .wpts-code-copy:focus-visible,
+.abp01-bootstrap .wpts-code-container pre:focus-visible {
+	outline: 2px solid var(--wpts-primary);
+	outline-offset: -2px;
+}
+
+.abp01-bootstrap .wpts-code-copy:disabled,
+.abp01-bootstrap .wpts-code-copy[aria-busy="true"] {
+	opacity: 0.6;
+	cursor: wait;
+}
+
+.abp01-bootstrap .wpts-code-copy .dashicons {
+	width: 20px;
+	height: 20px;
+	margin: 0;
+	font-size: 20px;
+	line-height: 20px;
+}
+
+.abp01-bootstrap .wpts-code-container pre {
+	max-height: 28rem;
+	margin: 0;
+	padding: 16px;
+	overflow: auto;
+}
+
+.abp01-bootstrap .wpts-code {
+	display: block;
+	margin: 0;
+	padding: 0;
+	background: transparent;
+	color: inherit;
+	font-family: Consolas, Monaco, 'Courier New', monospace;
+	font-size: 13px;
+	line-height: 1.6;
+	white-space: pre;
+	word-break: normal;
+	overflow-wrap: normal;
+	tab-size: 4;
+}
+
 .abp01-bs-progress-label {
 	text-align: center;
 	line-height: 25px;

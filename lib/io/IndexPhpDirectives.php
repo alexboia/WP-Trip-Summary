@@ -29,12 +29,14 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+if (!defined('ABP01_LOADED')) {
     exit;
 }
 
 class Abp01_Io_IndexPhpDirectives {
-	public static function getRedirectDirective($redirectCount) {
-		return '<?php header("Location: ' . str_repeat('../', $redirectCount) . 'index.php"); exit;';
+	public static function getRedirectDirective(int $redirectCount): string {
+		return '<?php header("Location: ' 
+			. str_repeat('../', $redirectCount) 
+			. 'index.php"); exit;';
 	}
 }

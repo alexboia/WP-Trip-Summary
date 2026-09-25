@@ -30,6 +30,7 @@
  */
 
 use WpTripSummary\Env;
+use WpTripSummary\MaintenanceTool\NginxAccessDirectivesHelper;
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 	exit;
@@ -433,6 +434,8 @@ class Abp01_Plugin {
 				$registry->registerTool(new Abp01_MaintenanceTool_DetectMissingTracks($this->getRouteManager(), 
 					$this->getRouteTrackProcessor()));
 			}
+
+			$registry->registerTool(new NginxAccessDirectivesHelper($this->getEnv()));
 
 			$additionalTools = $this->_getAdditionalMaintenanceTools();
 			foreach ($additionalTools as $t) {

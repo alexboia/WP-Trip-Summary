@@ -164,6 +164,8 @@ namespace WpTripSummary {
 		 */
 		private string $_rootStorageDir;
 
+		private string $_rootStorageUrl;
+
 		/**
 		 * The path to the tracks storage directory. This is where the original track data files are stored, as uploaded by the users.
 		 */
@@ -269,6 +271,8 @@ namespace WpTripSummary {
 			$uploadRootDirInfo = wp_upload_dir();
 			$this->_rootStorageDir = wp_normalize_path(sprintf('%s/wp-trip-summary', 
 				$uploadRootDirInfo['basedir']));
+			$this->_rootStorageUrl =  untrailingslashit($uploadRootDirInfo['baseurl']) 
+				. '/wp-trip-summary';
 			$this->_tracksStorageDir = wp_normalize_path(sprintf('%s/tracks', 
 				$this->_rootStorageDir));
 			$this->_cacheStorageDir = wp_normalize_path(sprintf('%s/cache', 
@@ -567,6 +571,14 @@ namespace WpTripSummary {
 
 		public function getDataDir(): string {
 			return $this->_dataDir;
+		}
+
+		public function getRootStorageUrl(bool $relative = false): string {
+			$url = $this->_rootStorageUrl;
+			if ($relative) {
+				$url = wp_parse_url($url, PHP_URL_PATH);
+			}
+			return $url;
 		}
 
 		public function getViewsDir(): string {

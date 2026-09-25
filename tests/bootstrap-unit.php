@@ -29,48 +29,10 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit;
-}
+// Bootstrap for tests that do not need WordPress or a database.
+require_once __DIR__ . '/../vendor/autoload.php';
 
-class Abp01_Installer_Service_CreateTracksStorageDirSecurityAssets extends Abp01_Installer_Service_BaseCreateStorageDirSecurityAssets {
-	private string $_tracksStorageDir;
+define('ABP01_LOADED', true);
+require_once __DIR__ . '/../lib/Autoloader.php';
 
-	private string $_cacheStorageDir;
-
-	public function __construct(string $tracksStorageDir, string $cacheStorageDir) {
-		$this->_tracksStorageDir = $tracksStorageDir;
-		$this->_cacheStorageDir = $cacheStorageDir;
-	}
-
-	public function execute(): bool {
-		$tracksStorageDir = $this->_tracksStorageDir;
-		$cacheStorageDir = $this->_cacheStorageDir;
-
-		$tracksAssets = array(
-			array(
-				'name' => 'index.php',
-				'contents' => $this->_getGuardIndexPhpFileContents(4),
-				'type' => 'file'
-			),
-			array(
-				'name' => '.htaccess',
-				'contents' => $this->_getTrackAssetsGuardHtaccessFileContents(),
-				'type' => 'file'
-			)
-		);
-
-		return $this->_installAssetsForDirectory($tracksStorageDir, $tracksAssets) &&
-			$this->_installAssetsForDirectory($cacheStorageDir, $tracksAssets);
-	}
-
-	private function _getTrackAssetsGuardHtaccessFileContents(): string {
-		return Abp01_Io_HtAccessDirectives::getDenyFileByExtensionsDirective(array(
-			'dat',
-			'cache',
-			'gpx',
-			'geojson',
-			'kml'
-		));
-	}
-}
+WpTripSummary\Autoloader::init(dirname(__DIR__) . '/lib');

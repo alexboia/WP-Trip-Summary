@@ -139,6 +139,63 @@
             return null;
         }
     }
+    function copyCodeText(text) {
+        if (window.isSecureContext && navigator.clipboard) {
+            return navigator.clipboard.writeText(text);
+        }
+        // Compatibility fallback for admin pages served without HTTPS.
+        return new Promise(function (resolve, reject) {
+            const previousFocus = document.activeElement;
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.readOnly = true;
+            textarea.style.position = 'fixed';
+            textarea.style.left = '-9999px';
+            textarea.style.top = '0';
+            try {
+                document.body.appendChild(textarea);
+                textarea.select();
+                if (!document.execCommand('copy')) {
+                    throw new Error('Clipboard copy failed.');
+                }
+                resolve();
+            }
+            catch (error) {
+                reject(error);
+            }
+            finally {
+                textarea.remove();
+                if (previousFocus instanceof HTMLElement) {
+                    previousFocus.focus({ preventScroll: true });
+                }
+            }
+        });
+    }
+    async function handleCodeCopyClicked(event) {
+        event.preventDefault();
+        const $button = $(this);
+        const $container = $button.closest('.wpts-code-container');
+        const $code = $container.find('.wpts-code').first();
+        const $status = $container.find('.wpts-code-copy-status').first();
+        if (!$code.length
+            || $button.prop('disabled')
+            || $button.attr('aria-busy') === 'true') {
+            return;
+        }
+        $button.attr('aria-busy', 'true');
+        $status.removeClass('wpts-code-copy-error').text('');
+        try {
+            await copyCodeText($code.text());
+            $status.text($button.attr('data-copy-success') || '');
+        }
+        catch (error) {
+            $status.addClass('wpts-code-copy-error')
+                .text($button.attr('data-copy-error') || '');
+        }
+        finally {
+            $button.removeAttr('aria-busy');
+        }
+    }
     $.fn.singleVal = function () {
         var $me = $(this);
         return ($me.val() || '').toString();
@@ -179,6 +236,8 @@
         };
         window.wpTripSummary = window.abp01;
     }
+    // Delegation also handles code blocks inserted by maintenance AJAX responses.
+    $(document).on('click.wptsCodeCopy', '.abp01-bootstrap .wpts-code-copy', handleCodeCopyClicked);
     $.abp01 = window.abp01;
     $.wpTripSummary = window.wpTripSummary;
 })(jQuery);

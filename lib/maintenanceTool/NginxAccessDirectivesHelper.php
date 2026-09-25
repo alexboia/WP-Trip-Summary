@@ -29,48 +29,49 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-	exit;
-}
+declare(strict_types = 1);
 
-class Abp01_Installer_Service_CreateTracksStorageDirSecurityAssets extends Abp01_Installer_Service_BaseCreateStorageDirSecurityAssets {
-	private string $_tracksStorageDir;
+namespace WpTripSummary\MaintenanceTool {
 
-	private string $_cacheStorageDir;
-
-	public function __construct(string $tracksStorageDir, string $cacheStorageDir) {
-		$this->_tracksStorageDir = $tracksStorageDir;
-		$this->_cacheStorageDir = $cacheStorageDir;
+	if (!defined('ABP01_LOADED')) {
+		exit ;
 	}
 
-	public function execute(): bool {
-		$tracksStorageDir = $this->_tracksStorageDir;
-		$cacheStorageDir = $this->_cacheStorageDir;
+    use Abp01_MaintenanceTool;
+    use Abp01_MaintenanceTool_Result;
+    use Override;
+    use WpTripSummary\Env;
+    use WpTripSummary\Io\NginxAccessDirectives;
 
-		$tracksAssets = array(
-			array(
-				'name' => 'index.php',
-				'contents' => $this->_getGuardIndexPhpFileContents(4),
-				'type' => 'file'
-			),
-			array(
-				'name' => '.htaccess',
-				'contents' => $this->_getTrackAssetsGuardHtaccessFileContents(),
-				'type' => 'file'
-			)
-		);
+	class NginxAccessDirectivesHelper implements Abp01_MaintenanceTool {
+		private Env $_env;
 
-		return $this->_installAssetsForDirectory($tracksStorageDir, $tracksAssets) &&
-			$this->_installAssetsForDirectory($cacheStorageDir, $tracksAssets);
-	}
+		public function __construct(Env $env) {
+			$this->_env = $env;
+		}
 
-	private function _getTrackAssetsGuardHtaccessFileContents(): string {
-		return Abp01_Io_HtAccessDirectives::getDenyFileByExtensionsDirective(array(
-			'dat',
-			'cache',
-			'gpx',
-			'geojson',
-			'kml'
-		));
+		#[Override]
+		public function execute(array $parameters = array()): Abp01_MaintenanceTool_Result{
+			$url = $this->_getRootStorageUrlPath();
+			return new Abp01_MaintenanceTool_Result(true, array(
+				'directives' => NginxAccessDirectives::generateDenyAccessRules($url)
+			));
+		}
+
+		private function _getRootStorageUrlPath(): string {
+			return $this->_env->getRootStorageUrl(true);
+		}
+
+		#[Override]
+		public function getId(): string {
+			return 'nginx-access-directives-helper';
+		}
+
+		#[Override]
+		public function getName(): string {
+			return __('Nginx Access Directives Helper', 'abp01-trip-summary') 
+				?? 'Nginx Access Directives Helper';
+		}
+
 	}
 }
