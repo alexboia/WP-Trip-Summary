@@ -72,6 +72,7 @@ class Abp01_Installer_Service_CreateTracksStorageDirSecurityAssets extends Abp01
 
 	private function _getTrackAssetsGuardHtaccessFileContents(): string {
 		return Abp01_Io_HtAccessDirectives::getDenyFileByExtensionsDirective(array(
+			'dat',
 			'cache',
 			'gpx',
 			'geojson',

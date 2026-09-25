@@ -32,18 +32,25 @@
 class AuthTests extends WP_UnitTestCase {
 	use TestAuthDataHelpers;
 
-	private $_roleKey;
+	private const TRIP_SUMMARY_PROTECTION_FILTER = 'abp01_is_post_trip_summary_protected';
 
-	private $_initialRoleData;
+	private array $_initialCookies = array();
 
-	private $_testPosts = array();
+	private string $_roleKey;
 
-	private $_testUsers = array();
+	private array $_initialRoleData;
 
-	private $_testRoleData = array();
+	private array $_testPosts = array();
+
+	private array $_testUsers = array();
+
+	private array $_testRoleData = array();
 
 	protected function setUp(): void {
 		parent::setUp();
+		$this->_initialCookies = $_COOKIE;
+		unset($_COOKIE['wp-postpass_' . COOKIEHASH]);
+
 		$this->_testRoleData = $this->_getTestRoleData();
 		$this->_storeBuiltInRoleData();
 		$this->_setupTestData();
@@ -68,13 +75,13 @@ class AuthTests extends WP_UnitTestCase {
 		update_option($this->_roleKey, $this->_testRoleData);
 	}
 
-	private function _createTestUserWithRole($roleName) {
+	private function _createTestUserWithRole(string $roleName): int|WP_Error {
 		return self::factory()->user->create(array(
 			'role' => $roleName
 		));
 	}
 
-	private function _createTestPostAuthoredByUser($userId) {
+	private function _createTestPostAuthoredByUser(int $userId): int|WP_Error {
 		//Avoid this: https://core.trac.wordpress.org/ticket/44416 
 		//  (compact() will throw notice for undefined variables in PHP 7.3)
 		error_reporting(E_ALL & ~E_NOTICE);
@@ -91,13 +98,13 @@ class AuthTests extends WP_UnitTestCase {
 		return $postId;
 	}
 
-	private function _capabilityExistsInRoleData($capCode, $roleData) {
+	private function _capabilityExistsInRoleData(string $capCode, array $roleData): bool {
 		$roleCaps = $roleData['capabilities'];
 		return isset($roleCaps[$capCode]) 
 			&& $roleCaps[$capCode] === true;
 	}
 
-	private function _capabilitiesExistsInRoleData($capCodes, $roleData) {
+	private function _capabilitiesExistsInRoleData(array $capCodes, array $roleData): bool {
 		$exist = true;
 		foreach ($capCodes as $capCode) {
 			if (!$this->_capabilityExistsInRoleData($capCode, $roleData)) {
@@ -108,15 +115,18 @@ class AuthTests extends WP_UnitTestCase {
 		return $exist;
 	}
 
-	private function _capabilityExistsInTestRole($capCode, $roleName) {
-		return $this->_capabilityExistsInRoleData($capCode, $this->_testRoleData[$roleName]);
+	private function _capabilityExistsInTestRole(string $capCode, string $roleName) {
+		return $this->_capabilityExistsInRoleData($capCode, 
+			$this->_testRoleData[$roleName]);
 	}
 
-	private function _capabilitiesExistInTestRole($capCodes, $roleName) {
-		return $this->_capabilitiesExistsInRoleData($capCodes, $this->_testRoleData[$roleName]);
+	private function _capabilitiesExistInTestRole(array $capCodes, string $roleName) {
+		return $this->_capabilitiesExistsInRoleData($capCodes, 
+			$this->_testRoleData[$roleName]);
 	}
 
 	protected function tearDown(): void {
+		$_COOKIE = $this->_initialCookies;
 		parent::tearDown();
 		$this->_restoreBuiltInRolesData();
 		$this->_clearTestData();
@@ -215,9 +225,12 @@ class AuthTests extends WP_UnitTestCase {
 		}
 	}
 
-	private function _shouldBeAbleToManageTripSummary($forRoleName, $withCapCodes) {
+	private function _shouldBeAbleToManageTripSummary(string $forRoleName, array $withCapCodes) {
 		return in_array(Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY, $withCapCodes) 
-			&& $this->_getAuth()->capCanBeInstalledForRole(Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY, $forRoleName);
+			&& $this->_getAuth()->capCanBeInstalledForRole(
+					Abp01_Auth::CAP_MANAGE_TRIP_SUMMARY, 
+					$forRoleName
+				);
 	}
 
 	public function test_tryCheckIfCanManagePluginSettings_whenCapabilitiesNotInstalled() {
@@ -249,9 +262,12 @@ class AuthTests extends WP_UnitTestCase {
 		}
 	}
 
-	private function _shouldBeAbleToEditTripSummary($withCapability, $forRoleName) {
+	private function _shouldBeAbleToEditTripSummary(string $withCapability, string $forRoleName) {
 		return $this->_capabilityExistsInTestRole($withCapability, $forRoleName)
-			&& $this->_getAuth()->capCanBeInstalledForRole(Abp01_Auth::CAP_EDIT_TRIP_SUMMARY, $forRoleName);
+			&& $this->_getAuth()->capCanBeInstalledForRole(
+					Abp01_Auth::CAP_EDIT_TRIP_SUMMARY, 
+					$forRoleName
+				);
 	}
 
 	public function test_canCheckIfCanEditTripSummary_whenCapabilitiesInstalled_othersPosts() {
@@ -310,7 +326,92 @@ class AuthTests extends WP_UnitTestCase {
 		}
 	}
 
-	private function _assertCanCheckIfCanManagePluginSettings($auth, $userId, $expectedCanManageTripSummary) {
+	/**
+	 * @dataProvider providePostTripSummaryPasswordStates
+	 */
+	public function test_canCheckIfPostTripSummaryIsProtected_passwordRequirement(string $postPassword,
+		?string $suppliedPassword,
+		bool $expectedProtected): void {
+		$postId = self::factory()->post->create(array(
+			'post_status' => 'publish',
+			'post_password' => $postPassword
+		));
+
+		if ($suppliedPassword !== null) {
+			$_COOKIE['wp-postpass_' . COOKIEHASH] = $this->_createPostPasswordCookie($suppliedPassword);
+		}
+
+		$this->assertSame($expectedProtected,
+			$this->_getAuth()->isPostTripSummaryProtected($postId));
+	}
+
+	public function providePostTripSummaryPasswordStates(): array {
+		return array(
+			'no password required' => array('', null, false),
+			'password not supplied' => array('route-password', null, true),
+			'incorrect password supplied' => array('route-password', 'wrong-password', true),
+			'correct password supplied' => array('route-password', 'route-password', false)
+		);
+	}
+
+	private function _createPostPasswordCookie(string $password): string {
+		require_once ABSPATH . WPINC . '/class-phpass.php';
+		$hasher = new PasswordHash(8, true);
+		return $hasher->HashPassword($password);
+	}
+
+	/**
+	 * @dataProvider providePostTripSummaryProtectionFilterResults
+	 */
+	public function test_canCheckIfPostTripSummaryIsProtected_withFilter(string $postPassword,
+		mixed $filteredResult,
+		bool $expectedProtected): void {
+
+		$postId = self::factory()->post->create(array(
+			'post_status' => 'publish',
+			'post_password' => $postPassword
+		));
+
+		$receivedArguments = array();
+		$filter = static function($isProtected, $filteredPostId) 
+			use ($filteredResult, &$receivedArguments) {
+				$receivedArguments[] = array($isProtected, $filteredPostId);
+				return $filteredResult;
+			};
+
+		add_filter(self::TRIP_SUMMARY_PROTECTION_FILTER, 
+			$filter, 
+			10, 
+			2);
+		
+		try {
+			$this->assertSame($expectedProtected,
+				$this->_getAuth()->isPostTripSummaryProtected($postId));
+
+			$this->assertSame(array(array($postPassword !== '', $postId)), 
+				$receivedArguments,
+				'The filter should receive the initial protection status and the requested post ID.');
+		} finally {
+			remove_filter(self::TRIP_SUMMARY_PROTECTION_FILTER, 
+				$filter, 
+				10);
+		}
+	}
+
+	public function providePostTripSummaryProtectionFilterResults(): array {
+		return array(
+			'filter protects an unprotected post' => array('', true, true),
+			'filter allows a protected post' => array('route-password', false, false),
+			'literal true keeps protection' => array('route-password', true, true),
+			'truthy integer does not protect' => array('route-password', 1, false),
+			'truthy string does not protect' => array('route-password', 'true', false),
+			'null does not protect' => array('route-password', null, false)
+		);
+	}
+
+	private function _assertCanCheckIfCanManagePluginSettings(Abp01_Auth $auth, 
+		int $userId, 
+		bool $expectedCanManageTripSummary) {
 		wp_set_current_user($userId);
 
 		if ($expectedCanManageTripSummary) {
@@ -320,7 +421,10 @@ class AuthTests extends WP_UnitTestCase {
 		}
 	}
 
-	private function _assertCanEditTripSummary(Abp01_Auth $auth, $userId, $postId, $expectedCanEditTripSummary) {
+	private function _assertCanEditTripSummary(Abp01_Auth $auth, 
+		int $userId, 
+		int $postId, 
+		bool $expectedCanEditTripSummary) {
 		wp_set_current_user($userId);
 
 		if ($expectedCanEditTripSummary) {
@@ -330,7 +434,7 @@ class AuthTests extends WP_UnitTestCase {
 		}
 	}
 
-	private function _getAuth() {
+	private function _getAuth(): Abp01_Auth {
 		return abp01_get_auth();
 	}
 }

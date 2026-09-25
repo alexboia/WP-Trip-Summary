@@ -34,18 +34,18 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Installer_Service_CreateStorageDirsSecurityAssets {
-	private $_rootStorageDir;
+	private string $_rootStorageDir;
 
-	private $_tracksStorageDir;
+	private string $_tracksStorageDir;
 
-	private $_cacheStorageDir;
+	private string $_cacheStorageDir;
 
-	private $_logStorageDir;
+	private string $_logStorageDir;
 
-	public function __construct($rootStorageDir, 
-			$tracksStorageDir, 
-			$cacheStorageDir, 
-			$logStorageDir) {
+	public function __construct(string $rootStorageDir, 
+			string $tracksStorageDir, 
+			string $cacheStorageDir, 
+			string $logStorageDir) {
 		$this->_rootStorageDir = $rootStorageDir;
 		$this->_tracksStorageDir = $tracksStorageDir;
 		$this->_cacheStorageDir = $cacheStorageDir;
