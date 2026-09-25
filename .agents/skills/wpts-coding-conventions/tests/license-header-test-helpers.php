@@ -6,6 +6,14 @@ require_once __DIR__ . '/../scripts/LicenseHeaderReader.php';
 require_once __DIR__ . '/../scripts/LicenseHeaderGenerator.php';
 require_once __DIR__ . '/../scripts/LicenseHeaderUpdater.php';
 
+function licenseHeaderUtilityScript(): string {
+	return __DIR__ . '/../scripts/license-header-utility.php';
+}
+
+function testSourceFileContents(string $sourceFile): string {
+	return file_get_contents(__DIR__ . '/license-header-files/'. $sourceFile);
+}
+
 function assertLicenseHeaderSame(mixed $expected, mixed $actual, string $message): void {
 	if ($expected !== $actual) {
 		throw new RuntimeException(

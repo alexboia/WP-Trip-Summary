@@ -1,16 +1,17 @@
 <?php
 declare(strict_types=1);
-
 require_once __DIR__ . '/license-header-test-helpers.php';
 
+use PharIo\Manifest\License;
+use WpTripSummary\Skills\WpCodingConventions\LicenseHeader;
 use WpTripSummary\Skills\WpCodingConventions\LicenseHeaderReader;
 
-$script = __DIR__ . '/../scripts/license-header-utility.php';
+$licenseHeaderUtilityScript = licenseHeaderUtilityScript();
 
 function runLicenseHeaderCli(array $arguments, int $expectedExitCode = 0): array {
-	global $script;
+	global $licenseHeaderUtilityScript;
 	$result = runLicenseHeaderPhp(array_merge(
-		array($script), 
+		array($licenseHeaderUtilityScript), 
 		$arguments));
 
 	assertLicenseHeaderSame($expectedExitCode, 
@@ -28,118 +29,153 @@ function runLicenseHeaderCli(array $arguments, int $expectedExitCode = 0): array
 	return $result;
 }
 
-withLicenseHeaderTestDirectory(function(string $directory): void {
-	$file = $directory . '/class with spaces.php';
-	$source = file_get_contents(__DIR__ . '/license-header-files/ClassWithNoLicenseHeader.php');
-	file_put_contents($file, $source);
+function arrangeTestFile(string $testDirectory, 
+		string $source, 
+		string $testFileName): string {
+	
+	$testFile = $testDirectory . '/' . $testFileName;
+	file_put_contents($testFile, $source);
+	
+	return $testFile;
+}
 
-	$missing = runLicenseHeaderCli(array($file, 
+function runWhenMissingHeaderTest(string $testFile): void {
+	$missing = runLicenseHeaderCli(array($testFile, 
 		'--json'));
 	assertLicenseHeaderSame(null, 
 		json_decode($missing['output'], true, 512, JSON_THROW_ON_ERROR),
 		'JSON read should return null for a missing header.');
 
-	runLicenseHeaderCli(array($file, '--check', '--year=2030'), 
+	runLicenseHeaderCli(array($testFile, '--check', '--year=2030'), 
 		1);
+}
 
-	$preview = runLicenseHeaderCli(array($file, 	
+function runDryRunDoesNotModifyTestFileTest(string $testFile, string $sourceWithoutLicenseHeader, int $toYear = 2030): array {
+	$preview = runLicenseHeaderCli(array($testFile, 	
 		'--update', 
-		'--year=2030', 
+		'--year=' . $toYear, 
 		'--dry-run'));
 
-	assertLicenseHeaderSame($source, 
-		file_get_contents($file), 
+	assertLicenseHeaderSame($sourceWithoutLicenseHeader, 
+		file_get_contents($testFile), 
 		'CLI preview must not modify the file.');
 
-	runLicenseHeaderCli(array($file, 
+	return $preview;
+}
+
+function runUpdateAfterDrRunTest(string $testFile, array $previewModified, int $toYear = 2030) {
+	runLicenseHeaderCli(array($testFile, 
 		'--update', 
-		'--year=2030'));
+		'--year=' . $toYear));
 
-	assertLicenseHeaderSame($preview['output'], 
-		file_get_contents($file), 
+	assertLicenseHeaderSame($previewModified['output'], 
+		file_get_contents($testFile), 
 		'CLI preview should equal the written source.');
+}
 
-	runLicenseHeaderCli(array($file, 
+function runCurrentYearVsOtherYearTest(string $testFile, int $currentYear = 2030, int $otherYear = 2031) {
+	runLicenseHeaderCli(array($testFile, 
 		'--check', 
-		'--year=2030'));
-	runLicenseHeaderCli(array($file, 
+		'--year=' . $currentYear
+	));
+	runLicenseHeaderCli(array($testFile, 
 			'--check', 
-			'--year=2031'), 
+			'--year=' . $otherYear
+		), 
 		1);
+}
 
-	$report = runLicenseHeaderCli(array($file, 
+function runUtilityJsonReportVersusDirectReadTests(string $testFile): ?LicenseHeader {
+	$report = runLicenseHeaderCli(array($testFile, 
 		'--read', 
 		'--json'));
 
-	$reader = new LicenseHeaderReader($file);
+	$reader = new LicenseHeaderReader($testFile);
 	$header = $reader->read();
 
+	$utilityReport = json_decode($report['output'], 
+		true, 
+		512, 
+		JSON_THROW_ON_ERROR);
+
 	assertLicenseHeaderSame($header->toArray(), 
-		json_decode($report['output'], true, 512, JSON_THROW_ON_ERROR),
+		$utilityReport,
 		'JSON read should return the complete header metadata.');
 
-	$full = runLicenseHeaderCli(array($file, '--full'));
+	return $header;
+}
+
+function runUtilityFullReadVersusExplicitHeaderTests(string $testFile, LicenseHeader $header) {
+	$full = runLicenseHeaderCli(array($testFile, 
+		'--full'));
+
 	assertLicenseHeaderSame(true, 
 		str_contains($full['output'], $header->normalizedHeader()),
 		'Full read should include the complete comment.');
+}
 
-	$before = file_get_contents($file);
-	runLicenseHeaderCli(array($file, 
+function runRepeatedlyUpdateTest(string $testFile, int $toYear = 2030): string {
+	$before = file_get_contents($testFile);
+	runLicenseHeaderCli(array($testFile, 
 		'--update', 
-		'--year=2030'));
+		'--year=' . $toYear));
 	assertLicenseHeaderSame($before, 
-		file_get_contents($file), 
+		file_get_contents($testFile), 
 		'Repeated CLI update must not change the file.');
 
+	return (string)$before;
+}
+
+function runOutdatedContentCheckThenRestoreTest(string $testFile, string $previousContents, int $toYear = 2030) {
 	$outdated = str_replace('Redistribution and use in source and binary forms',
 		'Outdated license wording',
-		$before);
+		$previousContents);
 	
 	assertLicenseHeaderSame(false, 
-		$outdated === $before,
+		$outdated === $previousContents,
 		'Test source should contain modified license text.');
 
-	file_put_contents($file, $outdated);
+	file_put_contents($testFile, $outdated);
 	
-	runLicenseHeaderCli(array($file, '--check', '--year=2030'), 
+	runLicenseHeaderCli(array($testFile, '--check', '--year=' . $toYear), 
 		1);
 	assertLicenseHeaderSame($outdated, 
-		file_get_contents($file),
+		file_get_contents($testFile),
 		'Checking the template must not modify the file.');
 
-	runLicenseHeaderCli(array($file, '--update', '--year=2030'));
-	assertLicenseHeaderSame($before, 
-		file_get_contents($file),
+	runLicenseHeaderCli(array($testFile, '--update', '--year=' . $toYear));
+	assertLicenseHeaderSame($previousContents, 
+		file_get_contents($testFile),
 		'Update should restore the full template even when the year is already correct.');
+}
 
-	runLicenseHeaderCli(array($file, 
-		'--check', 
-		'--year=2030'));
-	runLicenseHeaderCli(array($file, 
-			'--check', 
-			'--year=2029'), 
-		1);
+function runUpdateToCurrentYearTest(string $testDirectory, string $source) {
+	$currentFile = arrangeTestFile($testDirectory, 
+		$source, 
+		'current.php');
 
-	$currentFile = $directory . '/current.php';
-	file_put_contents($currentFile, $source);
-	runLicenseHeaderCli(array($currentFile, '--update'));
+	runLicenseHeaderCli(array($currentFile, 
+		'--update'));
 
 	$reader = new LicenseHeaderReader($currentFile);
 
 	assertLicenseHeaderSame(intval(date('Y')), 
 		$reader->read()?->year,
 		'CLI update should default to the current year.');
+
 	runLicenseHeaderCli(array($currentFile, 
 		'--check'));
+}
 
+function runInvalidOptionsTest(string $testFile, string $previousContents) {
 	$withInvalidOptions = array(
 		array(),
-		array($file, '--unknown'),
-		array($file, '--update', '--year=invalid'),
-		array($file, '--update', '--year=2013'),
-		array($file, '--read', '--update'),
-		array($file, '--dry-run'),
-		array($file, '--update', '--json')
+		array($testFile, '--unknown'),
+		array($testFile, '--update', '--year=invalid'),
+		array($testFile, '--update', '--year=2013'),
+		array($testFile, '--read', '--update'),
+		array($testFile, '--dry-run'),
+		array($testFile, '--update', '--json')
 	);
 
 	foreach ($withInvalidOptions as $arguments) {
@@ -147,18 +183,22 @@ withLicenseHeaderTestDirectory(function(string $directory): void {
 			2);
 	}
 
-	assertLicenseHeaderSame($before, 
-		file_get_contents($file), 
+	assertLicenseHeaderSame($previousContents, 
+		file_get_contents($testFile), 
 		'Invalid arguments must not modify the target.');
+}
 
-	$missingFile = runLicenseHeaderCli(array($directory . '/missing.php'), 
+function runMissingFileTest(string $testDirectory) {
+	$missingFile = runLicenseHeaderCli(array($testDirectory . '/missing.php'), 
 		1);
 
 	assertLicenseHeaderSame(true, 
 		str_contains($missingFile['error'], 'source file'),
 		'Missing files should produce a concise error.');
+}
 
-	$unsupported = $directory . '/settings.json';
+function runUnsupportedFileTest(string $testDirectory) {
+	$unsupported = $testDirectory . '/settings.json';
 	file_put_contents($unsupported, "{}\n");
 	
 	runLicenseHeaderCli(array($unsupported, '--update'), 
@@ -166,6 +206,48 @@ withLicenseHeaderTestDirectory(function(string $directory): void {
 	assertLicenseHeaderSame("{}\n", 
 		file_get_contents($unsupported), 
 		'Unsupported files must remain untouched.');
+}
+
+withLicenseHeaderTestDirectory(function(string $testDirectory): void {
+	$sourceWithoutLicenseHeader = 
+		testSourceFileContents('ClassWithNoLicenseHeader.php');
+
+	$testFile = arrangeTestFile($testDirectory, 
+		$sourceWithoutLicenseHeader, 
+		'class with spaces.php');
+
+	runWhenMissingHeaderTest($testFile);
+
+	$previewModified = runDryRunDoesNotModifyTestFileTest($testFile, 
+		$sourceWithoutLicenseHeader);
+
+	runUpdateAfterDrRunTest($testFile, 
+		$previewModified);
+
+	runCurrentYearVsOtherYearTest($testFile);
+
+	$header = runUtilityJsonReportVersusDirectReadTests($testFile);
+	runUtilityFullReadVersusExplicitHeaderTests($testFile, 
+		$header);
+
+	$contentsBeforeRepeatedUpdate = runRepeatedlyUpdateTest($testFile);
+
+	runOutdatedContentCheckThenRestoreTest($testFile, 
+		$contentsBeforeRepeatedUpdate);
+
+	runCurrentYearVsOtherYearTest($testFile, 
+		2030, 
+		2029);
+
+	runUpdateToCurrentYearTest($testDirectory, 
+		$sourceWithoutLicenseHeader);
+
+	runInvalidOptionsTest($testFile, 
+		$contentsBeforeRepeatedUpdate);
+
+	runMissingFileTest($testDirectory);
+
+	runUnsupportedFileTest($testDirectory);
 
 	runLicenseHeaderCli(array('--help'));
 	echo "License header CLI tests passed.\n";
