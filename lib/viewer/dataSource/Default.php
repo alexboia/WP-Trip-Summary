@@ -29,7 +29,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
+if (!defined('ABP01_LOADED')) {
     exit;
 }
 
@@ -60,7 +60,7 @@ class Abp01_Viewer_DataSource_Default implements Abp01_Viewer_DataSource {
 		$this->_cache = $cache;
 	}
 
-	public function getTripSummaryViewerData($postId) {
+	public function getTripSummaryViewerData(int $postId): ?stdClass {
 		$viewerData = $this->_cache->readCachedTripSummaryViewerData($postId);
 		if (empty($viewerData)) {
 			$viewerData = $this->_getTripSummaryViewerData($postId);
@@ -116,7 +116,7 @@ class Abp01_Viewer_DataSource_Default implements Abp01_Viewer_DataSource {
 		}
 	}
 
-	private function _getRouteInfoValueTranslator() {
+	private function _getRouteInfoValueTranslator(): Abp01_Route_Info_ValueTranslator {
 		return new Abp01_Route_Info_ValueTranslator($this->_lookup);
 	}
 
@@ -132,7 +132,7 @@ class Abp01_Viewer_DataSource_Default implements Abp01_Viewer_DataSource {
 		return $routeTrackData;
 	}
 
-	public function getTripSummaryStatusInfo($postId) {
+	public function getTripSummaryStatusInfo(int $postId): array {
 		return $this->_routeManager->getTripSummaryStatusInfo($postId);
 	}
 }

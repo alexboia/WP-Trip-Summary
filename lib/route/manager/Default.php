@@ -373,7 +373,7 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 		return false;
 	}
 
-	public function getTripSummaryStatusInfo(array $postIds): array {
+	public function getTripSummaryStatusInfo(int|array $postIds): array {
 		if (!is_array($postIds)) {
 			$postIds = array($postIds);
 		}
@@ -429,7 +429,7 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 		);
 	}
 
-	function getTripSummaryRouteTypeInfo(array $postIds): array {
+	function getTripSummaryRouteTypeInfo(int|array $postIds): array {
 		if (!is_array($postIds)) {
 			$postIds = array($postIds);
 		}

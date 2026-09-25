@@ -37,15 +37,7 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
  * @package WP-Trip-Summary
  */
 interface Abp01_Viewer_DataSource {
-	/**
-	 * @param int $postId 
-	 * @return stdClass
-	 */
-	function getTripSummaryViewerData($postId);
+	function getTripSummaryViewerData(int $postId): ?stdClass;
 
-	/**
-	 * @param int $postId 
-	 * @return array
-	 */
-	function getTripSummaryStatusInfo($postId);
+	function getTripSummaryStatusInfo(int $postId): array;
 }

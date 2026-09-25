@@ -50,9 +50,9 @@ interface Abp01_Route_Manager {
 
 	function hasRouteInfo(int|string $postId): bool;
 
-	function getTripSummaryStatusInfo(array $postIds): array;
+	function getTripSummaryStatusInfo(int|array $postIds): array;
 
-	function getTripSummaryRouteTypeInfo(array $postIds): array;
+	function getTripSummaryRouteTypeInfo(int|array $postIds): array;
 
 	function getAllPostsWithRouteTracks(): array;
 

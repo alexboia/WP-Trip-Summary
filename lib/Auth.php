@@ -34,22 +34,19 @@ if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
 }
 
 class Abp01_Auth {
-	const CAP_WP_UPLOAD_FILES = 'upload_files';
+	public const string CAP_WP_UPLOAD_FILES = 'upload_files';
 
-	const CAP_MANAGE_TRIP_SUMMARY = 'abp01.cap.manageTourSummary';
+	public const string  CAP_MANAGE_TRIP_SUMMARY = 'abp01.cap.manageTourSummary';
 
-	const CAP_EDIT_TRIP_SUMMARY = 'abp01.cap.editTourSummary';
+	public const string CAP_EDIT_TRIP_SUMMARY = 'abp01.cap.editTourSummary';
 
-	private $_capabilities = array();
+	private array $_capabilities = array();
 
-	private $_requiredCapabilities = array();
+	private array $_requiredCapabilities = array();
 
-	private static $_instance = null;
+	private static ?Abp01_Auth $_instance = null;
 
-	/**
-	 * @return Abp01_Auth
-	 */
-	public static function getInstance() {
+	public static function getInstance(): Abp01_Auth {
 		if (self::$_instance == null) {
 			self::$_instance = new self();
 		}
@@ -86,7 +83,7 @@ class Abp01_Auth {
 		);
 	}
 
-	public function installCapabilities() {
+	public function installCapabilities(): void {
 		foreach ($this->_capabilities as $roleName => $caps) {
 			$role = get_role($roleName);
 			if ($role) {
@@ -108,7 +105,7 @@ class Abp01_Auth {
 		}
 	}
 
-	public function removeCapabilities() {
+	public function removeCapabilities(): void {
 		foreach ($this->_capabilities as $roleName => $caps) {
 			$role = get_role($roleName);
 			if ($role) {
@@ -121,7 +118,7 @@ class Abp01_Auth {
 		}
 	}
 
-	public function capCanBeInstalledForRole($capCode, $roleName) {
+	public function capCanBeInstalledForRole(string $capCode, string $roleName): bool {
 		$allowed = true;
 
 		if (in_array($capCode, array(self::CAP_EDIT_TRIP_SUMMARY, self::CAP_MANAGE_TRIP_SUMMARY), true)) {
@@ -142,27 +139,52 @@ class Abp01_Auth {
 		return $allowed;
 	}
 
-	public function canEditPostTripSummary($postId) {
+	public function isPostTripSummaryProtected(int $postId): bool {
+		$isProtected = post_password_required($postId) === true;
+		/**
+		 * Filters whether to suppress the front-end trip summary viewer for the current post.
+		 *
+		 * Runs before automatic attachment to the post content and before shortcode rendering.
+		 * The initial value is true only when post_password_required($postId) returns true
+		 * for the current request. Callbacks can override this decision for the given post.
+		 *
+		 * Only a literal boolean true suppresses the viewer: the content filter returns
+		 * its incoming content unchanged and the shortcode returns an empty string.
+		 * Any other result allows the normal viewer rendering checks to continue.
+		 *
+		 * @since 0.3.3
+		 * @category Front-end Viewer
+		 *
+		 * @param bool $isProtected Whether to suppress the trip summary viewer in the current request.
+		 * @param int $postId The identifier of the post whose trip summary is being checked.
+		 */
+		return apply_filters('abp01_is_post_trip_summary_protected', 
+				$isProtected, 
+				$postId) 
+			=== true;
+	}
+
+	public function canEditPostTripSummary(int|string|null $postId): bool {
 		return !empty($postId) 
 			&& current_user_can(self::CAP_EDIT_TRIP_SUMMARY) 
 			&& current_user_can('edit_post', $postId);
 	}
 
-	public function canManagePluginSettings() {
+	public function canManagePluginSettings(): bool {
 		return current_user_can(self::CAP_MANAGE_TRIP_SUMMARY);
 	}
 
-	public function currentUserCan($capability) {
+	public function currentUserCan(?string $capability) {
 		return call_user_func_array('current_user_can', func_get_args());
 	}
 
-	public function getRequiredCapabilities($capCode) {
+	public function getRequiredCapabilities(?string $capCode): ?array {
 		return isset($this->_requiredCapabilities[$capCode])
 			? $this->_requiredCapabilities[$capCode]
 			: array();
 	}
 
-	public function getCapabilities() {
+	public function getCapabilities(): array {
 		return $this->_capabilities;
 	}
 }

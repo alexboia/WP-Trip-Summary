@@ -174,17 +174,27 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 	}
 
 	public function addViewerToContent(?string $postContent): string|array|null {
-		$postContent = wpautop($postContent);
+		$postId = $this->_getCurrentPostId();
+		if (empty($postId)) {
+			return $postContent;
+		}
+
+		if ($this->_isPostTripSummaryProtected($postId)) {
+			return $postContent;
+		}
 
 		if ($this->_shouldAddViewer()) {
-			$postId = $this->_getCurrentPostId();
-			if (!empty($postId)) {
-				$viewerData = $this->_getViewerData($postId);
-				$postContent = $this->_viewer->renderAndAttachToContent($viewerData, $postContent);
-			}			
+			$postContent = wpautop($postContent);
+			$viewerData = $this->_getViewerData($postId);
+			$postContent = $this->_viewer->renderAndAttachToContent($viewerData, 
+				$postContent);
 		}
 
 		return $postContent;
+	}
+
+	private function _isPostTripSummaryProtected(int $postId): bool {
+		return $this->_auth->isPostTripSummaryProtected($postId);
 	}
 
 	private function _getViewerData(int $postId): stdClass {
@@ -216,12 +226,18 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 	public function renderViewerShortCode($attributes): ?string {
 		$content = '';
 		$postId = $this->_getCurrentPostId();
-	
-		if (!empty($postId)) {
-			$viewerData = $this->_getViewerData($postId);
-			$contentParts = $this->_viewer->render($viewerData);
-			$content = $contentParts['viewerHtml'];
+
+		if (empty($postId)) {
+			return $content;
 		}
+
+		if ($this->_isPostTripSummaryProtected($postId)) {
+			return $content;
+		}
+	
+		$viewerData = $this->_getViewerData($postId);
+		$contentParts = $this->_viewer->render($viewerData);
+		$content = $contentParts['viewerHtml'];
 	
 		return $content;
 	}

@@ -7,8 +7,8 @@
         "views/**/*.php"
     ],
     "summary": {
-        "totalDispatches": 47,
-        "documented": 47,
+        "totalDispatches": 48,
+        "documented": 48,
         "undocumented": 0,
         "unresolvedDynamic": 0
     },
@@ -85,6 +85,25 @@
             "documentationStatus": "documented",
             "docCommentLine": 718,
             "docComment": "/**\n\t * Filters the date format used by the plug-in, optionally including time format.\n\t * Initial value is the format as returned by date_format option, \n\t * as well as time_format option, if time format is also required.\n\t * \n\t * If result is empty, the initial value will be used.\n\t * \n\t * @since 0.3.2\n\t * @category Time Management\n\t * \n\t * @param string $format The date format\n\t * @param bool $withTime Whether or not to include time format as well\n\t */",
+            "prefixEvidence": true
+        },
+        {
+            "hookName": "abp01_is_post_trip_summary_protected",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_is_post_trip_summary_protected'",
+            "arguments": [
+                "$isProtected",
+                "$postId"
+            ],
+            "file": "lib/Auth.php",
+            "line": 161,
+            "enclosingClass": "Abp01_Auth",
+            "enclosingFunction": "isPostTripSummaryProtected",
+            "documentationStatus": "documented",
+            "docCommentLine": 144,
+            "docComment": "/**\r\n\t\t * Filters whether to suppress the front-end trip summary viewer for the current post.\r\n\t\t *\r\n\t\t * Runs before automatic attachment to the post content and before shortcode rendering.\r\n\t\t * The initial value is true only when post_password_required($postId) returns true\r\n\t\t * for the current request. Callbacks can override this decision for the given post.\r\n\t\t *\r\n\t\t * Only a literal boolean true suppresses the viewer: the content filter returns\r\n\t\t * its incoming content unchanged and the shortcode returns an empty string.\r\n\t\t * Any other result allows the normal viewer rendering checks to continue.\r\n\t\t *\r\n\t\t * @since 0.3.3\r\n\t\t * @category Front-end Viewer\r\n\t\t *\r\n\t\t * @param bool $isProtected Whether to suppress the trip summary viewer in the current request.\r\n\t\t * @param int $postId The identifier of the post whose trip summary is being checked.\r\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -843,11 +862,11 @@
                 "$data"
             ],
             "file": "views/wpts-editor-launcher-metabox.php",
-            "line": 48,
+            "line": 50,
             "enclosingClass": null,
             "enclosingFunction": null,
             "documentationStatus": "documented",
-            "docCommentLine": 37,
+            "docCommentLine": 39,
             "docComment": "/**\n\t\t * Fires before the built-in status items in the trip summary editor launcher metabox.\n\t\t *\n\t\t * Callback output is rendered directly inside the status container, before the\n\t\t * trip summary information and track status items.\n\t\t *\n\t\t * @since 0.3.0\n\t\t * @category Trip Summary Management\n\t\t *\n\t\t * @param stdClass $data The editor launcher context containing the post ID, trip summary availability flags, and track download URL.\n\t\t */",
             "prefixEvidence": true
         },
@@ -861,11 +880,11 @@
                 "$data"
             ],
             "file": "views/wpts-editor-launcher-metabox.php",
-            "line": 85,
+            "line": 87,
             "enclosingClass": null,
             "enclosingFunction": null,
             "documentationStatus": "documented",
-            "docCommentLine": 74,
+            "docCommentLine": 76,
             "docComment": "/**\n\t\t * Fires after the built-in status items in the trip summary editor launcher metabox.\n\t\t *\n\t\t * Callback output is rendered directly inside the status container, after the\n\t\t * trip summary information and track status items and before the container closes.\n\t\t *\n\t\t * @since 0.3.0\n\t\t * @category Trip Summary Management\n\t\t *\n\t\t * @param stdClass $data The editor launcher context containing the post ID, trip summary availability flags, and track download URL.\n\t\t */",
             "prefixEvidence": true
         },

@@ -86,6 +86,10 @@ class Abp01_PluginModules_GetTrackDataPluginModule extends Abp01_PluginModules_P
 		if (empty($postId)) {
 			die;
 		}
+
+		if ($this->_isPostTripSummaryProtected($postId)) {
+			die;
+		}
 	  
 		$response = abp01_get_ajax_response();
 		$targetUnitSystem = $this->_settings->getUnitSystem();
@@ -123,5 +127,9 @@ class Abp01_PluginModules_GetTrackDataPluginModule extends Abp01_PluginModules_P
 		}
 
 		return $response;
+	}
+
+	private function _isPostTripSummaryProtected(int $postId): bool {
+		return $this->_auth->isPostTripSummaryProtected($postId);
 	}
 }
