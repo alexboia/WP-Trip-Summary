@@ -328,21 +328,44 @@
          * @return {String} The rendered attribution text
          *  */
         function getTileLayerAttribution(opts) {
-        	var tileLayerAttribution = null;
-        	var tileLayerAttributionTxt = opts.tileLayer.attributionTxt || opts.tileLayer.attributionUrl;            
-            
-            //only display attribution if there is a label (which is comprised of either the configured text or URL)
-            if (tileLayerAttributionTxt) {
-            	//if we have an URL, then display as an HTML link
-            	if (opts.tileLayer.attributionUrl) {
-            		tileLayerAttribution = '<a href="' + opts.tileLayer.attributionUrl + '" target="_blank">&copy; ' + tileLayerAttributionTxt + '</a>';
-            	} else {
-            		//otherwise, just display it as plain text
-            		tileLayerAttribution = '&copy; ' + tileLayerAttributionTxt;
-            	}
+        	const tileLayerAttributionTxt = opts.tileLayer.attributionTxt 
+                || opts.tileLayer.attributionUrl;
+
+            //only display attribution if there is a label 
+            // (which is comprised of either the configured text or URL)
+            if (!tileLayerAttributionTxt) {
+                return null;
             }
-            
-            return tileLayerAttribution;
+
+			//Use DOM construction and serialization for HTML output. encodeURI():
+            //
+			//  1) double-encodes existing URL escapes (%20 becomes %2520), which can break links;
+			//  2) preserves ' and &, so it does not provide HTML attribute escaping;
+			//  3) does not validate the protocol (for example, javascript: remains unchanged);
+			//  4) does not protect separately concatenated attribution text;
+			//  5) can throw URIError for unpaired UTF-16 surrogates.
+            //
+			//  textContent protects the label in both the link and the span below;
+			//  outerHTML serializes the element for Leaflet. 
+            //
+            //  URL scheme validation is still required.
+
+            //REPORT-2026-09-24/SEC-03
+            if (!!opts.tileLayer.attributionUrl) {
+                const linkElement = document.createElement('a');
+
+                linkElement.target = '_blank';
+                linkElement.rel = 'noopener noreferrer';
+                linkElement.textContent = '© ' + tileLayerAttributionTxt;
+                linkElement.href = opts.tileLayer.attributionUrl;
+                
+                return linkElement.outerHTML;
+            } else {
+                const linkElement = document.createElement('span');
+                linkElement.textContent = '© ' + tileLayerAttributionTxt;
+               
+                return linkElement.outerHTML;
+            }
         }
 
         function renderMap(bounds) {
