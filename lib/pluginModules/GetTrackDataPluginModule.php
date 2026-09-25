@@ -87,6 +87,7 @@ class Abp01_PluginModules_GetTrackDataPluginModule extends Abp01_PluginModules_P
 			die;
 		}
 
+		//Security REPORT-2026-09-24/SEC-01
 		if ($this->_isPostTripSummaryProtected($postId)) {
 			die;
 		}

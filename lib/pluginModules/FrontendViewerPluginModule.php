@@ -179,6 +179,7 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 			return $postContent;
 		}
 
+		//Security REPORT-2026-09-24/SEC-01
 		if ($this->_isPostTripSummaryProtected($postId)) {
 			return $postContent;
 		}
@@ -231,6 +232,7 @@ class Abp01_PluginModules_FrontendViewerPluginModule extends Abp01_PluginModules
 			return $content;
 		}
 
+		//Security REPORT-2026-09-24/SEC-01
 		if ($this->_isPostTripSummaryProtected($postId)) {
 			return $content;
 		}
