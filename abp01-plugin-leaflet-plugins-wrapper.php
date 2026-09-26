@@ -60,6 +60,9 @@ if (!defined('WP_DEBUG')) {
 require_once __DIR__ . '/abp01-plugin-wpshim.php';
 require_once __DIR__ . '/abp01-plugin-header.php';
 
+// Fixed for REPORT-2026-09-24/SEC-04
+// Also see ./bin/tools/test-leaflet-wrapper.php
+
 /**
  * Attempts to increase execution limits: time and memory.
  * Additionally, if the xdebug extension is installed, 
@@ -70,7 +73,7 @@ require_once __DIR__ . '/abp01-plugin-header.php';
  * 
  * @return void
  */
-function abp01_wrapper_increase_limits() {
+function wpts_wrapper_increase_limits(): void {
     if (function_exists('set_time_limit')) {
 		@set_time_limit(ABP01_WRAPPED_SCRIPT_MAX_EXECUTION_TIME_MINUTES * 60);
 	}
@@ -95,9 +98,9 @@ function abp01_wrapper_increase_limits() {
  * 
  * @return string The relative path to WP's root directory of the script that must be wrapped
  */
-function abp01_wrapper_get_file_to_wrap() {
+function wpts_wrapper_get_file_to_wrap(): ?string {
     $load = !empty($_GET['load']) 
-        ? trim(strip_tags($_GET['load']))
+        ? $_GET['load']
         : null;
 
     $requestUri = isset($_SERVER['REQUEST_URI']) 
@@ -105,19 +108,91 @@ function abp01_wrapper_get_file_to_wrap() {
         : null;
 
     $uri = parse_url($requestUri);
-    if (!empty($load)) {
-        //We're expecting 'load' to be relative to the plug-in's own root directory
-        $load = preg_match('/' . preg_quote(basename(__FILE__)) . '$/i', $uri['path']) 
-            ? '/wp-content/plugins/' . ABP01_PLUGIN_ROOT_NAME . '/' . preg_replace('/[^a-zA-Z0-9\/.\-_]/', '', $load) 
-            : null;
-    } else {
+    if (empty($load)) {
         $load = $uri['path'];
+    } else if(is_array($load) || is_object($load)) {
+        return null;
+    } else {
+        if (str_ends_with($load, "\0")) {
+            return null;
+        }
+        $load = urldecode(trim(strip_tags($load)));
     }
 
     return $load;
 }
 
-function abp01_wrapper_get_script_etag() {
+function wpts_wrapper_is_path_valid(string $load): bool {
+    $absoluteLoadDirPath = wpts_wrapper_get_absolute_load_path($load);
+    if ($absoluteLoadDirPath === null) {
+        return false;
+    }
+
+
+    $allowedAbsolutePath = wpts_wrapper_get_plugin_absolute_allowed_base_path();
+    if ($allowedAbsolutePath === null) {
+        return false;
+    }
+
+    return str_starts_with($absoluteLoadDirPath, 
+        $allowedAbsolutePath);
+}
+
+function wpts_wrapper_get_absolute_load_path(string $load): ?string {
+    $cleanLoad = preg_replace('/[^a-zA-Z0-9\/.\-_]/',  '', $load);
+    $realLoad = wpts_wrapper_expand_to_disk_path($cleanLoad);
+    return $realLoad;
+}
+
+function wpts_wrapper_get_plugin_relative_base_url(): string {
+    return '/wp-content/plugins/' . ABP01_PLUGIN_ROOT_NAME . '/';
+}
+
+function wpts_wrapper_get_plugin_absolute_allowed_base_path(): ?string {
+    $path = realpath(__DIR__ . '/media/js/3rdParty/leaflet-plugins');
+    if ($path === false) {
+        return null;
+    }
+
+    $path = rtrim($path, DIRECTORY_SEPARATOR) 
+        . DIRECTORY_SEPARATOR;
+
+    return $path;
+}
+
+function wpts_wrapper_get_plugin_absolute_base_path(): string {
+    return __DIR__;
+}
+
+function wpts_wrapper_expand_to_disk_path(string $relativeUrlPath): ?string {
+    $relativeUrlPath = ltrim($relativeUrlPath, '/');
+    $pluginBaseUrl = ltrim(wpts_wrapper_get_plugin_relative_base_url(), '/');
+
+    $relativeUrlPath = str_replace($pluginBaseUrl, 
+        '', 
+        $relativeUrlPath);
+
+    $relativePath = trim($relativeUrlPath);
+    $relativePath = ltrim($relativePath, '.');
+    $relativePath = ltrim($relativePath, '/');
+    $relativePath = trim($relativePath);
+    $relativePath = './' . $relativePath;
+    
+    $realPath = realpath($relativePath);
+
+    if ($realPath !== false) {
+        if (is_dir($realPath)) {
+            $realPath = rtrim($realPath, DIRECTORY_SEPARATOR) 
+                . DIRECTORY_SEPARATOR;
+        }
+    } else {
+        $realPath = null;
+    }
+
+    return $realPath;
+}
+
+function wpts_wrapper_get_script_etag(): string {
     $version = isset($_GET['ver']) 
         ? $_GET['ver'] 
         : null;
@@ -136,21 +211,22 @@ function abp01_wrapper_get_script_etag() {
  *  matches an allowed pattern, to avoid serving only some files we deem fit
  * @return boolean True if allowed, false otherwise
  */
-function abp01_wrapper_should_serve_script($requestUriPath) {
-    return preg_match('/^(\/wp-content\/plugins\/)([^\/]+)(\/media\/js\/3rdParty\/leaflet-plugins\/)(.*)\/([^\/]+)\.js(\?ver=([a-zA-Z0-9.]+))?$/i', 
-        $requestUriPath);
+function wpts_wrapper_should_serve_script(?string $requestUriPath): bool {
+    $isPathValid = wpts_wrapper_is_path_valid($requestUriPath);
+    if (!$isPathValid) {
+        return false;
+    }
+
+    $absoluteLoadPath = wpts_wrapper_get_absolute_load_path($requestUriPath);
+    return str_ends_with( strtolower($absoluteLoadPath), '.js');
 }
 
 /**
  * Locate the file and return its absolute path
  * @return string The absolute file path
  */
-function abp01_wrapper_locate_file_from_uri($requestUriPath) {
-    if (!empty($requestUriPath)) {
-        return ABSPATH . $requestUriPath;
-    } else {
-        return null;
-    }
+function wpts_wrapper_locate_file_from_uri(?string $requestUriPath): ?string {
+    return wpts_wrapper_get_absolute_load_path($requestUriPath);
 }
 
 /**
@@ -161,7 +237,7 @@ function abp01_wrapper_locate_file_from_uri($requestUriPath) {
  * @param string $filePath The absolute path of the script that should be processed
  * @return string The processed content
  */
-function abp01_wrapper_process_script($filePath) {
+function wpts_wrapper_process_script(string $filePath): string {
     $bom = pack('H*','EFBBBF');
     
     $contents = @file_get_contents($filePath);
@@ -178,30 +254,29 @@ function abp01_wrapper_process_script($filePath) {
  * Run the entire script wrapping process
  * @return void
  */
-function abp01_wrapper_serve_script() {
+function wpts_wrapper_serve_script(): never {
     $content = null;
     $contentLength = 0;
     $protocol = $_SERVER['SERVER_PROTOCOL'];
+    $etag = wpts_wrapper_get_script_etag();
 
     if (!in_array($protocol, array('HTTP/1.1', 'HTTP/2', 'HTTP/2.0'))) {
         $protocol = 'HTTP/1.0';
     }
 
     //See if there's anything to process
-    $requestUri = abp01_wrapper_get_file_to_wrap();
-    if (!empty($requestUri) && abp01_wrapper_should_serve_script($requestUri)) {
+    $requestUri = wpts_wrapper_get_file_to_wrap();
+    if (!empty($requestUri) && wpts_wrapper_should_serve_script($requestUri)) {
         //Locate script file and see if it's readable
-        $wrapFilePath = abp01_wrapper_locate_file_from_uri($requestUri);
+        $wrapFilePath = wpts_wrapper_locate_file_from_uri($requestUri);
         if (!empty($wrapFilePath) && is_readable($wrapFilePath)) {
-            $etag = abp01_wrapper_get_script_etag();
-
             if (isset($_SERVER['HTTP_IF_NONE_MATCH'] ) && stripslashes($_SERVER['HTTP_IF_NONE_MATCH']) === $etag) {
                 header($protocol . ' 304 Not Modified');
                 die;
             }
 
             //Process content
-            $content = abp01_wrapper_process_script($wrapFilePath);
+            $content = wpts_wrapper_process_script($wrapFilePath);
             if (function_exists('mb_strlen')) {
                 $contentLength = mb_strlen($content);
             } else {
@@ -226,5 +301,5 @@ function abp01_wrapper_serve_script() {
     die;
 }
 
-abp01_wrapper_increase_limits();
-abp01_wrapper_serve_script();
+wpts_wrapper_increase_limits();
+wpts_wrapper_serve_script();
