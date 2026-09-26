@@ -44,11 +44,15 @@ function wpts_leaflet_test_options(array $arguments): array {
 	return $options;
 }
 
+function wpts_get_plugin_path(): string {
+	return '/wp-content/plugins/' . basename(dirname(__DIR__, 2));
+}
+
 function wpts_leaflet_test_parse_arguments(array $arguments): array {
 	$options = array(
 		'host' => null,
 		'mode' => 'all',
-		'plugin-path' => '/wp-content/plugins/' . basename(dirname(__DIR__, 2))
+		'plugin-path' => wpts_get_plugin_path()
 	);
 
 	$validDashArgs = array('mode', 'plugin-path');
@@ -244,16 +248,20 @@ function wpts_leaflet_test_script_headers(array $response): void {
 
 function wpts_leaflet_test_expected_script(string $source): string {
 	$bom = pack('H*','EFBBBF');
-	$source = str_replace("\r\n", "\n", $source);
+	$source = wpts_leaflet_normalize_new_lines($source);
 	$source = trim(preg_replace("/^$bom/", '', $source));
 	return '(function (L) {' . PHP_EOL 
 		. trim($source) . PHP_EOL .
 		'})(window.' . ABP01_WRAPPED_LEAFLET_CONTEXT . ');';
 }
 
+function wpts_leaflet_normalize_new_lines(string $source): string {
+	return str_replace("\r\n", "\n", $source);
+}
+
 function wpts_leaflet_test_script_content(string $body, string $source): void {
 	$expected = wpts_leaflet_test_expected_script($source);
-	$actual = str_replace("\r\n", "\n", $body);
+	$actual = wpts_leaflet_normalize_new_lines($body);
 	wpts_leaflet_test_expect($actual === $expected,
 		'Wrapped content differs from the local script (expected SHA-256 ' . hash('sha256', $expected) .
 		', received ' . hash('sha256', $actual) . ').');
