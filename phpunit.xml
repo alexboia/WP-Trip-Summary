@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <phpunit
 	bootstrap="tests/bootstrap.php"
+	defaultTestSuite="default"
 	backupGlobals="false"
 	colors="true"
 	convertErrorsToExceptions="true"
@@ -11,6 +12,110 @@
 	<testsuites>
 		<testsuite name="default">
 			<directory prefix="test-" suffix=".php">tests</directory>
+		</testsuite>
+		<testsuite name="core">
+			<file>tests/test-AvailabilityHelper.php</file>
+			<file>tests/test-CachedChangelogDataSource.php</file>
+			<file>tests/test-CommonFunctions.php</file>
+			<file>tests/test-ConversionHelper.php</file>
+			<file>tests/test-Env.php</file>
+			<file>tests/test-FeatureStatus.php</file>
+			<file>tests/test-Lookup.php</file>
+			<file>tests/test-PredefinedTileLayer.php</file>
+			<file>tests/test-ReadmeChangelogExtractor.php</file>
+			<file>tests/test-Settings.php</file>
+			<file>tests/test-UnitSystem.php</file>
+			<file>tests/test-sample.php</file>
+		</testsuite>
+		<testsuite name="auth">
+			<file>tests/test-AlwaysTrueAuthorizationProvider.php</file>
+			<file>tests/test-Auth.php</file>
+			<file>tests/test-CallbackAuthorizationProvider.php</file>
+			<file>tests/test-NonceProviders.php</file>
+			<file>tests/test-NoneNonceProvider.php</file>
+			<file>tests/test-SimpleAuthorizationProvider.php</file>
+		</testsuite>
+		<testsuite name="validation">
+			<file>tests/test-FileValidatorProvider.php</file>
+			<file>tests/test-HexColourCodeValidator.php</file>
+			<file>tests/test-InputFiltering.php</file>
+			<file>tests/test-SimpleValidationRule.php</file>
+			<file>tests/test-TileLayerUrlValidator.php</file>
+			<file>tests/test-UrlValidator.php</file>
+		</testsuite>
+		<testsuite name="routes">
+			<file>tests/test-RouteInfo.php</file>
+			<file>tests/test-RouteManager.php</file>
+			<file>tests/test-RouteSphericalMercator.php</file>
+			<file>tests/test-RouteTrack.php</file>
+			<file>tests/test-RouteTrackAltitudeProfile.php</file>
+			<file>tests/test-RouteTrackInfo.php</file>
+			<file>tests/test-RouteTrackLine.php</file>
+			<file>tests/test-RouteTrackPart.php</file>
+			<file>tests/test-RouteTrackPoint.php</file>
+			<file>tests/test-RouteTrackProcessor.php</file>
+		</testsuite>
+		<testsuite name="documents">
+			<file>tests/test-DocumentParserFactory.php</file>
+			<file>tests/test-GeoJsonDocumentParser.php</file>
+			<file>tests/test-GeoJsonDocumentValidator.php</file>
+			<file>tests/test-GpxDocumentParser.php</file>
+			<file>tests/test-GpxDocumentValidator.php</file>
+		</testsuite>
+		<testsuite name="installer">
+			<file>tests/test-CheckCorrectInstallation.php</file>
+			<file>tests/test-CreateDbTableInstallerService.php</file>
+			<file>tests/test-CreateStorageDirectoriesInstallationService.php</file>
+			<file>tests/test-CreateStorageDirsSecurityAssetsInstallationService.php</file>
+			<file>tests/test-DefaultInstallerRequirementProvider.php</file>
+			<file>tests/test-DropDbTableInstallerService.php</file>
+			<file>tests/test-HasLibXmlRequirement.php</file>
+			<file>tests/test-HasMysqliRequirement.php</file>
+			<file>tests/test-HasMysqlSpatialSupportRequirement.php</file>
+			<file>tests/test-HasRequiredMysqlSpatialFunctionsRequirement.php</file>
+			<file>tests/test-InstallLookupDataInstallationService.php</file>
+			<file>tests/test-RemovePluginVersionInfoInstallerService.php</file>
+			<file>tests/test-RemoveStorageDirectoriesInstallerService.php</file>
+			<file>tests/test-RequiredVersionRequirement.php</file>
+			<file>tests/test-RequirementChecker.php</file>
+			<file>tests/test-RunInstallHookInstallerService.php</file>
+			<file>tests/test-RunPostInstallHooksInstallerStep.php</file>
+			<file>tests/test-RunPreInstallHooksInstallerStep.php</file>
+			<file>tests/test-SetPluginVersionInfoInstallerService.php</file>
+		</testsuite>
+		<testsuite name="modules">
+			<file>tests/test-CallbackDependencySelector.php</file>
+			<file>tests/test-PluginModuleActivator.php</file>
+			<file>tests/test-PluginModuleHost.php</file>
+			<file>tests/test-UnconditionalDependencySelector.php</file>
+		</testsuite>
+		<testsuite name="ui">
+			<file>tests/test-AdminAjaxAction.php</file>
+			<file>tests/test-FrontendThemeDecorator.php</file>
+			<file>tests/test-FrontendThemeDefault.php</file>
+			<file>tests/test-MaybeLeafletPluginScriptPathRewriter.php</file>
+			<file>tests/test-NoopPathRewriter.php</file>
+			<file>tests/test-PluginMenuItemCollector.php</file>
+			<file>tests/test-PostListingColumn.php</file>
+			<file>tests/test-TripSummaryStatusColumn.php</file>
+			<file>tests/test-TripSummaryStatusColumnDataSource.php</file>
+			<file>tests/test-View.php</file>
+			<file>tests/test-ViewerTests.php</file>
+		</testsuite>
+		<testsuite name="logging">
+			<file>tests/test-AuditLogData.php</file>
+			<file>tests/test-AuditLogProvider.php</file>
+			<file>tests/test-DefaultRouteLogManager.php</file>
+			<file>tests/test-LogFileInfo.php</file>
+			<file>tests/test-RouteLog.php</file>
+			<file>tests/test-RouteLogEntry.php</file>
+			<file>tests/test-SystemLogManager.php</file>
+		</testsuite>
+		<testsuite name="io">
+			<file>tests/test-IoFileInfo.php</file>
+			<file>tests/test-MaintenanceToolFilesHelper.php</file>
+			<file>tests/test-NginxAccessDirectives.php</file>
+			<file>tests/test-SimpleFileDownloader.php</file>
 		</testsuite>
 	</testsuites>
 </phpunit>

@@ -33,3 +33,32 @@ This content is then be built as HTML files when the plug-in installation kit is
 You can contribute to the code base itself either by:
    - writing code to fix a specific bug or implement a feature; 
    - or by proposing refactoring of existing code ([New issue -> Propose refactoring](https://github.com/alexboia/WP-Trip-Summary/issues/new/choose)).
+
+### Running tests
+
+With the PHPUnit dependencies and WordPress test environment configured, run:
+
+```bash
+bash bin/run-tests.sh
+bash bin/run-tests.sh --set=routes
+bash bin/run-tests.sh --filter='RouteTrackPointTests::test_'
+bash bin/run-tests.sh --set=documents --filter='GpxDocumentParserTests'
+```
+
+`--set SET` and `--filter PATTERN` are also accepted. A filter applies within the selected set. Other PHPUnit options are forwarded unchanged. Run `bash bin/run-tests.sh --help` for usage information. The script can also be called from `bin/` or by its path from another directory, and returns PHPUnit's exit status.
+
+| Set | Tests |
+| --- | --- |
+| `all`, `default` | All tests; used when `--set` is omitted |
+| `core` | Environment, settings, lookup data, changelog and common helpers |
+| `auth` | Authorization and nonce providers |
+| `validation` | Input filtering, validation rules and validator providers |
+| `routes` | Route data, tracks, geometry and processing |
+| `documents` | GPX/GeoJSON parsers, validators and parser factory |
+| `installer` | Installation, removal and requirements |
+| `modules` | Module activation, hosting and dependency selection |
+| `ui` | Admin actions, columns, menus, views and frontend themes |
+| `logging` | Audit, system and route logs |
+| `io` | Files, downloads, maintenance and server directives |
+
+The sets are PHPUnit suites defined in `phpunit.xml`. When adding a test file, include it in the corresponding thematic suite. The `default` suite discovers every `tests/test-*.php` file automatically and remains the default for direct PHPUnit and `composer test` runs.
