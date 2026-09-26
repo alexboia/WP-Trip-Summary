@@ -270,7 +270,8 @@ class Abp01_PluginModules_SettingsPluginModule extends Abp01_PluginModules_Plugi
 			),
 			'attributionUrl' => array(
 				new Abp01_Validation_Rule_Simple(
-					new Abp01_Validate_Url(true),
+					new Abp01_Validate_Url(true, 
+						['http://', 'https://']),
 					esc_html__('Tile layer attribution URL does not have a valid format', 'abp01-trip-summary')
 				)
 			)
