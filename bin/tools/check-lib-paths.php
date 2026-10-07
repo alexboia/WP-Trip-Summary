@@ -4,28 +4,34 @@ declare(strict_types=1);
 require_once __DIR__ . '/common.php';
 
 class DirectoryRecord {
-	/**
-	 * @var string
-	 */
-	public $path;
+	public string $path;
 
 	/**
-	 * @var array[]
+	 * @var EntryInfo[]
 	 */
-	public $files = array();
+	public array $files = array();
 
 	/**
 	 * @var DirectoryRecord[]
 	 */
-	public $directories = array();
+	public array $directories = array();
 
-	/**
-	 * @var string
-	 */
-	public $name = null;
+	public ?string $name = null;
 
 	public function isCorrectName(): bool {
 		return lcfirst($this->name) === $this->name;
+	}
+}
+
+final readonly class EntryInfo {
+	public function __construct(
+		public string $entryPath,
+		public bool $isEmpty, 
+		public string $expectedArtefactName, 
+		public bool $expectedArtefactExists
+	)
+	{
+		return;
 	}
 }
 
@@ -108,12 +114,16 @@ function wpts_scan_directory(
 					$artefactNameBase);
 			}
 
-			$record->files[$entryPath] = array(
-				'isEmpty' => empty(trim($entryContents)),
-				'expectedArtefactName' => $expectedArtefactName,
-				'expectedArtefactExists' => wpts_entry_has_expected_artefact($entryContents, 
-					$expectedArtefactName)
-			);
+			$isEmptyEntry = empty(trim($entryContents));
+			$expectedArtefactExists = wpts_entry_has_expected_artefact($entryContents, 
+				$expectedArtefactName);
+
+			$entryInfo = new EntryInfo($entryPath, 
+				$isEmptyEntry, 
+				$expectedArtefactName, 
+				$expectedArtefactExists);
+
+			$record->files[$entryPath] = $entryInfo;
 		} else if (is_dir($entryPath)) {
 			$entryDirectoryNames = $directoryNames;
 			$entryDirectoryNames[] = $entry;
@@ -140,7 +150,7 @@ function wpts_analyze_directory(DirectoryRecord $record): bool {
 	}
 
 	foreach ($record->files as $fileName => $fileInfo) {
-		if ($fileInfo['isEmpty']) {
+		if ($fileInfo->isEmpty) {
 			wpts_tools_format_print(
 				sprintf('File %s is empty. This will not cause build to fail.', $fileName) . PHP_EOL, 
 				array('yellow')
@@ -148,9 +158,9 @@ function wpts_analyze_directory(DirectoryRecord $record): bool {
 			continue;
 		}
 
-		if (!$fileInfo['expectedArtefactExists']) {
+		if (!$fileInfo->expectedArtefactExists) {
 			wpts_tools_format_print(
-				sprintf('File %s does not contain expected class/trait/interface %s.', $fileName, $fileInfo['expectedArtefactName']) . PHP_EOL, 
+				sprintf('File %s does not contain expected class/trait/interface %s.', $fileName, $fileInfo->expectedArtefactName) . PHP_EOL, 
 				array('yellow')
 			);
 			$ok = false;
