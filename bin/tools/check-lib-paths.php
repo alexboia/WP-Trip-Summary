@@ -29,7 +29,29 @@ class DirectoryRecord {
 	}
 }
 
-function abp01_scan_directory(string $directory, string $prefix = 'Abp01_'): DirectoryRecord {
+function wpts_is_php_file(string $entryPath): bool {
+	$entry = basename($entryPath);
+	return is_file($entryPath) 
+		&& stripos($entry, '.php') !== false;
+}
+
+function wpts_entry_has_expected_artefact(string $entryContents, string $expectedArtefactName): bool {
+	$searchClassDefinition = sprintf('class %s', $expectedArtefactName);
+	$searchInterfaceDefinition = sprintf('interface %s', $expectedArtefactName);
+	$searchTraitDefinition = sprintf('interface %s', $expectedArtefactName);
+
+	return strpos($entryContents, $searchClassDefinition) !== false ||
+		strpos($entryContents, $searchInterfaceDefinition) !== false ||
+		strpos($entryContents, $searchTraitDefinition) !== false;
+}
+
+function wpts_scan_directory(
+	string $directory, 
+	array $directoryNames,
+	string $psr4NamespacePrefix = 'WpTripSummary', 
+	string $psr0Prefix = 'Abp01'
+): DirectoryRecord {
+
 	if (empty($directory)) {
 		throw new InvalidArgumentException('Directory may not be empty.');
 	}
@@ -55,31 +77,58 @@ function abp01_scan_directory(string $directory, string $prefix = 'Abp01_'): Dir
 
 	foreach ($contents as $entry) {
 		$entryPath = $directory . DIRECTORY_SEPARATOR . $entry;
-		if (is_file($entryPath) && stripos($entry, '.php') !== false) {
-			$expectedArtefactName = $prefix . str_ireplace('.php', '', $entry);
-			$searchClassDefinition = sprintf('class %s', $expectedArtefactName);
-			$searchInterfaceDefinition = sprintf('interface %s', $expectedArtefactName);
-			$searchTraitDefinition = sprintf('interface %s', $expectedArtefactName);
-			
+		if (wpts_is_php_file($entryPath)) {
 			$entryContents = file_get_contents($entryPath);
+
+			$artefactNameBase = str_ireplace('.php', '', $entry);
+			
+			$namespaceParts = array_map(
+				fn($parent) => ucfirst($parent), 
+				$directoryNames
+			);
+
+			$searchNamespaceMarker = !empty($namespaceParts) 
+				? sprintf('namespace %s\\%s', 
+					$psr4NamespacePrefix,
+					join('\\', $namespaceParts))
+				: sprintf('namespace %s', 
+					$psr4NamespacePrefix);
+
+			if (stripos($entryContents, $searchNamespaceMarker) !== false) {
+				$expectedArtefactName = $artefactNameBase;
+			} else {
+				$psr0Namespace = !empty($namespaceParts) 
+					? sprintf('%s_%s', 
+						$psr0Prefix, 
+						join('_', $namespaceParts))
+					: $psr0Prefix;
+
+				$expectedArtefactName = sprintf('%s_%s', 
+					$psr0Namespace, 
+					$artefactNameBase);
+			}
+
 			$record->files[$entryPath] = array(
 				'isEmpty' => empty(trim($entryContents)),
 				'expectedArtefactName' => $expectedArtefactName,
-				'expectedArtefactExists' => 
-					strpos($entryContents, $searchClassDefinition) !== false ||
-					strpos($entryContents, $searchInterfaceDefinition) !== false ||
-					strpos($entryContents, $searchTraitDefinition) !== false
+				'expectedArtefactExists' => wpts_entry_has_expected_artefact($entryContents, 
+					$expectedArtefactName)
 			);
 		} else if (is_dir($entryPath)) {
-			$entryPrefix = sprintf('%s%s_', $prefix, ucfirst($entry));
-			$record->directories[] = abp01_scan_directory($entryPath, $entryPrefix);
+			$entryDirectoryNames = $directoryNames;
+			$entryDirectoryNames[] = $entry;
+
+			$record->directories[] = wpts_scan_directory($entryPath, 
+				$entryDirectoryNames, 
+				$psr4NamespacePrefix, 
+				$psr0Prefix);
 		}
 	}
 	
 	return $record;
 }
 
-function abp01_analyze_directory(DirectoryRecord $record): bool {
+function wpts_analyze_directory(DirectoryRecord $record): bool {
 	$ok = true;
 	
 	if (!$record->isCorrectName()) {
@@ -109,7 +158,7 @@ function abp01_analyze_directory(DirectoryRecord $record): bool {
 	}
 
 	foreach ($record->directories as $subRecord) {
-		if (!abp01_analyze_directory($subRecord)) {
+		if (!wpts_analyze_directory($subRecord)) {
 			$ok = false;
 		}
 	}
@@ -117,12 +166,12 @@ function abp01_analyze_directory(DirectoryRecord $record): bool {
 	return $ok;
 }
 
-function abp01_run_lib_check($directory) {
+function wpts_run_lib_check(string $directory): never {
 	echo sprintf('Scanning directory: %s...' . PHP_EOL, $directory);
-	$record = abp01_scan_directory($directory);
+	$record = wpts_scan_directory($directory, array());
 
 	echo sprintf('Analyzing directory contents...' . PHP_EOL);
-	if (abp01_analyze_directory($record)) {
+	if (wpts_analyze_directory($record)) {
 		exit(0);
 	} else {
 		exit(1000);
@@ -139,4 +188,4 @@ if (empty($directory)) {
 	$directory = realpath(__DIR__ . '/../../lib');
 }
 
-abp01_run_lib_check($directory);
+wpts_run_lib_check($directory);
