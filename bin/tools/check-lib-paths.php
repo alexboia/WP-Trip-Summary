@@ -10,7 +10,7 @@ class DirectoryRecord {
 	public $path;
 
 	/**
-	 * @var bool[]
+	 * @var array[]
 	 */
 	public $files = array();
 

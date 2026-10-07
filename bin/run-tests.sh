@@ -5,9 +5,10 @@ wpts_usage() {
 Usage: bash bin/run-tests.sh [--set=SET] [--filter=PATTERN] [PHPUnit options]
 
 Options:
-  --set=SET         Run a named test set (also accepts --set SET).
+  --set=SET         Run a named test set (also accepts --set SET). The value 'leaflet' will run the special non-PHPUnit leaflet wrapper tests against an optional host (default: alexboia.net.local:8080).
   --filter=PATTERN  Forward a PHPUnit filter (also accepts --filter PATTERN).
-  -h, --help       Show this help.
+  --host=HOST  		Specify the host against which to run the leaflet wrapper tests (also accepts --host HOST)
+  -h, --help       	Show this help.
 
 Test sets:
   all, default  All tests (the default).
@@ -21,6 +22,7 @@ Test sets:
   ui            Admin actions, columns, menus, views and frontend themes.
   logging       Audit, system and route logs.
   io            Files, downloads, maintenance and server directives.
+  leaflet		Run the leaflet wrapper tests
 
 Examples:
   bash bin/run-tests.sh --set=routes
@@ -36,6 +38,7 @@ wpts_argument_error() {
 
 WPTS_TEST_SET=all
 WPTS_PHPUNIT_ARGS=()
+WPTS_TEST_HOST=alexboia.net.local:8080
 
 while [ "$#" -gt 0 ]; do
 	case "$1" in
@@ -43,12 +46,14 @@ while [ "$#" -gt 0 ]; do
 			WPTS_TEST_SET=${1#--set=}
 			shift
 			;;
-		--set|--filter)
+		--set|--filter|--host)
 			if [ "$#" -lt 2 ] || [[ -z "$2" || "$2" == --* ]]; then
 				wpts_argument_error "Missing value for $1."
 			fi
 			if [ "$1" = --set ]; then
 				WPTS_TEST_SET=$2
+			elif [ "$1" = --host ]; then
+				WPTS_TEST_HOST=$2
 			else
 				WPTS_PHPUNIT_ARGS+=("$1" "$2")
 			fi
@@ -56,6 +61,10 @@ while [ "$#" -gt 0 ]; do
 			;;
 		--filter=)
 			wpts_argument_error 'Missing value for --filter.'
+			;;
+		--host=)
+			WPTS_TEST_HOST=${1#--host=}
+			shift
 			;;
 		-h|--help)
 			wpts_usage
@@ -74,6 +83,11 @@ case "$WPTS_TEST_SET" in
 		;;
 	core|auth|validation|routes|documents|installer|modules|ui|logging|io)
 		;;
+	leaflet)
+		if [[ -z "${WPTS_TEST_HOST-}" ]]; then
+			wpts_argument_error "--host parameter cannot be empty."
+		fi
+		;;
 	'')
 		wpts_argument_error 'Missing value for --set.'
 		;;
@@ -85,4 +99,8 @@ esac
 WPTS_ROOT=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd) || exit 1
 cd -- "$WPTS_ROOT" || exit 1
 
-exec ./vendor/bin/phpunit --testsuite "$WPTS_TEST_SET" "${WPTS_PHPUNIT_ARGS[@]}"
+if [[ $WPTS_TEST_SET == "leaflet" ]]; then
+	exec php ./bin/tools/test-leaflet-wrapper.php "$WPTS_TEST_HOST"
+else
+	exec ./vendor/bin/phpunit --testsuite "$WPTS_TEST_SET" "${WPTS_PHPUNIT_ARGS[@]}"
+fi

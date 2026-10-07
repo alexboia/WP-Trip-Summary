@@ -62,3 +62,71 @@ bash bin/run-tests.sh --set=documents --filter='GpxDocumentParserTests'
 | `io` | Files, downloads, maintenance and server directives |
 
 The sets are PHPUnit suites defined in `phpunit.xml`. When adding a test file, include it in the corresponding thematic suite. The `default` suite discovers every `tests/test-*.php` file automatically and remains the default for direct PHPUnit and `composer test` runs.
+
+### Testing the Leaflet script wrapper
+
+[bin/tools/test-leaflet-wrapper.php](bin/tools/test-leaflet-wrapper.php) runs HTTP integration tests against [abp01-plugin-leaflet-plugins-wrapper.php](abp01-plugin-leaflet-plugins-wrapper.php). It exercises the deployed wrapper through the web server, including rewrite rules and `REQUEST_URI`. Run it directly with PHP, independently of the PHPUnit suites above.
+
+#### Requirements and usage
+
+- PHP CLI with the cURL extension enabled.
+- A reachable WordPress installation at the host root, serving the same plug-in version and JavaScript files as the local checkout. The runner reads local scripts and plug-in constants to build its expectations.
+- Public access to the plug-in's `media/js/abp01-common.js` and WordPress's `/wp-includes/js/jquery/jquery.js`. The runner checks these before testing traversal, so an absent target cannot produce a misleading pass.
+- For rewrite tests, Apache must have `mod_rewrite` enabled and honor the plug-in's [.htaccess](.htaccess) rules.
+
+From the plug-in root:
+
+```bash
+php bin/tools/test-leaflet-wrapper.php alexboia.net.local:8080
+php bin/tools/test-leaflet-wrapper.php https://example.com --mode=load
+php bin/tools/test-leaflet-wrapper.php alexboia.net.local:8080 --mode=rewrite
+php bin/tools/test-leaflet-wrapper.php https://example.com --plugin-path=/wp-content/plugins/wp-trip-summary
+php bin/tools/test-leaflet-wrapper.php --help
+```
+
+Replace the example hosts with the installation being tested. The positional argument accepts a hostname with an optional port, or an HTTP(S) origin. It defaults to `http://` when the scheme is omitted. Supply the final origin: redirects are not followed. Credentials, URL paths, query strings and fragments are rejected.
+
+| Option | Behavior |
+| --- | --- |
+| `--mode=all` | Default; run both `load` and rewrite tests |
+| `--mode=load` | Call the PHP wrapper with `load` relative to the plug-in directory; exercises the fallback used when rewrite is unavailable |
+| `--mode=rewrite` | Request script URLs directly, allowing the server to route them to the wrapper with the original `REQUEST_URI` |
+| `--plugin-path=/wp-content/plugins/<directory>` | Override the remote plug-in URL path; defaults to `/wp-content/plugins/` followed by the local plug-in directory name |
+| `--help` | Print usage and exit |
+
+Options use the `--name=value` form. The runner does not change server configuration or create remote fixtures. Select `--mode=load` on a host without rewrite support; `all` expects both routes to work. A static JavaScript response fails the rewrite tests because they check the complete wrapped content.
+
+#### Coverage and results
+
+The suite checks:
+
+- Fullscreen, magnifying glass and magnifying glass button scripts, with and without `ver`: HTTP status, complete source wrapped with `window.abp01Leaflet`, JavaScript content type and byte length.
+- Cache headers (`ETag`, `Cache-Control`, `Expires`), repeated requests, matching and stale `If-None-Match`, version changes, and bodyless `304` responses. Missing or forbidden files must still be rejected when a cache validator is supplied.
+- Missing files, directories, CSS files and existing JavaScript outside the permitted Leaflet directory or plug-in. Traversal cases include relative and root-relative paths, double encoding and backslashes; malformed inputs include external URLs, null bytes and array-valued `load`.
+- Missing or empty `load`, fallback to `REQUEST_URI`, unrelated query parameters, and precedence of an explicit `load` over the rewritten URL.
+
+Access checks in rewrite mode send invalid `load` values through a valid rewritten script URL. This ensures the request reaches the wrapper, instead of depending on how the server serves unrelated static paths.
+
+Each assertion case prints `[PASS]` or `[FAIL]`, followed by totals at the end. Assertion failures allow the remaining cases to run; setup or transport errors abort the run with `[ERROR]`.
+
+| Exit code | Meaning |
+| --- | --- |
+| `0` | All selected cases passed, or help was requested |
+| `1` | One or more assertion cases failed |
+| `2` | Invalid arguments, missing dependencies or reference files, or an HTTP transport error |
+
+#### Extending the runner
+
+Keep each operation in a function with a clear responsibility. `wpts_leaflet_test_main()` handles CLI execution, while `wpts_leaflet_test_suite()` prepares the inputs and coordinates the test groups.
+
+| Responsibility | Functions |
+| --- | --- |
+| Parse and validate CLI input | `wpts_leaflet_test_options()`, `wpts_leaflet_test_parse_arguments()`, host and plug-in path validation helpers |
+| Prepare reference data | `wpts_leaflet_test_script_paths()`, `wpts_leaflet_test_read_sources()`, `wpts_leaflet_test_verify_traversal_targets()` |
+| Send HTTP requests and read headers | `wpts_leaflet_test_request()`, `wpts_leaflet_test_create_http_request()`, `wpts_leaflet_test_collect_response_header()` |
+| Check a script response | `wpts_leaflet_test_script()` delegates content, header, ETag and expiration checks to separate helpers |
+| Run scenario groups | `wpts_leaflet_test_run_script_cases()`, `wpts_leaflet_test_run_path_cases()`, `wpts_leaflet_test_run_cache_cases()`, `wpts_leaflet_test_run_access_cases()`, `wpts_leaflet_test_run_load_cases()`, `wpts_leaflet_test_run_rewrite_cases()` |
+| Define cache and access scenarios | `wpts_leaflet_test_cache_case_request()`, `wpts_leaflet_test_cache_case_response()`, `wpts_leaflet_test_invalid_loads()` |
+| Report outcomes | `wpts_leaflet_test_run()`, `wpts_leaflet_test_report_totals()`; terminal formatting is shared in [bin/tools/common.php](bin/tools/common.php) |
+
+Add new scenarios to the corresponding group and reuse the request and assertion helpers. Preserve the test names, messages and exit codes during refactoring; compare runs against the same host before and after the change.
