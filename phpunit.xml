@@ -119,6 +119,7 @@
 		</testsuite>
 		<testsuite name="sec">
 			<file>tests/test-LeafletWrapper.php</file>
+			<file>tests/test-NginxAccessDirectives.php</file>
 		</testsuite>
 	</testsuites>
 </phpunit>

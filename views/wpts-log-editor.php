@@ -103,7 +103,7 @@
 							</td>
 						</tr>
 						<tr id="abp01-trip-summary-log-listingRowAux-<?php echo esc_attr($logEntry->id); ?>">
-							<td colspan="6" class="wpts-cell-notes">
+							<td colspan="7" class="wpts-cell-notes">
 								<?php echo !empty($logEntry->notes) ? esc_html($logEntry->notes) : '-'; ?>
 							</td>
 						</tr>

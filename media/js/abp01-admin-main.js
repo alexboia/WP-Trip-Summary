@@ -278,7 +278,14 @@
 				$target: $target,
 				determinate: isDeterminate,
 				progress: progress,
-				message: text
+				message: text,
+				style: editorWindowState.isOpen ? {
+					top: '50%',
+					transform: 'translateY(-50%)',
+					width: 'calc(100% - 32px)',
+					maxWidth: '400px',
+					height: 'auto'
+				} : {}
 			});
 		}
 	}
@@ -398,7 +405,7 @@
 			var isMultiple = $me.attr('multiple');
 
 			var basicOptions = {
-				width: '638px',
+				width: '100%',
 				closeOnSelect: !isMultiple,
 				scrollAfterSelect: false,
 				minimumResultsForSearch: Infinity,
@@ -1309,12 +1316,12 @@
 
 		$.blockUI({
 			message: $ctrlEditor,
+			blockMsgClass: 'abp01-editor-modal',
 			css: {
-				width: '682px',
-				height: '545px',
-				top: 'calc(50% - ' + 682/2 + 'px)',
-				left: 'calc(50% - ' + 545/2 + 'px)',
-				boxShadow: '0 5px 15px rgba(0, 0, 0, 0.7)'
+				width: 'max-content',
+				height: 'auto',
+				top: '50%',
+				left: '50%'
 			},
 			onBlock: function() {
 				//Disable window scrolling

@@ -256,6 +256,196 @@ textarea.abp01-code-reading-area {
 	font-size: 17px;
 }
 
+/* Content-sized trip summary and log entry dialogs. */
+.abp01-editor-modal {
+	max-width: calc(100vw - 32px);
+	max-height: calc(100vh - 32px);
+	max-height: calc(100dvh - 32px);
+	transform: translate(-50%, -50%);
+	box-sizing: border-box;
+	overflow: auto;
+	overscroll-behavior: contain;
+	border-radius: 10px;
+	background: #fff;
+	box-shadow: 0 22px 50px -26px rgba(10, 56, 104, 0.55);
+	color: #12303f;
+	font-family: 'IBM Plex Sans', system-ui, sans-serif;
+	font-size: 13px;
+	line-height: 1.5;
+	text-align: left;
+}
+
+.abp01-editor-modal .abp01-editor-title-wrap,
+.abp01-editor-modal .abp01-window-container-header {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	height: auto;
+	padding: 16px 20px;
+	background: linear-gradient(120deg, var(--wpts-primary-hover), var(--wpts-primary));
+	color: #fff;
+	text-align: left;
+}
+
+.abp01-editor-modal .abp01-editor-title,
+.abp01-editor-modal .abp01-window-container-header h3 {
+	float: none;
+	flex: 1;
+	min-width: 0;
+	height: auto;
+	margin: 0;
+	padding: 0;
+	color: inherit;
+	font-family: 'Space Grotesk', system-ui, sans-serif;
+	font-size: 17px;
+	font-weight: 600;
+	line-height: 1.4;
+	overflow-wrap: anywhere;
+}
+
+.abp01-editor-modal .abp01-editor-title-close {
+	float: none;
+	flex-shrink: 0;
+}
+
+.abp01-editor-modal a.abp01-close-editor,
+.abp01-editor-modal a.abp01-close-window {
+	display: flex;
+	float: none;
+	align-items: center;
+	justify-content: center;
+	width: 30px;
+	height: 30px;
+	flex-shrink: 0;
+	border-radius: 8px;
+	background: rgba(140, 245, 217, 0.12);
+	color: #8CF5D9;
+	text-decoration: none;
+}
+
+.abp01-editor-modal a.abp01-close-editor:hover,
+.abp01-editor-modal a.abp01-close-window:hover {
+	background: rgba(140, 245, 217, 0.24);
+	color: #fff;
+}
+
+.abp01-editor-modal .abp01-editor-title-wrap > .abp01-clear,
+.abp01-editor-modal .abp01-window-container-header > .abp01-clear,
+.abp01-editor-modal .abp01-editor-footer > .abp01-clear {
+	display: none;
+}
+
+.abp01-editor-modal .abp01-form-line {
+	box-sizing: border-box;
+	width: min(638px, calc(100vw - 64px));
+	max-width: 100%;
+	margin: 0 0 12px;
+	line-height: 1.5;
+}
+
+.abp01-editor-modal .abp01-form-line:last-child {
+	margin-bottom: 0;
+}
+
+.abp01-editor-modal .abp01-form-line label {
+	display: block;
+	margin-bottom: 5px;
+	color: var(--wpts-primary-hover);
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.5;
+}
+
+.abp01-editor-modal .abp01-form-line input[type="text"],
+.abp01-editor-modal .abp01-form-line select {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 100%;
+	min-height: 34px;
+	margin: 0;
+	padding: 4px 10px;
+	border: 1px solid var(--wpts-border-neutral3);
+	border-radius: 4px;
+	background-color: #FCFDFE;
+	color: #12303f;
+	font: inherit;
+	line-height: 1.5;
+}
+
+.abp01-editor-modal .abp01-form-line input:focus,
+.abp01-editor-modal .abp01-form-line select:focus {
+	border-color: var(--wpts-border-happy);
+	box-shadow: 0 0 0 2px rgba(31, 164, 180, 0.15);
+	outline: none;
+}
+
+.abp01-editor-modal .button,
+.abp01-editor-modal .button.button-large,
+.abp01-editor-modal .button.button-hero,
+.abp01-editor-modal .abp01-quick-actions-editor-trigger {
+	box-sizing: border-box;
+	min-height: 34px;
+	height: auto;
+	margin-bottom: 0;
+	padding: 6px 14px;
+	border: 1px solid var(--wpts-border-neutral3);
+	border-radius: 4px;
+	background: #F8FAFB;
+	box-shadow: none;
+	color: var(--wpts-primary-hover);
+	font: inherit;
+	font-weight: 600;
+	line-height: 1.5;
+	text-align: center;
+	text-decoration: none;
+	white-space: normal;
+}
+
+.abp01-editor-modal .button:hover,
+.abp01-editor-modal .abp01-quick-actions-editor-trigger:hover {
+	border-color: var(--wpts-border-happy);
+	background: rgba(31, 164, 180, 0.10);
+	color: var(--wpts-primary-hover);
+}
+
+.abp01-editor-modal .button.button-primary {
+	border-color: var(--wpts-primary);
+	background: var(--wpts-primary);
+	color: #fff;
+}
+
+.abp01-editor-modal .button-primary:hover,
+.abp01-editor-modal .button-primary:focus,
+.abp01-editor-modal .button-primary:active {
+	border-color: var(--wpts-primary-hover);
+	background: var(--wpts-primary-hover);
+	color: #fff;
+}
+
+.abp01-editor-modal .button:focus {
+	box-shadow: none;
+}
+
+.abp01-editor-modal a:focus-visible,
+.abp01-editor-modal .button:focus-visible {
+	outline: 2px solid var(--wpts-border-happy);
+	outline-offset: 2px;
+}
+
+.abp01-editor-modal .abp01-progress-container,
+.abp01-editor-modal .abp01-progress-label,
+.abp01-editor-modal .abp01-progress-bar,
+#abp01-tripSummaryLog-adminRoot .abp01-progress-container,
+#abp01-tripSummaryLog-adminRoot .abp01-progress-label,
+#abp01-tripSummaryLog-adminRoot .abp01-progress-bar {
+	width: 100%;
+}
+
+.abp01-editor-modal .abp01-progress-container,
+.abp01-editor-modal .abp01-progress-label {
+	height: auto;
+}
+
 /* Form stuff */
 
 .row .abp01-checkbox-container {

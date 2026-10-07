@@ -150,9 +150,11 @@
 					$target: $target,
 					message: arguments.length == 2 ? arguments[1] : 'Please wait...',
 					style: {
-						top: !logEntryFormState.isOpen 
-							? ($('#abp01-tripSummaryLog-adminRoot').height() - 20) / 2
-							: 280
+						top: '50%',
+						transform: 'translateY(-50%)',
+						width: 'calc(100% - 32px)',
+						maxWidth: '400px',
+						height: 'auto'
 					}
 				});
 			}
@@ -272,15 +274,12 @@
 		initBlockUIDefaultStyles();
 		$.blockUI({
 			message: $('#abp01-tripSummaryLog-formContainer'),
+			blockMsgClass: 'abp01-editor-modal',
 			css: {
-				width: '640px',
-				height: '480px',
-				top: 'calc(50% - 240px)',
-				left: 'calc(50% - 320px)',
-				padding: '10px',
-				borderRadius: '5px',
-				backgroundColor: '#fff',
-				boxShadow: '0 5px 15px rgba(0, 0, 0, 0.7)'
+				width: 'max-content',
+				height: 'auto',
+				top: '50%',
+				left: '50%'
 			},
 			onBlock: function() {
 				setLogEntryFormOpen();

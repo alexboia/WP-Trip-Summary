@@ -30,17 +30,125 @@
 
 #abp01-trip-summary-log-listingTable {
 	margin-bottom: 16px;
+	border: 1px solid var(--wpts-border-neutral3);
+	border-radius: 8px;
+	border-spacing: 0;
+	overflow: hidden;
+	box-shadow: none;
+}
+
+#abp01-trip-summary-log-listingTable thead th {
+	padding: 12px;
+	border-bottom: 1px solid var(--wpts-border-neutral1);
+	background: var(--wpts-primary-hover);
+	color: #fff;
+	font-weight: 600;
+}
+
+#abp01-trip-summary-log-listingTable td {
+	padding: 10px 12px;
+	color: #12303f;
+	overflow-wrap: anywhere;
+}
+
+#abp01-trip-summary-log-listingTable tbody tr {
+	background: #fff;
+}
+
+#abp01-trip-summary-log-listingTable tbody tr:nth-child(4n + 1),
+#abp01-trip-summary-log-listingTable tbody tr:nth-child(4n + 2) {
+	background: #F8FAFB;
+}
+
+#abp01-trip-summary-log-listingTable a {
+	color: var(--wpts-primary);
+}
+
+#abp01-trip-summary-log-listingTable a:hover {
+	color: var(--wpts-primary-hover);
+}
+
+#abp01-trip-summary-log-listingTable a[rel="logentry-item-delete"] {
+	color: var(--wpts-danger-hover);
+}
+
+#abp01-tripSummaryLog-adminRoot .wpts-no-log-entries {
+	padding: 16px;
+	border: 1px solid var(--wpts-border-neutral3);
+	border-radius: 8px;
+	background: #F8FAFB;
+	color: #6B7C88;
+}
+
+#abp01-tripSummaryLog-adminRoot .wpts-trip-summary-log-controls {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+#abp01-tripSummaryLog-adminRoot .button {
+	border-color: var(--wpts-border-neutral3);
+	background: #F8FAFB;
+	color: var(--wpts-primary);
+	white-space: normal;
+}
+
+#abp01-tripSummaryLog-adminRoot .button:hover {
+	border-color: var(--wpts-border-happy);
+	background: rgba(31, 164, 180, 0.10);
+}
+
+#abp01-tripSummaryLog-formContainer {
+	width: auto;
+	height: auto;
+	background: #fff;
+}
+
+#abp01-tripSummaryLog-formContainer-inner {
+	padding: 16px;
 }
 
 #abp01-tripSummaryLog-formContainer .abp01-form-line {
 	margin-left: 0px;
 }
 
-.abp01-form-line input[type="text"]#abp01-log-time {
-	width: 610px;
+#abp01-tripSummaryLog-formContainer input[type="text"]#abp01-log-time {
+	width: calc(100% - 34px);
 }
 
-.widefat td.wpts-cell-notes {
-	color: #72777c;
+#abp01-tripSummaryLog-formContainer .abp01-numeric-stepper-ctrl-group {
+	height: 34px;
+	left: 0;
+	margin-left: 6px;
+}
+
+#abp01-tripSummaryLog-formContainer .abp01-numeric-stepper-ctrl {
+	width: 28px;
+	height: 17px;
+	border-color: var(--wpts-border-neutral3);
+	background: #F8FAFB;
+	color: var(--wpts-primary);
+}
+
+#abp01-tripSummaryLog-formContainer .abp01-numeric-stepper-ctrl:hover {
+	background: rgba(31, 164, 180, 0.10);
+}
+
+#abp01-tripSummaryLog-formContainer .abp01-numeric-stepper-ctrl .dashicons {
+	line-height: 15px;
+}
+
+#abp01-tripSummaryLog-formContainer .abp01-tripSummaryLog-form-controls {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	padding: 12px 16px;
+	border-top: 1px solid var(--wpts-border-neutral1);
+	background: #F8FAFB;
+}
+
+#abp01-trip-summary-log-listingTable td.wpts-cell-notes {
+	color: #6B7C88;
 	padding-left: 16px;
+	border-bottom: 1px solid var(--wpts-border-neutral2);
 }
