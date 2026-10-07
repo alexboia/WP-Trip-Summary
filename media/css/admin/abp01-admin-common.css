@@ -364,7 +364,7 @@ textarea.abp01-code-reading-area {
 	min-height: 34px;
 	margin: 0;
 	padding: 4px 10px;
-	border: 1px solid var(--wpts-border-neutral3);
+	border: 1px solid var(--wpts-border-happy);
 	border-radius: 4px;
 	background-color: #FCFDFE;
 	color: #12303f;

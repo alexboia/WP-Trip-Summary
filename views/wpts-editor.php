@@ -114,12 +114,21 @@
             <?php echo esc_html__('Chose the type of your tour', 'abp01-trip-summary'); ?>
         </h3>
         <a href="javascript:void(0)" class="button button-hero abp01-type-selector first" data-action="abp01-typeSelect" data-type="bike">
+            <svg class="abp01-selector-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <circle cx="6" cy="17" r="3.2"/><circle cx="18" cy="17" r="3.2"/><path d="M6 17l4-7h5l3 7M9 7h3"/>
+            </svg>
             <?php echo esc_html__('Biking', 'abp01-trip-summary'); ?>
         </a>
         <a href="javascript:void(0)" class="button button-hero abp01-type-selector" data-action="abp01-typeSelect" data-type="hiking">
+            <svg class="abp01-selector-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <circle cx="13" cy="4" r="2"/><path d="M7 12l3-5 4 3h4M10 7l-1 7 4 3v4M9 14l-3 7M18 10v11"/>
+            </svg>
             <?php echo esc_html__('Hiking', 'abp01-trip-summary'); ?>
         </a>
         <a href="javascript:void(0)" class="button button-hero abp01-type-selector" data-action="abp01-typeSelect" data-type="trainRide">
+            <svg class="abp01-selector-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <rect x="6" y="4" width="12" height="12" rx="3"/><path d="M6 10h12M9 20l-2 2M15 20l2 2"/><circle cx="9" cy="13" r="1"/><circle cx="15" cy="13" r="1"/>
+            </svg>
             <?php echo esc_html__('Train Ride', 'abp01-trip-summary'); ?>
         </a>
         <div class="abp01-clear"></div>
@@ -321,6 +330,9 @@
             <?php echo esc_html__('Upload a GPX or GeoJSON or KML track file', 'abp01-trip-summary'); ?>
         </h3>
         <a id="abp01-track-selector" href="javascript:void(0)" class="button button-hero abp01-track-selector first" data-action="abp01-trackSelect">
+            <svg class="abp01-selector-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="M12 16V3M7 8l5-5 5 5M4 16v4a1 1 0 001 1h14a1 1 0 001-1v-4"/>
+            </svg>
             <?php echo esc_html__('Chose file', 'abp01-trip-summary'); ?>
         </a>
         <div class="abp01-clear"></div>

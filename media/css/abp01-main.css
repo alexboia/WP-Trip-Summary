@@ -160,8 +160,20 @@
 
 .abp01-editor-modal .button.abp01-type-selector,
 .abp01-editor-modal .button.abp01-track-selector {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
 	margin: 0;
 	padding: 12px 20px;
+}
+
+.abp01-editor-modal .abp01-selector-icon {
+	display: block;
+	flex-shrink: 0;
+	width: 20px;
+	height: 20px;
+	pointer-events: none;
 }
 
 .abp01-track-selector {
@@ -359,7 +371,7 @@
 
 #abp01-techbox-editor .select2-container .select2-selection {
 	min-height: 34px;
-	border: 1px solid var(--wpts-border-neutral3);
+	border: 1px solid var(--wpts-border-happy);
 	border-radius: 4px;
 	background: #FCFDFE;
 	color: #12303f;
