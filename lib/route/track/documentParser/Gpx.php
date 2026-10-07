@@ -51,12 +51,12 @@ class Abp01_Route_Track_DocumentParser_Gpx implements Abp01_Route_Track_Document
 		}
 	}
 
-	public static function isSupported() {
+	public static function isSupported(): bool {
 		return function_exists('simplexml_load_string') &&
 			function_exists('simplexml_load_file');
 	}
 
-	public function parse($sourceString) {
+	public function parse(?string $sourceString): ?Abp01_Route_Track_Document {
 		if ($sourceString === null || empty($sourceString)) {
 			throw new InvalidArgumentException('Empty GPX string');
 		}
@@ -89,7 +89,7 @@ class Abp01_Route_Track_DocumentParser_Gpx implements Abp01_Route_Track_Document
 			: null;
 	}
 
-	private function _parseGpx($gpx) {
+	private function _parseGpx(SimpleXMLElement $gpx): Abp01_Route_Track_Document {
 		$meta = $this->_readMetaData($gpx);
 		$document = new Abp01_Route_Track_Document($meta);
 
@@ -99,7 +99,7 @@ class Abp01_Route_Track_DocumentParser_Gpx implements Abp01_Route_Track_Document
 		return $document;
 	}
 
-	private function _readMetaData($gpx) {
+	private function _readMetaData(SimpleXMLElement $gpx): stdClass {
 		$node = $gpx->metadata;
 		$meta = new stdClass();
 
@@ -116,7 +116,7 @@ class Abp01_Route_Track_DocumentParser_Gpx implements Abp01_Route_Track_Document
 		return $meta;
 	}
 
-	private function _parseAndCollectTracks(Abp01_Route_Track_Document $document, $gpx) {
+	private function _parseAndCollectTracks(Abp01_Route_Track_Document $document, SimpleXMLElement $gpx): void {
 		if (empty($gpx->trk)) {
 			return;
 		}
@@ -128,42 +128,35 @@ class Abp01_Route_Track_DocumentParser_Gpx implements Abp01_Route_Track_Document
 		}
 	}
 
-	private function _readTrack($trkNode) {
+	private function _readTrack(SimpleXMLElement $trkNode): Abp01_Route_Track_Part {
 		$name = !empty($trkNode->name) 
 			? (string)$trkNode->name 
 			: null;
 
 		$track = new Abp01_Route_Track_Part($name);
 
-		if (!empty($trkNode->trkseg)) {
-			foreach ($trkNode->trkseg as $trgSegNode) {
-				$trkSeg = $this->_readTrackSegment($trgSegNode);
-				if ($trkSeg) {
-					$track->addLine($trkSeg);
-				}
+		foreach ($trkNode->trkseg as $trgSegNode) {
+			$trkSeg = $this->_readTrackSegment($trgSegNode);
+			if ($trkSeg && !$trkSeg->isEmpty()) {
+				$track->addLine($trkSeg);
 			}
 		}
 
 		return $track;
 	}
 
-	private function _readTrackSegment($trkSegNode) {
+	private function _readTrackSegment(SimpleXMLElement $trkSegNode): Abp01_Route_Track_Line {
 		$segment = new Abp01_Route_Track_Line();
-		if (!empty($trkSegNode->trkpt)) {
-			foreach ($trkSegNode->trkpt as $trkptNode) {
-				$trkpt = $this->_readPoint($trkptNode);
-				if ($trkpt) {
-					$segment->addPoint($trkpt);
-				}
+		foreach ($trkSegNode->trkpt as $trkptNode) {
+			$trkpt = $this->_readPoint($trkptNode);
+			if ($trkpt !== null) {
+				$segment->addPoint($trkpt);
 			}
 		}
 		return $segment;
 	}
 
-	private function _parseAndCollectWayPoints(Abp01_Route_Track_Document $doc, $gpx) {
-		if (empty($gpx->wpt)) {
-			return;
-		}
+	private function _parseAndCollectWayPoints(Abp01_Route_Track_Document $doc, SimpleXMLElement $gpx): void {
 		foreach ($gpx->wpt as $wptNode) {
 			$wpt = $this->_readPoint($wptNode);
 			if ($wpt instanceof Abp01_Route_Track_Point) {
@@ -172,7 +165,7 @@ class Abp01_Route_Track_DocumentParser_Gpx implements Abp01_Route_Track_Document
 		}
 	}
 
-	private function _readPoint($wptNode) {
+	private function _readPoint(SimpleXMLElement $wptNode): ?Abp01_Route_Track_Point {
 		if (empty($wptNode['lat']) || empty($wptNode['lon'])) {
 			return null;
 		}
@@ -194,7 +187,7 @@ class Abp01_Route_Track_DocumentParser_Gpx implements Abp01_Route_Track_Document
 		return $point;
 	}
 
-	public function getDefaultMimeType() {
+	public function getDefaultMimeType(): string {
 		return 'application/gpx';
 	}
 }

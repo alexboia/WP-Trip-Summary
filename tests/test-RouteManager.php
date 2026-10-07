@@ -142,9 +142,9 @@
 		$proj = $this->_getProjSphericalMercator();
 
 		$bounds = $track->getBounds();
-		$minCoord = $proj->forward($bounds->southWest->lat, 
+		$minCoord = $proj->forwardFromWGS84($bounds->southWest->lat, 
 			$bounds->southWest->lng);
-		$maxCoord = $proj->forward($bounds->northEast->lat, 
+		$maxCoord = $proj->forwardFromWGS84($bounds->northEast->lat, 
 			$bounds->northEast->lng);
 
 		$this->_testRouteDataProvider

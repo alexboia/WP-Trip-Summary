@@ -40,7 +40,7 @@ class Abp01_Validate_GpxDocument implements Abp01_Validate_File {
 			throw new InvalidArgumentException('File path may not be empty');
 		}
 
-		if ( ! is_readable( $input ) ) {
+		if (!is_readable($input)) {
 			return false;
 		}
 

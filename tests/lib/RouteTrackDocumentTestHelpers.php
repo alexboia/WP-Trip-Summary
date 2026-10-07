@@ -184,7 +184,7 @@ trait RouteTrackDocumentTestHelpers {
         return $expectedData;
     }
 
-    protected function _areDocumentWayPointsCorrect(Abp01_Route_Track_Document $actualDocument, $expectWaypoints) {
+    protected function _areDocumentWayPointsCorrect(Abp01_Route_Track_Document $actualDocument, array $expectWaypoints) {
         $areWayPointsCorrect = true;
 
         foreach ($expectWaypoints as $expectWaypoint) {
@@ -197,7 +197,7 @@ trait RouteTrackDocumentTestHelpers {
         return $areWayPointsCorrect;
     }
 
-    protected function _areAllTrackPartsCorrect(Abp01_Route_Track_Document $actualDocument, $expectTrackPartsSpec) {
+    protected function _areAllTrackPartsCorrect(Abp01_Route_Track_Document $actualDocument, array $expectTrackPartsSpec) {
         $allTrackPartsCorrect = false;
         $countExpectTrackParts = count($expectTrackPartsSpec);
 

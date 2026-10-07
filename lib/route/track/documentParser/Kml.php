@@ -42,7 +42,7 @@ class Abp01_Route_Track_DocumentParser_Kml implements Abp01_Route_Track_Document
 		}
 	}
 
-    public function parse($sourceString) { 
+    public function parse(?string $sourceString): ?Abp01_Route_Track_Document { 
 		if ($sourceString === null || empty($sourceString)) {
 			throw new InvalidArgumentException('Empty KML string');
 		}
@@ -71,7 +71,7 @@ class Abp01_Route_Track_DocumentParser_Kml implements Abp01_Route_Track_Document
 			function_exists('simplexml_load_file');
 	}
 
-    public function getDefaultMimeType() { 
+    public function getDefaultMimeType(): string { 
 		return 'application/vnd.google-earth.kml+xml';
 	}
 }

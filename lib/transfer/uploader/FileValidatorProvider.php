@@ -68,7 +68,7 @@ class Abp01_Transfer_Uploader_FileValidatorProvider {
 	 * @return Abp01_Validate_File
 	 * @throws InvalidArgumentException 
 	 */
-	public function resolveValidator($mimeType) {
+	public function resolveValidator(?string $mimeType): ?Abp01_Validate_File {
 		if (empty($mimeType)) {
 			throw new InvalidArgumentException('Mime type may not be null');
 		}
@@ -78,11 +78,11 @@ class Abp01_Transfer_Uploader_FileValidatorProvider {
 			: null;
 	}
 
-	public function canResolveValidatorForMimeType($mimeType) {
+	public function canResolveValidatorForMimeType(?string $mimeType): bool {
 		return !empty($mimeType) && isset($this->_validatorRegistrations[$mimeType]);
 	}
 
-	public function getRecognizedDocumentMimeTypes() {
+	public function getRecognizedDocumentMimeTypes(): array {
 		return array_keys($this->_validatorRegistrations);
 	}
 }

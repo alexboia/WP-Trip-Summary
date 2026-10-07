@@ -29,12 +29,13 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
-}
+declare(strict_types = 1);
 
-interface Abp01_Route_Track_DocumentParser {
-    function parse(?string $sourceString): ?Abp01_Route_Track_Document;
+namespace WpTripSummary\Route\Track\Processor {
 
-    function getDefaultMimeType(): string;
+    use WpTripSummary\Exception;
+
+	final class NotValidWGS84CoordinatesFoundException extends Exception {
+		//
+	}
 }

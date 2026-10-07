@@ -30,6 +30,7 @@
  */
 
 use WpTripSummary\Env;
+use WpTripSummary\Route\Track\Processor\NotValidWGS84CoordinatesFoundException;
 
 if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
     exit;
@@ -519,10 +520,15 @@ class Abp01_PluginModules_AdminTripSummaryEditorPluginModule extends Abp01_Plugi
 
 			$currentUserId = get_current_user_id();
 			if ($this->_routeManager->saveRouteTrack($track, $currentUserId)) {
-				$this->_viewerDataSourceCache->clearCachedPostTripSummaryViewerData($postId);						
+				$this->_viewerDataSourceCache->clearCachedPostTripSummaryViewerData($postId);
 			} else {
 				$status = Abp01_Transfer_Uploader::UPLOAD_INTERNAL_ERROR;
 			}
+		} catch (NotValidWGS84CoordinatesFoundException $exc) {
+			$status = Abp01_Transfer_Uploader::UPLOAD_DESTINATION_FILE_NOT_WGS84;
+			$this->_logger->exception($exc->getMessage(), $exc, array(
+				'postId' => $postId
+			));
 		} catch (Abp01_Route_Track_DocumentParser_Exception $exc) {
 			$status = Abp01_Transfer_Uploader::UPLOAD_DESTINATION_FILE_CORRUPT;
 			$this->_logger->exception($exc->getMessage(), $exc, array(

@@ -83,7 +83,7 @@ class Abp01_Route_Track_DocumentParser_GeoJson implements Abp01_Route_Track_Docu
 		return $sourceString;
 	}
 
-	public function parse($sourceString) { 
+	public function parse(?string $sourceString): ?Abp01_Route_Track_Document { 
 		if ($sourceString === null || empty($sourceString)) {
 			throw new InvalidArgumentException('Empty GeoJson string');
 		}
@@ -599,7 +599,7 @@ class Abp01_Route_Track_DocumentParser_GeoJson implements Abp01_Route_Track_Docu
 			: array();
 	}
 
-	public function getDefaultMimeType() {
+	public function getDefaultMimeType(): string {
 		return 'application/geo+json';
 	}
 }

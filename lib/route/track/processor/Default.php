@@ -30,6 +30,8 @@
  */
 
 use WpTripSummary\Env;
+use WpTripSummary\Route\Track\Processor\NotValidWGS84CoordinatesFoundException;
+use WpTripSummary\Route\WGS84;
 
 if (!defined('ABP01_LOADED')) {
 	exit;
@@ -84,13 +86,16 @@ class Abp01_Route_Track_Processor_Default implements Abp01_Route_Track_Processor
 			throw new InvalidArgumentException('Track file mime type may not be empty');
 		}
 
-		$originalTrackDocument = $this->_getOriginalTrackDocument($postId);
-		if (!$originalTrackDocument) {
-			$originalTrackDocument = $this->_processTrackSourceFile($trackFilePath, 
-				$trackFileMimeType);
-			$this->_storeOriginalTrackDocument($postId, 
-				$originalTrackDocument);
+		$originalTrackDocument = $this->_processTrackSourceFile($trackFilePath, 
+			$trackFileMimeType);
+
+		$wgs84 = new WGS84();
+		if (!$wgs84->isValidWgs84Document($originalTrackDocument)) {
+			throw new NotValidWGS84CoordinatesFoundException('Invalid coordinates found');
 		}
+
+		$this->_storeOriginalTrackDocument($postId, 
+			$originalTrackDocument);
 
 		$trackFileName = basename($trackFilePath);
 		$trackFileMimeType = $this->_standardizeTrackFileMimeType($trackFileMimeType);

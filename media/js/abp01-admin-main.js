@@ -1314,6 +1314,10 @@
 			? arguments[0]
 			: null;
 
+		if (openWithTab && openWithTab.charAt(0) != '#') {
+			openWithTab = '#' + openWithTab;
+		}
+
 		$.blockUI({
 			message: $ctrlEditor,
 			blockMsgClass: 'abp01-editor-modal',
@@ -1334,7 +1338,7 @@
 
 				//First time we open the editor, set everything up
 				if (editorWindowState.firstTime) {
-					initTabs();
+					initTabs(openWithTab);
 					editorWindowState.firstTime = false;
 				} else {
 					//Otherwise, if map is not null AND is visible,
@@ -1408,7 +1412,7 @@
 	 * Editor tabs management functions
 	 * */
 
-	function initTabs() {
+	function initTabs(openWithTab) {
 		tabHandlers['abp01-form-info'] = showRouteInfoForm;
 		tabHandlers['abp01-form-map'] = showRouteTrackForm;
 
@@ -1416,7 +1420,9 @@
 			animate: false,
 			tabActiveClass: 'abp01-tab-active',
 			panelActiveClass: 'abp01-tabContentActive',
-			defaultTab: '#abp01-tab-info',
+			defaultTab: openWithTab == '#abp01-form-map'
+				? '#abp01-tab-map'
+				: '#abp01-tab-info',
 			updateHash: false
 		});
 
@@ -1424,7 +1430,14 @@
 			processTabSelected($target);
 		});
 
-		processTabSelected($('#abp01-form-info'));
+		//Keep the info fields ready for saving, even when opening directly on the map.
+		processTabSelected($ctrlFormInfoContainer);
+
+		//EasyTabs has already selected its initial panel before the after handler is bound.
+		var $activePanel = $ctrlEditorTabs.find('.abp01-tabContentActive');
+		if (!$activePanel.is($ctrlFormInfoContainer)) {
+			processTabSelected($activePanel);
+		}
 	}
 
 	function processTabSelected($target) {

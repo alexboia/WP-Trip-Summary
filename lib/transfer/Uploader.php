@@ -115,6 +115,12 @@ class Abp01_Transfer_Uploader {
 	const UPLOAD_DESTINATION_FILE_CORRUPT = 10;
 
 	/**
+	 * Uploaded file had coordinates outside of expected valid WGS84 ranges
+	 * @var int
+	 */
+	const UPLOAD_DESTINATION_FILE_NOT_WGS84 = 11;
+
+	/**
 	 * The destination file path where the uploaded file is stored
 	 * 
 	 * @var string

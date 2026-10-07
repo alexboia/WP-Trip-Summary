@@ -54,6 +54,7 @@
 			<file>tests/test-RouteTrackPart.php</file>
 			<file>tests/test-RouteTrackPoint.php</file>
 			<file>tests/test-RouteTrackProcessor.php</file>
+			<file>tests/test-RouteWGS84.php</file>
 		</testsuite>
 		<testsuite name="documents">
 			<file>tests/test-DocumentParserFactory.php</file>

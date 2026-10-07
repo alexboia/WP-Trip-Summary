@@ -198,8 +198,8 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 		$sw = $bounds->southWest;
 		$ne = $bounds->northEast;
 
-		$minCoord = array_values($proj->forward($sw->lat, $sw->lng));
-		$maxCoord = array_values($proj->forward($ne->lat, $ne->lng));
+		$minCoord = array_values($proj->forwardFromWGS84($sw->lat, $sw->lng));
+		$maxCoord = array_values($proj->forwardFromWGS84($ne->lat, $ne->lng));
 		$lineBetween = array($minCoord[0], $minCoord[1],
 			$maxCoord[0],
 			$maxCoord[1]);
@@ -314,9 +314,9 @@ class Abp01_Route_Manager_Default implements Abp01_Route_Manager {
 			$fileName = $row['route_track_file'];
 			$fileMimeType = $row['route_track_file_mime_type'];
 
-			$minCoord = $proj->inverse(floatval($row['route_min_lng']), 
+			$minCoord = $proj->inverseToWGS84(floatval($row['route_min_lng']), 
 				floatval($row['route_min_lat']));
-			$maxCoord = $proj->inverse(floatval($row['route_max_lng']), 
+			$maxCoord = $proj->inverseToWGS84(floatval($row['route_max_lng']), 
 				floatval($row['route_max_lat']));
 
 			$bounds = new Abp01_Route_Track_Bbox($minCoord['lat'],

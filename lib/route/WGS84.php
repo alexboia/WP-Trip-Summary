@@ -29,12 +29,59 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if (!defined('ABP01_LOADED') || !ABP01_LOADED) {
-    exit;
-}
+declare(strict_types=1);
 
-interface Abp01_Route_Track_DocumentParser {
-    function parse(?string $sourceString): ?Abp01_Route_Track_Document;
+namespace WpTripSummary\Route {
 
-    function getDefaultMimeType(): string;
+    use Abp01_Route_Track;
+    use Abp01_Route_Track_Document;
+    use Abp01_Route_Track_Point;
+
+	class WGS84 {
+		public function isValidWgs84Lat(float $lat): bool {
+			return $lat >= -90 && $lat <= 90;
+		}
+
+		public function isValidWgs84Lng(float $lng): bool {
+			return $lng >= -180 && $lng <= 180;
+		}
+
+		public function isValidWgs84Document(Abp01_Route_Track_Document $document): bool {
+			if ($document->parts !== null) {
+				foreach ($document->parts as $part) {
+					if ($part->lines === null) {
+						continue;
+					}
+
+					foreach ($part->lines as $line) {
+						if ($line->trackPoints === null) {
+							continue;
+						}
+
+						foreach ($line->trackPoints as $point) {
+							if (!$this->isvalidWgs84Point($point)) {
+								return false;
+							}
+						}
+					}
+				}
+			}
+
+			if ($document->waypoints !== null) {
+				foreach ($document->waypoints as $wpt) {
+					if (!$this->isvalidWgs84Point($wpt)) {
+						return false;
+					}
+				}
+			}
+
+			return true;
+		}
+
+		public function isvalidWgs84Point(Abp01_Route_Track_Point $point): bool {
+			return $point->coordinate != null 
+				&& $this->isValidWgs84Lat($point->coordinate->lat)
+				&& $this->isValidWgs84Lng($point->coordinate->lng);
+		}
+	}
 }

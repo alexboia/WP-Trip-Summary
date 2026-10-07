@@ -30,11 +30,11 @@
  */
 
 class MockDocumentParser implements Abp01_Route_Track_DocumentParser {
-    public function parse($sourceString) { 
+    public function parse(?string $sourceString):?Abp01_Route_Track_Document { 
 		return null;
 	}
 
-	public function getDefaultMimeType() {
-		return null;
+	public function getDefaultMimeType(): string {
+		return "";
 	}
 }

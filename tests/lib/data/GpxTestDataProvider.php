@@ -230,6 +230,22 @@ class GpxTestDataProvider {
 			'test2-strava-utf8-wo-bom.gpx' => array(
 				'expect' => 'test2-strava-utf8-bom.gpx'
 			),
+			'mtb sangeru day 1.gpx' => array(
+				'expect' => array(
+					'document' => true,
+					'metadata' => array(
+						'name' => 'mtb sangeru day 1',
+						'desc' => null,
+						'keywords' => null
+					),
+					'trackParts' => array(
+						array(
+							'name' => 'mtb sangeru day 1',
+							'trackLines' => self::_getMtbSangeruTrackLinesSpec()
+						)
+					)
+				)
+			),
 			'test4-empty-utf8-bom.gpx' => array(
 				'expect' => array(
 					'document' => true,
@@ -264,6 +280,36 @@ class GpxTestDataProvider {
 				'expect' => 'test5-empty-wmeta-wtrkroot-utf8-bom.gpx'
 			)
 		), $randomGpxFilesTestInfo);
+	}
+
+	private static function _getMtbSangeruTrackLinesSpec() {
+		//All 91 segments contain points with coordinates only (no elevation or other children).
+		$pointCounts = array(
+			56, 23, 22, 16, 2, 2, 2, 2, 2, 2,
+			2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+			2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+			2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+			2, 2, 2, 2, 2, 2, 15, 37, 25, 45,
+			28, 14, 22, 24, 24, 32, 39, 51, 5, 12,
+			14, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+			2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+			2, 2, 2, 2, 2, 2, 2, 15, 20, 54,
+			88
+		);
+		$lines = array_map(function($count) {
+			return array('trackPointsCount' => $count);
+		}, $pointCounts);
+
+		$lines[0]['sampleTrackPoints'] = array(
+			array('lat' => 44.926790000000004, 'lon' => 26.029470000000003, 'ele' => 0),
+			array('lat' => 44.95411000000001, 'lon' => 26.0471, 'ele' => 0)
+		);
+		$lines[90]['sampleTrackPoints'] = array(
+			array('lat' => 45.12716, 'lon' => 26.25468, 'ele' => 0),
+			array('lat' => 45.12368, 'lon' => 26.34549, 'ele' => 0)
+		);
+
+		return $lines;
 	}
 
 	public static function getInvalidTestFilesSpec() {

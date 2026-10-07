@@ -38,27 +38,27 @@ class RouteSphericalMercator extends WP_UnitTestCase {
     public function test_forwardProjection_specificCoords() {
         $merc = $this->_getProjSphericalMercator();
 
-        $merc_45_45 = $merc->forward(45, 45);
+        $merc_45_45 = $merc->forwardFromWGS84(45, 45);
         $this->assertEqualsWithDelta(5009377.09, $merc_45_45['mercX'],  0.05);
         $this->assertEqualsWithDelta(5621521.49, $merc_45_45['mercY'], 0.05);
 
-        $merc_0_0 = $merc->forward(0, 0);
+        $merc_0_0 = $merc->forwardFromWGS84(0, 0);
         $this->assertEqualsWithDelta(0.00, $merc_0_0['mercX'], 0.05);
         $this->assertEqualsWithDelta(0.00, $merc_0_0['mercY'], 0.05);
 
-        $merc_85_180 = $merc->forward(85, 180);
+        $merc_85_180 = $merc->forwardFromWGS84(85, 180);
         $this->assertEqualsWithDelta(20037508.34, $merc_85_180['mercX'], 0.05);
         $this->assertEqualsWithDelta(19971868.88, $merc_85_180['mercY'], 0.05);
 
-        $merc_85_180_neg = $merc->forward(-85, -180);
+        $merc_85_180_neg = $merc->forwardFromWGS84(-85, -180);
         $this->assertEqualsWithDelta(-20037508.34, $merc_85_180_neg['mercX'], 0.05);
         $this->assertEqualsWithDelta(-19971868.88, $merc_85_180_neg['mercY'], 0.05);
 
-        $merc_bucharest = $merc->forward(44.426165, 26.1023329);
+        $merc_bucharest = $merc->forwardFromWGS84(44.426165, 26.1023329);
         $this->assertEqualsWithDelta(2905698.41, $merc_bucharest['mercX'], 0.05);
         $this->assertEqualsWithDelta(5531630.80, $merc_bucharest['mercY'], 0.05);
 
-        $merc_gw = $merc->forward(51.4825766, -0.0076589);
+        $merc_gw = $merc->forwardFromWGS84(51.4825766, -0.0076589);
         $this->assertEqualsWithDelta(-852.58, $merc_gw['mercX'], 0.05);
         $this->assertEqualsWithDelta(6707103.99, $merc_gw['mercY'], 0.05);
     }
@@ -66,27 +66,27 @@ class RouteSphericalMercator extends WP_UnitTestCase {
     public function test_reverseProjection_specificCoords() {
         $merc = $this->_getProjSphericalMercator();
 
-        $inv_45_45 = $merc->inverse(5009377.09, 5621521.49);
+        $inv_45_45 = $merc->inverseToWGS84(5009377.09, 5621521.49);
         $this->assertEqualsWithDelta(45, $inv_45_45['lat'],  0.01);
         $this->assertEqualsWithDelta(45, $inv_45_45['lng'],  0.01);
 
-        $inv_0_0 = $merc->inverse(0.00, 0.00);
+        $inv_0_0 = $merc->inverseToWGS84(0.00, 0.00);
         $this->assertEqualsWithDelta(0.00, $inv_0_0['lat'], 0.01);
         $this->assertEqualsWithDelta(0.00, $inv_0_0['lng'], 0.01);
 
-        $inv_85_180 = $merc->inverse(20037508.34, 19971868.88);
+        $inv_85_180 = $merc->inverseToWGS84(20037508.34, 19971868.88);
         $this->assertEqualsWithDelta(85, $inv_85_180['lat'], 0.05);
         $this->assertEqualsWithDelta(180, $inv_85_180['lng'], 0.05);
 
-        $inv_85_180_neg = $merc->inverse(-20037508.34, -19971868.88);
+        $inv_85_180_neg = $merc->inverseToWGS84(-20037508.34, -19971868.88);
         $this->assertEqualsWithDelta(-85, $inv_85_180_neg['lat'], 0.05);
         $this->assertEqualsWithDelta(-180, $inv_85_180_neg['lng'], 0.05);
 
-        $inv_bucharest = $merc->inverse(2905698.41, 5531630.80);
+        $inv_bucharest = $merc->inverseToWGS84(2905698.41, 5531630.80);
         $this->assertEqualsWithDelta(44.426165, $inv_bucharest['lat'], 0.05);
         $this->assertEqualsWithDelta(26.1023329, $inv_bucharest['lng'], 0.05);
 
-        $inv_gw = $merc->inverse(-852.58, 6707103.99);
+        $inv_gw = $merc->inverseToWGS84(-852.58, 6707103.99);
         $this->assertEqualsWithDelta(51.4825766, $inv_gw['lat'], 0.05);
         $this->assertEqualsWithDelta(-0.0076589, $inv_gw['lng'], 0.05);
     }
@@ -96,8 +96,8 @@ class RouteSphericalMercator extends WP_UnitTestCase {
         
         for ($lng = -180; $lng <= 180; $lng++) {
             for ($lat = -85; $lat <= 85; $lat ++) {
-                $mercVal = $merc->forward($lat, $lng);
-                $invVal = $merc->inverse($mercVal['mercX'], $mercVal['mercY']);
+                $mercVal = $merc->forwardFromWGS84($lat, $lng);
+                $invVal = $merc->inverseToWGS84($mercVal['mercX'], $mercVal['mercY']);
                 $this->assertEqualsWithDelta($lng, $invVal['lng'], 0.05);
                 $this->assertEqualsWithDelta($lat, $invVal['lat'], 0.05);
             }
