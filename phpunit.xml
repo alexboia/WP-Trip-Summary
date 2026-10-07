@@ -117,5 +117,8 @@
 			<file>tests/test-NginxAccessDirectives.php</file>
 			<file>tests/test-SimpleFileDownloader.php</file>
 		</testsuite>
+		<testsuite name="sec">
+			<file>tests/test-LeafletWrapper.php</file>
+		</testsuite>
 	</testsuites>
 </phpunit>

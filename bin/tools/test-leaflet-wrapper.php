@@ -295,7 +295,7 @@ function wpts_leaflet_normalize_new_lines(string $source): string {
 }
 
 function wpts_leaflet_test_script_content(string $body, string $source): void {
-	$expected = wpts_leaflet_test_expected_script($source);
+	$expected = wpts_leaflet_normalize_new_lines(wpts_leaflet_test_expected_script($source));
 	$actual = wpts_leaflet_normalize_new_lines($body);
 
 	wpts_leaflet_test_expect(

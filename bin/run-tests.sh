@@ -22,7 +22,8 @@ Test sets:
   ui            Admin actions, columns, menus, views and frontend themes.
   logging       Audit, system and route logs.
   io            Files, downloads, maintenance and server directives.
-  leaflet		Run the leaflet wrapper tests
+  sec			Security related tests.
+  leaflet		Run the leaflet wrapper tests.
 
 Examples:
   bash bin/run-tests.sh --set=routes
@@ -81,7 +82,7 @@ case "$WPTS_TEST_SET" in
 	all|default)
 		WPTS_TEST_SET=default
 		;;
-	core|auth|validation|routes|documents|installer|modules|ui|logging|io)
+	core|auth|validation|routes|documents|installer|modules|ui|logging|io|sec)
 		;;
 	leaflet)
 		if [[ -z "${WPTS_TEST_HOST-}" ]]; then

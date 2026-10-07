@@ -165,31 +165,51 @@ function wpts_wrapper_get_plugin_absolute_base_path(): string {
 }
 
 function wpts_wrapper_expand_to_disk_path(string $relativeUrlPath): ?string {
-    $relativeUrlPath = ltrim($relativeUrlPath, '/');
-    $pluginBaseUrl = ltrim(wpts_wrapper_get_plugin_relative_base_url(), '/');
+	if (str_contains($relativeUrlPath, "\0")) {
+		return null;
+	}
 
-    $relativeUrlPath = str_replace($pluginBaseUrl, 
-        '', 
-        $relativeUrlPath);
+	$relativeUrlPath = ltrim($relativeUrlPath, '/');
+	$pluginBaseUrl = ltrim(wpts_wrapper_get_plugin_relative_base_url(), '/');
 
-    $relativePath = trim($relativeUrlPath);
-    $relativePath = ltrim($relativePath, '.');
-    $relativePath = ltrim($relativePath, '/');
-    $relativePath = trim($relativePath);
-    $relativePath = './' . $relativePath;
-    
-    $realPath = realpath($relativePath);
+	$relativeUrlPath = str_replace($pluginBaseUrl,
+		'',
+		$relativeUrlPath);
 
-    if ($realPath !== false) {
-        if (is_dir($realPath)) {
-            $realPath = rtrim($realPath, DIRECTORY_SEPARATOR) 
-                . DIRECTORY_SEPARATOR;
-        }
-    } else {
-        $realPath = null;
-    }
+	$relativePath = trim($relativeUrlPath);
+	$relativePath = ltrim($relativePath, '.');
+	$relativePath = ltrim($relativePath, '/');
+	$relativePath = trim($relativePath);
+	$candidatePath = __DIR__ . '/' . $relativePath;
 
-    return $realPath;
+	$visitedPaths = array();
+	$maxResolutionSteps = 32;
+
+	// On Windows, one realpath() call can leave another junction unresolved.
+	// Resolve each returned path again; containment is checked by the caller.
+	for ($step = 0; $step < $maxResolutionSteps; $step++) {
+		if (isset($visitedPaths[$candidatePath])) {
+			return null;
+		}
+		$visitedPaths[$candidatePath] = true;
+
+		clearstatcache(true, $candidatePath);
+		$realPath = realpath($candidatePath);
+		if ($realPath === false) {
+			return null;
+		}
+
+		if ($realPath === $candidatePath) {
+			return is_dir($realPath)
+				? rtrim($realPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR
+				: $realPath;
+		}
+
+		$candidatePath = $realPath;
+	}
+
+	// Fail closed if the chain cannot be fully resolved within the bound.
+	return null;
 }
 
 function wpts_wrapper_get_script_etag(): string {
