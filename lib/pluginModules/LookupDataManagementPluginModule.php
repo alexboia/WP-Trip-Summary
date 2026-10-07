@@ -237,7 +237,7 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 			: null;
 	}
 
-	private function _isLanguageCodeSupported(string $langCode, array $availableLookupLanguages): bool {
+	private function _isLanguageCodeSupported(?string $langCode, array $availableLookupLanguages): bool {
 		return !empty($langCode) && array_key_exists($langCode, $availableLookupLanguages);
 	}
 
@@ -260,8 +260,8 @@ class Abp01_PluginModules_LookupDataManagementPluginModule extends Abp01_PluginM
 			: null;
 	}
 
-	private function _isLookupCategorySupported(string $category, array $availableCategories): bool {
-		return array_key_exists($category, $availableCategories);
+	private function _isLookupCategorySupported(?string $category, array $availableCategories): bool {
+		return !empty($category) && array_key_exists($category, $availableCategories);
 	}
 
 	private function _getDefaultSelectedLookupCategory(array $availableCategories): string|bool|null {
