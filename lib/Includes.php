@@ -760,7 +760,7 @@ class Abp01_Includes {
 		)
 	);
 
-	private static $_styleSlugsForThemeIds = array();
+	private static array $_styleSlugsForThemeIds = array();
 
 	public static function configure(string $refPluginsPath, bool $scriptsInFooter) {
 		$includesManager = new Abp01_Includes_Manager(self::$_scripts, 
