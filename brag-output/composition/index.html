@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ro"><head><meta charset="UTF-8"><meta name="viewport" content="width=1920, height=1080"><title>WP Trip Summary — Povești cu traseu</title>
+<script src="assets/vendor/gsap.min.js"></script><script src="assets/music/audio-data.js"></script>
+<style>@font-face{font-family:'Space Grotesk';font-style:normal;font-weight:700;src:url('assets/fonts/space-grotesk-latin-700-normal.woff2') format('woff2');}
+@font-face{font-family:'Space Grotesk';font-style:normal;font-weight:700;src:url('assets/fonts/space-grotesk-latin-ext-700-normal.woff2') format('woff2');unicode-range:U+0100-02FF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;src:url('assets/fonts/ibm-plex-sans-latin-400-normal.woff2') format('woff2');}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;src:url('assets/fonts/ibm-plex-sans-latin-ext-400-normal.woff2') format('woff2');unicode-range:U+0100-02FF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+
+*{box-sizing:border-box} html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0A3868}
+body{font-family:'IBM Plex Sans',sans-serif;color:#FFFFFF}
+#root{position:relative;width:100%;height:100%;overflow:hidden} #backdrop{position:absolute;inset:0;background:#0A3868}
+#contours{position:absolute;inset:0;width:1920px;height:1080px;opacity:.28}
+#top-line{position:absolute;top:136px;left:88px;right:88px;height:1px;background:#547B9F}
+#brand{position:absolute;top:56px;left:88px;height:56px;display:flex;align-items:center;gap:20px;z-index:20}
+#brand img{width:56px;height:56px} #brand span{font-family:'Space Grotesk',sans-serif;font-size:30px;font-weight:700}
+#edition{position:absolute;top:73px;right:88px;font-size:24px;color:#D2E9EF;letter-spacing:3px}
+#footer{position:absolute;left:88px;bottom:49px;font-size:23px;color:#D2E9EF;letter-spacing:1px}
+#progress-rail{position:absolute;left:88px;bottom:25px;right:88px;height:3px;background:#365E83}
+#progress{height:3px;background:#8CF5D9;transform-origin:left}
+.clip,.scene-inner{position:absolute;inset:0}
+.kicker{font-size:24px;letter-spacing:4px;color:#8CF5D9;margin:0 0 35px}
+.copy{position:absolute;left:88px;top:265px;width:810px}
+.headline{margin:0;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:112px;letter-spacing:-5px;line-height:1.06}
+.line{display:block;width:100%;padding-bottom:6px}.mint{color:#8CF5D9}
+.caption{margin:35px 0 0;font-size:34px;line-height:1.35;color:#D2E9EF}
+.folio{position:absolute;right:88px;bottom:50px;font-size:24px;color:#D2E9EF}
+.paper{background:#FCFDFE;color:#12303F;border:2px solid #C7DDE6;border-radius:20px;overflow:hidden;box-shadow:0 30px 80px #06284C}
+.paper-head{height:78px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-size:27px;font-family:'Space Grotesk',sans-serif;font-weight:700;background:#FCFDFE}
+.paper-head small{font-family:'IBM Plex Sans',sans-serif;font-size:21px;font-weight:400;color:#435D70}
+.map-crop{position:relative;overflow:hidden;width:846px;height:526px;background:#C9DABD}
+.map-crop img{position:absolute;width:877px;height:auto;left:-16px;top:-108px}
+.map-crop,.graph-crop{isolation:isolate}
+.map-foot{display:flex;height:82px;padding:0 28px;align-items:center;gap:14px;font-size:24px;color:#12303F}
+.dot{width:12px;height:12px;border-radius:50%;background:#1793A3}
+.map-panel{position:absolute;left:974px;top:228px;width:850px}
+#hook .copy{top:290px;width:845px} #hook .headline{font-size:105px} #hook .caption{width:660px}
+#hook-route{position:absolute;left:105px;top:792px;width:735px;height:136px}
+#editor{position:absolute;left:974px;top:226px;width:850px;height:690px}
+.editor-title{height:80px;display:flex;align-items:center;padding:0 30px;background:#FCFDFE;font-family:'Space Grotesk',sans-serif;font-size:26px}
+.tabs{display:flex;height:64px;background:#F4F8FA;border-top:1px solid #D6E3EA;border-bottom:1px solid #D6E3EA}
+.tab{width:50%;text-align:center;padding-top:15px;font-size:24px;color:#435D70}
+.tab.active{color:#0A3868;background:#E5F4F3;border-bottom:4px solid #1793A3}
+#upload-pane{position:absolute;left:0;right:0;top:145px;bottom:0;display:flex;align-items:center;flex-direction:column;background:#FCFDFE;padding-top:69px}
+#upload-icon{width:66px;height:66px;margin-bottom:28px;color:#0A3868} #upload-icon svg{width:100%;height:100%}
+.upload-heading{font-size:30px;margin:0 0 30px}
+#choose-button{display:flex;align-items:center;justify-content:center;width:270px;height:72px;background:#0A3868;color:#FFFFFF;border-radius:9px;font-size:27px}
+#chosen-file{margin-top:31px;font-size:25px;color:#12303F}
+#load-bar{position:absolute;bottom:61px;left:160px;width:530px;height:7px;background:#1793A3;transform-origin:left;border-radius:4px}
+#editor-map{position:absolute;left:0;right:0;top:145px}
+#cursor{position:absolute;left:501px;top:478px;width:42px;height:56px;z-index:5}
+#map-result{top:239px}
+#profile-scene .copy{top:222px} #profile-scene .headline{font-size:90px}
+#graph-panel{position:absolute;top:500px;left:88px;width:808px;height:458px;border-radius:16px}
+#graph-panel .paper-head{height:58px;padding:0 24px;font-size:25px}
+.graph-crop{position:relative;overflow:hidden;width:804px;height:396px;background:#FFFFFF}
+.graph-crop img{position:absolute;width:835px;height:auto;left:-16px;top:-614px}
+#graph-reveal{width:804px;height:396px}
+#summary-panel{position:absolute;left:974px;top:226px;width:850px;height:698px}
+.summary-title{height:104px;background:#0A3868;color:#FFFFFF;display:flex;padding:0 30px;align-items:center;gap:20px}
+.summary-title svg{width:42px;height:42px;color:#8CF5D9}
+.summary-title strong{font-family:'Space Grotesk',sans-serif;font-size:30px}
+.summary-title span{margin-left:auto;font-size:23px;color:#8CF5D9}
+#summary-rows{margin:10px 28px 0}
+.summary-row{min-height:110px;display:flex;align-items:center;border-bottom:1px solid #D6E3EA}
+.row-icon{width:64px;height:64px;border-radius:13px;color:#0A3868;background:#E5F4F3;display:flex;align-items:center;justify-content:center;margin-right:22px}
+.row-icon svg{width:32px;height:32px}
+.row-label{font-size:24px;width:285px;color:#435D70}
+.row-value{font-family:'Space Grotesk',sans-serif;font-size:34px;font-weight:700;color:#0A3868;margin-left:auto}
+#demo-note{padding:22px 28px 0;font-size:22px;color:#435D70}
+#details .copy{top:270px}
+#trip-types{position:absolute;left:88px;top:710px;display:flex;flex-direction:column;gap:19px;font-size:32px;color:#D2E9EF}
+#trip-types span{display:flex;align-items:center;gap:18px} #trip-types svg{width:32px;height:32px;color:#8CF5D9}
+#outro-lockup{position:absolute;inset:205px 88px 180px;display:flex;align-items:center;gap:72px}
+#outro-logo{width:290px;height:290px} #outro-copy{flex:1}
+#outro-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:104px;letter-spacing:-5px;line-height:1.1;margin:0}
+#outro-tag{font-family:'Space Grotesk',sans-serif;font-size:67px;color:#8CF5D9;margin:23px 0 42px}
+#outro-url{font-size:31px;color:#FFFFFF;margin:0}
+#outro-rule{height:3px;width:220px;background:#8CF5D9;margin-bottom:30px;transform-origin:left}
+</style></head><body>
+<div data-hf-id="hf-qzz6" id="root" data-composition-id="wpts-brag" data-width="1920" data-height="1080" data-duration="22" data-fps="30">
+<div data-hf-id="hf-mwvj" id="backdrop"></div><svg data-hf-id="hf-f8x4" id="contours" viewBox="0 0 1920 1080" fill="none" stroke="#6096AE" stroke-width="2" aria-hidden="true" data-layout-ignore=""><path data-hf-id="hf-rv8m" d="M1130 -80C870 100 1420 285 1280 490S1090 870 1470 1180" /><path data-hf-id="hf-9rc4" d="M1210 -80C950 100 1500 285 1360 490S1170 870 1550 1180" /><path data-hf-id="hf-esqv" d="M1290 -80C1030 100 1580 285 1440 490S1250 870 1630 1180" /><path data-hf-id="hf-ldbf" d="M1370 -80C1110 100 1660 285 1520 490S1330 870 1710 1180" /><path data-hf-id="hf-da5n" d="M1450 -80C1190 100 1740 285 1600 490S1410 870 1790 1180" /><path data-hf-id="hf-18ph" d="M1530 -80C1270 100 1820 285 1680 490S1490 870 1870 1180" /><path data-hf-id="hf-nm85" d="M1610 -80C1350 100 1900 285 1760 490S1570 870 1950 1180" /></svg>
+<div data-hf-id="hf-nv54" id="brand"><img data-hf-id="hf-o8qr" src="assets/images/logo.png" alt=""><span data-hf-id="hf-takd">WP Trip Summary</span></div><div data-hf-id="hf-dbn6" id="edition">PENTRU WORDPRESS</div><div data-hf-id="hf-z6dt" id="top-line"></div>
+<div data-hf-id="hf-8e97" id="footer">POVEȘTI CU TRASEU</div><div data-hf-id="hf-0n0t" id="progress-rail"><div data-hf-id="hf-o6ww" id="progress"></div></div>
+<section data-hf-id="hf-60lb" id="hook" class="clip" data-start="0" data-duration="3.27" data-track-index="0"><div data-hf-id="hf-97sb" class="scene-inner"><div data-hf-id="hf-bdx3" class="copy"><p data-hf-id="hf-7jg2" class="kicker">DIN JURNALUL TĂU DE CĂLĂTORIE</p><h2 data-hf-id="hf-t43f" class="headline"><span data-hf-id="hf-9iqw" class="line">Ai povestea.</span><span data-hf-id="hf-1917" class="line mint">Pune și traseul.</span></h2><p data-hf-id="hf-5ecc" class="caption">Turele tale, pe blogul tău.</p></div><div data-hf-id="hf-ksza" id="hero-map" class="paper map-panel"><div data-hf-id="hf-91hk" class="paper-head">Hartă &amp; Track GPS<small data-hf-id="hf-am7q">WP Trip Summary</small></div><div data-hf-id="hf-j4tl" class="map-crop"><img data-hf-id="hf-fv6c" data-layout-allow-overflow="" src="assets/images/map-profile.png" alt="Hartă GPS din WP Trip Summary"></div><div data-hf-id="hf-suvb" class="map-foot"><span data-hf-id="hf-9gry" class="dot"></span>Traseul face parte din poveste.</div></div><svg data-hf-id="hf-0vrr" id="hook-route" viewBox="0 0 735 136" fill="none" aria-hidden="true" data-layout-ignore=""><path data-hf-id="hf-nqrl" id="route-draw" d="M15 104C100 104 76 20 160 20S228 121 340 100S424 20 512 30S597 117 705 30" stroke="#8CF5D9" stroke-width="4" stroke-linecap="round" /><circle data-hf-id="hf-f3of" cx="15" cy="104" r="8" fill="#8CF5D9" /><circle data-hf-id="hf-sb8c" cx="705" cy="30" r="12" fill="#0A3868" stroke="#8CF5D9" stroke-width="4" /></svg><div data-hf-id="hf-kg9o" class="folio">01 / 05</div></div></section>
+<section data-hf-id="hf-ih9g" id="import-scene" class="clip" data-start="3.27" data-duration="5.47" data-track-index="0"><div data-hf-id="hf-skgb" class="scene-inner"><div data-hf-id="hf-r8s7" class="copy"><p data-hf-id="hf-oo4e" class="kicker">ADAUGĂ TRASEUL</p><h2 data-hf-id="hf-abaz" class="headline"><span data-hf-id="hf-bs5q" class="line">Din fișier,</span><span data-hf-id="hf-e0rm" class="line mint">pe hartă.</span></h2><p data-hf-id="hf-clz3" class="caption">GPX · GeoJSON · KML</p></div><div data-hf-id="hf-yjt3" id="editor" class="paper"><div data-hf-id="hf-mrp6" class="editor-title">Modifică sumarul turei</div><div data-hf-id="hf-5rmk" class="tabs"><div data-hf-id="hf-zcti" class="tab">Informații</div><div data-hf-id="hf-2jkc" class="tab active">Hartă &amp; Track GPS</div></div><div data-hf-id="hf-pnk1" id="upload-pane"><div data-hf-id="hf-syuo" id="upload-icon"><svg data-hf-id="hf-m6vp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path data-hf-id="hf-b2we" d="M12 16V3M7 8l5-5 5 5M4 16v4a1 1 0 001 1h14a1 1 0 001-1v-4" /></svg></div><p data-hf-id="hf-tmky" class="upload-heading">Încarcă un fișier GPS</p><div data-hf-id="hf-7gm2" id="choose-button">Alege fișierul</div><div data-hf-id="hf-ud1l" id="chosen-file">traseu-demo.gpx</div><div data-hf-id="hf-sal1" id="load-bar"></div></div><div data-hf-id="hf-386b" id="editor-map"><div data-hf-id="hf-ojz1" class="map-crop"><img data-hf-id="hf-rkq4" data-layout-allow-overflow="" src="assets/images/map-profile.png" alt="Hartă GPS din WP Trip Summary"></div></div><svg data-hf-id="hf-4hma" id="cursor" viewBox="0 0 40 54" aria-hidden="true" data-layout-ignore=""><path data-hf-id="hf-q99y" d="M3 2L3 39L13 29L23 50L31 46L21 26L36 25Z" fill="#FFFFFF" stroke="#12303F" stroke-width="3" /></svg></div><div data-hf-id="hf-q8uv" class="folio">02 / 05</div></div></section>
+<section data-hf-id="hf-6fls" id="profile-scene" class="clip" data-start="8.74" data-duration="4.9" data-track-index="0"><div data-hf-id="hf-s65a" class="scene-inner"><div data-hf-id="hf-quh6" class="copy"><p data-hf-id="hf-bve0" class="kicker">HARTĂ ȘI PROFIL DE ALTITUDINE</p><h2 data-hf-id="hf-9wzy" class="headline"><span data-hf-id="hf-tg74" class="line">Fiecare urcare.</span><span data-hf-id="hf-hrzx" class="line mint">La vedere.</span></h2></div><div data-hf-id="hf-s7nz" id="map-result" class="paper map-panel"><div data-hf-id="hf-61j4" class="paper-head">Hartă &amp; Track GPS<small data-hf-id="hf-eq8q">WP Trip Summary</small></div><div data-hf-id="hf-pqw4" class="map-crop"><img data-hf-id="hf-qdt1" data-layout-allow-overflow="" src="assets/images/map-profile.png" alt="Hartă GPS din WP Trip Summary"></div><div data-hf-id="hf-d9ri" class="map-foot"><span data-hf-id="hf-zcc2" class="dot"></span>De la primul pas la destinație.</div></div><div data-hf-id="hf-7y1x" id="graph-panel" class="paper"><div data-hf-id="hf-om1d" class="paper-head">Profil de altitudine<small data-hf-id="hf-8dx6">metri / kilometri</small></div><div data-hf-id="hf-du1f" class="graph-crop"><div data-hf-id="hf-7en3" id="graph-reveal"><img data-hf-id="hf-9u2o" data-layout-allow-overflow="" src="assets/images/map-profile.png" alt="Profil de altitudine din proiect"></div></div></div><div data-hf-id="hf-b9nu" class="folio">03 / 05</div></div></section>
+<section data-hf-id="hf-2mlf" id="details" class="clip" data-start="13.64" data-duration="4.92" data-track-index="0"><div data-hf-id="hf-rru9" class="scene-inner"><div data-hf-id="hf-qg65" class="copy"><p data-hf-id="hf-5yw4" class="kicker">DETALIILE CARE CONTEAZĂ</p><h2 data-hf-id="hf-9iox" class="headline"><span data-hf-id="hf-80kf" class="line">Tura,</span><span data-hf-id="hf-s20l" class="line mint">pe scurt.</span></h2></div><div data-hf-id="hf-tmss" id="trip-types"><span data-hf-id="hf-gld3"><svg data-hf-id="hf-d3m1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path data-hf-id="hf-de9u" d="M2 17a4 4 0 108 0a4 4 0 10-8 0M15 17a4 4 0 108 0a4 4 0 10-8 0M6 17l5-10 8 10M8 7h5M14 3h3l2 14M6 17h8L9 7" /></svg>Bicicletă</span><span data-hf-id="hf-k9f7"><svg data-hf-id="hf-eaj4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path data-hf-id="hf-r6oy" d="M2 20L9 6l5 9 3-5 5 10H2ZM6 12l3 2 3-2" /></svg>Drumeție</span><span data-hf-id="hf-zbyw"><svg data-hf-id="hf-dw83" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path data-hf-id="hf-h3cl" d="M5 5a3 3 0 013-3h8a3 3 0 013 3v11a3 3 0 01-3 3H8a3 3 0 01-3-3V5ZM5 10h14M9 19l-3 3M15 19l3 3M8 15h2M14 15h2" /></svg>Tren</span></div><div data-hf-id="hf-eljd" id="summary-panel" class="paper"><div data-hf-id="hf-ai3p" class="summary-title"><svg data-hf-id="hf-bwoy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path data-hf-id="hf-lrbh" d="M9 20l-6 2V6l6-2 6 2 6-2v16l-6 2-6-2V4M15 6v16" /></svg><strong data-hf-id="hf-jq6w">Tura pe scurt</strong><span data-hf-id="hf-5p8f">Cu bicicleta</span></div><div data-hf-id="hf-ias4" class="tabs"><div data-hf-id="hf-rd5q" class="tab active">Detalii prozaice</div><div data-hf-id="hf-3bqc" class="tab">Hartă &amp; Track GPS</div></div><div data-hf-id="hf-3am3" id="summary-rows"><div data-hf-id="hf-g4fb" class="summary-row"><span data-hf-id="hf-ui97" class="row-icon"><svg data-hf-id="hf-bidx" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path data-hf-id="hf-mh23" d="M3 16h18M3 12v8M21 12v8M7 8l5-5 5 5" /></svg></span><span data-hf-id="hf-dvv0" class="row-label">Distanța totală</span><span data-hf-id="hf-rmd3" class="row-value">42,8 km</span></div><div data-hf-id="hf-0jk7" class="summary-row"><span data-hf-id="hf-lryj" class="row-icon"><svg data-hf-id="hf-cpb0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path data-hf-id="hf-w183" d="M2 20L10 4l5 10 3-6 4 12H2Z" /></svg></span><span data-hf-id="hf-m43o" class="row-label">Diferența de nivel</span><span data-hf-id="hf-3krk" class="row-value">860 m</span></div><div data-hf-id="hf-0596" class="summary-row"><span data-hf-id="hf-ldni" class="row-icon"><svg data-hf-id="hf-cazz" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path data-hf-id="hf-mmbc" d="M4 20v-5M12 20V9M20 20V3" /></svg></span><span data-hf-id="hf-swqg" class="row-label">Nivelul de dificultate</span><span data-hf-id="hf-el3t" class="row-value">Mediu</span></div><div data-hf-id="hf-zqy5" class="summary-row"><span data-hf-id="hf-kzch" class="row-icon"><svg data-hf-id="hf-abgu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path data-hf-id="hf-58qp" d="M12 1v3M12 20v3M1 12h3M20 12h3M4 4l2 2M18 18l2 2M20 4l-2 2M6 18l-2 2M7 12a5 5 0 1010 0a5 5 0 10-10 0" /></svg></span><span data-hf-id="hf-0hne" class="row-label">Anotimpuri</span><span data-hf-id="hf-u6o4" class="row-value">Vară · Toamnă</span></div></div><div data-hf-id="hf-kgmt" id="demo-note">Exemplu de tură · valori demonstrative</div></div><div data-hf-id="hf-d4x9" class="folio">04 / 05</div></div></section>
+<section data-hf-id="hf-wwya" id="outro" class="clip" data-start="18.56" data-duration="3.44" data-track-index="0"><div data-hf-id="hf-rdj8" class="scene-inner"><div data-hf-id="hf-50h1" id="outro-lockup"><img data-hf-id="hf-8znp" id="outro-logo" src="assets/images/logo.png" alt="Logo WP Trip Summary"><div data-hf-id="hf-u1lw" id="outro-copy"><h2 data-hf-id="hf-0u82" id="outro-title">WP Trip Summary</h2><p data-hf-id="hf-7fjo" id="outro-tag">Povești cu traseu.</p><div data-hf-id="hf-odhl" id="outro-rule"></div><p data-hf-id="hf-3gdc" id="outro-url">wordpress.org/plugins/wp-trip-summary</p></div></div><div data-hf-id="hf-gm08" class="folio">05 / 05</div></div></section>
+<audio data-hf-id="hf-a4c5" id="music" src="assets/music/music.mp3" data-start="0" data-duration="22" data-track-index="10" data-volume="0.34" data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.15},{&quot;t&quot;:0.35,&quot;v&quot;:0.34},{&quot;t&quot;:20.7,&quot;v&quot;:0.34},{&quot;t&quot;:22,&quot;v&quot;:0}]}]}"></audio>
+<audio data-hf-id="hf-5e2p" id="click" src="assets/sfx/click.ogg" data-start="4.91" data-duration="0.04" data-track-index="11" data-volume="0.65"></audio>
+<audio data-hf-id="hf-p8qe" id="map-hit" src="assets/sfx/impact.ogg" data-start="8.74" data-duration="0.18" data-track-index="12" data-volume="0.5"></audio>
+<audio data-hf-id="hf-st1n" id="logo-hit" src="assets/sfx/impact.ogg" data-start="18.56" data-duration="0.18" data-track-index="13" data-volume="0.5"></audio>
+</div><script>
+document.fonts.ready.then(function() {
+	const tl = gsap.timeline({ paused: true });
+	// Clip-wipe primitive adapted from the installed Hyperframes component.
+	function revealLines(selector, start) {
+		tl.fromTo(selector, { clipPath: 'inset(0 100% 0 0)', y: 18 }, { clipPath: 'inset(0 0% 0 0)', y: 0, duration: .52, stagger: .14, ease: 'power2.out' }, start);
+	}
+	function sceneCopy(id, start) {
+		tl.fromTo(id + ' .kicker', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .3, ease: 'power2.out' }, start + .06);
+		revealLines(id + ' .line', start + .08);
+		if (document.querySelector(id + ' .caption')) tl.fromTo(id + ' .caption', { opacity: 0 }, { opacity: 1, duration: .35 }, start + .5);
+	}
+	tl.fromTo('#progress', { scaleX: 0 }, { scaleX: 1, duration: 22, ease: 'none' }, 0);
+	tl.fromTo('#contours', { x: -12, y: 0 }, { x: 15, y: -25, duration: 22, ease: 'none' }, 0);
+	sceneCopy('#hook', 0);
+	tl.fromTo('#hero-map', { x: 65, rotation: 2, opacity: .5 }, { x: 0, rotation: 0, opacity: 1, duration: .8, ease: 'power3.out' }, 0);
+	const route = document.getElementById('route-draw');
+	const length = route.getTotalLength();
+	tl.fromTo(route, { strokeDasharray: length, strokeDashoffset: length }, { strokeDashoffset: 0, duration: 1.55, ease: 'power1.inOut' }, .55);
+	tl.to('#hook .scene-inner', { opacity: 0, x: -24, duration: .23, ease: 'power2.in' }, 3.04);
+	sceneCopy('#import-scene', 3.27);
+	tl.fromTo('#editor', { x: 60, opacity: 0 }, { x: 0, opacity: 1, duration: .5, ease: 'power3.out' }, 3.27);
+	tl.fromTo('#cursor', { x: 180, y: 115, opacity: 0 }, { x: -70, y: -80, opacity: 1, duration: .7, ease: 'power2.inOut' }, 4.15);
+	// beat-grid: selection click at 4.91s, map result at 6.00s.
+	tl.fromTo('#choose-button', { scale: 1 }, { scale: .96, duration: .1, repeat: 1, yoyo: true, ease: 'power1.inOut' }, 4.91);
+	tl.fromTo('#chosen-file', { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: .25 }, 5.08);
+	tl.fromTo('#load-bar', { scaleX: 0 }, { scaleX: 1, duration: .75, ease: 'power1.inOut' }, 5.15);
+	tl.to('#cursor', { opacity: 0, duration: .2 }, 5.3);
+	tl.fromTo('#editor-map', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .4, ease: 'power2.out' }, 6);
+	tl.to('#upload-pane', { autoAlpha: 0, duration: .1 }, 5.9);
+	tl.to('#import-scene .scene-inner', { opacity: 0, duration: .18 }, 8.56);
+	// beat-locked: map/profile payoff at 8.74s.
+	sceneCopy('#profile-scene', 8.74);
+	tl.fromTo('#map-result', { y: 25, opacity: 0 }, { y: 0, opacity: 1, duration: .45, ease: 'power3.out' }, 8.74);
+	tl.fromTo('#graph-panel', { y: 35, opacity: 0 }, { y: 0, opacity: 1, duration: .45, ease: 'power2.out' }, 8.95);
+	tl.fromTo('#graph-reveal', { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 1.3, ease: 'power2.inOut' }, 9.2);
+	tl.to('#profile-scene .scene-inner', { opacity: 0, duration: .2 }, 13.44);
+	sceneCopy('#details', 13.64);
+	tl.fromTo('#summary-panel', { x: 50, opacity: 0 }, { x: 0, opacity: 1, duration: .5, ease: 'power3.out' }, 13.64);
+	tl.fromTo('.summary-row', { x: 24, opacity: 0 }, { x: 0, opacity: 1, duration: .4, stagger: .28, ease: 'power2.out' }, 14.05);
+	tl.fromTo('#trip-types span', { x: -14, opacity: 0 }, { x: 0, opacity: 1, duration: .35, stagger: .3, ease: 'power2.out' }, 14.2);
+	tl.to('#details .scene-inner', { opacity: 0, duration: .22 }, 18.34);
+	// beat-locked: final signature at 18.56s.
+	tl.fromTo('#outro-logo', { scale: .85, rotation: -5, opacity: 0 }, { scale: 1, rotation: 0, opacity: 1, duration: .55, ease: 'back.out(1.1)' }, 18.56);
+	revealLines('#outro-title', 18.56);
+	tl.fromTo('#outro-tag', { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: .45, ease: 'power2.out' }, 18.75);
+	tl.fromTo('#outro-rule', { scaleX: 0 }, { scaleX: 1, duration: .5, ease: 'power2.out' }, 18.78);
+	tl.fromTo('#outro-url', { opacity: 0 }, { opacity: 1, duration: .35 }, 18.88);
+	// Audio-extraction data drives an unobtrusive decorative route response.
+	if (window.AUDIO_DATA) {
+		window.AUDIO_DATA.frames.slice(0, 660).forEach(function(frame, i) {
+			tl.to('#hook-route', { opacity: .75 + .25 * frame.rms, duration: 1 / 30, ease: 'none' }, i / 30);
+		});
+	}
+	window.__timelines['wpts-brag'] = tl;
+});</script></body></html>
