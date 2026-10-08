@@ -20,3 +20,10 @@ node_modules
 vendor
 vendor/composer
 .compatibility
+brag-output/*.mp4
+brag-output/tooling
+bin/tools/screen-capture/screenshots
+/config.yaml
+/bin/tools/screen-capture/config.yaml
+bin/tools/screen-capture/.venv/
+bin/tools/screen-capture/__pycache__/
