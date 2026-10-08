@@ -348,7 +348,7 @@ class Abp01_Includes {
 		),
 		self::JS_CHART_JS => array(
 			'path' => 'media/js/3rdParty/chartjs/Chart.js', 
-			'version' => '2.9.3'
+			'version' => '2.9.4'
 		),
 
 		self::JS_ABP01_COMMON => array(
@@ -643,7 +643,7 @@ class Abp01_Includes {
 		),
 		self::STYLE_CHART_JS => array(
 			'path' => 'media/js/3rdParty/chartjs/Chart.css', 
-			'version' => '2.9.3'
+			'version' => '2.9.4'
 		),
 
 		self::STYLE_FRONTEND_MAIN => array(
