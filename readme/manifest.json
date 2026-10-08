@@ -1,0 +1,22 @@
+{
+	"makefile": "readme/Makefile",
+	"pluginHeader": {
+		"file": "abp01-plugin-main.php",
+		"variables": {
+			"pluginName": "Plugin Name",
+			"version": "Version",
+			"requiresWp": "Requires at least",
+			"requiresPhp": "Requires PHP"
+		}
+	},
+	"paths": {
+		"sections": "readme/sections",
+		"screenshots": "assets/en_US",
+		"changelog": "CHANGELOG.md"
+	},
+	"variables": {
+		"repositoryUrl": "https://github.com/alexboia/WP-Trip-Summary",
+		"wporgUrl": "https://wordpress.org/plugins/wp-trip-summary/",
+		"donateUrl": "https://ko-fi.com/alexandruboia"
+	}
+}
