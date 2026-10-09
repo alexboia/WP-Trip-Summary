@@ -59,11 +59,12 @@ def wpts_post_url(baseUrl: str, page: str):
 	return baseUrl.rstrip('/') + '/' + page.lstrip('/')
 
 def logon(browser: Browser, url: str, userName: str, password: str, retries: int) -> Page:
-	logonPage = browser.new_page(viewport={
+	context = browser.new_context(viewport={
 		"width": 1920, 
 		"height": 1080
 	})
 
+	logonPage = context.new_page()
 	logonPage.goto(url, timeout=10000, wait_until="domcontentloaded")
 	
 	logonPage.fill("#user_login", userName)
@@ -91,7 +92,9 @@ def wpts_about_screenshot(currentPage: Page, url: str, includeFullPage: bool = F
 	return currentPage
 
 def wpts_settings_screenshots(currentPage: Page, url: str, includeFullPage: bool = False) -> Page:
-	currentPage.goto(url, timeout=10000, wait_until="domcontentloaded")
+	currentPage.goto(url, 
+		timeout=WPTS_TIMEOUT, 
+		wait_until="domcontentloaded")
 
 	#General settings section
 	currentPage.click("#abp01-general-settings-tab")
@@ -174,24 +177,40 @@ def wpts_execute_maintenance_tool(currentPage: Page, option: str, waitForSelecto
 
 	currentPage.wait_for_timeout(150)
 
+def wpts_lookup_data_screenshot(currentPage: Page, url: str, includeFullPage: bool = False) -> Page:
+
+	return currentPage
+
+def wpts_post_listing_screenshot(currentPage: Page, url: str, postId: str, includeFullPage: bool = False) -> Page:
+	
+	return currentPage
+
+def wpts_post_edit_screenshot(currentPage: Page, url: str, postId: str, includeFullPage: bool = False) -> Page:
+
+	return currentPage
+
 def wpts_post_view_screenshot(currentPage: Page, url: str, includeFullPage: bool = False) -> Page:
 	currentPage.goto(url, timeout=10000, wait_until="domcontentloaded")
 
+	# Top teaser - capture element-only
 	currentPage.wait_for_selector("#abp01-techbox-teaser", timeout=WPTS_TIMEOUT)
 	teaser = currentPage.locator("#abp01-techbox-teaser")
 	teaser.screenshot(path="./screenshots/wpts-sample-post-teaser.png")
 
+	# Move down and wait for the viewer to come into view
 	currentPage.click("#abp01-techbox-teaser-action")
 	currentPage.wait_for_timeout(150)
 
 	viewer = currentPage.locator("#abp01-techbox-frontend")
 	expect(viewer).to_be_in_viewport()
 
+	# Info tab, grab that
 	currentPage.click("#abp01-tab-info a")
 	currentPage.wait_for_selector("#abp01-techbox-info", state="visible", timeout=WPTS_TIMEOUT)
 	currentPage.wait_for_timeout(150)
 	viewer.screenshot(path="./screenshots/wpts-sample-post-viewer-info.png")
 
+	# Map tab with and without altitudine profile
 	currentPage.click("#abp01-tab-map a")
 	currentPage.wait_for_selector("#abp01-techbox-map", state="visible", timeout=WPTS_TIMEOUT)
 	currentPage.wait_for_selector("#abp01-map .leaflet-tile", state="visible", timeout=WPTS_TIMEOUT)
@@ -206,11 +225,13 @@ def wpts_post_view_screenshot(currentPage: Page, url: str, includeFullPage: bool
 	currentPage.wait_for_timeout(150)
 	viewer.screenshot(path="./screenshots/wpts-sample-post-viewer-map-alt-profile.png")
 
+	# Route log tab
 	currentPage.click("#abp01-route-log a")
 	currentPage.wait_for_selector("#abp01-route-log-content", state="visible", timeout=WPTS_TIMEOUT)
 	currentPage.wait_for_timeout(150)
 	viewer.screenshot(path="./screenshots/wpts-sample-post-viewer-log.png")
 
+	# Full page, only if requested
 	if (includeFullPage):
 		currentPage.screenshot(path="./screenshots/wpts-sample-post-full.png")
 
@@ -352,7 +373,6 @@ def main():
 			WPTS_CONSOLE.log(":thumbs_up: Captured Frontend Sample page!", style="bold green")
 
 		browser.close()
-
 
 if __name__ == "__main__":
 	main()
