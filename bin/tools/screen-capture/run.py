@@ -1,79 +1,21 @@
-from dataclasses import dataclass, field, asdict
-from getpass import getpass
+from dataclasses import asdict
 from pathlib import Path
-from tempfile import NamedTemporaryFile
-from urllib.parse import urlsplit
 from rich.console import Console
 from rich.status import Status
 
-import yaml
 from playwright.sync_api import sync_playwright, expect
 from playwright.sync_api import Browser
 from playwright.sync_api import Page, Locator
 from playwright.sync_api import TimeoutError
 
 import cv2
-from cv2.typing import MatLike
-import numpy as np
 import os
 import json
 import argparse
 
-@dataclass
-class WptsArgs:
-	# Use this host, --host
-	host: str| None = None
-	# Use this username for logon, --username
-	userName: str | None = None
-	# Use this password for logon, --password
-	password: str | None = None
-	# Where to save screenshots, --output-dir
-	outDir: str = "./screenshots"
-	# Resolution to use, WIDTHxHEIGHT format, --viewport
-	viewport: str = "1920x1080"
-	# Override host, username and password in current configuration, --save-config
-	saveCofig: bool = False
-	# Restart setup process, will use any given values that overlap as defaults, --reconfigure
-	reconfigure: bool = False
-	# Whether to include full pages or not, --full-pages
-	fullPages: bool = False
-	# Whether to enable advanced tracing
-	verbose: bool = False
-
-@dataclass
-class WptsConfig:
-	# Base URL of WordPress instance
-	baseUrl: str
-	# Username to authenticate with
-	userName: str
-	# Password to authenticate with
-	password: str = field(repr=False)
-	# Post ID to use for editor screenshots
-	knownSamplePostEdit: str
-	# Post permalink to use for viewer screenshots
-	knownSamplePostView: str
-
-@dataclass
-class WptsScreenshot:
-	# Human readable description of the page
-	page: str
-	# Url from which the capture has been generated
-	url: str
-	# Full path of resulting file
-	outFile: str
-	# Whether or not is was a full page screenshot
-	isFullPage: bool = False
-	# If only an element has been captured, describe it here
-	element: str|None = None
-
-@dataclass
-class WptsContext:
-	config: WptsConfig|None = None
-	viewPortWidth: int = 1920
-	viewPortHeight: int = 1080
-	outDir: str = "./screenshots"
-	# Empty means US English
-	langCode: str = ""
+from data import WptsArgs, WptsContext, WptsConfig, WptsScreenshot
+from image import wpts_apply_soften_filter, wpts_apply_vignette_filter
+from config import wpts_get_config, wpts_setup, wpts_config_value
 
 WPTS_TIMEOUT = 10000
 
@@ -86,15 +28,6 @@ WPTS_ARG_SAVE_CONFIG = "--save-config"
 WPTS_ARG_RECONFIGURE = "--reconfigure"
 WPTS_ARG_FULL_PAGES = "--full-pages"
 WPTS_ARG_VERBOSE = "--verbose"
-
-WPTS_CONFIG_PATH = Path("./config.yaml")
-WPTS_CONFIG_FIELDS = {
-	"baseUrl": "WordPress base URL",
-	"userName": "WordPress username",
-	"password": "WordPress password",
-	"knownSamplePostEdit": "Sample post ID for editor screenshots",
-	"knownSamplePostView": "Sample post permalink for viewer screenshots"
-}
 
 WP_OPTIONS_GENERAL_URL = "options-general.php"
 WP_POST_LISTING_URL = "edit.php"
@@ -190,31 +123,6 @@ def wpts_apply_image_filers(screenshots: list[WptsScreenshot], filteredOutDir: s
 			cv2.imwrite(f'{filteredOutDir}/{fileName}', outputImage)
 		else:
 			WPTS_CONSOLE.print(f':pile_of_poo: Could not open mage {screen.outFile}', style="bold red")
-
-def wpts_apply_soften_filter(inputImage: MatLike, diameter=12, sigmaSpace=100) -> MatLike:
-	outputImage = cv2.bilateralFilter(inputImage, d=diameter, sigmaColor=75, sigmaSpace=sigmaSpace)
-	return outputImage
-
-def wpts_apply_vignette_filter(inputImage: MatLike, size:float=0.65) -> MatLike:
-	rows, cols = inputImage.shape[:2]
-
-	if (rows < 200 or cols < 200):
-		return inputImage
-
-	sigmaX = cols * size
-	sigmaY = rows * size
-
-	xResultantKernel = cv2.getGaussianKernel(cols, sigmaX)
-	yResultantKernel = cv2.getGaussianKernel(rows, sigmaY)
-
-	mask = np.outer(yResultantKernel, xResultantKernel)
-	maskNormalized = mask / mask.max()
-	
-	outputImage = np.zeros_like(inputImage, dtype=np.uint8)
-	for i in range(3):
-		outputImage[:, :, i] = inputImage[:, :, i] * maskNormalized
-
-	return outputImage
 
 def wpts_fill_field(currentPage: Page, selector: str, value: str, retries: int = 3) -> bool:
 	currentPage.wait_for_selector(selector, state="visible")
@@ -915,113 +823,6 @@ def wpts_post_view_screenshot(currentPage: Page, postViewUrl: str, includeFullPa
 
 	return currentPage
 
-def _wpts_config_value(name: str, value) -> str:
-	"""Cleans and validates config value"""
-	
-	if name == "knownSamplePostEdit" and type(value) is int:
-		value = str(value)
-	if not isinstance(value, str) or not value.strip():
-		raise ValueError(f"{name} must be a non-empty string.")
-
-	if name != "password":
-		value = value.strip()
-
-	if name == "baseUrl":
-		try:
-			url = urlsplit(value)
-			valid = url.scheme in ("http", "https") and bool(url.hostname)
-			valid = valid and not any(character.isspace() for character in value)
-			valid = valid and not url.query and not url.fragment
-			valid = valid and url.username is None and url.password is None
-			_ = url.port
-		except ValueError:
-			valid = False
-		if not valid:
-			raise ValueError("baseUrl must be an HTTP(S) URL without credentials, a query or a fragment.")
-	elif name == "knownSamplePostEdit":
-		if not value.isascii() or not value.isdecimal() or int(value) <= 0:
-			raise ValueError("knownSamplePostEdit must be a positive post ID.")
-	elif name == "knownSamplePostView":
-		try:
-			url = urlsplit(value)
-			valid = not url.scheme and not url.netloc and bool(url.path or url.query)
-		except ValueError:
-			valid = False
-		if not valid:
-			raise ValueError("knownSamplePostView must be a permalink relative to the WordPress base URL.")
-
-	return value
-
-
-def wpts_setup(force: bool, wptsArgs: WptsArgs|None = None):
-	"""Reuse a valid config, or interactively collect and save all required values."""
-	try:
-		currentConfig = wpts_get_config()
-	except (FileNotFoundError, ValueError):
-		currentConfig = None
-
-	if currentConfig is not None and not force:
-		return
-
-	# If command line args have some values, merged those in
-	if (wptsArgs is not None and currentConfig is not None):
-		currentConfig.baseUrl = wptsArgs.host if wptsArgs.host \
-			else currentConfig.baseUrl
-		currentConfig.userName = wptsArgs.userName if wptsArgs.userName \
-			else currentConfig.userName
-		currentConfig.password = wptsArgs.password if wptsArgs.password \
-			else currentConfig.password
-
-	configData = {}
-	for name, label in WPTS_CONFIG_FIELDS.items():
-		currentValue = getattr(currentConfig, name) if currentConfig is not None else None
-		if currentValue is None:
-			prompt = f"{label}: "
-		elif name == "password":
-			prompt = f"{label} [Enter to keep the current password]: "
-		else:
-			prompt = f"{label} [{currentValue}]: "
-
-		while True:
-			value = getpass(prompt) if name == "password" else input(prompt)
-			if value == "" and currentValue is not None:
-				value = currentValue
-			try:
-				configData[name] = _wpts_config_value(name, value)
-				break
-			except ValueError as error:
-				print(error)
-
-	# Replace only after every value is valid and the complete YAML has been written.
-	temporaryPath = None
-	try:
-		with NamedTemporaryFile(mode="w", encoding="utf-8", newline="\n",
-			dir=WPTS_CONFIG_PATH.parent, prefix=".wpts-config-", suffix=".tmp", delete=False) as configFile:
-			temporaryPath = Path(configFile.name)
-			yaml.safe_dump(configData, configFile, allow_unicode=True, sort_keys=False)
-		temporaryPath.replace(WPTS_CONFIG_PATH)
-	finally:
-		if temporaryPath is not None:
-			temporaryPath.unlink(missing_ok=True)
-
-
-def wpts_get_config() -> WptsConfig:
-	"""Read and validate ./config.yaml without prompting or starting a browser."""
-	try:
-		with WPTS_CONFIG_PATH.open(encoding="utf-8") as configFile:
-			configData = yaml.safe_load(configFile)
-	except (yaml.YAMLError, UnicodeError):
-		# Parser messages may include configuration contents, including the password.
-		raise ValueError("config.yaml must contain valid UTF-8 YAML.") from None
-
-	if not isinstance(configData, dict):
-		raise ValueError("config.yaml must contain a mapping of configuration fields.")
-
-	return WptsConfig(**{
-		name: _wpts_config_value(name, configData.get(name))
-		for name in WPTS_CONFIG_FIELDS
-	})
-
 def wpts_parse_args() -> WptsArgs:
 	wptsArgs = WptsArgs()
 	parser = argparse.ArgumentParser()
@@ -1067,7 +868,7 @@ def wpts_validate_args_or_throw(wptsArgs: WptsArgs) -> None:
 	):
 		if value is not None:
 			try:
-				_wpts_config_value(configField, value)
+				wpts_config_value(configField, value)
 			except ValueError as error:
 				raise ValueError(f"{option}: {error}") from None
 
