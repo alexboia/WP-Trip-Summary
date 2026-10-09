@@ -77,6 +77,16 @@ class WptsContext:
 
 WPTS_TIMEOUT = 10000
 
+WPTS_ARG_HOST = "--host"
+WPTS_ARG_USERNAME = "--user-name"
+WPTS_ARG_PASSWORD = "--password"
+WPTS_ARG_OUT_DIR = "--out-dir"
+WPTS_ARG_VIEWPORT = "--viewport"
+WPTS_ARG_SAVE_CONFIG = "--save-config"
+WPTS_ARG_RECONFIGURE = "--reconfigure"
+WPTS_ARG_FULL_PAGES = "--full-pages"
+WPTS_ARG_VERBOSE = "--verbose"
+
 WPTS_CONFIG_PATH = Path("./config.yaml")
 WPTS_CONFIG_FIELDS = {
 	"baseUrl": "WordPress base URL",
@@ -890,32 +900,32 @@ def wpts_parse_args() -> WptsArgs:
 	wptsArgs = WptsArgs()
 	parser = argparse.ArgumentParser()
 
-	parser.add_argument("--host", required=False, 
+	parser.add_argument(WPTS_ARG_HOST, required=False, 
 		help="Use this host. Must include protocol, i.e. http:// or https://. Takes precedence over the configured one.")
-	parser.add_argument("--user-name", dest="userName", required=False, 
+	parser.add_argument(WPTS_ARG_USERNAME, dest="userName", required=False, 
 		help="Use this username for WordPress logon. Takes precedence over the configured one.")
-	parser.add_argument("--password", dest="password", required=False, 
+	parser.add_argument(WPTS_ARG_PASSWORD, dest="password", required=False, 
 		help="Use this password for WordPress logon. Takes precedence over the configured one.")
-	parser.add_argument("--out-dir", dest="outDir", required=False, 
+	parser.add_argument(WPTS_ARG_OUT_DIR, dest="outDir", required=False, 
 		default="./screenshots",
 		help="Where to save screenshots")
-	parser.add_argument("--viewport", dest="viewport", required=False, 
+	parser.add_argument(WPTS_ARG_VIEWPORT, dest="viewport", required=False, 
 		default="1920x1080", 
 		help="Resolution to use, WIDTHxHEIGHT format")
-	parser.add_argument("--save-config", dest="saveCofig", action="store_true", 
+	parser.add_argument(WPTS_ARG_SAVE_CONFIG, dest="saveCofig", action="store_true", 
 		required=False, 
 		default=False,
 		help="Save host, username and password in current configuration")
-	parser.add_argument("--reconfigure", dest="reconfigure", action="store_true", 
+	parser.add_argument(WPTS_ARG_RECONFIGURE, dest="reconfigure", action="store_true", 
 		required=False, 
 		default=False,
 		help="Restart setup process, will use any current values that overlap as defaults")
-	parser.add_argument("--full-pages", dest="fullPages", action="store_true", 
+	parser.add_argument(WPTS_ARG_FULL_PAGES, dest="fullPages", action="store_true", 
 		required=False, 
 		default=False,
 		help="Whether to include full pages or not")
 	
-	parser.add_argument("--verbose", dest="verbose", action="store_true", 
+	parser.add_argument(WPTS_ARG_VERBOSE, dest="verbose", action="store_true", 
 		required=False, 
 		default=False,
 		help="Enable advanced tracing")
@@ -925,9 +935,9 @@ def wpts_parse_args() -> WptsArgs:
 
 def wpts_validate_args_or_throw(wptsArgs: WptsArgs) -> None:
 	for option, configField, value in (
-		("--host", "baseUrl", wptsArgs.host),
-		("--user-name", "userName", wptsArgs.userName),
-		("--password", "password", wptsArgs.password)
+		(WPTS_ARG_HOST, "baseUrl", wptsArgs.host),
+		(WPTS_ARG_USERNAME, "userName", wptsArgs.userName),
+		(WPTS_ARG_PASSWORD, "password", wptsArgs.password)
 	):
 		if value is not None:
 			try:
@@ -936,23 +946,23 @@ def wpts_validate_args_or_throw(wptsArgs: WptsArgs) -> None:
 				raise ValueError(f"{option}: {error}") from None
 
 	if not isinstance(wptsArgs.outDir, str) or not wptsArgs.outDir.strip() or "\0" in wptsArgs.outDir:
-		raise ValueError("--out-dir must be a non-empty directory path without null characters.")
+		raise ValueError(f"{WPTS_ARG_OUT_DIR} must be a non-empty directory path without null characters.")
 
 	# A new output directory is valid, provided no existing parent is a file.
 	outDir = Path(wptsArgs.outDir)
 	for candidate in (outDir, *outDir.parents):
 		if candidate.exists() or candidate.is_symlink():
 			if not candidate.is_dir():
-				raise ValueError("--out-dir must refer to a directory, with no file in its parent path.")
+				raise ValueError(f"{WPTS_ARG_OUT_DIR} must refer to a directory, with no file in its parent path.")
 			break
 
 	_wpts_parse_viewport_spec(wptsArgs.viewport)
 
 	for option, value in (
-		("--save-config", wptsArgs.saveCofig),
-		("--reconfigure", wptsArgs.reconfigure),
-		("--full-pages", wptsArgs.fullPages),
-		("--verbose", wptsArgs.verbose)
+		(WPTS_ARG_SAVE_CONFIG, wptsArgs.saveCofig),
+		(WPTS_ARG_RECONFIGURE, wptsArgs.reconfigure),
+		(WPTS_ARG_FULL_PAGES, wptsArgs.fullPages),
+		(WPTS_ARG_VERBOSE, wptsArgs.verbose)
 	):
 		if type(value) is not bool:
 			raise ValueError(f"{option} must be a boolean flag.")
@@ -981,7 +991,7 @@ def wpts_report_status_task(taskStatus: str, good: bool = True):
 	WPTS_CONSOLE.log(f'{icon} {taskStatus}', style="bold green")
 
 def _wpts_parse_viewport_spec(viewportSpec: str) -> tuple[int, int]:
-	message = "--viewport must use WIDTHxHEIGHT with two positive integers, e.g. 1920x1080."
+	message = f"{WPTS_ARG_VIEWPORT} must use WIDTHxHEIGHT with two positive integers, e.g. 1920x1080."
 	if not isinstance(viewportSpec, str):
 		raise ValueError(message)
 
