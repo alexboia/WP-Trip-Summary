@@ -98,6 +98,7 @@ WPTS_CONFIG_FIELDS = {
 
 WP_OPTIONS_GENERAL_URL = "options-general.php"
 WP_POST_LISTING_URL = "edit.php"
+WP_POST_EDIT_URL = "post.php"
 
 WPTS_ABOUT_URL = "admin.php?page=abp01-trip-summary-about"
 WPTS_SETTINGS_URL = "admin.php?page=abp01-trip-summary-settings"
@@ -120,6 +121,9 @@ def wp_options_general_url(baseUrl: str):
 
 def wp_post_listing_url(baseUrl: str):
 	return wp_admin_url(baseUrl) + WP_POST_LISTING_URL
+
+def wp_post_edit_url(baseUrl: str, postId: str):
+	return wp_admin_url(baseUrl) + f"{WP_POST_EDIT_URL}?post={postId}&action=edit"
 
 def wpts_about_url(baseUrl: str):
 	return wp_admin_url(baseUrl) + WPTS_ABOUT_URL
@@ -337,7 +341,7 @@ def wpts_about_screenshot(currentPage: Page, url: str, includeFullPage: bool = F
 
 	return currentPage
 
-def wpts_navigate_to_settings_tab(currentPage: Page, tab: str, container: str, waitAnimationTimeout: int = 500):
+def _wpts_navigate_to_settings_tab(currentPage: Page, tab: str, container: str, waitAnimationTimeout: int = 500):
 	currentPage.click(tab)
 	currentPage.wait_for_selector(container, timeout=WPTS_TIMEOUT)
 	#Tab selections highglights ins and outs 
@@ -350,7 +354,7 @@ def wpts_settings_screenshots(currentPage: Page, url: str, includeFullPage: bool
 	wpts_goto(currentPage, url)
 
 	#General settings section
-	wpts_navigate_to_settings_tab(currentPage, 
+	_wpts_navigate_to_settings_tab(currentPage, 
 		tab="#abp01-general-settings-tab", 
 		container="#abp01-general-settings")
 
@@ -374,7 +378,7 @@ def wpts_settings_screenshots(currentPage: Page, url: str, includeFullPage: bool
 		))
 
 	#Viewer settings section
-	wpts_navigate_to_settings_tab(currentPage, 
+	_wpts_navigate_to_settings_tab(currentPage, 
 		tab="#abp01-viewer-settings-tab", 
 		container="#abp01-viewer-settings")
 
@@ -398,7 +402,7 @@ def wpts_settings_screenshots(currentPage: Page, url: str, includeFullPage: bool
 		))
 
 	#Map settings section
-	wpts_navigate_to_settings_tab(currentPage, 
+	_wpts_navigate_to_settings_tab(currentPage, 
 		tab="#abp01-map-settings-tab", 
 		container="#abp01-map-settings")
 
@@ -462,7 +466,7 @@ def wpts_maintenance_screenshots(currentPage: Page, url: str, includeFullPage: b
 			))
 
 	#Sample 1 - Detect missing track files
-	wpts_execute_maintenance_tool(currentPage, 
+	_wpts_execute_maintenance_tool(currentPage, 
 		option="detect-missing-track-files", 
 		waitForSelector="#abp01-admin-missing-tracks-posts")
 
@@ -486,7 +490,7 @@ def wpts_maintenance_screenshots(currentPage: Page, url: str, includeFullPage: b
 		))	
 
 	#Sample 2 - Nginx Access Directives Helper
-	wpts_execute_maintenance_tool(currentPage, 
+	_wpts_execute_maintenance_tool(currentPage, 
 		option="nginx-access-directives-helper", 
 		waitForSelector="#wpts-nginx-directives-container")
 
@@ -511,7 +515,7 @@ def wpts_maintenance_screenshots(currentPage: Page, url: str, includeFullPage: b
 	
 	return currentPage
 
-def wpts_execute_maintenance_tool(currentPage: Page, option: str, waitForSelector: str):
+def _wpts_execute_maintenance_tool(currentPage: Page, option: str, waitForSelector: str):
 	currentPage.select_option("#abp01-maintenance-tool-select", option)
 	currentPage.click("#abp01-execute-maintenance-tool")
 
@@ -698,6 +702,125 @@ def _wpts_listing_search_for_target_post(currentPage: Page, postId: str) -> Loca
 	return postRow
 
 def wpts_post_edit_screenshot(currentPage: Page, url: str, postId: str, includeFullPage: bool = False) -> Page:
+	wpts_goto(currentPage, url)
+	currentPage.wait_for_load_state("load", timeout=WPTS_TIMEOUT)
+	expect(currentPage.locator("#post_ID")).to_have_value(str(postId), timeout=WPTS_TIMEOUT)
+
+	launcher = currentPage.locator("#abp01-enhanced-editor-launcher-metabox")
+	routeLog = currentPage.locator("#abp01-enhanced-editor-log-metabox")
+	for metabox in (launcher, routeLog):
+		metabox.wait_for(state="visible", timeout=WPTS_TIMEOUT)
+		
+		# Metaboxes may be collapsed
+		if "closed" in (metabox.get_attribute("class") or "").split():
+			metabox.locator("button.handlediv").click(timeout=WPTS_TIMEOUT)
+
+		metabox.locator(".inside").wait_for(state="visible", timeout=WPTS_TIMEOUT)
+
+	outFile = wpts_screenshot_locator(launcher, outFile="wpts-admin-post-edit-launcher.png")
+	wpts_register_screenshot(WptsScreenshot(
+		url=url,
+		page="Admin - Edit Post",
+		element="Trip Summary Launcher Metabox",
+		outFile=outFile
+	))
+
+	# Capture the editor itself on each tab, without saving any changes.
+	launcher.locator("a[data-action='abp01-openTechBox'][data-select-tab='abp01-form-info']")\
+		.click(timeout=WPTS_TIMEOUT)
+	
+	editor = currentPage.locator("#abp01-techbox-editor")
+	editor.wait_for(state="visible", timeout=WPTS_TIMEOUT)
+
+	currentPage.wait_for_selector("#abp01-form-info > div", 
+		state="visible", 
+		timeout=WPTS_TIMEOUT)
+	currentPage.wait_for_timeout(500)
+
+	outFile = wpts_screenshot_locator(editor, 
+		outFile="wpts-admin-post-edit-info.png")
+	
+	wpts_register_screenshot(WptsScreenshot(
+		url=url,
+		page="Admin - Edit Post",
+		element="Trip Summary Editor - Info",
+		outFile=outFile
+	))
+
+	editor.locator("#abp01-tab-map a")\
+		.click(timeout=WPTS_TIMEOUT)
+	
+	currentPage.wait_for_selector("#abp01-form-map > div", 
+		state="visible", 
+		timeout=WPTS_TIMEOUT)
+
+	if editor.locator("#abp01-map").count() > 0:
+		# Track data arrives via AJAX; map tiles finish loading separately.
+		currentPage.wait_for_function("""() => {
+			const tiles = Array.from(document.querySelectorAll('#abp01-map .leaflet-tile'));
+			return tiles.length > 0 && tiles.every(tile => tile.complete && tile.naturalWidth > 0);
+		}""", timeout=WPTS_TIMEOUT)
+
+		editor.locator(".abp01-progress-container")\
+			.wait_for(state="hidden", timeout=WPTS_TIMEOUT)
+		
+	currentPage.wait_for_timeout(500)
+
+	outFile = wpts_screenshot_locator(editor, outFile="wpts-admin-post-edit-map.png")
+	wpts_register_screenshot(WptsScreenshot(
+		url=url,
+		page="Admin - Edit Post",
+		element="Trip Summary Editor - Map",
+		outFile=outFile
+	))
+
+	editor.locator("a[data-action='abp01-closeTechBox']")\
+		.click(timeout=WPTS_TIMEOUT)
+	editor.wait_for(state="hidden", timeout=WPTS_TIMEOUT)
+
+	outFile = wpts_screenshot_locator(routeLog, outFile="wpts-admin-post-edit-route-log.png")
+	wpts_register_screenshot(WptsScreenshot(
+		url=url,
+		page="Admin - Edit Post",
+		element="Route Log Metabox",
+		outFile=outFile
+	))
+
+	# The add form is available even when the post has no route log entries.
+	routeLog.locator("#abp01-addTripSummary-logEntry")\
+		.click(timeout=WPTS_TIMEOUT)
+	
+	routeLogForm = currentPage.locator("#abp01-tripSummaryLog-formContainer")
+	routeLogForm.wait_for(state="visible", timeout=WPTS_TIMEOUT)
+
+	currentPage.wait_for_timeout(500)
+
+	outFile = wpts_screenshot_locator(routeLogForm, outFile="wpts-admin-post-edit-route-log-form.png")
+	wpts_register_screenshot(WptsScreenshot(
+		url=url,
+		page="Admin - Edit Post",
+		element="Route Log - Add Entry Form",
+		outFile=outFile
+	))
+
+	routeLogForm.locator("#abp01-cancel-logEntry").click(timeout=WPTS_TIMEOUT)
+	routeLogForm.wait_for(state="hidden", timeout=WPTS_TIMEOUT)
+
+	if (includeFullPage):
+		# Reset sticky WordPress controls after the element captures scrolled the page.
+		currentPage.evaluate("window.scrollTo(0, 0)")
+		currentPage.wait_for_timeout(500)
+
+		outFileFull = wpts_screenshot_page(currentPage,
+			outFile="wpts-admin-post-edit-full.png",
+			fullPage=True)
+		
+		wpts_register_screenshot(WptsScreenshot(
+			url=url,
+			page="Admin - Edit Post - Full Page",
+			outFile=outFileFull,
+			isFullPage=True
+		))
 
 	return currentPage
 
@@ -793,6 +916,8 @@ def wpts_post_view_screenshot(currentPage: Page, postViewUrl: str, includeFullPa
 	return currentPage
 
 def _wpts_config_value(name: str, value) -> str:
+	"""Cleans and validates config value"""
+	
 	if name == "knownSamplePostEdit" and type(value) is int:
 		value = str(value)
 	if not isinstance(value, str) or not value.strip():
@@ -831,13 +956,14 @@ def _wpts_config_value(name: str, value) -> str:
 def wpts_setup(force: bool, wptsArgs: WptsArgs|None = None):
 	"""Reuse a valid config, or interactively collect and save all required values."""
 	try:
-		currentConfig = wpts_config()
+		currentConfig = wpts_get_config()
 	except (FileNotFoundError, ValueError):
 		currentConfig = None
 
 	if currentConfig is not None and not force:
 		return
 
+	# If command line args have some values, merged those in
 	if (wptsArgs is not None and currentConfig is not None):
 		currentConfig.baseUrl = wptsArgs.host if wptsArgs.host \
 			else currentConfig.baseUrl
@@ -879,7 +1005,7 @@ def wpts_setup(force: bool, wptsArgs: WptsArgs|None = None):
 			temporaryPath.unlink(missing_ok=True)
 
 
-def wpts_config() -> WptsConfig:
+def wpts_get_config() -> WptsConfig:
 	"""Read and validate ./config.yaml without prompting or starting a browser."""
 	try:
 		with WPTS_CONFIG_PATH.open(encoding="utf-8") as configFile:
@@ -1019,7 +1145,7 @@ def main():
 		wpts_validate_args_or_throw(wptsArgs)
 
 		wpts_setup(force=wptsArgs.reconfigure)		
-		config = wpts_config()
+		config = wpts_get_config()
 		
 		WPTS_CONTEXT.config = config
 		WPTS_CONTEXT.outDir = wptsArgs.outDir
@@ -1080,7 +1206,13 @@ def main():
 					postId=config.knownSamplePostEdit)
 				wpts_report_status_task("Captured Admin Post Listing page and audit log!")
 
-				wptsPostSample = wpts_post_view_screenshot(wptsPostListing,
+				wptsPostEdit = wpts_post_edit_screenshot(wptsPostListing,
+					wp_post_edit_url(config.baseUrl, config.knownSamplePostEdit),
+					postId=config.knownSamplePostEdit,
+					includeFullPage=wptsArgs.fullPages)
+				wpts_report_status_task("Captured Admin Post Editor elements!")
+
+				wptsPostSample = wpts_post_view_screenshot(wptsPostEdit,
 					wpts_post_url(config.baseUrl, config.knownSamplePostView))
 				wpts_report_status_task("Captured Frontend Sample page!")
 

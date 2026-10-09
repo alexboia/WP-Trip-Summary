@@ -33,20 +33,20 @@ class WptsConfigTests(unittest.TestCase):
 
 	def test_config_loads_all_fields_and_preserves_password(self):
 		self.write_config()
-		config = run.wpts_config()
+		config = run.wpts_get_config()
 		self.assertEqual(asdict(config), self.values)
 		self.assertNotIn(self.values["password"], repr(config))
 
 	def test_config_accepts_numeric_post_id_and_unicode(self):
 		values = dict(self.values, knownSamplePostEdit=42, userName="călător")
 		self.write_config(values)
-		config = run.wpts_config()
+		config = run.wpts_get_config()
 		self.assertEqual(config.knownSamplePostEdit, "42")
 		self.assertEqual(config.userName, "călător")
 
 	def test_config_missing_file_raises_without_creating_it(self):
 		with self.assertRaises(FileNotFoundError):
-			run.wpts_config()
+			run.wpts_get_config()
 		self.assertFalse(self.configPath.exists())
 
 	def test_config_rejects_empty_or_non_mapping_yaml(self):
@@ -54,7 +54,7 @@ class WptsConfigTests(unittest.TestCase):
 			with self.subTest(text=text):
 				self.configPath.write_text(text, encoding="utf-8")
 				with self.assertRaises(ValueError):
-					run.wpts_config()
+					run.wpts_get_config()
 
 	def test_config_requires_every_field(self):
 		for name in self.values:
@@ -63,7 +63,7 @@ class WptsConfigTests(unittest.TestCase):
 				del values[name]
 				self.write_config(values)
 				with self.assertRaisesRegex(ValueError, name):
-					run.wpts_config()
+					run.wpts_get_config()
 
 	def test_config_rejects_invalid_values(self):
 		invalidValues = {
@@ -78,27 +78,27 @@ class WptsConfigTests(unittest.TestCase):
 				with self.subTest(name=name, value=value):
 					self.write_config(dict(self.values, **{name: value}))
 					with self.assertRaisesRegex(ValueError, name):
-						run.wpts_config()
+						run.wpts_get_config()
 
 	def test_config_accepts_relative_and_query_permalinks(self):
 		for permalink in ("2026/10/traseu/", "/2026/10/traseu/", "?p=42"):
 			with self.subTest(permalink=permalink):
 				self.write_config(dict(self.values, knownSamplePostView=permalink))
-				self.assertEqual(run.wpts_config().knownSamplePostView, permalink)
+				self.assertEqual(run.wpts_get_config().knownSamplePostView, permalink)
 
 	def test_config_rejects_malformed_yaml_and_unsafe_tags_without_echoing_contents(self):
 		for text in ("password: [sample-secret", "!!python/object/apply:builtins.print [sample-secret]"):
 			with self.subTest(text=text), contextlib.redirect_stdout(io.StringIO()) as output:
 				self.configPath.write_text(text, encoding="utf-8")
 				with self.assertRaises(ValueError) as error:
-					run.wpts_config()
+					run.wpts_get_config()
 				self.assertNotIn("sample-secret", str(error.exception))
 				self.assertEqual(output.getvalue(), "")
 
 	def test_config_rejects_non_utf8_input(self):
 		self.configPath.write_bytes(b"password: \xff")
 		with self.assertRaisesRegex(ValueError, "UTF-8"):
-			run.wpts_config()
+			run.wpts_get_config()
 
 	def test_setup_reuses_valid_file_without_prompting_or_rewriting(self):
 		self.write_config()
@@ -113,7 +113,7 @@ class WptsConfigTests(unittest.TestCase):
 		answers = ["", "ftp://example.test", self.values["baseUrl"], "", self.values["userName"], "0", "42", "https://other.test/post", self.values["knownSamplePostView"]]
 		with patch("builtins.input", side_effect=answers), patch.object(run, "getpass", side_effect=["", self.values["password"]]) as passwordPrompt, contextlib.redirect_stdout(io.StringIO()) as output:
 			run.wpts_setup(force=False)
-		self.assertEqual(asdict(run.wpts_config()), self.values)
+		self.assertEqual(asdict(run.wpts_get_config()), self.values)
 		self.assertEqual(passwordPrompt.call_count, 2)
 		self.assertNotIn(self.values["password"], output.getvalue())
 		self.assertEqual(list(self.configPath.parent.glob(".wpts-config-*.tmp")), [])
@@ -125,7 +125,7 @@ class WptsConfigTests(unittest.TestCase):
 				answers = [self.values[name] for name in self.values if name != "password"]
 				with patch("builtins.input", side_effect=answers), patch.object(run, "getpass", return_value=self.values["password"]):
 					run.wpts_setup(force=False)
-				self.assertEqual(asdict(run.wpts_config()), self.values)
+				self.assertEqual(asdict(run.wpts_get_config()), self.values)
 
 	def test_forced_setup_prompts_and_keeps_defaults_without_displaying_password(self):
 		self.write_config()
@@ -134,13 +134,13 @@ class WptsConfigTests(unittest.TestCase):
 		self.assertEqual(prompt.call_count, 4)
 		passwordPrompt.assert_called_once()
 		self.assertNotIn(self.values["password"], passwordPrompt.call_args.args[0])
-		self.assertEqual(asdict(run.wpts_config()), self.values)
+		self.assertEqual(asdict(run.wpts_get_config()), self.values)
 
 	def test_forced_setup_saves_changed_values(self):
 		self.write_config()
 		with patch("builtins.input", side_effect=["https://new.test", "new-user", "123", "?p=123"]), patch.object(run, "getpass", return_value="new-password"):
 			run.wpts_setup(force=True)
-		self.assertEqual(asdict(run.wpts_config()), {
+		self.assertEqual(asdict(run.wpts_get_config()), {
 			"baseUrl": "https://new.test",
 			"userName": "new-user",
 			"password": "new-password",
