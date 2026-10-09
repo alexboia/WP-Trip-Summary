@@ -18,6 +18,7 @@ Read the applicable `SKILL.md` before performing its workflow. These skills own 
 | Create, edit or review plugin PHP, JavaScript, TypeScript, CSS, templates or tests | [wpts-coding-conventions](.agents/skills/wpts-coding-conventions/SKILL.md) | Use its conventions and relevant examples; maintain source license headers with its utility. |
 | Inventory, audit or maintain action/filter documentation | [wpts-document-hooks](.agents/skills/wpts-document-hooks/SKILL.md) | Refresh and read the canonical inventory; preserve public hook contracts and distinguish an audit from an inline documentation edit. |
 | Migrate legacy class names, or add conservative PHP types on request | [wpts-refactor-code-namespaces](.agents/skills/wpts-refactor-code-namespaces/SKILL.md) | Follow the current release lot gate, planning metadata and compatibility checks, including for type-hint-only work. |
+| Plan or produce product marketing materials | [wpts-marketing](.agents/skills/wpts-marketing/SKILL.md) | Ground user/developer messaging in the target release; use the existing README generator and asset paths, and route video production through the media skills. |
 
 Combine skills when a task spans their responsibilities. Ordinary code edits use the coding skill without automatically starting a namespace migration, a typing pass or a repository-wide hook audit. Keep detailed skill rules in their existing files instead of maintaining a second copy here.
 

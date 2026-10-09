@@ -1,0 +1,4 @@
+interface:
+  display_name: "WP Trip Summary Marketing"
+  short_description: "Plan WPTS videos, README copy and visual assets"
+  default_prompt: "Use $wpts-marketing to prepare a coherent marketing kit for WP Trip Summary users and developers."
