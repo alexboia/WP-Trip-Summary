@@ -17,15 +17,16 @@ from cv2.typing import MatLike
 import numpy as np
 import os
 import json
+import argparse
 
 @dataclass
 class WptsArgs:
 	# Use this host, --host
-	host: str
+	host: str| None = None
 	# Use this username for logon, --username
-	userName: str
+	userName: str | None = None
 	# Use this password for logon, --password
-	password: str
+	password: str | None = None
 	# Where to save screenshots, --output-dir
 	outDir: str = "./screenshots"
 	# Resolution to use, WIDTHxHEIGHT format, --viewport
@@ -35,9 +36,9 @@ class WptsArgs:
 	# Restart setup process, will use any given values that overlap as defaults, --reconfigure
 	reconfigure: bool = False
 	# Whether to include full pages or not, --full-pages
-	includeFullPages: bool = False
-	# Show help, --help
-	showHelp: bool = False
+	fullPages: bool = False
+	# Whether to enable advanced tracing
+	verbose: bool = False
 
 @dataclass
 class WptsConfig:
@@ -86,6 +87,7 @@ WPTS_CONFIG_FIELDS = {
 }
 
 WP_OPTIONS_GENERAL_URL = "options-general.php"
+WP_POST_LISTING_URL = "edit.php"
 
 WPTS_ABOUT_URL = "admin.php?page=abp01-trip-summary-about"
 WPTS_SETTINGS_URL = "admin.php?page=abp01-trip-summary-settings"
@@ -105,6 +107,9 @@ def wp_login_url(baseUrl: str):
 
 def wp_options_general_url(baseUrl: str):
 	return wp_admin_url(baseUrl) + WP_OPTIONS_GENERAL_URL
+
+def wp_post_listing_url(baseUrl: str):
+	return wp_admin_url(baseUrl) + WP_POST_LISTING_URL
 
 def wpts_about_url(baseUrl: str):
 	return wp_admin_url(baseUrl) + WPTS_ABOUT_URL
@@ -602,8 +607,85 @@ def wpts_lookup_data_screenshot(currentPage: Page, lookupDataUrl: str, includeFu
 	return currentPage
 
 def wpts_post_listing_screenshot(currentPage: Page, url: str, postId: str, includeFullPage: bool = False) -> Page:
-	
+	wpts_goto(currentPage, url)
+	currentPage.wait_for_load_state("load", timeout=WPTS_TIMEOUT)
+	currentPage.wait_for_selector("#the-list", state="visible", timeout=WPTS_TIMEOUT)
+
+	outFile = wpts_screenshot_page(currentPage, outFile="wpts-admin-post-listing.png")
+	wpts_register_screenshot(WptsScreenshot(
+		url=currentPage.url,
+		page="Admin - Post Listing",
+		outFile=outFile
+	))
+
+	if (includeFullPage):
+		outFileFull = wpts_screenshot_page(currentPage,
+			outFile="wpts-admin-post-listing-full.png",
+			fullPage=True)
+
+		wpts_register_screenshot(WptsScreenshot(
+			url=currentPage.url,
+			page="Admin - Post Listing - Full Page",
+			outFile=outFileFull,
+			isFullPage=True
+		))
+
+	# The configured sample post may be on a later listing page.
+	postRow = _wpts_listing_search_for_target_post(currentPage, postId)
+
+	# Wait for the audit controls to initialize before revealing the row actions.
+	currentPage.wait_for_load_state("load", timeout=WPTS_TIMEOUT)
+	currentPage.wait_for_selector("#abp01-listing-audit-log-window-__wrap",
+		state="attached",
+		timeout=WPTS_TIMEOUT)
+	postRow.hover(timeout=WPTS_TIMEOUT)
+	postRow.locator(f"a.abp01-admin-listing-audit-log-link[data-post='{postId}']")\
+		.click(timeout=WPTS_TIMEOUT)
+
+	# The modal is populated only after the audit request completes.
+	currentPage.wait_for_selector("#abp01-listing-audit-log-window .abp01-admin-trip-summary-audit-log",
+		state="visible",
+		timeout=WPTS_TIMEOUT)
+	currentPage.wait_for_selector("#abp01-progress-container",
+		state="hidden",
+		timeout=WPTS_TIMEOUT)
+	currentPage.wait_for_timeout(500)
+
+	outFile = wpts_screenshot_page(currentPage, outFile="wpts-admin-post-listing-audit.png")
+	wpts_register_screenshot(WptsScreenshot(
+		url=currentPage.url,
+		page=f"Admin - Post Listing - Audit Log Sample",
+		outFile=outFile
+	))
+
+	auditLogWindow = currentPage.locator("#abp01-listing-audit-log-window-content")
+	outFile = wpts_screenshot_locator(auditLogWindow, 
+		outFile="wpts-admin-post-listing-audit-window.png")
+
+	wpts_register_screenshot(WptsScreenshot(
+		url=currentPage.url,
+		page=f"Admin - Post Listing - Audit Log Sample",
+		outFile=outFile,
+		element="Audit Log Window"
+	))
+
 	return currentPage
+
+def _wpts_listing_search_for_target_post(currentPage: Page, postId: str) -> Locator:
+	postRow = currentPage.locator(f"#post-{postId}")
+	while postRow.count() == 0:
+		nextPage = currentPage.locator("#posts-filter .tablenav.top a.next-page:not(.disabled)")
+		if nextPage.count() == 0:
+			raise ValueError(f"Post {postId} was not found in the post listing [1].")
+
+		nextPageUrl = nextPage.get_attribute("href")
+		if (nextPageUrl is not None):
+			wpts_goto(currentPage, nextPageUrl)
+			currentPage.wait_for_selector("#the-list", state="visible", timeout=WPTS_TIMEOUT)
+		else:
+			raise ValueError(f"Post {postId} was not found in the post listing [2].")
+
+	return postRow
 
 def wpts_post_edit_screenshot(currentPage: Page, url: str, postId: str, includeFullPage: bool = False) -> Page:
 
@@ -736,7 +818,7 @@ def _wpts_config_value(name: str, value) -> str:
 	return value
 
 
-def wpts_setup(force: bool, args: WptsArgs|None = None):
+def wpts_setup(force: bool, wptsArgs: WptsArgs|None = None):
 	"""Reuse a valid config, or interactively collect and save all required values."""
 	try:
 		currentConfig = wpts_config()
@@ -745,6 +827,14 @@ def wpts_setup(force: bool, args: WptsArgs|None = None):
 
 	if currentConfig is not None and not force:
 		return
+
+	if (wptsArgs is not None and currentConfig is not None):
+		currentConfig.baseUrl = wptsArgs.host if wptsArgs.host \
+			else currentConfig.baseUrl
+		currentConfig.userName = wptsArgs.userName if wptsArgs.userName \
+			else currentConfig.userName
+		currentConfig.password = wptsArgs.password if wptsArgs.password \
+			else currentConfig.password
 
 	configData = {}
 	for name, label in WPTS_CONFIG_FIELDS.items():
@@ -796,6 +886,77 @@ def wpts_config() -> WptsConfig:
 		for name in WPTS_CONFIG_FIELDS
 	})
 
+def wpts_parse_args() -> WptsArgs:
+	wptsArgs = WptsArgs()
+	parser = argparse.ArgumentParser()
+
+	parser.add_argument("--host", required=False, 
+		help="Use this host. Must include protocol, i.e. http:// or https://. Takes precedence over the configured one.")
+	parser.add_argument("--user-name", dest="userName", required=False, 
+		help="Use this username for WordPress logon. Takes precedence over the configured one.")
+	parser.add_argument("--password", dest="password", required=False, 
+		help="Use this password for WordPress logon. Takes precedence over the configured one.")
+	parser.add_argument("--out-dir", dest="outDir", required=False, 
+		default="./screenshots",
+		help="Where to save screenshots")
+	parser.add_argument("--viewport", dest="viewport", required=False, 
+		default="1920x1080", 
+		help="Resolution to use, WIDTHxHEIGHT format")
+	parser.add_argument("--save-config", dest="saveCofig", action="store_true", 
+		required=False, 
+		default=False,
+		help="Save host, username and password in current configuration")
+	parser.add_argument("--reconfigure", dest="reconfigure", action="store_true", 
+		required=False, 
+		default=False,
+		help="Restart setup process, will use any current values that overlap as defaults")
+	parser.add_argument("--full-pages", dest="fullPages", action="store_true", 
+		required=False, 
+		default=False,
+		help="Whether to include full pages or not")
+	
+	parser.add_argument("--verbose", dest="verbose", action="store_true", 
+		required=False, 
+		default=False,
+		help="Enable advanced tracing")
+
+	parser.parse_args(namespace=wptsArgs)
+	return wptsArgs
+
+def wpts_validate_args_or_throw(wptsArgs: WptsArgs) -> None:
+	for option, configField, value in (
+		("--host", "baseUrl", wptsArgs.host),
+		("--user-name", "userName", wptsArgs.userName),
+		("--password", "password", wptsArgs.password)
+	):
+		if value is not None:
+			try:
+				_wpts_config_value(configField, value)
+			except ValueError as error:
+				raise ValueError(f"{option}: {error}") from None
+
+	if not isinstance(wptsArgs.outDir, str) or not wptsArgs.outDir.strip() or "\0" in wptsArgs.outDir:
+		raise ValueError("--out-dir must be a non-empty directory path without null characters.")
+
+	# A new output directory is valid, provided no existing parent is a file.
+	outDir = Path(wptsArgs.outDir)
+	for candidate in (outDir, *outDir.parents):
+		if candidate.exists() or candidate.is_symlink():
+			if not candidate.is_dir():
+				raise ValueError("--out-dir must refer to a directory, with no file in its parent path.")
+			break
+
+	_wpts_parse_viewport_spec(wptsArgs.viewport)
+
+	for option, value in (
+		("--save-config", wptsArgs.saveCofig),
+		("--reconfigure", wptsArgs.reconfigure),
+		("--full-pages", wptsArgs.fullPages),
+		("--verbose", wptsArgs.verbose)
+	):
+		if type(value) is not bool:
+			raise ValueError(f"{option} must be a boolean flag.")
+
 def wpts_save_screenshot_registry(screenshots: list[WptsScreenshot], outDir: str) -> str:
 	outRecords = []
 	outFile = f'{outDir.rstrip('/')}/catalog.json'	
@@ -809,7 +970,7 @@ def wpts_save_screenshot_registry(screenshots: list[WptsScreenshot], outDir: str
 
 	return outFile
 
-def wpts_report_screenshot_registry(registry: list[WptsScreenshot]):
+def wpts_report_screenshot_registry(screenshots: list[WptsScreenshot]):
 	pass
 
 def wpts_begin_status(label: str) -> Status:
@@ -819,11 +980,41 @@ def wpts_report_status_task(taskStatus: str, good: bool = True):
 	icon = ":thumbs_up:" if good else ":pile_of_poo:"
 	WPTS_CONSOLE.log(f'{icon} {taskStatus}', style="bold green")
 
+def _wpts_parse_viewport_spec(viewportSpec: str) -> tuple[int, int]:
+	message = "--viewport must use WIDTHxHEIGHT with two positive integers, e.g. 1920x1080."
+	if not isinstance(viewportSpec, str):
+		raise ValueError(message)
+
+	dimensions = [value.strip() for value in viewportSpec.lower().split("x")]
+	if len(dimensions) != 2 or any(not value.isascii() or not value.isdecimal() for value in dimensions):
+		raise ValueError(message)
+
+	try:
+		width, height = (int(value) for value in dimensions)
+	except ValueError:
+		raise ValueError(message) from None
+	if width <= 0 or height <= 0:
+		raise ValueError(message)
+
+	return width, height
+
+def wpts_parse_viewport_spec_into_context(wptsArgs: WptsArgs) -> None:
+	width, height = _wpts_parse_viewport_spec(wptsArgs.viewport)
+	WPTS_CONTEXT.viewPortWidth = width
+	WPTS_CONTEXT.viewPortHeight = height
+
 def main():
 	try:
-		wpts_setup(force=False)
+		wptsArgs = wpts_parse_args()
+		wpts_validate_args_or_throw(wptsArgs)
+
+		wpts_setup(force=wptsArgs.reconfigure)		
 		config = wpts_config()
+		
 		WPTS_CONTEXT.config = config
+		WPTS_CONTEXT.outDir = wptsArgs.outDir
+
+		wpts_parse_viewport_spec_into_context(wptsArgs)
 	except (OSError, ValueError, EOFError) as error:
 		raise SystemExit(f"Cannot configure screen capture: {error}") from None
 	except KeyboardInterrupt:
@@ -840,7 +1031,7 @@ def main():
 					userName=config.userName,
 					password=config.password,
 					retries=3,
-					verbose=False)
+					verbose=wptsArgs.verbose)
 	
 				WPTS_CONSOLE.print(':thumbs_up: Successfully logged on', style="bold green")
 			except TimeoutError:
@@ -874,7 +1065,12 @@ def main():
 					wpts_lookup_data_url(config.baseUrl))
 				wpts_report_status_task("Captured Admin Lookup Data page and add form!")
 
-				wptsPostSample = wpts_post_view_screenshot(wptsLookupData,
+				wptsPostListing = wpts_post_listing_screenshot(wptsLookupData,
+					wp_post_listing_url(config.baseUrl),
+					postId=config.knownSamplePostEdit)
+				wpts_report_status_task("Captured Admin Post Listing page and audit log!")
+
+				wptsPostSample = wpts_post_view_screenshot(wptsPostListing,
 					wpts_post_url(config.baseUrl, config.knownSamplePostView))
 				wpts_report_status_task("Captured Frontend Sample page!")
 
