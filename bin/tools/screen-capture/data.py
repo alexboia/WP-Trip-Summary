@@ -1,5 +1,7 @@
 from dataclasses import dataclass, field
 
+WPTS_TIMEOUT = 10000
+
 @dataclass
 class WptsArgs:
 	# Use this host, --host
@@ -55,3 +57,4 @@ class WptsContext:
 	outDir: str = "./screenshots"
 	# Empty means US English
 	langCode: str = ""
+	timeout: int = WPTS_TIMEOUT

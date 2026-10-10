@@ -162,6 +162,119 @@ Keep each operation in a function with a clear responsibility. `wpts_leaflet_tes
 
 Add new scenarios to the corresponding group and reuse the request and assertion helpers. Preserve the test names, messages and exit codes during refactoring; compare runs against the same host before and after the change.
 
+## Capturing screenshots
+
+[bin/tools/screen-capture/run.py](bin/tools/screen-capture/run.py) captures the plug-in's admin screens and frontend viewer using Playwright and headless Firefox. It also generates filtered image variants and a JSON catalog describing each capture.
+
+### Preparing the environment
+
+Use Python 3.12 or newer; the commands below use Python 3.13, which has been used to verify the tool. The Python dependencies are pinned in [requirements.txt](bin/tools/screen-capture/requirements.txt).
+
+Prepare a development WordPress installation with WP Trip Summary active and an administrator account that can access Settings, the plug-in's admin pages and the sample post editor. Login must work through the standard username/password form; the tool does not handle interactive CAPTCHA or two-factor authentication challenges.
+
+The sample editor post must expose the Trip Summary launcher and route log metaboxes. For the frontend captures, prepare a post with trip information, a GPS track with altitude data, and visible teaser, map, altitude profile and route log controls. The editor and frontend samples can refer to the same post. The configured map tile service must be reachable from Firefox.
+
+From the plug-in root, in PowerShell:
+
+```powershell
+cd bin\tools\screen-capture
+py -3.13 -m venv .venv
+.\init.ps1
+.\.venv\Scripts\python.exe -m playwright install firefox
+.\.venv\Scripts\python.exe run.py --help
+```
+
+[init.ps1](bin/tools/screen-capture/init.ps1) creates `.venv` if needed and installs the Python dependencies. The separate Playwright command installs the Firefox binary used by the tool. Run it again after updating Playwright. Calling `.venv\Scripts\python.exe` explicitly keeps all commands on the same interpreter; activating the environment is optional.
+
+### Configuring the capture run
+
+Keep the working directory at `bin/tools/screen-capture` for the following commands. Both `config.yaml` and relative output paths are resolved from the current working directory.
+
+```powershell
+.\.venv\Scripts\python.exe run.py
+```
+
+On the first run, or when the configuration is invalid, the tool prompts for five required values, writes `config.yaml`, then starts capturing. A valid existing configuration is reused. The file has this structure; replace every sample value with your development site's details:
+
+```yaml
+baseUrl: "http://localhost:8080"
+userName: "screenshot-user"
+password: "replace-with-local-password"
+knownSamplePostEdit: "42"
+knownSamplePostView: "/sample-trip/"
+```
+
+`baseUrl` is the WordPress installation URL, including `http://` or `https://`, an optional port and an optional installation subdirectory. It must not include credentials, a query or a fragment. `knownSamplePostEdit` is a positive post ID used for the listing audit window and editor captures. `knownSamplePostView` is a permalink relative to `baseUrl`, such as `/sample-trip/` or `?p=42`.
+
+The password prompt hides typed characters, but the saved YAML contains the password in plain text. The tool's `config.yaml` is ignored by Git; keep it local. To change the saved values interactively, run:
+
+```powershell
+.\.venv\Scripts\python.exe run.py --reconfigure
+```
+
+Press Enter to retain an existing value, including the password. Reconfiguration continues into the capture workflow after saving; it is not a setup-only command.
+
+### Command-line options
+
+```powershell
+.\.venv\Scripts\python.exe run.py --out-dir ./screenshots/review --viewport 1920x1080
+.\.venv\Scripts\python.exe run.py --full-pages --verbose
+```
+
+| Option | Current behavior |
+| --- | --- |
+| `--out-dir PATH` | Output directory; defaults to `./screenshots`. A new directory path is accepted, but it cannot point to an existing file or have a file as a parent. |
+| `--viewport WIDTHxHEIGHT` | Browser viewport; defaults to `1920x1080`. Both dimensions must be positive integers. Uppercase `X` and surrounding spaces are also accepted; quote values containing spaces. |
+| `--reconfigure` | Prompt for configuration again, using valid saved values as defaults, then capture. |
+| `--full-pages` | Adds full-page images throughout the capture sequence, alongside the regular page and element captures. Full-page filenames end in `-full.png`. |
+| `--verbose` | Log navigation requests, responses and failures during login. |
+| `--host URL`, `--user-name USER`, `--password PASSWORD` | Parsed and validated, but currently not applied to the configuration used by `main()`. Use `config.yaml` or `--reconfigure` to change login details. |
+| `--save-config` | Accepted by the parser, but currently has no effect in `main()`. Interactive setup and reconfiguration save the YAML file. |
+| `-h`, `--help` | Print the CLI help and exit. |
+
+The limitations above describe the current implementation; the help text for the credential override options describes their intended behavior.
+
+### Captured screens and output
+
+Each run executes the complete capture sequence:
+
+- About, Settings tabs and the predefined map tile layers dialog.
+- Maintenance page, missing track files report and Nginx access directives helper.
+- System logs, lookup data management and its add-item form.
+- Post listing and the sample post's audit window, including a separate crop of the window. The tool follows listing pagination to find the configured post.
+- Five post editor element captures: the launcher metabox, the trip editor on Info and Map, the route log metabox and its add-entry form. `--full-pages` adds one image of the entire editor page with the dialogs closed.
+- Frontend teaser and viewer on Info, Map, Map with altitude profile, and Route Log.
+
+The lookup and post editor forms are opened for capture without saving their contents. The complete run also executes the two maintenance tools listed above and accepts their confirmation dialogs. It temporarily changes the **site language** to US English and restores the previous value after the capture sequence succeeds. If capture stops before that restoration step, restore the language through WordPress Settings > General.
+
+Output is organized as follows:
+
+```text
+screenshots/
+  wpts-about.png
+  wpts-admin-post-edit-launcher.png
+  wpts-admin-post-edit-info.png
+  wpts-admin-post-edit-map.png
+  wpts-admin-post-edit-route-log.png
+  wpts-admin-post-edit-route-log-form.png
+  ...
+  filtered/
+    wpts-about.png
+    ...
+  catalog.json
+```
+
+The original PNGs are kept in the output directory. `filtered/` contains copies processed with the softening and vignette filters. After a successful run, `catalog.json` records `page`, `url`, `outFile`, `isFullPage` and `element` for each original capture; URLs are stored relative to the configured WordPress base URL. Reusing an output directory overwrites matching filenames, so use a different `--out-dir` when keeping multiple capture sets.
+
+Review the images before using them in documentation. The tool does not copy or rename them into `assets/en_US/`; select the required images and update the readme screenshot assets and captions separately, following [Updating the readme files](#updating-the-readme-files).
+
+### Troubleshooting
+
+- **Missing Python imports:** run the script and dependency installation through the same `.venv\Scripts\python.exe` interpreter shown above.
+- **Firefox executable missing:** run `.\.venv\Scripts\python.exe -m playwright install firefox` from the tool directory.
+- **Login timeout:** rerun with `--verbose` and check the saved credentials, WordPress URL, redirects and any login challenge. Each run uses a fresh browser context.
+- **Missing controls or map timeout:** check that the configured sample posts contain the expected Trip Summary content, the metaboxes are enabled, and the track and map tiles load normally in Firefox. Most explicit waits use the `WPTS_TIMEOUT` constant, currently 10 seconds.
+
 ## Updating the readme files
 
 `README.md` (GitHub) and `README.txt` (WordPress.org) are generated by [bin/tools/build-readme.php](bin/tools/build-readme.php). Do not edit them directly: edit their sources in `readme/` and rebuild. `README.txt` is also read at runtime: the plug-in's About page extracts its `== Changelog ==` section, and the build and SVN export scripts copy it as `readme.txt`.

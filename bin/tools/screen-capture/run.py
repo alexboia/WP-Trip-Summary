@@ -13,9 +13,14 @@ import os
 import json
 import argparse
 
-from data import WptsArgs, WptsContext, WptsConfig, WptsScreenshot
-from image import wpts_apply_soften_filter, wpts_apply_vignette_filter
+from data import WptsArgs, WptsScreenshot
+from context import wpts_context_get
 from config import wpts_get_config, wpts_setup, wpts_config_value
+from image import wpts_apply_soften_filter, wpts_apply_vignette_filter
+from registry import wpts_register_screenshot, wpts_get_registered_screenshots
+from console import wpts_print_fail, wpts_print_neutral, wpts_print_ok, wpts_begin_status, wpts_report_status_task
+from nav import wpts_goto, wpts_screenshot_locator, wpts_screenshot_page
+from wp import wp_logon, wp_change_language_to
 
 WPTS_TIMEOUT = 10000
 
@@ -38,10 +43,6 @@ WPTS_SETTINGS_URL = "admin.php?page=abp01-trip-summary-settings"
 WPTS_MAINTENANCE_URL = "admin.php?page=abp01-trip-summary-maintenance"
 WPTS_SYSTEM_LOGS_URL = "admin.php?page=abp01-system-logs"
 WPTS_LOOKUP_DATA_URL = "admin.php?page=abp01-trip-summary-lookup"
-
-WPTS_CONSOLE = Console()
-WPTS_SCREENSHOT_REGISTRY: list[WptsScreenshot] = []
-WPTS_CONTEXT = WptsContext()
 
 def wp_admin_url(baseUrl:str):
 	return baseUrl.rstrip('/') + "/wp-admin/"
@@ -76,38 +77,6 @@ def wpts_lookup_data_url(baseUrl: str):
 def wpts_post_url(baseUrl: str, page: str):
 	return baseUrl.rstrip('/') + '/' + page.lstrip('/')
 
-def wpts_goto(currentPage: Page, url: str):
-	currentPage.goto(url=url, 
-		timeout=WPTS_TIMEOUT, 
-		wait_until="domcontentloaded")
-
-def wpts_screenshot_page(currentPage: Page, outFile: str, fullPage: bool|None = None) -> str:
-	outPath = f'{WPTS_CONTEXT.outDir}/{outFile}'
-	currentPage.screenshot(path=outPath, full_page=fullPage)
-	return outPath
-
-def wpts_screenshot_locator(locator: Locator, outFile: str):
-	outPath = f'{WPTS_CONTEXT.outDir}/{outFile}'
-	locator.screenshot(path=outPath)
-	return outPath
-
-def wpts_to_relative_url(url: str) -> str:
-	return url.replace(WPTS_CONTEXT.config.baseUrl, "").lstrip('/') \
-		if WPTS_CONTEXT.config is not None \
-		else url
-
-def wpts_register_screenshot(screnshot: WptsScreenshot):
-	WPTS_SCREENSHOT_REGISTRY.append(WptsScreenshot(
-		outFile = screnshot.outFile,
-		url = wpts_to_relative_url(screnshot.url),
-		page = screnshot.page,
-		element =screnshot.element,
-		isFullPage =screnshot.isFullPage
-	))
-
-def wpts_get_registered_screenshots() -> list[WptsScreenshot]:
-	return WPTS_SCREENSHOT_REGISTRY
-
 def wpts_apply_image_filers(screenshots: list[WptsScreenshot], filteredOutDir: str):
 	filteredOutDir = filteredOutDir.rstrip('/')
 	if not os.path.isdir(filteredOutDir):
@@ -122,108 +91,7 @@ def wpts_apply_image_filers(screenshots: list[WptsScreenshot], filteredOutDir: s
 
 			cv2.imwrite(f'{filteredOutDir}/{fileName}', outputImage)
 		else:
-			WPTS_CONSOLE.print(f':pile_of_poo: Could not open mage {screen.outFile}', style="bold red")
-
-def wpts_fill_field(currentPage: Page, selector: str, value: str, retries: int = 3) -> bool:
-	currentPage.wait_for_selector(selector, state="visible")
-	currentPage.fill(selector, value)
-
-	currentPage.wait_for_timeout(50)
-	readValue = currentPage.locator(selector).input_value()
-
-	while readValue != value and retries > 0:
-		currentPage.fill(selector, value)
-		currentPage.wait_for_timeout(50)
-		readValue = currentPage.locator(selector).input_value()
-		retries -= 1
-
-	return readValue == value
-
-def wp_logon(browser: Browser, logonPageUrl: str, userName: str, password: str, retries: int, verbose: bool = True) -> Page:
-	context = browser.new_context(viewport={
-		"width": WPTS_CONTEXT.viewPortWidth, 
-		"height": WPTS_CONTEXT.viewPortHeight
-	})
-
-	# Always use incognito contexts
-	logonPage = context.new_page()
-	wpts_goto(logonPage, logonPageUrl)
-
-	if (verbose):
-		logonPage.on("request", lambda r:
-			WPTS_CONSOLE.print(f'>> {r.method} {r.url}', style="bold yellow3")
-			if r.is_navigation_request() else None)
-
-		logonPage.on("response", lambda r:
-			WPTS_CONSOLE.print(f'<< {r.status} {r.url} -> {r.headers.get("location", "")}', style="bold yellow3")
-			if r.request.is_navigation_request() else None)
-
-		logonPage.on("requestfailed", lambda r:
-			WPTS_CONSOLE.print(f'FAIL {r.url} {r.failure}', style="bold red")
-			if r.is_navigation_request() else None)
-
-	# Check if captcha is still there and bail if its
-
-	# Fill in the logon form and wait for the 
-	# WordPress built-in auto-focus timeout to pass
-	logonPage.wait_for_timeout(200)
-
-	# We use this helper because the value may not be set at once, 
-	# mostly due to the auto-focus we just talked about
-	fillOK = wpts_fill_field(logonPage, "#user_login", userName)
-	if (not fillOK):
-		raise SystemExit("Failed to fill in username at logon!")
-
-	fillOK = wpts_fill_field(logonPage, "#user_pass", password)
-	if (not fillOK):
-		raise SystemExit("Failed to fill in password at logon!")
-	
-	logonPage.click("#wp-submit")
-
-	while retries > 0:
-		try:
-			logonPage.wait_for_url("**/wp-admin**", 
-				timeout=WPTS_TIMEOUT, 
-				wait_until="domcontentloaded")
-			break
-		except TimeoutError as timeoutErr:
-			WPTS_CONSOLE.print(f':pile_of_poo: Logon timed out while waiting for wp-admin redirect. Current UR: {logonPage.url}.')
-			wpLogonError = logonPage.locator("#login_error").all_text_contents()
-
-			if (wpLogonError):
-				WPTS_CONSOLE.print(f':pile_of_poo: Got WordPress logon error: {wpLogonError}.', style="bold red")
-
-			retries -= 1
-			if (retries == 0):
-				raise timeoutErr
-
-	return logonPage
-
-def wp_change_language_to(currentPage: Page, settingPageUrl: str, langCode: str = "") -> str:
-	previousUrl = currentPage.url
-	wpts_goto(currentPage, settingPageUrl)
-
-	currentPage.wait_for_selector("#WPLANG", 
-		state="visible", 
-		timeout=WPTS_TIMEOUT)
-
-	wpLang = currentPage.locator("#WPLANG")
-	oldLanguageCode = wpLang.input_value()
-
-	if (oldLanguageCode != langCode):
-		wpLang.select_option(langCode)
-
-		readLanguageCode = wpLang.input_value()
-		if (readLanguageCode != langCode):
-			raise SystemExit('Could not set language code')
-
-		currentPage.click("#submit")
-		currentPage.wait_for_selector("#setting-error-settings_updated", 
-			state="visible", 
-			timeout=WPTS_TIMEOUT)
-
-	wpts_goto(currentPage, previousUrl)
-	return oldLanguageCode
+			wpts_print_fail(f'Could not open mage {screen.outFile}')
 
 def wpts_about_screenshot(currentPage: Page, url: str, includeFullPage: bool = False) -> Page:
 	wpts_goto(currentPage, url)
@@ -469,7 +337,7 @@ def wpts_system_logs_screenshot(currentPage: Page, systemLogsUrl: str, includeFu
 
 	if (includeFullPage):
 		outFileFull = wpts_screenshot_page(currentPage, 
-			outFile="wpts-admin-system-logs.png", 
+			outFile="wpts-admin-system-logs-full.png",
 			fullPage=True)
 
 		wpts_register_screenshot(WptsScreenshot(
@@ -811,7 +679,7 @@ def wpts_post_view_screenshot(currentPage: Page, postViewUrl: str, includeFullPa
 	# Full page, only if requested
 	if (includeFullPage):
 		outFileFull = wpts_screenshot_page(currentPage, 
-			outFile="screenshots/wpts-sample-post-full.png", 
+			outFile="wpts-sample-post-full.png",
 			fullPage=True)
 
 		wpts_register_screenshot(WptsScreenshot(
@@ -910,13 +778,6 @@ def wpts_save_screenshot_registry(screenshots: list[WptsScreenshot], outDir: str
 def wpts_report_screenshot_registry(screenshots: list[WptsScreenshot]):
 	pass
 
-def wpts_begin_status(label: str) -> Status:
-	return WPTS_CONSOLE.status(f'[bold green] {label}')
-	
-def wpts_report_status_task(taskStatus: str, good: bool = True):
-	icon = ":thumbs_up:" if good else ":pile_of_poo:"
-	WPTS_CONSOLE.log(f'{icon} {taskStatus}', style="bold green")
-
 def _wpts_parse_viewport_spec(viewportSpec: str) -> tuple[int, int]:
 	message = f"{WPTS_ARG_VIEWPORT} must use WIDTHxHEIGHT with two positive integers, e.g. 1920x1080."
 	if not isinstance(viewportSpec, str):
@@ -937,19 +798,21 @@ def _wpts_parse_viewport_spec(viewportSpec: str) -> tuple[int, int]:
 
 def wpts_parse_viewport_spec_into_context(wptsArgs: WptsArgs) -> None:
 	width, height = _wpts_parse_viewport_spec(wptsArgs.viewport)
-	WPTS_CONTEXT.viewPortWidth = width
-	WPTS_CONTEXT.viewPortHeight = height
+	wptsContext = wpts_context_get()
+	wptsContext.viewPortWidth = width
+	wptsContext.viewPortHeight = height
 
 def main():
 	try:
 		wptsArgs = wpts_parse_args()
+		wptsContext = wpts_context_get()
 		wpts_validate_args_or_throw(wptsArgs)
 
 		wpts_setup(force=wptsArgs.reconfigure)		
 		config = wpts_get_config()
 		
-		WPTS_CONTEXT.config = config
-		WPTS_CONTEXT.outDir = wptsArgs.outDir
+		wptsContext.config = config
+		wptsContext.outDir = wptsArgs.outDir
 
 		wpts_parse_viewport_spec_into_context(wptsArgs)
 	except (OSError, ValueError, EOFError) as error:
@@ -963,48 +826,54 @@ def main():
 		try:
 			logonUrl = wp_login_url(config.baseUrl)		
 			try:
-				WPTS_CONSOLE.print(f'Logging on to {config.baseUrl}...', style="bold yellow3")
+				wpts_print_neutral(f'Logging on to {config.baseUrl}...')
 				wpAdmin = wp_logon(browser, logonUrl,
 					userName=config.userName,
 					password=config.password,
 					retries=3,
 					verbose=wptsArgs.verbose)
 	
-				WPTS_CONSOLE.print(':thumbs_up: Successfully logged on', style="bold green")
+				wpts_print_ok('Successfully logged on')
 			except TimeoutError:
-				WPTS_CONSOLE.print(":pile_of_poo: Logon timed out!", style="bold red")
+				wpts_print_fail("Logon timed out!")
 				raise SystemExit(1)
 	
 			with wpts_begin_status("Capturing screenshots...") as status:
 				oldLanguageCode = wp_change_language_to(wpAdmin, 
 					wp_options_general_url(config.baseUrl),
-					WPTS_CONTEXT.langCode)
+					wptsContext.langCode)
 
-				wpts_report_status_task(f'Successfully set langauge code to: {WPTS_CONTEXT.langCode if WPTS_CONTEXT.langCode else "en"}. Old langauge code: {oldLanguageCode if oldLanguageCode else "en"}.')
+				wpts_report_status_task(f'Successfully set langauge code to: {wptsContext.langCode if wptsContext.langCode else "en"}. Old langauge code: {oldLanguageCode if oldLanguageCode else "en"}.')
 
 				wptsAbout = wpts_about_screenshot(wpAdmin, 
-					wpts_about_url(config.baseUrl))
+					wpts_about_url(config.baseUrl),
+					includeFullPage=wptsArgs.fullPages)
 				wpts_report_status_task("Captured Admin About page!")
 	
 				wptsSettings = wpts_settings_screenshots(wptsAbout, 
-					wpts_settings_url(config.baseUrl))
+					wpts_settings_url(config.baseUrl),
+					includeFullPage=wptsArgs.fullPages)
 				wpts_report_status_task("Captured Admin Settings page!")
 	
 				wptsMaintenance = wpts_maintenance_screenshots(wptsSettings, 
-					wpts_maintenance_url(config.baseUrl))
+					wpts_maintenance_url(config.baseUrl),
+					includeFullPage=wptsArgs.fullPages)
 				wpts_report_status_task("Captured Admin Maintenance page!")
 
 				wptsSystemLogs = wpts_system_logs_screenshot(wptsMaintenance, 
-					wpts_admin_system_logs_url(config.baseUrl))
+					wpts_admin_system_logs_url(config.baseUrl),
+					includeFullPage=wptsArgs.fullPages)
 				wpts_report_status_task("Captured Admin System Logs page!")
 	
 				wptsLookupData = wpts_lookup_data_screenshot(wptsSystemLogs,
-					wpts_lookup_data_url(config.baseUrl))
+					wpts_lookup_data_url(config.baseUrl),
+					includeFullPage=wptsArgs.fullPages)
 				wpts_report_status_task("Captured Admin Lookup Data page and add form!")
 
 				wptsPostListing = wpts_post_listing_screenshot(wptsLookupData,
 					wp_post_listing_url(config.baseUrl),
-					postId=config.knownSamplePostEdit)
+					postId=config.knownSamplePostEdit,
+					includeFullPage=wptsArgs.fullPages)
 				wpts_report_status_task("Captured Admin Post Listing page and audit log!")
 
 				wptsPostEdit = wpts_post_edit_screenshot(wptsPostListing,
@@ -1014,7 +883,8 @@ def main():
 				wpts_report_status_task("Captured Admin Post Editor elements!")
 
 				wptsPostSample = wpts_post_view_screenshot(wptsPostEdit,
-					wpts_post_url(config.baseUrl, config.knownSamplePostView))
+					wpts_post_url(config.baseUrl, config.knownSamplePostView),
+					includeFullPage=wptsArgs.fullPages)
 				wpts_report_status_task("Captured Frontend Sample page!")
 
 				wp_change_language_to(wptsPostSample, 
@@ -1023,7 +893,7 @@ def main():
 
 				wpts_report_status_task(f'Successfully restored langauge code to: {oldLanguageCode if oldLanguageCode else "en"}.')
 
-				filteredOutDir = f'{WPTS_CONTEXT.outDir}/filtered'
+				filteredOutDir = f'{wptsContext.outDir}/filtered'
 				wpts_apply_image_filers(wpts_get_registered_screenshots(), 
 					filteredOutDir)
 				wpts_report_status_task("Applied filters!")
@@ -1031,7 +901,7 @@ def main():
 				wptsPostSample.close()
 
 				catalogFile = wpts_save_screenshot_registry(wpts_get_registered_screenshots(), 
-					WPTS_CONTEXT.outDir)
+					wptsContext.outDir)
 				wpts_report_status_task(f"Saved catalog: {catalogFile}!")
 		finally:
 			browser.close()
