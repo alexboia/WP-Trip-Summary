@@ -22,6 +22,8 @@ class WptsArgs:
 	fullPages: bool = False
 	# Whether to enable advanced tracing
 	verbose: bool = False
+	# Show a report of what has been captured
+	report: bool = False
 
 @dataclass
 class WptsConfig:

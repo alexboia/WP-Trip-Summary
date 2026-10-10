@@ -18,7 +18,7 @@ from context import wpts_context_get
 from config import wpts_get_config, wpts_setup, wpts_config_value
 from image import wpts_apply_soften_filter, wpts_apply_vignette_filter
 from registry import wpts_register_screenshot, wpts_get_registered_screenshots
-from console import wpts_print_fail, wpts_print_neutral, wpts_print_ok, wpts_begin_status, wpts_report_status_task
+from console import wpts_print_fail, wpts_print_neutral, wpts_print_ok, wpts_begin_status, wpts_report_status_task, wpts_displayable_table_from_screenshot_registry, wpts_print_table
 from nav import wpts_goto, wpts_screenshot_locator, wpts_screenshot_page
 from wp import wp_logon, wp_change_language_to
 
@@ -33,6 +33,7 @@ WPTS_ARG_SAVE_CONFIG = "--save-config"
 WPTS_ARG_RECONFIGURE = "--reconfigure"
 WPTS_ARG_FULL_PAGES = "--full-pages"
 WPTS_ARG_VERBOSE = "--verbose"
+WPTS_ARG_REPORT = "--report"
 
 WP_OPTIONS_GENERAL_URL = "options-general.php"
 WP_POST_LISTING_URL = "edit.php"
@@ -725,6 +726,11 @@ def wpts_parse_args() -> WptsArgs:
 		default=False,
 		help="Enable advanced tracing")
 
+	parser.add_argument(WPTS_ARG_REPORT, dest="report", action="store_true", 
+		required=False, 
+		default=False,
+		help="Show a table report of what has been captured")
+
 	parser.parse_args(namespace=wptsArgs)
 	return wptsArgs
 
@@ -757,7 +763,8 @@ def wpts_validate_args_or_throw(wptsArgs: WptsArgs) -> None:
 		(WPTS_ARG_SAVE_CONFIG, wptsArgs.saveCofig),
 		(WPTS_ARG_RECONFIGURE, wptsArgs.reconfigure),
 		(WPTS_ARG_FULL_PAGES, wptsArgs.fullPages),
-		(WPTS_ARG_VERBOSE, wptsArgs.verbose)
+		(WPTS_ARG_VERBOSE, wptsArgs.verbose),
+		(WPTS_ARG_REPORT, wptsArgs.report)
 	):
 		if type(value) is not bool:
 			raise ValueError(f"{option} must be a boolean flag.")
@@ -776,7 +783,8 @@ def wpts_save_screenshot_registry(screenshots: list[WptsScreenshot], outDir: str
 	return outFile
 
 def wpts_report_screenshot_registry(screenshots: list[WptsScreenshot]):
-	pass
+	table = wpts_displayable_table_from_screenshot_registry(screenshots)
+	wpts_print_table(table)
 
 def _wpts_parse_viewport_spec(viewportSpec: str) -> tuple[int, int]:
 	message = f"{WPTS_ARG_VIEWPORT} must use WIDTHxHEIGHT with two positive integers, e.g. 1920x1080."
@@ -900,9 +908,13 @@ def main():
 
 				wptsPostSample.close()
 
-				catalogFile = wpts_save_screenshot_registry(wpts_get_registered_screenshots(), 
+				screenshots = wpts_get_registered_screenshots()
+				catalogFile = wpts_save_screenshot_registry(screenshots, 
 					wptsContext.outDir)
 				wpts_report_status_task(f"Saved catalog: {catalogFile}!")
+
+				if (wptsArgs.report):
+					wpts_report_screenshot_registry(screenshots)
 		finally:
 			browser.close()
 
