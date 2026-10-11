@@ -810,6 +810,9 @@ def wpts_parse_viewport_spec_into_context(wptsArgs: WptsArgs) -> None:
 	wptsContext.viewPortWidth = width
 	wptsContext.viewPortHeight = height
 
+def _wpts_lang_code_desc(langCode: str|None) -> str:
+	return langCode if langCode else "en"
+
 def main():
 	try:
 		wptsArgs = wpts_parse_args()
@@ -851,7 +854,7 @@ def main():
 					wp_options_general_url(config.baseUrl),
 					wptsContext.langCode)
 
-				wpts_report_status_task(f'Successfully set langauge code to: {wptsContext.langCode if wptsContext.langCode else "en"}. Old langauge code: {oldLanguageCode if oldLanguageCode else "en"}.')
+				wpts_report_status_task(f'Successfully set langauge code to: {_wpts_lang_code_desc(wptsContext.langCode)}. Old langauge code: {_wpts_lang_code_desc(oldLanguageCode)}.')
 
 				wptsAbout = wpts_about_screenshot(wpAdmin, 
 					wpts_about_url(config.baseUrl),
@@ -899,14 +902,14 @@ def main():
 					wp_options_general_url(config.baseUrl), 
 					oldLanguageCode)
 
-				wpts_report_status_task(f'Successfully restored langauge code to: {oldLanguageCode if oldLanguageCode else "en"}.')
+				wpts_report_status_task(f'Successfully restored langauge code to: {_wpts_lang_code_desc(oldLanguageCode)}.')
+
+				wptsPostSample.close()
 
 				filteredOutDir = f'{wptsContext.outDir}/filtered'
 				wpts_apply_image_filers(wpts_get_registered_screenshots(), 
 					filteredOutDir)
 				wpts_report_status_task("Applied filters!")
-
-				wptsPostSample.close()
 
 				screenshots = wpts_get_registered_screenshots()
 				catalogFile = wpts_save_screenshot_registry(screenshots, 
