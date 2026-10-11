@@ -40,6 +40,9 @@
 
 	var $ctrlFrontend = null;
 	var $ctrlTechboxTabs = null;
+	var $ctrlTabNavigation = null;
+	var $ctrlTabStrip = null;
+	var $ctrlTabScrollButtons = null;
 	var $ctrlMapProgress = null;
 	var $ctrlMapHolder = null;
 
@@ -204,12 +207,15 @@
 			if (clickedTab == 'abp01-tab-map') {
 				initOrRefreshMap();
 			}
+
+			refreshTabNavigation();
 		});
 
 		$ctrlTechboxTabs.bind('easytabs:initialised', function(e, $defaultTabLink, defaultPanel) {
 			if ($defaultTabLink.hasClass('abp01-tab-active')) {
 				$defaultTabLink.removeClass('abp01-tab-active');
 			}
+			refreshTabNavigation();
 		});
 
 		$ctrlTechboxTabs = $ctrlTechboxTabs.easytabs({
@@ -230,6 +236,89 @@
 				$ctrlTechboxTabs.easytabs('select', '#' + settings.initialViewerTab);
 			}
 		});
+	}
+
+	function updateTabScrollButtons() {
+		var tabStrip = $ctrlTabStrip[0];
+		var maxScroll = tabStrip.scrollWidth - tabStrip.clientWidth;
+		var scrollLeft = tabStrip.scrollLeft;
+
+		if ($ctrlTabStrip.css('direction') === 'rtl') {
+			scrollLeft += maxScroll;
+		}
+
+		$ctrlTabScrollButtons.filter('.abp01-tabs-scroll-left')
+			.prop('disabled', scrollLeft <= 1);
+		$ctrlTabScrollButtons.filter('.abp01-tabs-scroll-right')
+			.prop('disabled', scrollLeft >= maxScroll - 1);
+	}
+
+	function revealViewerTab(tab) {
+		if (!tab || !$ctrlTabStrip.length) {
+			return;
+		}
+
+		var stripBounds = $ctrlTabStrip[0].getBoundingClientRect();
+		var tabBounds = tab.getBoundingClientRect();
+		var visibleLeft = stripBounds.left + parseFloat($ctrlTabStrip.css('padding-left'));
+		var visibleRight = stripBounds.right - parseFloat($ctrlTabStrip.css('padding-right'));
+
+		if (tabBounds.left < visibleLeft || tabBounds.width > visibleRight - visibleLeft) {
+			$ctrlTabStrip[0].scrollBy({ left: tabBounds.left - visibleLeft });
+		} else if (tabBounds.right > visibleRight) {
+			$ctrlTabStrip[0].scrollBy({ left: tabBounds.right - visibleRight });
+		}
+		
+		updateTabScrollButtons();
+	}
+
+	function refreshTabNavigation() {
+		if (!$ctrlTabNavigation.length || !$ctrlTabStrip.length) {
+			return;
+		}
+
+		// Compare against the full navigation width, even while the arrows take space.
+		// This lets them disappear again when the container grows enough to fit all tabs.
+		var overflows = $ctrlTabStrip[0].scrollWidth > $ctrlTabNavigation[0].clientWidth + 1;
+
+		$ctrlTabNavigation.toggleClass('abp01-tabs-overflow', overflows);
+		$ctrlTabScrollButtons.prop('hidden', !overflows);
+		
+		revealViewerTab($ctrlTabStrip.find('.abp01-tab-active')[0]);
+		updateTabScrollButtons();
+	}
+
+	function initTabNavigation() {
+		if (!$ctrlTabNavigation.length || !$ctrlTabStrip.length) {
+			return;
+		}
+
+		$ctrlTabScrollButtons.on('click', function() {
+			var direction = Number($(this).data('scroll-direction'));
+			var distance = Math.max(120, $ctrlTabStrip[0].clientWidth * 0.75);
+
+			$ctrlTabStrip[0].scrollBy({
+				left: direction * distance,
+				behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+			});
+		});
+
+		$ctrlTabStrip.on('scroll', updateTabScrollButtons);
+		$ctrlTabStrip.on('focusin', 'a', function() {
+			revealViewerTab(this.parentNode);
+		});
+
+		if (window.ResizeObserver) {
+			new ResizeObserver(refreshTabNavigation).observe($ctrlTabNavigation[0], { box: 'border-box' });
+		} else {
+			$(window).on('resize', refreshTabNavigation);
+		}
+
+		if (document.fonts) {
+			document.fonts.ready.then(refreshTabNavigation);
+		}
+
+		refreshTabNavigation();
 	}
 
 	function initTeasers() {
@@ -317,6 +406,9 @@
 
 	function initControls() {
 		$ctrlFrontend = $('#abp01-techbox-frontend');
+		$ctrlTabNavigation = $('#abp01-techbox-tab-navigation');
+		$ctrlTabStrip = $('#abp01-techbox-tabs');
+		$ctrlTabScrollButtons = $ctrlTabNavigation.find('.abp01-tabs-scroll');
 		$ctrlTeaserAction = $('#abp01-techbox-teaser-action');
 		$ctrlContentSkipTeaserAction = $('#abp01-techbox-content-skip-teaser-action');
 		$ctrlTeaser = $('#abp01-techbox-teaser');
@@ -342,6 +434,7 @@
 
 		if (context.totalTabCount > 0) {
 			initControls();
+			initTabNavigation();
 			initItemValueTogglers();
 			initTeasers();
 			initDocument();

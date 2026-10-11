@@ -57,35 +57,47 @@
 		</div>
 		<div id="abp01-techbox-wrapper" class="abp01-techbox-wrapper">
 			<?php if ($totalTabCount > 0): ?>
-				<ul id="abp01-techbox-tabs" class="abp01-techbox-tabs">
-					<?php if ($data->info->exists): ?>
-						<li id="abp01-tab-info" class="abp01-tab abp01-tab-info">
-							<a href="#abp01-techbox-info">
-								<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1793A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-									<path d="M4 5h16M4 12h16M4 19h10"/>
-								</svg>
-								<?php echo esc_html__('Prosaic details', 'abp01-trip-summary'); ?>
-							</a>
-						</li>
-					<?php endif; ?>
-					<?php if ($data->track->exists): ?>
-						<li id="abp01-tab-map" class="abp01-tab abp01-tab-map">
-							<a href="#abp01-techbox-map">
-								<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1793A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-									<path d="M9 20l-6 2V6l6-2 6 2 6-2v16l-6 2-6-2V4"/>
-								</svg>
-								<?php echo esc_html__('Map', 'abp01-trip-summary'); ?>
-							</a>
-						</li>
-					<?php endif; ?>
-					<?php if ($hasAdditionalTabs): ?>
-						<?php foreach ($data->additionalTabs as $tabId => $tabInfo): ?>
-							<li id="<?php echo esc_attr($tabId); ?>" class="abp01-tab <?php echo esc_attr($tabId); ?>">
-								<a href="#<?php echo esc_attr($tabId) ?>-content"><span class="dashicons <?php echo !empty($tabInfo['icon']) ? esc_attr($tabInfo['icon']) : '' ?>"></span><?php echo esc_html($tabInfo['label']); ?></a>
-							</li> 
-						<?php endforeach; ?>
-					<?php endif; ?>
-				</ul>
+				<div id="abp01-techbox-tab-navigation" class="abp01-techbox-tab-navigation">
+					<button type="button" class="abp01-tabs-scroll abp01-tabs-scroll-left" data-scroll-direction="-1"
+						aria-label="<?php echo esc_attr__('Scroll tabs left', 'abp01-trip-summary'); ?>"
+						aria-controls="abp01-techbox-tabs" hidden disabled>
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6" /></svg>
+					</button>
+					<ul id="abp01-techbox-tabs" class="abp01-techbox-tabs">
+						<?php if ($data->info->exists): ?>
+							<li id="abp01-tab-info" class="abp01-tab abp01-tab-info">
+								<a href="#abp01-techbox-info">
+									<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1793A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+										<path d="M4 5h16M4 12h16M4 19h10"/>
+									</svg>
+									<?php echo esc_html__('Prosaic details', 'abp01-trip-summary'); ?>
+								</a>
+							</li>
+						<?php endif; ?>
+						<?php if ($data->track->exists): ?>
+							<li id="abp01-tab-map" class="abp01-tab abp01-tab-map">
+								<a href="#abp01-techbox-map">
+									<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1793A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+										<path d="M9 20l-6 2V6l6-2 6 2 6-2v16l-6 2-6-2V4"/>
+									</svg>
+									<?php echo esc_html__('Map', 'abp01-trip-summary'); ?>
+								</a>
+							</li>
+						<?php endif; ?>
+						<?php if ($hasAdditionalTabs): ?>
+							<?php foreach ($data->additionalTabs as $tabId => $tabInfo): ?>
+								<li id="<?php echo esc_attr($tabId); ?>" class="abp01-tab <?php echo esc_attr($tabId); ?>">
+									<a href="#<?php echo esc_attr($tabId) ?>-content"><span class="dashicons <?php echo !empty($tabInfo['icon']) ? esc_attr($tabInfo['icon']) : '' ?>"></span><?php echo esc_html($tabInfo['label']); ?></a>
+								</li>
+							<?php endforeach; ?>
+						<?php endif; ?>
+					</ul>
+					<button type="button" class="abp01-tabs-scroll abp01-tabs-scroll-right" data-scroll-direction="1"
+						aria-label="<?php echo esc_attr__('Scroll tabs right', 'abp01-trip-summary'); ?>"
+						aria-controls="abp01-techbox-tabs" hidden disabled>
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m10 6 6 6-6 6" /></svg>
+					</button>
+				</div>
 			<?php endif; ?>
 			<div class="abp01-clear"></div>
 			<div id="abp01-techbox-content" class="abp01-techbox-content">
