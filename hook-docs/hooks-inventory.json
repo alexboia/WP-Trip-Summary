@@ -7,8 +7,8 @@
         "views/**/*.php"
     ],
     "summary": {
-        "totalDispatches": 48,
-        "documented": 48,
+        "totalDispatches": 49,
+        "documented": 49,
         "undocumented": 0,
         "unresolvedDynamic": 0
     },
@@ -152,11 +152,11 @@
                 "true"
             ],
             "file": "lib/Plugin.php",
-            "line": 458,
+            "line": 461,
             "enclosingClass": "Abp01_Plugin",
             "enclosingFunction": "_shouldAddClearCacheTool",
             "documentationStatus": "documented",
-            "docCommentLine": 449,
+            "docCommentLine": 452,
             "docComment": "/**\n\t\t * Filters whether the built-in clear track data cache maintenance tool is available.\n\t\t * Initial value is true. Only the boolean value true keeps the tool available.\n\t\t *\n\t\t * @since 0.2.8\n\t\t * @category Maintenance Tools\n\t\t *\n\t\t * @param bool $enabled Whether the clear track data cache maintenance tool is available.\n\t\t */",
             "prefixEvidence": true
         },
@@ -170,11 +170,11 @@
                 "true"
             ],
             "file": "lib/Plugin.php",
-            "line": 472,
+            "line": 475,
             "enclosingClass": "Abp01_Plugin",
             "enclosingFunction": "_shouldAddClearAllDataTool",
             "documentationStatus": "documented",
-            "docCommentLine": 463,
+            "docCommentLine": 466,
             "docComment": "/**\n\t\t * Filters whether the built-in clear all trip summary data maintenance tool is available.\n\t\t * Initial value is true. Only the boolean value true keeps the tool available.\n\t\t *\n\t\t * @since 0.2.8\n\t\t * @category Maintenance Tools\n\t\t *\n\t\t * @param bool $enabled Whether the clear all trip summary data maintenance tool is available.\n\t\t */",
             "prefixEvidence": true
         },
@@ -188,11 +188,11 @@
                 "true"
             ],
             "file": "lib/Plugin.php",
-            "line": 486,
+            "line": 489,
             "enclosingClass": "Abp01_Plugin",
             "enclosingFunction": "_shouldAddDetectMissingTracksTool",
             "documentationStatus": "documented",
-            "docCommentLine": 477,
+            "docCommentLine": 480,
             "docComment": "/**\n\t\t * Filters whether the built-in detect missing track files maintenance tool is available.\n\t\t * Initial value is true. Only the boolean value true keeps the tool available.\n\t\t *\n\t\t * @since 0.2.8\n\t\t * @category Maintenance Tools\n\t\t *\n\t\t * @param bool $enabled Whether the detect missing track files maintenance tool is available.\n\t\t */",
             "prefixEvidence": true
         },
@@ -206,11 +206,11 @@
                 "$tools"
             ],
             "file": "lib/Plugin.php",
-            "line": 508,
+            "line": 511,
             "enclosingClass": "Abp01_Plugin",
             "enclosingFunction": "_getAdditionalMaintenanceTools",
             "documentationStatus": "documented",
-            "docCommentLine": 496,
+            "docCommentLine": 499,
             "docComment": "/**\n\t\t * Filters the list of additional maintenance tools, on top of the built-in ones.\n\t\t * Initial value is an empty array.\n\t\t * If result is not an array, it will be reset to an empty array.\n\t\t * Entries which are not instance of Abp01_MaintenanceTool will be removed, nulls included.\n\t\t * \n\t\t * @see Abp01_MaintenanceTool\n\t\t * @since 0.3.2\n\t\t * @category Maintenance Tools\n\t\t * \n\t\t * @param Abp01_MaintenanceTool[] $tools The current list of additional tools.\n\t\t */",
             "prefixEvidence": true
         },
@@ -889,6 +889,25 @@
             "prefixEvidence": true
         },
         {
+            "hookName": "abp01_show_frontend_viewer_credits",
+            "kind": "filter",
+            "dispatcher": "apply_filters",
+            "resolution": "static",
+            "nameExpression": "'abp01_show_frontend_viewer_credits'",
+            "arguments": [
+                "true",
+                "$data"
+            ],
+            "file": "views/wpts-frontend.php",
+            "line": 54,
+            "enclosingClass": null,
+            "enclosingFunction": null,
+            "documentationStatus": "documented",
+            "docCommentLine": 41,
+            "docComment": "/**\r\n\t * Filters whether to display the front-end viewer credits.\r\n\t *\r\n\t * Runs at the beginning of the viewer template. Defaults to true; the result\r\n\t * is converted to boolean. Returning false omits the entire credits container,\r\n\t * independently of whether the bottom teaser is enabled.\r\n\t *\r\n\t * @since 0.3.3\r\n\t * @category Front-end Viewer\r\n\t *\r\n\t * @param bool $showCredits Whether to display the credits. Defaults to true.\r\n\t * @param stdClass $data The complete front-end viewer data for the current post.\r\n\t */",
+            "prefixEvidence": true
+        },
+        {
             "hookName": "abp01_additional_frontend_viewer_tab_content",
             "kind": "action",
             "dispatcher": "do_action",
@@ -900,11 +919,11 @@
                 "$data"
             ],
             "file": "views/wpts-frontend.php",
-            "line": 157,
+            "line": 184,
             "enclosingClass": null,
             "enclosingFunction": null,
             "documentationStatus": "documented",
-            "docCommentLine": 141,
+            "docCommentLine": 168,
             "docComment": "/**\r\n\t\t\t\t\t\t\t * Fires when the content container for an additional front-end viewer tab is rendered.\r\n\t\t\t\t\t\t\t *\r\n\t\t\t\t\t\t\t * The action fires once for every tab registered through the\r\n\t\t\t\t\t\t\t * abp01_additional_frontend_viewer_tabs filter. Callbacks should inspect the tab\r\n\t\t\t\t\t\t\t * identifier and output safe HTML only for the tabs they handle. The output is\r\n\t\t\t\t\t\t\t * rendered directly inside the corresponding tab content container.\r\n\t\t\t\t\t\t\t *\r\n\t\t\t\t\t\t\t * @since 0.3.0\r\n\t\t\t\t\t\t\t * @category Front-end Viewer\r\n\t\t\t\t\t\t\t * @see abp01_additional_frontend_viewer_tabs for registering additional tabs.\r\n\t\t\t\t\t\t\t *\r\n\t\t\t\t\t\t\t * @param string $tabId The identifier of the additional tab being rendered.\r\n\t\t\t\t\t\t\t * @param array<string, mixed> $tabInfo The registered tab information, including its label and optional icon.\r\n\t\t\t\t\t\t\t * @param stdClass $data The complete front-end viewer data for the current post.\r\n\t\t\t\t\t\t\t */",
             "prefixEvidence": true
         }

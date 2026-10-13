@@ -37,6 +37,21 @@
 	$totalTabCount = abp01_count_frontend_viewer_tabs($data);
 	$hasAdditionalTabs = abp01_frontend_viewer_has_additional_tabs($data);
 	$tabWidth = abp01_frontend_determine_viewer_tab_width($totalTabCount);
+
+	/**
+	 * Filters whether to display the front-end viewer credits.
+	 *
+	 * Runs at the beginning of the viewer template. Defaults to true; the result
+	 * is converted to boolean. Returning false omits the entire credits container,
+	 * independently of whether the bottom teaser is enabled.
+	 *
+	 * @since 0.3.3
+	 * @category Front-end Viewer
+	 *
+	 * @param bool $showCredits Whether to display the credits. Defaults to true.
+	 * @param stdClass $data The complete front-end viewer data for the current post.
+	 */
+	$showCredits = (bool) apply_filters('abp01_show_frontend_viewer_credits', true, $data);
 ?>
 
 <?php if ($data && ($data->info->exists || $data->track->exists)): ?>
@@ -174,6 +189,11 @@
 					<?php endforeach; ?>
 				<?php endif; ?>
 			</div>
+			<?php if ($showCredits): ?>
+				<div id="abp01-techbox-credits" class="abp01-techbox-credits">
+					<a href="<?php echo esc_url('https://github.com/alexboia/WP-Trip-Summary'); ?>" target="_blank"><?php echo esc_html__('Trip data by WP-Trip-Summary', 'abp01-trip-summary'); ?></a><?php echo esc_html__(', made with ❤️ in Bucharest.', 'abp01-trip-summary'); ?>
+				</div>
+			<?php endif; ?>
 			<?php if ($data->settings->showTeaser): ?>
 				<div id="abp01-techbox-content-skip-teaser" class="abp01-techbox-content-skip-teaser" style="display: none;">
 					<a id="abp01-techbox-content-skip-teaser-action" href="javascript:void(0)"><?php echo esc_html($data->settings->bottomTeaserText); ?></a>
