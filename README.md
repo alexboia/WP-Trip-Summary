@@ -30,7 +30,9 @@
 </p>
 
 <p align="center">
-   <img align="center" src="https://raw.githubusercontent.com/alexboia/WP-Trip-Summary/master/screenshots/MAIN.png?raw=true" style="margin-bottom: 20px; margin-right: 20px;" />
+   <a href="https://vimeo.com/manage/videos/1238064833">
+      <img align="center" src="https://raw.githubusercontent.com/alexboia/WP-Trip-Summary/master/screenshots/MAIN.png?raw=true" style="margin-bottom: 20px; margin-right: 20px;" />
+   </a>
 </p>
 
 ## Why WP Trip Summary
