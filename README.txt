@@ -134,7 +134,7 @@ You can follow the work in the [milestones](https://github.com/alexboia/WP-Trip-
 
 WP Trip Summary is built and maintained in my free time. If it helps you share your journeys, you can support its development:
 
-[Support me on Ko-fi](https://ko-fi.com/Q5Q01KGLM)
+[ko-fi](https://ko-fi.com/Q5Q01KGLM)
 
 You can also support my paid work on [Gumroad](https://alexboia.gumroad.com/).
 

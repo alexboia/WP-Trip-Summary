@@ -75,44 +75,45 @@ Readers of a travel post want answers before they read the story: how long is th
 | ![Editor - Route log](assets/en_US/wpts-admin-post-edit-route-log.png) | ![Editor - Add route log entry](assets/en_US/wpts-admin-post-edit-route-log-form.png) |
 
 <details>
-<summary><strong>Settings, maintenance and the rest of the admin area</strong></summary>
+	<summary>
+		<strong>Settings, maintenance and the rest of the admin area</strong>
+	</summary>
 
-#### Post listing, with trip summary status and a route type filter
+	#### Post listing, with trip summary status and a route type filter
 
-![Admin - Post listing](assets/en_US/wpts-admin-post-listing.png)
+	![Admin - Post listing](assets/en_US/wpts-admin-post-listing.png)
 
-#### Audit log for a post's trip information and track
+	#### Audit log for a post's trip information and track
 
-![Admin - Audit log](assets/en_US/wpts-admin-post-listing-audit-window.png)
+	![Admin - Audit log](assets/en_US/wpts-admin-post-listing-audit-window.png)
 
-#### Viewer settings
+	#### Viewer settings
 
-![Admin - Viewer settings](assets/en_US/wpts-settings-viewer.png)
+	![Admin - Viewer settings](assets/en_US/wpts-settings-viewer.png)
 
-#### Map settings
+	#### Map settings
 
-![Admin - Map settings](assets/en_US/wpts-settings-map.png)
+	![Admin - Map settings](assets/en_US/wpts-settings-map.png)
 
-#### Pre-defined tile layers
+	#### Pre-defined tile layers
 
-![Admin - Pre-defined tile layers](assets/en_US/wpts-settings-map-predefined-layers.png)
+	![Admin - Pre-defined tile layers](assets/en_US/wpts-settings-map-predefined-layers.png)
 
-#### Lookup data management
+	#### Lookup data management
 
-![Admin - Lookup data](assets/en_US/wpts-admin-lookup-data.png)
+	![Admin - Lookup data](assets/en_US/wpts-admin-lookup-data.png)
 
-#### Maintenance - detecting missing track files
+	#### Maintenance - detecting missing track files
 
-![Admin - Maintenance - Missing track files](assets/en_US/wpts-maintenance-missing-track-files.png)
+	![Admin - Maintenance - Missing track files](assets/en_US/wpts-maintenance-missing-track-files.png)
 
-#### Maintenance - Nginx access rules for stored track files
+	#### Maintenance - Nginx access rules for stored track files
 
-![Admin - Maintenance - Nginx access rules](assets/en_US/wpts-maintenance-nginx.png)
+	![Admin - Maintenance - Nginx access rules](assets/en_US/wpts-maintenance-nginx.png)
 
-#### System logs
+	#### System logs
 
-![Admin - System logs](assets/en_US/wpts-admin-system-logs.png)
-
+	![Admin - System logs](assets/en_US/wpts-admin-system-logs.png)
 </details>
 
 ## Who it is for
@@ -309,7 +310,7 @@ Developer setup and test instructions are in [CONTRIBUTING.md](https://github.co
 
 WP Trip Summary is built and maintained in my free time. If it helps you share your journeys, you can support its development:
 
-[![Support me on Ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q01KGLM)
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q01KGLM)
 
 You can also support my paid work on [Gumroad](https://alexboia.gumroad.com/).
 
