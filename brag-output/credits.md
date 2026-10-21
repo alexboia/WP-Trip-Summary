@@ -1,6 +1,6 @@
 # Sources and credits
 
-- Travel photography and footage: Alexandru Boia, supplied for this campaign in `assets/marketing`. Selected originals: `nature-stills/IMG_4434.jpg`, `nature-stills/IMG_4560.jpg`, and `nature-videos/GX010086 - Trim.mp4`. Used under the author's request for these marketing materials. No general redistribution license for the originals is implied. Source geography and trip identity were not inferred from filenames.
+- Travel photography and footage: Alexandru Boia, supplied for this campaign in `assets/marketing`. Selected originals: `nature-stills/IMG_4434.jpg`, `nature-stills/IMG_4560.jpg`, and `nature-videos/hiking-high-plains.mp4`. Used under the author's request for these marketing materials. No general redistribution license for the originals is implied. Source geography and trip identity were not inferred from filenames.
 - Product captures: WP Trip Summary, supplied `assets/en_US/wpts-admin-post-edit-map.png` and `wpts-sample-post-viewer-map-alt-profile.png`. The UI is a real supplied capture; the pointer and sequence are editorial animation. Sample data is not claimed to describe the accompanying trip photographs or video.
 - Maps: Leaflet; maps © Thunderforest; data © OpenStreetMap contributors. Attribution remains in every used map viewport. The screenshots' existing color and dimming are preserved.
 - Logo: existing WP Trip Summary logo from `assets/logo.png`, unchanged.

@@ -1,0 +1,15 @@
+{
+  "playback": {
+    "duration": 24,
+    "ended": true,
+    "currentTime": 24,
+    "width": 1920,
+    "height": 1080,
+    "totalVideoFrames": 720,
+    "droppedVideoFrames": 0,
+    "error": null
+  },
+  "failures": [],
+  "mobileOverflow": false,
+  "audioNote": "Browser QA ran muted; stream, decode and loudness checked separately."
+}

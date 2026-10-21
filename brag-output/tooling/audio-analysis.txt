@@ -1,0 +1,47 @@
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'D:\Proiecte\Alexboia.NET\wp-content\plugins\abp01-travel-tech-box\brag-output-2026-10-21-182034\brag.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf60.3.100
+  Duration: 00:00:24.00, start: 0.000000, bitrate: 8838 kb/s
+  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709, progressive), 1920x1080 [SAR 1:1 DAR 16:9], 8631 kb/s, 30 fps, 30 tbr, 15360 tbn (default)
+    Metadata:
+      handler_name    : VideoHandler
+      vendor_id       : [0][0][0][0]
+      encoder         : Lavc60.3.100 libx264
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 198 kb/s (default)
+    Metadata:
+      handler_name    : SoundHandler
+      vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:1 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, null, to 'pipe:':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf60.3.100
+  Stream #0:0(und): Audio: pcm_s16le, 192000 Hz, stereo, s16, 6144 kb/s (default)
+    Metadata:
+      handler_name    : SoundHandler
+      vendor_id       : [0][0][0][0]
+      encoder         : Lavc60.3.100 pcm_s16le
+size=       0kB time=-577014:32:22.77 bitrate=  -0.0kbits/s speed=N/A    
+size=N/A time=00:00:16.80 bitrate=N/A speed=33.6x    
+size=N/A time=00:00:21.10 bitrate=N/A speed=31.7x    
+video:0kB audio:18000kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+[Parsed_loudnorm_0 @ 0000029f7425d480] 
+{
+	"input_i" : "-19.88",
+	"input_tp" : "-8.17",
+	"input_lra" : "3.40",
+	"input_thresh" : "-30.25",
+	"output_i" : "-18.07",
+	"output_tp" : "-6.36",
+	"output_lra" : "1.00",
+	"output_thresh" : "-28.28",
+	"normalization_type" : "dynamic",
+	"target_offset" : "0.07"
+}

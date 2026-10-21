@@ -25,3 +25,11 @@ The first render attempt stopped because FFprobe was not on PATH. After selectin
 The supplied UI captures have a dimmed appearance; their pixels were preserved. Screenshot metadata identifies the source files but does not independently certify the capture build or viewport. The marketing claims were checked against local version 0.3.3 source, not against an installed WordPress.org package. The editor action is explicitly labeled as an animated screenshot sequence.
 
 These are prepared local materials. The WordPress banners remain staged in this campaign, the README hero/copy are ready for the existing generator, and no external publication or replacement of shared branding was performed. A directory-page check after eventual upload will confirm the final WordPress page overlays and caching behavior.
+
+## Relocation review — 21 October 2026
+
+The author replaced the previous `brag-output` directory with this campaign. Active commands now use `brag-output`; FFprobe is an explicit dependency of its local tooling, and preparation retains the bundled fonts, licenses and GSAP without copying from the deleted campaign. The source video reference follows the verified Git rename to `assets/marketing/nature-videos/hiking-high-plains.mp4` (R100 in commit `7d382ba`). The source inventory was refreshed.
+
+Source preflight passed for all 16 required inputs. HyperFrames check passed again from the new directory with no errors and with browser audits enabled (`tooling/check-relocation.json`). Both local preview URLs returned HTTP 200. The MP4 remains byte-for-byte identical to the original delivery, SHA-256 `c3961367a913d23640d6ff23e480685906b87c90992bd4d0cf2caa8361a7c2b1`.
+
+The obsolete root Git ignore for the entire tooling directory was removed; campaign-specific ignores still exclude dependencies, raw personal-media copies and render intermediates. Existing staged changes were preserved. Historical render reports retain their original absolute paths as evidence of the initial production run.

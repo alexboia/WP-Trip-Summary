@@ -1,0 +1,12 @@
+{
+  "images/road.jpg": "assets/marketing/nature-stills/IMG_4434.jpg",
+  "images/meadow.jpg": "assets/marketing/nature-stills/IMG_4560.jpg",
+  "images/bicycle.jpg": "assets/marketing/nature-stills/IMG_3701.jpg",
+  "images/editor-map.png": "assets/en_US/wpts-admin-post-edit-map.png",
+  "images/viewer-profile.png": "assets/en_US/wpts-sample-post-viewer-map-alt-profile.png",
+  "images/viewer-map.png": "assets/en_US/wpts-sample-post-viewer-map.png",
+  "images/logo.png": "assets/logo.png",
+  "fonts/space-grotesk-latin-700-normal.woff2": "brag-output/composition/assets/fonts/space-grotesk-latin-700-normal.woff2",
+  "fonts/ibm-plex-sans-latin-400-normal.woff2": "brag-output/composition/assets/fonts/ibm-plex-sans-latin-400-normal.woff2",
+  "gsap.min.js": "brag-output/tooling/node_modules/gsap/dist/gsap.min.js"
+}

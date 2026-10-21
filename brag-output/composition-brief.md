@@ -18,12 +18,12 @@ Target checkout: commit `513be0b0d2ff766dfbfe486b5889e52b1ab13c6f`, plugin metad
 From the plugin root:
 
 ```powershell
-.\brag-output-2026-10-21-182034\run-hyperframes.ps1 preview --background --port 3017
-.\brag-output-2026-10-21-182034\run-hyperframes.ps1 check
-.\brag-output-2026-10-21-182034\run-hyperframes.ps1 render --quality delivery --fps 30 --output ../tooling/raw-render.mp4
+.\brag-output\run-hyperframes.ps1 preview --background --port 3017
+.\brag-output\run-hyperframes.ps1 check
+.\brag-output\run-hyperframes.ps1 render --quality delivery --fps 30 --output ../tooling/raw-render.mp4
 ```
 
-The helper uses HyperFrames 0.8.183, the campaign's isolated FFmpeg 6.0 binary and the existing FFprobe package from the older campaign. Install the campaign tooling with `npm ci --prefix brag-output-2026-10-21-182034/tooling` if missing. `tooling/prepare_campaign.py` rebuilds frozen sources and the original score using NumPy; source photographs and video remain in `assets/marketing`. `tooling/render_static.mjs` renders the native HTML/CSS artwork with Playwright; `CODEX_NODE_MODULES` and `CAMPAIGN_BROWSER` can override its local runtime paths. `tooling/finish_campaign.py` selects the poster, embeds frame zero, checks streams and packages the final exports.
+The helper uses HyperFrames 0.8.183 and the campaign's isolated FFmpeg 6.0 and FFprobe binaries. Install the campaign tooling with `npm ci --prefix brag-output/tooling` if missing. `tooling/prepare_campaign.py` rebuilds media sources and the original score using NumPy; source photographs and video remain in `assets/marketing`. Pass `--check-sources` to validate inputs without rebuilding. Fonts, licenses and GSAP are retained in `composition/assets`; the previous campaign is not required. `tooling/render_static.mjs` renders the native HTML/CSS artwork with Playwright; `CODEX_NODE_MODULES` and `CAMPAIGN_BROWSER` can override its local runtime paths. `tooling/finish_campaign.py` selects the poster, embeds frame zero and checks streams; `tooling/package_campaign.py` packages the final exports.
 
 The registered GSAP timeline owns all animated properties. HyperFrames owns media playback and clip visibility. The graph crop removes the sample title and footer while preserving tabs, route, chart axes and map attribution. The final still has a restrained 3.5% camera push. The three audio clips have explicit IDs and timings; the score's fade is baked into its source.
 

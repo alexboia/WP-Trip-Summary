@@ -3,7 +3,9 @@
 
 ### The map, with the altitude profile
 
-![Viewer - Map with altitude profile](assets/en_US/wpts-sample-post-viewer-map-alt-profile.png)
+<p align="center">
+   <img alt="Viewer - Map with altitude profile" title="Viewer - Map with altitude profile" align="center" src="https://raw.githubusercontent.com/alexboia/WP-Trip-Summary/master/assets/en_US/wpts-sample-post-viewer-map-alt-profile.png?raw=true" style="margin-bottom: 20px; margin-right: 20px;" />
+</p>
 
 ### What your readers see
 

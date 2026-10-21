@@ -1,0 +1,335 @@
+{
+  "photos": [
+    {
+      "file": "assets\\marketing\\nature-stills\\20190928_140322.jpg",
+      "width": 4032,
+      "height": 1960,
+      "bytes": 2393344
+    },
+    {
+      "file": "assets\\marketing\\nature-stills\\20190928_144000.jpg",
+      "width": 4032,
+      "height": 1960,
+      "bytes": 1502736
+    },
+    {
+      "file": "assets\\marketing\\nature-stills\\20190928_150811.jpg",
+      "width": 4032,
+      "height": 1960,
+      "bytes": 1503357
+    },
+    {
+      "file": "assets\\marketing\\nature-stills\\20190928_152125.jpg",
+      "width": 4032,
+      "height": 1960,
+      "bytes": 1425097
+    },
+    {
+      "file": "assets\\marketing\\nature-stills\\20200602_103339.jpg",
+      "width": 4032,
+      "height": 1960,
+      "bytes": 2498738
+    },
+    {
+      "file": "assets\\marketing\\nature-stills\\20200602_124906.jpg",
+      "width": 4032,
+      "height": 1960,
+      "bytes": 1274696
+    },
+    {
+      "file": "assets\\marketing\\nature-stills\\20240712_151524.jpg",
+      "width": 4000,
+      "height": 1868,
+      "bytes": 2641162
+    },
+    {
+      "file": "assets\\marketing\\nature-stills\\20240712_165742.jpg",
+      "width": 3960,
+      "height": 1849,
+      "bytes": 2094342
+    },
+    {
+      "file": "assets\\marketing\\nature-stills\\20240712_175017.jpg",
+      "width": 4000,
+      "height": 1868,
+      "bytes": 3127428
+    },
+    {
+      "file": "assets\\marketing\\nature-stills\\20250802_155714.jpg",
+      "width": 4000,
+      "height": 1868,
+      "bytes": 3516002
+    },
+    {
+      "file": "assets\\marketing\\nature-stills\\20250802_185232.jpg",
+      "width": 4000,
+      "height": 1868,
+      "bytes": 3906708
+    },
+    {
+      "file": "assets\\marketing\\nature-stills\\20250802_192755.jpg",
+      "width": 4000,
+      "height": 1868,
+      "bytes": 3025432
+    },
+    {
+      "file": "assets\\marketing\\nature-stills\\IMG_3159.jpg",
+      "width": 4272,
+      "height": 2848,
+      "bytes": 5928972
+    },
+    {
+      "file": "assets\\marketing\\nature-stills\\IMG_3284.jpg",
+      "width": 4153,
+      "height": 2769,
+      "bytes": 8458666
+    },
+    {
+      "file": "assets\\marketing\\nature-stills\\IMG_3348.jpg",
+      "width": 4272,
+      "height": 2848,
+      "bytes": 10379770
+    },
+    {
+      "file": "assets\\marketing\\nature-stills\\IMG_3430.jpg",
+      "width": 4272,
+      "height": 2848,
+      "bytes": 10553280
+    },
+    {
+      "file": "assets\\marketing\\nature-stills\\IMG_3448.jpg",
+      "width": 4272,
+      "height": 2848,
+      "bytes": 13741510
+    },
+    {
+      "file": "assets\\marketing\\nature-stills\\IMG_3524.jpg",
+      "width": 4272,
+      "height": 2848,
+      "bytes": 10965163
+    },
+    {
+      "file": "assets\\marketing\\nature-stills\\IMG_3701.jpg",
+      "width": 3695,
+      "height": 2463,
+      "bytes": 5900508
+    },
+    {
+      "file": "assets\\marketing\\nature-stills\\IMG_3715.jpg",
+      "width": 4272,
+      "height": 2848,
+      "bytes": 12465252
+    },
+    {
+      "file": "assets\\marketing\\nature-stills\\IMG_4434.jpg",
+      "width": 4272,
+      "height": 2848,
+      "bytes": 3602219
+    },
+    {
+      "file": "assets\\marketing\\nature-stills\\IMG_4550.jpg",
+      "width": 4132,
+      "height": 2755,
+      "bytes": 8707746
+    },
+    {
+      "file": "assets\\marketing\\nature-stills\\IMG_4560.jpg",
+      "width": 4272,
+      "height": 2848,
+      "bytes": 10272766
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "assets\\en_US\\wpts-about.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 558454
+    },
+    {
+      "file": "assets\\en_US\\wpts-admin-lookup-data-add.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 283888
+    },
+    {
+      "file": "assets\\en_US\\wpts-admin-lookup-data.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 376238
+    },
+    {
+      "file": "assets\\en_US\\wpts-admin-post-edit-info.png",
+      "width": 670,
+      "height": 690,
+      "bytes": 220989
+    },
+    {
+      "file": "assets\\en_US\\wpts-admin-post-edit-launcher.png",
+      "width": 280,
+      "height": 253,
+      "bytes": 55956
+    },
+    {
+      "file": "assets\\en_US\\wpts-admin-post-edit-map.png",
+      "width": 670,
+      "height": 614,
+      "bytes": 458334
+    },
+    {
+      "file": "assets\\en_US\\wpts-admin-post-edit-route-log-form.png",
+      "width": 670,
+      "height": 620,
+      "bytes": 201456
+    },
+    {
+      "file": "assets\\en_US\\wpts-admin-post-edit-route-log.png",
+      "width": 1418,
+      "height": 321,
+      "bytes": 140489
+    },
+    {
+      "file": "assets\\en_US\\wpts-admin-post-listing-audit-window.png",
+      "width": 800,
+      "height": 466,
+      "bytes": 148676
+    },
+    {
+      "file": "assets\\en_US\\wpts-admin-post-listing-audit.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 468208
+    },
+    {
+      "file": "assets\\en_US\\wpts-admin-post-listing.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 582922
+    },
+    {
+      "file": "assets\\en_US\\wpts-admin-system-logs.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 1025960
+    },
+    {
+      "file": "assets\\en_US\\wpts-maintenance-default.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 349124
+    },
+    {
+      "file": "assets\\en_US\\wpts-maintenance-missing-track-files.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 388231
+    },
+    {
+      "file": "assets\\en_US\\wpts-maintenance-nginx.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 674754
+    },
+    {
+      "file": "assets\\en_US\\wpts-sample-post-teaser.png",
+      "width": 679,
+      "height": 64,
+      "bytes": 18545
+    },
+    {
+      "file": "assets\\en_US\\wpts-sample-post-viewer-info.png",
+      "width": 679,
+      "height": 663,
+      "bytes": 268386
+    },
+    {
+      "file": "assets\\en_US\\wpts-sample-post-viewer-log.png",
+      "width": 679,
+      "height": 387,
+      "bytes": 163434
+    },
+    {
+      "file": "assets\\en_US\\wpts-sample-post-viewer-map-alt-profile.png",
+      "width": 679,
+      "height": 949,
+      "bytes": 659048
+    },
+    {
+      "file": "assets\\en_US\\wpts-sample-post-viewer-map.png",
+      "width": 679,
+      "height": 604,
+      "bytes": 471384
+    },
+    {
+      "file": "assets\\en_US\\wpts-settings-general.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 358581
+    },
+    {
+      "file": "assets\\en_US\\wpts-settings-map-predefined-layers.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 480204
+    },
+    {
+      "file": "assets\\en_US\\wpts-settings-map.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 491932
+    },
+    {
+      "file": "assets\\en_US\\wpts-settings-viewer.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 448407
+    }
+  ],
+  "videos": [
+    {
+      "file": "assets\\marketing\\nature-videos\\camping-making-tea.mp4",
+      "duration": 4.778646,
+      "width": 1920,
+      "height": 1080,
+      "fps": "2997/125",
+      "codec": "h264",
+      "bytes": 27308641
+    },
+    {
+      "file": "assets\\marketing\\nature-videos\\hiking-high-plains.mp4",
+      "duration": 4.650646,
+      "width": 1920,
+      "height": 1080,
+      "fps": "2997/125",
+      "codec": "h264",
+      "bytes": 26729436
+    },
+    {
+      "file": "assets\\marketing\\nature-videos\\mtb-downhill-1.mp4",
+      "duration": 2.879979,
+      "width": 1920,
+      "height": 1080,
+      "fps": "2997/100",
+      "codec": "h264",
+      "bytes": 5948839
+    },
+    {
+      "file": "assets\\marketing\\nature-videos\\mtb-selfie.mp4",
+      "duration": 5.376,
+      "width": 1920,
+      "height": 1080,
+      "fps": "2997/100",
+      "codec": "h264",
+      "bytes": 11466512
+    },
+    {
+      "file": "assets\\marketing\\nature-videos\\waterfall-spotting.mp4",
+      "duration": 21.226667,
+      "width": 1920,
+      "height": 1080,
+      "fps": "30000/1001",
+      "codec": "h264",
+      "bytes": 41434976
+    }
+  ]
+}

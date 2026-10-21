@@ -1,0 +1,189 @@
+{
+  "ok": true,
+  "strict": false,
+  "browserSkipped": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 6,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "duplicate_media_discovery_risk",
+        "severity": "warning",
+        "message": "Detected 4 matching img entries with the same source/start/duration.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "D:\\Proiecte\\Alexboia.NET\\wp-content\\plugins\\abp01-travel-tech-box\\brag-output\\composition\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Avoid duplicated media nodes that can be discovered twice during compilation."
+      },
+      {
+        "code": "timeline_track_too_dense",
+        "severity": "warning",
+        "message": "Track 1 has 4 timed elements in this HTML file. Smaller sub-compositions keep timelines easier to read, iterate on, and diff.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "D:\\Proiecte\\Alexboia.NET\\wp-content\\plugins\\abp01-travel-tech-box\\brag-output\\composition\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move coherent scene groups into separate .html files under compositions/ and mount them from the parent with data-composition-src so the timeline stays easier to inspect, revise, and validate."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<section id=\"intro\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#intro",
+        "dataAttributes": {},
+        "sourceFile": "D:\\Proiecte\\Alexboia.NET\\wp-content\\plugins\\abp01-travel-tech-box\\brag-output\\composition\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <section id=\"intro\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<section id=\"editor\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#editor",
+        "dataAttributes": {},
+        "sourceFile": "D:\\Proiecte\\Alexboia.NET\\wp-content\\plugins\\abp01-travel-tech-box\\brag-output\\composition\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <section id=\"editor\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<section id=\"result\"> is a timeline element that contains nested <div id=\"result-panel\">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#result",
+        "dataAttributes": {},
+        "sourceFile": "D:\\Proiecte\\Alexboia.NET\\wp-content\\plugins\\abp01-travel-tech-box\\brag-output\\composition\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <section id=\"result\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<section id=\"outro\"> is a timeline element that contains nested <div id=\"outro-photo-wrap\">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#outro",
+        "dataAttributes": {},
+        "sourceFile": "D:\\Proiecte\\Alexboia.NET\\wp-content\\plugins\\abp01-travel-tech-box\\brag-output\\composition\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <section id=\"outro\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      }
+    ],
+    "filesScanned": 1
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "duration": 24,
+    "samples": [
+      1.333,
+      4,
+      6.667,
+      9.333,
+      12,
+      14.667,
+      17.333,
+      20,
+      22.667
+    ],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 0,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": true,
+    "specPath": "D:\\Proiecte\\Alexboia.NET\\wp-content\\plugins\\abp01-travel-tech-box\\brag-output\\composition\\index.motion.json",
+    "samples": 300
+  },
+  "contrast": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": true,
+    "samples": [
+      1.333,
+      6.667,
+      12,
+      17.333,
+      22.667
+    ],
+    "checked": 25,
+    "passed": 25
+  },
+  "hdr": {
+    "autoPromotion": null,
+    "inspection": "available"
+  },
+  "snapshots": {
+    "enabled": false,
+    "files": [],
+    "times": [],
+    "findingFiles": []
+  },
+  "saved": {
+    "id": "186dc6e4-f272-4a6c-8312-8602d686a95f",
+    "revision": "48823ef0-8d0c-4322-9f4a-f7b6190dae21",
+    "report": "D:\\Proiecte\\Alexboia.NET\\wp-content\\plugins\\abp01-travel-tech-box\\brag-output\\composition\\.hyperframes\\artifacts\\checks\\186dc6e4-f272-4a6c-8312-8602d686a95f.json",
+    "attribution": "recorded-revision"
+  },
+  "_meta": {
+    "version": "0.8.183",
+    "latestVersion": "0.8.183",
+    "updateAvailable": false
+  }
+}
