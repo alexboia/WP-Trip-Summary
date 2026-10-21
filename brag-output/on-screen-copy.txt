@@ -1,0 +1,26 @@
+00:00–00:04.800
+WP Trip Summary
+Every trip has a story.
+Give it a route.
+Your adventures. On WordPress.
+
+00:04.800–00:10.800
+From your WordPress editor
+Add your GPS track.
+GPX · KML · GeoJSON
+Product demo · Animated screenshot sequence
+
+00:10.800–00:18.000
+For the people reading your story
+Every climb. In context.
+Route map
+Elevation profile
+Product demo · Example track
+WP Trip Summary
+
+00:18.000–00:24.000
+WP Trip Summary
+Give your next story a route.
+Get WP Trip Summary
+wordpress.org/plugins/wp-trip-summary/
+For your WordPress travel stories.

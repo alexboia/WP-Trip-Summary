@@ -1,2 +1,1 @@
-Am făcut WP Trip Summary pentru povești care merită și o hartă: trasee GPS, profil de altitudine și detaliile turei, direct în WordPress. Ai povestea. Pune și traseul.
-https://wordpress.org/plugins/wp-trip-summary/
+Every trip has a story. Give it a route with WP Trip Summary: GPS maps, elevation profiles and practical trip details for your WordPress posts. https://wordpress.org/plugins/wp-trip-summary/

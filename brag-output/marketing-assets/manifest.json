@@ -1,0 +1,62 @@
+[
+  {
+    "file": "marketing-assets/banner-772x250.jpg",
+    "width": 772,
+    "height": 250,
+    "bytes": 95514,
+    "locale": "en_US",
+    "source": "marketing-assets/source.html",
+    "variant": "banner",
+    "scale": 1
+  },
+  {
+    "file": "marketing-assets/banner-1544x500.jpg",
+    "width": 1544,
+    "height": 500,
+    "bytes": 329071,
+    "locale": "en_US",
+    "source": "marketing-assets/source.html",
+    "variant": "banner",
+    "scale": 2
+  },
+  {
+    "file": "marketing-assets/social-landscape-1200x630.jpg",
+    "width": 1200,
+    "height": 630,
+    "bytes": 262827,
+    "locale": "en_US",
+    "source": "marketing-assets/source.html",
+    "variant": "landscape",
+    "scale": 1
+  },
+  {
+    "file": "marketing-assets/social-square-1080x1080.jpg",
+    "width": 1080,
+    "height": 1080,
+    "bytes": 341883,
+    "locale": "en_US",
+    "source": "marketing-assets/source.html",
+    "variant": "square",
+    "scale": 1
+  },
+  {
+    "file": "marketing-assets/readme-hero-1600x900.jpg",
+    "width": 1600,
+    "height": 900,
+    "bytes": 195294,
+    "locale": "en_US",
+    "source": "marketing-assets/source.html",
+    "variant": "readme",
+    "scale": 1
+  },
+  {
+    "file": "marketing-assets/developer-1200x630.png",
+    "width": 1200,
+    "height": 630,
+    "bytes": 63284,
+    "locale": "en_US",
+    "source": "marketing-assets/source.html",
+    "variant": "developer",
+    "scale": 1
+  }
+]

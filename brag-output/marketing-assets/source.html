@@ -1,0 +1,40 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><title>WP Trip Summary — campaign artwork masters</title>
+<style>
+@font-face{font-family:Space;src:url('../composition/assets/fonts/space-grotesk-latin-700-normal.woff2');font-weight:700}
+@font-face{font-family:Plex;src:url('../composition/assets/fonts/ibm-plex-sans-latin-400-normal.woff2');font-weight:400}
+*{box-sizing:border-box;margin:0}body{background:#f3f3e9;font-family:Plex,Arial,sans-serif;color:#0a3868}
+#art{position:relative;overflow:hidden;transform-origin:top left;background:#f3f3e9}
+.brand{font:700 28px Space;display:flex;align-items:center;gap:14px;letter-spacing:-.7px}.brand img{width:44px;height:44px}
+h1,h2{font-family:Space;letter-spacing:-.045em;line-height:1.04;font-weight:700}.mint{color:#8cf5d9}.navy{background:#0a3868;color:#f3f3e9}
+.photo{position:absolute;object-fit:cover}.label{font-size:16px;letter-spacing:2px;text-transform:uppercase}.demo{font-size:15px}.url{font-size:18px}.screen{background:white;border:10px solid white;border-radius:13px;overflow:hidden;box-shadow:0 18px 40px #051b3228;position:absolute}.screen img{display:block;width:100%;position:relative}
+.banner{width:772px;height:250px}.banner .photo{left:420px;width:352px;height:250px;object-position:50% 62%}.banner .left{position:absolute;left:0;top:0;width:420px;height:250px;padding:25px 28px}.banner .brand{font-size:25px;gap:10px}.banner .brand img{width:34px;height:34px}.banner h1{font-size:35px;margin-top:20px;line-height:1.05;letter-spacing:-1.4px}.banner .sub{font-size:15px;margin-top:14px}
+.landscape{width:1200px;height:630px}.landscape .photo{left:600px;width:600px;height:630px;object-position:45% 50%}.landscape .left{position:absolute;width:600px;height:630px;padding:40px}.landscape h1{font-size:75px;margin-top:61px}.landscape .sub{font-size:24px;line-height:1.5;margin-top:26px;max-width:490px}.landscape .url{position:absolute;left:40px;bottom:38px;font-size:17px}.landscape .screen{left:710px;top:93px;width:420px;height:452px}.landscape .screen img{top:-44px}.landscape .demo{position:absolute;left:724px;top:551px;background:#f3f3e9;padding:5px 12px;border-radius:4px}
+.square{width:1080px;height:1080px}.square .brand{position:absolute;left:62px;top:49px;font-size:36px}.square .brand img{width:56px;height:56px}.square h1{position:absolute;top:143px;left:62px;font-size:91px}.square .sub{position:absolute;left:65px;top:359px;font-size:27px}.square .photo{left:0;top:450px;width:1080px;height:630px;object-position:40% 58%}.square .screen{left:571px;top:493px;width:453px;height:517px;border-width:11px}.square .screen img{top:-47px}.square .demo{position:absolute;left:586px;top:1019px;background:#f3f3e9;padding:5px 12px;border-radius:4px}
+.readme{width:1600px;height:900px}.readme .left{position:absolute;left:0;top:0;width:830px;height:900px;padding:65px 64px}.readme .brand{font-size:32px}.readme .brand img{width:56px;height:56px}.readme h1{font-size:98px;margin-top:110px}.readme .sub{font-size:30px;line-height:1.45;margin-top:32px;max-width:640px}.readme .tags{font-size:24px;margin-top:47px;color:#8cf5d9}.readme .screen{left:934px;top:42px;width:584px;height:748px;border-width:12px}.readme .screen img{top:-60px}.readme .demo{position:absolute;left:946px;top:809px;font-size:20px}.readme .bar{position:absolute;left:830px;top:0;width:54px;height:900px;background:#8cf5d9}
+.developer{width:1200px;height:630px}.developer .brand{position:absolute;left:40px;top:36px}.developer .label{position:absolute;left:42px;top:137px}.developer h1{position:absolute;left:40px;top:190px;font-size:67px;max-width:515px}.developer .sub{position:absolute;left:42px;top:448px;font-size:23px;line-height:1.45;max-width:450px}.developer .code{position:absolute;left:580px;top:96px;width:580px;height:434px;border-radius:17px;padding:28px 27px;background:#0a3868;color:#f3f3e9}.developer .code-title{color:#8cf5d9;font-size:15px;letter-spacing:2px;margin-bottom:30px}.developer pre{font:17px/1.8 Consolas,'Courier New',monospace;white-space:pre}.developer .code-note{font-size:18px;line-height:1.5;margin-top:26px;border-top:1px solid #8cf5d950;padding-top:22px}.developer .url{position:absolute;left:42px;bottom:34px;font-size:19px}
+/* Keep the complete graph and map attribution inside the framed viewport. */
+.landscape .screen{left:740px;top:80px;width:380px;height:464px}.landscape .screen img{top:-39px}.landscape .demo{left:744px;top:552px}
+.square .screen{top:467px;height:554px}.square .demo{top:1030px}
+.readme .screen{top:65px;height:718px}
+</style></head><body><main id="art"></main>
+<script>
+const p=new URLSearchParams(location.search),kind=p.get('kind')||'landscape';
+const base='../composition/assets/images/';
+const brand=`<div class="brand"><img src="${base}logo.png" alt="">WP Trip Summary</div>`;
+const photo=(name)=>`<img class="photo" src="${base}${name}.jpg" alt="Original travel photograph by Alexandru Boia">`;
+const screen=`<div class="screen"><img src="${base}viewer-profile.png" alt="Product demo map and elevation profile, with map provider attribution"></div>`;
+const variants={
+banner:photo('road')+`<div class="left navy">${brand}<h1>Every trip has a story.<br><span class="mint">Give it a route.</span></h1><p class="sub">Trip details &amp; GPS maps for WordPress</p></div>`,
+landscape:photo('road')+`<div class="left navy">${brand}<h1>Every trip<br>has a story.<br><span class="mint">Give it a route.</span></h1><p class="sub">Turn your GPS track into part<br>of your WordPress story.</p><p class="url">wordpress.org/plugins/wp-trip-summary/</p></div>`+screen+`<div class="demo">Product demo · Example track</div>`,
+square:brand+`<h1>Every trip has a story.<br>Give it a route.</h1><p class="sub">GPS maps &amp; trip details for WordPress.</p>`+photo('meadow')+screen+`<div class="demo">Product demo · Example track</div>`,
+readme:`<div class="left navy">${brand}<h1>Your story.<br>Your route.<br><span class="mint">Together.</span></h1><p class="sub">Structured trip details, GPS maps and elevation profiles for WordPress.</p><p class="tags">Bike trips · Hiking trips · Train rides</p></div><div class="bar"></div>`+screen+`<div class="demo">Product demo · Example track</div>`,
+developer:brand+`<p class="label">For WordPress developers</p><h1>Your post type.<br>Your trip<br>summary.</h1><p class="sub">Enable trip summaries for a<br>custom post type through a filter.</p><div class="code"><div class="code-title">FROM THE E01 INTEGRATION EXAMPLE</div><pre>add_filter(
+  'abp01_trip_summary_available_for_post_types',
+  'e01_get_trip_summary_available_for_post_types',
+  1
+);</pre><p class="code-note">Read the complete callback and setup:<br>examples/e01-enable-custom-post-types/</p></div><p class="url">github.com/alexboia/WP-Trip-Summary</p>`
+};
+if(!variants[kind])throw Error('Unknown artwork type');
+document.querySelector('#art').className=kind;document.querySelector('#art').innerHTML=variants[kind];
+if(kind==='banner'&&p.get('scale')==='2')document.querySelector('#art').style.transform='scale(2)';
+</script></body></html>

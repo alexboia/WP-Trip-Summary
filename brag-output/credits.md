@@ -1,22 +1,13 @@
 # Sources and credits
 
-- Product identity, UI structure, logo and Romanian map/profile screenshot: WP Trip Summary repository. The film reconstructs the author/reader flow; it is not a recording of a running WordPress installation.
-- Map: OpenStreetMap contributors, attribution retained within the source map crop.
-- Example summary values (42.8 km, 860 m, medium difficulty, summer/autumn): fictional demonstration data, labeled on screen; not measurements of the displayed repository route.
-- Music: “Happy Beats / Business Moves Vol. 12” by ende.app, supplied with the installed `/brag` skill. No narration.
-- Sound effects: Kenney, CC0, supplied with `/brag`; `click_003.ogg` and `impactSoft_medium_001.ogg`.
-- Fonts: Space Grotesk 700 and IBM Plex Sans 400, distributed through Fontsource. Latin and Latin Extended subsets are local.
-- Animation: GSAP 3.14.2; clip-wipe text reveal adapted from the Hyperframes registry's `caption-clip-wipe` component.
-- Local composition/check/render: Hyperframes 0.8.141.
+- Travel photography and footage: Alexandru Boia, supplied for this campaign in `assets/marketing`. Selected originals: `nature-stills/IMG_4434.jpg`, `nature-stills/IMG_4560.jpg`, and `nature-videos/GX010086 - Trim.mp4`. Used under the author's request for these marketing materials. No general redistribution license for the originals is implied. Source geography and trip identity were not inferred from filenames.
+- Product captures: WP Trip Summary, supplied `assets/en_US/wpts-admin-post-edit-map.png` and `wpts-sample-post-viewer-map-alt-profile.png`. The UI is a real supplied capture; the pointer and sequence are editorial animation. Sample data is not claimed to describe the accompanying trip photographs or video.
+- Maps: Leaflet; maps © Thunderforest; data © OpenStreetMap contributors. Attribution remains in every used map viewport. The screenshots' existing color and dimming are preserved.
+- Logo: existing WP Trip Summary logo from `assets/logo.png`, unchanged.
+- Original instrumental score: “Give it a route”, composed procedurally for this campaign, 100 BPM, D major, 24 seconds. Generated locally by `tooling/prepare_campaign.py`; no third-party recordings, music samples or generated voice. No narration.
+- Sound effects: Kenney, CC0, `click_003.ogg` and `impactSoft_medium_001.ogg` supplied by the installed brag plugin. Sources: https://kenney.nl/assets/interface-sounds and https://kenney.nl/assets/impact-sounds .
+- Fonts: Space Grotesk Bold and IBM Plex Sans Regular via Fontsource, SIL Open Font License. Local license texts are in `composition/assets/licenses/`.
+- Animation: GSAP 3.14.2, local runtime copied from the previous campaign tooling. Headline primitive adapted from the HyperFrames Registry `line-by-line-slide` component; the fetched source remains under `composition/compositions/components/`.
+- Authoring and rendering: HyperFrames 0.8.183, FFmpeg 6.0, local Chromium. Static artwork: original HTML/CSS layouts rendered with Playwright/Edge. No AI-generated or reconstructed product UI.
 
-# Reopening the composition
-
-From the plugin directory, with the generated tooling present:
-
-```powershell
-.\brag-output\run-hyperframes.ps1 preview --background
-.\brag-output\run-hyperframes.ps1 check
-.\brag-output\run-hyperframes.ps1 render --quality delivery --output ../brag.mp4
-```
-
-The helper adds the existing FFmpeg directory and the isolated FFprobe package to its process PATH. Nothing changes the system PATH or the WordPress runtime. The required fonts, images, music and animation runtime are included under `composition/assets/`.
+The source register and export specifications are recorded in `asset-register.json` and `marketing-assets/manifest.json`. Generated deliverables do not change the license of user photographs or third-party map data.

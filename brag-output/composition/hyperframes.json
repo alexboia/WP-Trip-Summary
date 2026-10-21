@@ -11,9 +11,9 @@
   },
   "registryItems": [
     {
-      "name": "caption-clip-wipe",
+      "name": "line-by-line-slide",
       "type": "hyperframes:component",
-      "target": "compositions/components/caption-clip-wipe.html"
+      "target": "compositions/components/line-by-line-slide.html"
     }
   ]
 }

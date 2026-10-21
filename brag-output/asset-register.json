@@ -1,0 +1,234 @@
+{
+  "campaign": "Every trip has a story. Give it a route.",
+  "canonical_locale": "en_US",
+  "date": "2026-10-21",
+  "target_commit": "513be0b0d2ff766dfbfe486b5889e52b1ab13c6f",
+  "target_metadata_version": "0.3.3",
+  "sources": [
+    {
+      "id": "road",
+      "path": "composition/assets/images/road.jpg",
+      "original": "assets/marketing/nature-stills/IMG_4434.jpg",
+      "role": "Banner and landscape social photo",
+      "author_or_rights": "Alexandru Boia; supplied for campaign use",
+      "crop": "Center-right winding road; CSS object-fit crop",
+      "dimensions": [
+        4272,
+        2848
+      ],
+      "sha256": "651196e84aafdd1200d8c75b774bb2387792e50d7b40779e0e9d178c4e305c19",
+      "locale": null,
+      "trip": "Not identified"
+    },
+    {
+      "id": "meadow",
+      "path": "composition/assets/images/meadow.jpg",
+      "original": "assets/marketing/nature-stills/IMG_4560.jpg",
+      "role": "Closing still and square social photo",
+      "author_or_rights": "Alexandru Boia; supplied for campaign use",
+      "crop": "Meadow and path, 45% horizontal; final scale 1.035",
+      "dimensions": [
+        4272,
+        2848
+      ],
+      "sha256": "ba8beb94258783c244ce9b133504d9f5e08b364ae6406075bab576b23eb3fdbf",
+      "locale": null,
+      "trip": "Not identified"
+    },
+    {
+      "id": "editor-map",
+      "path": "composition/assets/images/editor-map.png",
+      "original": "assets/en_US/wpts-admin-post-edit-map.png",
+      "role": "Editor demo",
+      "author_or_rights": "WP Trip Summary; map credits retained",
+      "crop": "Complete screenshot; animated pointer is an editorial overlay",
+      "dimensions": [
+        670,
+        614
+      ],
+      "sha256": "52cd6d6acb20d53ddb55ed466aad00f23ec9d1d99d27a35fbbd01a4f49bf80cd",
+      "locale": "en_US",
+      "trip": "Example product track, unrelated to travel imagery"
+    },
+    {
+      "id": "viewer-profile",
+      "path": "composition/assets/images/viewer-profile.png",
+      "original": "assets/en_US/wpts-sample-post-viewer-map-alt-profile.png",
+      "role": "Reader proof in video and static artwork",
+      "author_or_rights": "WP Trip Summary; Leaflet, Thunderforest, OpenStreetMap attribution retained",
+      "crop": "Crop sample title/footer; retain map, graph axes and provider credits",
+      "dimensions": [
+        679,
+        949
+      ],
+      "sha256": "7c120a72ab07eecada6dddcd9a20fdb3f3fe33b298b8714ee4a2eeab2d020427",
+      "locale": "en_US",
+      "trip": "Example product track, unrelated to travel imagery"
+    },
+    {
+      "id": "logo",
+      "path": "composition/assets/images/logo.png",
+      "original": "assets/logo.png",
+      "role": "Existing product identity",
+      "author_or_rights": "WP Trip Summary",
+      "crop": "Unchanged, contain",
+      "dimensions": [
+        807,
+        807
+      ],
+      "sha256": "9df79ff535aa7809453f7b23e0d503e2e1019d02673dd1c8aa4a1a217e2c5ed2",
+      "locale": "en_US",
+      "trip": "Not identified"
+    },
+    {
+      "id": "ridge",
+      "path": "composition/assets/video/ridge.mp4",
+      "original": "assets/marketing/nature-videos/GX010086 - Trim.mp4",
+      "role": "Opening footage",
+      "author_or_rights": "Alexandru Boia; supplied for campaign use",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "duration": 4.8,
+      "crop": "Centered right-half viewport; no color treatment; 30fps derivative, short last-frame hold",
+      "sha256": "d12ca7076cf8289b72c4603830f3557dfe5a3e57cf92ec794e0034528087dd7a",
+      "trip": "Not identified"
+    },
+    {
+      "id": "score",
+      "path": "composition/assets/audio/give-it-a-route.mp3",
+      "original": "tooling/prepare_campaign.py",
+      "role": "Original instrumental bed",
+      "author_or_rights": "Original synthesized score for this campaign; no third-party samples",
+      "duration": 24,
+      "sha256": "1d8fb4fb066ea401ce7ad91b26aebb420604be948b0873dbc7ea7f27373020d3"
+    },
+    {
+      "id": "sfx",
+      "paths": [
+        "composition/assets/audio/click.ogg",
+        "composition/assets/audio/soft-impact.ogg"
+      ],
+      "role": "Save and map accents",
+      "author_or_rights": "Kenney CC0, supplied by brag"
+    },
+    {
+      "id": "fonts",
+      "paths": [
+        "composition/assets/fonts/space-grotesk-latin-700-normal.woff2",
+        "composition/assets/fonts/ibm-plex-sans-latin-400-normal.woff2"
+      ],
+      "role": "Headings and body",
+      "author_or_rights": "SIL OFL; local license texts retained"
+    }
+  ],
+  "exports": [
+    {
+      "file": "marketing-assets/banner-772x250.jpg",
+      "width": 772,
+      "height": 250,
+      "bytes": 95514,
+      "locale": "en_US",
+      "source": "marketing-assets/source.html",
+      "variant": "banner",
+      "scale": 1,
+      "format": "JPEG",
+      "sha256": "fbebe714fc2b1e079527dfcfe21cc3b1853596dbfff716174e581c9e0427d7ce"
+    },
+    {
+      "file": "marketing-assets/banner-1544x500.jpg",
+      "width": 1544,
+      "height": 500,
+      "bytes": 329071,
+      "locale": "en_US",
+      "source": "marketing-assets/source.html",
+      "variant": "banner",
+      "scale": 2,
+      "format": "JPEG",
+      "sha256": "c196cdf10dd5b8ced198b713f0d27212b5c1fabc12f4f63d58bec001da21f9a9"
+    },
+    {
+      "file": "marketing-assets/social-landscape-1200x630.jpg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 262827,
+      "locale": "en_US",
+      "source": "marketing-assets/source.html",
+      "variant": "landscape",
+      "scale": 1,
+      "format": "JPEG",
+      "sha256": "879df99ff9befa7c8f8bb1ebda6dd3c1d3e8bdf2fe4d65923e67c9d02bd4b2cb"
+    },
+    {
+      "file": "marketing-assets/social-square-1080x1080.jpg",
+      "width": 1080,
+      "height": 1080,
+      "bytes": 341883,
+      "locale": "en_US",
+      "source": "marketing-assets/source.html",
+      "variant": "square",
+      "scale": 1,
+      "format": "JPEG",
+      "sha256": "8015f4e03f5f743b0aa543046a35faf3d2be6100f2880b1408b7539ff50aee64"
+    },
+    {
+      "file": "marketing-assets/readme-hero-1600x900.jpg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 195294,
+      "locale": "en_US",
+      "source": "marketing-assets/source.html",
+      "variant": "readme",
+      "scale": 1,
+      "format": "JPEG",
+      "sha256": "f55cf8b3d003db463dd913abd4b963e5197f2b615cdaee678a1e105ef50ebef9"
+    },
+    {
+      "file": "marketing-assets/developer-1200x630.png",
+      "width": 1200,
+      "height": 630,
+      "bytes": 63284,
+      "locale": "en_US",
+      "source": "marketing-assets/source.html",
+      "variant": "developer",
+      "scale": 1,
+      "format": "PNG",
+      "sha256": "d22f0f3918b927095e8eecf84e34045076913a7bf9eccd0774599569b7312aa1"
+    }
+  ],
+  "film": {
+    "video": {
+      "codec_name": "h264",
+      "width": 1920,
+      "height": 1080,
+      "r_frame_rate": "30/1",
+      "nb_frames": "720",
+      "duration": "24.000000",
+      "pix_fmt": "yuv420p"
+    },
+    "audio": {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "duration": "24.000000"
+    },
+    "audio_loudness": {
+      "input_i": "-19.88",
+      "input_tp": "-8.17",
+      "input_lra": "3.40",
+      "input_thresh": "-30.25",
+      "output_i": "-18.07",
+      "output_tp": "-6.36",
+      "output_lra": "1.00",
+      "output_thresh": "-28.28",
+      "normalization_type": "dynamic",
+      "target_offset": "0.07"
+    },
+    "bytes": 26515424,
+    "sha256": "c3961367a913d23640d6ff23e480685906b87c90992bd4d0cf2caa8361a7c2b1",
+    "decode": "passed",
+    "poster_time": 3.2,
+    "poster_baked_into_first_frame": true
+  }
+}

@@ -1,10 +1,1 @@
-{
-	"duration": 22,
-	"assertions": [
-		{ "kind": "appearsBy", "selector": "#hook .headline", "bySec": 0.8 },
-		{ "kind": "appearsBy", "selector": "#editor-map", "bySec": 6.6 },
-		{ "kind": "appearsBy", "selector": "#graph-panel", "bySec": 9.6 },
-		{ "kind": "appearsBy", "selector": "#outro-title", "bySec": 19.2 },
-		{ "kind": "staysInFrame", "selector": "#outro-url" }
-	]
-}
+{"duration":24,"assertions":[{"kind":"appearsBy","selector":"#hook","bySec":0.8},{"kind":"appearsBy","selector":"#hook-tag","bySec":2.4},{"kind":"appearsBy","selector":"#editor-panel","bySec":5.6},{"kind":"appearsBy","selector":"#result-panel","bySec":11.6},{"kind":"appearsBy","selector":"#cta","bySec":19.2},{"kind":"staysInFrame","selector":"#editor-title"},{"kind":"staysInFrame","selector":"#cta"}]}
