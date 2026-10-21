@@ -33,16 +33,24 @@
 	/**
 	 * @var \stdClass $data
 	 */
+
+	$jsonLdData = array(
+		'@context' => 'https://schema.org',
+		'@type' => 'Place',
+		'@id' => $data->id,
+		'geo' => array(
+			'@type' => 'GeoShape',
+			'box' => implode(' ', array(
+				(float)$data->southWest->lat,
+				(float)$data->southWest->lng,
+				(float)$data->northEast->lat,
+				(float)$data->northEast->lng
+			))
+		),
+		'name' => $data->name
+	);
 ?>
 
 <script type="application/ld+json">
-{
-	"@context": "https://schema.org",
-	"@type": "Place",
-	"geo": {
-		"@type": "GeoShape",
-		"box": "<?php echo $data->southWest->lat; ?> <?php echo $data->southWest->lng; ?> <?php echo $data->northEast->lat; ?> <?php echo $data->northEast->lng; ?>"
-	},
-	"name": "<?php echo esc_js($data->name); ?>"
-}
+<?php echo wp_json_encode($jsonLdData, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_PRETTY_PRINT); ?>
 </script>

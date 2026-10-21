@@ -39,6 +39,8 @@ if (!defined('ABP01_LOADED')) {
  * @package WP-Trip-Summary
  */
 class Abp01_PluginModules_JsonLdFrontendDataPluginModule extends Abp01_PluginModules_PluginModule {
+	const PLACE_ID_FRAGMENT = '#wpts-place';
+
 	private Abp01_Settings $_settings;
 
 	private Abp01_Viewer_DataSource $_viewerDataSource;
@@ -58,19 +60,60 @@ class Abp01_PluginModules_JsonLdFrontendDataPluginModule extends Abp01_PluginMod
 	}
 
 	public function load(): void {
-		if ($this->_jsonLdFrontendDataEnabled()) {
-			add_action('wp_head', array($this, 'includeJsonLdFrontendData'));
-		}
+		// The enabled check is deferred until wp_head,
+		//	so that themes can also hook into its filter
+		add_action('wp_head', array($this, 'includeJsonLdFrontendData'));
+
+		// Integration with the wp-alexboia-net theme schema.org output:
+		//	links its BlogPosting node to the Place node output by this module
+		add_filter('wp_abnet_schema_org_properties_blog_posting',
+			array($this, 'linkBlogPostingToPlace'),
+			10,
+			2);
 	}
 
-	private function _jsonLdFrontendDataEnabled(): bool {
-		return $this->_settings->getEnableJsonLdFrontenData();
+	public function linkBlogPostingToPlace(mixed $properties, WP_Post $post): mixed {
+		if (is_array($properties) && $this->_shouldIncludeJsonLdFrontendData($post->ID)) {
+			$properties['contentLocation'] = array(
+				'@id' => $this->_getPlaceId($post->ID)
+			);
+		}
+
+		return $properties;
+	}
+
+	private function _shouldIncludeJsonLdFrontendData(int $postId): bool {
+		return $postId > 0
+			&& $this->_jsonLdFrontendDataEnabled($postId)
+			&& $this->_hasTrackData($this->_getTripSummaryViewerData($postId));
+	}
+
+	private function _getPlaceId(int $postId): string {
+		return get_permalink($postId) . self::PLACE_ID_FRAGMENT;
+	}
+
+	private function _jsonLdFrontendDataEnabled(int $postId): bool {
+		/**
+		 * Whether or not to output JSON-LD frontend data for the given post.
+		 * Defaults to the value of the corresponding plug-in setting.
+		 * Result is converted such that only boolean true enables the output.
+		 *
+		 * @since 0.3.3
+		 * @category Front-end Viewer
+		 * @unstable Susceptible to breaking changes due to PSR-4 migration
+		 *
+		 * @param bool $enabled Whether or not the JSON-LD frontend data output is enabled
+		 * @param int $postId The post identifier
+		 */
+		return apply_filters('abp01_jsonld_frontend_data_enabled',
+			$this->_settings->getEnableJsonLdFrontenData(),
+			$postId) === true;
 	}
 
 	public function includeJsonLdFrontendData(): void {
 		if ($this->_isPostDetailsPage()) {
 			$postId = $this->_getCurrentPostId();
-			if ($postId > 0) {
+			if ($postId > 0 && $this->_jsonLdFrontendDataEnabled($postId)) {
 				$this->_includeJsonLdFrontendData($postId);
 			}
 		}
@@ -88,6 +131,7 @@ class Abp01_PluginModules_JsonLdFrontendDataPluginModule extends Abp01_PluginMod
 			$bounds = $viewerData->track->summary->bounds;
 			
 			$data = new stdClass();
+			$data->id = $this->_getPlaceId($postId);
 			$data->name = $post->post_title;
 			$data->southWest = $bounds->southWest;
 			$data->northEast = $bounds->northEast;

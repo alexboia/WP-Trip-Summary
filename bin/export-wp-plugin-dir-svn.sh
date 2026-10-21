@@ -72,19 +72,25 @@ copy_source_files() {
 copy_asset_files() {
     echo "Copying all asset files to $WPTS_EXPORT_ASSETS_DIR..."
 
-    cp ./assets/en_US/viewer-summary.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-1.png" > /dev/null
-    cp ./assets/en_US/viewer-map.png	"$WPTS_EXPORT_ASSETS_DIR/screenshot-2.png" > /dev/null
-    cp ./assets/en_US/viewer-teaser-top.png	"$WPTS_EXPORT_ASSETS_DIR/screenshot-3.png" > /dev/null
-    cp ./assets/en_US/admin-edit-map.png	"$WPTS_EXPORT_ASSETS_DIR/screenshot-4.png" > /dev/null
-    cp ./assets/en_US/admin-edit-summary-bike.png	"$WPTS_EXPORT_ASSETS_DIR/screenshot-5.png" > /dev/null
-    cp ./assets/en_US/admin-edit-summary-empty.png  "$WPTS_EXPORT_ASSETS_DIR/screenshot-6.png" > /dev/null
-    cp ./assets/en_US/admin-settings.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-7.png" > /dev/null
-	cp ./assets/en_US/admin-settings-predefined-tile-layer.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-8.png" > /dev/null
-	cp ./assets/en_US/viewer-map-alt-profile.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-9.png" > /dev/null
-	cp ./assets/en_US/maintenance.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-10.png" > /dev/null
-	cp ./assets/en_US/admin-log-entry-add.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-11.png" > /dev/null
-	cp ./assets/en_US/admin-log-entry-listing.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-12.png" > /dev/null
-	cp ./assets/en_US/viewer-log-entries.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-13.png" > /dev/null
+    cp ./assets/en_US/wpts-sample-post-viewer-info.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-1.png" > /dev/null
+    cp ./assets/en_US/wpts-sample-post-viewer-map.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-2.png" > /dev/null
+    cp ./assets/en_US/wpts-sample-post-viewer-map-alt-profile.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-3.png" > /dev/null
+    cp ./assets/en_US/wpts-sample-post-viewer-log.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-4.png" > /dev/null
+    cp ./assets/en_US/wpts-sample-post-teaser.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-5.png" > /dev/null
+    cp ./assets/en_US/wpts-admin-post-edit-launcher.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-6.png" > /dev/null
+    cp ./assets/en_US/wpts-admin-post-edit-info.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-7.png" > /dev/null
+    cp ./assets/en_US/wpts-admin-post-edit-map.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-8.png" > /dev/null
+    cp ./assets/en_US/wpts-admin-post-edit-route-log.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-9.png" > /dev/null
+    cp ./assets/en_US/wpts-admin-post-edit-route-log-form.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-10.png" > /dev/null
+    cp ./assets/en_US/wpts-admin-post-listing.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-11.png" > /dev/null
+    cp ./assets/en_US/wpts-admin-post-listing-audit-window.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-12.png" > /dev/null
+    cp ./assets/en_US/wpts-settings-viewer.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-13.png" > /dev/null
+    cp ./assets/en_US/wpts-settings-map.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-14.png" > /dev/null
+    cp ./assets/en_US/wpts-settings-map-predefined-layers.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-15.png" > /dev/null
+    cp ./assets/en_US/wpts-admin-lookup-data.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-16.png" > /dev/null
+    cp ./assets/en_US/wpts-maintenance-missing-track-files.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-17.png" > /dev/null
+    cp ./assets/en_US/wpts-maintenance-nginx.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-18.png" > /dev/null
+    cp ./assets/en_US/wpts-admin-system-logs.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-19.png" > /dev/null
 
     cp ./assets/banner-772x250.jpg    "$WPTS_EXPORT_ASSETS_DIR/banner-772x250.jpg" > /dev/null
     cp ./assets/banner-1544x500.jpg    "$WPTS_EXPORT_ASSETS_DIR/banner-1544x500.jpg" > /dev/null

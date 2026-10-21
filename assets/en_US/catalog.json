@@ -1,0 +1,170 @@
+[
+    {
+        "element": null,
+        "isFullPage": false,
+        "outFile": "./screenshots/wpts-about.png",
+        "page": "Admin About",
+        "url": "wp-admin/admin.php?page=abp01-trip-summary-about"
+    },
+    {
+        "element": null,
+        "isFullPage": false,
+        "outFile": "./screenshots/wpts-settings-general.png",
+        "page": "Admin Settings - General",
+        "url": "wp-admin/admin.php?page=abp01-trip-summary-settings"
+    },
+    {
+        "element": null,
+        "isFullPage": false,
+        "outFile": "./screenshots/wpts-settings-viewer.png",
+        "page": "Admin Settings - Viewer",
+        "url": "wp-admin/admin.php?page=abp01-trip-summary-settings"
+    },
+    {
+        "element": null,
+        "isFullPage": false,
+        "outFile": "./screenshots/wpts-settings-map.png",
+        "page": "Admin Settings - Map",
+        "url": "wp-admin/admin.php?page=abp01-trip-summary-settings"
+    },
+    {
+        "element": null,
+        "isFullPage": false,
+        "outFile": "./screenshots/wpts-settings-map-predefined-layers.png",
+        "page": "Admin Settings - Map - Pre-defined tile layers",
+        "url": "wp-admin/admin.php?page=abp01-trip-summary-settings"
+    },
+    {
+        "element": null,
+        "isFullPage": false,
+        "outFile": "./screenshots/wpts-maintenance-default.png",
+        "page": "Admin - Maintenance - Entry",
+        "url": "wp-admin/admin.php?page=abp01-trip-summary-maintenance"
+    },
+    {
+        "element": null,
+        "isFullPage": false,
+        "outFile": "./screenshots/wpts-maintenance-missing-track-files.png",
+        "page": "Admin - Maintenance - Detect Missing Track Files",
+        "url": "wp-admin/admin.php?page=abp01-trip-summary-maintenance"
+    },
+    {
+        "element": null,
+        "isFullPage": false,
+        "outFile": "./screenshots/wpts-maintenance-nginx.png",
+        "page": "Admin - Maintenance - Nginx Access Directives Helper",
+        "url": "wp-admin/admin.php?page=abp01-trip-summary-maintenance"
+    },
+    {
+        "element": null,
+        "isFullPage": false,
+        "outFile": "./screenshots/wpts-admin-system-logs.png",
+        "page": "Admin - System Logs",
+        "url": "wp-admin/admin.php?page=abp01-system-logs"
+    },
+    {
+        "element": null,
+        "isFullPage": false,
+        "outFile": "./screenshots/wpts-admin-lookup-data.png",
+        "page": "Admin - Lookup Data",
+        "url": "wp-admin/admin.php?page=abp01-trip-summary-lookup"
+    },
+    {
+        "element": null,
+        "isFullPage": false,
+        "outFile": "./screenshots/wpts-admin-lookup-data-add.png",
+        "page": "Admin - Lookup Data - Add Item",
+        "url": "wp-admin/admin.php?page=abp01-trip-summary-lookup"
+    },
+    {
+        "element": null,
+        "isFullPage": false,
+        "outFile": "./screenshots/wpts-admin-post-listing.png",
+        "page": "Admin - Post Listing",
+        "url": "wp-admin/edit.php"
+    },
+    {
+        "element": null,
+        "isFullPage": false,
+        "outFile": "./screenshots/wpts-admin-post-listing-audit.png",
+        "page": "Admin - Post Listing - Audit Log Sample",
+        "url": "wp-admin/edit.php"
+    },
+    {
+        "element": "Audit Log Window",
+        "isFullPage": false,
+        "outFile": "./screenshots/wpts-admin-post-listing-audit-window.png",
+        "page": "Admin - Post Listing - Audit Log Sample",
+        "url": "wp-admin/edit.php"
+    },
+    {
+        "element": "Trip Summary Launcher Metabox",
+        "isFullPage": false,
+        "outFile": "./screenshots/wpts-admin-post-edit-launcher.png",
+        "page": "Admin - Edit Post",
+        "url": "wp-admin/post.php?post=10454&action=edit"
+    },
+    {
+        "element": "Trip Summary Editor - Info",
+        "isFullPage": false,
+        "outFile": "./screenshots/wpts-admin-post-edit-info.png",
+        "page": "Admin - Edit Post",
+        "url": "wp-admin/post.php?post=10454&action=edit"
+    },
+    {
+        "element": "Trip Summary Editor - Map",
+        "isFullPage": false,
+        "outFile": "./screenshots/wpts-admin-post-edit-map.png",
+        "page": "Admin - Edit Post",
+        "url": "wp-admin/post.php?post=10454&action=edit"
+    },
+    {
+        "element": "Route Log Metabox",
+        "isFullPage": false,
+        "outFile": "./screenshots/wpts-admin-post-edit-route-log.png",
+        "page": "Admin - Edit Post",
+        "url": "wp-admin/post.php?post=10454&action=edit"
+    },
+    {
+        "element": "Route Log - Add Entry Form",
+        "isFullPage": false,
+        "outFile": "./screenshots/wpts-admin-post-edit-route-log-form.png",
+        "page": "Admin - Edit Post",
+        "url": "wp-admin/post.php?post=10454&action=edit"
+    },
+    {
+        "element": "Top Teaser",
+        "isFullPage": false,
+        "outFile": "./screenshots/wpts-sample-post-teaser.png",
+        "page": "Frontend - View Post",
+        "url": "2025/09/faptelnita-contraataca/"
+    },
+    {
+        "element": "Viewer - Info Tab",
+        "isFullPage": false,
+        "outFile": "./screenshots/wpts-sample-post-viewer-info.png",
+        "page": "Frontend - View Post",
+        "url": "2025/09/faptelnita-contraataca/"
+    },
+    {
+        "element": "Viewer - Map Tab",
+        "isFullPage": false,
+        "outFile": "./screenshots/wpts-sample-post-viewer-map.png",
+        "page": "Frontend - View Post",
+        "url": "2025/09/faptelnita-contraataca/"
+    },
+    {
+        "element": "Viewer - Map Tab with Altitude Profile",
+        "isFullPage": false,
+        "outFile": "./screenshots/wpts-sample-post-viewer-map-alt-profile.png",
+        "page": "Frontend - View Post",
+        "url": "2025/09/faptelnita-contraataca/"
+    },
+    {
+        "element": "Viewer - Route Log Tab",
+        "isFullPage": false,
+        "outFile": "./screenshots/wpts-sample-post-viewer-log.png",
+        "page": "Frontend - View Post",
+        "url": "2025/09/faptelnita-contraataca/"
+    }
+]

@@ -4,144 +4,236 @@ Donate link: https://ko-fi.com/alexandruboia
 Tags: trip, summary, map, gpx, travel
 Requires at least: 6.0.0
 Tested up to: 6.5.2
-Stable tag: 0.3.2
+Stable tag: 0.3.3
 Requires PHP: 8.0.0
 License: Modified BSD License
 License URI: https://opensource.org/licenses/BSD-3-Clause
 
-A WordPress trip summary plugin to help travel bloggers manage and display structured information about their train rides and biking or hiking trips.
+Structured trip summaries, self-hosted GPS tracks and interactive maps for travel bloggers.
 
 == Description ==
 
-🌟 [GitHub](https://github.com/alexboia/WP-Trip-Summary)
-❤️ [WordPress](https://wordpress.org/plugins/wp-trip-summary/)
+= Why WP Trip Summary =
 
-### Features
+Readers of a travel post want answers before they read the story: how long is the route, how much climbing does it involve, how hard is it and how do I get there? WP Trip Summary puts those answers in a clean, consistent box at the top of every trip post, next to an interactive map of the route.
 
-- attach technical information to a post (ex. how long was your trip, how much did you totally climb, where from and where to, how hard do you think it has been, what kind of roads or trails did you encounter etc.);
-- attach GPS data to a post (GPX, GeoJSON and KML files are currently accepted as data sources) and display that track on a map;
-- maintain rider's log entries, while optionally specifying some of them as public;
-- allows management of the look-up data used to populate the fields presented as single or multi-selection options list (ex. `Difficulty Level`, `Open During Seasons` etc.);
-- allows customization of the map layer:
-   - map tile source (comes by default configured with [OpenStreetMap](https://www.openstreetmap.org/)); 
-   - enabling/disabling of available map controls; 
-   - customizing the visual representation of the track).
-- allows customization of the measurement unit system used to represent various values (ex. `Total distance`, `Total climb` etc.);
-- multi-language.
+- 🧭 **Every trip post becomes a route sheet.** Add distance, total climb, difficulty, seasons, surface type and more. The fields are tailored to each trip type and displayed the same way on every post.
+- 🗺️ **Your GPS tracks stay on your server.** Upload a GPX, KML or GeoJSON file and it is parsed, stored and rendered by your own WordPress site. You need no third-party map service account, subscription or API key.
+- ⛰️ **Interactive maps with elevation profiles.** Visitors can pan, zoom, go full screen, magnify parts of the route, see its highest and lowest points and explore the altitude profile.
+- 📓 **Rider's log.** Keep a record of everyone who rode or walked the route, including dates, time spent, gear and notes. You choose which entries are public.
+- 🔎 **Search-engine friendly.** Optionally add schema.org `Place` structured data (JSON-LD) to posts that have a track.
+- 🌍 **Ready for your audience.** The plugin is available in English, French, German and Romanian, and it supports metric and imperial units.
 
-### More details
+= Who it is for =
 
-This plug-in provides three basic features:
-- allow some structured information to be filled in, according to a selected trip type;
-- allow some GPS track to be uploaded and then rendered on a map;
-- maintain rider's log entries, while optionally specifying some of them as public.
+- **Cycling and bikepacking bloggers** who want every tour to show distance, climb, surface and recommended bike at a glance.
+- **Hiking and trekking bloggers** who document trails, route markers, seasons and access routes.
+- **Railway enthusiasts** who write about train journeys, including gauge, operators, electrification and line status.
+- **Small tour operators, guides and outdoor clubs** that publish routes on a WordPress site and want them presented consistently.
 
-Structured information is supported for the following types of trips:
-- Bike trips;
-- Hiking trips;
-- Train rides.
+WP Trip Summary attaches the trip information to the post itself. You write your story as usual, and the summary, map and log travel with it.
 
-For bike trips the following fields are available:
-- Total distance;
-- Total climb;
-- Difficulty level;
-- Access information (how to get to the start point and return from the end point);
-- Open during seasons;
-- Path surface type (eg: dirt, asphalt, grass etc.);
-- Recommended bike type (eg: MTB, road bike etc.).
+= Features =
 
-For hiking trips the following fields are available:
-- Total distance;
-- Total climb;
-- Difficulty level;
-- Access information;
-- Open during seasons;
-- Path surface type;
-- Route markers.
+= Structured trip information =
 
-For train rides the following fields are available:
-- Total distance;
-- How many trains were exchanged;
-- Line gauge (mm);
-- Railroad operators used;
-- Line status (closed, operational etc.);
-- Whether the line is electrified or not;
-- Line type.
+Choose a trip type for each post and fill in the fields that matter for it:
 
-### Requirements
+| Bike trips | Hiking trips | Train rides |
+| --- | --- | --- |
+| Total distance | Total distance | Total distance |
+| Total climb | Total climb | Number of train changes |
+| Difficulty level | Difficulty level | Line gauge |
+| Access information | Access information | Railroad operators |
+| Open during seasons | Open during seasons | Line status |
+| Path surface type | Path surface type | Electrification |
+| Recommended bike type | Route markers | Line type |
 
-- PHP version 8.0.0 or greater (as of version 0.3.2);
-- MySQL version 5.7 or greater (with spatial support);
-- Wordpress 6.0.0 or greater;
-- libxml extension;
-- SimpleXml extension;
-- mysqli extension;
-- mbstring - not strictly required, but recommended;
-- zlib - not strictly required, but recommended.
+Options such as difficulty levels, seasons and surface types are fully editable from the admin area, in every supported language.
 
-### Multi language
+= GPS tracks and maps =
 
-Available in English, Romanian, French and (since 0.3.2) German.
+- Upload **GPX 1.1**, **KML** or **GeoJSON (RFC 7946)** files. Every coordinate is validated before the track is saved. [See how each format is read](https://github.com/alexboia/WP-Trip-Summary/blob/master/readme/docs/file-formats.md).
+- The map is powered by [Leaflet](https://leafletjs.com/) and uses [OpenStreetMap](https://www.openstreetmap.org/) by default. You can choose a predefined tile layer or set up your own.
+- Visitors can use full-screen mode, a magnifying glass and the button that re-centers the map on the track.
+- An altitude profile chart and a box with the minimum and maximum altitude are available.
+- You can let visitors download the track as a GPX file.
+- You can change the track's color and line weight.
 
-### Helping out
+= Rider's log =
 
-- by contributing: head over tot he project's GitHub page: [https://github.com/alexboia/WP-Trip-Summary](https://github.com/alexboia/WP-Trip-Summary);
-- by donating: [https://ko-fi.com/alexandruboia](https://ko-fi.com/alexandruboia);
-- support my paid work: [https://alexboia.gumroad.com/](https://alexboia.gumroad.com/).
+Add as many log entries as you need to each route, with the rider, date, time spent, vehicle, gear and notes. Public entries appear in a dedicated tab of the viewer.
 
-== Frequently Asked Questions ==
+= Easy to place, easy to configure =
 
-= How can it be displayed for other post types than page and post? =
-Out of the box this is not possible, but, as of 0.2.8 you can customize it using a filter hook. Please see this wiki page for an example: https://github.com/alexboia/WP-Trip-Summary/wiki/Changing-the-editor-availability-per-post-type.
+- The trip summary viewer is added automatically to the post, or you can place it yourself with the `[abp01_trip_summary_viewer]` shortcode.
+- A **Gutenberg block** and a **classic editor button** insert the shortcode for you.
+- A **teaser** at the top of the post can invite readers to jump to the trip summary.
+- You can choose the tab that the viewer opens on and the unit system (metric or imperial).
 
-= Does it support KML files? =
-Yes, as of version 0.3.2.
+= For site owners =
 
-= Can I insert the trip summary front-end viewer at a custom location? =
-You can insert the trip summary viewer at a custom location *in the same post for which you have defined it* using the following shortcode: [abp01_trip_summary_viewer] (no parameters required). Only one such shortcode allowed and supported per post.
+- In the post listing, you can **filter posts by trip type** and see a **trip summary audit log**.
+- The **maintenance tools** clear cached track data, find posts with missing track files or remove all plugin data.
+- The **system logs** page lets you view and manage the plugin's error and debug logs.
 
-= Can it be customized? =
-Yes, the front-end viewer of the plug-in (i.e. the one that shows trip summary data to your visitors can be customized). See here how: https://github.com/alexboia/WP-Trip-Summary/wiki/Customizing-the-front-end-viewer.
+= For developers =
 
-= Why does the trip summary viewer not show up on post listing pages, such as archive pages? =
-WP-Trip-Summary looks at the current page and only activates itself when on the actual post details page, so it won’t work on archive pages, even if the entire post content is displayed.
+- Trip summary data is exposed through the WordPress REST API, in the `wpts_trip_summary` field of posts.
+- [Actions and filters are documented](https://github.com/alexboia/WP-Trip-Summary/tree/master/hook-docs), so you can customize the plugin.
+- Optional JSON-LD output (schema.org `Place` with a `GeoShape` bounding box):
 
-= How can I contribute? =
-Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summary) and let's talk!
+```html
+<script type="application/ld+json">
+{
+	"@context": "https://schema.org",
+	"@type": "Place",
+	"geo": {
+		"@type": "GeoShape",
+		"box": "45.69152 23.72547 46.01246 25.27592"
+	},
+	"name": "Towards Eagle's lake"
+}
+</script>
+```
 
-== Screenshots ==
+The box is described by its south-west and north-east corners: `Lat1 Lng1 Lat2 Lng2`.
 
-1. Frontend Viewer - Trip information
-2. Frontend Viewer - Trip Map
-3. Frontend Viewer - Top Teaser
-4. Admin - Trip Editor - Map
-5. Admin - Trip Editor - Trip information
-6. Admin - Trip Editor - No trip type selected yet
-7. Admin - Plug-in settings editor
-8. Admin - Plug-in settings editor - chose a pre-defined tile configuration
-9. Frontend Viewer - Trip Map with altitude profile
-10. Admin - Maintenance page
-11. Admin - Add rider log entry
-12. Admin - List rider log entries
-13. Frontend viewer - List rider log entries
+= Languages =
+
+| Language | Code |
+| --- | --- |
+| English (default) | en_US |
+| French | fr_FR |
+| German | de_DE |
+| Romanian | ro_RO |
+
+The German translation was partly contributed by [Nico](https://wordpress.org/support/users/nida78/).
+
+Would you like WP Trip Summary in your language? [Open an issue](https://github.com/alexboia/WP-Trip-Summary/issues/new/choose) and help translate it.
+
+= Roadmap =
+
+Version 0.4 focuses on flexibility and on making the plugin your own:
+
+- [ ] **Custom trip types**, plus new built-in ones such as road trips and water activities.
+- [ ] **Viewer color schemes** that you can customize from the settings page or in code.
+- [ ] **GPX waypoints** displayed on the map.
+- [ ] **A public API** for plugin and theme developers.
+- [ ] **More customizable settings.**
+
+You can follow the work in the [milestones](https://github.com/alexboia/WP-Trip-Summary/milestones). Have an idea? [Suggest a feature](https://github.com/alexboia/WP-Trip-Summary/issues/new/choose).
+
+= Support and community =
+
+- 🐞 **Found a bug or have a question?** [Open an issue](https://github.com/alexboia/WP-Trip-Summary/issues/new/choose) or use the [WordPress.org support forum](https://wordpress.org/support/plugin/wp-trip-summary/).
+- ⭐ **Enjoying the plugin?** A [review on WordPress.org](https://wordpress.org/support/plugin/wp-trip-summary/reviews/#new-post) helps other travel bloggers find it.
+- 🛠️ **Want to contribute code or translations?** [Read the contribution guide](https://github.com/alexboia/WP-Trip-Summary/blob/master/CONTRIBUTING.md).
+
+= Support the project =
+
+WP Trip Summary is built and maintained in my free time. If it helps you share your journeys, you can support its development:
+
+[Support me on Ko-fi](https://ko-fi.com/Q5Q01KGLM)
+
+You can also support my paid work on [Gumroad](https://alexboia.gumroad.com/).
 
 == Installation ==
 
-1. Upload the plugin files to the `/wp-content/plugins/abp01-wp-trip-summary` directory, or install the plugin through the WordPress plugins screen directly.
-2. Activate the plugin through the 'Plugins' screen in WordPress.
-3. Use the `Trip Summary -> Settings` sidebar menu item to access the plug-in configuration page.
-4. Use the `Trip Summary -> Help` sidebar menu item to access the plug-in help page.
-5. For those with plug-in versions older than 0.2.1, please see here notes on updating to plug-in version 0.2.1: https://github.com/alexboia/WP-Trip-Summary/blob/master/README-UPDATE-021.md
+= Getting started =
+
+1. In your WordPress admin area, go to `Plugins` -> `Add New` and search for **WP Trip Summary**.
+2. Click `Install Now`, then `Activate`.
+3. Open a post, choose the trip type in the **Trip Summary** box, fill in the details and upload your GPS track.
+4. Publish your post. The trip summary and map appear on the post.
+
+You can fine-tune the plugin from `Trip Summary` -> `Settings`.
+
+Prefer a manual install? Download the latest package from the [WordPress plugin directory](https://wordpress.org/plugins/wp-trip-summary/) or from [GitHub releases](https://github.com/alexboia/WP-Trip-Summary/releases), then upload it from `Plugins` -> `Add New` -> `Upload Plugin`.
+
+= Requirements =
+
+- WordPress 6.0 or newer
+- PHP 8.0 or newer, with the `libxml`, `SimpleXML` and `mysqli` extensions
+- MySQL 5.7 or newer, with spatial support
+- Recommended: the `mbstring` and `zlib` PHP extensions
+
+Developer setup and test instructions are in [CONTRIBUTING.md](https://github.com/alexboia/WP-Trip-Summary/blob/master/CONTRIBUTING.md).
+
+== Frequently Asked Questions ==
+
+= Does it work with the block editor (Gutenberg)? =
+
+Yes. The plugin works with both the block editor and the classic editor.
+
+= Do I need an account with a map provider? =
+
+No. The map uses OpenStreetMap tiles by default, and your tracks are stored on your own server. You can switch to another tile provider if you want to.
+
+= Which GPS file formats can I upload? =
+
+You can upload GPX 1.1, KML and GeoJSON files. [See the parsing details](https://github.com/alexboia/WP-Trip-Summary/blob/master/readme/docs/file-formats.md).
+
+= Can my readers download the track? =
+
+Yes, if you allow it. Track downloads are optional and can be turned on from the plugin settings.
+
+= Can I show the trip summary somewhere else in the post? =
+
+Yes. Use the `[abp01_trip_summary_viewer]` shortcode, the Gutenberg block or the classic editor button. The shortcode takes no parameters and is supported once per post, in the post for which the trip summary was defined.
+
+= Can I use it with post types other than posts and pages? =
+
+Yes, with a filter hook. [See the example in the wiki](https://github.com/alexboia/WP-Trip-Summary/wiki/Changing-the-editor-availability-per-post-type).
+
+= Can I customize how the trip summary looks? =
+
+Yes. [See how to customize the front-end viewer](https://github.com/alexboia/WP-Trip-Summary/wiki/Customizing-the-front-end-viewer).
+
+= Why doesn't the trip summary appear on archive pages? =
+
+The viewer is shown only on the post's own page. It does not appear on listing pages, such as archives, even when they display the full post content.
+
+= Does it support multisite installations? =
+
+WP Trip Summary is designed and tested for single-site installations. Multisite is not officially supported.
+
+= Is it free? =
+
+Yes. WP Trip Summary is free and open source, under the BSD 3-Clause license.
+
+== Screenshots ==
+
+1. Your readers get the essentials at a glance: distance, climb, difficulty, access, seasons and surface
+2. Your GPS track on an interactive map, served from your own site
+3. The altitude profile under the map shows where the climbing happens
+4. The public route log shows who did the route, when, how long it took and what they used
+5. An optional teaser at the top of the post takes readers straight to the trip summary
+6. Open the trip summary editor right from the post editor
+7. Fill in the trip details, choosing from options tailored to each trip type
+8. Upload a GPX, KML or GeoJSON file and preview the track before publishing
+9. Keep a log of everyone who did the route, alongside the post
+10. Add a route log entry and decide whether your readers can see it
+11. See which posts have trip information and a track, and filter them by route type
+12. Check when a post's trip information and track were last changed, and by whom
+13. Set the teaser texts, the tab readers see first and how multi-value fields are displayed
+14. Choose the map tiles and controls, the altitude display, track downloads and the track's look
+15. Start from a pre-defined tile layer instead of typing the configuration yourself
+16. Manage the options offered for difficulty levels, seasons, surfaces and other fields
+17. Find the posts whose track files have gone missing
+18. Generate Nginx rules that block direct web access to stored track files
+19. Read and manage the plugin's debug and error logs from the dashboard
 
 == Changelog ==
 
 = 0.3.2 =
-- Added German translation (de_DE, many thanks to Nico - nida78);
-- Added support for KML files;
-- Bring help contents (mostly) up-to-date with the new features, for ro_RO and en_US;
-- Add route type filter in admin area post listing;
-- Some small bug fixes;
-- Add proper error and debug logging infrastructure, including dedicated log management page.
+- Added German translation (issue #90);
+- Added support for KML files (issue #91);
+- Bring help contents (mostly) up-to-date with the new features, for ro_RO and en_US (issue #89);
+- Add route type filter in admin area post listing (issue #92);
+- Some embarrassing bug fixes;
+- Add proper error and debug logging infrastructure, including dedicated log management page (go to `Trip Summary` -> `System logs`);
+- Other stuff which I may not remember.
 
 = 0.3.1 =
 - Fixed bug on some PHP versions.
@@ -156,20 +248,22 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 - Internal installer rework.
 
 = 0.2.8 =
-- Added trip summary audit log to post edit and post listing pages;
+- Added shortcuts to plug-in's entry from the plug-in listing page;
 - Added maintenance page with the following tools: clear cached track data, clear all trip summary info, detect posts that have missing track files;
 - Added JSON-LD structured data to posts or pages that have trip summary track data (type Place, with box GeoShape);
-- Added shortcuts to plug-in's entry from the plug-in listing page;
 - Added additional REST API field to WP-JSON post endpoint to return trip summary data;
-- Updated UI + UX of the lookup data management editor page;
-- Usability improvements;
-- Updated help contents.
+- Fixed MysqliDb dependency -  The MysqliDb generates deprectation warnings and needs to be updated (Issue #79);
+- Fixed JS warnings caused by including editor scripts in non-editor pages (Issue #78);
+- Added trip summary audit log to post edit and post listing pages (Issue #80);
+- Updated UI + UX of the lookup data management editor page (Issue #77);
+- Fixed trip summary shortcode block not rendering in post/page view;
+- Fixed trip summary shortcode block editor widget not showing up.
 
 = 0.2.7 =
-- Refactoring: the plug-in now has a more manageable and extensible structure;
-- Feature: Added an about page;
-- Feature: Enhanced display for the frontend viewer information items;
-- Feature: Added support for GeoJSON file import;
+- Refactoring: the plug-in now has a more manageable and extensible structure, with the most important change being the splitting of all the code previously in `abp01-plugin-main.php`, into separate plugin modules;
+- Feature: Added an about page (Issue 59);
+- Feature: Enhanced display for the frontend viewer information items (Issue 75);
+- Feature: Added support for GeoJSON file import (Issue 76);
 - Improved plug-in documentation;
 - Improved usability and UI for the settings page;
 - Improved usability and UI for the help page;
@@ -177,68 +271,68 @@ Head over to the plug-in's GitHub page (https://github.com/alexboia/WP-Trip-Summ
 - Improved stability and various bug fixes.
 
 = 0.2.6 =
-- Usability improvement: added a control to the front-end viewer map that allows one to re-center the map to the GPS track bounding area - basically the initial state of the map when it's first loaded.
-- Usability improvement: within the WP-Trip-Summary, the "Clear Track" and "Clear Info" buttons have been grouped using a `Quick Actions` control, such as in the metabox used to display the summary in the post page.
-- Usability improvement: added confirmation when attempting to remove trip summary information as well as when attempting to remove track data.
-- Usability improvement: when removing a lookup data item with existing associations (that is, associated with at least a post), WP-Trip-Summary no longer issues a hard denial, but asks the user to confirm whether he/she wishes to proceed removing the item, as well as sever its associations with the posts.
-- Feature: added an option (to the WP-Trip-Summary settings page) to specify the initially selected WP-Trip-Summary front-end viewer tab.
-- Feature: added an option (to the WP-Trip-Summary settings page) to specify the front-end viewer map height.
+- Usability improvement: added a control to the front-end viewer map that allows one to re-center the map to the GPS track bounding area - basically the initial state of the map when it's first loaded (Issue 68).
+- Usability improvement: within the WP-Trip-Summary, the `Clear Track` and `Clear Info` buttons have been grouped using a `Quick Actions` control, such as in the metabox used to display the summary in the post page (Issue 69).
+- Usability improvement: added confirmation when attempting to remove trip summary information as well as when attempting to remove track data (Issue 72).
+- Usability improvement: when removing a lookup data item with existing associations (that is, associated with at least a post), WP-Trip-Summary no longer issues a hard denial, but asks the user to confirm whether he/she wishes to proceed removing the item, as well as sever its associations with the posts (Issue 67).
+- Feature: added an option (to the WP-Trip-Summary settings page) to specify the initially selected WP-Trip-Summary front-end viewer tab (Issue 71).
+- Feature: added an option (to the WP-Trip-Summary settings page) to specify the front-end viewer map height (Issue 70).
 - Improved stability;
 - Improved documentation.
 
 = 0.2.5 =
-* Trip summary front-end viewer can now inserted at a custom location in the post content for which it has been defined using the [abp01_trip_summary_viewer] shortcode (or a special block, if you're using the block editor);
-* Support for trip summary front-end viewer customization: https://github.com/alexboia/WP-Trip-Summary/wiki/Customizing-the-front-end-viewer.
-* Refined error reporting when uploading a new GPS track;
-* Altitude profile now available;
-* Min/max altitude info box now available;
-* Refactoring and stability improvements;
-* Fixed track uploader not opening on Microsoft Edge browsers;
-* Fixed Waymark compatibility issue. 
+- Trip summary front-end viewer can now inserted at a custom location in the post content for which it has been defined using the [abp01_trip_summary_viewer] shortcode (or a special block, if you're using the block editor);
+- Support for trip summary front-end viewer customization: https://github.com/alexboia/WP-Trip-Summary/wiki/Customizing-the-front-end-viewer.
+- Refined error reporting when uploading a new GPS track;
+- Altitude profile now available;
+- Min/max altitude info box now available;
+- Refactoring and stability improvements;
+- Fixed track uploader not opening on Microsoft Edge browsers;
+- Fixed Waymark compatibility issue.
 
 = 0.2.4 =
-* French translation now available!
-* The trip summary editor is now launched from a side metabox, which also displays relevant information and features some quick actions;
-* The plug-in is now smoothly integrated with the block editor as well;
-* In the plug-in settings editor a user can now specify the weight used to plot the GPS track on the map;
-* Added automated tests;
-* Tested compatibility with WordPress 5.4;
-* Fixed a GPX file upload issue that occured with certain GPX files;
-* Updated dependencies: URI.js.
+- French translation now available!
+- The trip summary editor is now launched from a side metabox, which also displays relevant information and features some quick actions;
+- The plug-in is now smoothly integrated with the block editor as well;
+- In the plug-in settings editor a user can now specify the weight used to plot the GPS track on the map;
+- Added automated tests;
+- Tested compatibility with WordPress 5.4;
+- Fixed a GPX file upload issue that occured with certain GPX files;
+- Updated dependencies: URI.js.
 
 = 0.2.3 =
-* In the plug-in settings editor a user can now specify the color used to plot the GPS track on the map
-* The post and page listing now have two columns that describe whether or not an article has route information and, respectively, whether or not it has an uploaded GPX track
-* The plug-in now correctly works for WP pages as well (previously, it would not correctly render on the frontend)
-* Added automated tests
-* Added compatibility with Mysql 8.0+
-* Fixed an activation issue that occured with certain PHP versions
-* Updated dependencies: Leaftlet Js, Leaflet Js Magnifying Glass component, NProgress js, MysqliDb.
+- In the plug-in settings editor a user can now specify the color used to plot the GPX track on the map
+- The post and page listing now have two columns that describe whether or not an article has route information and, respectively, whether or not it has an uploaded GPX track
+- The plug-in now correctly works for WP pages as well (previously, it would not correctly render on the frontend)
+- Added automated tests
+- Added compatibility with Mysql 8.0+
+- Fixed an activation issue that occured with certain PHP versions
+- Updated dependencies: Leaftlet Js, Leaflet Js Magnifying Glass component, NProgress js, MysqliDb
 
 = 0.2.2 =
-* The storage directories have received index.php and .htaccess guard access files to prevent direct access of stored files. These are copied on install and on upgrade, but also created upon storing files, if they do not exist.
-* Refactoring of view file names: replaced "techbox-" prefix with "wpts-" prefix.
-* Removed deprecated uploader runtimes (flash and silverlight) from track uploader.
-* Minor refactoring.
+- The storage directories have received index.php and .htaccess guard access files to prevent direct access of stored files. These are copied on install and on upgrade, but also created upon storing files, if they do not exist.
+- Refactoring of view file names: replaced "techbox-" prefix with "wpts-" prefix.
+- Removed deprecated uploader runtimes (flash and silverlight) from track uploader.
+- Minor refactoring.
 
-= 0.2.1 = 
-* Moved plug-in track & cache storage to a sub-directory of wp-content/uploads, as, previously, the plug-in stored its track & cache files to its own directory, which caused this data to be lost upon upgrade, since WordPress, when upgrading a plug-in, removes all the files that belong to the previous plug-in version.
-* Minor refactoring
+= 0.2.1 =
+- Moved plug-in track & cache storage to a sub-directory of wp-content/uploads, as, previously, the plug-in stored its track & cache files to its own directory, which caused this data to be lost upon upgrade, since WordPress, when upgrading a plug-in, removes all the files that belong to the previous plug-in version.
+- Minor refactoring
 
 = 0.2.0 =
-* Fixed An activation issue which occurred under certain conditions.
-* Fixed the trip summary editor not being re-centered upon window resize;
-* Fixed the settings page not displaying the progress bar when saving, if the page has been scrolled.
+- Fixed An activation issue which occurred under certain conditions.
+- Fixed the trip summary editor not being re-centered upon window resize;
+- Fixed the settings page not displaying the progress bar when saving, if the page has been scrolled.
 
 = 0.2b =
-First officially distributed version.
+- First officially distributed version.
 
 == Upgrade Notice ==
 
-= 0.3.2 = 
+= 0.3.2 =
 Upgrade to this version for additional features, better user experience and improved plug-in stability
 
-= 0.2.8. = 
+= 0.2.8 =
 Upgrade to this version for additional features, better user experience and improved plug-in stability
 
 = 0.2.7 =
@@ -253,7 +347,7 @@ Upgrade to this version for additional features and improved plug-in stability
 = 0.2.4 =
 Upgrade to this version for additional features (including block editor integration) and improved plug-in stability
 
-= 0.2.3 = 
+= 0.2.3 =
 Upgrade to this version for additional features and improved plug-in stability
 
 = 0.2.2 =
