@@ -77,7 +77,7 @@ Readers of a travel post want answers before they read the story: how long is th
 | ![Editor - Route log](assets/en_US/wpts-admin-post-edit-route-log.png) | ![Editor - Add route log entry](assets/en_US/wpts-admin-post-edit-route-log-form.png) |
 
 <details>
-<summary><strong>Settings, maintenance and the rest of the admin area</strong></summary>
+<summary><h3>Settings, maintenance and the rest of the admin area</h3></summary>
 
 #### Post listing, with trip summary status and a route type filter
 

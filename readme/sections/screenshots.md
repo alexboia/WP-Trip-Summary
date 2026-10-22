@@ -32,7 +32,7 @@
 <!-- TODO: consider a short GIF of the editor flow: upload a GPX file, fill in the fields, publish -->
 
 <details>
-<summary><strong>Settings, maintenance and the rest of the admin area</strong></summary>
+<summary><h3>Settings, maintenance and the rest of the admin area</h3></summary>
 
 #### Post listing, with trip summary status and a route type filter
 
