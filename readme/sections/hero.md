@@ -28,7 +28,7 @@
 </p>
 
 <p align="center">
-   <a href="https://vimeo.com/1238064833">
+   <a href="https://vimeo.com/1238064833" target="_blank">
       <img align="center" src="https://raw.githubusercontent.com/alexboia/WP-Trip-Summary/master/screenshots/MAIN.jpg?raw=true" style="margin-bottom: 20px; margin-right: 20px;" />
    </a>
 </p>

@@ -186,10 +186,6 @@ Yes. Use the `[abp01_trip_summary_viewer]` shortcode, the Gutenberg block or the
 
 Yes, with a filter hook. [See the example in the wiki](https://github.com/alexboia/WP-Trip-Summary/wiki/Changing-the-editor-availability-per-post-type).
 
-= Can I customize how the trip summary looks? =
-
-Yes. [See how to customize the front-end viewer](https://github.com/alexboia/WP-Trip-Summary/wiki/Customizing-the-front-end-viewer).
-
 = Why doesn't the trip summary appear on archive pages? =
 
 The viewer is shown only on the post's own page. It does not appear on listing pages, such as archives, even when they display the full post content.
@@ -225,6 +221,8 @@ Yes. WP Trip Summary is free and open source, under the BSD 3-Clause license.
 19. Read and manage the plugin's debug and error logs from the dashboard
 
 == Changelog ==
+
+= 0.3.3 =
 
 = 0.3.2 =
 - Added German translation (issue #90);

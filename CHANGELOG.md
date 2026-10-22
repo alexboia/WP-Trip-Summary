@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 0.3.3
+
+
 ### Version 0.3.2
 - Added German translation ([issue #90](https://github.com/alexboia/WP-Trip-Summary/issues/90));
 - Added support for KML files ([issue #91](https://github.com/alexboia/WP-Trip-Summary/issues/91));

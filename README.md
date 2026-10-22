@@ -30,7 +30,7 @@
 </p>
 
 <p align="center">
-   <a href="https://vimeo.com/1238064833">
+   <a href="https://vimeo.com/1238064833" target="_blank">
       <img align="center" src="https://raw.githubusercontent.com/alexboia/WP-Trip-Summary/master/screenshots/MAIN.jpg?raw=true" style="margin-bottom: 20px; margin-right: 20px;" />
    </a>
 </p>
@@ -77,9 +77,7 @@ Readers of a travel post want answers before they read the story: how long is th
 | ![Editor - Route log](assets/en_US/wpts-admin-post-edit-route-log.png) | ![Editor - Add route log entry](assets/en_US/wpts-admin-post-edit-route-log-form.png) |
 
 <details>
-	<summary>
-		<strong>Settings, maintenance and the rest of the admin area</strong>
-	</summary>
+	<summary><strong>Settings, maintenance and the rest of the admin area</strong></summary>
 
 	#### Post listing, with trip summary status and a route type filter
 
@@ -274,10 +272,6 @@ Yes. Use the `[abp01_trip_summary_viewer]` shortcode, the Gutenberg block or the
 **Can I use it with post types other than posts and pages?**
 
 Yes, with a filter hook. [See the example in the wiki](https://github.com/alexboia/WP-Trip-Summary/wiki/Changing-the-editor-availability-per-post-type).
-
-**Can I customize how the trip summary looks?**
-
-Yes. [See how to customize the front-end viewer](https://github.com/alexboia/WP-Trip-Summary/wiki/Customizing-the-front-end-viewer).
 
 **Why doesn't the trip summary appear on archive pages?**
 
