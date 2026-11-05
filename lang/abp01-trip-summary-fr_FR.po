@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the WP Trip Summary plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Trip Summary 0.2.2\n"
+"Project-Id-Version: WP Trip Summary 0.3.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-trip-summary\n"
-"POT-Creation-Date: 2024-02-17T20:14:37+02:00\n"
-"PO-Revision-Date: 2024-02-17 20:18+0200\n"
+"POT-Creation-Date: 2026-11-05T16:59:24+00:00\n"
+"PO-Revision-Date: 2026-11-05 19:03+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -13,18 +13,21 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: GNU gettext-tools 0.26\n"
 "X-Domain: abp01-trip-summary\n"
 
 #. Plugin Name of the plugin
+#: abp01-plugin-main.php
 msgid "WP Trip Summary"
 msgstr "WP Trip Summary"
 
 #. Plugin URI of the plugin
+#: abp01-plugin-main.php
 msgid "https://github.com/alexboia/WP-Trip-Summary"
 msgstr "https://github.com/alexboia/WP-Trip-Summary"
 
 #. Description of the plugin
+#: abp01-plugin-main.php
 msgid ""
 "Aids a travel blogger to add structured information about his tours (biking, "
 "hiking, train travels etc.)"
@@ -33,74 +36,185 @@ msgstr ""
 "structurées sur ses circuits (vélo, randonnée, voyages en train, etc.)"
 
 #. Author of the plugin
+#: abp01-plugin-main.php
 msgid "Alexandru Boia"
 msgstr "Alexandru Boia"
 
 #. Author URI of the plugin
+#: abp01-plugin-main.php
 msgid "http://alexboia.net"
 msgstr "http://alexboia.net"
 
-#: abp01-plugin-functions.php:482
+#: abp01-plugin-functions.php:542
 msgid "Bike type"
 msgstr "Vélo recommandé"
 
-#: abp01-plugin-functions.php:483 views/wpts-frontend.php:77
-#: views/wpts-frontend.php:85
+#: abp01-plugin-functions.php:544 views/wpts-frontend.php:125
+#: views/wpts-frontend.php:133
 msgid "Difficulty level"
 msgstr "Niveau de difficulté"
 
-#: abp01-plugin-functions.php:484 views/wpts-frontend.php:80
-#: views/wpts-frontend.php:88
+#: abp01-plugin-functions.php:546 views/wpts-frontend.php:128
+#: views/wpts-frontend.php:136
 msgid "Path surface type"
 msgstr "Type de surface de piste"
 
-#: abp01-plugin-functions.php:485
+#: abp01-plugin-functions.php:548
 msgid "Railroad electrification status"
 msgstr "État d'électrification ferroviaire"
 
-#: abp01-plugin-functions.php:486
+#: abp01-plugin-functions.php:550
 msgid "Railroad line status"
 msgstr "Condition de la ligne de chemin de fer"
 
-#: abp01-plugin-functions.php:487
+#: abp01-plugin-functions.php:552
 msgid "Railroad line type"
 msgstr "Type de ligne de chemin de fer"
 
-#: abp01-plugin-functions.php:488 views/wpts-frontend.php:94
+#: abp01-plugin-functions.php:554 views/wpts-frontend.php:142
 msgid "Railroad operators"
 msgstr "Compagnies ferroviaires"
 
-#: abp01-plugin-functions.php:489
+#: abp01-plugin-functions.php:556
 msgid "Recommended seasons"
 msgstr "Saisons recommandées"
 
-#: abp01-plugin-functions.php:619
+#: abp01-plugin-functions.php:708
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "heure"
 msgstr[1] "heures"
 
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:66
+msgid "Overview"
+msgstr "Présentation"
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:68
+msgid "A day in the mountains"
+msgstr "Une journée en montagne"
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:69
+msgid ""
+"This sample trip follows a quiet valley before climbing to an open ridge. "
+"Leave time for a picnic and a few stops to enjoy the scenery."
+msgstr ""
+"Ce circuit d'exemple suit une vallée tranquille avant de monter sur une "
+"crête dégagée. Prévoyez du temps pour un pique-nique et quelques pauses pour "
+"admirer le paysage."
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:71
+msgid "Illustration of mountain peaks under a sunny sky."
+msgstr "Illustration de sommets montagneux sous un ciel ensoleillé."
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:74
+msgid "Getting there"
+msgstr "Comment s'y rendre"
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:76
+msgid "Start at the trailhead"
+msgstr "Partez du début du sentier"
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:77
+msgid ""
+"The example route begins at the edge of the village. Follow the winding path "
+"towards the hills and use the signpost as a meeting point."
+msgstr ""
+"L'itinéraire d'exemple commence à la sortie du village. Suivez le sentier "
+"sinueux vers les collines et utilisez le poteau indicateur comme point de "
+"rendez-vous."
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:79
+msgid "Illustration of a signpost beside a winding trail."
+msgstr "Illustration d'un poteau indicateur au bord d'un sentier sinueux."
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:82
+msgid "Highlights"
+msgstr "Points d'intérêt"
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:84
+msgid "Pause by the lake"
+msgstr "Pause au bord du lac"
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:85
+msgid ""
+"A small lake makes a pleasant halfway stop on this imaginary itinerary. Look "
+"for the reflection of the surrounding peaks and take a photograph before "
+"continuing."
+msgstr ""
+"Un petit lac offre une halte agréable à mi-parcours sur cet itinéraire "
+"imaginaire. Observez le reflet des sommets environnants et prenez une photo "
+"avant de poursuivre."
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:87
+msgid "Illustration of a blue lake surrounded by mountains."
+msgstr "Illustration d'un lac bleu entouré de montagnes."
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:90
+msgid "Equipment"
+msgstr "Équipement"
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:92
+msgid "Pack for the day"
+msgstr "Préparez votre sac pour la journée"
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:93
+msgid ""
+"Use this tab for a short packing list: a water bottle, a snack, a waterproof "
+"layer and a map. Replace this sample text with equipment notes for your own "
+"trip."
+msgstr ""
+"Utilisez cet onglet pour une courte liste d'équipement : une bouteille "
+"d'eau, un en-cas, un vêtement imperméable et une carte. Remplacez ce texte "
+"d'exemple par des notes sur l'équipement nécessaire à votre propre circuit."
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:95
+msgid "Illustration of a hiking backpack and a water bottle."
+msgstr "Illustration d'un sac à dos de randonnée et d'une bouteille d'eau."
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:98
+msgid "Field notes"
+msgstr "Notes de terrain"
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:100
+msgid "Remember the little things"
+msgstr "Gardez en mémoire les petits détails"
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:101
+msgid ""
+"Finish the example with a few personal impressions: the quiet forest, the "
+"view from the ridge and a favourite rest stop. This final tab also helps "
+"exercise a crowded viewer navigation bar."
+msgstr ""
+"Terminez l'exemple par quelques impressions personnelles : le calme de la "
+"forêt, la vue depuis la crête et une halte préférée. Ce dernier onglet "
+"permet aussi de tester une barre de navigation du visualiseur comportant de "
+"nombreux onglets."
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:103
+msgid "Illustration of a tent in a clearing beneath the evening sky."
+msgstr "Illustration d'une tente dans une clairière sous le ciel du soir."
+
 #: lib/display/postListing/RouteTypeFilterDataSource.php:39
 msgid "All route types"
 msgstr "Tous types d'itinéraires"
 
-#: lib/display/postListing/RouteTypeFilterDecorator.php:45
+#: lib/display/postListing/RouteTypeFilterDecorator.php:49
 msgid "Filter by route type"
 msgstr "Filtrer par type d'itinéraire"
 
-#: lib/display/postListing/TripSummaryRouteTypeColumnsDecorator.php:46
+#: lib/display/postListing/TripSummaryRouteTypeColumnsDecorator.php:49
 msgid "Route type"
 msgstr "Type d'itinéraire"
 
 #: lib/display/postListing/TripSummaryStatusColumn.php:47
-#: lib/pluginModules/RouteLogPluginModule.php:440
+#: lib/pluginModules/RouteLogPluginModule.php:576
 #: lib/TranslatedScriptMessages.php:41 views/wpts-log-editor.php:98
 #: views/wpts-log-editor.php:219
 msgid "Yes"
 msgstr "Oui"
 
 #: lib/display/postListing/TripSummaryStatusColumn.php:48
-#: lib/pluginModules/RouteLogPluginModule.php:441
+#: lib/pluginModules/RouteLogPluginModule.php:577
 #: lib/TranslatedScriptMessages.php:42 views/wpts-log-editor.php:99
 #: views/wpts-log-editor.php:221
 msgid "No"
@@ -111,275 +225,275 @@ msgid "Not available"
 msgstr "Indisponible"
 
 #: lib/display/postListing/TripSummaryStatusColumnsDecorator.php:46
-#: views/wpts-audit-log.php:41 views/wpts-editor-launcher-metabox.php:47
+#: views/wpts-audit-log.php:62 views/wpts-editor-launcher-metabox.php:61
 msgid "Trip summary info"
 msgstr "Informations sur le voyage"
 
 #: lib/display/postListing/TripSummaryStatusColumnsDecorator.php:55
-#: views/wpts-audit-log.php:73 views/wpts-editor-launcher-metabox.php:59
+#: views/wpts-audit-log.php:108 views/wpts-editor-launcher-metabox.php:73
 msgid "Trip summary track"
 msgstr "Piste GPS"
 
-#: lib/Help.php:80
-msgid "Current language"
-msgstr "Paramètres régionaux actuels"
-
-#: lib/Lookup.php:266
+#: lib/Lookup.php:267
 msgid "Default"
 msgstr "Défaut"
 
-#: lib/maintenanceTool/ClearAllData.php:68
+#: lib/maintenanceTool/ClearAllData.php:66
 msgid "Clear all trip summary related data (cannot be undone)"
 msgstr ""
 "Supprimer toutes les données relatives au résumé du trajet (irréversible)"
 
-#: lib/maintenanceTool/ClearCache.php:54
+#: lib/maintenanceTool/ClearCache.php:55
 msgid "Clear track data cache"
 msgstr "Supprimer le cache des données de piste"
 
-#: lib/maintenanceTool/DetectMissingTracks.php:113
+#: lib/maintenanceTool/DetectMissingTracks.php:108
 msgid "Detect missing track files"
 msgstr "Détecter les fichiers de piste manquants"
 
-#: lib/Plugin.php:142
+#: lib/maintenanceTool/NginxAccessDirectivesHelper.php:72
+msgid "Nginx Access Directives Helper"
+msgstr "Assistant pour les directives d'accès Nginx"
+
+#: lib/Plugin.php:148
 msgid "Could not activate plug-in: activation failure."
 msgstr "Impossible d'activer le plug-in: échec de l'activation."
 
-#: lib/Plugin.php:165
+#: lib/Plugin.php:171
 msgid "Could not activate plug-in: requirements not met."
 msgstr ""
 "Impossible d'activer le plug-in: les conditions d'installation ne sont pas "
 "satisfaites. "
 
-#: lib/Plugin.php:172
+#: lib/Plugin.php:178
+#, php-format
 msgid "Minimum required PHP version is %s"
 msgstr "La version PHP minimale requise est %s"
 
-#: lib/Plugin.php:174
+#: lib/Plugin.php:180
+#, php-format
 msgid "Minimum required WP version is %s"
 msgstr "La version WP minimale requise est %s"
 
-#: lib/Plugin.php:176
+#: lib/Plugin.php:182
 msgid "LIBXML support was not found on your system"
 msgstr "L'extension LIBXML est introuvable sur votre système"
 
-#: lib/Plugin.php:178
+#: lib/Plugin.php:184
 msgid ""
 "Mysqli extension was not found on your system or is not fully compatible"
 msgstr ""
 "L'extension MySQLi est introuvable sur votre système ou n'est pas "
 "entièrement compatible"
 
-#: lib/Plugin.php:180
+#: lib/Plugin.php:186
 msgid "MySQL spatial support was not found on your system"
 msgstr ""
 "Les fonctionnalités spatiales de MySQL sont introuvables sur votre système"
 
-#: lib/Plugin.php:182
+#: lib/Plugin.php:188
 msgid "We could not check whether your system fully supports this plug-in."
 msgstr ""
 "Le plug-in n'a pas pu vérifier si votre système répond à toutes les "
 "exigences d'installation"
 
-#: lib/Plugin.php:191
+#: lib/Plugin.php:197
 msgid "Activation error"
 msgstr "Erreur d'activation"
 
-#: lib/pluginModules/AboutPagePluginModule.php:78 views/wpts-about.php:35
+#: lib/pluginModules/AboutPagePluginModule.php:74 views/wpts-admin-about.php:39
 msgid "About WP Trip Summary"
 msgstr "À propos de WP Trip Summary"
 
-#: lib/pluginModules/AboutPagePluginModule.php:79
+#: lib/pluginModules/AboutPagePluginModule.php:75
 msgid "About"
 msgstr "À propos"
 
-#: lib/pluginModules/AdminTripSummaryAuditLogPluginModule.php:152
-#: lib/pluginModules/AdminTripSummaryAuditLogPluginModule.php:220
+#: lib/pluginModules/AdminTripSummaryAuditLogPluginModule.php:150
+#: lib/pluginModules/AdminTripSummaryAuditLogPluginModule.php:235
 msgid "Trip summary audit log"
 msgstr "Journal d'audit du résumé du voyage"
 
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:296
-#: views/wpts-frontend.php:45
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:261
+#: views/wpts-frontend.php:66
 msgid "Trip summary"
 msgstr "Résumé du voyage"
 
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:441
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:469
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:406
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:434
 msgid "The data could not be saved due to a possible database error"
 msgstr ""
 "Les données n'ont pas été enregistrées en raison d'une possible erreur de "
 "base de données"
 
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:595
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:565
 msgid "The data could not be updated due to a possible database error"
 msgstr ""
 "Les données n'ont pas été enregistrées en raison d'une possible erreur de "
 "base de données"
 
-#: lib/pluginModules/GetTrackDataPluginModule.php:107
+#: lib/pluginModules/GetTrackDataPluginModule.php:102
 msgid "Track file not found or is not readable"
 msgstr "Le fichier de la piste GPS est introuvable ou n'est pas lisible"
 
-#: lib/pluginModules/HelpPluginModule.php:124
-#: lib/pluginModules/HelpPluginModule.php:125
-msgid "Help"
-msgstr "Aide"
-
-#: lib/pluginModules/LookupDataManagementPluginModule.php:205
-#: lib/pluginModules/LookupDataManagementPluginModule.php:206
-#: views/wpts-lookup-data-management.php:48
+#: lib/pluginModules/LookupDataManagementPluginModule.php:174
+#: lib/pluginModules/LookupDataManagementPluginModule.php:175
+#: views/wpts-admin-lookup-data-management.php:54
 msgid "Lookup data management"
 msgstr "Gestion des éléments de la nomenclature"
 
-#: lib/pluginModules/LookupDataManagementPluginModule.php:356
+#: lib/pluginModules/LookupDataManagementPluginModule.php:320
 msgid "The lookup item could not be created"
 msgstr "L'élément n'a pas été enregistré"
 
-#: lib/pluginModules/LookupDataManagementPluginModule.php:368
+#: lib/pluginModules/LookupDataManagementPluginModule.php:332
 msgid ""
 "The lookup item has been created, but the translation could not be saved"
 msgstr ""
 "L'élément de recherche a été enregistré, mais la traduction n'a pas été "
 "enregistrée"
 
-#: lib/pluginModules/LookupDataManagementPluginModule.php:399
+#: lib/pluginModules/LookupDataManagementPluginModule.php:363
 msgid "The default label is mandatory"
 msgstr "L'étiquette par défaut est obligatoire"
 
-#: lib/pluginModules/LookupDataManagementPluginModule.php:444
+#: lib/pluginModules/LookupDataManagementPluginModule.php:408
 msgid "The lookup item could not be modified"
 msgstr "L'élément n'a pas été enregistré"
 
-#: lib/pluginModules/LookupDataManagementPluginModule.php:484
+#: lib/pluginModules/LookupDataManagementPluginModule.php:449
 msgid "The item translation could not be deleted."
 msgstr "La traduction de l'élément n'a pas été supprimée."
 
-#: lib/pluginModules/LookupDataManagementPluginModule.php:516
-#: lib/pluginModules/LookupDataManagementPluginModule.php:526
+#: lib/pluginModules/LookupDataManagementPluginModule.php:481
+#: lib/pluginModules/LookupDataManagementPluginModule.php:491
 msgid "The item could not be deleted"
 msgstr "L'élément n'a pas été supprimé"
 
-#: lib/pluginModules/LookupDataManagementPluginModule.php:522
+#: lib/pluginModules/LookupDataManagementPluginModule.php:487
+#, php-format
 msgid "The item is still associated with %d post(s). Do you wish to proceed?"
 msgstr "L'article est associé à %d publication (s). Voulez-vous continuer?"
 
-#: lib/pluginModules/MaintenancePluginModule.php:121
-#: lib/pluginModules/MaintenancePluginModule.php:122
-#: lib/pluginModules/PluginListingPageCustomizationPluginModule.php:59
-#: views/wpts-maintenance.php:42
+#: lib/pluginModules/MaintenancePluginModule.php:114
+#: lib/pluginModules/MaintenancePluginModule.php:115
+#: lib/pluginModules/PluginListingPageCustomizationPluginModule.php:61
+#: views/wpts-admin-maintenance.php:46
 msgid "Maintenance"
 msgstr "Entretien"
 
-#: lib/pluginModules/PluginListingPageCustomizationPluginModule.php:55
-#: lib/pluginModules/SettingsPluginModule.php:104
+#: lib/pluginModules/PluginListingPageCustomizationPluginModule.php:57
+#: lib/pluginModules/SettingsPluginModule.php:100
 msgid "Settings"
 msgstr "Paramètres"
 
-#: lib/pluginModules/RestApiEnhancementsPluginModule.php:80
+#: lib/pluginModules/RestApiEnhancementsPluginModule.php:88
 msgid "WP Trip Summary Info"
 msgstr "WP Trip Summary Info"
 
-#: lib/pluginModules/RouteLogPluginModule.php:218
+#: lib/pluginModules/RouteLogPluginModule.php:207
 msgid "Log"
 msgstr "Jurnal"
 
 #: lib/pluginModules/RouteLogPluginModule.php:255
-#: views/wpts-log-editor-launcher-status-item.php:43
+#: views/wpts-log-editor-launcher-status-item.php:47
 msgid "Trip summary log"
 msgstr "Journal de synthèse du voyage"
 
-#: lib/pluginModules/RouteLogPluginModule.php:424
+#: lib/pluginModules/RouteLogPluginModule.php:474
 msgid "The log entry could not be saved."
 msgstr "L'entrée du journal n'a pas pu être enregistrée."
 
-#: lib/pluginModules/RouteLogPluginModule.php:448
+#: lib/pluginModules/RouteLogPluginModule.php:584
 msgid "The log entry rider is mandatory"
 msgstr "L'avenant d'entrée du journal est obligatoire"
 
-#: lib/pluginModules/RouteLogPluginModule.php:455
+#: lib/pluginModules/RouteLogPluginModule.php:591
 msgid "A valid log entry date is mandatory"
 msgstr "Une date d’entrée de journal valide est obligatoire"
 
-#: lib/pluginModules/RouteLogPluginModule.php:462
+#: lib/pluginModules/RouteLogPluginModule.php:598
 msgid "The log entry vehicle is mandatory"
 msgstr "Le véhicule d'entrée en rondins est obligatoire"
 
-#: lib/pluginModules/RouteLogPluginModule.php:481
+#: lib/pluginModules/RouteLogPluginModule.php:617
 msgid "The log entry could not be deleted."
 msgstr "L'entrée du journal n'a pas pu être supprimée."
 
-#: lib/pluginModules/RouteLogPluginModule.php:497
+#: lib/pluginModules/RouteLogPluginModule.php:633
 msgid "The log entries could not be deleted."
 msgstr "Les entrées du journal n'ont pas pu être supprimées."
 
-#: lib/pluginModules/SettingsPluginModule.php:98 views/wpts-settings.php:43
+#: lib/pluginModules/SettingsPluginModule.php:94
+#: views/wpts-admin-settings.php:48
 msgid "Trip Summary Settings"
 msgstr "Paramètres de WP Trip Summary"
 
-#: lib/pluginModules/SettingsPluginModule.php:99
+#: lib/pluginModules/SettingsPluginModule.php:95
 msgid "Trip Summary"
 msgstr "WP Trip Summary"
 
-#: lib/pluginModules/SettingsPluginModule.php:220
+#: lib/pluginModules/SettingsPluginModule.php:216
 msgid "The settings could not be saved. Please try again."
 msgstr "Les paramètres n'ont pas été enregistrés. Réessayer, s'il vous plaît."
 
-#: lib/pluginModules/SettingsPluginModule.php:238
+#: lib/pluginModules/SettingsPluginModule.php:234
 msgid "Unsupported unit system"
 msgstr "Le système d'unités n'est pas valide"
 
-#: lib/pluginModules/SettingsPluginModule.php:245
+#: lib/pluginModules/SettingsPluginModule.php:241
 msgid "Unsupported viewer tab"
 msgstr "L'étiquette de le visualiseur sélectionnée n'est pas prise en charge"
 
-#: lib/pluginModules/SettingsPluginModule.php:252
+#: lib/pluginModules/SettingsPluginModule.php:248
 msgid "Unsupported viewer item layout"
 msgstr ""
 "La disposition de l'élément de visionneuse sélectionnée n'est pas valide"
 
-#: lib/pluginModules/SettingsPluginModule.php:259
+#: lib/pluginModules/SettingsPluginModule.php:255
 msgid "The track line colour is not a valid HEX colour code"
 msgstr ""
 "La couleur de la ligne de trace GPS n'est pas un code de couleur HEX valide"
 
-#: lib/pluginModules/SettingsPluginModule.php:268
+#: lib/pluginModules/SettingsPluginModule.php:264
 msgid "Tile layer URL is required"
 msgstr "L'URL de la couche de tuiles de carte est obligatoire"
 
-#: lib/pluginModules/SettingsPluginModule.php:272
+#: lib/pluginModules/SettingsPluginModule.php:268
 msgid "Tile layer URL does not have a valid format"
 msgstr "L'URL de la couche de tuiles de carte n'a pas un format valide"
 
-#: lib/pluginModules/SettingsPluginModule.php:278
+#: lib/pluginModules/SettingsPluginModule.php:275
 msgid "Tile layer attribution URL does not have a valid format"
 msgstr ""
 "L'URL d'attribution de la couche de tuiles de carte n'a pas un format valide"
 
-#: lib/pluginModules/SettingsPluginModule.php:286
+#: lib/pluginModules/SettingsPluginModule.php:283
 msgid "Tile layer API key is required"
 msgstr "La clé API de la couche de tuiles est requise"
 
-#: lib/pluginModules/SystemLogsManagementPluginModule.php:149
-#: lib/pluginModules/SystemLogsManagementPluginModule.php:150
-#: views/wpts-admin-system-logs.php:45
+#: lib/pluginModules/SystemLogsManagementPluginModule.php:140
+#: lib/pluginModules/SystemLogsManagementPluginModule.php:141
+#: views/wpts-admin-system-logs.php:49
 msgid "System logs"
 msgstr "Fichiers journaux système"
 
-#: lib/pluginModules/SystemLogsManagementPluginModule.php:304
+#: lib/pluginModules/SystemLogsManagementPluginModule.php:323
 msgid "The requested log file could not be deleted."
 msgstr "Le fichier journal demandé n'a pas pu être supprimé."
 
-#: lib/route/Type.php:45 lib/TranslatedScriptMessages.php:90
-#: views/wpts-editor.php:113
+#: lib/route/Type.php:45 lib/TranslatedScriptMessages.php:91
+#: lib/viewer/dataSource/Default.php:109 views/wpts-editor.php:120
 msgid "Biking"
 msgstr "Aller à vélo"
 
-#: lib/route/Type.php:46 lib/TranslatedScriptMessages.php:91
-#: views/wpts-editor.php:116
+#: lib/route/Type.php:46 lib/TranslatedScriptMessages.php:92
+#: lib/viewer/dataSource/Default.php:111 views/wpts-editor.php:126
 msgid "Hiking"
 msgstr "Randonnée"
 
-#: lib/route/Type.php:47 views/wpts-editor.php:119
+#: lib/route/Type.php:47 lib/viewer/dataSource/Default.php:113
+#: views/wpts-editor.php:132
 msgid "Train Ride"
 msgstr "Voyage en train"
 
@@ -399,47 +513,47 @@ msgstr ""
 "Il semble que vous ayez sauté l'histoire. Vous devriez également lire cela. "
 "Cliquez ici pour revenir au début"
 
-#: lib/settings/PredefinedTileLayer.php:134
+#: lib/settings/PredefinedTileLayer.php:141
 msgid "Basic Open Street Map Style"
 msgstr "Carte classique Open Street Map"
 
-#: lib/settings/PredefinedTileLayer.php:143
+#: lib/settings/PredefinedTileLayer.php:150
 msgid "Thunderforest Atlas Map"
 msgstr "Carte Thunderforest Atlas"
 
-#: lib/settings/PredefinedTileLayer.php:149
+#: lib/settings/PredefinedTileLayer.php:156
 msgid "Thunderforest Landscape Map"
 msgstr "Carte Thunderforest Landscape"
 
-#: lib/settings/PredefinedTileLayer.php:155
+#: lib/settings/PredefinedTileLayer.php:162
 msgid "Thunderforest Mobile Atlas Map"
 msgstr "Carte Thunderforest Mobile Atlas"
 
-#: lib/settings/PredefinedTileLayer.php:161
+#: lib/settings/PredefinedTileLayer.php:168
 msgid "Thunderforest Neighbourhood Map"
 msgstr "Carte Thunderforest Neighbourhood"
 
-#: lib/settings/PredefinedTileLayer.php:167
+#: lib/settings/PredefinedTileLayer.php:174
 msgid "Thunderforest Open Cycle Map"
 msgstr "Thunderforest Open Cycle Map"
 
-#: lib/settings/PredefinedTileLayer.php:173
+#: lib/settings/PredefinedTileLayer.php:180
 msgid "Thunderforest Outdoors Map"
 msgstr "Carte Thunderforest Outdoors"
 
-#: lib/settings/PredefinedTileLayer.php:179
+#: lib/settings/PredefinedTileLayer.php:186
 msgid "Thunderforest Pioneer Map"
 msgstr "Carte Thunderforest Pioneer"
 
-#: lib/settings/PredefinedTileLayer.php:185
+#: lib/settings/PredefinedTileLayer.php:192
 msgid "Thunderforest Spinal Map"
 msgstr "Carte Thunderforest Spinal"
 
-#: lib/settings/PredefinedTileLayer.php:191
+#: lib/settings/PredefinedTileLayer.php:198
 msgid "Thunderforest Transport Map"
 msgstr "Carte Thunderforest Transport"
 
-#: lib/settings/PredefinedTileLayer.php:197
+#: lib/settings/PredefinedTileLayer.php:204
 msgid "Thunderforest Transport Dark Map"
 msgstr "Carte Thunderforest Transport Dark"
 
@@ -451,153 +565,158 @@ msgstr "Confirmer l'action"
 msgid "Are you sure you want to proceed?"
 msgstr "Êtes-vous sur de vouloir continuer?"
 
-#: lib/TranslatedScriptMessages.php:48
+#: lib/TranslatedScriptMessages.php:48 lib/TranslatedScriptMessages.php:146
+#: lib/TranslatedScriptMessages.php:164
+msgid "Working. Please wait..."
+msgstr "Manipulation en cours. S'il vous plaît, attendez..."
+
+#: lib/TranslatedScriptMessages.php:49
 msgid "Are you sure you want to remove this log file?"
 msgstr "Êtes-vous sûr de vouloir supprimer ce fichier journal ?"
 
-#: lib/TranslatedScriptMessages.php:49
+#: lib/TranslatedScriptMessages.php:50
 msgid "The log file has been successfully deleted."
 msgstr "Le fichier journal a été supprimé avec succès."
 
-#: lib/TranslatedScriptMessages.php:50
+#: lib/TranslatedScriptMessages.php:51
 msgid "The log file could not be deleted"
 msgstr "Le fichier journal n'a pas pu être supprimé"
 
-#: lib/TranslatedScriptMessages.php:51
+#: lib/TranslatedScriptMessages.php:52
 msgid "The log file could not be loaded"
 msgstr "Le fichier journal n'a pas pu être chargé"
 
-#: lib/TranslatedScriptMessages.php:52
+#: lib/TranslatedScriptMessages.php:53
 msgid "The log file could not be found"
 msgstr "Le fichier journal est introuvable"
 
-#: lib/TranslatedScriptMessages.php:58
+#: lib/TranslatedScriptMessages.php:59
 msgid "Saving trip summary log entry. Please wait..."
 msgstr ""
 "Enregistrement de l'entrée du journal récapitulatif du voyage. S'il vous "
 "plaît, attendez..."
 
-#: lib/TranslatedScriptMessages.php:59
+#: lib/TranslatedScriptMessages.php:60
 msgid "Deleting trip summary log entry. Please wait..."
 msgstr ""
 "Suppression de l'entrée du journal du résumé du voyage. S'il vous plaît, "
 "attendez..."
 
-#: lib/TranslatedScriptMessages.php:60
+#: lib/TranslatedScriptMessages.php:61
 msgid "Deleting all trip summary log entries for this post. Please wait..."
 msgstr ""
 "Suppression de toutes les entrées du journal de résumé de voyage pour ce "
 "message. S'il vous plaît, attendez..."
 
-#: lib/TranslatedScriptMessages.php:61
+#: lib/TranslatedScriptMessages.php:62
 msgid "Loading log entry. Please wait..."
 msgstr "Chargement de l'entrée du journal. S'il vous plaît, attendez..."
 
-#: lib/TranslatedScriptMessages.php:63
+#: lib/TranslatedScriptMessages.php:64
 msgid "Remove selected log entry? This action cannot be undone!"
 msgstr ""
 "Supprimer l'entrée de journal sélectionnée ? Cette action ne peut pas être "
 "annulée!"
 
-#: lib/TranslatedScriptMessages.php:64
+#: lib/TranslatedScriptMessages.php:65
 msgid "Remove all log entries for this post? This action cannot be undone!"
 msgstr ""
 "Supprimer toutes les entrées du journal pour ce message ? Cette action ne "
 "peut pas être annulée!"
 
-#: lib/TranslatedScriptMessages.php:66
+#: lib/TranslatedScriptMessages.php:67
 msgid "The trip summary log entry has been successfully deleted"
 msgstr "L'entrée du journal du résumé du voyage a été supprimée avec succès"
 
-#: lib/TranslatedScriptMessages.php:67
+#: lib/TranslatedScriptMessages.php:68
 msgid ""
 "All the trip summary log entries for this post have been successfully deleted"
 msgstr ""
 "Toutes les entrées du journal de résumé de voyage pour ce message ont été "
 "supprimées avec succès"
 
-#: lib/TranslatedScriptMessages.php:69
+#: lib/TranslatedScriptMessages.php:70
 msgid "The trip summary log entry could not be saved"
 msgstr ""
 "L'entrée du journal récapitulatif du voyage n'a pas pu être enregistrée"
 
-#: lib/TranslatedScriptMessages.php:70
+#: lib/TranslatedScriptMessages.php:71
 msgid "The trip summary log entry could not be deleted"
 msgstr "L'entrée du journal du résumé du voyage n'a pas pu être supprimée"
 
-#: lib/TranslatedScriptMessages.php:71
+#: lib/TranslatedScriptMessages.php:72
 msgid "The trip summary log entries for this post could not be deleted"
 msgstr ""
 "Les entrées du journal de résumé du voyage pour ce message n'ont pas pu être "
 "supprimées"
 
-#: lib/TranslatedScriptMessages.php:72
+#: lib/TranslatedScriptMessages.php:73
 msgid "The log entry could not be loaded."
 msgstr "L'entrée du journal n'a pas pu être chargée."
 
-#: lib/TranslatedScriptMessages.php:74 views/wpts-log-editor.php:135
+#: lib/TranslatedScriptMessages.php:75 views/wpts-log-editor.php:135
 msgid "Add trip summary log entry"
 msgstr "Ajouter une entrée de journal récapitulatif du voyage"
 
-#: lib/TranslatedScriptMessages.php:75
+#: lib/TranslatedScriptMessages.php:76
 msgid "Edit trip summary log entry"
 msgstr "Modifier l'entrée du journal du résumé du voyage"
 
-#: lib/TranslatedScriptMessages.php:77
-#: views/wpts-log-editor-launcher-status-item.php:39
+#: lib/TranslatedScriptMessages.php:78
+#: views/wpts-log-editor-launcher-status-item.php:43
 msgid "Trip summary log is present for this post"
 msgstr "Le journal récapitulatif du voyage est présent pour cet article"
 
-#: lib/TranslatedScriptMessages.php:78
-#: views/wpts-log-editor-launcher-status-item.php:40
+#: lib/TranslatedScriptMessages.php:79
+#: views/wpts-log-editor-launcher-status-item.php:44
 msgid "Trip summary log is not present for this post"
 msgstr "Le journal récapitulatif du voyage n'est pas présent pour ce message"
 
-#: lib/TranslatedScriptMessages.php:84
+#: lib/TranslatedScriptMessages.php:85
 #: views/wpts-editor-quick-actions-tooltip.php:36
 #: views/wpts-editor-quick-actions.php:49
 msgid "Clear info"
 msgstr "Supprimer les informations"
 
-#: lib/TranslatedScriptMessages.php:85
+#: lib/TranslatedScriptMessages.php:86
 #: views/wpts-editor-quick-actions-tooltip.php:43
 #: views/wpts-editor-quick-actions.php:55
 msgid "Clear track"
 msgstr "Supprimer la trace GPS"
 
-#: lib/TranslatedScriptMessages.php:86
+#: lib/TranslatedScriptMessages.php:87
 msgid "GPX files"
 msgstr "Fichiers GPX"
 
-#: lib/TranslatedScriptMessages.php:87
+#: lib/TranslatedScriptMessages.php:88
 msgid "Generating preview. Please wait..."
 msgstr "Génération de l'aperçu. Attendez s'il vous plaît..."
 
-#: lib/TranslatedScriptMessages.php:88
+#: lib/TranslatedScriptMessages.php:89
 msgid "Uploading track"
 msgstr "Téléchargement de la trace GPS"
 
-#: lib/TranslatedScriptMessages.php:89
+#: lib/TranslatedScriptMessages.php:90
 msgid "The track has been uploaded and saved successfully"
 msgstr "La trace GPS a été téléchargée et enregistrée avec succès"
 
-#: lib/TranslatedScriptMessages.php:92
+#: lib/TranslatedScriptMessages.php:93
 msgid "Train ride"
 msgstr "Voyage en train"
 
-#: lib/TranslatedScriptMessages.php:93
+#: lib/TranslatedScriptMessages.php:94
 msgid "Clearing track. Please wait..."
 msgstr "Je supprime la piste GPS. S'il vous plaît, attendez..."
 
-#: lib/TranslatedScriptMessages.php:94
+#: lib/TranslatedScriptMessages.php:95
 msgid "The track has been successfully cleared"
 msgstr "La piste GPS a été supprimée avec succès"
 
-#: lib/TranslatedScriptMessages.php:95
+#: lib/TranslatedScriptMessages.php:96
 msgid "The data could not be updated"
 msgstr "Les données n'ont pas été enregistrées"
 
-#: lib/TranslatedScriptMessages.php:96
+#: lib/TranslatedScriptMessages.php:97
 msgid ""
 "The data could not be updated due to a possible network error or an internal "
 "server issue"
@@ -605,19 +724,19 @@ msgstr ""
 "Les données n'ont pas été enregistrées en raison d'une éventuelle erreur "
 "réseau ou d'un problème interne du serveur"
 
-#: lib/TranslatedScriptMessages.php:97
+#: lib/TranslatedScriptMessages.php:98
 msgid "Saving data. Please wait..."
 msgstr "J'enregistre les données. S'il vous plaît, attendez..."
 
-#: lib/TranslatedScriptMessages.php:98
+#: lib/TranslatedScriptMessages.php:99
 msgid "The data has been saved"
 msgstr "Les données ont été enregistrées"
 
-#: lib/TranslatedScriptMessages.php:99
+#: lib/TranslatedScriptMessages.php:100
 msgid "The data could not be saved"
 msgstr "Les données n'ont pas été enregistrées"
 
-#: lib/TranslatedScriptMessages.php:100
+#: lib/TranslatedScriptMessages.php:101
 msgid ""
 "The data could not be saved due to a possible network error or an internal "
 "server issue"
@@ -625,19 +744,19 @@ msgstr ""
 "Les données n'ont pas été enregistrées en raison d'une éventuelle erreur "
 "réseau ou d'un problème interne du serveur"
 
-#: lib/TranslatedScriptMessages.php:101
+#: lib/TranslatedScriptMessages.php:102
 msgid "Clearing trip info. Please wait..."
 msgstr "Je supprime les données de voyage. S'il vous plaît, attendez..."
 
-#: lib/TranslatedScriptMessages.php:102
+#: lib/TranslatedScriptMessages.php:103
 msgid "The trip info has been cleared"
 msgstr "Les données de voyage ont été supprimées"
 
-#: lib/TranslatedScriptMessages.php:103
+#: lib/TranslatedScriptMessages.php:104
 msgid "The trip info could not be cleared"
 msgstr "Les données de voyage n'ont pas été supprimées"
 
-#: lib/TranslatedScriptMessages.php:104
+#: lib/TranslatedScriptMessages.php:105
 msgid ""
 "The trip info could not be cleared due to a possible network error or an "
 "internal server issue"
@@ -645,13 +764,13 @@ msgstr ""
 "Les données de voyage n'ont pas été supprimées en raison d'une éventuelle "
 "erreur réseau ou d'un problème interne du serveur"
 
-#: lib/TranslatedScriptMessages.php:105 lib/TranslatedScriptMessages.php:112
+#: lib/TranslatedScriptMessages.php:106 lib/TranslatedScriptMessages.php:113
 msgid "The selected file is too large. Maximum allowed size is 10MB"
 msgstr ""
 "Le fichier téléchargé est trop volumineux. La taille maximale autorisée est "
 "de 10 MB"
 
-#: lib/TranslatedScriptMessages.php:106 lib/TranslatedScriptMessages.php:111
+#: lib/TranslatedScriptMessages.php:107 lib/TranslatedScriptMessages.php:112
 msgid ""
 "The selected file type is not valid. Only GPX, GeoJSON and KML files are "
 "allowed"
@@ -659,29 +778,29 @@ msgstr ""
 "Le type de fichier sélectionné n'est pas valide. Seuls les fichiers GPX, "
 "GeoJSON et KML sont autorisés"
 
-#: lib/TranslatedScriptMessages.php:107 lib/TranslatedScriptMessages.php:108
+#: lib/TranslatedScriptMessages.php:108 lib/TranslatedScriptMessages.php:109
 msgid "The file could not be read"
 msgstr "Le fichier n'a pas été lu"
 
-#: lib/TranslatedScriptMessages.php:109
+#: lib/TranslatedScriptMessages.php:110
 msgid "The uploader could not be initialized"
 msgstr "L'uploader n'a pas été initialisé"
 
-#: lib/TranslatedScriptMessages.php:110 lib/TranslatedScriptMessages.php:120
+#: lib/TranslatedScriptMessages.php:111 lib/TranslatedScriptMessages.php:121
 msgid "The file could not be uploaded"
 msgstr "Le fichier n'a pas été téléchargé"
 
-#: lib/TranslatedScriptMessages.php:113
+#: lib/TranslatedScriptMessages.php:114
 msgid "No file was uploaded"
 msgstr "Aucun fichier n'a été téléchargé"
 
-#: lib/TranslatedScriptMessages.php:114
+#: lib/TranslatedScriptMessages.php:115
 msgid "The file could not be uploaded due to a possible internal server issue"
 msgstr ""
 "Le fichier n'a pas pu être téléchargé en raison d'un éventuel problème "
 "interne du serveur"
 
-#: lib/TranslatedScriptMessages.php:115
+#: lib/TranslatedScriptMessages.php:116
 msgid ""
 "The file could not be stored on the server (#2). This usually indicates an "
 "internal server issue."
@@ -689,7 +808,7 @@ msgstr ""
 "Le fichier n'a pas pu être enregistré sur le serveur (#2). Cela indique "
 "généralement un problème de serveur interne."
 
-#: lib/TranslatedScriptMessages.php:116
+#: lib/TranslatedScriptMessages.php:117
 msgid ""
 "The file could not be stored on the server (#1). This usually indicates an "
 "internal server issue."
@@ -697,7 +816,7 @@ msgstr ""
 "Le fichier n'a pas pu être enregistré sur le serveur (#1). Cela indique "
 "généralement un problème de serveur interne."
 
-#: lib/TranslatedScriptMessages.php:117
+#: lib/TranslatedScriptMessages.php:118
 msgid ""
 "The upload request contains some invalid parameters. This might indicate an "
 "error within the plug-in itself or an attempt to forge the request."
@@ -706,7 +825,7 @@ msgstr ""
 "indiquer une erreur dans le plug-in lui-même ou une tentative de "
 "falsification de la demande."
 
-#: lib/TranslatedScriptMessages.php:118
+#: lib/TranslatedScriptMessages.php:119
 msgid ""
 "The destination were the track file was uploaded cannot be found. This "
 "usually indicates an internal server issue."
@@ -714,7 +833,7 @@ msgstr ""
 "La destination où la trace GPS a été téléchargée est introuvable. Cela "
 "indique généralement un problème de serveur interne."
 
-#: lib/TranslatedScriptMessages.php:119
+#: lib/TranslatedScriptMessages.php:120
 msgid ""
 "The destination were the track file was uploaded has been found, but is "
 "corrupt. This usually indicates a problem with the file itself or, less "
@@ -724,43 +843,43 @@ msgstr ""
 "est corrompue. Cela indique généralement un problème avec le fichier lui-"
 "même ou, moins probablement, un problème de serveur interne."
 
-#: lib/TranslatedScriptMessages.php:121
+#: lib/TranslatedScriptMessages.php:122
 msgid "The uploaded file was not a valid GPX / GeoJSON / KML file"
 msgstr "Le fichier téléchargé n'était pas un fichier GPX/GeoJSON/KML valide"
 
-#: lib/TranslatedScriptMessages.php:122
+#: lib/TranslatedScriptMessages.php:123
 msgid "Choose options"
 msgstr "Choisissez vos options"
 
-#: lib/TranslatedScriptMessages.php:123
+#: lib/TranslatedScriptMessages.php:124
 msgid "{0} selected"
 msgstr "{0} options sélectionnées"
 
-#: lib/TranslatedScriptMessages.php:124
+#: lib/TranslatedScriptMessages.php:125
 msgid "Select all"
 msgstr "Sélectionnez toutes les options"
 
-#: lib/TranslatedScriptMessages.php:125
-#: views/wpts-editor-launcher-metabox.php:42
+#: lib/TranslatedScriptMessages.php:126
+#: views/wpts-editor-launcher-metabox.php:56
 msgid "Trip summary information is present for this post"
 msgstr "Les informations de voyage sont présentes pour ce post"
 
-#: lib/TranslatedScriptMessages.php:126
-#: views/wpts-editor-launcher-metabox.php:43
+#: lib/TranslatedScriptMessages.php:127
+#: views/wpts-editor-launcher-metabox.php:57
 msgid "Trip summary information is not present for this post"
 msgstr "Les informations de voyage ne sont pas présentes pour ce post"
 
-#: lib/TranslatedScriptMessages.php:127
-#: views/wpts-editor-launcher-metabox.php:54
+#: lib/TranslatedScriptMessages.php:128
+#: views/wpts-editor-launcher-metabox.php:68
 msgid "Trip summary track is present for this post"
 msgstr "La trace GPS du trajet est présente pour ce post"
 
-#: lib/TranslatedScriptMessages.php:128
-#: views/wpts-editor-launcher-metabox.php:55
+#: lib/TranslatedScriptMessages.php:129
+#: views/wpts-editor-launcher-metabox.php:69
 msgid "Trip summary track is not present for this post"
 msgstr "La trace GPS du trajet n'est pas présente pour ce post"
 
-#: lib/TranslatedScriptMessages.php:129
+#: lib/TranslatedScriptMessages.php:130
 msgid ""
 "Are you sure you want to remove the trip summary information? This action "
 "cannot be undone!"
@@ -768,7 +887,7 @@ msgstr ""
 "Voulez-vous vraiment supprimer les informations du voyage? Cette action ne "
 "peut pas être annulée!"
 
-#: lib/TranslatedScriptMessages.php:130
+#: lib/TranslatedScriptMessages.php:131
 msgid ""
 "Are you sure you want to remove the trip summary track? This action cannot "
 "be undone!"
@@ -776,7 +895,7 @@ msgstr ""
 "Voulez-vous vraiment supprimer la trace GPS du voyage? Cette action ne peut "
 "pas être annulée!"
 
-#: lib/TranslatedScriptMessages.php:136
+#: lib/TranslatedScriptMessages.php:137
 msgid ""
 "The settings could not be saved due to a possible network error or an "
 "internal server issue"
@@ -784,39 +903,34 @@ msgstr ""
 "Les paramètres n'ont pas été enregistrés en raison d'une éventuelle erreur "
 "réseau ou d'un problème interne du serveur"
 
-#: lib/TranslatedScriptMessages.php:137
+#: lib/TranslatedScriptMessages.php:138
 msgid "The settings could not be saved due to a possible internal server issue"
 msgstr ""
 "Les paramètres n'ont pas été enregistrés en raison d'un éventuel problème "
 "interne du serveur"
 
-#: lib/TranslatedScriptMessages.php:138
+#: lib/TranslatedScriptMessages.php:139
 msgid "Settings successfully saved"
 msgstr "Les paramètres ont été enregistrés avec succès"
 
-#: lib/TranslatedScriptMessages.php:139
+#: lib/TranslatedScriptMessages.php:140
 msgid "Saving settings. Please wait..."
 msgstr "Enregistrement des paramètres. S'il vous plaît, attendez..."
 
-#: lib/TranslatedScriptMessages.php:145 lib/TranslatedScriptMessages.php:162
-msgid "Working. Please wait..."
-msgstr "Manipulation en cours. S'il vous plaît, attendez..."
-
-#: lib/TranslatedScriptMessages.php:146
+#: lib/TranslatedScriptMessages.php:147
 msgid "Item successfully saved"
 msgstr "Élément enregistré avec succès"
 
-#: lib/TranslatedScriptMessages.php:147
-#: views/wpts-lookup-data-management.php:81
-#: views/wpts-lookup-data-management.php:95
+#: lib/TranslatedScriptMessages.php:148
+#: views/wpts-admin-lookup-data-management.php:120
 msgid "Add new item"
 msgstr "Ajouter un nouvel élément"
 
-#: lib/TranslatedScriptMessages.php:148
+#: lib/TranslatedScriptMessages.php:149
 msgid "Modify item"
 msgstr "Modifier l'élément"
 
-#: lib/TranslatedScriptMessages.php:149
+#: lib/TranslatedScriptMessages.php:150
 msgid ""
 "The item could not be saved due to a possible network error or an internal "
 "server issue"
@@ -824,17 +938,21 @@ msgstr ""
 "L'élément n'a pas été enregistré en raison d'une éventuelle erreur réseau ou "
 "d'un problème interne du serveur"
 
-#: lib/TranslatedScriptMessages.php:150
+#: lib/TranslatedScriptMessages.php:151
 msgid "The item could not be saved due to a possible internal server issue"
 msgstr ""
 "L'élément n'a pas été enregistré en raison d'un éventuel problème interne du "
 "serveur"
 
-#: lib/TranslatedScriptMessages.php:151
+#: lib/TranslatedScriptMessages.php:152
+msgid "Please fill in all required fields."
+msgstr "Veuillez remplir tous les champs obligatoires."
+
+#: lib/TranslatedScriptMessages.php:153
 msgid "Confirm item removal"
 msgstr "Confirmer la suppression de l'élément"
 
-#: lib/TranslatedScriptMessages.php:152
+#: lib/TranslatedScriptMessages.php:154
 msgid ""
 "The item could not be deleted due to a possible network error or an internal "
 "server issue"
@@ -842,17 +960,17 @@ msgstr ""
 "L'élément n'a pas été supprimé en raison d'une éventuelle erreur réseau ou "
 "d'un problème interne du serveur"
 
-#: lib/TranslatedScriptMessages.php:153
+#: lib/TranslatedScriptMessages.php:155
 msgid "The item could not be deleted due to a possible internal server issue"
 msgstr ""
 "L'élément n'a pas été supprimé en raison d'un éventuel problème de serveur "
 "interne"
 
-#: lib/TranslatedScriptMessages.php:154
+#: lib/TranslatedScriptMessages.php:156
 msgid "The item has been successfully deleted"
 msgstr "L'élément a été supprimé avec succès"
 
-#: lib/TranslatedScriptMessages.php:155
+#: lib/TranslatedScriptMessages.php:157
 msgid ""
 "The lookup items could not be loaded due to a possible network error or an "
 "internal server issue"
@@ -860,23 +978,23 @@ msgstr ""
 "Les éléments n'ont pas été chargés en raison d'une éventuelle erreur réseau "
 "ou d'un problème interne du serveur"
 
-#: lib/TranslatedScriptMessages.php:156
+#: lib/TranslatedScriptMessages.php:158
 msgid "The lookup items could not be loaded"
 msgstr "Les éléments n'ont pas été chargés"
 
-#: lib/TranslatedScriptMessages.php:163
+#: lib/TranslatedScriptMessages.php:165
 msgid "Are you sure you want to execute the selected tool?"
 msgstr "Voulez-vous vraiment exécuter l'outil de maintenance sélectionné?"
 
-#: lib/TranslatedScriptMessages.php:164
+#: lib/TranslatedScriptMessages.php:166
 msgid "The selected maintenance tool successfully executed."
 msgstr "L'outil de maintenance sélectionné a été exécuté avec succès."
 
-#: lib/TranslatedScriptMessages.php:165
+#: lib/TranslatedScriptMessages.php:167
 msgid "The selected maintenance tool could not be executed."
 msgstr "L'outil de maintenance sélectionné n'a pas pu être exécuté."
 
-#: lib/TranslatedScriptMessages.php:166
+#: lib/TranslatedScriptMessages.php:168
 msgid ""
 "The selected maintenance tool could not be executed due to a possible "
 "network issue. Please check your internet connection and try again."
@@ -885,70 +1003,71 @@ msgstr ""
 "éventuel problème de réseau. S'il vous plaît, vérifiez votre connexion à "
 "internet et réessayez."
 
-#: lib/TranslatedScriptMessages.php:172
+#: lib/TranslatedScriptMessages.php:174
 msgid "Minimum altitude:"
 msgstr "Altitude minimale:"
 
-#: lib/TranslatedScriptMessages.php:173
+#: lib/TranslatedScriptMessages.php:175
 msgid "Maximum altitude:"
 msgstr "Altitude maximale:"
 
-#: lib/TranslatedScriptMessages.php:174
+#: lib/TranslatedScriptMessages.php:176
 msgid "Altitude:"
 msgstr "Altitude:"
 
-#: lib/TranslatedScriptMessages.php:175
+#: lib/TranslatedScriptMessages.php:177
 msgid "Distance:"
 msgstr "Distance:"
 
-#: lib/TranslatedScriptMessages.php:176 views/helpers/controls.frontend.php:92
+#: lib/TranslatedScriptMessages.php:178 views/helpers/controls.frontend.php:92
 msgid "(show)"
 msgstr "(afficher)"
 
-#: lib/TranslatedScriptMessages.php:177
+#: lib/TranslatedScriptMessages.php:179
 msgid "(hide)"
 msgstr "(cacher)"
 
-#: lib/TranslatedScriptMessages.php:183
+#: lib/TranslatedScriptMessages.php:185
 msgid "Loading help contents. Please wait..."
 msgstr "Le contenu est en cours de chargement. S'il vous plaît, attendez..."
 
-#: lib/TranslatedScriptMessages.php:184
+#: lib/TranslatedScriptMessages.php:186
 msgid ""
 "The help contents could not be loaded due to a possible network error or an "
 "internal server issue."
 msgstr ""
 "Le contenu n'a pas pu être chargé en raison d'une possible erreur réseau."
 
-#: lib/TranslatedScriptMessages.php:185
+#: lib/TranslatedScriptMessages.php:187
 msgid "The help contents could not be loaded."
 msgstr "Le contenu n'a pas pu être chargé."
 
-#: lib/TranslatedScriptMessages.php:191
+#: lib/TranslatedScriptMessages.php:193
 msgid "Loading audit log. Please wait..."
 msgstr "Chargement du journal d'audit. S'il vous plaît, attendez..."
 
-#: lib/TranslatedScriptMessages.php:192
+#: lib/TranslatedScriptMessages.php:194
 msgid "The audit log could not be loaded!"
 msgstr "Le journal d'audit n'a pas pu être chargé !"
 
-#: lib/Viewer.php:61 views/wpts-frontend.php:52
+#: lib/Viewer.php:118 views/wpts-frontend.php:88
 msgid "Prosaic details"
 msgstr "Détails banals"
 
-#: lib/Viewer.php:62 views/wpts-editor.php:82 views/wpts-frontend.php:57
+#: lib/Viewer.php:119 views/wpts-editor.php:86 views/wpts-frontend.php:98
 msgid "Map"
 msgstr "Carte et trace GPS"
 
-#: lib/Viewer.php:94
+#: lib/Viewer.php:132
 msgid "Horizontally"
 msgstr "Horizontalement"
 
-#: lib/Viewer.php:95
+#: lib/Viewer.php:133
 msgid "Vertically"
 msgstr "Verticalement"
 
 #: views/helpers/controls.frontend.php:91
+#, php-format
 msgid "and %d more"
 msgstr "et %d de plus"
 
@@ -961,227 +1080,564 @@ msgid "Title"
 msgstr "Titre"
 
 #: views/maintenance/wpts-detect-missing-track-files-result.php:40
-#: views/wpts-lookup-data-management.php:88
+#: views/wpts-admin-lookup-data-management.php:131
 msgid "Actions"
 msgstr "Actions"
 
 #: views/maintenance/wpts-detect-missing-track-files-result.php:49
-msgid "[View]"
-msgstr "[Voir]"
+msgid "View"
+msgstr "Voir"
 
 #: views/maintenance/wpts-detect-missing-track-files-result.php:50
-msgid "[Edit]"
-msgstr "[Éditer]"
+#: views/wpts-admin-lookup-data-management.php:155
+#: views/wpts-editor-launcher-metabox.php:101 views/wpts-log-editor.php:101
+#: views/wpts-log-editor.php:225
+msgid "Edit"
+msgstr "Éditer"
 
-#: views/maintenance/wpts-detect-missing-track-files-result.php:57
+#: views/maintenance/wpts-detect-missing-track-files-result.php:58
 msgid "No posts with missing track files found!"
 msgstr "Aucun article avec des fichiers de piste manquants n'a été trouvé !"
 
-#: views/wpts-about.php:47
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:35
+msgid ""
+"These rules are intended to block direct web access to the plugin storage "
+"directory and its contents. Generating or copying them does not change your "
+"server configuration."
+msgstr ""
+"Ces règles visent à bloquer l'accès direct par le Web au répertoire de "
+"stockage de l'extension et à son contenu. Leur génération ou leur copie ne "
+"modifie pas la configuration de votre serveur."
+
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:41
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:42
+msgid "Copy code to clipboard"
+msgstr "Copier le code dans le presse-papiers"
+
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:43
+msgid "Copied to clipboard."
+msgstr "Copié dans le presse-papiers."
+
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:44
+msgid "Could not copy. Select the code and copy it manually."
+msgstr "La copie a échoué. Sélectionnez le code et copiez-le manuellement."
+
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:48
+msgid "Nginx access rules"
+msgstr "Règles d'accès Nginx"
+
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:51
+msgid "How to apply these rules"
+msgstr "Comment appliquer ces règles"
+
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:53
+msgid ""
+"Back up your Nginx configuration before editing it. If you cannot manage it "
+"yourself, send these rules to your hosting provider or server administrator."
+msgstr ""
+"Sauvegardez votre configuration Nginx avant de la modifier. Si vous ne "
+"pouvez pas la gérer vous-même, transmettez ces règles à votre hébergeur ou à "
+"l'administrateur du serveur."
+
+#. translators: 1: Nginx server block, 2: Nginx location block, 3: Apache configuration filename.
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:57
+#, php-format
+msgid ""
+"Add both rules directly inside each %1$s block that serves the storage URL, "
+"including HTTP and HTTPS where applicable. Do not put them inside another "
+"%2$s block or in a %3$s file."
+msgstr ""
+"Ajoutez les deux règles directement dans chaque bloc %1$s qui dessert l'URL "
+"de stockage, y compris pour HTTP et HTTPS, le cas échéant. Ne les placez pas "
+"dans un autre bloc %2$s ni dans un fichier %3$s."
+
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:63
+msgid ""
+"Confirm that the paths match the public storage URL. Have your administrator "
+"check existing rules for conflicts, including duplicate or more specific "
+"locations."
+msgstr ""
+"Vérifiez que les chemins correspondent à l'URL publique de stockage. "
+"Demandez à votre administrateur de vérifier les conflits éventuels avec les "
+"règles existantes, notamment les blocs de localisation en double ou plus "
+"spécifiques."
+
+#. translators: 1: Nginx configuration test command, 2: Nginx configuration reload command.
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:67
+#, php-format
+msgid ""
+"Test the configuration with %1$s. Only if the test succeeds, apply it with "
+"%2$s or the equivalent hosting control panel action. Use the commands and "
+"permissions required by your host."
+msgstr ""
+"Testez la configuration avec %1$s. Uniquement si le test réussit, appliquez-"
+"la avec %2$s ou l'action équivalente dans le panneau de contrôle de "
+"l'hébergement. Utilisez les commandes et les autorisations requises par "
+"votre hébergeur."
+
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:72
+msgid ""
+"After reloading, request the direct URL of a known existing file in the "
+"storage directory without signing in and confirm an HTTP 403 response. Also "
+"check that your website and normal plugin features still work. A successful "
+"configuration test alone does not confirm access protection."
+msgstr ""
+"Après le rechargement, accédez sans vous connecter à l'URL directe d'un "
+"fichier dont vous savez qu'il existe dans le répertoire de stockage et "
+"vérifiez que la réponse est HTTP 403. Vérifiez également que votre site et "
+"les fonctionnalités habituelles de l'extension fonctionnent toujours. La "
+"seule réussite du test de configuration ne confirme pas la protection de "
+"l'accès."
+
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:75
+msgid "Nginx configuration documentation (opens in a new tab)"
+msgstr ""
+"Documentation sur la configuration de Nginx (s'ouvre dans un nouvel onglet)"
+
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:79
+msgid "Disclaimer"
+msgstr "Clause de non-responsabilité"
+
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:80
+msgid ""
+"These rules are provided as-is and require review for your server setup. The "
+"plugin neither applies them nor verifies that access is blocked. Incorrect "
+"configuration may expose files or disrupt your website."
+msgstr ""
+"Ces règles sont fournies en l'état et doivent être vérifiées en fonction de "
+"la configuration de votre serveur. L'extension ne les applique pas et ne "
+"vérifie pas que l'accès est bloqué. Une configuration incorrecte peut "
+"exposer des fichiers ou perturber le fonctionnement de votre site."
+
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:81
+msgid ""
+"Protection is limited to the URL paths covered by the rules on the servers "
+"where they are applied. Custom log directories, alternate URLs, aliases and "
+"CDN copies may require separate protection. These rules do not replace "
+"access checks in the plugin."
+msgstr ""
+"La protection se limite aux chemins d'URL couverts par les règles sur les "
+"serveurs où elles sont appliquées. Les répertoires de journaux "
+"personnalisés, les URL alternatives, les alias et les copies sur un CDN "
+"peuvent nécessiter une protection distincte. Ces règles ne remplacent pas "
+"les contrôles d'accès de l'extension."
+
+#: views/wpts-admin-about.php:43 views/wpts-editor.php:81
+msgid "Info"
+msgstr "Info"
+
+#: views/wpts-admin-about.php:56
 msgid "Current Version"
 msgstr "Version Actuelle"
 
-#: views/wpts-about.php:51
+#: views/wpts-admin-about.php:60
 msgid "License"
 msgstr "Licene"
 
-#: views/wpts-about.php:55
+#: views/wpts-admin-about.php:64
 msgid "Author"
 msgstr "Auteur"
 
-#: views/wpts-about.php:61
+#: views/wpts-admin-about.php:70
 msgid "Minimum WordPress Version"
 msgstr "Version minimum de WordPress"
 
-#: views/wpts-about.php:65
+#: views/wpts-admin-about.php:74
 msgid "Your WordPress Version"
 msgstr "Votre version de WordPress"
 
-#: views/wpts-about.php:69
+#: views/wpts-admin-about.php:78
 msgid "Minimum PHP Version"
 msgstr "Version de PHP minimale"
 
-#: views/wpts-about.php:73
+#: views/wpts-admin-about.php:82
 msgid "Your PHP Version"
 msgstr "Votre version de PHP"
 
-#: views/wpts-about.php:77
+#: views/wpts-admin-about.php:86
 msgid "Project source"
 msgstr "Code source du projet"
 
-#: views/wpts-about.php:78
+#: views/wpts-admin-about.php:87
 msgid "Github"
 msgstr "Github"
 
-#: views/wpts-about.php:85
-msgid "Get Support"
-msgstr "Obtenir de l'aide"
-
-#: views/wpts-about.php:88
+#: views/wpts-admin-about.php:94
 msgid "Buy me a coffee :)"
 msgstr "Achetez-moi un café :)"
 
-#: views/wpts-about.php:95
+#: views/wpts-admin-about.php:98
+msgid "Get Support"
+msgstr "Obtenir de l'aide"
+
+#: views/wpts-admin-about.php:105
 msgid "Changelog"
 msgstr "Journal des modifications"
 
-#: views/wpts-admin-system-logs.php:49
+#: views/wpts-admin-lookup-data-management.php:61
+msgid "Edit Lookup Data Item"
+msgstr "Modifier un élément de la nomenclature"
+
+#: views/wpts-admin-lookup-data-management.php:62
+#: views/wpts-listing-inline-scripts.php:50
+#: views/wpts-listing-inline-scripts.php:58
+msgid "Close"
+msgstr "Fermer"
+
+#: views/wpts-admin-lookup-data-management.php:69
+#: views/wpts-admin-lookup-data-management.php:129
+msgid "Default label"
+msgstr "L'étiquette par défaut"
+
+#: views/wpts-admin-lookup-data-management.php:73
+msgid "Translated label"
+msgstr "L'étiquette traduite"
+
+#: views/wpts-admin-lookup-data-management.php:79
+msgid "Save item"
+msgstr "Enregistrer l'élément"
+
+#: views/wpts-admin-lookup-data-management.php:80 views/wpts-log-editor.php:176
+msgid "Cancel"
+msgstr "Annuler"
+
+#: views/wpts-admin-lookup-data-management.php:89
+msgid "Manage for"
+msgstr "Gérer pour"
+
+#: views/wpts-admin-lookup-data-management.php:93
+msgid "Lookup type:"
+msgstr "Type d'élément:"
+
+#: views/wpts-admin-lookup-data-management.php:101
+msgid "and"
+msgstr "et"
+
+#: views/wpts-admin-lookup-data-management.php:104
+msgid "Language:"
+msgstr "Langue:"
+
+#: views/wpts-admin-lookup-data-management.php:116
+msgid "Lookup data items"
+msgstr "Éléments de la nomenclature"
+
+#: views/wpts-admin-lookup-data-management.php:121
+msgid "Reload list"
+msgstr "Recharger la liste"
+
+#: views/wpts-admin-lookup-data-management.php:130
+msgid "Label"
+msgstr "L'étiquette"
+
+#: views/wpts-admin-lookup-data-management.php:156
+#: views/wpts-admin-system-logs.php:112 views/wpts-log-editor.php:102
+#: views/wpts-log-editor.php:226
+msgid "Delete"
+msgstr "Supprimer"
+
+#: views/wpts-admin-maintenance.php:51
+msgid "Available tools"
+msgstr "Outils disponibles"
+
+#: views/wpts-admin-maintenance.php:56
+msgid "Select one"
+msgstr "Sélectionnez-en un"
+
+#: views/wpts-admin-maintenance.php:68
+msgid "Execute"
+msgstr "Exécuter"
+
+#: views/wpts-admin-maintenance.php:76
+msgid "Execution result"
+msgstr "Résultat d'exécution"
+
+#: views/wpts-admin-settings.php:54
+msgid "Chose a pre-defined tile layer service"
+msgstr "Choisissez une source de couche de tuiles prédéfinie"
+
+#: views/wpts-admin-settings.php:69 views/wpts-admin-settings.php:324
+msgid "This tile layer requires an API key from the service provider"
+msgstr "Cette couche de tuiles nécessite une clé API"
+
+#: views/wpts-admin-settings.php:78
+msgid "View details"
+msgstr "Des détails"
+
+#: views/wpts-admin-settings.php:84
+msgid "Use this tile layer"
+msgstr "Utilisez cette source"
+
+#: views/wpts-admin-settings.php:97
+msgid "Menu"
+msgstr "Menu"
+
+#: views/wpts-admin-settings.php:107
+msgid "General Settings"
+msgstr "Paramètres généraux"
+
+#: views/wpts-admin-settings.php:116
+msgid "Viewer settings"
+msgstr "Paramètres du lecteur"
+
+#: views/wpts-admin-settings.php:125
+msgid "Map Settings"
+msgstr "Paramètres de la carte"
+
+#: views/wpts-admin-settings.php:132
+msgid "Options"
+msgstr "Options"
+
+#: views/wpts-admin-settings.php:143
+msgid ""
+"These settings control various aspects that do not belong to any one topic"
+msgstr ""
+"Ces paramètres contrôlent divers aspects qui n'appartiennent à aucun sujet "
+"spécifique"
+
+#: views/wpts-admin-settings.php:147
+msgid "Unit system"
+msgstr "Le système d'unités de mesure"
+
+#: views/wpts-admin-settings.php:168
+msgid "These settings configure the trip summary viewer"
+msgstr "Ces paramètres configurent le lecteur de résumé de voyage"
+
+#: views/wpts-admin-settings.php:172
+msgid "Show teaser?"
+msgstr "Afficher le texte d'accroche?"
+
+#: views/wpts-admin-settings.php:184
+msgid "Top teaser text"
+msgstr "Texte d'accroche supérieur"
+
+#: views/wpts-admin-settings.php:193
+msgid "Bottom teaser text"
+msgstr "Texte d'accroche inférieur"
+
+#: views/wpts-admin-settings.php:202
+msgid "Initial viewer tab"
+msgstr "Étiquette initialement sélectionnée"
+
+#: views/wpts-admin-settings.php:217
+msgid "Chose how multi-value items are laid out"
+msgstr "Choisissez comment les éléments à valeurs multiples sont disposés"
+
+#: views/wpts-admin-settings.php:232
+msgid "Chose how many values of a multi-valued item are displayed"
+msgstr ""
+"Choisissez combien de valeurs d'un élément à valeurs multiples sont affichées"
+
+#: views/wpts-admin-settings.php:245
+msgid "Enable JSON-LD frontend data"
+msgstr "Activer les données frontales JSON-LD"
+
+#: views/wpts-admin-settings.php:263
+msgid "These settings configure the map component"
+msgstr "Ces paramètres configurent la façon dont la carte est affichée"
+
+#: views/wpts-admin-settings.php:267
+msgid "Tile layer URL template"
+msgstr "Modèle d'URL source de la couche de tuiles de carte"
+
+#: views/wpts-admin-settings.php:280
+msgid "... or chose pre-defined"
+msgstr "... ou choisissez prédéfini"
+
+#: views/wpts-admin-settings.php:287
+msgid "Tile layer attribution URL"
+msgstr "URL d'attribution de la source de la couche de tuiles de carte"
+
+#: views/wpts-admin-settings.php:299
+msgid "Tile layer attribution text"
+msgstr "Texte d'attribution de source de la couche de tuiles"
+
+#: views/wpts-admin-settings.php:311
+msgid "Tile layer API key"
+msgstr "Clé API de la source de la couche de tuiles"
+
+#: views/wpts-admin-settings.php:330
+msgid "Enable map fullscreen mode?"
+msgstr "Autoriser le mode plein écran de la carte?"
+
+#: views/wpts-admin-settings.php:342
+msgid "Show magnifying glass?"
+msgstr "Autoriser l'utilisation de la loupe?"
+
+#: views/wpts-admin-settings.php:354
+msgid "Show map scale?"
+msgstr "Afficher l'échelle de la carte?"
+
+#: views/wpts-admin-settings.php:366
+msgid "Show minimum & maximum altitude?"
+msgstr "Afficher l'altitude minimale et maximale?"
+
+#: views/wpts-admin-settings.php:378
+msgid "Show altitude profile?"
+msgstr "Afficher le profil d'altitude?"
+
+#: views/wpts-admin-settings.php:390
+msgid "Allow track download?"
+msgstr "Autoriser le téléchargement de la trace GPS?"
+
+#: views/wpts-admin-settings.php:402
+msgid "Track line colour"
+msgstr "Couleur de la ligne de trace GPS"
+
+#: views/wpts-admin-settings.php:414
+msgid "Track line weight"
+msgstr "Largeur de la ligne de trace GPS"
+
+#: views/wpts-admin-settings.php:427
+msgid "Map height"
+msgstr "Hauteur de la carte"
+
+#: views/wpts-admin-settings.php:446
+msgid "Save settings"
+msgstr "Enregistrer les paramètres"
+
+#: views/wpts-admin-system-logs.php:53
 msgid "System log files"
 msgstr "Fichiers journaux système"
 
-#: views/wpts-admin-system-logs.php:51
+#: views/wpts-admin-system-logs.php:55
 msgid "Debug logs"
 msgstr "Fichiers journaux de débogage"
 
-#: views/wpts-admin-system-logs.php:55
+#: views/wpts-admin-system-logs.php:59
 msgid ""
 "Debug logging is currently disabled. Only showing existing debug log files."
 msgstr ""
 "La journalisation du débogage est actuellement désactivée. Afficher "
 "uniquement les fichiers journaux de débogage existants."
 
-#: views/wpts-admin-system-logs.php:60
+#: views/wpts-admin-system-logs.php:64
 msgid "There are no debug log files available"
 msgstr "Aucun fichier journal de débogage n'est disponible"
 
-#: views/wpts-admin-system-logs.php:75
+#: views/wpts-admin-system-logs.php:79
 msgid "Error logs"
 msgstr "Journaux d'erreurs"
 
-#: views/wpts-admin-system-logs.php:79
+#: views/wpts-admin-system-logs.php:83
 msgid ""
 "Error logging is currently disabled. Only showing existing error log files."
 msgstr ""
 "La journalisation des erreurs est actuellement désactivée. Afficher "
 "uniquement les fichiers journaux d'erreurs existants."
 
-#: views/wpts-admin-system-logs.php:84
+#: views/wpts-admin-system-logs.php:88
 msgid "There are no error log files available"
 msgstr "Aucun fichier journal d'erreurs n'est disponible"
 
-#: views/wpts-admin-system-logs.php:102
+#: views/wpts-admin-system-logs.php:106
 msgid "Log file contents"
 msgstr "Contenu du fichier journal"
 
-#: views/wpts-admin-system-logs.php:106
+#: views/wpts-admin-system-logs.php:110
 msgid "Download"
 msgstr "Télécharger"
 
-#: views/wpts-admin-system-logs.php:107
+#: views/wpts-admin-system-logs.php:111
 msgid "Reload"
 msgstr "Recharger"
 
-#: views/wpts-admin-system-logs.php:108 views/wpts-log-editor.php:102
-#: views/wpts-log-editor.php:226 views/wpts-lookup-data-management.php:152
-msgid "Delete"
-msgstr "Supprimer"
-
-#: views/wpts-admin-system-logs.php:115
+#: views/wpts-admin-system-logs.php:119
 msgid "The log file is too large. Only displaying the last 200 lines."
 msgstr ""
 "Le fichier journal est trop volumineux. Afficher uniquement les 200 "
 "dernières lignes."
 
-#: views/wpts-audit-log.php:44 views/wpts-audit-log.php:76
+#: views/wpts-audit-log.php:65 views/wpts-audit-log.php:111
 msgid "Date created"
 msgstr "Date créée"
 
-#: views/wpts-audit-log.php:52 views/wpts-audit-log.php:84
+#: views/wpts-audit-log.php:73 views/wpts-audit-log.php:119
 msgid "Date last updated"
 msgstr "Date de la dernière modification"
 
-#: views/wpts-audit-log.php:60 views/wpts-audit-log.php:92
+#: views/wpts-audit-log.php:81 views/wpts-audit-log.php:127
 msgid "Last updated by"
 msgstr "Dernière modification par l'utilisateur"
 
-#: views/wpts-button.php:35 views/wpts-editor.php:57 views/wpts-editor.php:64
+#: views/wpts-button.php:35 views/wpts-editor.php:61 views/wpts-editor.php:68
 msgid "Edit trip summary"
 msgstr "Modifier le résumé du voyage"
 
-#: views/wpts-editor-launcher-metabox.php:68 views/wpts-editor.php:98
+#: views/wpts-editor-launcher-metabox.php:94 views/wpts-editor.php:102
 msgid "Quick actions"
 msgstr "Actions rapides"
 
-#: views/wpts-editor-launcher-metabox.php:72
+#: views/wpts-editor-launcher-metabox.php:98
 msgid "Click here to edit trip summary information and/or track"
 msgstr ""
 "Cliquez ici pour modifier les informations de voyage et / ou la trace GPS"
-
-#: views/wpts-editor-launcher-metabox.php:75 views/wpts-log-editor.php:101
-#: views/wpts-log-editor.php:225 views/wpts-lookup-data-management.php:151
-msgid "Edit"
-msgstr "Éditer"
 
 #: views/wpts-editor-quick-actions-tooltip.php:41
 #: views/wpts-editor-quick-actions.php:53
 msgid "Download track"
 msgstr "Téléchargement de trace GPS"
 
-#: views/wpts-editor.php:77
-msgid "Info"
-msgstr "Info"
-
-#: views/wpts-editor.php:99
+#: views/wpts-editor.php:103
 msgid "Save"
 msgstr "Sauvegarder"
 
-#: views/wpts-editor.php:110
+#: views/wpts-editor.php:114
 msgid "Chose the type of your tour"
 msgstr "Choisissez le type de votre voyage"
 
-#: views/wpts-editor.php:128 views/wpts-editor.php:194
-#: views/wpts-editor.php:252 views/wpts-frontend.php:75
-#: views/wpts-frontend.php:83 views/wpts-frontend.php:91
+#: views/wpts-editor.php:141 views/wpts-editor.php:207
+#: views/wpts-editor.php:265 views/wpts-frontend.php:123
+#: views/wpts-frontend.php:131 views/wpts-frontend.php:139
 msgid "Total distance"
 msgstr "Distance totale"
 
-#: views/wpts-editor.php:132 views/wpts-editor.php:198
-#: views/wpts-frontend.php:76 views/wpts-frontend.php:84
+#: views/wpts-editor.php:145 views/wpts-editor.php:211
+#: views/wpts-frontend.php:124 views/wpts-frontend.php:132
 msgid "Total climb"
 msgstr "Ascension totale"
 
-#: views/wpts-editor.php:139 views/wpts-editor.php:205
+#: views/wpts-editor.php:152 views/wpts-editor.php:218
 msgid "-- Choose an option --"
 msgstr "-- Choisis une option --"
 
-#: views/wpts-editor.php:144 views/wpts-editor.php:160
-#: views/wpts-editor.php:172 views/wpts-editor.php:184
-#: views/wpts-editor.php:210 views/wpts-editor.php:226
-#: views/wpts-editor.php:238 views/wpts-editor.php:271
-#: views/wpts-editor.php:283 views/wpts-editor.php:295
-#: views/wpts-editor.php:307
+#: views/wpts-editor.php:157 views/wpts-editor.php:173
+#: views/wpts-editor.php:185 views/wpts-editor.php:197
+#: views/wpts-editor.php:223 views/wpts-editor.php:239
+#: views/wpts-editor.php:251 views/wpts-editor.php:284
+#: views/wpts-editor.php:296 views/wpts-editor.php:308
+#: views/wpts-editor.php:320
 msgid ""
 "No items to select from. Visit the lookup data management page to add some."
 msgstr ""
 "Il n'y a aucun élément à sélectionner. Vous pouvez créer de nouveaux "
 "éléments dans la page de gestion de la nomenclature"
 
-#: views/wpts-editor.php:149 views/wpts-editor.php:215
-#: views/wpts-frontend.php:78 views/wpts-frontend.php:86
+#: views/wpts-editor.php:162 views/wpts-editor.php:228
+#: views/wpts-frontend.php:126 views/wpts-frontend.php:134
 msgid "Access information"
 msgstr "Comment s'y rendre"
 
-#: views/wpts-editor.php:243
+#: views/wpts-editor.php:256
 msgid "Route markers"
 msgstr "Marquages touristiques"
 
-#: views/wpts-editor.php:256 views/wpts-frontend.php:92
+#: views/wpts-editor.php:269 views/wpts-frontend.php:140
 msgid "Exchanged trains"
 msgstr "Nombre de trains a changé"
 
-#: views/wpts-editor.php:260 views/wpts-frontend.php:93
+#: views/wpts-editor.php:273 views/wpts-frontend.php:141
 msgid "Line gauge"
 msgstr "Écartement ferroviaire"
 
-#: views/wpts-editor.php:317
+#: views/wpts-editor.php:330
 msgid "Upload a GPX or GeoJSON or KML track file"
 msgstr "Téléchargez un fichier de suivi GPX, GeoJSON ou KML"
 
-#: views/wpts-editor.php:320
+#: views/wpts-editor.php:336
 msgid "Chose file"
 msgstr "Choisissez un fichier"
 
-#: views/wpts-editor.php:337 views/wpts-frontend.php:107
+#: views/wpts-editor.php:353 views/wpts-frontend.php:155
 msgid ""
 "The map could not be loaded due to either a network error or a possible "
 "server issue."
@@ -1189,37 +1645,53 @@ msgstr ""
 "La carte n'a pas été chargée en raison d'une erreur réseau ou d'un éventuel "
 "problème de serveur."
 
-#: views/wpts-editor.php:338 views/wpts-frontend.php:108
+#: views/wpts-editor.php:354 views/wpts-frontend.php:156
 msgid "Retry"
 msgstr "Réessayer"
 
-#: views/wpts-frontend-route-log.php:63
+#: views/wpts-frontend-route-log.php:65
 msgid "There are no log entries yet"
 msgstr "Il n'y a pas encore d'entrées de journal"
 
-#: views/wpts-frontend.php:79 views/wpts-frontend.php:87
+#: views/wpts-frontend.php:77
+msgid "Scroll tabs left"
+msgstr "Faire défiler les onglets vers la gauche"
+
+#: views/wpts-frontend.php:111
+msgid "Scroll tabs right"
+msgstr "Faire défiler les onglets vers la droite"
+
+#: views/wpts-frontend.php:127 views/wpts-frontend.php:135
 msgid "Open during seasons"
 msgstr "Recommandé pendant les saisons"
 
-#: views/wpts-frontend.php:81
+#: views/wpts-frontend.php:129
 msgid "Recommended bike type"
 msgstr "Vélo recommandé"
 
-#: views/wpts-frontend.php:89
+#: views/wpts-frontend.php:137
 msgid "Path markers"
 msgstr "Marquages touristiques"
 
-#: views/wpts-frontend.php:95
+#: views/wpts-frontend.php:143
 msgid "Line status"
 msgstr "Condition de la ligne de chemin de fer"
 
-#: views/wpts-frontend.php:96
+#: views/wpts-frontend.php:144
 msgid "Electrification status"
 msgstr "État d'électrification ferroviaire"
 
-#: views/wpts-frontend.php:97
+#: views/wpts-frontend.php:145
 msgid "Line type"
 msgstr "Type de ligne de chemin de fer"
+
+#: views/wpts-frontend.php:194
+msgid "Trip data by WP-Trip-Summary"
+msgstr "Données du circuit fournies par WP-Trip-Summary"
+
+#: views/wpts-frontend.php:194
+msgid ", made with ❤️ in Bucharest."
+msgstr ", créé avec ❤️ à Bucarest."
 
 #: views/wpts-help.php:40
 msgid "WP Trip Summary Help"
@@ -1243,7 +1715,7 @@ msgstr ""
 "avec les fichiers de contenu d'aide qui ont été distribués avec le plug-in. "
 "Veuillez vérifier la structure des fichiers de votre site Web."
 
-#: views/wpts-listing-inline-scripts.php:48
+#: views/wpts-listing-inline-scripts.php:49
 msgid "Audit log"
 msgstr "Journal d'audit"
 
@@ -1315,215 +1787,35 @@ msgstr "Afficher publiquement"
 msgid "Save entry"
 msgstr "Enregistrer l'entrée du journal"
 
-#: views/wpts-log-editor.php:176 views/wpts-lookup-data-management.php:115
-#: views/wpts-lookup-data-management.php:134
-msgid "Cancel"
-msgstr "Annuler"
+#~ msgid "Current language"
+#~ msgstr "Paramètres régionaux actuels"
 
-#: views/wpts-lookup-data-management.php:54
-msgid "Manage"
-msgstr "Gérer les données"
+#~ msgid "Help"
+#~ msgstr "Aide"
 
-#: views/wpts-lookup-data-management.php:57
-msgid "Lookup type:"
-msgstr "Type d'élément:"
+#~ msgid "[View]"
+#~ msgstr "[Voir]"
 
-#: views/wpts-lookup-data-management.php:65
-msgid "for"
-msgstr "pour"
+#~ msgid "[Edit]"
+#~ msgstr "[Éditer]"
 
-#: views/wpts-lookup-data-management.php:68
-msgid "Language:"
-msgstr "Langue:"
+#~ msgid "Manage"
+#~ msgstr "Gérer les données"
 
-#: views/wpts-lookup-data-management.php:80
-#: views/wpts-lookup-data-management.php:94
-msgid "Reload list"
-msgstr "Recharger la liste"
+#~ msgid "for"
+#~ msgstr "pour"
 
-#: views/wpts-lookup-data-management.php:86
-#: views/wpts-lookup-data-management.php:105
-msgid "Default label"
-msgstr "L'étiquette par défaut"
+#~ msgid ""
+#~ "Are you sure you want to delete this item? This action cannot be undone"
+#~ msgstr ""
+#~ "Êtes-vous sûr de bien vouloir supprimer cet élément? Cette action ne peut "
+#~ "pas être annulée"
 
-#: views/wpts-lookup-data-management.php:87
-msgid "Label"
-msgstr "L'étiquette"
+#~ msgid "Only delete item translation"
+#~ msgstr "Supprimer uniquement la traduction de l'élément"
 
-#: views/wpts-lookup-data-management.php:109
-msgid "Translated label"
-msgstr "L'étiquette traduite"
-
-#: views/wpts-lookup-data-management.php:114
-msgid "Save item"
-msgstr "Enregistrer l'élément"
-
-#: views/wpts-lookup-data-management.php:125
-msgid "Are you sure you want to delete this item? This action cannot be undone"
-msgstr ""
-"Êtes-vous sûr de bien vouloir supprimer cet élément? Cette action ne peut "
-"pas être annulée"
-
-#: views/wpts-lookup-data-management.php:128
-msgid "Only delete item translation"
-msgstr "Supprimer uniquement la traduction de l'élément"
-
-#: views/wpts-lookup-data-management.php:133
-msgid "Confirm delete"
-msgstr "Confirmation de la suppression"
-
-#: views/wpts-maintenance.php:47
-msgid "Available tools"
-msgstr "Outils disponibles"
-
-#: views/wpts-maintenance.php:52
-msgid "Select one"
-msgstr "Sélectionnez-en un"
-
-#: views/wpts-maintenance.php:64
-msgid "Execute"
-msgstr "Exécuter"
-
-#: views/wpts-maintenance.php:74
-msgid "Execution result"
-msgstr "Résultat d'exécution"
-
-#: views/wpts-settings.php:46
-msgid "General Settings"
-msgstr "Paramètres généraux"
-
-#: views/wpts-settings.php:48
-msgid ""
-"These settings control various aspects that do not belong to any one topic"
-msgstr ""
-"Ces paramètres contrôlent divers aspects qui n'appartiennent à aucun sujet "
-"spécifique"
-
-#: views/wpts-settings.php:54
-msgid "Unit system"
-msgstr "Le système d'unités de mesure"
-
-#: views/wpts-settings.php:76 views/wpts-settings.php:183
-#: views/wpts-settings.php:367
-msgid "Save settings"
-msgstr "Enregistrer les paramètres"
-
-#: views/wpts-settings.php:79
-msgid "Viewer settings"
-msgstr "Paramètres du lecteur"
-
-#: views/wpts-settings.php:81
-msgid "These settings configure the trip summary viewer"
-msgstr "Ces paramètres configurent le lecteur de résumé de voyage"
-
-#: views/wpts-settings.php:87
-msgid "Show teaser?"
-msgstr "Afficher le texte d'accroche?"
-
-#: views/wpts-settings.php:100
-msgid "Top teaser text"
-msgstr "Texte d'accroche supérieur"
-
-#: views/wpts-settings.php:110
-msgid "Bottom teaser text"
-msgstr "Texte d'accroche inférieur"
-
-#: views/wpts-settings.php:120
-msgid "Initial viewer tab"
-msgstr "Étiquette initialement sélectionnée"
-
-#: views/wpts-settings.php:136
-msgid "Chose how multi-value items are laid out"
-msgstr "Choisissez comment les éléments à valeurs multiples sont disposés"
-
-#: views/wpts-settings.php:152
-msgid "Chose how many values of a multi-valued item are displayed"
-msgstr ""
-"Choisissez combien de valeurs d'un élément à valeurs multiples sont affichées"
-
-#: views/wpts-settings.php:164
-msgid "Enable JSON-LD frontend data"
-msgstr "Activer les données frontales JSON-LD"
-
-#: views/wpts-settings.php:187
-msgid "Map Settings"
-msgstr "Paramètres de la carte"
-
-#: views/wpts-settings.php:189
-msgid "These settings configure the map component"
-msgstr "Ces paramètres configurent la façon dont la carte est affichée"
-
-#: views/wpts-settings.php:195
-msgid "Tile layer URL template"
-msgstr "Modèle d'URL source de la couche de tuiles de carte"
-
-#: views/wpts-settings.php:207
-msgid "... or chose pre-defined"
-msgstr "... ou choisissez prédéfini"
-
-#: views/wpts-settings.php:212
-msgid "Tile layer attribution URL"
-msgstr "URL d'attribution de la source de la couche de tuiles de carte"
-
-#: views/wpts-settings.php:224
-msgid "Tile layer attribution text"
-msgstr "Texte d'attribution de source de la couche de tuiles"
-
-#: views/wpts-settings.php:236
-msgid "Tile layer API key"
-msgstr "Clé API de la source de la couche de tuiles"
-
-#: views/wpts-settings.php:248 views/wpts-settings.php:396
-msgid "This tile layer requires an API key from the service provider"
-msgstr "Cette couche de tuiles nécessite une clé API"
-
-#: views/wpts-settings.php:253
-msgid "Enable map fullscreen mode?"
-msgstr "Autoriser le mode plein écran de la carte?"
-
-#: views/wpts-settings.php:265
-msgid "Show magnifying glass?"
-msgstr "Autoriser l'utilisation de la loupe?"
-
-#: views/wpts-settings.php:277
-msgid "Show map scale?"
-msgstr "Afficher l'échelle de la carte?"
-
-#: views/wpts-settings.php:289
-msgid "Show minimum & maximum altitude?"
-msgstr "Afficher l'altitude minimale et maximale?"
-
-#: views/wpts-settings.php:301
-msgid "Show altitude profile?"
-msgstr "Afficher le profil d'altitude?"
-
-#: views/wpts-settings.php:313
-msgid "Allow track download?"
-msgstr "Autoriser le téléchargement de la trace GPS?"
-
-#: views/wpts-settings.php:325
-msgid "Track line colour"
-msgstr "Couleur de la ligne de trace GPS"
-
-#: views/wpts-settings.php:337
-msgid "Track line weight"
-msgstr "Largeur de la ligne de trace GPS"
-
-#: views/wpts-settings.php:349
-msgid "Map height"
-msgstr "Hauteur de la carte"
-
-#: views/wpts-settings.php:378
-msgid "Chose a pre-defined tile layer service"
-msgstr "Choisissez une source de couche de tuiles prédéfinie"
-
-#: views/wpts-settings.php:403
-msgid "View details"
-msgstr "Des détails"
-
-#: views/wpts-settings.php:406
-msgid "Use this tile layer"
-msgstr "Utilisez cette source"
+#~ msgid "Confirm delete"
+#~ msgstr "Confirmation de la suppression"
 
 #~ msgid "Open Street Map, Hike & Bike Map"
 #~ msgstr "Open Street Map, Carte des randonnées et des vélos"

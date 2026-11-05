@@ -26,3 +26,4 @@ bin/tools/screen-capture/screenshots
 /bin/tools/screen-capture/config.yaml
 bin/tools/screen-capture/.venv/
 bin/tools/screen-capture/__pycache__/
+/marketing/2026-10-launch-outreach/

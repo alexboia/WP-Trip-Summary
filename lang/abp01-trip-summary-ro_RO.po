@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the WP Trip Summary package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Trip Summary 0.1.1\n"
+"Project-Id-Version: WP Trip Summary 0.3.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-trip-summary\n"
-"POT-Creation-Date: 2024-02-17T20:14:37+02:00\n"
-"PO-Revision-Date: 2024-02-17 20:16+0200\n"
+"POT-Creation-Date: 2026-11-05T16:59:24+00:00\n"
+"PO-Revision-Date: 2026-11-05 19:03+0200\n"
 "Last-Translator: \n"
 "Language-Team: alexandru.boia [at] outlook [dot] com\n"
 "Language: ro_RO\n"
@@ -14,18 +14,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n==0 || (n!=1 && n%100>=1 && "
 "n%100<=19) ? 1 : 2);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: GNU gettext-tools 0.26\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #. Plugin Name of the plugin
+#: abp01-plugin-main.php
 msgid "WP Trip Summary"
 msgstr "WP Trip Summary"
 
 #. Plugin URI of the plugin
+#: abp01-plugin-main.php
 msgid "https://github.com/alexboia/WP-Trip-Summary"
 msgstr "https://github.com/alexboia/WP-Trip-Summary"
 
 #. Description of the plugin
+#: abp01-plugin-main.php
 msgid ""
 "Aids a travel blogger to add structured information about his tours (biking, "
 "hiking, train travels etc.)"
@@ -34,75 +37,184 @@ msgstr ""
 "informații structurate despre turele pe care le fac"
 
 #. Author of the plugin
+#: abp01-plugin-main.php
 msgid "Alexandru Boia"
 msgstr "Alexandru Boia"
 
 #. Author URI of the plugin
+#: abp01-plugin-main.php
 msgid "http://alexboia.net"
 msgstr "http://alexboia.net"
 
-#: abp01-plugin-functions.php:482
+#: abp01-plugin-functions.php:542
 msgid "Bike type"
 msgstr "Tip recomandat de bicicletă"
 
-#: abp01-plugin-functions.php:483 views/wpts-frontend.php:77
-#: views/wpts-frontend.php:85
+#: abp01-plugin-functions.php:544 views/wpts-frontend.php:125
+#: views/wpts-frontend.php:133
 msgid "Difficulty level"
 msgstr "Nivelul de dificultate"
 
-#: abp01-plugin-functions.php:484 views/wpts-frontend.php:80
-#: views/wpts-frontend.php:88
+#: abp01-plugin-functions.php:546 views/wpts-frontend.php:128
+#: views/wpts-frontend.php:136
 msgid "Path surface type"
 msgstr "Suprafața drumului/potecii"
 
-#: abp01-plugin-functions.php:485
+#: abp01-plugin-functions.php:548
 msgid "Railroad electrification status"
 msgstr "Status electrificare linie de cale ferată"
 
-#: abp01-plugin-functions.php:486
+#: abp01-plugin-functions.php:550
 msgid "Railroad line status"
 msgstr "Starea liniei de cale ferată"
 
-#: abp01-plugin-functions.php:487
+#: abp01-plugin-functions.php:552
 msgid "Railroad line type"
 msgstr "Tipul liniei de cale ferată"
 
-#: abp01-plugin-functions.php:488 views/wpts-frontend.php:94
+#: abp01-plugin-functions.php:554 views/wpts-frontend.php:142
 msgid "Railroad operators"
 msgstr "Operatori feroviari"
 
-#: abp01-plugin-functions.php:489
+#: abp01-plugin-functions.php:556
 msgid "Recommended seasons"
 msgstr "Practicabil în anotimpurile"
 
-#: abp01-plugin-functions.php:619
+#: abp01-plugin-functions.php:708
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "oră"
 msgstr[1] "ore"
-msgstr[2] ""
+msgstr[2] "de ore"
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:66
+msgid "Overview"
+msgstr "Prezentare generală"
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:68
+msgid "A day in the mountains"
+msgstr "O zi la munte"
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:69
+msgid ""
+"This sample trip follows a quiet valley before climbing to an open ridge. "
+"Leave time for a picnic and a few stops to enjoy the scenery."
+msgstr ""
+"Această tură de exemplu urmează o vale liniștită înainte de a urca pe o "
+"creastă deschisă. Rezervă timp pentru un picnic și câteva opriri pentru a "
+"admira peisajul."
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:71
+msgid "Illustration of mountain peaks under a sunny sky."
+msgstr "Ilustrație cu vârfuri de munte sub un cer însorit."
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:74
+msgid "Getting there"
+msgstr "Cum ajungi acolo"
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:76
+msgid "Start at the trailhead"
+msgstr "Pornește de la intrarea pe traseu"
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:77
+msgid ""
+"The example route begins at the edge of the village. Follow the winding path "
+"towards the hills and use the signpost as a meeting point."
+msgstr ""
+"Traseul de exemplu începe la marginea satului. Urmează poteca șerpuită spre "
+"dealuri și folosește indicatorul ca punct de întâlnire."
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:79
+msgid "Illustration of a signpost beside a winding trail."
+msgstr "Ilustrație cu un indicator lângă o potecă șerpuită."
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:82
+msgid "Highlights"
+msgstr "Puncte de atracție"
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:84
+msgid "Pause by the lake"
+msgstr "Popas lângă lac"
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:85
+msgid ""
+"A small lake makes a pleasant halfway stop on this imaginary itinerary. Look "
+"for the reflection of the surrounding peaks and take a photograph before "
+"continuing."
+msgstr ""
+"Un mic lac oferă un loc plăcut de popas la jumătatea acestui traseu "
+"imaginar. Caută reflexia vârfurilor din jur în apă și fă o fotografie "
+"înainte de a continua."
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:87
+msgid "Illustration of a blue lake surrounded by mountains."
+msgstr "Ilustrație cu un lac albastru înconjurat de munți."
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:90
+msgid "Equipment"
+msgstr "Echipament"
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:92
+msgid "Pack for the day"
+msgstr "Pregătește rucsacul pentru o zi"
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:93
+msgid ""
+"Use this tab for a short packing list: a water bottle, a snack, a waterproof "
+"layer and a map. Replace this sample text with equipment notes for your own "
+"trip."
+msgstr ""
+"Folosește acest tab pentru o scurtă listă de echipament: o sticlă cu apă, o "
+"gustare, o haină impermeabilă și o hartă. Înlocuiește acest text de exemplu "
+"cu notițe despre echipamentul pentru propria tură."
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:95
+msgid "Illustration of a hiking backpack and a water bottle."
+msgstr "Ilustrație cu un rucsac de drumeție și o sticlă cu apă."
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:98
+msgid "Field notes"
+msgstr "Notițe de pe traseu"
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:100
+msgid "Remember the little things"
+msgstr "Păstrează în amintire micile detalii"
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:101
+msgid ""
+"Finish the example with a few personal impressions: the quiet forest, the "
+"view from the ridge and a favourite rest stop. This final tab also helps "
+"exercise a crowded viewer navigation bar."
+msgstr ""
+"Încheie exemplul cu câteva impresii personale: pădurea liniștită, "
+"priveliștea de pe creastă și un loc preferat de popas. Acest ultim tab ajută "
+"și la testarea unei bare de navigare aglomerate în vizualizator."
+
+#: examples/e03-custom-frontend-viewer-tabs/plugin.php:103
+msgid "Illustration of a tent in a clearing beneath the evening sky."
+msgstr "Ilustrație cu un cort într-o poiană sub cerul de seară."
 
 #: lib/display/postListing/RouteTypeFilterDataSource.php:39
 msgid "All route types"
 msgstr "Toate tipurile de tură"
 
-#: lib/display/postListing/RouteTypeFilterDecorator.php:45
+#: lib/display/postListing/RouteTypeFilterDecorator.php:49
 msgid "Filter by route type"
 msgstr "Filtrează după tipul de tură"
 
-#: lib/display/postListing/TripSummaryRouteTypeColumnsDecorator.php:46
+#: lib/display/postListing/TripSummaryRouteTypeColumnsDecorator.php:49
 msgid "Route type"
 msgstr "Tipul turei"
 
 #: lib/display/postListing/TripSummaryStatusColumn.php:47
-#: lib/pluginModules/RouteLogPluginModule.php:440
+#: lib/pluginModules/RouteLogPluginModule.php:576
 #: lib/TranslatedScriptMessages.php:41 views/wpts-log-editor.php:98
 #: views/wpts-log-editor.php:219
 msgid "Yes"
 msgstr "Da"
 
 #: lib/display/postListing/TripSummaryStatusColumn.php:48
-#: lib/pluginModules/RouteLogPluginModule.php:441
+#: lib/pluginModules/RouteLogPluginModule.php:577
 #: lib/TranslatedScriptMessages.php:42 views/wpts-log-editor.php:99
 #: views/wpts-log-editor.php:221
 msgid "No"
@@ -113,267 +225,267 @@ msgid "Not available"
 msgstr "Indisponibil"
 
 #: lib/display/postListing/TripSummaryStatusColumnsDecorator.php:46
-#: views/wpts-audit-log.php:41 views/wpts-editor-launcher-metabox.php:47
+#: views/wpts-audit-log.php:62 views/wpts-editor-launcher-metabox.php:61
 msgid "Trip summary info"
 msgstr "Info traseu"
 
 #: lib/display/postListing/TripSummaryStatusColumnsDecorator.php:55
-#: views/wpts-audit-log.php:73 views/wpts-editor-launcher-metabox.php:59
+#: views/wpts-audit-log.php:108 views/wpts-editor-launcher-metabox.php:73
 msgid "Trip summary track"
 msgstr "Track traseu"
 
-#: lib/Help.php:80
-msgid "Current language"
-msgstr "Limba curentă"
-
-#: lib/Lookup.php:266
+#: lib/Lookup.php:267
 msgid "Default"
 msgstr "Implicit"
 
-#: lib/maintenanceTool/ClearAllData.php:68
+#: lib/maintenanceTool/ClearAllData.php:66
 msgid "Clear all trip summary related data (cannot be undone)"
 msgstr ""
 "Șterge toate informațiile specifice modulului (nu pot fi recuperate ulterior)"
 
-#: lib/maintenanceTool/ClearCache.php:54
+#: lib/maintenanceTool/ClearCache.php:55
 msgid "Clear track data cache"
 msgstr "Șterge cache-ul track-urilor"
 
-#: lib/maintenanceTool/DetectMissingTracks.php:113
+#: lib/maintenanceTool/DetectMissingTracks.php:108
 msgid "Detect missing track files"
 msgstr "Detectează post-urile cu track-uri lipsă"
 
-#: lib/Plugin.php:142
+#: lib/maintenanceTool/NginxAccessDirectivesHelper.php:72
+msgid "Nginx Access Directives Helper"
+msgstr "Asistent pentru directivele de acces Nginx"
+
+#: lib/Plugin.php:148
 msgid "Could not activate plug-in: activation failure."
 msgstr ""
 "Plug-in-ul nu a putut fi activat din cauza unei posibile probleme interne"
 
-#: lib/Plugin.php:165
+#: lib/Plugin.php:171
 msgid "Could not activate plug-in: requirements not met."
 msgstr ""
 "Plug-in-ul nu a putut fi activat din cauză că sistemul tău nu suportă toate "
 "cerințele necesare pentru instalare"
 
-#: lib/Plugin.php:172
+#: lib/Plugin.php:178
+#, php-format
 msgid "Minimum required PHP version is %s"
 msgstr "Versiunea necesară minimă de PHP este %s"
 
-#: lib/Plugin.php:174
+#: lib/Plugin.php:180
+#, php-format
 msgid "Minimum required WP version is %s"
 msgstr "Versiunea necesară minimă de WordPress este %s"
 
-#: lib/Plugin.php:176
+#: lib/Plugin.php:182
 msgid "LIBXML support was not found on your system"
 msgstr "Extensia LIBXML nu a fost găsită pe sistemul tău"
 
-#: lib/Plugin.php:178
+#: lib/Plugin.php:184
 msgid ""
 "Mysqli extension was not found on your system or is not fully compatible"
 msgstr "Extensia MySQLi nu a fost găsită pe sistemul tău"
 
-#: lib/Plugin.php:180
+#: lib/Plugin.php:186
 msgid "MySQL spatial support was not found on your system"
 msgstr "Server-ul MySQL nu are suport pentru date spațiale"
 
-#: lib/Plugin.php:182
+#: lib/Plugin.php:188
 msgid "We could not check whether your system fully supports this plug-in."
 msgstr ""
 "Plug-in-ul nu a putut verifica dacă sistemul tău suportă toate cerințele "
 "necesare pentru instalare"
 
-#: lib/Plugin.php:191
+#: lib/Plugin.php:197
 msgid "Activation error"
 msgstr "Eroare la activare"
 
-#: lib/pluginModules/AboutPagePluginModule.php:78 views/wpts-about.php:35
+#: lib/pluginModules/AboutPagePluginModule.php:74 views/wpts-admin-about.php:39
 msgid "About WP Trip Summary"
 msgstr "Despre WP Trip Summary"
 
-#: lib/pluginModules/AboutPagePluginModule.php:79
+#: lib/pluginModules/AboutPagePluginModule.php:75
 msgid "About"
 msgstr "Despre"
 
-#: lib/pluginModules/AdminTripSummaryAuditLogPluginModule.php:152
-#: lib/pluginModules/AdminTripSummaryAuditLogPluginModule.php:220
+#: lib/pluginModules/AdminTripSummaryAuditLogPluginModule.php:150
+#: lib/pluginModules/AdminTripSummaryAuditLogPluginModule.php:235
 msgid "Trip summary audit log"
 msgstr "Auditare jurnal de tură"
 
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:296
-#: views/wpts-frontend.php:45
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:261
+#: views/wpts-frontend.php:66
 msgid "Trip summary"
 msgstr "Tura pe scurt"
 
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:441
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:469
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:406
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:434
 msgid "The data could not be saved due to a possible database error"
 msgstr "Datele nu au putut fi salvate din cauza unei posibile erori interne"
 
-#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:595
+#: lib/pluginModules/AdminTripSummaryEditorPluginModule.php:565
 msgid "The data could not be updated due to a possible database error"
 msgstr ""
 "Datele nu au putut fi actualizate din cauza unei posibile erori interne"
 
-#: lib/pluginModules/GetTrackDataPluginModule.php:107
+#: lib/pluginModules/GetTrackDataPluginModule.php:102
 msgid "Track file not found or is not readable"
 msgstr "Fișierul track-ului nu există sau nu a putut fi citit"
 
-#: lib/pluginModules/HelpPluginModule.php:124
-#: lib/pluginModules/HelpPluginModule.php:125
-msgid "Help"
-msgstr "Ajutor"
-
-#: lib/pluginModules/LookupDataManagementPluginModule.php:205
-#: lib/pluginModules/LookupDataManagementPluginModule.php:206
-#: views/wpts-lookup-data-management.php:48
+#: lib/pluginModules/LookupDataManagementPluginModule.php:174
+#: lib/pluginModules/LookupDataManagementPluginModule.php:175
+#: views/wpts-admin-lookup-data-management.php:54
 msgid "Lookup data management"
 msgstr "Gestiune nomenclatoare"
 
-#: lib/pluginModules/LookupDataManagementPluginModule.php:356
+#: lib/pluginModules/LookupDataManagementPluginModule.php:320
 msgid "The lookup item could not be created"
 msgstr "Itemul nu a putut fi creat"
 
-#: lib/pluginModules/LookupDataManagementPluginModule.php:368
+#: lib/pluginModules/LookupDataManagementPluginModule.php:332
 msgid ""
 "The lookup item has been created, but the translation could not be saved"
 msgstr "Itemul a fost creat, dar varianta sa tradusă nu a putut fi salvată"
 
-#: lib/pluginModules/LookupDataManagementPluginModule.php:399
+#: lib/pluginModules/LookupDataManagementPluginModule.php:363
 msgid "The default label is mandatory"
 msgstr "Trebuie să completezi eticheta implicită"
 
-#: lib/pluginModules/LookupDataManagementPluginModule.php:444
+#: lib/pluginModules/LookupDataManagementPluginModule.php:408
 msgid "The lookup item could not be modified"
 msgstr "Itemul nu a putut fi modificat"
 
-#: lib/pluginModules/LookupDataManagementPluginModule.php:484
+#: lib/pluginModules/LookupDataManagementPluginModule.php:449
 msgid "The item translation could not be deleted."
 msgstr "Varianta tradusă a itemului nu a putut fi ștearsă"
 
-#: lib/pluginModules/LookupDataManagementPluginModule.php:516
-#: lib/pluginModules/LookupDataManagementPluginModule.php:526
+#: lib/pluginModules/LookupDataManagementPluginModule.php:481
+#: lib/pluginModules/LookupDataManagementPluginModule.php:491
 msgid "The item could not be deleted"
 msgstr "Itemul nu a putut fi șters"
 
-#: lib/pluginModules/LookupDataManagementPluginModule.php:522
+#: lib/pluginModules/LookupDataManagementPluginModule.php:487
+#, php-format
 msgid "The item is still associated with %d post(s). Do you wish to proceed?"
 msgstr "Itemul este încă asociat cu %d articol(e). Dorești să continui?"
 
-#: lib/pluginModules/MaintenancePluginModule.php:121
-#: lib/pluginModules/MaintenancePluginModule.php:122
-#: lib/pluginModules/PluginListingPageCustomizationPluginModule.php:59
-#: views/wpts-maintenance.php:42
+#: lib/pluginModules/MaintenancePluginModule.php:114
+#: lib/pluginModules/MaintenancePluginModule.php:115
+#: lib/pluginModules/PluginListingPageCustomizationPluginModule.php:61
+#: views/wpts-admin-maintenance.php:46
 msgid "Maintenance"
 msgstr "Mentenanță"
 
-#: lib/pluginModules/PluginListingPageCustomizationPluginModule.php:55
-#: lib/pluginModules/SettingsPluginModule.php:104
+#: lib/pluginModules/PluginListingPageCustomizationPluginModule.php:57
+#: lib/pluginModules/SettingsPluginModule.php:100
 msgid "Settings"
 msgstr "Configurare"
 
-#: lib/pluginModules/RestApiEnhancementsPluginModule.php:80
+#: lib/pluginModules/RestApiEnhancementsPluginModule.php:88
 msgid "WP Trip Summary Info"
 msgstr "WP Trip Summary Info"
 
-#: lib/pluginModules/RouteLogPluginModule.php:218
+#: lib/pluginModules/RouteLogPluginModule.php:207
 msgid "Log"
 msgstr "Jurnal"
 
 #: lib/pluginModules/RouteLogPluginModule.php:255
-#: views/wpts-log-editor-launcher-status-item.php:43
+#: views/wpts-log-editor-launcher-status-item.php:47
 msgid "Trip summary log"
 msgstr "Jurnal de parcurgere"
 
-#: lib/pluginModules/RouteLogPluginModule.php:424
+#: lib/pluginModules/RouteLogPluginModule.php:474
 msgid "The log entry could not be saved."
 msgstr "Înregistrarea de jurnal nu a putut fi salvată."
 
-#: lib/pluginModules/RouteLogPluginModule.php:448
+#: lib/pluginModules/RouteLogPluginModule.php:584
 msgid "The log entry rider is mandatory"
 msgstr "Călătorul este obligatoriu pentru o înregistrare de jurnal"
 
-#: lib/pluginModules/RouteLogPluginModule.php:455
+#: lib/pluginModules/RouteLogPluginModule.php:591
 msgid "A valid log entry date is mandatory"
 msgstr "Data este obligatorie pentru o înregistrare de jurnal"
 
-#: lib/pluginModules/RouteLogPluginModule.php:462
+#: lib/pluginModules/RouteLogPluginModule.php:598
 msgid "The log entry vehicle is mandatory"
 msgstr "Vehiculul este obligatoriu pentru o înregistrare de jurnal"
 
-#: lib/pluginModules/RouteLogPluginModule.php:481
+#: lib/pluginModules/RouteLogPluginModule.php:617
 msgid "The log entry could not be deleted."
 msgstr "Înregistrarea de jurnal nu a putut fi ștearsă"
 
-#: lib/pluginModules/RouteLogPluginModule.php:497
+#: lib/pluginModules/RouteLogPluginModule.php:633
 msgid "The log entries could not be deleted."
 msgstr "Înregistrările de jurnal nu au putut fi șterse"
 
-#: lib/pluginModules/SettingsPluginModule.php:98 views/wpts-settings.php:43
+#: lib/pluginModules/SettingsPluginModule.php:94
+#: views/wpts-admin-settings.php:48
 msgid "Trip Summary Settings"
 msgstr "Setări WP Trip Summary"
 
-#: lib/pluginModules/SettingsPluginModule.php:99
+#: lib/pluginModules/SettingsPluginModule.php:95
 msgid "Trip Summary"
 msgstr "WP Trip Summary"
 
-#: lib/pluginModules/SettingsPluginModule.php:220
+#: lib/pluginModules/SettingsPluginModule.php:216
 msgid "The settings could not be saved. Please try again."
 msgstr "Opțiunile nu au putut fi salvate. Te rog să reîncerci."
 
-#: lib/pluginModules/SettingsPluginModule.php:238
+#: lib/pluginModules/SettingsPluginModule.php:234
 msgid "Unsupported unit system"
 msgstr "Sistemul de unități de măsură ales nu este suportat"
 
-#: lib/pluginModules/SettingsPluginModule.php:245
+#: lib/pluginModules/SettingsPluginModule.php:241
 msgid "Unsupported viewer tab"
 msgstr "Tab-ul selectat nu este suportat"
 
-#: lib/pluginModules/SettingsPluginModule.php:252
+#: lib/pluginModules/SettingsPluginModule.php:248
 msgid "Unsupported viewer item layout"
 msgstr "Valoare invalidă pentru layout-ul itemilor din viewer"
 
-#: lib/pluginModules/SettingsPluginModule.php:259
+#: lib/pluginModules/SettingsPluginModule.php:255
 msgid "The track line colour is not a valid HEX colour code"
 msgstr "Culoarea track-ului nu este un cod de culoare HEX valid"
 
-#: lib/pluginModules/SettingsPluginModule.php:268
+#: lib/pluginModules/SettingsPluginModule.php:264
 msgid "Tile layer URL is required"
 msgstr "Trebuie să completezi URL-ul sursei de tile-uri de hartă"
 
-#: lib/pluginModules/SettingsPluginModule.php:272
+#: lib/pluginModules/SettingsPluginModule.php:268
 msgid "Tile layer URL does not have a valid format"
 msgstr "URL-ul sursei de tile-uri de hartă nu are un format valid"
 
-#: lib/pluginModules/SettingsPluginModule.php:278
+#: lib/pluginModules/SettingsPluginModule.php:275
 msgid "Tile layer attribution URL does not have a valid format"
 msgstr ""
 "URL-ul către pagina de copyright a sursei de tile-uri de hartă nu are un "
 "format valid"
 
-#: lib/pluginModules/SettingsPluginModule.php:286
+#: lib/pluginModules/SettingsPluginModule.php:283
 msgid "Tile layer API key is required"
 msgstr "Trebuie să completezi cheia API a sursei de tile-uri de hartă"
 
-#: lib/pluginModules/SystemLogsManagementPluginModule.php:149
-#: lib/pluginModules/SystemLogsManagementPluginModule.php:150
-#: views/wpts-admin-system-logs.php:45
+#: lib/pluginModules/SystemLogsManagementPluginModule.php:140
+#: lib/pluginModules/SystemLogsManagementPluginModule.php:141
+#: views/wpts-admin-system-logs.php:49
 msgid "System logs"
 msgstr "Jurnale de sistem"
 
-#: lib/pluginModules/SystemLogsManagementPluginModule.php:304
+#: lib/pluginModules/SystemLogsManagementPluginModule.php:323
 msgid "The requested log file could not be deleted."
 msgstr "Fișierul ales de jurnal nu a putut fi șters"
 
-#: lib/route/Type.php:45 lib/TranslatedScriptMessages.php:90
-#: views/wpts-editor.php:113
+#: lib/route/Type.php:45 lib/TranslatedScriptMessages.php:91
+#: lib/viewer/dataSource/Default.php:109 views/wpts-editor.php:120
 msgid "Biking"
 msgstr "Cu bicicleta"
 
-#: lib/route/Type.php:46 lib/TranslatedScriptMessages.php:91
-#: views/wpts-editor.php:116
+#: lib/route/Type.php:46 lib/TranslatedScriptMessages.php:92
+#: lib/viewer/dataSource/Default.php:111 views/wpts-editor.php:126
 msgid "Hiking"
 msgstr "Per-pedes"
 
-#: lib/route/Type.php:47 views/wpts-editor.php:119
+#: lib/route/Type.php:47 lib/viewer/dataSource/Default.php:113
+#: views/wpts-editor.php:132
 msgid "Train Ride"
 msgstr "Cu trenul"
 
@@ -393,47 +505,47 @@ msgstr ""
 "Se pare că ai sărit peste poveste. E păcat să o ratezi. Nu ai vrea să o "
 "citești? Click aici pentru început!"
 
-#: lib/settings/PredefinedTileLayer.php:134
+#: lib/settings/PredefinedTileLayer.php:141
 msgid "Basic Open Street Map Style"
 msgstr "Harta clasică Open Street Map"
 
-#: lib/settings/PredefinedTileLayer.php:143
+#: lib/settings/PredefinedTileLayer.php:150
 msgid "Thunderforest Atlas Map"
 msgstr "Harta Thunderforest Atlas"
 
-#: lib/settings/PredefinedTileLayer.php:149
+#: lib/settings/PredefinedTileLayer.php:156
 msgid "Thunderforest Landscape Map"
 msgstr "Harta Thunderforest Landscape"
 
-#: lib/settings/PredefinedTileLayer.php:155
+#: lib/settings/PredefinedTileLayer.php:162
 msgid "Thunderforest Mobile Atlas Map"
 msgstr "Harta Thunderforest Mobile Atlas"
 
-#: lib/settings/PredefinedTileLayer.php:161
+#: lib/settings/PredefinedTileLayer.php:168
 msgid "Thunderforest Neighbourhood Map"
 msgstr "Harta Thunderforest Neighbourhood"
 
-#: lib/settings/PredefinedTileLayer.php:167
+#: lib/settings/PredefinedTileLayer.php:174
 msgid "Thunderforest Open Cycle Map"
 msgstr "Thunderforest Open Cycle Map"
 
-#: lib/settings/PredefinedTileLayer.php:173
+#: lib/settings/PredefinedTileLayer.php:180
 msgid "Thunderforest Outdoors Map"
 msgstr "Harta Thunderforest Outdoors"
 
-#: lib/settings/PredefinedTileLayer.php:179
+#: lib/settings/PredefinedTileLayer.php:186
 msgid "Thunderforest Pioneer Map"
 msgstr "Harta Thunderforest Pioneer"
 
-#: lib/settings/PredefinedTileLayer.php:185
+#: lib/settings/PredefinedTileLayer.php:192
 msgid "Thunderforest Spinal Map"
 msgstr "Harta Thunderforest Spinal"
 
-#: lib/settings/PredefinedTileLayer.php:191
+#: lib/settings/PredefinedTileLayer.php:198
 msgid "Thunderforest Transport Map"
 msgstr "Harta Thunderforest Transport"
 
-#: lib/settings/PredefinedTileLayer.php:197
+#: lib/settings/PredefinedTileLayer.php:204
 msgid "Thunderforest Transport Dark Map"
 msgstr "Harta Thunderforest Transport Dark"
 
@@ -445,142 +557,147 @@ msgstr "Confirmare necesară"
 msgid "Are you sure you want to proceed?"
 msgstr "Siguri dorești să continui?"
 
-#: lib/TranslatedScriptMessages.php:48
+#: lib/TranslatedScriptMessages.php:48 lib/TranslatedScriptMessages.php:146
+#: lib/TranslatedScriptMessages.php:164
+msgid "Working. Please wait..."
+msgstr "Lucrez. Așteaptă puțin..."
+
+#: lib/TranslatedScriptMessages.php:49
 msgid "Are you sure you want to remove this log file?"
 msgstr "Sigur dorești să ștergi fișierul de jurnal?"
 
-#: lib/TranslatedScriptMessages.php:49
+#: lib/TranslatedScriptMessages.php:50
 msgid "The log file has been successfully deleted."
 msgstr "Fișierul de jurnal a fost șters cu succes."
 
-#: lib/TranslatedScriptMessages.php:50
+#: lib/TranslatedScriptMessages.php:51
 msgid "The log file could not be deleted"
 msgstr "Fișierul de jurnal nu a putut fi șters"
 
-#: lib/TranslatedScriptMessages.php:51
+#: lib/TranslatedScriptMessages.php:52
 msgid "The log file could not be loaded"
 msgstr "Fișierul de jurnal nu a putut fi încărcat"
 
-#: lib/TranslatedScriptMessages.php:52
+#: lib/TranslatedScriptMessages.php:53
 msgid "The log file could not be found"
 msgstr "Fișierul de jurnal nu a putut fi găsit"
 
-#: lib/TranslatedScriptMessages.php:58
+#: lib/TranslatedScriptMessages.php:59
 msgid "Saving trip summary log entry. Please wait..."
 msgstr "Se salvează înregistrarea de jurnal. Te rog să aștepți..."
 
-#: lib/TranslatedScriptMessages.php:59
+#: lib/TranslatedScriptMessages.php:60
 msgid "Deleting trip summary log entry. Please wait..."
 msgstr "Se șterge înregistrarea de jurnal. Te rog să aștepți..."
 
-#: lib/TranslatedScriptMessages.php:60
+#: lib/TranslatedScriptMessages.php:61
 msgid "Deleting all trip summary log entries for this post. Please wait..."
 msgstr "Se șterg înregistrările de jurnal. Te rog să aștepți..."
 
-#: lib/TranslatedScriptMessages.php:61
+#: lib/TranslatedScriptMessages.php:62
 msgid "Loading log entry. Please wait..."
 msgstr "Se încarcă înregistrarea de jurnal. Te rugăm să aștepți..."
 
-#: lib/TranslatedScriptMessages.php:63
+#: lib/TranslatedScriptMessages.php:64
 msgid "Remove selected log entry? This action cannot be undone!"
 msgstr ""
 "Sigur ștergi această înregistrare de jurnal? Datele nu vor putea fi "
 "recuperate!"
 
-#: lib/TranslatedScriptMessages.php:64
+#: lib/TranslatedScriptMessages.php:65
 msgid "Remove all log entries for this post? This action cannot be undone!"
 msgstr ""
 "Sigur ștergi toate înregistrările de jurnal? Datele nu vor putea fi "
 "recuperate!"
 
-#: lib/TranslatedScriptMessages.php:66
+#: lib/TranslatedScriptMessages.php:67
 msgid "The trip summary log entry has been successfully deleted"
 msgstr "Înregistrarea de jurnal a fost ștearsă cu succes"
 
-#: lib/TranslatedScriptMessages.php:67
+#: lib/TranslatedScriptMessages.php:68
 msgid ""
 "All the trip summary log entries for this post have been successfully deleted"
 msgstr "Înregistrările de jurnal au fost șterse cu succes"
 
-#: lib/TranslatedScriptMessages.php:69
+#: lib/TranslatedScriptMessages.php:70
 msgid "The trip summary log entry could not be saved"
 msgstr "Înregistrarea de jurnal nu a putut fi salvată"
 
-#: lib/TranslatedScriptMessages.php:70
+#: lib/TranslatedScriptMessages.php:71
 msgid "The trip summary log entry could not be deleted"
 msgstr "Înregistrarea de jurnal nu a putut fi ștearsă"
 
-#: lib/TranslatedScriptMessages.php:71
+#: lib/TranslatedScriptMessages.php:72
 msgid "The trip summary log entries for this post could not be deleted"
 msgstr "Înregistrările de jurnal nu au putut fi șterse"
 
-#: lib/TranslatedScriptMessages.php:72
+#: lib/TranslatedScriptMessages.php:73
 msgid "The log entry could not be loaded."
 msgstr "Înregistrarea de jurnal nu a putut fi încărcată."
 
-#: lib/TranslatedScriptMessages.php:74 views/wpts-log-editor.php:135
+#: lib/TranslatedScriptMessages.php:75 views/wpts-log-editor.php:135
 msgid "Add trip summary log entry"
 msgstr "Adaugă înregistrare nouă"
 
-#: lib/TranslatedScriptMessages.php:75
+#: lib/TranslatedScriptMessages.php:76
 msgid "Edit trip summary log entry"
 msgstr "Modifică înregistrarea de jurnal"
 
-#: lib/TranslatedScriptMessages.php:77
-#: views/wpts-log-editor-launcher-status-item.php:39
+#: lib/TranslatedScriptMessages.php:78
+#: views/wpts-log-editor-launcher-status-item.php:43
 msgid "Trip summary log is present for this post"
 msgstr "Există înregistrări de jurnal pentru acest post"
 
-#: lib/TranslatedScriptMessages.php:78
-#: views/wpts-log-editor-launcher-status-item.php:40
+#: lib/TranslatedScriptMessages.php:79
+#: views/wpts-log-editor-launcher-status-item.php:44
 msgid "Trip summary log is not present for this post"
 msgstr "Nu există înregistrări de jurnal pentru acest post"
 
-#: lib/TranslatedScriptMessages.php:84
+#: lib/TranslatedScriptMessages.php:85
 #: views/wpts-editor-quick-actions-tooltip.php:36
 #: views/wpts-editor-quick-actions.php:49
 msgid "Clear info"
 msgstr "Șterge info"
 
-#: lib/TranslatedScriptMessages.php:85
+#: lib/TranslatedScriptMessages.php:86
 #: views/wpts-editor-quick-actions-tooltip.php:43
 #: views/wpts-editor-quick-actions.php:55
 msgid "Clear track"
 msgstr "Șterge track"
 
-#: lib/TranslatedScriptMessages.php:86
+#: lib/TranslatedScriptMessages.php:87
 msgid "GPX files"
 msgstr "Fișiere GPX"
 
-#: lib/TranslatedScriptMessages.php:87
+#: lib/TranslatedScriptMessages.php:88
 msgid "Generating preview. Please wait..."
 msgstr "Se generează harta și traseul. Te rog să aștepți..."
 
-#: lib/TranslatedScriptMessages.php:88
+#: lib/TranslatedScriptMessages.php:89
 msgid "Uploading track"
 msgstr "Se încarcă track-ul"
 
-#: lib/TranslatedScriptMessages.php:89
+#: lib/TranslatedScriptMessages.php:90
 msgid "The track has been uploaded and saved successfully"
 msgstr "Fișierul a fost încărcat și procesat cu succes"
 
-#: lib/TranslatedScriptMessages.php:92
+#: lib/TranslatedScriptMessages.php:93
 msgid "Train ride"
 msgstr "Cu trenul"
 
-#: lib/TranslatedScriptMessages.php:93
+#: lib/TranslatedScriptMessages.php:94
 msgid "Clearing track. Please wait..."
 msgstr "Se șterge track-ul. Te rog să aștepți..."
 
-#: lib/TranslatedScriptMessages.php:94
+#: lib/TranslatedScriptMessages.php:95
 msgid "The track has been successfully cleared"
 msgstr "Track-ul a fost șters cu succes"
 
-#: lib/TranslatedScriptMessages.php:95
+#: lib/TranslatedScriptMessages.php:96
 msgid "The data could not be updated"
 msgstr "Datele nu au putut fi salvate"
 
-#: lib/TranslatedScriptMessages.php:96
+#: lib/TranslatedScriptMessages.php:97
 msgid ""
 "The data could not be updated due to a possible network error or an internal "
 "server issue"
@@ -588,19 +705,19 @@ msgstr ""
 "Datele nu au putut fi salvade din cauza unei posibile erori de rețea sau a "
 "unei erori interne"
 
-#: lib/TranslatedScriptMessages.php:97
+#: lib/TranslatedScriptMessages.php:98
 msgid "Saving data. Please wait..."
 msgstr "Se salvează datele. Te rog să aștepți..."
 
-#: lib/TranslatedScriptMessages.php:98
+#: lib/TranslatedScriptMessages.php:99
 msgid "The data has been saved"
 msgstr "Datele au fost salvate"
 
-#: lib/TranslatedScriptMessages.php:99
+#: lib/TranslatedScriptMessages.php:100
 msgid "The data could not be saved"
 msgstr "Datele nu au putut fi salvate"
 
-#: lib/TranslatedScriptMessages.php:100
+#: lib/TranslatedScriptMessages.php:101
 msgid ""
 "The data could not be saved due to a possible network error or an internal "
 "server issue"
@@ -608,19 +725,19 @@ msgstr ""
 "Datele nu au putut fi salvate din cauza unei posibile erori de rețea sau a "
 "unei erori interne"
 
-#: lib/TranslatedScriptMessages.php:101
+#: lib/TranslatedScriptMessages.php:102
 msgid "Clearing trip info. Please wait..."
 msgstr "Șterg informațiile traseului. Te rog să aștepți..."
 
-#: lib/TranslatedScriptMessages.php:102
+#: lib/TranslatedScriptMessages.php:103
 msgid "The trip info has been cleared"
 msgstr "Informațiile traseului au fost șterse"
 
-#: lib/TranslatedScriptMessages.php:103
+#: lib/TranslatedScriptMessages.php:104
 msgid "The trip info could not be cleared"
 msgstr "Informațiile traseului nu au putut fi șterse"
 
-#: lib/TranslatedScriptMessages.php:104
+#: lib/TranslatedScriptMessages.php:105
 msgid ""
 "The trip info could not be cleared due to a possible network error or an "
 "internal server issue"
@@ -628,11 +745,11 @@ msgstr ""
 "Informațiile traseului nu au putut fi șterse din cauza unei posibile erori "
 "de rețea sau a unei erori interne"
 
-#: lib/TranslatedScriptMessages.php:105 lib/TranslatedScriptMessages.php:112
+#: lib/TranslatedScriptMessages.php:106 lib/TranslatedScriptMessages.php:113
 msgid "The selected file is too large. Maximum allowed size is 10MB"
 msgstr "Fișierul selectat e prea mare. Dimensiunea maximă admisă e 10MB"
 
-#: lib/TranslatedScriptMessages.php:106 lib/TranslatedScriptMessages.php:111
+#: lib/TranslatedScriptMessages.php:107 lib/TranslatedScriptMessages.php:112
 msgid ""
 "The selected file type is not valid. Only GPX, GeoJSON and KML files are "
 "allowed"
@@ -640,27 +757,27 @@ msgstr ""
 "Tipul selectat de fișier nu este valid. Sunt permise doar fișierele GPX, "
 "GeoJSON și KML"
 
-#: lib/TranslatedScriptMessages.php:107 lib/TranslatedScriptMessages.php:108
+#: lib/TranslatedScriptMessages.php:108 lib/TranslatedScriptMessages.php:109
 msgid "The file could not be read"
 msgstr "Fișierul nu a putut fi citit"
 
-#: lib/TranslatedScriptMessages.php:109
+#: lib/TranslatedScriptMessages.php:110
 msgid "The uploader could not be initialized"
 msgstr "Una din componente nu a putut fi inițializată corect"
 
-#: lib/TranslatedScriptMessages.php:110 lib/TranslatedScriptMessages.php:120
+#: lib/TranslatedScriptMessages.php:111 lib/TranslatedScriptMessages.php:121
 msgid "The file could not be uploaded"
 msgstr "Fișierul nu a putut fi încărcat"
 
-#: lib/TranslatedScriptMessages.php:113
+#: lib/TranslatedScriptMessages.php:114
 msgid "No file was uploaded"
 msgstr "Nu a fost încărcat nici un fișier"
 
-#: lib/TranslatedScriptMessages.php:114
+#: lib/TranslatedScriptMessages.php:115
 msgid "The file could not be uploaded due to a possible internal server issue"
 msgstr "Fișierul nu a putut fi încărcat din cauza unei posibile erori interne"
 
-#: lib/TranslatedScriptMessages.php:115
+#: lib/TranslatedScriptMessages.php:116
 msgid ""
 "The file could not be stored on the server (#2). This usually indicates an "
 "internal server issue."
@@ -668,7 +785,7 @@ msgstr ""
 "Fișierul nu a putut fi stocat pe server (#2). Acest lucru indică de obicei o "
 "problemă internă a server-ului."
 
-#: lib/TranslatedScriptMessages.php:116
+#: lib/TranslatedScriptMessages.php:117
 msgid ""
 "The file could not be stored on the server (#1). This usually indicates an "
 "internal server issue."
@@ -676,7 +793,7 @@ msgstr ""
 "Fișierul nu a putut fi stocat pe server (#1). Acest lucru indică de obicei o "
 "problemă internă a server-ului."
 
-#: lib/TranslatedScriptMessages.php:117
+#: lib/TranslatedScriptMessages.php:118
 msgid ""
 "The upload request contains some invalid parameters. This might indicate an "
 "error within the plug-in itself or an attempt to forge the request."
@@ -685,7 +802,7 @@ msgstr ""
 "Acest lucru indică de obicei cu plug-in-ul în sine sau o încercare de a "
 "falsifica cererea."
 
-#: lib/TranslatedScriptMessages.php:118
+#: lib/TranslatedScriptMessages.php:119
 msgid ""
 "The destination were the track file was uploaded cannot be found. This "
 "usually indicates an internal server issue."
@@ -693,7 +810,7 @@ msgstr ""
 "Destinația la care a fost stocat fișierul track-ului GPS este de negăsit. "
 "Acest lucru indică de obicei o problemă internă a server-ului."
 
-#: lib/TranslatedScriptMessages.php:119
+#: lib/TranslatedScriptMessages.php:120
 msgid ""
 "The destination were the track file was uploaded has been found, but is "
 "corrupt. This usually indicates a problem with the file itself or, less "
@@ -703,43 +820,43 @@ msgstr ""
 "fișierul este corupt. Acest lucru indică de obicei o problemă cu fișierul în "
 "sine sau, mai rar, o problemă internă a server-ului."
 
-#: lib/TranslatedScriptMessages.php:121
+#: lib/TranslatedScriptMessages.php:122
 msgid "The uploaded file was not a valid GPX / GeoJSON / KML file"
 msgstr "Fișierul încărcat nu a fost un fișier GPX / GeoJSON / KML valid"
 
-#: lib/TranslatedScriptMessages.php:122
+#: lib/TranslatedScriptMessages.php:123
 msgid "Choose options"
 msgstr "Alege opțiuni"
 
-#: lib/TranslatedScriptMessages.php:123
+#: lib/TranslatedScriptMessages.php:124
 msgid "{0} selected"
 msgstr "{0} opțiuni selectate"
 
-#: lib/TranslatedScriptMessages.php:124
+#: lib/TranslatedScriptMessages.php:125
 msgid "Select all"
 msgstr "Selectează tot"
 
-#: lib/TranslatedScriptMessages.php:125
-#: views/wpts-editor-launcher-metabox.php:42
+#: lib/TranslatedScriptMessages.php:126
+#: views/wpts-editor-launcher-metabox.php:56
 msgid "Trip summary information is present for this post"
 msgstr "Informațiile despre traseu au fost furnizate pentru acest post"
 
-#: lib/TranslatedScriptMessages.php:126
-#: views/wpts-editor-launcher-metabox.php:43
+#: lib/TranslatedScriptMessages.php:127
+#: views/wpts-editor-launcher-metabox.php:57
 msgid "Trip summary information is not present for this post"
 msgstr "Informațiile despre traseu nu au fost furnizate pentru acest post"
 
-#: lib/TranslatedScriptMessages.php:127
-#: views/wpts-editor-launcher-metabox.php:54
+#: lib/TranslatedScriptMessages.php:128
+#: views/wpts-editor-launcher-metabox.php:68
 msgid "Trip summary track is present for this post"
 msgstr "Track-ul traseului a fost încărcat și procesat pentru acest post"
 
-#: lib/TranslatedScriptMessages.php:128
-#: views/wpts-editor-launcher-metabox.php:55
+#: lib/TranslatedScriptMessages.php:129
+#: views/wpts-editor-launcher-metabox.php:69
 msgid "Trip summary track is not present for this post"
 msgstr "Track-ul traseului nu a fost încărcat pentru acest post"
 
-#: lib/TranslatedScriptMessages.php:129
+#: lib/TranslatedScriptMessages.php:130
 msgid ""
 "Are you sure you want to remove the trip summary information? This action "
 "cannot be undone!"
@@ -747,7 +864,7 @@ msgstr ""
 "Sigur ștergi informațiile traseului? Odată efectuată, această acțiune nu "
 "poate fi anulată!"
 
-#: lib/TranslatedScriptMessages.php:130
+#: lib/TranslatedScriptMessages.php:131
 msgid ""
 "Are you sure you want to remove the trip summary track? This action cannot "
 "be undone!"
@@ -755,7 +872,7 @@ msgstr ""
 "Sigur ștergi track-ul traseului? Odată efectuată, această acțiune nu poate "
 "fi anulată!"
 
-#: lib/TranslatedScriptMessages.php:136
+#: lib/TranslatedScriptMessages.php:137
 msgid ""
 "The settings could not be saved due to a possible network error or an "
 "internal server issue"
@@ -763,90 +880,89 @@ msgstr ""
 "Opțiunile nu au putut fi salvate din cauza unei posibile erori de rețea sau "
 "a unei erori interne"
 
-#: lib/TranslatedScriptMessages.php:137
+#: lib/TranslatedScriptMessages.php:138
 msgid "The settings could not be saved due to a possible internal server issue"
 msgstr "Opțiunile nu au putut fi salvate din cauza unei posibile erori interne"
 
-#: lib/TranslatedScriptMessages.php:138
+#: lib/TranslatedScriptMessages.php:139
 msgid "Settings successfully saved"
 msgstr "Opțiunile au fost salvate cu succes"
 
-#: lib/TranslatedScriptMessages.php:139
+#: lib/TranslatedScriptMessages.php:140
 msgid "Saving settings. Please wait..."
 msgstr "Se salvează opțiunile. Te rog să aștepți..."
 
-#: lib/TranslatedScriptMessages.php:145 lib/TranslatedScriptMessages.php:162
-msgid "Working. Please wait..."
-msgstr "Lucrez. Așteaptă puțin..."
-
-#: lib/TranslatedScriptMessages.php:146
+#: lib/TranslatedScriptMessages.php:147
 msgid "Item successfully saved"
 msgstr "Itemul a fost salvat cu succes"
 
-#: lib/TranslatedScriptMessages.php:147
-#: views/wpts-lookup-data-management.php:81
-#: views/wpts-lookup-data-management.php:95
+#: lib/TranslatedScriptMessages.php:148
+#: views/wpts-admin-lookup-data-management.php:120
 msgid "Add new item"
 msgstr "Adaugă item"
 
-#: lib/TranslatedScriptMessages.php:148
+#: lib/TranslatedScriptMessages.php:149
 msgid "Modify item"
 msgstr "Modifică"
 
-#: lib/TranslatedScriptMessages.php:149
+#: lib/TranslatedScriptMessages.php:150
 msgid ""
 "The item could not be saved due to a possible network error or an internal "
 "server issue"
 msgstr ""
 "Itemul nu a putut fi salvat din cauza unei posibile probleme de conexiune"
 
-#: lib/TranslatedScriptMessages.php:150
+#: lib/TranslatedScriptMessages.php:151
 msgid "The item could not be saved due to a possible internal server issue"
 msgstr "Itemul nu a putut fi salvat din cauza unei posibile probleme interne"
 
-#: lib/TranslatedScriptMessages.php:151
+#: lib/TranslatedScriptMessages.php:152
+msgid "Please fill in all required fields."
+msgstr "Te rugăm să completezi toate câmpurile obligatorii."
+
+#: lib/TranslatedScriptMessages.php:153
 msgid "Confirm item removal"
 msgstr "Confirmă ștergerea itemului"
 
-#: lib/TranslatedScriptMessages.php:152
+#: lib/TranslatedScriptMessages.php:154
 msgid ""
 "The item could not be deleted due to a possible network error or an internal "
 "server issue"
 msgstr ""
 "Itemul nu a putut fi șters in cauza unei posibile probleme de conexiune"
 
-#: lib/TranslatedScriptMessages.php:153
+#: lib/TranslatedScriptMessages.php:155
 msgid "The item could not be deleted due to a possible internal server issue"
 msgstr "Itemul nu a putut fi șters din cauza unei posibile probleme interne"
 
-#: lib/TranslatedScriptMessages.php:154
+#: lib/TranslatedScriptMessages.php:156
 msgid "The item has been successfully deleted"
 msgstr "Itemul a fost șters cu succes"
 
-#: lib/TranslatedScriptMessages.php:155
+#: lib/TranslatedScriptMessages.php:157
 msgid ""
 "The lookup items could not be loaded due to a possible network error or an "
 "internal server issue"
 msgstr ""
 "Itemii nu au putut fi încărcați din cauza unei posibile probleme de conexiune"
 
-#: lib/TranslatedScriptMessages.php:156
+#: lib/TranslatedScriptMessages.php:158
 msgid "The lookup items could not be loaded"
 msgstr "Itemii nu au putut fi încărcați"
 
-#: lib/TranslatedScriptMessages.php:163
+#: lib/TranslatedScriptMessages.php:165
 msgid "Are you sure you want to execute the selected tool?"
 msgstr "Sigur execuți unealta selectată?"
 
-#: lib/TranslatedScriptMessages.php:164
+#: lib/TranslatedScriptMessages.php:166
 msgid "The selected maintenance tool successfully executed."
 msgstr "Unealta selectată a fost executată cu succes."
 
-#: lib/TranslatedScriptMessages.php:165
+#: lib/TranslatedScriptMessages.php:167
 msgid "The selected maintenance tool could not be executed."
 msgstr "Unealta selectată nu a putut fi executată."
 
-#: lib/TranslatedScriptMessages.php:166
+#: lib/TranslatedScriptMessages.php:168
 msgid ""
 "The selected maintenance tool could not be executed due to a possible "
 "network issue. Please check your internet connection and try again."
@@ -854,35 +970,35 @@ msgstr ""
 "Unealta selectată nu a putut fi executată din cauza unei posibile probleme "
 "de conexiune. Te rugăm să verifici conexiunea la internet și să reîncerc."
 
-#: lib/TranslatedScriptMessages.php:172
+#: lib/TranslatedScriptMessages.php:174
 msgid "Minimum altitude:"
 msgstr "Altitudinea minimă:"
 
-#: lib/TranslatedScriptMessages.php:173
+#: lib/TranslatedScriptMessages.php:175
 msgid "Maximum altitude:"
 msgstr "Altitudinea maximă:"
 
-#: lib/TranslatedScriptMessages.php:174
+#: lib/TranslatedScriptMessages.php:176
 msgid "Altitude:"
 msgstr "Altitudinea:"
 
-#: lib/TranslatedScriptMessages.php:175
+#: lib/TranslatedScriptMessages.php:177
 msgid "Distance:"
 msgstr "Distanța:"
 
-#: lib/TranslatedScriptMessages.php:176 views/helpers/controls.frontend.php:92
+#: lib/TranslatedScriptMessages.php:178 views/helpers/controls.frontend.php:92
 msgid "(show)"
 msgstr "(arată)"
 
-#: lib/TranslatedScriptMessages.php:177
+#: lib/TranslatedScriptMessages.php:179
 msgid "(hide)"
 msgstr "(ascunde)"
 
-#: lib/TranslatedScriptMessages.php:183
+#: lib/TranslatedScriptMessages.php:185
 msgid "Loading help contents. Please wait..."
 msgstr "Se încară conținutul. Te rugăm să aștepți..."
 
-#: lib/TranslatedScriptMessages.php:184
+#: lib/TranslatedScriptMessages.php:186
 msgid ""
 "The help contents could not be loaded due to a possible network error or an "
 "internal server issue."
@@ -890,35 +1006,36 @@ msgstr ""
 "Conținutul nu a putut fi încărcat din cauza unei posibile probleme de "
 "conexi\tune"
 
-#: lib/TranslatedScriptMessages.php:185
+#: lib/TranslatedScriptMessages.php:187
 msgid "The help contents could not be loaded."
 msgstr "Conținutul nu a putut fi încărcat"
 
-#: lib/TranslatedScriptMessages.php:191
+#: lib/TranslatedScriptMessages.php:193
 msgid "Loading audit log. Please wait..."
 msgstr "Se încarcă datele de auditare. Te rugăm să aștepți..."
 
-#: lib/TranslatedScriptMessages.php:192
+#: lib/TranslatedScriptMessages.php:194
 msgid "The audit log could not be loaded!"
 msgstr "Datele de auditare nu au putut fi încărcate!"
 
-#: lib/Viewer.php:61 views/wpts-frontend.php:52
+#: lib/Viewer.php:118 views/wpts-frontend.php:88
 msgid "Prosaic details"
 msgstr "Detalii prozaice"
 
-#: lib/Viewer.php:62 views/wpts-editor.php:82 views/wpts-frontend.php:57
+#: lib/Viewer.php:119 views/wpts-editor.php:86 views/wpts-frontend.php:98
 msgid "Map"
 msgstr "Hartă & Track GPS"
 
-#: lib/Viewer.php:94
+#: lib/Viewer.php:132
 msgid "Horizontally"
 msgstr "Orizontal"
 
-#: lib/Viewer.php:95
+#: lib/Viewer.php:133
 msgid "Vertically"
 msgstr "Vertical"
 
 #: views/helpers/controls.frontend.php:91
+#, php-format
 msgid "and %d more"
 msgstr "și încă %d"
 
@@ -931,224 +1048,558 @@ msgid "Title"
 msgstr "Titlu"
 
 #: views/maintenance/wpts-detect-missing-track-files-result.php:40
-#: views/wpts-lookup-data-management.php:88
+#: views/wpts-admin-lookup-data-management.php:131
 msgid "Actions"
 msgstr "Acțiuni"
 
 #: views/maintenance/wpts-detect-missing-track-files-result.php:49
-msgid "[View]"
-msgstr "[Vizualizare]"
+msgid "View"
+msgstr "Vizualizare"
 
 #: views/maintenance/wpts-detect-missing-track-files-result.php:50
-msgid "[Edit]"
-msgstr "[Modifică]"
+#: views/wpts-admin-lookup-data-management.php:155
+#: views/wpts-editor-launcher-metabox.php:101 views/wpts-log-editor.php:101
+#: views/wpts-log-editor.php:225
+msgid "Edit"
+msgstr "Modifică"
 
-#: views/maintenance/wpts-detect-missing-track-files-result.php:57
+#: views/maintenance/wpts-detect-missing-track-files-result.php:58
 msgid "No posts with missing track files found!"
 msgstr "Nu au fost găsite post-uri cu track-uri lipsă!"
 
-#: views/wpts-about.php:47
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:35
+msgid ""
+"These rules are intended to block direct web access to the plugin storage "
+"directory and its contents. Generating or copying them does not change your "
+"server configuration."
+msgstr ""
+"Aceste reguli sunt menite să blocheze accesul direct prin web la directorul "
+"de stocare al modulului și la conținutul acestuia. Generarea sau copierea "
+"lor nu modifică configurația serverului."
+
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:41
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:42
+msgid "Copy code to clipboard"
+msgstr "Copiază codul în clipboard"
+
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:43
+msgid "Copied to clipboard."
+msgstr "Copiat în clipboard."
+
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:44
+msgid "Could not copy. Select the code and copy it manually."
+msgstr "Copierea nu a reușit. Selectează codul și copiază-l manual."
+
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:48
+msgid "Nginx access rules"
+msgstr "Reguli de acces Nginx"
+
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:51
+msgid "How to apply these rules"
+msgstr "Cum se aplică aceste reguli"
+
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:53
+msgid ""
+"Back up your Nginx configuration before editing it. If you cannot manage it "
+"yourself, send these rules to your hosting provider or server administrator."
+msgstr ""
+"Fă o copie de siguranță a configurației Nginx înainte de a o modifica. Dacă "
+"nu o poți administra singur, trimite aceste reguli furnizorului de găzduire "
+"sau administratorului serverului."
+
+#. translators: 1: Nginx server block, 2: Nginx location block, 3: Apache configuration filename.
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:57
+#, php-format
+msgid ""
+"Add both rules directly inside each %1$s block that serves the storage URL, "
+"including HTTP and HTTPS where applicable. Do not put them inside another "
+"%2$s block or in a %3$s file."
+msgstr ""
+"Adaugă ambele reguli direct în fiecare bloc %1$s care deservește URL-ul de "
+"stocare, inclusiv pentru HTTP și HTTPS, după caz. Nu le pune în interiorul "
+"altui bloc %2$s sau într-un fișier %3$s."
+
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:63
+msgid ""
+"Confirm that the paths match the public storage URL. Have your administrator "
+"check existing rules for conflicts, including duplicate or more specific "
+"locations."
+msgstr ""
+"Verifică dacă aceste căi corespund URL-ului public de stocare. Cere "
+"administratorului să verifice regulile existente pentru eventuale conflicte, "
+"inclusiv locații duplicate sau mai specifice."
+
+#. translators: 1: Nginx configuration test command, 2: Nginx configuration reload command.
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:67
+#, php-format
+msgid ""
+"Test the configuration with %1$s. Only if the test succeeds, apply it with "
+"%2$s or the equivalent hosting control panel action. Use the commands and "
+"permissions required by your host."
+msgstr ""
+"Testează configurația cu %1$s. Numai dacă testul reușește, aplic-o folosind "
+"%2$s sau acțiunea echivalentă din panoul de control al găzduirii. Folosește "
+"comenzile și permisiunile cerute de furnizorul de găzduire."
+
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:72
+msgid ""
+"After reloading, request the direct URL of a known existing file in the "
+"storage directory without signing in and confirm an HTTP 403 response. Also "
+"check that your website and normal plugin features still work. A successful "
+"configuration test alone does not confirm access protection."
+msgstr ""
+"După reîncărcare, accesează fără autentificare URL-ul direct al unui fișier "
+"despre care știi că există în directorul de stocare și verifică dacă "
+"primești un răspuns HTTP 403. Verifică și dacă site-ul și funcțiile "
+"obișnuite ale modulului funcționează în continuare. Reușita testului de "
+"configurație nu confirmă, de una singură, protecția accesului."
+
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:75
+msgid "Nginx configuration documentation (opens in a new tab)"
+msgstr "Documentația pentru configurarea Nginx (se deschide într-un tab nou)"
+
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:79
+msgid "Disclaimer"
+msgstr "Declinarea răspunderii"
+
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:80
+msgid ""
+"These rules are provided as-is and require review for your server setup. The "
+"plugin neither applies them nor verifies that access is blocked. Incorrect "
+"configuration may expose files or disrupt your website."
+msgstr ""
+"Aceste reguli sunt furnizate ca atare și trebuie verificate în raport cu "
+"configurația serverului tău. Modulul nu le aplică și nici nu verifică dacă "
+"accesul este blocat. O configurație incorectă poate expune fișiere sau poate "
+"perturba funcționarea site-ului."
+
+#: views/maintenance/wpts-nginx-access-directives-helper-result.php:81
+msgid ""
+"Protection is limited to the URL paths covered by the rules on the servers "
+"where they are applied. Custom log directories, alternate URLs, aliases and "
+"CDN copies may require separate protection. These rules do not replace "
+"access checks in the plugin."
+msgstr ""
+"Protecția se limitează la căile URL acoperite de reguli pe serverele pe care "
+"acestea sunt aplicate. Directoarele de jurnal personalizate, URL-urile "
+"alternative, aliasurile și copiile CDN pot necesita protecție separată. "
+"Aceste reguli nu înlocuiesc verificările de acces din modul."
+
+#: views/wpts-admin-about.php:43 views/wpts-editor.php:81
+msgid "Info"
+msgstr "Informații"
+
+#: views/wpts-admin-about.php:56
 msgid "Current Version"
 msgstr "Versiune Curentă"
 
-#: views/wpts-about.php:51
+#: views/wpts-admin-about.php:60
 msgid "License"
 msgstr "Licență"
 
-#: views/wpts-about.php:55
+#: views/wpts-admin-about.php:64
 msgid "Author"
 msgstr "Autor"
 
-#: views/wpts-about.php:61
+#: views/wpts-admin-about.php:70
 msgid "Minimum WordPress Version"
 msgstr "Versiunea Minimă Necesară de WordPress"
 
-#: views/wpts-about.php:65
+#: views/wpts-admin-about.php:74
 msgid "Your WordPress Version"
 msgstr "Versiunea ta de WordPress"
 
-#: views/wpts-about.php:69
+#: views/wpts-admin-about.php:78
 msgid "Minimum PHP Version"
 msgstr "Versiunea Minimă Necesară de PHP"
 
-#: views/wpts-about.php:73
+#: views/wpts-admin-about.php:82
 msgid "Your PHP Version"
 msgstr "Versiunea ta de PHP"
 
-#: views/wpts-about.php:77
+#: views/wpts-admin-about.php:86
 msgid "Project source"
 msgstr "Codul sursă al proiectului"
 
-#: views/wpts-about.php:78
+#: views/wpts-admin-about.php:87
 msgid "Github"
 msgstr "Github"
 
-#: views/wpts-about.php:85
-msgid "Get Support"
-msgstr "Am o problemă cu plug-in-ul"
-
-#: views/wpts-about.php:88
+#: views/wpts-admin-about.php:94
 msgid "Buy me a coffee :)"
 msgstr "Vreau să-ți iau o cafea"
 
-#: views/wpts-about.php:95
+#: views/wpts-admin-about.php:98
+msgid "Get Support"
+msgstr "Am o problemă cu plug-in-ul"
+
+#: views/wpts-admin-about.php:105
 msgid "Changelog"
 msgstr "Jurnal de modificări"
 
-#: views/wpts-admin-system-logs.php:49
+#: views/wpts-admin-lookup-data-management.php:61
+msgid "Edit Lookup Data Item"
+msgstr "Modifică itemul din nomenclator"
+
+#: views/wpts-admin-lookup-data-management.php:62
+#: views/wpts-listing-inline-scripts.php:50
+#: views/wpts-listing-inline-scripts.php:58
+msgid "Close"
+msgstr "Închide"
+
+#: views/wpts-admin-lookup-data-management.php:69
+#: views/wpts-admin-lookup-data-management.php:129
+msgid "Default label"
+msgstr "Eticheta implicită"
+
+#: views/wpts-admin-lookup-data-management.php:73
+msgid "Translated label"
+msgstr "Eticheta tradusă"
+
+#: views/wpts-admin-lookup-data-management.php:79
+msgid "Save item"
+msgstr "Salvează"
+
+#: views/wpts-admin-lookup-data-management.php:80 views/wpts-log-editor.php:176
+msgid "Cancel"
+msgstr "Anulează"
+
+#: views/wpts-admin-lookup-data-management.php:89
+msgid "Manage for"
+msgstr "Gestionează pentru"
+
+#: views/wpts-admin-lookup-data-management.php:93
+msgid "Lookup type:"
+msgstr "Tip item nomenclator:"
+
+#: views/wpts-admin-lookup-data-management.php:101
+msgid "and"
+msgstr "și"
+
+#: views/wpts-admin-lookup-data-management.php:104
+msgid "Language:"
+msgstr "Limba:"
+
+#: views/wpts-admin-lookup-data-management.php:116
+msgid "Lookup data items"
+msgstr "Itemi din nomenclator"
+
+#: views/wpts-admin-lookup-data-management.php:121
+msgid "Reload list"
+msgstr "Reîncarcă lista"
+
+#: views/wpts-admin-lookup-data-management.php:130
+msgid "Label"
+msgstr "Eticheta"
+
+#: views/wpts-admin-lookup-data-management.php:156
+#: views/wpts-admin-system-logs.php:112 views/wpts-log-editor.php:102
+#: views/wpts-log-editor.php:226
+msgid "Delete"
+msgstr "Șterge"
+
+#: views/wpts-admin-maintenance.php:51
+msgid "Available tools"
+msgstr "Unelte disponbile"
+
+#: views/wpts-admin-maintenance.php:56
+msgid "Select one"
+msgstr "Alege una"
+
+#: views/wpts-admin-maintenance.php:68
+msgid "Execute"
+msgstr "Execută"
+
+#: views/wpts-admin-maintenance.php:76
+msgid "Execution result"
+msgstr "Rezultatul execuției"
+
+#: views/wpts-admin-settings.php:54
+msgid "Chose a pre-defined tile layer service"
+msgstr "Alege o sursă de tile-uri de hartă predefinită"
+
+#: views/wpts-admin-settings.php:69 views/wpts-admin-settings.php:324
+msgid "This tile layer requires an API key from the service provider"
+msgstr ""
+"Această sursă de tile-uri de hartă necesită o cheie API, care se poate "
+"obține de la furnizor"
+
+#: views/wpts-admin-settings.php:78
+msgid "View details"
+msgstr "Detalii"
+
+#: views/wpts-admin-settings.php:84
+msgid "Use this tile layer"
+msgstr "Folosește această sursă"
+
+#: views/wpts-admin-settings.php:97
+msgid "Menu"
+msgstr "Meniu"
+
+#: views/wpts-admin-settings.php:107
+msgid "General Settings"
+msgstr "Opțiuni generale"
+
+#: views/wpts-admin-settings.php:116
+msgid "Viewer settings"
+msgstr "Opțiuni de vizualizare"
+
+#: views/wpts-admin-settings.php:125
+msgid "Map Settings"
+msgstr "Opțiuni de hartă"
+
+#: views/wpts-admin-settings.php:132
+msgid "Options"
+msgstr "Opțiuni"
+
+#: views/wpts-admin-settings.php:143
+msgid ""
+"These settings control various aspects that do not belong to any one topic"
+msgstr ""
+"Aceste opțiuni controlează diverse aspecte care nu aparțin vreunei zone anume"
+
+#: views/wpts-admin-settings.php:147
+msgid "Unit system"
+msgstr "Sistemul de unități măsură"
+
+#: views/wpts-admin-settings.php:168
+msgid "These settings configure the trip summary viewer"
+msgstr ""
+"Aceste opțiuni controlează modul în care este vizualizat sumarul turei în "
+"articolul corespunzător"
+
+#: views/wpts-admin-settings.php:172
+msgid "Show teaser?"
+msgstr "Se afișează teaser-ul?"
+
+#: views/wpts-admin-settings.php:184
+msgid "Top teaser text"
+msgstr "Textul teaser-ului din partea de sus"
+
+#: views/wpts-admin-settings.php:193
+msgid "Bottom teaser text"
+msgstr "Textul teaser-ului din partea de jos"
+
+#: views/wpts-admin-settings.php:202
+msgid "Initial viewer tab"
+msgstr "Fila inițial selectată"
+
+#: views/wpts-admin-settings.php:217
+msgid "Chose how multi-value items are laid out"
+msgstr "Alege layout-ul itemilor cu  mai multe valori"
+
+#: views/wpts-admin-settings.php:232
+msgid "Chose how many values of a multi-valued item are displayed"
+msgstr "Alege câte valori sunt afișate pentru itemii cu mai multe valori"
+
+#: views/wpts-admin-settings.php:245
+msgid "Enable JSON-LD frontend data"
+msgstr "Insearază date JSON-LD în front-end"
+
+#: views/wpts-admin-settings.php:263
+msgid "These settings configure the map component"
+msgstr "Aceste opțiuni controlează cum este afișată harta traseului"
+
+#: views/wpts-admin-settings.php:267
+msgid "Tile layer URL template"
+msgstr "Șablonul URL-ului sursei de tile-uri de hartă"
+
+#: views/wpts-admin-settings.php:280
+msgid "... or chose pre-defined"
+msgstr "... sau alege unul predefinit"
+
+#: views/wpts-admin-settings.php:287
+msgid "Tile layer attribution URL"
+msgstr "URL-ul paginii de copyright a sursei de tile-uri de hartă"
+
+#: views/wpts-admin-settings.php:299
+msgid "Tile layer attribution text"
+msgstr "Nota de copyright a sursei de tile-uri de hartă"
+
+#: views/wpts-admin-settings.php:311
+msgid "Tile layer API key"
+msgstr "Cheia API a sursei de tile-uri de hartă"
+
+#: views/wpts-admin-settings.php:330
+msgid "Enable map fullscreen mode?"
+msgstr "Se permite comutarea hărții pe întreg ecranul?"
+
+#: views/wpts-admin-settings.php:342
+msgid "Show magnifying glass?"
+msgstr "Se activează lupa?"
+
+#: views/wpts-admin-settings.php:354
+msgid "Show map scale?"
+msgstr "Se afișează scara hărții"
+
+#: views/wpts-admin-settings.php:366
+msgid "Show minimum & maximum altitude?"
+msgstr "Se afișează altitudinea minimă și maximă?"
+
+#: views/wpts-admin-settings.php:378
+msgid "Show altitude profile?"
+msgstr "Se arată profilul de altitudine?"
+
+#: views/wpts-admin-settings.php:390
+msgid "Allow track download?"
+msgstr "Se permite descărcarea track-ului?"
+
+#: views/wpts-admin-settings.php:402
+msgid "Track line colour"
+msgstr "Culoarea liniei track-ului de pe harta"
+
+#: views/wpts-admin-settings.php:414
+msgid "Track line weight"
+msgstr "Grosimea liniei track-ului de pe harta"
+
+#: views/wpts-admin-settings.php:427
+msgid "Map height"
+msgstr "Înălțimea hărții"
+
+#: views/wpts-admin-settings.php:446
+msgid "Save settings"
+msgstr "Salvează opțiunile"
+
+#: views/wpts-admin-system-logs.php:53
 msgid "System log files"
 msgstr "Fișiere jurnal de sistem"
 
-#: views/wpts-admin-system-logs.php:51
+#: views/wpts-admin-system-logs.php:55
 msgid "Debug logs"
 msgstr "Fișiere jurnal pentru depanare"
 
-#: views/wpts-admin-system-logs.php:55
+#: views/wpts-admin-system-logs.php:59
 msgid ""
 "Debug logging is currently disabled. Only showing existing debug log files."
 msgstr ""
 "Jurnalizarea pentru depanare este momentan inactivă. Se afișează doar "
 "fișierele existente."
 
-#: views/wpts-admin-system-logs.php:60
+#: views/wpts-admin-system-logs.php:64
 msgid "There are no debug log files available"
 msgstr "Nu există fișiere jurnal pentru depanare."
 
-#: views/wpts-admin-system-logs.php:75
+#: views/wpts-admin-system-logs.php:79
 msgid "Error logs"
 msgstr "Fișiere jurnal pentru erori"
 
-#: views/wpts-admin-system-logs.php:79
+#: views/wpts-admin-system-logs.php:83
 msgid ""
 "Error logging is currently disabled. Only showing existing error log files."
 msgstr ""
 "Jurnalizarea erorilor este momentan inactivă. Se afișează doar fișierele "
 "existente."
 
-#: views/wpts-admin-system-logs.php:84
+#: views/wpts-admin-system-logs.php:88
 msgid "There are no error log files available"
 msgstr "Nu există fișiere jurnal pentru erori."
 
-#: views/wpts-admin-system-logs.php:102
+#: views/wpts-admin-system-logs.php:106
 msgid "Log file contents"
 msgstr "Conținutul fișierului jurnal"
 
-#: views/wpts-admin-system-logs.php:106
+#: views/wpts-admin-system-logs.php:110
 msgid "Download"
 msgstr "Descarcă"
 
-#: views/wpts-admin-system-logs.php:107
+#: views/wpts-admin-system-logs.php:111
 msgid "Reload"
 msgstr "Reîncarcă"
 
-#: views/wpts-admin-system-logs.php:108 views/wpts-log-editor.php:102
-#: views/wpts-log-editor.php:226 views/wpts-lookup-data-management.php:152
-msgid "Delete"
-msgstr "Șterge"
-
-#: views/wpts-admin-system-logs.php:115
+#: views/wpts-admin-system-logs.php:119
 msgid "The log file is too large. Only displaying the last 200 lines."
 msgstr "Fișierul este prea mare. Se afișează doar ultimele 200 de linii."
 
-#: views/wpts-audit-log.php:44 views/wpts-audit-log.php:76
+#: views/wpts-audit-log.php:65 views/wpts-audit-log.php:111
 msgid "Date created"
 msgstr "Data creării"
 
-#: views/wpts-audit-log.php:52 views/wpts-audit-log.php:84
+#: views/wpts-audit-log.php:73 views/wpts-audit-log.php:119
 msgid "Date last updated"
 msgstr "Data ultimei modificări"
 
-#: views/wpts-audit-log.php:60 views/wpts-audit-log.php:92
+#: views/wpts-audit-log.php:81 views/wpts-audit-log.php:127
 msgid "Last updated by"
 msgstr "Modificat ultima oară de"
 
-#: views/wpts-button.php:35 views/wpts-editor.php:57 views/wpts-editor.php:64
+#: views/wpts-button.php:35 views/wpts-editor.php:61 views/wpts-editor.php:68
 msgid "Edit trip summary"
 msgstr "Modifică sumarul turei"
 
-#: views/wpts-editor-launcher-metabox.php:68 views/wpts-editor.php:98
+#: views/wpts-editor-launcher-metabox.php:94 views/wpts-editor.php:102
 msgid "Quick actions"
 msgstr "Acțiuni rapide"
 
-#: views/wpts-editor-launcher-metabox.php:72
+#: views/wpts-editor-launcher-metabox.php:98
 msgid "Click here to edit trip summary information and/or track"
 msgstr "Click aici pentru a modifica sumarul turei și/sau track-ul GPS"
-
-#: views/wpts-editor-launcher-metabox.php:75 views/wpts-log-editor.php:101
-#: views/wpts-log-editor.php:225 views/wpts-lookup-data-management.php:151
-msgid "Edit"
-msgstr "Modifică"
 
 #: views/wpts-editor-quick-actions-tooltip.php:41
 #: views/wpts-editor-quick-actions.php:53
 msgid "Download track"
 msgstr "Descărcare track GPS"
 
-#: views/wpts-editor.php:77
-msgid "Info"
-msgstr "Informații"
-
-#: views/wpts-editor.php:99
+#: views/wpts-editor.php:103
 msgid "Save"
 msgstr "Salvează"
 
-#: views/wpts-editor.php:110
+#: views/wpts-editor.php:114
 msgid "Chose the type of your tour"
 msgstr "Alege tipul turei"
 
-#: views/wpts-editor.php:128 views/wpts-editor.php:194
-#: views/wpts-editor.php:252 views/wpts-frontend.php:75
-#: views/wpts-frontend.php:83 views/wpts-frontend.php:91
+#: views/wpts-editor.php:141 views/wpts-editor.php:207
+#: views/wpts-editor.php:265 views/wpts-frontend.php:123
+#: views/wpts-frontend.php:131 views/wpts-frontend.php:139
 msgid "Total distance"
 msgstr "Distanța totală"
 
-#: views/wpts-editor.php:132 views/wpts-editor.php:198
-#: views/wpts-frontend.php:76 views/wpts-frontend.php:84
+#: views/wpts-editor.php:145 views/wpts-editor.php:211
+#: views/wpts-frontend.php:124 views/wpts-frontend.php:132
 msgid "Total climb"
 msgstr "Diferența de nivel"
 
-#: views/wpts-editor.php:139 views/wpts-editor.php:205
+#: views/wpts-editor.php:152 views/wpts-editor.php:218
 msgid "-- Choose an option --"
 msgstr "-- Alege o opțiune --"
 
-#: views/wpts-editor.php:144 views/wpts-editor.php:160
-#: views/wpts-editor.php:172 views/wpts-editor.php:184
-#: views/wpts-editor.php:210 views/wpts-editor.php:226
-#: views/wpts-editor.php:238 views/wpts-editor.php:271
-#: views/wpts-editor.php:283 views/wpts-editor.php:295
-#: views/wpts-editor.php:307
+#: views/wpts-editor.php:157 views/wpts-editor.php:173
+#: views/wpts-editor.php:185 views/wpts-editor.php:197
+#: views/wpts-editor.php:223 views/wpts-editor.php:239
+#: views/wpts-editor.php:251 views/wpts-editor.php:284
+#: views/wpts-editor.php:296 views/wpts-editor.php:308
+#: views/wpts-editor.php:320
 msgid ""
 "No items to select from. Visit the lookup data management page to add some."
 msgstr ""
 "Nu există itemi de selectat. Poți crea noi itemi în pagina de gestiune a "
 "nomenclatoarelor"
 
-#: views/wpts-editor.php:149 views/wpts-editor.php:215
-#: views/wpts-frontend.php:78 views/wpts-frontend.php:86
+#: views/wpts-editor.php:162 views/wpts-editor.php:228
+#: views/wpts-frontend.php:126 views/wpts-frontend.php:134
 msgid "Access information"
 msgstr "Informații de acces"
 
-#: views/wpts-editor.php:243
+#: views/wpts-editor.php:256
 msgid "Route markers"
 msgstr "Marcaje turistice"
 
-#: views/wpts-editor.php:256 views/wpts-frontend.php:92
+#: views/wpts-editor.php:269 views/wpts-frontend.php:140
 msgid "Exchanged trains"
 msgstr "Numărul de trenuri schimbate"
 
-#: views/wpts-editor.php:260 views/wpts-frontend.php:93
+#: views/wpts-editor.php:273 views/wpts-frontend.php:141
 msgid "Line gauge"
 msgstr "Ecartamentul liniei"
 
-#: views/wpts-editor.php:317
+#: views/wpts-editor.php:330
 msgid "Upload a GPX or GeoJSON or KML track file"
 msgstr "Încarcă un fișier GPX sau GeoJSON sau KML"
 
-#: views/wpts-editor.php:320
+#: views/wpts-editor.php:336
 msgid "Chose file"
 msgstr "Alege un fișier"
 
-#: views/wpts-editor.php:337 views/wpts-frontend.php:107
+#: views/wpts-editor.php:353 views/wpts-frontend.php:155
 msgid ""
 "The map could not be loaded due to either a network error or a possible "
 "server issue."
@@ -1156,37 +1607,53 @@ msgstr ""
 "Harta nu a putut fi încărcată din cauza unei erori de comunicație sau a unei "
 "posibile erori interne"
 
-#: views/wpts-editor.php:338 views/wpts-frontend.php:108
+#: views/wpts-editor.php:354 views/wpts-frontend.php:156
 msgid "Retry"
 msgstr "Reîncearcă"
 
-#: views/wpts-frontend-route-log.php:63
+#: views/wpts-frontend-route-log.php:65
 msgid "There are no log entries yet"
 msgstr "Nu există înregistrări de jurnal"
 
-#: views/wpts-frontend.php:79 views/wpts-frontend.php:87
+#: views/wpts-frontend.php:77
+msgid "Scroll tabs left"
+msgstr "Derulează tab-urile spre stânga"
+
+#: views/wpts-frontend.php:111
+msgid "Scroll tabs right"
+msgstr "Derulează tab-urile spre dreapta"
+
+#: views/wpts-frontend.php:127 views/wpts-frontend.php:135
 msgid "Open during seasons"
 msgstr "Practicabil în anotimpurile"
 
-#: views/wpts-frontend.php:81
+#: views/wpts-frontend.php:129
 msgid "Recommended bike type"
 msgstr "Tip recomandat de bicicletă"
 
-#: views/wpts-frontend.php:89
+#: views/wpts-frontend.php:137
 msgid "Path markers"
 msgstr "Marcaje turistice"
 
-#: views/wpts-frontend.php:95
+#: views/wpts-frontend.php:143
 msgid "Line status"
 msgstr "Statusul liniei"
 
-#: views/wpts-frontend.php:96
+#: views/wpts-frontend.php:144
 msgid "Electrification status"
 msgstr "Electrificare"
 
-#: views/wpts-frontend.php:97
+#: views/wpts-frontend.php:145
 msgid "Line type"
 msgstr "Tipul liniei"
+
+#: views/wpts-frontend.php:194
+msgid "Trip data by WP-Trip-Summary"
+msgstr "Date despre tură oferite de WP-Trip-Summary"
+
+#: views/wpts-frontend.php:194
+msgid ", made with ❤️ in Bucharest."
+msgstr ", creat cu ❤️ în București."
 
 #: views/wpts-help.php:40
 msgid "WP Trip Summary Help"
@@ -1210,7 +1677,7 @@ msgstr ""
 "fișierul în care e stocat, distribuit cu acest plug-in. Îți recomandă să "
 "verifici structura de fișiere a site-ului tău"
 
-#: views/wpts-listing-inline-scripts.php:48
+#: views/wpts-listing-inline-scripts.php:49
 msgid "Audit log"
 msgstr "Auditare"
 
@@ -1282,215 +1749,33 @@ msgstr "Afișează public"
 msgid "Save entry"
 msgstr "Salvează înregistrarea"
 
-#: views/wpts-log-editor.php:176 views/wpts-lookup-data-management.php:115
-#: views/wpts-lookup-data-management.php:134
-msgid "Cancel"
-msgstr "Anulează"
+#~ msgid "Current language"
+#~ msgstr "Limba curentă"
 
-#: views/wpts-lookup-data-management.php:54
-msgid "Manage"
-msgstr "Gestionează"
+#~ msgid "Help"
+#~ msgstr "Ajutor"
 
-#: views/wpts-lookup-data-management.php:57
-msgid "Lookup type:"
-msgstr "Tip item nomenclator:"
+#~ msgid "[View]"
+#~ msgstr "[Vizualizare]"
 
-#: views/wpts-lookup-data-management.php:65
-msgid "for"
-msgstr "pentru"
+#~ msgid "[Edit]"
+#~ msgstr "[Modifică]"
 
-#: views/wpts-lookup-data-management.php:68
-msgid "Language:"
-msgstr "Limba:"
+#~ msgid "Manage"
+#~ msgstr "Gestionează"
 
-#: views/wpts-lookup-data-management.php:80
-#: views/wpts-lookup-data-management.php:94
-msgid "Reload list"
-msgstr "Reîncarcă lista"
+#~ msgid "for"
+#~ msgstr "pentru"
 
-#: views/wpts-lookup-data-management.php:86
-#: views/wpts-lookup-data-management.php:105
-msgid "Default label"
-msgstr "Eticheta implicită"
+#~ msgid ""
+#~ "Are you sure you want to delete this item? This action cannot be undone"
+#~ msgstr "Sigur ștergi acest item? Datele nu vor putea fi recuperate"
 
-#: views/wpts-lookup-data-management.php:87
-msgid "Label"
-msgstr "Eticheta"
+#~ msgid "Only delete item translation"
+#~ msgstr "Șterge doar varianta tradusă a itemului"
 
-#: views/wpts-lookup-data-management.php:109
-msgid "Translated label"
-msgstr "Eticheta tradusă"
-
-#: views/wpts-lookup-data-management.php:114
-msgid "Save item"
-msgstr "Salvează"
-
-#: views/wpts-lookup-data-management.php:125
-msgid "Are you sure you want to delete this item? This action cannot be undone"
-msgstr "Sigur ștergi acest item? Datele nu vor putea fi recuperate"
-
-#: views/wpts-lookup-data-management.php:128
-msgid "Only delete item translation"
-msgstr "Șterge doar varianta tradusă a itemului"
-
-#: views/wpts-lookup-data-management.php:133
-msgid "Confirm delete"
-msgstr "Confirmă ștergerea"
-
-#: views/wpts-maintenance.php:47
-msgid "Available tools"
-msgstr "Unelte disponbile"
-
-#: views/wpts-maintenance.php:52
-msgid "Select one"
-msgstr "Alege una"
-
-#: views/wpts-maintenance.php:64
-msgid "Execute"
-msgstr "Execută"
-
-#: views/wpts-maintenance.php:74
-msgid "Execution result"
-msgstr "Rezultatul execuției"
-
-#: views/wpts-settings.php:46
-msgid "General Settings"
-msgstr "Opțiuni generale"
-
-#: views/wpts-settings.php:48
-msgid ""
-"These settings control various aspects that do not belong to any one topic"
-msgstr ""
-"Aceste opțiuni controlează diverse aspecte care nu aparțin vreunei zone anume"
-
-#: views/wpts-settings.php:54
-msgid "Unit system"
-msgstr "Sistemul de unități măsură"
-
-#: views/wpts-settings.php:76 views/wpts-settings.php:183
-#: views/wpts-settings.php:367
-msgid "Save settings"
-msgstr "Salvează opțiunile"
-
-#: views/wpts-settings.php:79
-msgid "Viewer settings"
-msgstr "Opțiuni de vizualizare"
-
-#: views/wpts-settings.php:81
-msgid "These settings configure the trip summary viewer"
-msgstr ""
-"Aceste opțiuni controlează modul în care este vizualizat sumarul turei în "
-"articolul corespunzător"
-
-#: views/wpts-settings.php:87
-msgid "Show teaser?"
-msgstr "Se afișează teaser-ul?"
-
-#: views/wpts-settings.php:100
-msgid "Top teaser text"
-msgstr "Textul teaser-ului din partea de sus"
-
-#: views/wpts-settings.php:110
-msgid "Bottom teaser text"
-msgstr "Textul teaser-ului din partea de jos"
-
-#: views/wpts-settings.php:120
-msgid "Initial viewer tab"
-msgstr "Fila inițial selectată"
-
-#: views/wpts-settings.php:136
-msgid "Chose how multi-value items are laid out"
-msgstr "Alege layout-ul itemilor cu  mai multe valori"
-
-#: views/wpts-settings.php:152
-msgid "Chose how many values of a multi-valued item are displayed"
-msgstr "Alege câte valori sunt afișate pentru itemii cu mai multe valori"
-
-#: views/wpts-settings.php:164
-msgid "Enable JSON-LD frontend data"
-msgstr "Insearază date JSON-LD în front-end"
-
-#: views/wpts-settings.php:187
-msgid "Map Settings"
-msgstr "Opțiuni de hartă"
-
-#: views/wpts-settings.php:189
-msgid "These settings configure the map component"
-msgstr "Aceste opțiuni controlează cum este afișată harta traseului"
-
-#: views/wpts-settings.php:195
-msgid "Tile layer URL template"
-msgstr "Șablonul URL-ului sursei de tile-uri de hartă"
-
-#: views/wpts-settings.php:207
-msgid "... or chose pre-defined"
-msgstr "... sau alege unul predefinit"
-
-#: views/wpts-settings.php:212
-msgid "Tile layer attribution URL"
-msgstr "URL-ul paginii de copyright a sursei de tile-uri de hartă"
-
-#: views/wpts-settings.php:224
-msgid "Tile layer attribution text"
-msgstr "Nota de copyright a sursei de tile-uri de hartă"
-
-#: views/wpts-settings.php:236
-msgid "Tile layer API key"
-msgstr "Cheia API a sursei de tile-uri de hartă"
-
-#: views/wpts-settings.php:248 views/wpts-settings.php:396
-msgid "This tile layer requires an API key from the service provider"
-msgstr ""
-"Această sursă de tile-uri de hartă necesită o cheie API, care se poate "
-"obține de la furnizor"
-
-#: views/wpts-settings.php:253
-msgid "Enable map fullscreen mode?"
-msgstr "Se permite comutarea hărții pe întreg ecranul?"
-
-#: views/wpts-settings.php:265
-msgid "Show magnifying glass?"
-msgstr "Se activează lupa?"
-
-#: views/wpts-settings.php:277
-msgid "Show map scale?"
-msgstr "Se afișează scara hărții"
-
-#: views/wpts-settings.php:289
-msgid "Show minimum & maximum altitude?"
-msgstr "Se afișează altitudinea minimă și maximă?"
-
-#: views/wpts-settings.php:301
-msgid "Show altitude profile?"
-msgstr "Se arată profilul de altitudine?"
-
-#: views/wpts-settings.php:313
-msgid "Allow track download?"
-msgstr "Se permite descărcarea track-ului?"
-
-#: views/wpts-settings.php:325
-msgid "Track line colour"
-msgstr "Culoarea liniei track-ului de pe harta"
-
-#: views/wpts-settings.php:337
-msgid "Track line weight"
-msgstr "Grosimea liniei track-ului de pe harta"
-
-#: views/wpts-settings.php:349
-msgid "Map height"
-msgstr "Înălțimea hărții"
-
-#: views/wpts-settings.php:378
-msgid "Chose a pre-defined tile layer service"
-msgstr "Alege o sursă de tile-uri de hartă predefinită"
-
-#: views/wpts-settings.php:403
-msgid "View details"
-msgstr "Detalii"
-
-#: views/wpts-settings.php:406
-msgid "Use this tile layer"
-msgstr "Folosește această sursă"
+#~ msgid "Confirm delete"
+#~ msgstr "Confirmă ștergerea"
 
 #~ msgid "Open Street Map, Hike & Bike Map"
 #~ msgstr "Harta pentru Drumeții și Ciclism bazată pe Open Street Map"
