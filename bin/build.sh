@@ -20,6 +20,12 @@ WPTS_BUILD_TMPDIR="$WPTS_BUILD_ROOTDIR/tmp"
 WPTS_VERSION=$(awk '{IGNORECASE=1}/Version:/{print $NF}' ./abp01-plugin-main.php | awk '{gsub(/\s+/,""); print $0}')
 WPTS_BUILD_NAME="wp-trip-summary.$WPTS_VERSION.zip"
 
+# Readmes are now built from dedicated sources
+build_readme() {
+	echo "Building readme files..."
+	php ./bin/tools/build-readme.php
+}
+
 # Ensure all output directories exist
 ensure_out_dirs() {
 	echo "Ensuring output directory structure..."
@@ -109,7 +115,8 @@ echo "Using version: ${WPTS_VERSION}"
 scan_lib_dir_or_fail
 ensure_out_dirs
 clean_out_dirs
-#make_compat_info
+make_compat_info
+build_readme
 copy_source_files
 generate_package
 clean_tmp_dir
