@@ -111,7 +111,7 @@ Start with the narrowest relevant tests and broaden when shared behavior is affe
 
 - **Leaflet wrapper:** follow the HTTP integration prerequisites in `CONTRIBUTING.md`; invoke `php bin/tools/test-leaflet-wrapper.php <test-origin>` against the intended test installation. `--mode=load` covers a host without rewrite support; rewrite tests require the server rules. This runner is separate from PHPUnit.
 - **Hooks:** use the hook skill to refresh `hook-docs/hooks-inventory.json` with `bash bin/update-hooks-inventory.sh` or its documented PHP equivalent. Do not hand-edit the generated inventory. Generated hook Markdown belongs under `hook-docs/`.
-- **Skill utilities:** when changing a utility, run the standalone regression runners named in its `SKILL.md`. They have different prerequisites from the WordPress suite.
+- **Development utilities:** `bash bin/run-tool-tests.sh` runs the standalone utility regressions, including the skill utilities, CompatInfo extension and screenshot utility. Use `--set=license`, `hooks`, `namespaces`, `compatinfo` or `screen-capture` for a targeted group; `--set=php` runs all PHP groups. When changing a skill utility, also follow its `SKILL.md` instructions. These runners have different prerequisites from the WordPress suite; see `CONTRIBUTING.md`.
 - **Browser behavior:** for frontend/admin changes, check the affected editor, viewer or settings flow in the available development installation, including the browser console. Report when browser verification was unavailable.
 
 ## Build and completion

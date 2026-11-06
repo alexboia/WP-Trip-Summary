@@ -771,7 +771,7 @@ def wpts_validate_args_or_throw(wptsArgs: WptsArgs) -> None:
 
 def wpts_save_screenshot_registry(screenshots: list[WptsScreenshot], outDir: str) -> str:
 	outRecords = []
-	outFile = f'{outDir.rstrip('/')}/catalog.json'	
+	outFile = f"{outDir.rstrip('/')}/catalog.json"
 
 	# WptsScreenshot is not JSON serializable!
 	for screenshot in screenshots:

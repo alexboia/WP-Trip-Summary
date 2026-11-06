@@ -103,11 +103,17 @@ tsc --project media/js/tsconfig.json --noEmit
 tsc --project media/js/tsconfig.json --noEmitOnError
 ```
 
-The manifests do not pin TypeScript or define npm build/test scripts. Record the compiler version used for a change; the local compiler inspected for this workflow is 5.9.3. The configuration targets ES2020/CommonJS and emits JavaScript beside its sources without source maps. Check the generated diff, include the intended source/output pairs, and verify the affected UI in WordPress. Dependency or compiler upgrades should be separate, intentional changes.
+The manifests do not pin TypeScript or define npm build/test scripts. Record the compiler version used for a change; the local compiler inspected for this workflow is 5.9.3. The configuration targets ES2020/CommonJS and emits JavaScript beside its sources without source maps. 
+
+Check the generated diff, include the intended source/output pairs, and verify the affected UI in WordPress. 
+
+Dependency or compiler upgrades should be separate, intentional changes.
 
 ### Running tests
 
-The locked test dependencies are WordPress PHPUnit 7.1.3, PHPUnit 9.6.38, PHPUnit Polyfills 1.1.5, Mockery 1.6.15 and Faker 1.24.1. PHPUnit is an explicit development dependency. These are the latest compatible stable versions at this update: [WordPress 7.1.3 requires PHPUnit Polyfills 1.x](https://github.com/WordPress/wordpress-develop/blob/7.1.3/composer.json), whose supported PHPUnit versions stop at 9.x. Updating PHPUnit to a newer major requires corresponding WordPress test-suite support.
+The locked test dependencies are WordPress PHPUnit 7.1.3, PHPUnit 9.6.38, PHPUnit Polyfills 1.1.5, Mockery 1.6.15 and Faker 1.24.1. PHPUnit is an explicit development dependency. 
+
+These are the latest compatible stable versions at this update: [WordPress 7.1.3 requires PHPUnit Polyfills 1.x](https://github.com/WordPress/wordpress-develop/blob/7.1.3/composer.json), whose supported PHPUnit versions stop at 9.x. Updating PHPUnit to a newer major requires corresponding WordPress test-suite support.
 
 Use `composer install` to reproduce the lockfile. For an intentional test dependency update, run:
 
@@ -172,6 +178,33 @@ composer install
 $env:WP_CORE_DIR = 'D:\path\to\wordpress'
 php .\vendor\bin\phpunit -c .\phpunit.xml
 ```
+
+### Testing development utilities
+
+[bin/run-tool-tests.sh](bin/run-tool-tests.sh) runs the standalone regression tests for the development utilities. It resolves the plug-in root from its own location, so it also works when invoked from `bin/` or by path from another directory. These tests do not require WordPress or a test database.
+
+```bash
+bash bin/run-tool-tests.sh
+bash bin/run-tool-tests.sh --set=php
+bash bin/run-tool-tests.sh --set=hooks
+bash bin/run-tool-tests.sh --help
+```
+
+| Group | Runners |
+| --- | --- |
+| `all` | All seven runners; the default |
+| `php` | All six PHP runners |
+| `license` | License-header parser and CLI utility |
+| `hooks` | Hook extraction and hook-documentation parsing |
+| `namespaces` | Class-identifier conversion utility |
+| `compatinfo` | Per-file parser-error reset extension |
+| `screen-capture` | Python unit tests for the screenshot utility |
+
+The script preserves each runner's output, continues after failures and prints a final summary. Exit status is `0` when every selected runner passes, `1` when any runner fails or cannot start, and `2` for invalid arguments. Missing prerequisites are failures, not skipped tests. Keep the explicit runner list in the script current when adding utility tests; supporting files such as test helpers are not entry points.
+
+PHP defaults to `php` from `PATH`; set `WPTS_TEST_PHP` to an executable path to override it. The full PHP group requires the Composer development dependencies and PHP version described above, plus `tokenizer`, `sqlite3`, `pdo_sqlite` and enabled process execution. The screenshot tests require the Python dependencies from [requirements.txt](bin/tools/screen-capture/requirements.txt); they mock browser interaction and do not require a running site or an installed Firefox binary. Python selection prefers the screenshot tool's native `.venv`, then `python3` or `python` from `PATH`. On WSL, a Windows `.venv/Scripts/python.exe` is not selected automatically. Set `WPTS_TEST_PYTHON` to override this selection. Both overrides accept executable paths without extra arguments.
+
+The Leaflet HTTP checks still use `bin/run-tests.sh --set=leaflet --host HOST`, with the live-site prerequisites below. WordPress PHPUnit tests continue to use `bin/run-tests.sh`.
 
 ### Testing the Leaflet script wrapper
 
