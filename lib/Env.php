@@ -618,7 +618,7 @@ namespace WpTripSummary {
 		}
 
 		public function getRequiredPhpVersion(): string {
-			return '8.0.0';
+			return '8.3.0';
 		}
 
 		public function getWpVersion(): string {
@@ -626,7 +626,7 @@ namespace WpTripSummary {
 		}
 
 		public function getRequiredWpVersion(): string {
-			return '6.0.0';
+			return '7.0.0';
 		}
 
 		public function getVersion(): string {

@@ -2,10 +2,10 @@
 Contributors: alexandruboia
 Donate link: https://ko-fi.com/alexandruboia
 Tags: trip, summary, map, gpx, travel
-Requires at least: 6.0.0
-Tested up to: 6.5.2
+Requires at least: 7.0.0
+Tested up to: 7.1.4
 Stable tag: 0.3.3
-Requires PHP: 8.0.0
+Requires PHP: 8.3.0
 License: Modified BSD License
 License URI: https://opensource.org/licenses/BSD-3-Clause
 
@@ -153,8 +153,8 @@ Prefer a manual install? Download the latest package from the [WordPress plugin 
 
 = Requirements =
 
-- WordPress 6.0 or newer
-- PHP 8.0 or newer, with the `libxml`, `SimpleXML` and `mysqli` extensions
+- WordPress 7.0 or newer
+- PHP 8.3 or newer, with the `libxml`, `SimpleXML` and `mysqli` extensions
 - MySQL 5.7 or newer, with spatial support
 - Recommended: the `mbstring` and `zlib` PHP extensions
 

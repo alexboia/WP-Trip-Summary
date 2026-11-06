@@ -220,23 +220,28 @@ Add new scenarios to the corresponding group and reuse the request and assertion
 
 ## Generating compatibility reports
 
-[bin/detect-compat-info.sh](bin/detect-compat-info.sh) uses the Composer-installed PHP CompatInfo to inspect the plugin and test sources. Install development dependencies with `composer install` first. The current toolchain requires PHP 8.2 or newer, and the default SQLite connection needs both `sqlite3` and `pdo_sqlite` in the CLI configuration. These are analysis-tool requirements; the report does not change the plugin's declared runtime requirements.
+[bin/detect-compat-info.sh](bin/detect-compat-info.sh) checks the platform requirements of production dependencies with Composer and uses the Composer-installed PHP CompatInfo to inspect the plugin and test sources. Make `composer` and `php` available on `PATH`, and install development dependencies with `composer install` first. The current toolchain requires PHP 8.2 or newer, and the default SQLite connection needs both `sqlite3` and `pdo_sqlite` in the CLI configuration. These are analysis-tool requirements; the reports do not change the plugin's declared runtime requirements.
 
 ```bash
 bash bin/detect-compat-info.sh
 ```
 
-The script resolves the plugin root from its own location and creates `build/compat-info/`. It checks the reference database with `diagnose`; when the database is missing or uninitialized, it runs `db:new` (schema creation plus reference-data import), then checks it again. A valid database is reused. Initialization runs without `--force`. A nonzero exit status from initialization or analysis stops the script.
+The script resolves the plugin root from its own location and creates `build/compat-info/`. It first runs `composer --no-interaction --no-ansi check-platform-reqs --no-dev`, saving both standard output and errors to `platform-deps.txt`. A failed platform check prints the report to standard error and stops the script with a nonzero exit status before database preparation or source analysis.
+
+The script then checks the reference database with `diagnose`; when the database is missing or uninitialized, it runs `db:new` (schema creation plus reference-data import), then checks it again. A valid database is reused. Initialization runs without `--force`. A nonzero exit status from initialization or analysis also stops the script.
 
 | Output | Purpose |
 | --- | --- |
 | `build/compat-info/compatinfo-db.sqlite` | Default reference database for the analyzer, separate from WordPress and its test database |
 | `build/compat-info/cache/wpts-file-errors/` | Default analyzer cache for the local extension configuration, including its environment subdirectory |
+| `build/compat-info/platform-deps.txt` | Composer platform check for installed production dependencies against the current CLI environment; development dependencies are excluded |
 | `build/compat-info/database-diagnose.txt` | Latest database and runtime prerequisite diagnostics |
-| `build/compat-info/main-compat-info.txt` | Plugin source analysis, excluding `tests`, `help`, `build`, `bin`, `docs` and `.agents` |
+| `build/compat-info/main-compat-info.txt` | Plugin source analysis, excluding `tests`, `help`, `build`, `bin`, `docs`, `.agents` and `vendor` |
 | `build/compat-info/tests-compat-info.txt` | Separate analysis of `tests/` |
 
-Each report is overwritten when its analysis starts; a failed or interrupted analysis may leave its report incomplete. There is no Help report because that source directory has been removed. The main scan still includes dependencies present under `vendor/`, so a development checkout can report requirements from development dependencies too. Interpret the report alongside `composer.lock`, plugin metadata and runtime tests.
+Each report is overwritten when its check starts; a failed or interrupted check may leave its report incomplete. Reports for later steps remain from any previous run if the script stops early. There is no Help report because that source directory has been removed. The main scan excludes `vendor/` so that development tools do not affect the plugin source report.
+
+The [Composer platform check](https://getcomposer.org/doc/03-cli.md#check-platform-reqs) validates the PHP and extension requirements declared by installed production dependencies, including transitive dependencies. It checks the real CLI environment and ignores `config.platform`; passing on the development machine does not establish compatibility with the plugin's minimum supported PHP version. Run the same Composer check and runtime tests on each supported target environment. The source report and platform check complement each other; neither replaces runtime tests or a source audit of the production dependencies shipped in the release. Interpret them alongside `composer.lock` and plugin metadata.
 
 Existing `DATABASE_URL` and `APP_CACHE_DIR` values override the default database and cache base directory. The script appends `wpts-file-errors` to the cache base so an older CLI container built without the local extension cannot bypass its registration. Use a database dedicated to this analyzer. With the default Windows SQLite path, the script accounts for CompatInfoDB's leading-slash normalization by using a path rooted on the current drive.
 
@@ -246,7 +251,7 @@ The CLI memory limit defaults to `2G` for reference-data import and analysis; th
 WPTS_COMPAT_MEMORY_LIMIT=4G bash bin/detect-compat-info.sh
 ```
 
-If preparation fails, inspect the command output and `database-diagnose.txt`, verify the CLI extensions and directory permissions, then rerun. A schema-only database left by an interrupted initial import can be populated on the next run. Save changes to the shell script before starting a run.
+If preparation fails, inspect the command output and the relevant `platform-deps.txt` or `database-diagnose.txt` report, verify the CLI extensions and directory permissions, then rerun. A schema-only database left by an interrupted initial import can be populated on the next run. Save changes to the shell script before starting a run.
 
 ### Local PHP CompatInfo extension
 

@@ -5,6 +5,11 @@ set -euo pipefail
 WPTS_ROOT=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
 cd -- "$WPTS_ROOT"
 
+if ! command -v composer > /dev/null 2>&1; then
+	printf 'Composer is missing. Install Composer and make it available on PATH.\n' >&2
+	exit 1
+fi
+
 if [[ ! -f ./vendor/bin/phpcompatinfo ]]; then
 	printf 'PHP CompatInfo is missing. Run composer install with development dependencies first.\n' >&2
 	exit 1
@@ -12,6 +17,14 @@ fi
 
 WPTS_COMPAT_DIR="$WPTS_ROOT/build/compat-info"
 mkdir -p -- "$WPTS_COMPAT_DIR"
+
+WPTS_COMPAT_PLATFORM_REPORT="$WPTS_COMPAT_DIR/platform-deps.txt"
+printf 'Checking production dependency platform requirements...\n'
+if ! composer --no-interaction --no-ansi check-platform-reqs --no-dev > "$WPTS_COMPAT_PLATFORM_REPORT" 2>&1; then
+	cat "$WPTS_COMPAT_PLATFORM_REPORT" >&2
+	printf 'Platform dependency check failed. See %s\n' "$WPTS_COMPAT_PLATFORM_REPORT" >&2
+	exit 1
+fi
 
 WPTS_COMPAT_NATIVE_DIR=$(php -r 'echo str_replace("\\", "/", realpath($argv[1]));' "$WPTS_COMPAT_DIR")
 # Keep the custom service container separate from an earlier vanilla CLI cache.
@@ -36,7 +49,7 @@ if ! "${WPTS_COMPATINFO[@]}" diagnose > "$WPTS_COMPAT_DIAGNOSE" 2>&1; then
 fi
 
 printf 'Analyzing plugin sources...\n'
-"${WPTS_COMPATINFO[@]}" analyser:run . --exclude tests --exclude help --exclude build --exclude bin --exclude docs --exclude .agents > "$WPTS_COMPAT_DIR/main-compat-info.txt"
+"${WPTS_COMPATINFO[@]}" analyser:run . --exclude tests --exclude help --exclude build --exclude bin --exclude docs --exclude .agents --exclude vendor > "$WPTS_COMPAT_DIR/main-compat-info.txt"
 printf 'Analyzing test sources...\n'
 "${WPTS_COMPATINFO[@]}" analyser:run ./tests > "$WPTS_COMPAT_DIR/tests-compat-info.txt"
 printf 'Compatibility reports saved to %s\n' "$WPTS_COMPAT_DIR"

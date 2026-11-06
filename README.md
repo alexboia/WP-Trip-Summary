@@ -288,8 +288,8 @@ Yes. WP Trip Summary is free and open source, under the BSD 3-Clause license.
 ## Requirements
 <a name="wpts-requirements"></a>
 
-- WordPress 6.0 or newer
-- PHP 8.0 or newer, with the `libxml`, `SimpleXML` and `mysqli` extensions
+- WordPress 7.0 or newer
+- PHP 8.3 or newer, with the `libxml`, `SimpleXML` and `mysqli` extensions
 - MySQL 5.7 or newer, with spatial support
 - Recommended: the `mbstring` and `zlib` PHP extensions
 
