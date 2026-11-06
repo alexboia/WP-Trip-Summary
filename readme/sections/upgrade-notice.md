@@ -1,5 +1,8 @@
 ## Upgrade notice
 
+### 0.3.3
+Upgrade to this version for additional features, better user experience and improved plug-in stability. New requirements: minimum PHP 8.3 and minimum WordPress 7.0.
+
 ### 0.3.2
 Upgrade to this version for additional features, better user experience and improved plug-in stability
 
