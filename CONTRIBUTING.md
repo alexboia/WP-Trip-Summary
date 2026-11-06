@@ -34,6 +34,21 @@ You can contribute to the code base itself either by:
    - writing code to fix a specific bug or implement a feature; 
    - or by proposing refactoring of existing code ([New issue -> Propose refactoring](https://github.com/alexboia/WP-Trip-Summary/issues/new/choose)).
 
+### Repository skills
+
+The repository includes four skills under `.agents/skills/`: reusable instructions, references and supporting utilities for contributors and coding agents. Start with [AGENTS.md](AGENTS.md) for repository structure and shared boundaries, then read the relevant `SKILL.md` before following its workflow.
+
+| Skill | When to use it | What it covers |
+| --- | --- | --- |
+| [wpts-coding-conventions](.agents/skills/wpts-coding-conventions/SKILL.md) | Creating, editing or reviewing plugin code, templates and tests | PHP, JavaScript, TypeScript and CSS conventions, examples from the codebase, and the source license-header utility. |
+| [wpts-document-hooks](.agents/skills/wpts-document-hooks/SKILL.md) | Inventorying, auditing or documenting actions and filters | Hook extraction and documentation parsing, inline contract documentation, migration-sensitive contracts, and generated documentation under `hook-docs/`. |
+| [wpts-refactor-code-namespaces](.agents/skills/wpts-refactor-code-namespaces/SKILL.md) | Migrating legacy `Abp01_*` symbols to `WpTripSummary`, or adding conservative PHP types on request | Release-scoped migration lots, the class inventory, a conversion helper, legacy aliases and shims, and compatibility validation. |
+| [wpts-marketing](.agents/skills/wpts-marketing/SKILL.md) | Planning or producing product marketing materials | Release-grounded messaging, README copy, screenshots and visual assets, travel photograph selection, and video workflow references. |
+
+Each `SKILL.md` links to its detailed procedures, references and applicable utility checks. Keep those instructions in the skill files when updating a workflow. Combine skills when the task requires it; ordinary code changes do not automatically start a namespace migration or a hook audit. Namespace migration and type-hint-only work follow the current release lot defined by the refactoring skill.
+
+For marketing work that updates the readmes or captures the UI, also follow [Updating the readme files](#updating-the-readme-files) and [Capturing screenshots](#capturing-screenshots) below.
+
 ### Setting up the development environment
 
 You need everything required to run the plug-in itself ([see the requirements](README.md#wpts-requirements)), plus:
