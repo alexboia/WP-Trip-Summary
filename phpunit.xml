@@ -60,6 +60,7 @@
 			<file>tests/test-DocumentParserFactory.php</file>
 			<file>tests/test-GeoJsonDocumentParser.php</file>
 			<file>tests/test-GeoJsonDocumentValidator.php</file>
+			<file>tests/test-GpsDocumentFakerDataProvider.php</file>
 			<file>tests/test-GpxDocumentParser.php</file>
 			<file>tests/test-GpxDocumentValidator.php</file>
 		</testsuite>

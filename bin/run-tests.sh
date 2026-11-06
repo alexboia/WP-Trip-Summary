@@ -103,5 +103,5 @@ cd -- "$WPTS_ROOT" || exit 1
 if [[ $WPTS_TEST_SET == "leaflet" ]]; then
 	exec php ./bin/tools/test-leaflet-wrapper.php "$WPTS_TEST_HOST"
 else
-	exec ./vendor/bin/phpunit --testsuite "$WPTS_TEST_SET" "${WPTS_PHPUNIT_ARGS[@]}"
+	exec php ./vendor/bin/phpunit -c ./phpunit.xml --testsuite "$WPTS_TEST_SET" "${WPTS_PHPUNIT_ARGS[@]}"
 fi

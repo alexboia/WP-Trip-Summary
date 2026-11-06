@@ -54,7 +54,7 @@ For marketing work that updates the readmes or captures the UI, also follow [Upd
 You need everything required to run the plug-in itself ([see the requirements](README.md#wpts-requirements)), plus:
 
 1. the xdebug extension (recommended);
-2. the Composer development dependencies, including PHPUnit, installed with `composer install`;
+2. PHP 8.4.1 or newer for the complete Composer development toolchain, including PHPUnit, installed with `composer install` (this is separate from the plug-in's PHP 8.3 runtime minimum);
 3. wp-cli 2.x, available in your `$PATH`, to initialize the test environment if needed;
 4. the Composer development dependency `bartlett/php-compatinfo`, invoked through `vendor/bin/phpcompatinfo`; see [Generating compatibility reports](#generating-compatibility-reports);
 5. on Windows, Cygwin or the Windows Subsystem for Linux, to set up the development environment and run the test and build scripts, with:
@@ -74,10 +74,20 @@ Run it in a Unix-style environment with access to `/usr/local/bin` and `/usr/lib
 bash bin/install-dev.sh --help
 bash bin/install-dev.sh --db-name=wpts_test --db-user=wpts_test \
     --db-pass='replace-with-test-password' --db-host=127.0.0.1 \
-    --wp-version=6.9.4 --skip-db-create=true --skip-wp-tests-scaffold=true
+    --wp-version=locked --skip-db-create=true --skip-wp-tests-scaffold=true
 ```
 
-Use a dedicated test database and replace the example WordPress version with the version of `wp-phpunit/wp-phpunit` in `composer.lock`. Both skip flags default to `true`; set `--skip-db-create=false` to allow database creation (requires `mysqladmin`), or `--skip-wp-tests-scaffold=false` to generate the test scaffold. If `bin/install-wp-tests.sh` already exists, the helper still invokes it with the supplied database/version parameters and database skip flag. Check the resulting test configuration before running PHPUnit.
+Use a dedicated test database. `--wp-version=locked` is the default: the helper reads the `wp-phpunit/wp-phpunit` version from `composer.lock`, using [bin/tools/get-wp-test-version.php](bin/tools/get-wp-test-version.php). Explicit versions remain supported. Both skip flags default to `true`; set `--skip-db-create=false` to allow database creation (requires `mysqladmin`), or `--skip-wp-tests-scaffold=false` to generate the test scaffold. If `bin/install-wp-tests.sh` already exists, the helper still invokes it with the supplied database/version parameters and database skip flag. Check the resulting test configuration before running PHPUnit.
+
+The scaffold installer reuses an existing core directory. When upgrading WordPress tests, select a fresh directory through `WP_CORE_DIR` (for example `/tmp/wpts-wordpress-7.1.3`) so it downloads the matching core instead of retaining an older installation.
+
+To replace the test core at the default `/tmp/wordpress` path, run:
+
+```bash
+bash bin/update-wp-test-core.sh
+```
+
+This helper runs `composer install`, reads the locked WordPress test version and downloads it with WP-CLI into `/tmp/wordpress-<version>`. After a successful download and a check for the required core files, it deletes `/tmp/wordpress` and moves the new core into that location. Failed dependency installation or download leaves the old core in place. It can be run from the plug-in root or from `bin/`.
 
 #### Compiling TypeScript
 
@@ -96,6 +106,17 @@ tsc --project media/js/tsconfig.json --noEmitOnError
 The manifests do not pin TypeScript or define npm build/test scripts. Record the compiler version used for a change; the local compiler inspected for this workflow is 5.9.3. The configuration targets ES2020/CommonJS and emits JavaScript beside its sources without source maps. Check the generated diff, include the intended source/output pairs, and verify the affected UI in WordPress. Dependency or compiler upgrades should be separate, intentional changes.
 
 ### Running tests
+
+The locked test dependencies are WordPress PHPUnit 7.1.3, PHPUnit 9.6.38, PHPUnit Polyfills 1.1.5, Mockery 1.6.15 and Faker 1.24.1. PHPUnit is an explicit development dependency. These are the latest compatible stable versions at this update: [WordPress 7.1.3 requires PHPUnit Polyfills 1.x](https://github.com/WordPress/wordpress-develop/blob/7.1.3/composer.json), whose supported PHPUnit versions stop at 9.x. Updating PHPUnit to a newer major requires corresponding WordPress test-suite support.
+
+Use `composer install` to reproduce the lockfile. For an intentional test dependency update, run:
+
+```bash
+composer update phpunit/phpunit yoast/phpunit-polyfills wp-phpunit/wp-phpunit fakerphp/faker mockery/mockery --with-dependencies --minimal-changes
+php bin/tools/get-wp-test-version.php
+```
+
+Provision the reported WordPress core version before running the updated suite. Review `composer.lock` and run the tests after an update.
 
 With the PHPUnit dependencies and WordPress test environment configured, run:
 
@@ -136,18 +157,20 @@ Use the space-separated `--host HOST` form: the current parser does not handle a
 
 #### Running tests from PowerShell
 
-The test bootstrap uses `WP_TESTS_DIR` when set, otherwise `/tmp/wordpress-tests-lib` when present, then the WordPress test library installed by Composer in `vendor/wp-phpunit/wp-phpunit`. This library is separate from the WordPress core installation needed to run the tests.
+The test bootstrap uses an explicit `WP_TESTS_DIR` first, otherwise the Composer-provided `WP_PHPUNIT__DIR` (`vendor/wp-phpunit/wp-phpunit`), with `/tmp/wordpress-tests-lib` as a fallback. This avoids silently selecting an old scaffold library after a Composer update. The test library is separate from the WordPress core installation needed to run the tests.
 
-Set `WP_CORE_DIR` to the WordPress core installation to use for testing. Use a WordPress version matching the `wp-phpunit/wp-phpunit` version in `composer.lock`. Without this variable, the test configuration looks for `wordpress` under PHP's temporary directory.
+Set `WP_CORE_DIR` to the WordPress core installation to use for testing. Use a WordPress version matching the `wp-phpunit/wp-phpunit` version in `composer.lock`; `php bin/tools/get-wp-test-version.php` prints it. Without this variable, the test configuration looks for `wordpress` under PHP's temporary directory. When using the Composer test library, the bootstrap rejects a missing or mismatched core before WordPress resets test tables.
 
-Configure the test database connection in `tests/wp-tests-config.php` before running the suite. Use a dedicated test database: WordPress recreates its test tables during setup. The bootstrap loads this configuration directly.
+Configure the test database connection in `tests/wp-tests-config.php` before running the suite, or set `WP_TESTS_CONFIG_FILE_PATH` to an absolute path to a separate test configuration. An already-defined constant of that name takes precedence. Use a dedicated test database: WordPress recreates its test tables during setup. In a custom configuration, derive `ABSPATH` from `WP_CORE_DIR` and set `WP_PHP_BINARY` to `PHP_BINARY` so the WordPress installer uses the same PHP executable as PHPUnit.
+
+Each run resets the plug-in's test tables and activates it against the freshly installed WordPress fixture. The old `.wpts-installed` checkout marker is no longer used. Fixture setup failures abort the run with a nonzero status; a failed bootstrap must never count as a passing suite. File fixtures remain the responsibility of their tests, and the bootstrap does not remove storage directories while the plug-in's logger is open.
 
 From the plug-in directory:
 
 ```powershell
 composer install
 $env:WP_CORE_DIR = 'D:\path\to\wordpress'
-.\vendor\bin\phpunit -c .\phpunit.xml
+php .\vendor\bin\phpunit -c .\phpunit.xml
 ```
 
 ### Testing the Leaflet script wrapper
@@ -220,7 +243,7 @@ Add new scenarios to the corresponding group and reuse the request and assertion
 
 ## Generating compatibility reports
 
-[bin/detect-compat-info.sh](bin/detect-compat-info.sh) checks the platform requirements of production dependencies with Composer and uses the Composer-installed PHP CompatInfo to inspect the plugin and test sources. Make `composer` and `php` available on `PATH`, and install development dependencies with `composer install` first. The current toolchain requires PHP 8.2 or newer, and the default SQLite connection needs both `sqlite3` and `pdo_sqlite` in the CLI configuration. These are analysis-tool requirements; the reports do not change the plugin's declared runtime requirements.
+[bin/detect-compat-info.sh](bin/detect-compat-info.sh) checks the platform requirements of production dependencies with Composer and uses the Composer-installed PHP CompatInfo to inspect the plugin and test sources. Make `composer` and `php` available on `PATH`, and install development dependencies with `composer install` first. The current locked toolchain requires PHP 8.4.1 or newer, and the default SQLite connection needs both `sqlite3` and `pdo_sqlite` in the CLI configuration. These are analysis-tool requirements; the reports do not change the plugin's declared runtime requirements.
 
 ```bash
 bash bin/detect-compat-info.sh

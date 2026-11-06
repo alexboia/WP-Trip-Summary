@@ -69,10 +69,7 @@ require_once WPTS_TESTS_ROOT . '/lib/RouteLogTestHelpers.php';
 
 $_tests_dir = getenv('WP_TESTS_DIR');
 if (!$_tests_dir) {
-	$_tests_dir = '/tmp/wordpress-tests-lib';
-	if (!is_dir($_tests_dir)) {
-		$_tests_dir = getenv('WP_PHPUNIT__DIR') ?: $_tests_dir;
-	}
+	$_tests_dir = getenv('WP_PHPUNIT__DIR') ?: '/tmp/wordpress-tests-lib';
 }
 
 if (!is_readable($_tests_dir . '/includes/functions.php')
@@ -94,6 +91,36 @@ if (!defined( 'WP_CORE_DIR')) {
 	define('WP_CORE_DIR', $_wp_core_dir);
 }
 
+// Detect stale core downloads before WordPress creates or resets any test tables.
+$_wp_core_version_file = rtrim(WP_CORE_DIR, '/\\') . '/wp-includes/version.php';
+if (!is_readable($_wp_core_version_file)) {
+	fwrite(STDERR, 'WordPress test core is missing. Set WP_CORE_DIR to the core version reported by php bin/tools/get-wp-test-version.php.' . PHP_EOL);
+	exit(1);
+}
+
+$_wp_php_unit_installed_path = realpath(\Composer\InstalledVersions::getInstallPath('wp-phpunit/wp-phpunit'));
+if (realpath($_tests_dir) === $_wp_php_unit_installed_path) {
+	$_wp_test_version = ltrim(\Composer\InstalledVersions::getPrettyVersion('wp-phpunit/wp-phpunit'), 'v');
+	$_wp_core_version = (static function(string $versionFile): string {
+		require $versionFile;
+		return $wp_version;
+	})($_wp_core_version_file);
+
+	// WordPress writes initial major releases as X.Y; Composer uses X.Y.0.
+	$_wp_core_version = preg_match('/^\d+\.\d+$/', $_wp_core_version)
+		? $_wp_core_version . '.0'
+		: $_wp_core_version;
+		
+	if (version_compare($_wp_core_version, $_wp_test_version, '!=')) {
+		fwrite(STDERR, sprintf(
+			'WordPress core %s does not match the installed test library %s. Point WP_CORE_DIR at a matching test installation.%s',
+			$_wp_core_version,
+			$_wp_test_version,
+			PHP_EOL));
+		exit(1);
+	}
+}
+
 // Forward custom PHPUnit Polyfills configuration to PHPUnit bootstrap file.
 $_phpunit_polyfills_path = getenv('WP_TESTS_PHPUNIT_POLYFILLS_PATH');
 if (false !== $_phpunit_polyfills_path) {
@@ -108,18 +135,6 @@ function _get_plugin_base_dir() {
 	return WPTS_ROOT;
 }
 
-function _get_tests_file_path(string $file) {
-	return _get_tests_base_dir() . '/' . $file;
-}
-
-function _has_plugin_been_installed_before() {
-	return file_exists(_get_tests_file_path('.wpts-installed'));
-}
-
-function _set_plugin_installed() {
-	file_put_contents(_get_tests_file_path('.wpts-installed'), 'yes');
-}
-
 function _manually_load_plugin() {
 	require_once _get_plugin_base_dir() . '/abp01-plugin-main.php';
 	_override_plugin_db_wrapper();
@@ -131,20 +146,20 @@ function _override_plugin_db_wrapper() {
 }
 
 function _manually_install_plugin() {
+	// WordPress has already recreated its tables, including plugin options.
+	// Reset only the plugin-owned tables that survive that process. A checkout
+	// marker cannot tell whether they exist in the currently selected database.
+	$env = abp01_get_env();
+	$resetSchema = new Abp01_Installer_Step_UninstallSchema($env);
+	if (!$resetSchema->execute()) {
+		throw new RuntimeException('Failed to reset plugin test tables.');
+	}
+
 	$installer = new Abp01_Installer();
-
-	if (_has_plugin_been_installed_before()) {
-		if (!$installer->uninstall()) {
-			var_dump($installer->getLastError());
-			die;
-		}
-	}
-
 	if (!$installer->activate()) {
-		die('Failed to activate plugin. Cannot continue testing.');
+		throw new RuntimeException('Failed to activate plugin. Cannot continue testing.');
 	}
 
-	_set_plugin_installed();
 	_include_plugin_dependent_test_classes();
 	_include_asserts();
 }
@@ -181,11 +196,16 @@ function _include_asserts() {
 }
 
 function _configure_wp_tests_config() {
-	$thisConfig = _get_tests_base_dir() . '/wp-tests-config.php';
-
-	if (!defined('WP_TESTS_CONFIG_FILE_PATH') && is_readable($thisConfig)) {
-		define('WP_TESTS_CONFIG_FILE_PATH', $thisConfig);
+	if (defined('WP_TESTS_CONFIG_FILE_PATH')) {
+		return;
 	}
+	$thisConfig = getenv('WP_TESTS_CONFIG_FILE_PATH') ?: _get_tests_base_dir() . '/wp-tests-config.php';
+
+	if (!is_readable($thisConfig)) {
+		fwrite(STDERR, sprintf('WordPress test configuration is not readable: %s%s', $thisConfig, PHP_EOL));
+		exit(1);
+	}
+	define('WP_TESTS_CONFIG_FILE_PATH', $thisConfig);
 }
 
 function _register_setup_actions() {

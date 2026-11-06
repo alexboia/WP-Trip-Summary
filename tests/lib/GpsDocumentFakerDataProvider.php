@@ -90,6 +90,7 @@ class GpsDocumentFakerDataProvider extends \Faker\Provider\Base {
 
 		$documentArgs = array(
 			'from' => $from,
+			'coordinateBounds' => $this->_getAreaBounds($options['area']),
 			'spanLat' => $options['span'],
 			'spanLng' => $options['span'],
 			'spanAlt' => $options['elevation']['generate'] 
@@ -206,6 +207,7 @@ class GpsDocumentFakerDataProvider extends \Faker\Provider\Base {
 			$newDelta = $this->_generateDeltaLatLngAlt($deltaGenerationArgs);
 			$newTrackArgs = array(
 				'from' => $currentTo,
+				'coordinateBounds' => $args['coordinateBounds'],
 				'withTrackName' => $withTrackName,
 				'withPointName' => $withPointName,
 				'withPointDesc' => $withPointDesc,
@@ -334,6 +336,7 @@ class GpsDocumentFakerDataProvider extends \Faker\Provider\Base {
 			$newDelta = $this->_generateDeltaLatLngAlt($deltaGenerationArgs);
 			$newSegmentArgs = array(
 				'from' => $currentTo,
+				'coordinateBounds' => $args['coordinateBounds'],
 				'withPointName' => $withPointName,
 				'withPointDesc' => $withPointDesc,
 				'spanLat' => round($segmentSpanLat + $newDelta['newDeltaLat'], $precision),
@@ -374,6 +377,7 @@ class GpsDocumentFakerDataProvider extends \Faker\Provider\Base {
 
 	private function _generateSegment($args) {
 		$points = array();
+		$coordinateBounds = $args['coordinateBounds'];
 		$from = $args['from']; 
 		$withPointName = $args['withPointName'];
 		$withPointDesc = $args['withPointDesc'];
@@ -417,6 +421,14 @@ class GpsDocumentFakerDataProvider extends \Faker\Provider\Base {
 				$precision);
 			$generatedLng = round($currentTo['lon'] + $pointSpanLng + $newDelta['newDeltaLng'], 
 				$precision);
+			$generatedLat = $this->_reflectCoordinate($generatedLat,
+				$coordinateBounds['minLat'],
+				$coordinateBounds['maxLat'],
+				$precision);
+			$generatedLng = $this->_reflectCoordinate($generatedLng,
+				$coordinateBounds['minLng'],
+				$coordinateBounds['maxLng'],
+				$precision);
 			$generatedAlt = $pointSpanAlt !== 0 && $newDelta['newDeltaAlt'] !== 0 
 				? round($currentTo['ele'] + $pointSpanAlt + $newDelta['newDeltaAlt'], 
 					$precision)
@@ -451,6 +463,24 @@ class GpsDocumentFakerDataProvider extends \Faker\Provider\Base {
 			'from' => $from,
 			'to' => $currentTo
 		);
+	}
+
+	private function _reflectCoordinate($coordinate, $min, $max, $precision) {
+		if ($coordinate >= $min && $coordinate <= $max) {
+			return $coordinate;
+		}
+
+		// Accumulated deltas and minimum rounded steps can exceed the starting
+		// margin. Reflect at the area's edges to keep the generated track local.
+		$width = $max - $min;
+		$offset = fmod($coordinate - $min, 2 * $width);
+		if ($offset < 0) {
+			$offset += 2 * $width;
+		}
+		if ($offset > $width) {
+			$offset = 2 * $width - $offset;
+		}
+		return round($min + $offset, $precision);
 	}
 
 	private function _generateDeltaLatLngAlt($args, $allowNegative = false) {

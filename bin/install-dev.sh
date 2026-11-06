@@ -13,7 +13,7 @@ Options:
   --db-user VALUE                    Test database user (required)
   --db-pass VALUE                    Test database password; may be empty
   --db-host VALUE                    Database host (default: 127.0.0.1)
-  --wp-version VALUE                 WordPress test version (default: latest)
+  --wp-version VALUE                 WordPress test version (default: locked, from composer.lock)
   --skip-db-create VALUE             Whether to skip database creation (default: true)
   --skip-wp-tests-scaffold VALUE     Whether to skip WP-CLI scaffolding (default: true)
   -h, --help                         Show this help and exit
@@ -22,7 +22,7 @@ Named options also accept the --option=value form and may be mixed with
 positional arguments. Named options take precedence over positional arguments.
 
 Examples:
-  ./bin/install-dev.sh test_db root '' 172.20.0.1 latest false true
+  ./bin/install-dev.sh test_db root '' 172.20.0.1 locked false true
   ./bin/install-dev.sh --db-name=test_db --db-user=root --db-pass='' \
     --db-host=172.20.0.1 --skip-wp-tests-scaffold=false
 EOF
@@ -139,7 +139,7 @@ DB_NAME="${DB_NAME-${POSITIONAL[0]:-}}"
 DB_USER="${DB_USER-${POSITIONAL[1]:-}}"
 DB_PASS="${DB_PASS-${POSITIONAL[2]:-}}"
 DB_HOST="${DB_HOST-${POSITIONAL[3]:-127.0.0.1}}"
-WP_VERSION="${WP_VERSION-${POSITIONAL[4]:-latest}}"
+WP_VERSION="${WP_VERSION-${POSITIONAL[4]:-locked}}"
 SKIP_DB_CREATE="${SKIP_DB_CREATE-${POSITIONAL[5]:-true}}"
 SKIP_WP_TESTS_SCAFFOLD="${SKIP_WP_TESTS_SCAFFOLD-${POSITIONAL[6]:-true}}"
 
@@ -304,6 +304,11 @@ check_and_install_tooling() {
 }
 
 setup_unit_testing() {
+    if [[ "$WP_VERSION" == "locked" ]]
+    then
+        WP_VERSION="$(php ./bin/tools/get-wp-test-version.php)"
+    fi
+
     if [[ "$SKIP_WP_TESTS_SCAFFOLD" != "true" ]]
     then
         wp scaffold plugin-tests abp01-travel-tech-box --allow-root

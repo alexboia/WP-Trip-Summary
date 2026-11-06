@@ -54,7 +54,7 @@ Combine skills when a task spans their responsibilities. Ordinary code edits use
 
 ## Environment and compatibility
 
-Read the current plugin metadata, runtime requirement checks and `composer.lock` together before choosing PHP syntax or changing compatibility claims. The declared minimum and the effective requirements are not necessarily aligned: the plugin header currently advertises PHP 8.0.0, while locked Monolog requires PHP 8.1 or newer. The license utility and library-path checker use PHP 8.2 features. Do not infer the production baseline solely from the PHP executable installed locally or from a tooling requirement.
+Read the current plugin metadata, runtime requirement checks and `composer.lock` together before choosing PHP syntax or changing compatibility claims. The plugin header currently requires PHP 8.3.0 and WordPress 7.0.0. The full locked development toolchain requires PHP 8.4.1 or newer; the standalone license utility and library-path checker use PHP 8.2 features. Do not infer the production baseline solely from the PHP executable installed locally or from a tooling requirement.
 
 The legacy `.circleci/config.yml` matrix and `.phpcs.xml.dist`, if present locally, contain outdated versions or template settings. Do not treat them as an authoritative compatibility target or use them to reformat the plugin. Verify their relevance before relying on them.
 
@@ -83,9 +83,9 @@ This is a structural check, not a substitute for runtime loading or migration va
 
 ### WordPress PHPUnit tests
 
-Tests use [phpunit.xml](phpunit.xml) and [tests/bootstrap.php](tests/bootstrap.php). They require Composer development dependencies, a matching WordPress core installation and a dedicated test database configured through `tests/wp-tests-config.php`. The bootstrap installs/uninstalls plugin data and WordPress recreates test tables; never point it at the site's working database.
+Tests use [phpunit.xml](phpunit.xml) and [tests/bootstrap.php](tests/bootstrap.php). They require Composer development dependencies, a matching WordPress core installation and a dedicated test database configured through `tests/wp-tests-config.php` or `WP_TESTS_CONFIG_FILE_PATH`. The bootstrap resets plugin tables and activates the plugin after WordPress recreates its test tables; never point it at the site's working database.
 
-`WP_TESTS_DIR` selects the WordPress test library. Otherwise the bootstrap tries `/tmp/wordpress-tests-lib`, then the Composer-provided library through `WP_PHPUNIT__DIR`. `WP_CORE_DIR` selects WordPress core; its default is `wordpress` under PHP's temporary directory. Match the core version to `wp-phpunit/wp-phpunit` in `composer.lock`. Do not assume the surrounding WordPress installation is the test fixture.
+`WP_TESTS_DIR` selects the WordPress test library. Otherwise the bootstrap uses the Composer-provided library through `WP_PHPUNIT__DIR`, then `/tmp/wordpress-tests-lib` as a fallback. `WP_CORE_DIR` selects WordPress core; its default is `wordpress` under PHP's temporary directory. Match the core version to `wp-phpunit/wp-phpunit` in `composer.lock`; `php bin/tools/get-wp-test-version.php` prints it. The bootstrap checks this match before database setup when using the Composer library. `WP_TESTS_CONFIG_FILE_PATH` can select a separate test configuration. Do not assume the surrounding WordPress installation is the test fixture. The full locked development toolchain requires PHP 8.4.1 or newer.
 
 Once the test environment is configured, direct PHP invocation works from PowerShell as well as Bash:
 
