@@ -10,23 +10,23 @@ If it is an already existing feature, go ahead anyway and propose a way to enhan
 
 ## Help with translating the plug-in
 
-There two main types of assets that need translation:
-
-   - the user interface strings (labels, system messages etc.), which are provided and stored in classic `.mo` files, with a source `.pot` template file that can be used as base for translation (in this case, the `lib/abp01-trip-summary.pot` file);
-   - the help content, which is provided as HTML files, one per each language, each with a source markdown (`.md`) file.
+User interface translations live in `lang/`: editable `.po` catalogs, compiled `.mo` files and the shared [abp01-trip-summary.pot](lang/abp01-trip-summary.pot) template. Translations of predefined lookup values are maintained separately in [data/dev/setup/lookup-definitions.xml](data/dev/setup/lookup-definitions.xml).
 
 ### Translating user interface strings
 
-The way you translate user interface strings is by installing [POEdit](https://poedit.net/), loading the provide .pot file and, on that basis, provide the translation for the language you want.
+To translate user interface strings, open the existing `.po` catalog in [POEdit](https://poedit.net/), or create a new catalog from the `.pot` template for the desired locale. Update existing catalogs from the template when source strings change.
 [See this guide for an example](https://wplang.org/translate-theme-plugin/).  
-The result is a .mo file and a .po file, which you then commit and create a pull request.
+Save both the `.po` catalog and its compiled `.mo` file under `lang/`, following the existing `abp01-trip-summary-<locale>` naming pattern, and include both in the pull request.
+
+After changing translatable PHP strings, regenerate the template from the plug-in root with WP-CLI's `i18n make-pot` command available:
+
+```bash
+bash bin/makepot.sh
+```
+
+The script writes `lang/abp01-trip-summary.pot`; it does not update `.po` catalogs or compile `.mo` files. Its current exclusions include `media/`, so check JavaScript translation changes separately. Review the catalog diff and verify the affected UI in the target language.
 
 When done, [open a new issue and request](https://github.com/alexboia/WP-Trip-Summary/issues/new/choose) that it be processed and added as a plug-in translation.
-
-### Translating help files
-
-The help content is written, for each language, in a markdown (`.md`) file called index.md, located, for each language, in the `help/src/{language_code}` folder (ex. `help/src/ro_RO/index.md`). 
-This content is then be built as HTML files when the plug-in installation kit is created, but it can also be built on demand.  
 
 ## Actively contribute to the code base
 
@@ -56,13 +56,44 @@ You need everything required to run the plug-in itself ([see the requirements](R
 1. the xdebug extension (recommended);
 2. the Composer development dependencies, including PHPUnit, installed with `composer install`;
 3. wp-cli 2.x, available in your `$PATH`, to initialize the test environment if needed;
-4. phpcompatinfo 5.x, available in your `$PATH`, to generate the compatibility information files;
+4. the Composer development dependency `bartlett/php-compatinfo`, invoked through `vendor/bin/phpcompatinfo`; see [Generating compatibility reports](#generating-compatibility-reports);
 5. on Windows, Cygwin or the Windows Subsystem for Linux, to set up the development environment and run the test and build scripts, with:
    - the `wget`, `curl` and `zip` commands;
    - the gettext libraries;
    - the PHP CLI with the extensions listed in the plug-in requirements;
    - the MySQL command line client;
    - the Subversion command line client.
+
+#### Development setup helper
+
+[bin/install-dev.sh](bin/install-dev.sh) installs Composer dependencies and prepares optional WordPress test infrastructure. It expects this plug-in to be inside a WordPress installation. Before running it, make `php`, `curl`, `svn` and `wp` available, and configure that installation's `wp-config.php` to read `WP_DB_HOST_ENV` and `WP_DEBUG_ENV` through `getenv()`. The script validates these settings before installing tools.
+
+Run it in a Unix-style environment with access to `/usr/local/bin` and `/usr/lib/wpi18n`, which it uses for tools and the WordPress translation library. It can download Composer and WP-CLI when needed. On Windows, use a suitably configured WSL or Cygwin environment for this setup helper.
+
+```bash
+bash bin/install-dev.sh --help
+bash bin/install-dev.sh --db-name=wpts_test --db-user=wpts_test \
+    --db-pass='replace-with-test-password' --db-host=127.0.0.1 \
+    --wp-version=6.9.4 --skip-db-create=true --skip-wp-tests-scaffold=true
+```
+
+Use a dedicated test database and replace the example WordPress version with the version of `wp-phpunit/wp-phpunit` in `composer.lock`. Both skip flags default to `true`; set `--skip-db-create=false` to allow database creation (requires `mysqladmin`), or `--skip-wp-tests-scaffold=false` to generate the test scaffold. If `bin/install-wp-tests.sh` already exists, the helper still invokes it with the supplied database/version parameters and database skip flag. Check the resulting test configuration before running PHPUnit.
+
+#### Compiling TypeScript
+
+Browser sources and [tsconfig.json](media/js/tsconfig.json) live under `media/js/`, including its `admin/` directory. Edit `.ts` files where they exist and regenerate their companion `.js` files; `.d.ts` files can be handwritten contracts. Scripts without a TypeScript source are edited directly.
+
+Install the npm dependencies from both manifests and use an available TypeScript compiler:
+
+```bash
+npm install
+npm --prefix media/js install
+tsc --version
+tsc --project media/js/tsconfig.json --noEmit
+tsc --project media/js/tsconfig.json --noEmitOnError
+```
+
+The manifests do not pin TypeScript or define npm build/test scripts. Record the compiler version used for a change; the local compiler inspected for this workflow is 5.9.3. The configuration targets ES2020/CommonJS and emits JavaScript beside its sources without source maps. Check the generated diff, include the intended source/output pairs, and verify the affected UI in WordPress. Dependency or compiler upgrades should be separate, intentional changes.
 
 ### Running tests
 
@@ -90,8 +121,18 @@ bash bin/run-tests.sh --set=documents --filter='GpxDocumentParserTests'
 | `ui` | Admin actions, columns, menus, views and frontend themes |
 | `logging` | Audit, system and route logs |
 | `io` | Files, downloads, maintenance and server directives |
+| `sec` | Leaflet wrapper security and Nginx access directives |
+| `leaflet` | Live HTTP integration checks for the Leaflet wrapper; not a PHPUnit suite |
 
-The sets are PHPUnit suites defined in `phpunit.xml`. When adding a test file, include it in the corresponding thematic suite. The `default` suite discovers every `tests/test-*.php` file automatically and remains the default for direct PHPUnit and `composer test` runs.
+Except for `leaflet`, the sets are PHPUnit suites defined in `phpunit.xml`. When adding a test file, include it in the corresponding thematic suite. The `default` suite discovers every `tests/test-*.php` file automatically and remains the default for direct PHPUnit and `composer test` runs.
+
+The wrapper also provides this shortcut for the [Leaflet HTTP integration checks](#testing-the-leaflet-script-wrapper):
+
+```bash
+bash bin/run-tests.sh --set=leaflet --host http://localhost:8080
+```
+
+Use the space-separated `--host HOST` form: the current parser does not handle a nonempty `--host=HOST` value correctly. The shortcut runs the default HTTP test mode; use the PHP runner directly for options such as `--mode=load` or `--plugin-path`.
 
 #### Running tests from PowerShell
 
@@ -177,6 +218,57 @@ Keep each operation in a function with a clear responsibility. `wpts_leaflet_tes
 
 Add new scenarios to the corresponding group and reuse the request and assertion helpers. Preserve the test names, messages and exit codes during refactoring; compare runs against the same host before and after the change.
 
+## Generating compatibility reports
+
+[bin/detect-compat-info.sh](bin/detect-compat-info.sh) uses the Composer-installed PHP CompatInfo to inspect the plugin and test sources. Install development dependencies with `composer install` first. The current toolchain requires PHP 8.2 or newer, and the default SQLite connection needs both `sqlite3` and `pdo_sqlite` in the CLI configuration. These are analysis-tool requirements; the report does not change the plugin's declared runtime requirements.
+
+```bash
+bash bin/detect-compat-info.sh
+```
+
+The script resolves the plugin root from its own location and creates `build/compat-info/`. It checks the reference database with `diagnose`; when the database is missing or uninitialized, it runs `db:new` (schema creation plus reference-data import), then checks it again. A valid database is reused. Initialization runs without `--force`. A nonzero exit status from initialization or analysis stops the script.
+
+| Output | Purpose |
+| --- | --- |
+| `build/compat-info/compatinfo-db.sqlite` | Default reference database for the analyzer, separate from WordPress and its test database |
+| `build/compat-info/cache/` | Default analyzer cache, including its environment subdirectory |
+| `build/compat-info/database-diagnose.txt` | Latest database and runtime prerequisite diagnostics |
+| `build/compat-info/main-compat-info.txt` | Plugin source analysis, excluding `tests`, `help`, `build`, `bin`, `docs` and `.agents` |
+| `build/compat-info/tests-compat-info.txt` | Separate analysis of `tests/` |
+
+Each report is overwritten when its analysis starts; a failed or interrupted analysis may leave its report incomplete. There is no Help report because that source directory has been removed. The main scan still includes dependencies present under `vendor/`, so a development checkout can report requirements from development dependencies too. Interpret the report alongside `composer.lock`, plugin metadata and runtime tests.
+
+Existing `DATABASE_URL` and `APP_CACHE_DIR` values override the default database and cache locations. Use a database dedicated to this analyzer. With the default Windows SQLite path, the script accounts for CompatInfoDB's leading-slash normalization by using a path rooted on the current drive.
+
+The CLI memory limit defaults to `1G` for reference-data import and analysis; this affects only the analyzer processes. To adjust it:
+
+```bash
+WPTS_COMPAT_MEMORY_LIMIT=2G bash bin/detect-compat-info.sh
+```
+
+If preparation fails, inspect the command output and `database-diagnose.txt`, verify the CLI extensions and directory permissions, then rerun. A schema-only database left by an interrupted initial import can be populated on the next run. Save changes to the shell script before starting a run.
+
+## Building a distribution package
+
+[bin/build.sh](bin/build.sh) creates `build/output/wp-trip-summary.<version>.zip`, using the version in `abp01-plugin-main.php`. Run it from the plugin root with Bash, PHP, `awk`, `zip` and the standard Unix file utilities available. The library path checker requires PHP 8.2 or newer.
+
+Prepare the package in a separate release checkout or staging copy so that its `vendor/` contains production dependencies only:
+
+```bash
+composer install --no-dev --prefer-dist --optimize-autoloader
+php bin/tools/build-readme.php
+php bin/tools/check-lib-paths.php
+bash bin/build.sh
+```
+
+Run the relevant tests and compatibility analysis with development dependencies before preparing this staging copy. Compile changed TypeScript and translation catalogs beforehand as well. The build copies the prepared files; it does not run PHPUnit, compile TypeScript/catalogs or regenerate the readmes. Its compatibility-analysis call is currently commented out, so run that check separately when needed.
+
+The script clears `build/output/` and `build/tmp/`, stages the plugin files, copies all of `vendor/`, creates and checks the ZIP, then clears the temporary files. Keep anything you need to retain outside those directories. Inspect the archive contents and test installation/upgrade in a development WordPress instance before distribution; its final `DONE!` message alone does not establish that every external command succeeded.
+
+### WordPress.org export status
+
+[bin/export-wp-plugin-dir-svn.sh](bin/export-wp-plugin-dir-svn.sh) prepares a local WordPress.org SVN checkout under `build/wp-plugin-dir-svn/`; it does not commit it. It currently still invokes the removed `help/tools/make-help.php` and copies `data/help/`. Update and verify those obsolete steps before using it as a release workflow. The export also clears the local `trunk/` contents and copies the complete `vendor/`, so its staging inputs need the same review as the ZIP build.
+
 ## Capturing screenshots
 
 [bin/tools/screen-capture/run.py](bin/tools/screen-capture/run.py) captures the plug-in's admin screens and frontend viewer using Playwright and headless Firefox. It also generates filtered image variants and a JSON catalog describing each capture.
@@ -242,6 +334,7 @@ Press Enter to retain an existing value, including the password. Reconfiguration
 | `--viewport WIDTHxHEIGHT` | Browser viewport; defaults to `1920x1080`. Both dimensions must be positive integers. Uppercase `X` and surrounding spaces are also accepted; quote values containing spaces. |
 | `--reconfigure` | Prompt for configuration again, using valid saved values as defaults, then capture. |
 | `--full-pages` | Adds full-page images throughout the capture sequence, alongside the regular page and element captures. Full-page filenames end in `-full.png`. |
+| `--report` | Prints a table of captured screenshots after saving the catalog; it does not change which screens are captured. |
 | `--verbose` | Log navigation requests, responses and failures during login. |
 | `--host URL`, `--user-name USER`, `--password PASSWORD` | Parsed and validated, but currently not applied to the configuration used by `main()`. Use `config.yaml` or `--reconfigure` to change login details. |
 | `--save-config` | Accepted by the parser, but currently has no effect in `main()`. Interactive setup and reconfiguration save the YAML file. |

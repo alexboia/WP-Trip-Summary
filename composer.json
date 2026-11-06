@@ -7,7 +7,8 @@
         "yoast/phpunit-polyfills": "^1.0",
         "wp-phpunit/wp-phpunit": "^6.3",
         "fakerphp/faker": "^1.24",
-        "mockery/mockery": "^1.6"
+        "mockery/mockery": "^1.6",
+        "bartlett/php-compatinfo": "^7.2"
     },
     "scripts": {
         "test": "vendor/bin/phpunit"
