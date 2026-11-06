@@ -2,7 +2,7 @@
 
 ## Scope and starting point
 
-This file applies to the `abp01-travel-tech-box` plugin and its descendants. The product is **WP Trip Summary**: a WordPress plugin for structured trip information, GPS tracks, maps and route logs.
+This file applies to the `wp-trip-summary` (can also be found under a root folder named `abp01-travel-tech-box`) plugin and its descendants. The product is **WP Trip Summary**: a WordPress plugin for structured trip information, GPS tracks, maps and route logs.
 
 - Treat this directory as the working and Git root. It can be nested inside a larger WordPress installation; run commands here or use `git -C <plugin-root>`.
 - Inspect `git status --short`, the relevant implementation and neighboring tests before editing. Preserve existing user changes.
