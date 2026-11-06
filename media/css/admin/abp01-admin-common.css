@@ -28,15 +28,21 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* Adjust bootstrap color scheme */
+/* Theme tokens and Bootstrap palette */
 
 :root {
 	--wpts-primary: #0d4a80;
 	--wpts-primary-hover: #0A3868;
-	--wpts-danger: #E04038;
-	--wpts-danger-hover: #C9332C;
-	--wpts-warn: #F29E1F;
-	--wpts-warn-ink: #8A3F00;
+	--wpts-danger: #C4453C;
+	--wpts-danger-rgb: 196, 69, 60;
+	--wpts-danger-hover: #A93630;
+	--wpts-danger-active: #922E29;
+	--wpts-danger-bg: #FFF1EF;
+	--wpts-danger-border: #E7B2AD;
+	--wpts-warn: #A66B16;
+	--wpts-warn-bg: #FFF4DB;
+	--wpts-warn-border: #D6AB4B;
+	--wpts-warn-ink: #6B4612;
 	--wpts-list-selection: #1FA4B4;
 	--wpts-border-happy: #1FA4B4;
 	--wpts-border-neutral1: #E7EDF1;
@@ -46,8 +52,19 @@
 
 .abp01-bootstrap {
 	--bs-primary: var(--wpts-primary);
+	--bs-danger: var(--wpts-danger);
+	--bs-danger-rgb: var(--wpts-danger-rgb);
+	--bs-danger-text-emphasis: var(--wpts-danger-active);
+	--bs-danger-bg-subtle: var(--wpts-danger-bg);
+	--bs-danger-border-subtle: var(--wpts-danger-border);
 	--bs-border-color: var(--wpts-border-neutral1);
 }
+
+.abp01-bootstrap .bg-primary {
+	--bs-primary-rgb: 34, 113, 177;
+}
+
+/* Tables and selectable lists */
 
 .abp01-bootstrap .table {
 	--bs-table-border-color: var(--wpts-border-neutral1);
@@ -63,6 +80,8 @@
 	box-shadow: none;
 }
 
+/* Buttons */
+
 .abp01-bootstrap .btn-primary {
 	--bs-btn-bg: var(--wpts-primary);
 	--bs-btn-border-color: var(--wpts-primary);
@@ -75,11 +94,14 @@
 	--bs-btn-border-color: var(--wpts-danger);
 	--bs-btn-hover-bg: var(--wpts-danger-hover);
 	--bs-btn-hover-border-color: var(--wpts-danger-hover);
+	--bs-btn-focus-shadow-rgb: var(--wpts-danger-rgb);
+	--bs-btn-active-bg: var(--wpts-danger-active);
+	--bs-btn-active-border-color: var(--wpts-danger-active);
+	--bs-btn-disabled-bg: var(--wpts-danger);
+	--bs-btn-disabled-border-color: var(--wpts-danger);
 }
 
-.abp01-bootstrap .bg-primary {
-	--bs-primary-rgb: 34, 113, 177;
-}
+/* Bootstrap dialogs */
 
 .abp01-bootstrap .modal-backdrop {
 	--bs-backdrop-zindex: 99999;
@@ -90,59 +112,39 @@
 	--bs-modal-zindex: 199999;
 }
 
-/* Basic elements and support classes */
-
-.abp01-status-text {
-	border-radius: 4px;
-	padding: 10px;
-	background-color: #e5e5e5;
-	color: #2e4453;
+.abp01-bootstrap .modal-header {
+	background: linear-gradient(120deg, var(--wpts-primary-hover), var(--wpts-primary));
+	color: #fff;
 }
 
-.abp01-status-ok {
-	background-color: #c6e1c6;
-	color: #5b841b;
+.abp01-bootstrap .modal-header button,
+.abp01-bootstrap .modal-title {
+	color: #fff;
 }
 
-.abp01-status-err {
-	background-color: #eba3a3;
-	color: #761919;
+.abp01-bootstrap .modal-header button.btn-close {
+	--bs-btn-close-color: #fff;
+	/* Bootstrap's background SVG does not inherit the button's text color. */
+	--bs-btn-close-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e");
+	filter: none;
 }
 
-.abp01-status-warn {
-	background-color: #f3e9cd;
-	color: #ffba00;
+.abp01-modal-window.modal h3.modal-title {
+	font-size: 17px;
 }
 
-.abp01-stop-scrolling {
-	height: 100%;
-	overflow: hidden;
+.modal-footer .dashicons {
+	margin-bottom: 2px;
+	padding-bottom: 0px;
+	margin-right: 4px;
+	font-size: 14px;
+	width: 17px;
+	height: 17px;
+	line-height: 17px;
+	vertical-align: middle;
 }
 
-.abp01-clear {
-	clear: both;
-	width: 0;
-	height: 0
-}
-
-.abp01-rounded-container {
-	border-radius: 5px;
-	box-shadow: 0 1px 1px rgba(0,0,0,.04);
-	padding: 10px;
-	background-color: #fff;
-}
-
-textarea.abp01-code-reading-area {
-	height: 600px;
-	width: 100%;
-	background-color: #fff;
-	font-family: 'Courier New', Courier, monospace;
-	border: 1px solid #f1f1f1;
-	border-radius: 5px;
-	resize: none;
-}
-
-/* Reusable code blocks */
+/* Reusable code blocks and clipboard actions */
 
 .abp01-bootstrap .wpts-code-container {
 	min-width: 0;
@@ -173,7 +175,7 @@ textarea.abp01-code-reading-area {
 }
 
 .abp01-bootstrap .wpts-code-copy-status.wpts-code-copy-error {
-	color: #b32d2e;
+	color: var(--wpts-danger-hover);
 }
 
 .abp01-bootstrap .wpts-code-copy {
@@ -239,6 +241,8 @@ textarea.abp01-code-reading-area {
 	tab-size: 4;
 }
 
+/* Bootstrap progress overlays and inline alerts */
+
 .abp01-bs-progress-label {
 	text-align: center;
 	line-height: 25px;
@@ -252,11 +256,8 @@ textarea.abp01-code-reading-area {
 	margin-bottom: 10px;
 }
 
-.abp01-modal-window.modal h3.modal-title {
-	font-size: 17px;
-}
+/* Trip summary and log entry dialogs */
 
-/* Content-sized trip summary and log entry dialogs. */
 .abp01-editor-modal {
 	max-width: calc(100vw - 32px);
 	max-height: calc(100vh - 32px);
@@ -432,21 +433,7 @@ textarea.abp01-code-reading-area {
 	outline-offset: 2px;
 }
 
-.abp01-editor-modal .abp01-progress-container,
-.abp01-editor-modal .abp01-progress-label,
-.abp01-editor-modal .abp01-progress-bar,
-#abp01-tripSummaryLog-adminRoot .abp01-progress-container,
-#abp01-tripSummaryLog-adminRoot .abp01-progress-label,
-#abp01-tripSummaryLog-adminRoot .abp01-progress-bar {
-	width: 100%;
-}
-
-.abp01-editor-modal .abp01-progress-container,
-.abp01-editor-modal .abp01-progress-label {
-	height: auto;
-}
-
-/* Form stuff */
+/* Forms and predefined field selectors */
 
 .row .abp01-checkbox-container {
 	padding-top: 7px;
@@ -494,10 +481,6 @@ label {
 	width: 350px;
 }
 
-.abp01-bootstrap .table {
-
-}
-
 .form-control.abp01-textarea-input {
 	resize: none;
 }
@@ -514,22 +497,26 @@ label {
 	margin-top: -4px;
 }
 
-/* Admin page - basic structure */
+/* Admin page layout, navigation and toolbars */
 
-.abp01-page {
-	
+.abp01-rounded-container {
+	border-radius: 5px;
+	box-shadow: 0 1px 1px rgba(0,0,0,.04);
+	padding: 10px;
+	background-color: #fff;
 }
 
 .abp01-page h2.abp01-page-title {
 	color: #1d2327;
-  	font-size: 1.3em;
-  	margin: 1em 0;
+	font-size: 1.3em;
+	margin: 1em 0;
 	display: block;
 	font-weight: 600;
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
 }
 
-.abp01-page-sidebar h4, .abp01-page-workspace h4 {
+.abp01-page-sidebar h4,
+.abp01-page-workspace h4 {
 	font-size: 1.1em;
 	padding-bottom: 10px;
 	border-bottom: 1px solid #f1f1f1;
@@ -552,7 +539,6 @@ label {
 	color: #fff;
 }
 
-.lead.abp01-workspace-info,
 .lead.abp01-settings-info {
 	font-size: 16px;
 }
@@ -562,7 +548,8 @@ label {
 	margin-right: -10px;
 }
 
-.abp01-page-sidebar h5, .abp01-page-workspace h5 {
+.abp01-page-sidebar h5,
+.abp01-page-workspace h5 {
 	font-size: 1em;
 	padding: 10px;
 	background-color: var(--bs-primary);
@@ -577,7 +564,8 @@ label {
 	margin-top: 0px;
 }
 
-.abp01-page-sidebar h5.error-heading, .abp01-page-workspace h5.error-heading {
+.abp01-page-sidebar h5.error-heading,
+.abp01-page-workspace h5.error-heading {
 	background-color: var(--bs-danger);
 }
 
@@ -605,19 +593,8 @@ label {
 	margin-right: 4px;
 }
 
-.modal-footer .dashicons {
-	margin-bottom: 2px;
-	padding-bottom: 0px;
-	margin-right: 4px;
-	font-size: 14px;
-	width: 17px;
-	height: 17px;
-	line-height: 17px;
-	vertical-align: middle;
-}
-
 /* Trip summary audit log */
-/* TODO: move to separate file */
+
 #abp01-trip-summary-audit-log .inside {
 	padding-left: 4px;
 	padding-right: 4px;
@@ -638,29 +615,29 @@ table.abp01-admin-trip-summary-audit-log h4 {
 table.abp01-admin-trip-summary-audit-log th {
 	text-align: left;
 	width: calc(30% - 16px);
- }
+}
 
- table.abp01-admin-trip-summary-audit-log td {
+table.abp01-admin-trip-summary-audit-log td {
 	width: calc(70% - 16px);
- }
+}
 
- table.abp01-admin-trip-summary-audit-log th, 
- table.abp01-admin-trip-summary-audit-log td {
+table.abp01-admin-trip-summary-audit-log th,
+table.abp01-admin-trip-summary-audit-log td {
 	padding: 8px;
 	word-wrap: break-word;
 	text-align: left;
- }
+}
 
- table.abp01-admin-trip-summary-audit-log tr:nth-child(2n+1) {
+table.abp01-admin-trip-summary-audit-log tr:nth-child(2n+1) {
 	background-color: #f8f8f8;
- }
+}
 
- table.abp01-admin-trip-summary-audit-log tr:hover {
+table.abp01-admin-trip-summary-audit-log tr:hover {
 	background-color: #e14d43;
 	color: #fff;
 }
 
- 
+
 table.abp01-admin-trip-summary-audit-log tr.abp01-trip-summary-audit-log-section-title,
 table.abp01-admin-trip-summary-audit-log tr.abp01-trip-summary-audit-log-section-title:nth-child(2n+1),
 table.abp01-admin-trip-summary-audit-log tr.abp01-trip-summary-audit-log-section-title:hover {
@@ -691,20 +668,60 @@ table.abp01-admin-trip-summary-audit-log.abp01-admin-trip-summary-audit-log-over
 	color: #FFF;
 }
 
-@media (min-width: 782px) {
-	/* integrate fix from: https://github.com/WordPress/gutenberg/issues/31165 */
-	.interface-complementary-area {
-		 /* width: 280px; */
-		width: 100%;
-	}
+/* Legacy styles - retained for existing consumers */
 
-	.is-sidebar-opened .interface-interface-skeleton__sidebar {
-		width: 280px;
-	}
+.abp01-status-text {
+	border-radius: 4px;
+	padding: 10px;
+	background-color: #e5e5e5;
+	color: #2e4453;
 }
 
+.abp01-status-ok {
+	background-color: #c6e1c6;
+	color: #5b841b;
+}
 
-/* Deprecated stuff */
+.abp01-status-err {
+	background-color: #eba3a3;
+	color: #761919;
+}
+
+.abp01-status-warn {
+	background-color: #f3e9cd;
+	color: #ffba00;
+}
+
+/* Legacy scrolling, float layouts and workspace helpers */
+
+.abp01-stop-scrolling {
+	height: 100%;
+	overflow: hidden;
+}
+
+.abp01-clear {
+	clear: both;
+	width: 0;
+	height: 0
+}
+
+.lead.abp01-workspace-info {
+	font-size: 16px;
+}
+
+/* Legacy system log reader */
+
+textarea.abp01-code-reading-area {
+	height: 600px;
+	width: 100%;
+	background-color: #fff;
+	font-family: 'Courier New', Courier, monospace;
+	border: 1px solid #f1f1f1;
+	border-radius: 5px;
+	resize: none;
+}
+
+/* Legacy progress overlays - still used by the editors */
 
 .abp01-progress-container {
 	width: 400px;
@@ -725,4 +742,31 @@ table.abp01-admin-trip-summary-audit-log.abp01-admin-trip-summary-audit-log-over
 .abp01-progress-bar {
 	width: 400px;
 	height: 20px;
+}
+
+.abp01-editor-modal .abp01-progress-container,
+.abp01-editor-modal .abp01-progress-label,
+.abp01-editor-modal .abp01-progress-bar,
+#abp01-tripSummaryLog-adminRoot .abp01-progress-container,
+#abp01-tripSummaryLog-adminRoot .abp01-progress-label,
+#abp01-tripSummaryLog-adminRoot .abp01-progress-bar {
+	width: 100%;
+}
+
+.abp01-editor-modal .abp01-progress-container,
+.abp01-editor-modal .abp01-progress-label {
+	height: auto;
+}
+
+/* Legacy Gutenberg sidebar compatibility */
+
+@media (min-width: 782px) {
+	/* integrate fix from: https://github.com/WordPress/gutenberg/issues/31165 */
+	.interface-complementary-area {
+		width: 100%;
+	}
+
+	.is-sidebar-opened .interface-interface-skeleton__sidebar {
+		width: 280px;
+	}
 }

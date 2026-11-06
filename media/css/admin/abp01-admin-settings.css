@@ -28,6 +28,8 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* Predefined tile layer details */
+
 .abp01-predefined-tile-layer {
 	border-bottom: 1px solid #f1f1f1;
 	padding-bottom: 10px;
@@ -35,7 +37,6 @@
 }
 
 .abp01-predefined-tile-layer h4 {
-	margin-top: 0px;
 	padding-top: 0px;
 	margin-top: 5px;
 	margin-bottom: 5px;
@@ -52,27 +53,29 @@
 	font-size: 14px;
 }
 
+/* API key requirement warnings */
+
 .abp01-predefined-tile-layer .abp01-predefined-tile-layer-prop.abp01-predefined-tile-layer-prop-warn {
 	padding-top: 5px;
 	padding-bottom: 5px;
 }
 
 .abp01-predefined-tile-layer .abp01-predefined-tile-layer-prop.abp01-predefined-tile-layer-prop-warn span.abp01-predefined-tile-layer-prop-warn-message {
-	background-color: var(--wpts-warn);
-	border: 1px solid var(--wpts-warn-ink);
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
+	background-color: var(--wpts-warn-bg);
+	border: 1px solid var(--wpts-warn-border);
 	border-radius: 3px;
 	color: var(--wpts-warn-ink);
 	padding: 6px;
 	font-size: 13px;
 	display: block;
-	opacity: 0.7;
 }
 
 .abp01-predefined-tile-layer .abp01-predefined-tile-layer-prop.abp01-predefined-tile-layer-prop-warn span.dashicons {
 	margin-right: 5px;
+	color: var(--wpts-warn);
 }
+
+/* Tile layer actions and API key help */
 
 .abp01-predefined-tile-layer-actions a.button {
 	margin-right: 10px;
@@ -82,6 +85,8 @@
 	margin-top: 5px;
 	cursor: pointer;
 }
+
+/* Settings form actions */
 
 .apb01-settings-save {
 	margin-top: 10px;
