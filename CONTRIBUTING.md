@@ -204,7 +204,13 @@ The script preserves each runner's output, continues after failures and prints a
 
 PHP defaults to `php` from `PATH`; set `WPTS_TEST_PHP` to an executable path to override it. The full PHP group requires the Composer development dependencies and PHP version described above, plus `tokenizer`, `sqlite3`, `pdo_sqlite` and enabled process execution. Both interpreter overrides accept executable paths without extra arguments.
 
-The screenshot tests require the Python dependencies from [requirements.txt](bin/tools/screen-capture/requirements.txt); they mock browser interaction and do not require a running site or an installed Firefox binary. Python selection uses `WPTS_TEST_PYTHON` when explicitly set; otherwise it prefers `bin/tools/screen-capture/.venv/bin/python`, then `.venv/Scripts/python.exe` in Git Bash, Cygwin or WSL. Using the Windows environment from WSL requires [Windows interoperability](https://learn.microsoft.com/en-us/windows/wsl/filesystems#run-windows-tools-from-linux) to be enabled and the checkout to be accessible to Windows, such as under `/mnt/d/`. The script prints the selected interpreter and fails if the virtual environment is unavailable; it does not implicitly fall back to the system Python. To use a different environment or the system interpreter intentionally, set `WPTS_TEST_PYTHON`.
+The screenshot tests require the Python dependencies from [requirements.txt](bin/tools/screen-capture/requirements.txt); they mock browser interaction and do not require a running site or an installed Firefox binary. 
+
+Python selection uses `WPTS_TEST_PYTHON` when explicitly set; otherwise it prefers `bin/tools/screen-capture/.venv/bin/python`, then `.venv/Scripts/python.exe` in Git Bash, Cygwin or WSL. 
+
+Using the Windows environment from WSL requires [Windows interoperability](https://learn.microsoft.com/en-us/windows/wsl/filesystems#run-windows-tools-from-linux) to be enabled and the checkout to be accessible to Windows, such as under `/mnt/d/`. 
+
+The script prints the selected interpreter and fails if the virtual environment is unavailable; it does not implicitly fall back to the system Python. To use a different environment or the system interpreter intentionally, set `WPTS_TEST_PYTHON`.
 
 The Leaflet HTTP checks still use `bin/run-tests.sh --set=leaflet --host HOST`, with the live-site prerequisites below. WordPress PHPUnit tests continue to use `bin/run-tests.sh`.
 
