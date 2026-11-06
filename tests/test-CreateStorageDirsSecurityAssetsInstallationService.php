@@ -69,6 +69,7 @@ class CreateStorageDirsSecurityAssetsInstallationServiceTests extends WP_UnitTes
 		$this->_assertIndexPhpFile($logStorageDir, '../../../../index.php');
 
 		$trackFilesExcludedExtensions = array(
+			'.dat',
 			'.cache',
 			'.gpx',
 			'.geojson',
