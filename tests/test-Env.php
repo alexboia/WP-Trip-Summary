@@ -74,11 +74,14 @@ class EnvTests extends WP_UnitTestCase {
 
 	public function test_canGetVersions() {
 		$env = Env::getInstance();
+		$pluginData = get_plugin_data(ABP01_PLUGIN_MAIN, false, false);
 
 		$this->assertEquals(PHP_VERSION, $env->getPhpVersion());
 		$this->assertEquals(get_bloginfo('version', 'raw'), $env->getWpVersion());
-		$this->assertEquals('8.0.0', $env->getRequiredPhpVersion());
-		$this->assertEquals('6.0.0', $env->getRequiredWpVersion());
+		$this->assertNotEmpty($pluginData['RequiresPHP']);
+		$this->assertNotEmpty($pluginData['RequiresWP']);
+		$this->assertSame($pluginData['RequiresPHP'], $env->getRequiredPhpVersion());
+		$this->assertSame($pluginData['RequiresWP'], $env->getRequiredWpVersion());
 		$this->assertEquals('0.3.3', $env->getVersion());
 	}
 

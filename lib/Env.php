@@ -144,9 +144,19 @@ namespace WpTripSummary {
 		private string $_wpVersion;
 
 		/**
+		 * Minimum WordPress version declared in the plugin header
+		 */
+		private string $_requiredWpVersion;
+
+		/**
 		 * The current PHP version
 		 */
 		private string $_phpVersion;
+
+		/**
+		 * Minimum PHP version declared in the plugin header
+		 */
+		private string $_requiredPhpVersion;
 
 		/**
 		 * The path to the root plug-in directory
@@ -253,6 +263,14 @@ namespace WpTripSummary {
 		private function _initVersions(): void {
 			$this->_phpVersion = PHP_VERSION;
 			$this->_wpVersion = get_bloginfo('version', 'raw');
+
+			// Read both requirements once when constructing the singleton.
+			$requirements = get_file_data(ABP01_PLUGIN_MAIN, array(
+				'RequiresPHP' => 'Requires PHP',
+				'RequiresWP' => 'Requires at least'
+			));
+			$this->_requiredPhpVersion = $requirements['RequiresPHP'];
+			$this->_requiredWpVersion = $requirements['RequiresWP'];
 		}
 
 		private function _initDirs(): void {
@@ -618,7 +636,7 @@ namespace WpTripSummary {
 		}
 
 		public function getRequiredPhpVersion(): string {
-			return '8.3.0';
+			return $this->_requiredPhpVersion;
 		}
 
 		public function getWpVersion(): string {
@@ -626,7 +644,7 @@ namespace WpTripSummary {
 		}
 
 		public function getRequiredWpVersion(): string {
-			return '7.0.0';
+			return $this->_requiredWpVersion;
 		}
 
 		public function getVersion(): string {
