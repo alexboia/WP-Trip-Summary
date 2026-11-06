@@ -23,8 +23,9 @@ Groups:
 
 Environment:
   WPTS_TEST_PHP     PHP executable, default: php from PATH.
-  WPTS_TEST_PYTHON  Python executable; otherwise prefer the screenshot tool's
-                   native .venv, then python3 or python from PATH.
+  WPTS_TEST_PYTHON  Python executable; otherwise use the screenshot tool's .venv.
+                   Prefer bin/python; Scripts/python.exe is also supported
+                   in Git Bash, Cygwin and WSL. No implicit PATH fallback.
                    Supply executable paths without additional arguments.
 
 All selected runners execute even if another fails. Missing dependencies fail
@@ -90,6 +91,24 @@ wpts_run_tool_test() {
 	fi
 }
 
+wpts_run_screenshot_tests() {
+	local python_executable=${WPTS_TEST_PYTHON:-}
+	local venv_path="$WPTS_ROOT/bin/tools/screen-capture/.venv"
+	if [[ -z "$python_executable" ]]; then
+		if [[ -x "$venv_path/bin/python" ]]; then
+			python_executable="$venv_path/bin/python"
+		elif [[ "${OSTYPE:-}" == msys* || "${OSTYPE:-}" == cygwin* || -n "${WSL_INTEROP:-}" || -n "${WSL_DISTRO_NAME:-}" ]] && [[ -x "$venv_path/Scripts/python.exe" ]]; then
+			python_executable="$venv_path/Scripts/python.exe"
+		else
+			printf 'Error: no usable Python interpreter found in %s.\n' "$venv_path" >&2
+			printf 'Create the screenshot tool virtual environment and install requirements.txt, or set WPTS_TEST_PYTHON explicitly.\n' >&2
+			return 1
+		fi
+	fi
+	printf 'Python interpreter: %s\n' "$python_executable"
+	"$python_executable" -m unittest discover -s bin/tools/screen-capture -p test_run.py -v
+}
+
 case "$WPTS_TEST_SET" in
 	all|php|license)
 		wpts_run_tool_test 'License header parser' "$WPTS_TEST_PHP" .agents/skills/wpts-coding-conventions/tests/license-header-test.php
@@ -114,18 +133,7 @@ case "$WPTS_TEST_SET" in
 esac
 case "$WPTS_TEST_SET" in
 	all|screen-capture)
-		if [[ -z "${WPTS_TEST_PYTHON:-}" ]]; then
-			if [[ -x "$WPTS_ROOT/bin/tools/screen-capture/.venv/bin/python" ]]; then
-				WPTS_TEST_PYTHON="$WPTS_ROOT/bin/tools/screen-capture/.venv/bin/python"
-			elif [[ "${OSTYPE:-}" == msys* || "${OSTYPE:-}" == cygwin* ]] && [[ -x "$WPTS_ROOT/bin/tools/screen-capture/.venv/Scripts/python.exe" ]]; then
-				WPTS_TEST_PYTHON="$WPTS_ROOT/bin/tools/screen-capture/.venv/Scripts/python.exe"
-			elif command -v python3 > /dev/null 2>&1; then
-				WPTS_TEST_PYTHON=python3
-			else
-				WPTS_TEST_PYTHON=python
-			fi
-		fi
-		wpts_run_tool_test 'Screenshot utility' "$WPTS_TEST_PYTHON" -m unittest discover -s bin/tools/screen-capture -p test_run.py -v
+		wpts_run_tool_test 'Screenshot utility' wpts_run_screenshot_tests
 		;;
 esac
 

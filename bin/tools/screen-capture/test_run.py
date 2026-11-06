@@ -115,8 +115,10 @@ class WptsConfigTests(unittest.TestCase):
 
 	def test_setup_creates_config_and_retries_invalid_answers(self):
 		answers = ["", "ftp://example.test", self.values["baseUrl"], "", self.values["userName"], "0", "42", "https://other.test/post", self.values["knownSamplePostView"]]
+		
 		with patch("builtins.input", side_effect=answers), patch.object(configuration, "getpass", side_effect=["", self.values["password"]]) as passwordPrompt, contextlib.redirect_stdout(io.StringIO()) as output:
 			configuration.wpts_setup(force=False)
+
 		self.assertEqual(asdict(configuration.wpts_get_config()), self.values)
 		self.assertEqual(passwordPrompt.call_count, 2)
 		self.assertNotIn(self.values["password"], output.getvalue())
