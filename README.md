@@ -19,11 +19,6 @@
 </p>
 
 <p align="center">
-   <a href="https://plugintests.com/plugins/wporg/wp-trip-summary/latest"><img src="https://plugintests.com/plugins/wporg/wp-trip-summary/wp-badge.svg" alt="WP compatibility" /></a>
-   <a href="https://plugintests.com/plugins/wporg/wp-trip-summary/latest"><img src="https://plugintests.com/plugins/wporg/wp-trip-summary/php-badge.svg" alt="PHP compatibility" /></a>
-</p>
-
-<p align="center">
    <a href="https://wordpress.org/plugins/wp-trip-summary/"><strong>Download from WordPress.org</strong></a>
    &nbsp;·&nbsp;
    <a href="https://github.com/alexboia/WP-Trip-Summary/releases"><strong>GitHub releases</strong></a>
