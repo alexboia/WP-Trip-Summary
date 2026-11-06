@@ -231,22 +231,38 @@ The script resolves the plugin root from its own location and creates `build/com
 | Output | Purpose |
 | --- | --- |
 | `build/compat-info/compatinfo-db.sqlite` | Default reference database for the analyzer, separate from WordPress and its test database |
-| `build/compat-info/cache/` | Default analyzer cache, including its environment subdirectory |
+| `build/compat-info/cache/wpts-file-errors/` | Default analyzer cache for the local extension configuration, including its environment subdirectory |
 | `build/compat-info/database-diagnose.txt` | Latest database and runtime prerequisite diagnostics |
 | `build/compat-info/main-compat-info.txt` | Plugin source analysis, excluding `tests`, `help`, `build`, `bin`, `docs` and `.agents` |
 | `build/compat-info/tests-compat-info.txt` | Separate analysis of `tests/` |
 
 Each report is overwritten when its analysis starts; a failed or interrupted analysis may leave its report incomplete. There is no Help report because that source directory has been removed. The main scan still includes dependencies present under `vendor/`, so a development checkout can report requirements from development dependencies too. Interpret the report alongside `composer.lock`, plugin metadata and runtime tests.
 
-Existing `DATABASE_URL` and `APP_CACHE_DIR` values override the default database and cache locations. Use a database dedicated to this analyzer. With the default Windows SQLite path, the script accounts for CompatInfoDB's leading-slash normalization by using a path rooted on the current drive.
+Existing `DATABASE_URL` and `APP_CACHE_DIR` values override the default database and cache base directory. The script appends `wpts-file-errors` to the cache base so an older CLI container built without the local extension cannot bypass its registration. Use a database dedicated to this analyzer. With the default Windows SQLite path, the script accounts for CompatInfoDB's leading-slash normalization by using a path rooted on the current drive.
 
-The CLI memory limit defaults to `1G` for reference-data import and analysis; this affects only the analyzer processes. To adjust it:
+The CLI memory limit defaults to `2G` for reference-data import and analysis; this affects only the analyzer processes. To adjust it:
 
 ```bash
-WPTS_COMPAT_MEMORY_LIMIT=2G bash bin/detect-compat-info.sh
+WPTS_COMPAT_MEMORY_LIMIT=4G bash bin/detect-compat-info.sh
 ```
 
 If preparation fails, inspect the command output and `database-diagnose.txt`, verify the CLI extensions and directory permissions, then rerun. A schema-only database left by an interrupted initial import can be populated on the next run. Save changes to the shell script before starting a run.
+
+### Local PHP CompatInfo extension
+
+The script loads [bin/tools/compatinfo/config.php](bin/tools/compatinfo/config.php) through `--config`. It imports the upstream default services and registers [ResetFileErrorsExtension](bin/tools/compatinfo/ResetFileErrorsExtension.php) through PHP CompatInfo's `app.extension` mechanism. No dependency source files are patched.
+
+PHP CompatInfo 7.2.7 retains its collecting error handler across files. Once an empty or invalid file adds an error, later valid files can be reported with that same error. The extension clears the handler on `BeforeFileAnalysis`, after the preceding file's errors have been collected and before the next file is parsed. Real errors remain in the report, and `--stop-on-failure` still stops at the first error.
+
+The upstream query handler constructs its error handler directly. The local configuration replaces that service with [CompatibilityQueryHandler](bin/tools/compatinfo/CompatibilityQueryHandler.php), which passes a shared `Collecting` service through the parser's public `parse()` method. The reset extension receives that same service through constructor injection and calls `clearErrors()` directly. For `--stop-on-failure`, the query handler keeps the upstream `Throwing` behavior. This uses public interfaces without reflection or access to private parser state.
+
+Review the upstream query handler for changes to source discovery or parser arguments, and rerun the standalone regression check when upgrading PHP CompatInfo:
+
+```bash
+php bin/tools/compatinfo/test-reset-file-errors.php
+```
+
+The check uses an isolated reference database and retains its fixtures and reports under `build/compat-info/`. It covers empty and malformed files followed by valid files, cached-container loading, `--stop-on-failure`, source exclusions and missing sources. When changing the service configuration or upgrading dependencies, clear the dedicated `wpts-file-errors` cache before running the main script again; the reference SQLite database is stored separately.
 
 ## Building a distribution package
 

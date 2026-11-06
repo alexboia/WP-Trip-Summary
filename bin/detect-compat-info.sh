@@ -14,14 +14,15 @@ WPTS_COMPAT_DIR="$WPTS_ROOT/build/compat-info"
 mkdir -p -- "$WPTS_COMPAT_DIR"
 
 WPTS_COMPAT_NATIVE_DIR=$(php -r 'echo str_replace("\\", "/", realpath($argv[1]));' "$WPTS_COMPAT_DIR")
-export APP_CACHE_DIR="${APP_CACHE_DIR:-$WPTS_COMPAT_NATIVE_DIR/cache}"
+# Keep the custom service container separate from an earlier vanilla CLI cache.
+export APP_CACHE_DIR="${APP_CACHE_DIR:-$WPTS_COMPAT_NATIVE_DIR/cache}/wpts-file-errors"
 
 # CompatInfoDB prepends / to SQLite paths. On Windows, use a path rooted on
 # the current drive instead of /C:/...; 
 # the working directory is the plugin root.
 export DATABASE_URL="${DATABASE_URL:-sqlite://${WPTS_COMPAT_NATIVE_DIR#[A-Za-z]:}/compatinfo-db.sqlite}"
 
-WPTS_COMPATINFO=(php -d "memory_limit=${WPTS_COMPAT_MEMORY_LIMIT:-1G}" ./vendor/bin/phpcompatinfo --no-interaction --no-ansi)
+WPTS_COMPATINFO=(php -d "memory_limit=${WPTS_COMPAT_MEMORY_LIMIT:-2G}" ./vendor/bin/phpcompatinfo --no-interaction --no-ansi --config "$WPTS_ROOT/bin/tools/compatinfo/config.php")
 WPTS_COMPAT_DIAGNOSE="$WPTS_COMPAT_DIR/database-diagnose.txt"
 
 printf 'Checking PHP CompatInfo database...\n'
