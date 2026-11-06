@@ -51,7 +51,25 @@
 	 * @param bool $showCredits Whether to display the credits. Defaults to true.
 	 * @param stdClass $data The complete front-end viewer data for the current post.
 	 */
-	$showCredits = (bool) apply_filters('abp01_show_frontend_viewer_credits', true, $data);
+	$showCredits = (bool) apply_filters('abp01_show_frontend_viewer_credits', 
+		true, 
+		$data);
+
+	/**
+	 * Filters the subtitle displayed below the front-end viewer title.
+	 *
+	 * Defaults to null, which omits the subtitle element. Any non-null result
+	 * renders the element, including an empty string. The text is HTML-escaped.
+	 *
+	 * @since 0.3.3
+	 * @category Front-end Viewer
+	 *
+	 * @param string|null $subtitle The subtitle text, or null to omit the element.
+	 * @param stdClass $data The complete front-end viewer data for the current post.
+	 */
+	$subtitle = apply_filters('abp01_show_frontend_viewer_subtitle', 
+		null, 
+		$data);
 ?>
 
 <?php if ($data && ($data->info->exists || $data->track->exists)): ?>
@@ -64,7 +82,9 @@
 			</span>
 			<div class="abp01-techbox-title-area">
 				<span class="abp01-techbox-title-content"><?php echo esc_html__('Trip summary', 'abp01-trip-summary'); ?></span>
-				<span class="abp01-techbox-title-content-sub">Test subtitle</span>
+				<?php if (!empty($subtitle)): ?>
+					<span class="abp01-techbox-title-content-sub"><?php echo esc_html($subtitle); ?></span>
+				<?php endif; ?>
 			</div>
 			<?php if (!empty($data->info->typeLabel)): ?>
 				<span class="abp01-techbox-badge"><?php echo esc_html($data->info->typeLabel); ?></span>
