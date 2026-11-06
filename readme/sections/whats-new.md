@@ -8,6 +8,7 @@
 - Refreshed the admin settings, maintenance, lookup data, system logs and About pages, as well as the trip summary audit log viewer;
 - Improved the trip summary and rider's log editors with updated layouts, action button icons and better modal sizing;
 - Added front-end viewer credits, with the `abp01_show_frontend_viewer_credits` filter to control their visibility;
+- Added front-end viewer subtitle, with the `abp01_show_frontend_viewer_subtitle` filter to provide a custom value (default no subtitle);
 - Added an Nginx Access Directives Helper to the maintenance tools, generating access rules for protecting the plugin's storage directory;
 - Updated Romanian, French and German translations, and added German translations for predefined lookup values;
 - Fixed translation loading errors caused by initializing translated UI labels too early;
