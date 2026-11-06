@@ -89,6 +89,7 @@ class GpsDocumentFakerDataProviderTests extends \PHPUnit\Framework\TestCase {
 			'south-east' => array(-85, 0, 0, 180),
 			'south-west' => array(-85, 0, -180, 0)
 		);
+
 		foreach ($areas as $area => $limits) {
 			$cases[$area . ' default span'] = array(1, array('area' => $area), $limits);
 			$cases[$area . ' longitude drift'] = array(1, array_merge(self::_manyPointsOptions(), array('area' => $area)), $limits);
@@ -100,6 +101,7 @@ class GpsDocumentFakerDataProviderTests extends \PHPUnit\Framework\TestCase {
 				'metadata' => false
 			), $limits);
 		}
+
 		return $cases;
 	}
 
@@ -125,9 +127,12 @@ class GpsDocumentFakerDataProviderTests extends \PHPUnit\Framework\TestCase {
 		$this->assertSame(max(array_column($points, 'lat')), $container['bounds']['maxLat']);
 		$this->assertSame(min(array_column($points, 'lon')), $container['bounds']['minLng']);
 		$this->assertSame(max(array_column($points, 'lon')), $container['bounds']['maxLng']);
+		
 		foreach (array('lat', 'lon') as $coordinate) {
-			$this->assertSame($points[0][$coordinate], $container['from'][$coordinate]);
-			$this->assertSame($points[count($points) - 1][$coordinate], $container['to'][$coordinate]);
+			$this->assertSame($points[0][$coordinate], 
+				$container['from'][$coordinate]);
+			$this->assertSame($points[count($points) - 1][$coordinate], 
+				$container['to'][$coordinate]);
 		}
 	}
 
@@ -138,32 +143,49 @@ class GpsDocumentFakerDataProviderTests extends \PHPUnit\Framework\TestCase {
 		$this->_faker->seed($seed);
 		$document = $this->_faker->$format(self::_manyPointsOptions());
 		$coordinates = array();
+
 		if ($format === 'gpx') {
 			$xml = new DOMDocument();
 			$this->assertTrue($xml->loadXML($document['content']['text']));
+			
 			$xpath = new DOMXPath($xml);
 			foreach ($xpath->query('//*[local-name()="trkpt" or local-name()="wpt"]') as $point) {
-				$coordinates[] = array((float)$point->getAttribute('lon'), (float)$point->getAttribute('lat'));
+				if (method_exists($point, 'getAttribute')) {
+					$coordinates[] = array(
+						(float)$point->getAttribute('lon'), 
+						(float)$point->getAttribute('lat')
+					);
+				}
 			}
 		} else {
-			$json = json_decode($document['content']['text'], true, 512, JSON_THROW_ON_ERROR);
+			$json = json_decode($document['content']['text'], 
+				true, 
+				512, 
+				JSON_THROW_ON_ERROR);
+
 			foreach ($json['features'] as $feature) {
 				$geometry = $feature['geometry'];
 				if ($geometry === null) {
 					continue;
 				}
+				
 				if ($geometry['type'] === 'Point') {
 					$coordinates[] = $geometry['coordinates'];
 				} else {
 					foreach ($geometry['coordinates'] as $segment) {
-						$coordinates = array_merge($coordinates, $segment);
+						$coordinates = array_merge($coordinates, 
+							$segment);
 					}
 				}
 			}
 		}
+
 		$this->assertNotEmpty($coordinates);
+		
 		foreach ($coordinates as $point) {
-			$this->_assertValidCoordinates($point[1], $point[0], array(-90, 90, -180, 180));
+			$this->_assertValidCoordinates($point[1], 
+				$point[0], 
+				array(-90, 90, -180, 180));
 		}
 	}
 
