@@ -89,6 +89,18 @@ bash bin/update-wp-test-core.sh
 
 This helper runs `composer install`, reads the locked WordPress test version and downloads it with WP-CLI into `/tmp/wordpress-<version>`. After a successful download and a check for the required core files, it deletes `/tmp/wordpress` and moves the new core into that location. Failed dependency installation or download leaves the old core in place. It can be run from the plug-in root or from `bin/`.
 
+#### Isolated Docker compatibility sites
+
+[docker-images/compatibility](docker-images/compatibility/README.md) provides two isolated WordPress sites built from the local plugin sources: WordPress 7.0 / PHP 8.3 / MySQL 5.7 and a pinned snapshot of the latest stable WordPress/PHP/MySQL branches. Each profile has its own database and uploads, installs only production Composer dependencies and publishes a local browser port. Use them to validate runtime compatibility, installation and the built release ZIP without changing the surrounding WordPress installation.
+
+```bash
+cd docker-images/compatibility
+docker compose --env-file minimum.env up --build --renew-anon-volumes --wait --wait-timeout 240
+docker compose --env-file latest.env up --build --renew-anon-volumes --wait --wait-timeout 240
+```
+
+The sites are available at `http://localhost:8083` and `http://localhost:8085`. See the linked guide for credentials, version inspection, rebuilds, package testing and cleanup. PHP uses patch releases within the selected branch; the minimum profile does not claim validation of the original PHP 8.3.0 binary. These runtime sites are separate from PHPUnit, whose locked development dependencies require PHP 8.4.1+ and a matching dedicated test core/database. Historical release images under [docker-images](docker-images/README.md) remain available to prepare upgrade baselines.
+
 #### Compiling TypeScript
 
 Browser sources and [tsconfig.json](media/js/tsconfig.json) live under `media/js/`, including its `admin/` directory. Edit `.ts` files where they exist and regenerate their companion `.js` files; `.d.ts` files can be handwritten contracts. Scripts without a TypeScript source are edited directly.
