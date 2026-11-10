@@ -57,6 +57,19 @@ See [class and file layout examples](references/examples.md#classes-and-file-lay
 
 See [blocks and expressions](references/examples.md#blocks-and-expressions), [arrays and access](references/examples.md#arrays-and-access) and [string concatenation](references/examples.md#string-concatenation).
 
+## Code must speak
+
+Write as though a reader unfamiliar with the implementation will maintain it. Make the meaning of a decision or value visible at its call site.
+
+- Do not bundle multiple checks directly in a conditional statement. Extract a predicate named after the decision. Choose a private helper, an object method or a policy collaborator with an interface according to the responsibility and reuse involved.
+- When an object is repeatedly asked about the same conditions, expose a named read-only query, whether private or public. At the PHP 8.3 baseline, use a predicate/getter method for computed conditions; use typed `readonly` properties for values fixed at initialization. Do not cache a condition that must reflect changing state.
+- Prefer a named class to an anonymous data object (`stdClass`, an object cast or an anonymous class used as a record) when it has more than two or three fields, or its meaning is unclear, even if used in only one method. Start with typed `readonly` properties.
+- Treat positional arrays used as tuples as small return/pass values: prefer at most three fields. Extract an explicit type when there are more than three fields or the meaning of the positions is unclear, even for a smaller tuple.
+- Use local variables to name intermediate meaning, even when used once. Preserve short-circuit evaluation, evaluation order and side effects when extracting expressions.
+- Strongly prefer separating main method logic from error handling when the two can be decoupled simply. Keep the existing API method as the wrapper and extract the work into a distinctly named helper, normally private. Preserve exception behavior and any state needed by handlers; avoid a forced split when complex shared state prevents it.
+
+Apply these rules within the requested change and preserve existing external contracts. See [PHP examples and extraction guidance](references/examples.md#code-must-speak).
+
 ## Function and method declarations and calls
 
 - Keep names adjacent to `(` in declarations and calls; anonymous functions use `function(...)`. Do not pad argument lists; use one space after separating commas.

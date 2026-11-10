@@ -1,6 +1,6 @@
 # Coding convention examples
 
-Companion to [the main skill](../SKILL.md). Snippets are excerpts or shortened adaptations of the linked source, with incidental whitespace normalized. They illustrate conventions rather than propose new features. License headers are omitted from snippets; complete source files use [the license template](.license-header).
+Companion to [the main skill](../SKILL.md). Snippets are excerpts or shortened adaptations of the linked source, with incidental whitespace normalized, or explicitly illustrative examples. They illustrate conventions rather than propose new features. License headers are omitted from snippets; complete source files use [the license template](.license-header).
 
 General block and indentation rules apply across languages; PHP arrays, namespaces, concatenation and WordPress APIs are PHP-specific. The `WPTS_`/`wpts_` examples illustrate the established policy for new global names, not names already present in the plugin.
 
@@ -8,6 +8,7 @@ General block and indentation rules apply across languages; PHP arrays, namespac
 
 - [License header utility](#license-header-utility)
 - [Blocks and expressions](#blocks-and-expressions)
+- [Code must speak](#code-must-speak)
 - [Declarations and calls](#declarations-and-calls)
 - [Arrays and access](#arrays-and-access)
 - [String concatenation](#string-concatenation)
@@ -100,6 +101,173 @@ $deps = isset($script['deps']) && is_array($script['deps'])
 ```
 
 Both strict and loose comparisons exist. Preserve their intended behavior; this formatting example does not prescribe replacing one with the other.
+
+## Code must speak
+
+Write as though a reader unfamiliar with the implementation will maintain it. The following PHP examples are illustrative; their domain rules are not new plugin requirements.
+
+### Do not bundle multiple checks in a conditional statement
+
+Prefer a condition that names the decision:
+
+```php
+if ($this->_canReplaceRoute($candidate, $current)) {
+	$this->_replaceRoute($candidate);
+}
+```
+
+Avoid making the caller reconstruct that decision from its checks:
+
+```php
+if ($candidate->hasTrack()
+	&& $candidate->getPointCount() > $current->getPointCount()
+	&& in_array($candidate->getType(), array('bike', 'hiking'), true)
+	&& $candidate->getUpdatedAt() > $current->getUpdatedAt()) {
+	$this->_replaceRoute($candidate);
+}
+```
+
+The extracted predicate owns those checks. Choose its location case by case: a private method for local logic, a method on the responsible object, or a policy object behind an interface when the responsibility or interchangeable behavior warrants it. PHP 8.3 has no C#-style extension methods; a collaborator can provide the behavior when the original class cannot be changed. Name the decision specifically rather than using a vague name such as `_checkConditions()`.
+
+### Expose recurrent conditions through read-only methods or properties
+
+When callers repeatedly ask an object about the same condition, give that condition a name, whether the query belongs in its public or private API.
+
+Prefer:
+
+```php
+if ($customer->hasEligibleDiscount()) {
+	$this->_applyDiscount($customer);
+}
+```
+
+Avoid repeating:
+
+```php
+if ($customer->isActive()
+	&& $customer->getTotalBalance() > 200
+	&& $customer->hasOrdersInTheLastWeek()) {
+	$this->_applyDiscount($customer);
+}
+```
+
+The predicate encapsulates the recurring condition. Use a method for a computed query at the PHP 8.3 baseline; property hooks require PHP 8.4 and are not suitable for that baseline. A typed `readonly` property is appropriate when the value is fixed at initialization, such as a snapshot result. It is not a computed property: do not store a live eligibility condition there if changes to the customer or the passage of time should change the answer. Read-only queries should not mutate the object.
+
+### Prefer explicit types to anonymous data objects
+
+For an anonymous data object with more than two or three fields, or an unclear meaning, consider extracting a named class even if the value is only used within one method. In PHP this includes `stdClass`, `(object) array(...)` and anonymous classes used merely as records. Start with typed `readonly` properties; require a concrete reason before making the data mutable.
+
+For example, replace this anonymous record:
+
+```php
+$summary = (object) array(
+	'distanceKm' => $distanceKm,
+	'ascentMeters' => $ascentMeters,
+	'durationSeconds' => $durationSeconds,
+	'pointCount' => $pointCount
+);
+```
+
+With an explicit value type:
+
+```php
+namespace WpTripSummary {
+	final class RouteSummary {
+		public function __construct(public readonly float $distanceKm,
+			public readonly float $ascentMeters,
+			public readonly int $durationSeconds,
+			public readonly int $pointCount) {
+		}
+	}
+}
+```
+
+```php
+$summary = new \WpTripSummary\RouteSummary($distanceKm,
+	$ascentMeters, $durationSeconds, $pointCount);
+```
+
+`readonly` prevents reassignment of the property; it does not make an object held by that property deeply immutable. This preference concerns data records, not anonymous classes used as small implementations of an existing interface.
+
+### Prefer explicit types to tuple-like arrays
+
+PHP has no native tuple type. Positional arrays, including arrays unpacked through `list(...)` or destructuring, are often used for that purpose. Prefer passing or returning at most three fields in this form. When there are more than three fields, or their positional meaning is unclear, extract an explicit type. A two-field result can still need a class if callers cannot tell what the positions mean.
+
+Prefer the `RouteSummary` type above:
+
+```php
+return new \WpTripSummary\RouteSummary($distanceKm,
+	$ascentMeters, $durationSeconds, $pointCount);
+```
+
+Over a result whose meaning depends on remembering positions:
+
+```php
+return array($distanceKm, $ascentMeters, $durationSeconds, $pointCount);
+```
+
+Associative arrays can make keys explicit, but they are still not a named domain type. Keep existing WordPress array contracts, configuration maps and public hook payloads compatible; this convention does not authorize changing them into objects.
+
+### Use local variables to store intermediate meaning
+
+Name intermediate concepts even if each variable is used only once. PHP infers local variable types; do not copy C# local type declarations into PHP.
+
+Prefer:
+
+```php
+$isActive = $customer->hasLoggedOn && $customer->isEnabled;
+$hasWarnings = $customer->warningCount > 0;
+
+return $isActive && !$hasWarnings;
+```
+
+Over:
+
+```php
+return $customer->hasLoggedOn && $customer->isEnabled && $customer->warningCount == 0;
+```
+
+This example assumes side-effect-free boolean properties and a non-negative warning count. Do not turn a guarded, expensive or state-changing check into an unconditional evaluation just to introduce a variable. Retain short-circuit behavior with a guard or an extracted predicate when needed.
+
+### Separate main method logic from error handling
+
+When the work and its error handling can be decoupled simply, strongly prefer a wrapper that calls a separate helper.
+
+For example, separate this combined method:
+
+```php
+public function execute(): void {
+	try {
+		$document = $this->_loadDocument();
+		$this->_validateDocument($document);
+		$this->_saveDocument($document);
+	} catch (Exception $exception) {
+		$this->_handleExecutionFailure($exception);
+	}
+}
+```
+
+Into a wrapper and its core operation (class-body excerpt):
+
+```php
+public function execute(): void {
+	try {
+		$this->_executeCore();
+	} catch (Exception $exception) {
+		$this->_handleExecutionFailure($exception);
+	}
+}
+
+private function _executeCore(): void {
+	$document = $this->_loadDocument();
+	$this->_validateDocument($document);
+	$this->_saveDocument($document);
+}
+```
+
+`_executeCore()` is not a mandatory name; the distinction between the operation and the handling must be clear. Preserve the existing entry point's name, visibility, signature and contract if it is a public API or an internal API used by other components. A private/protected method that is not such a contract may be renamed to something like `_executeWithErrorHandling()`, with its callers updated. Keep the new helper private unless a wider contract is actually needed.
+
+Preserve the caught exception types, propagation behavior and `finally` cleanup. In namespaced code, import global exception types or qualify them. Do not broaden `Exception` to `Throwable` as a side effect of extraction. Apply the split only when the `try` and `catch` blocks do not share complex state, or can be made independent without awkward plumbing or moving method-local state into object properties merely to make it accessible.
 
 ## Declarations and calls
 
