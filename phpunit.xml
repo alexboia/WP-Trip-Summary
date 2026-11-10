@@ -99,6 +99,7 @@
 			<file>tests/test-NoopPathRewriter.php</file>
 			<file>tests/test-PluginMenuItemCollector.php</file>
 			<file>tests/test-PostListingColumn.php</file>
+			<file>tests/test-RouteTypeFilterProcessor.php</file>
 			<file>tests/test-TripSummaryStatusColumn.php</file>
 			<file>tests/test-TripSummaryStatusColumnDataSource.php</file>
 			<file>tests/test-View.php</file>

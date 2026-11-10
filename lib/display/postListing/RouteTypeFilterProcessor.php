@@ -47,10 +47,9 @@ class Abp01_Display_PostListing_RouteTypeFilterProcessor implements Abp01_Displa
 	}
 
 	private function _processQueryJoin($join, WP_Query $query, $currentValue): string {
-		$postsTableName = $this->_getPostsTableName();
-		$routeDetailsTableName = $this->_getRouteDetailsTableName();
-
-		if (!empty($currentValue)) {
+		if (!empty($currentValue) && $this->_shouldFilterQuery($query)) {
+			$postsTableName = $this->_getPostsTableName();
+			$routeDetailsTableName = $this->_getRouteDetailsTableName();
 			$join .= ' LEFT JOIN `' . $routeDetailsTableName . '` `abp01rd` ON `' . $postsTableName . '`.`ID` = `abp01rd`.`post_ID`';
 		}
 
@@ -58,10 +57,23 @@ class Abp01_Display_PostListing_RouteTypeFilterProcessor implements Abp01_Displa
 	}
 
 	private function _processQueryClauses(array $clauses, WP_Query $query, $currentValue): array {
-		if (!empty($currentValue)) {
-			$clauses['where'] = " AND `abp01rd`.`route_type` = '" . esc_sql($currentValue) . "'";
+		if (!empty($currentValue) && $this->_shouldFilterQuery($query)) {
+			// Preserve WordPress's post type, status, date and other query conditions.
+			$clauses['where'] .= " AND `abp01rd`.`route_type` = '" . esc_sql($currentValue) . "'";
 		}
 		return $clauses;	
+	}
+
+	private function _shouldFilterQuery(WP_Query $query): bool {
+		// These SQL hooks also run for secondary queries, including wp_global_styles.
+		// Filtering those and replacing their WHERE made the theme resolver decode
+		// an ordinary route post as theme JSON. Scope both hooks to the admin list.
+		return is_admin()
+			&& $query->is_main_query()
+			&& abp01_get_env()->isListingWpPosts()
+			&& in_array($query->get('post_type') ?: 'post',
+				Abp01_AvailabilityHelper::getTripSummaryAvailableForPostTypes(), 
+				true);
 	}
 	
 	private function _getRouteDetailsTableName() {
