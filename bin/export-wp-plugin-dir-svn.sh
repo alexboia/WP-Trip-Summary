@@ -42,11 +42,6 @@ clean_trunk_dir() {
     rm -rf $WPTS_EXPORT_TRUNK_DIR/.htaccess > /dev/null
 }
 
-regenerate_help() {
-	echo "Re-generating help contents..."
-	php ./help/tools/make-help.php
-}
-
 copy_source_files() {
     echo "Copying all source files to $1..."
 	cp ./LICENSE.md "$1/license.txt"
@@ -63,9 +58,8 @@ copy_source_files() {
 
 	mkdir "$1/data"
 	mkdir "$1/data/cache" && mkdir "$1/data/storage"
-	mkdir "$1/data/help" && mkdir "$1/data/setup"
+	mkdir "$1/data/setup"
 
-	cp -r ./data/help/* "$1/data/help" > /dev/null
 	cp -r ./data/dev/setup/* "$1/data/setup" > /dev/null
 }
 
@@ -102,7 +96,6 @@ echo "Using version: $WPTS_VERSION"
 
 ensure_root_dir
 clean_trunk_dir
-regenerate_help
 copy_source_files "$WPTS_EXPORT_TRUNK_DIR"
 
 if [ $# -eq 1 ] && [ "$1" = "--export-tag=true" ]
