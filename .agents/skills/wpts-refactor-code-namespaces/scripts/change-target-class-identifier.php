@@ -80,7 +80,9 @@ function nextMeaningfulTokenIndex(array $tokens, int $start): ?int {
 	return null;
 }
 
-function buildReplacements(array $tokens, string $legacyName, string $shortName): array {
+function buildReplacements(array $tokens, 
+	string $legacyName, 
+	string $shortName): array {
 	//Find references to legacy name and register a replacement 
 	//	for each (tailored for substr_replace).
 	// A replacement item holds: 
@@ -221,24 +223,73 @@ function addClassDependency(array &$dependencies, string $dependency, string $le
 	}
 }
 
+function getBraceDepthAfterToken(array $token, int $braceDepth): int {
+	if (($token['id'] === null && $token['text'] === '{')
+		|| $token['id'] === T_CURLY_OPEN
+		|| $token['id'] === T_DOLLAR_OPEN_CURLY_BRACES) {
+		return $braceDepth + 1;
+	}
+	if ($token['id'] === null && $token['text'] === '}') {
+		return max(0, $braceDepth - 1);
+	}
+	return $braceDepth;
+}
+
 function determineClassDependencies(array $tokens, string $legacyName): array {
 	$dependencies = array();
 	$previousMeaningfulToken = null;
 	$expectSingleClass = false;
 	$inImplementsList = false;
+	$inTraitUseList = false;
+	$braceDepth = 0;
 	$inCatchType = false;
 	$waitingForCatchParenthesis = false;
-
+	$inFunctionDefinition = false;
+	$hasPassedArgumentsDeclaration = false;
+	
 	$classNamesAfter = array(T_NEW, 
 		T_INSTANCEOF, 
 		T_EXTENDS);
 
-	foreach ($tokens as $token) {
+	$excludeTypeHints = array(
+		'mixed',
+		'array',
+		'string',
+		'int',
+		'float',
+		'bool',
+		'self',
+		'void',
+		'never', 
+		'true',
+		'false',
+		'null'
+	);
+
+	foreach ($tokens as $index => $token) {
 		if (isIgnoredToken($token)) {
 			continue;
 		}
 
-		if (in_array($token['id'], $classNamesAfter, true)) {
+		$braceDepth = getBraceDepthAfterToken($token, 
+			$braceDepth);
+
+		if ($token['id'] === T_USE && $braceDepth > 0) {
+			// Namespace imports are top-level in the 
+			//	accepted source files.
+			// Closure captures start with '(', whereas trait lists 
+			//	start with a name.
+			$nameIndex = nextMeaningfulTokenIndex($tokens, $index + 1);
+			if ($nameIndex !== null && isClassNameToken($tokens[$nameIndex])) {
+				$inTraitUseList = true;
+				$previousMeaningfulToken = $token;
+				continue;
+			}
+		}
+
+		if (in_array($token['id'], 
+			$classNamesAfter, 
+			true)) {
 			$expectSingleClass = true;
 			$previousMeaningfulToken = $token;
 			continue;
@@ -263,13 +314,45 @@ function determineClassDependencies(array $tokens, string $legacyName): array {
 			continue;
 		}
 
+		if ($token['id'] === T_FUNCTION) {
+			$inFunctionDefinition = true;
+			continue;
+		}
+
+		if ($inFunctionDefinition === true && $token['text'] === '(') {
+			//Not doing this will add the function name as a depency, 
+			//	since the token type is reported as T_STRING!!!
+			$hasPassedArgumentsDeclaration = true;
+			continue;
+		}
+
+		if ($inFunctionDefinition === true 
+			&& in_array($token['text'], 
+				array('{', ';'), 
+				true)) {
+			$inFunctionDefinition = false;
+			$hasPassedArgumentsDeclaration = false;
+			continue;
+		}
+
 		if (isClassNameToken($token)) {
-			if ($expectSingleClass || $inImplementsList || $inCatchType) {
+			if ($expectSingleClass 
+				|| $inImplementsList 
+				|| $inCatchType 
+				|| $inTraitUseList) {
 				addClassDependency($dependencies, 
 					$token['text'], 
 					$legacyName);
 
 				$expectSingleClass = false;
+			} elseif ($inFunctionDefinition 
+				&& $hasPassedArgumentsDeclaration
+				&& !in_array($token['text'], 
+					$excludeTypeHints, 
+					true)) { 
+				addClassDependency($dependencies, 
+					$token['text'], 
+					$legacyName);
 			} elseif ($previousMeaningfulToken !== null
 				&& $previousMeaningfulToken['id'] === T_DOUBLE_COLON) {
 				// The class name is before ::, so it is handled when :: is reached.
@@ -284,16 +367,22 @@ function determineClassDependencies(array $tokens, string $legacyName): array {
 				$legacyName);
 		}
 
-		if ($inImplementsList
-			&& in_array($token['text'], array('{', ';'), true)) {
+		if (($inImplementsList || $inTraitUseList)
+			&& in_array($token['text'], 
+				array('{', ';'), 
+				true)) {
 			$inImplementsList = false;
+			$inTraitUseList = false;
 		}
 		if ($inCatchType
-			&& ($token['id'] === T_VARIABLE || $token['text'] === ')')) {
+			&& ($token['id'] === T_VARIABLE 
+				|| $token['text'] === ')')) {
 			$inCatchType = false;
 		}
-		if ($expectSingleClass && ($token['id'] === T_VARIABLE || $token['id'] === T_CLASS)) {
-			// Dynamic instantiation or an anonymous class cannot be imported.
+		if ($expectSingleClass && ($token['id'] === T_VARIABLE 
+			|| $token['id'] === T_CLASS)) {
+			// Dynamic instantiation or an anonymous class 
+			//	cannot be imported.
 			$expectSingleClass = false;
 		}
 
@@ -310,13 +399,11 @@ function hasTopLevelUseDeclaration(array $tokens): bool {
 		if (isIgnoredToken($token)) {
 			continue;
 		}
-		if ($token['text'] === '{') {
-			$braceDepth++;
-		} elseif ($token['text'] === '}') {
-			$braceDepth = max(0, $braceDepth - 1);
-		} elseif ($token['id'] === T_USE
+		$braceDepth = getBraceDepthAfterToken($token, $braceDepth);
+		if ($token['id'] === T_USE
 			&& $braceDepth === 0
-			&& ($previousMeaningfulToken === null || $previousMeaningfulToken['text'] !== ')')) {
+			&& ($previousMeaningfulToken === null 
+				|| $previousMeaningfulToken['text'] !== ')')) {
 			return true;
 		}
 		$previousMeaningfulToken = $token;
@@ -339,6 +426,18 @@ function writeChanges(string $converted, string $file): bool {
 	}
 
 	return true;
+}
+
+function findOpenTagIndex(array $tokens): int|null {
+	$openTagIndex = null;
+	foreach ($tokens as $index => $token) {
+		if ($token['id'] === T_OPEN_TAG) {
+			$openTagIndex = $index;
+			break;
+		}
+	}
+
+	return $openTagIndex;
 }
 
 if ($argc < 3 || $argc > 4) {
@@ -406,18 +505,6 @@ $replacements = buildReplacements($tokens,
 
 $converted = applyReplacements($source, 
 	$replacements);
-
-function findOpenTagIndex(array $tokens): int|null {
-	$openTagIndex = null;
-	foreach ($tokens as $index => $token) {
-		if ($token['id'] === T_OPEN_TAG) {
-			$openTagIndex = $index;
-			break;
-		}
-	}
-
-	return $openTagIndex;
-}
 
 $convertedTokens = tokenOffsets($converted);
 $openTagIndex = findOpenTagIndex($convertedTokens);
