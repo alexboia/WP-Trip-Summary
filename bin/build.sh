@@ -61,12 +61,6 @@ scan_lib_dir_or_fail() {
 	fi
 }
 
-# Regenerate compatibility info
-make_compat_info() {
-	echo "Building compatibility information files..."
-	./bin/detect-compat-info.sh
-}
-
 clean_tmp_dir() {
 	echo "Cleaning up temporary directory..."
 	rm -rf $WPTS_BUILD_TMPDIR/*
@@ -115,7 +109,6 @@ echo "Using version: ${WPTS_VERSION}"
 scan_lib_dir_or_fail
 ensure_out_dirs
 clean_out_dirs
-make_compat_info
 build_readme
 copy_source_files
 generate_package
