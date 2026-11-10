@@ -39,8 +39,20 @@ class Abp01_Installer_Requirement_RequiredVersion implements Abp01_Installer_Req
 	private $_requiredVersion;
 	
 	public function __construct($currentVersion, $requiredVersion) {
-		$this->_currentVersion = $currentVersion;
-		$this->_requiredVersion = $requiredVersion;
+		$this->_currentVersion = $this->_normalizeVersion($currentVersion);
+		$this->_requiredVersion = $this->_normalizeVersion($requiredVersion);
+	}
+
+	private function _normalizeVersion($version) {
+		// version_compare() treats 7.0 as older than 7.0.0. Pad the numeric
+		// release part, preserving suffixes and any fourth or later component.
+		// Accept the numeric separators that version_compare() canonicalizes.
+		if (preg_match('/^([0-9]+(?:[._+-][0-9]+)*)([._+-]?[a-zA-Z].*)?$/D', $version, $matches) !== 1) {
+			return $version;
+		}
+
+		$components = preg_split('/[._+-]/', $matches[1]);
+		return implode('.', array_pad($components, 3, '0')) . ($matches[2] ?? '');
 	}
 
 	public function isSatisfied() { 
