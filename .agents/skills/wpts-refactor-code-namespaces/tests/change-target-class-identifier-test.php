@@ -41,40 +41,13 @@ function runConverter(string $script, string $file, string $legacyName, bool $dr
 	return array(implode(PHP_EOL, $output), $exitCode);
 }
 
-function getTestSourceNoUsings(): string {
-	$source = <<<'PHP'
-<?php
-/** The word use in a comment is not an import. */
-
-class Abp01_Example extends Abp01_Base implements Abp01_First, Abp01_Second {
-	public static function make(): Abp01_Example {
-		$className = Abp01_Dynamic::class;
-		$dynamic = new $className();
-		new Abp01_Service();
-		if ($dynamic instanceof Abp01_Contract) {
-			Abp01_StaticTool::run();
-		}
-		try {
-			$dynamicNew = new Abp01_Dynamic();
-		} catch (Abp01_FirstException|Abp01_SecondException $exception) {}
-		return new Abp01_Example();
+function wpts_copyTestFixture(string $fixtureName, string $temporaryDir): string {
+	$fixture = __DIR__ . '/data/change-target-class-identifier/' . $fixtureName;
+	$destination = $temporaryDir . '/' . $fixtureName;
+	if (!is_file($fixture) || !copy($fixture, $destination)) {
+		throw new RuntimeException('Could not copy test fixture: ' . $fixtureName);
 	}
-}
-PHP;
-	return $source;
-}
-
-function getTestSourceWithUsings(): string {
-	$source = <<<'PHP'
-<?php 
-use Existing\\Dependency;
-class Abp01_ExistingUse { 
-	public function make() { 
-		return new Abp01_Other(); 
-	} 
-}
-PHP;
-	return $source;
+	return $destination;
 }
 
 function assertGeneratedImports(array $expected, string $converted, string $caseName): void {
@@ -99,141 +72,41 @@ function assertGeneratedImports(array $expected, string $converted, string $case
 function getTraitDependencyCases(): array {
 	return array(
 		'SingleTrait' => array(
-			'source' => <<<'PHP'
-<?php
-class Abp01_TraitConsumer {
-	/** use Abp01_CommentOnlyTrait; */
-	use Abp01_LoggingTrait;
-	private const LABEL = 'use Abp01_StringOnlyTrait;';
-}
-PHP,
 			'imports' => array('Abp01_LoggingTrait')
 		),
 		'MultipleTraitsAndTypes' => array(
-			'source' => <<<'PHP'
-<?php
-class Abp01_TraitConsumer {
-	use /* first trait */ Abp01_FirstTrait,
-		// second trait
-		Abp01_SecondTrait;
-	use Abp01_ThirdTrait;
-	public function convert(?Abp01_Input $input): Abp01_Output|false {
-		return false;
-	}
-	public function traitClass(): string {
-		return Abp01_FirstTrait::class;
-	}
-}
-PHP,
 			'imports' => array('Abp01_FirstTrait', 'Abp01_SecondTrait',
 				'Abp01_ThirdTrait', 'Abp01_Input', 'Abp01_Output')
 		),
 		'TraitAdaptations' => array(
-			'source' => <<<'PHP'
-<?php
-class Abp01_TraitConsumer {
-	use Abp01_FirstTrait, Abp01_SecondTrait, Abp01_ThirdTrait {
-		Abp01_FirstTrait::execute insteadof Abp01_SecondTrait, Abp01_ThirdTrait;
-		Abp01_SecondTrait::execute as private executeSecond;
-		execute as protected;
-	}
-	private const AFTER_TRAITS = 'after';
-	public function methodAfterTraits(): string {
-		return 'done';
-	}
-}
-PHP,
 			'imports' => array('Abp01_FirstTrait', 'Abp01_SecondTrait', 'Abp01_ThirdTrait')
 		),
 		'NestedTrait' => array(
-			'source' => <<<'PHP'
-<?php
-trait Abp01_TraitConsumer {
-	use Abp01_NestedTrait;
-}
-PHP,
 			'imports' => array('Abp01_NestedTrait')
 		),
 		'EnumTrait' => array(
-			'source' => <<<'PHP'
-<?php
-enum Abp01_TraitConsumer {
-	use Abp01_EnumTrait;
-	case Example;
-}
-PHP,
 			'imports' => array('Abp01_EnumTrait')
 		),
 		'AnonymousClassTrait' => array(
-			'source' => <<<'PHP'
-<?php
-class Abp01_TraitConsumer {
-	public function make(): mixed {
-		return new class {
-			use Abp01_AnonymousTrait;
-		};
-	}
-}
-PHP,
 			'imports' => array('Abp01_AnonymousTrait')
 		),
 		'FullyQualifiedTrait' => array(
-			'source' => <<<'PHP'
-<?php
-class Abp01_TraitConsumer {
-	use \External\Mixins\Logging;
-}
-PHP,
 			'imports' => array('External\\Mixins\\Logging')
 		),
 		'ClosureCaptures' => array(
-			'source' => <<<'PHP'
-<?php
-$captured = 'value';
-$callback = static function(Abp01_Input $input) use /* capture */ ($captured): string {
-	return $captured;
-};
-class Abp01_TraitConsumer {
-	use Abp01_LoggingTrait;
-	public function make(): mixed {
-		$captured = 'value';
-		return function(Abp01_Input $input) use (&$captured): ?Abp01_Output {
-			return null;
-		};
-	}
-}
-PHP,
 			'imports' => array('Abp01_Input', 'Abp01_Output', 'Abp01_LoggingTrait')
 		),
 		'TraitAfterInterpolatedString' => array(
-			'source' => <<<'PHP'
-<?php
-class Abp01_TraitConsumer {
-	public function describe(string $name): string {
-		return "{$name}}";
-	}
-	use Abp01_LoggingTrait;
-}
-PHP,
 			'imports' => array('Abp01_LoggingTrait')
 		),
 		'ExistingTraitImport' => array(
-			'source' => <<<'PHP'
-<?php
-use External\Mixins\Logging as LoggingTrait;
-class Abp01_TraitConsumer {
-	use LoggingTrait, Abp01_AdditionalTrait;
-}
-PHP,
 			'imports' => array()
 		)
 	);
 }
 
 try {
-	$source = getTestSourceNoUsings();
-	$file = $temporaryDir . '/Example.php';
-	file_put_contents($file, $source);
+	$file = wpts_copyTestFixture('Example.php', $temporaryDir);
 
 	//1. Dry run must not modify the file, 
 	//	but preview still needs to be the correctly 
@@ -296,10 +169,7 @@ try {
 	}
 
 	//3. Existing imports need to be respected and none other added
-	$existingUseFile = $temporaryDir . '/ExistingUse.php';
-	file_put_contents($existingUseFile, 
-		getTestSourceWithUsings()
-	);
+	$existingUseFile = wpts_copyTestFixture('ExistingUse.php', $temporaryDir);
 	
 	[, $existingUseExitCode] = runConverter($script, 
 		$existingUseFile, 
@@ -315,8 +185,7 @@ try {
 	// adaptation aliases, closure variables or other non-class identifiers.
 	$traitCases = getTraitDependencyCases();
 	foreach ($traitCases as $caseName => $case) {
-		$traitFile = $temporaryDir . '/' . $caseName . '.php';
-		file_put_contents($traitFile, $case['source']);
+		$traitFile = wpts_copyTestFixture($caseName . '.php', $temporaryDir);
 		
 		$before = hash_file('sha256', $traitFile);
 		[$traitPreview, $traitPreviewExitCode] = runConverter($script,
@@ -361,17 +230,7 @@ try {
 	}
 
 	//5. An unqualified trait reference must resolve after namespace conversion.
-	$runtimeFile = $temporaryDir . '/TraitRuntime.php';
-	file_put_contents($runtimeFile, <<<'PHP'
-<?php
-trait Abp01_LoggingTrait {
-	public function getTraitValue(): string {
-		return 'trait-ok';
-	}
-}
-require __DIR__ . '/SingleTrait.php';
-echo (new \WpTripSummary\TraitConsumer())->getTraitValue();
-PHP);
+	$runtimeFile = wpts_copyTestFixture('TraitRuntime.php', $temporaryDir);
 	$runtimeOutput = array();
 	$runtimeExitCode = 0;
 
