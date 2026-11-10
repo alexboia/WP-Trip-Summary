@@ -28,7 +28,8 @@
 - Expanded action/filter documentation and automated regression coverage, added a custom viewer tab example, and improved contributor and README generation tooling;
 - Added repository skills for coding conventions and license headers, hook documentation, namespace migrations and conservative typing, and product marketing, with supporting references and utilities (see [Repository skills](CONTRIBUTING.md#repository-skills));
 - Removed the built-in Help page and its bundled resources;
-- Removed bundled styles targeting individual legacy WordPress themes.
+- Removed bundled styles targeting individual legacy WordPress themes;
+- Fixed an issue when filtering by route type, yielding `Notice: WP_Theme_JSON_Resolver::get_user_data(): Error when decoding a theme.json schema for user data`.
 
 ### Version 0.3.2
 - Added German translation ([issue #90](https://github.com/alexboia/WP-Trip-Summary/issues/90));
