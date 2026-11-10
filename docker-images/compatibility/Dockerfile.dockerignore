@@ -1,0 +1,27 @@
+# This Dockerfile uses the plugin root as its context. Send only release inputs.
+**
+!abp01-plugin-*.php
+!index.php
+!.htaccess
+!LICENSE.md
+!README.txt
+!composer.json
+!composer.lock
+!lib/
+!lib/**
+!views/
+!views/**
+!media/
+!media/**
+!lang/
+!lang/**
+!data/
+!data/dev/
+!data/dev/setup/
+!data/dev/setup/**
+!docker-images/
+!docker-images/compatibility/
+!docker-images/compatibility/entrypoint.sh
+**/node_modules
+**/.git
+**/.env

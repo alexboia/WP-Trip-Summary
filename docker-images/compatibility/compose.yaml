@@ -1,0 +1,63 @@
+services:
+  database:
+    image: ${WPTS_DATABASE_IMAGE:?Select minimum.env or latest.env with --env-file}
+    platform: ${WPTS_DATABASE_PLATFORM:-linux/amd64}
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_PASSWORD: wpts-local-root
+    healthcheck:
+      test: ["CMD-SHELL", "mysql --protocol=TCP --host=127.0.0.1 --user=$$MYSQL_USER --password=$$MYSQL_PASSWORD --database=$$MYSQL_DATABASE --execute='SELECT 1' >/dev/null 2>&1"]
+      interval: 5s
+      timeout: 5s
+      retries: 40
+      start_period: 30s
+    volumes:
+      - database_data:/var/lib/mysql
+
+  wordpress:
+    image: wp-trip-summary:compat-${WPTS_COMPAT_PROFILE:?Select a compatibility profile}
+    build:
+      context: ../..
+      dockerfile: docker-images/compatibility/Dockerfile
+      args:
+        WORDPRESS_RUNTIME_IMAGE: ${WPTS_WORDPRESS_RUNTIME_IMAGE:?Select a compatibility profile}
+        WORDPRESS_VERSION: ${WPTS_WORDPRESS_VERSION:?Select a compatibility profile}
+        WPTS_PHP_BRANCH: ${WPTS_PHP_BRANCH:?Select a compatibility profile}
+    depends_on:
+      database:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${WPTS_PORT:?Select a compatibility profile}:80"
+    environment:
+      WORDPRESS_DB_HOST: database:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DEBUG: "1"
+      WORDPRESS_CONFIG_EXTRA: |
+        define('AUTOMATIC_UPDATER_DISABLED', true);
+        define('WP_AUTO_UPDATE_CORE', false);
+        define('DISABLE_WP_CRON', true);
+        define('WP_DEBUG_LOG', true);
+        define('WP_DEBUG_DISPLAY', true);
+      WPTS_SITE_URL: http://localhost:${WPTS_PORT}
+      WPTS_SITE_TITLE: WP Trip Summary - ${WPTS_COMPAT_PROFILE}
+      WPTS_ADMIN_USER: ${WPTS_ADMIN_USER:-wpts}
+      WPTS_ADMIN_PASSWORD: ${WPTS_ADMIN_PASSWORD:-wpts-change-me}
+      WPTS_ADMIN_EMAIL: ${WPTS_ADMIN_EMAIL:-wpts@example.test}
+    healthcheck:
+      test: ["CMD-SHELL", "test -f /tmp/wpts-compat-ready && curl --fail --silent --max-time 5 http://127.0.0.1/wp-login.php >/dev/null"]
+      interval: 5s
+      timeout: 10s
+      retries: 30
+      start_period: 60s
+    volumes:
+      - uploads_data:/var/www/html/wp-content/uploads
+
+# Compose project names differ between profiles, so both the database and
+# uploaded tracks/media remain isolated when the two sites run together.
+volumes:
+  database_data:
+  uploads_data:

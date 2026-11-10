@@ -1,5 +1,10 @@
 # WP Trip Summary release images
 
+For isolated sites using the **current local plugin sources**, see the
+[minimum/latest compatibility profiles](compatibility/README.md). They cover
+the declared minimum environment and a snapshot of the newest stable versions;
+the historical images below remain available for upgrade tests.
+
 This directory contains one Dockerfile for every downloadable WP Trip Summary
 release found in the WordPress Plugin Directory or on the project's GitHub
 Releases page on 2026-09-20.
