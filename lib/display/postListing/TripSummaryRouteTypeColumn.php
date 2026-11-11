@@ -99,7 +99,7 @@ class Abp01_Display_PostListing_TripSummaryRouteTypeColumn extends Abp01_Display
 		 *
 		 * @param string|null $routeTypeLabel The unformatted route type label.
 		 * @param int|null $postId The post identifier.
-		 * @param string $routeType The route type code, or an empty string when none is assigned.
+		 * @param string|null $routeType The route type code, or null/empty when none is assigned.
 		 */
 		$filteredRouteTypeLabel = apply_filters('abp01_unformatted_route_type_label',
 			$routeTypeLabel,

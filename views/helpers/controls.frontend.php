@@ -304,8 +304,8 @@ if (!function_exists('abp01_get_info_item_field_icon_mapping')) {
 			 * through the abp01_info_item_icons filter. A field mapped to an identifier that is
 			 * not present in the icon registry is rendered without an icon.
 			 *
-			 * The filtered mapping is cached for the remainder of the request. A non-array result
-			 * is ignored in favor of the defaults; an empty array intentionally disables all icons.
+			 * The filtered mapping is cached for the remainder of the request. Non-array and
+			 * empty-array results are ignored in favor of the defaults.
 			 *
 			 * @since 0.3.3
 			 * @category Front-end Viewer
@@ -380,8 +380,8 @@ if (!function_exists('abp01_get_info_item_icons')) {
 			 * The array is keyed by icon identifier and each value contains the inner markup
 			 * inserted unescaped into the common 24x24 SVG wrapper. Icon identifiers are
 			 * resolved through the info item field-to-icon mapping. The filtered array is
-			 * cached for the remainder of the request. A non-array result is ignored in favor
-			 * of the defaults. Callbacks must provide trusted SVG element markup.
+			 * cached for the remainder of the request. Non-array and empty-array results are
+			 * ignored in favor of the defaults. Callbacks must provide trusted SVG element markup.
 			 *
 			 * @since 0.3.3
 			 * @category Front-end Viewer

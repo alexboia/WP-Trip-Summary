@@ -48,7 +48,7 @@ namespace WpTripSummary {
 			 * Initial value is either the value of boolean constant ABP01_TRIP_SUMMARY_LOG_ENABLED, 
 			 * if defined, or true if not defined.
 			 * 
-			 * Result is converted to boolean.
+			 * Only a literal boolean true enables the feature.
 			 * 
 			 * @since 0.3.2
 			 * @category Trip Summary Management

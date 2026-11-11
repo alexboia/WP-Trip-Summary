@@ -28,7 +28,7 @@
             "enclosingFunction": "abp01_get_logger_config",
             "documentationStatus": "documented",
             "docCommentLine": 204,
-            "docComment": "/**\n\t * Filters whether or not to rotate logs. \n\t * Initial value is either the value of boolean constant ABP01_LOGS_ROTATE, \n\t * if defined, or true by default\n\t * \n\t * @since 0.3.2\n\t * @category Log Management\n\t * \n\t * @param bool $rotateLogs Whether logs should rotated or not\n\t */",
+            "docComment": "/**\n\t * Filters whether or not to rotate logs. \n\t * Initial value is either the value of boolean constant ABP01_LOGS_ROTATE, \n\t * if defined, or true by default. Only a literal boolean true enables rotation.\n\t * \n\t * @since 0.3.2\n\t * @category Log Management\n\t * \n\t * @param bool $rotateLogs Whether logs should be rotated.\n\t */",
             "prefixEvidence": true
         },
         {
@@ -41,12 +41,12 @@
                 "$maxLogFiles"
             ],
             "file": "abp01-plugin-functions.php",
-            "line": 236,
+            "line": 238,
             "enclosingClass": null,
             "enclosingFunction": "abp01_get_logger_config",
             "documentationStatus": "documented",
             "docCommentLine": 223,
-            "docComment": "/**\n\t * Filters the number of log files to retain (0 = no limit).\n\t * Initial and default value is either the value of the integer constant ABP01_LOGS_MAX_LOG_FILES, \n\t * if defined, or 10 by default.\n\t * \n\t * Automatically converted to integer. \n\t * If less than 0, it will reset to the default value.\n\t * \n\t * @since 0.3.2\n\t * @category Log Management\n\t * \n\t * @var int $maxLogFiles The maximum number of log files\n\t */",
+            "docComment": "/**\n\t * Filters the number of rotated log files to retain.\n\t * Initial and default value is either the value of the integer constant ABP01_LOGS_MAX_LOG_FILES, \n\t * if defined, or 10 by default.\n\t * \n\t * Automatically converted to integer. \n\t * Zero and negative filtered values reset to the configured default.\n\t * To retain unlimited files, set ABP01_LOGS_MAX_LOG_FILES to 0; returning 0\n\t * from this filter alone does not override a positive configured default.\n\t * \n\t * @since 0.3.2\n\t * @category Log Management\n\t * \n\t * @param int $maxLogFiles The configured maximum number of rotated log files.\n\t */",
             "prefixEvidence": true
         },
         {
@@ -60,12 +60,12 @@
                 "$type"
             ],
             "file": "abp01-plugin-functions.php",
-            "line": 576,
+            "line": 579,
             "enclosingClass": null,
             "enclosingFunction": "abp01_get_lookup_type_label",
             "documentationStatus": "documented",
-            "docCommentLine": 564,
-            "docComment": "/**\n\t * Filters the label for a lookup type. \n\t * The initial value is the already translated lookup type label.\n\t * \n\t * @see Abp01_Lookup\n\t * \n\t * @since 0.3.2\n\t * @category Lookup Types Management\n\t * \n\t * @param string $translatedLabel The translated label for the lookup type\n\t * @param string $type The lookup type, as defined by the Abp01_Lookup class.\n\t */",
+            "docCommentLine": 566,
+            "docComment": "/**\n\t * Filters the label for a lookup type. \n\t * The initial value is the translated lookup type label, or null for an unknown type.\n\t * The filtered result is returned without further normalization.\n\t * \n\t * @see Abp01_Lookup\n\t * \n\t * @since 0.3.2\n\t * @category Lookup Types Management\n\t * \n\t * @param string|null $translatedLabel The translated label, or null for an unknown type.\n\t * @param string $type The lookup type, as defined by the Abp01_Lookup class.\n\t */",
             "prefixEvidence": true
         },
         {
@@ -79,11 +79,11 @@
                 "$withTime"
             ],
             "file": "abp01-plugin-functions.php",
-            "line": 731,
+            "line": 734,
             "enclosingClass": null,
             "enclosingFunction": "abp01_determine_date_format",
             "documentationStatus": "documented",
-            "docCommentLine": 718,
+            "docCommentLine": 721,
             "docComment": "/**\n\t * Filters the date format used by the plug-in, optionally including time format.\n\t * Initial value is the format as returned by date_format option, \n\t * as well as time_format option, if time format is also required.\n\t * \n\t * If result is empty, the initial value will be used.\n\t * \n\t * @since 0.3.2\n\t * @category Time Management\n\t * \n\t * @param string $format The date format\n\t * @param bool $withTime Whether or not to include time format as well\n\t */",
             "prefixEvidence": true
         },
@@ -139,7 +139,7 @@
             "enclosingFunction": "tripSummaryLogEnabled",
             "documentationStatus": "documented",
             "docCommentLine": 46,
-            "docComment": "/**\r\n\t\t\t * Filters whether the trip summary log feature should be made available.\r\n\t\t\t * Initial value is either the value of boolean constant ABP01_TRIP_SUMMARY_LOG_ENABLED, \r\n\t\t\t * if defined, or true if not defined.\r\n\t\t\t * \r\n\t\t\t * Result is converted to boolean.\r\n\t\t\t * \r\n\t\t\t * @since 0.3.2\r\n\t\t\t * @category Trip Summary Management\r\n\t\t\t * \r\n\t\t\t * @param bool $enabled Whether or not trip summary log is available\r\n\t\t\t */",
+            "docComment": "/**\r\n\t\t\t * Filters whether the trip summary log feature should be made available.\r\n\t\t\t * Initial value is either the value of boolean constant ABP01_TRIP_SUMMARY_LOG_ENABLED, \r\n\t\t\t * if defined, or true if not defined.\r\n\t\t\t * \r\n\t\t\t * Only a literal boolean true enables the feature.\r\n\t\t\t * \r\n\t\t\t * @since 0.3.2\r\n\t\t\t * @category Trip Summary Management\r\n\t\t\t * \r\n\t\t\t * @param bool $enabled Whether or not trip summary log is available\r\n\t\t\t */",
             "prefixEvidence": true
         },
         {
@@ -206,12 +206,12 @@
                 "$tools"
             ],
             "file": "lib/Plugin.php",
-            "line": 511,
+            "line": 512,
             "enclosingClass": "Abp01_Plugin",
             "enclosingFunction": "_getAdditionalMaintenanceTools",
             "documentationStatus": "documented",
             "docCommentLine": 499,
-            "docComment": "/**\n\t\t * Filters the list of additional maintenance tools, on top of the built-in ones.\n\t\t * Initial value is an empty array.\n\t\t * If result is not an array, it will be reset to an empty array.\n\t\t * Entries which are not instance of Abp01_MaintenanceTool will be removed, nulls included.\n\t\t * \n\t\t * @see Abp01_MaintenanceTool\n\t\t * @since 0.3.2\n\t\t * @category Maintenance Tools\n\t\t * \n\t\t * @param Abp01_MaintenanceTool[] $tools The current list of additional tools.\n\t\t */",
+            "docComment": "/**\n\t\t * Filters the list of additional maintenance tools, on top of the built-in ones.\n\t\t * Initial value is an empty array.\n\t\t * If result is not an array, it will be reset to an empty array.\n\t\t * Entries which are not instance of Abp01_MaintenanceTool will be removed, nulls included.\n\t\t * \n\t\t * @see Abp01_MaintenanceTool\n\t\t * @since 0.3.2\n\t\t * @category Maintenance Tools\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\n\t\t * \n\t\t * @param Abp01_MaintenanceTool[] $tools The current list of additional tools.\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -243,12 +243,12 @@
                 "$postId"
             ],
             "file": "lib/Viewer.php",
-            "line": 102,
+            "line": 103,
             "enclosingClass": "Abp01_Viewer",
             "enclosingFunction": "getAdditionalTabs",
             "documentationStatus": "documented",
             "docCommentLine": 84,
-            "docComment": "/**\n\t\t * Filters the additional front-end viewer tabs.\n\t\t * It cannot be used to modify the existing ones.\n\t\t * \n\t\t * Must be an array with tab codes as keys and, for each key, \n\t\t * an array with a mandatory \"label\" key as values. \n\t\t * Other keys are valid, but left alone.\n\t\t * \n\t\t * Post ID can be an positive integer or a null value.\n\t\t * If a null value is passed, all available tabs should be provided, \n\t\t * since this is called from the settings page where the default selected tab is configured.\n\t\t * \n\t\t * @since 0.3.2\n\t\t * @category Front-end Viewer\n\t\t * \n\t\t * @param array<string, array> $additionaTabs The list of additional tabs\n\t\t * @param ?int $postId The post ID or null\n\t\t */",
+            "docComment": "/**\n\t\t * Filters the additional front-end viewer tabs.\n\t\t * It cannot be used to modify the existing ones.\n\t\t * The initial value is an empty array. Non-array results are discarded.\n\t\t * \n\t\t * Must be an array with tab codes as keys and, for each key, \n\t\t * an array with a mandatory \"label\" key as values. \n\t\t * Other keys are valid, but left alone.\n\t\t * \n\t\t * Post ID can be an positive integer or a null value.\n\t\t * If a null value is passed, all available tabs should be provided, \n\t\t * since this is called from the settings page where the default selected tab is configured.\n\t\t * \n\t\t * @since 0.3.2\n\t\t * @category Front-end Viewer\n\t\t * \n\t\t * @param array<string, array> $additionalTabs The list of additional tabs\n\t\t * @param ?int $postId The post ID or null\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -289,7 +289,7 @@
             "enclosingFunction": "_getRouteTypeLabel",
             "documentationStatus": "documented",
             "docCommentLine": 90,
-            "docComment": "/**\r\n\t\t * Filters the unformatted (i.e. no HTML) route type label displayed in the post listing.\r\n\t\t * Initial value is the translated route type label, a dash when no route type\r\n\t\t * is assigned, or null when the route type is unknown.\r\n\t\t * \r\n\t\t * If the return value is not a string, the initial value will be used.\r\n\t\t *\r\n\t\t * @since 0.3.2\r\n\t\t * @category Trip Summary Management\r\n\t\t *\r\n\t\t * @param string|null $routeTypeLabel The unformatted route type label.\r\n\t\t * @param int|null $postId The post identifier.\r\n\t\t * @param string $routeType The route type code, or an empty string when none is assigned.\r\n\t\t */",
+            "docComment": "/**\r\n\t\t * Filters the unformatted (i.e. no HTML) route type label displayed in the post listing.\r\n\t\t * Initial value is the translated route type label, a dash when no route type\r\n\t\t * is assigned, or null when the route type is unknown.\r\n\t\t * \r\n\t\t * If the return value is not a string, the initial value will be used.\r\n\t\t *\r\n\t\t * @since 0.3.2\r\n\t\t * @category Trip Summary Management\r\n\t\t *\r\n\t\t * @param string|null $routeTypeLabel The unformatted route type label.\r\n\t\t * @param int|null $postId The post identifier.\r\n\t\t * @param string|null $routeType The route type code, or null/empty when none is assigned.\r\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -399,7 +399,7 @@
             "enclosingFunction": "_getTablesToUninstall",
             "documentationStatus": "documented",
             "docCommentLine": 77,
-            "docComment": "/**\r\n\t\t * Filters custom database table names dropped during uninstallation.\r\n\t\t * Initial value is an empty array. Return an associative array whose values are\r\n\t\t * table names.\r\n\t\t *\r\n\t\t * Custom tables are dropped in the order provided.\r\n\t\t * Empty or non-array results are ignored, and built-in tables \r\n\t\t * are always appended to the final list, \r\n\t\t * so they are always dropped from the databasae.\r\n\t\t *\r\n\t\t * @since 0.3.3\r\n\t\t * @category Installer\r\n\t\t *\r\n\t\t * @param array<string, mixed> $customTables Custom table names.\r\n\t\t * @param string[] $ownTables Built-in table names in drop order.\r\n\t\t */",
+            "docComment": "/**\r\n\t\t * Filters custom database table names dropped during uninstallation.\r\n\t\t * Initial value is an empty array. Return an array whose values are non-empty\r\n\t\t * table name strings; keys are ignored.\r\n\t\t *\r\n\t\t * Custom tables are processed in the order provided. Invalid entries are removed.\r\n\t\t * Empty or non-array results are ignored, and built-in tables \r\n\t\t * are always appended to the final list, \r\n\t\t * so the filter cannot remove built-in tables from the drop list.\r\n\t\t *\r\n\t\t * @since 0.3.3\r\n\t\t * @category Installer\r\n\t\t *\r\n\t\t * @param string[] $customTables Custom table names.\r\n\t\t * @param string[] $ownTables Built-in table names in drop order.\r\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -412,12 +412,12 @@
                 "$defaultLoggerClass"
             ],
             "file": "lib/logger/Manager.php",
-            "line": 76,
+            "line": 79,
             "enclosingClass": "Abp01_Logger_Manager",
             "enclosingFunction": "_createLogger",
             "documentationStatus": "documented",
             "docCommentLine": 62,
-            "docComment": "/**\r\n\t\t * Filters the class used to create the plug-in logger.\r\n\t\t *\r\n\t\t * The initial value is Abp01_Logger_MonologLogger. A custom class must be a\r\n\t\t * concrete implementation of Abp01_Logger and accept an Abp01_Logger_Config\r\n\t\t * instance as its constructor argument. Unsupported or non-instantiable classes\r\n\t\t * are ignored and the default logger is used instead.\r\n\t\t *\r\n\t\t * @since 0.3.1\r\n\t\t * @category Log Management\r\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t *\r\n\t\t * @param string $loggerClass The logger implementation class name.\r\n\t\t */",
+            "docComment": "/**\r\n\t\t * Filters the class used to create the plug-in logger.\r\n\t\t *\r\n\t\t * The initial value is Abp01_Logger_MonologLogger. A custom class must be a\r\n\t\t * concrete implementation of Abp01_Logger and accept an Abp01_Logger_Config\r\n\t\t * instance as its constructor argument. Return an existing class name: the value\r\n\t\t * is passed directly to class_implements().\r\n\t\t * Existing classes that do not implement Abp01_Logger, abstract classes, and\r\n\t\t * constructors that throw an Exception fall back to the default logger.\r\n\t\t * Invalid names or other thrown errors are not guaranteed to be handled.\r\n\t\t *\r\n\t\t * @since 0.3.1\r\n\t\t * @category Log Management\r\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t *\r\n\t\t * @param string $loggerClass The logger implementation class name.\r\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -449,12 +449,12 @@
                 "$postId"
             ],
             "file": "lib/pluginModules/JsonLdFrontendDataPluginModule.php",
-            "line": 108,
+            "line": 107,
             "enclosingClass": "Abp01_PluginModules_JsonLdFrontendDataPluginModule",
             "enclosingFunction": "_jsonLdFrontendDataEnabled",
             "documentationStatus": "documented",
             "docCommentLine": 96,
-            "docComment": "/**\r\n\t\t * Whether or not to output JSON-LD frontend data for the given post.\r\n\t\t * Defaults to the value of the corresponding plug-in setting.\r\n\t\t * Result is converted such that only boolean true enables the output.\r\n\t\t *\r\n\t\t * @since 0.3.3\r\n\t\t * @category Front-end Viewer\r\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t *\r\n\t\t * @param bool $enabled Whether or not the JSON-LD frontend data output is enabled\r\n\t\t * @param int $postId The post identifier\r\n\t\t */",
+            "docComment": "/**\r\n\t\t * Filters whether to output JSON-LD frontend data for the given post.\r\n\t\t * Defaults to the value of the corresponding plug-in setting.\r\n\t\t * Result is converted such that only boolean true enables the output.\r\n\t\t *\r\n\t\t * @since 0.3.3\r\n\t\t * @category Front-end Viewer\r\n\t\t *\r\n\t\t * @param bool $enabled Whether or not the JSON-LD frontend data output is enabled\r\n\t\t * @param int $postId The post identifier\r\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -506,12 +506,12 @@
                 "true"
             ],
             "file": "lib/pluginModules/RestApiEnhancementsPluginModule.php",
-            "line": 73,
+            "line": 74,
             "enclosingClass": "Abp01_PluginModules_RestApiEnhancementsPluginModule",
             "enclosingFunction": "_shouldAddTripSummaryToRestApi",
             "documentationStatus": "documented",
             "docCommentLine": 64,
-            "docComment": "/**\r\n\t\t * Filters whether or not to add the trip summary endpoint to the WP REST APIs.\r\n\t\t * True by default.\r\n\t\t * \r\n\t\t * @since 0.3.0\r\n\t\t * @category REST API\r\n\t\t * \r\n\t\t * @param bool $shouldAddTripSummaryToRestAPI True if it should be added, false otherwise\r\n\t\t */",
+            "docComment": "/**\r\n\t\t * Filters whether to register the read-only wpts_trip_summary field on supported\r\n\t\t * post types in the WordPress REST API.\r\n\t\t * Defaults to true. Only a literal boolean true enables registration.\r\n\t\t * \r\n\t\t * @since 0.3.0\r\n\t\t * @category REST API\r\n\t\t * \r\n\t\t * @param bool $shouldAddTripSummaryToRestAPI True if it should be added, false otherwise\r\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -524,12 +524,12 @@
                 "false"
             ],
             "file": "lib/pluginModules/RestApiEnhancementsPluginModule.php",
-            "line": 134,
+            "line": 136,
             "enclosingClass": "Abp01_PluginModules_RestApiEnhancementsPluginModule",
             "enclosingFunction": "_shouldAddTripSummaryToRestApiListing",
             "documentationStatus": "documented",
-            "docCommentLine": 125,
-            "docComment": "/**\r\n\t\t * Filters whether to add trip summary data for each post when the request is for a post listing.\r\n\t\t * Default false.\r\n\t\t * \r\n\t\t * @since 0.3.0\r\n\t\t * @category REST API\r\n\t\t * \r\n\t\t * @param bool $shouldAddTripSummaryToRestApiListing True to add, false otherwise.\r\n\t\t */",
+            "docCommentLine": 126,
+            "docComment": "/**\r\n\t\t * Filters whether to add trip summary data for each post when the request is for a post listing.\r\n\t\t * Defaults to false. Only a literal boolean true includes the data in listings;\r\n\t\t * otherwise the registered field returns null for those requests.\r\n\t\t * \r\n\t\t * @since 0.3.0\r\n\t\t * @category REST API\r\n\t\t * \r\n\t\t * @param bool $shouldAddTripSummaryToRestApiListing True to add, false otherwise.\r\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -543,12 +543,12 @@
                 "$viewerData"
             ],
             "file": "lib/pluginModules/RouteLogPluginModule.php",
-            "line": 241,
+            "line": 240,
             "enclosingClass": "Abp01_PluginModules_RouteLogPluginModule",
             "enclosingFunction": "_shouldRenderFrontendRouteLogMeta",
             "documentationStatus": "documented",
             "docCommentLine": 230,
-            "docComment": "/**\r\n\t\t * Whether or not to display metadata information for each trip summary route log item.\r\n\t\t * Defaults to true. Result is converted to boolean.\r\n\t\t * \r\n\t\t * @since 0.3.2\r\n\t\t * @category Front-end Viewer\r\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t * \r\n\t\t * @param bool $showMeta True to show the metadata information, false otherwise\r\n\t\t * @param stdClass $viewerData\r\n\t\t */",
+            "docComment": "/**\r\n\t\t * Filters whether to display metadata for each front-end trip summary route log item.\r\n\t\t * Defaults to true. Only a literal boolean true enables the metadata.\r\n\t\t * \r\n\t\t * @since 0.3.2\r\n\t\t * @category Front-end Viewer\r\n\t\t * \r\n\t\t * @param bool $showMeta True to show the metadata information, false otherwise\r\n\t\t * @param stdClass $viewerData The complete front-end viewer data for the current post.\r\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -562,11 +562,11 @@
                 "$postId"
             ],
             "file": "lib/pluginModules/RouteLogPluginModule.php",
-            "line": 351,
+            "line": 350,
             "enclosingClass": "Abp01_PluginModules_RouteLogPluginModule",
             "enclosingFunction": "_getDefaultLogEntryRider",
             "documentationStatus": "documented",
-            "docCommentLine": 338,
+            "docCommentLine": 337,
             "docComment": "/**\r\n\t\t * Filters the rider used to prefill a new trip summary route log entry.\r\n\t\t *\r\n\t\t * The initial value is the display name of the current WordPress user.\r\n\t\t * A null result is normalized to an empty string and the final result is\r\n\t\t * converted to string.\r\n\t\t *\r\n\t\t * @since 0.3.0\r\n\t\t * @category Trip Summary Management\r\n\t\t *\r\n\t\t * @param string $displayName The current WordPress user's display name.\r\n\t\t * @param int $postId The ID of the post whose route log is being edited.\r\n\t\t */",
             "prefixEvidence": true
         },
@@ -581,11 +581,11 @@
                 "$postId"
             ],
             "file": "lib/pluginModules/RouteLogPluginModule.php",
-            "line": 371,
+            "line": 370,
             "enclosingClass": "Abp01_PluginModules_RouteLogPluginModule",
             "enclosingFunction": "_getDefaultDate",
             "documentationStatus": "documented",
-            "docCommentLine": 359,
+            "docCommentLine": 358,
             "docComment": "/**\r\n\t\t * Filters the date used to prefill a new trip summary route log entry.\r\n\t\t *\r\n\t\t * The initial value is the current date in Y-m-d format. A null result is\r\n\t\t * normalized to an empty string and the final result is converted to string.\r\n\t\t *\r\n\t\t * @since 0.3.0\r\n\t\t * @category Trip Summary Management\r\n\t\t *\r\n\t\t * @param string $defaultDate The current date in Y-m-d format.\r\n\t\t * @param int $postId The ID of the post whose route log is being edited.\r\n\t\t */",
             "prefixEvidence": true
         },
@@ -600,11 +600,11 @@
                 "$postId"
             ],
             "file": "lib/pluginModules/RouteLogPluginModule.php",
-            "line": 393,
+            "line": 392,
             "enclosingClass": "Abp01_PluginModules_RouteLogPluginModule",
             "enclosingFunction": "_getDefaultVehicle",
             "documentationStatus": "documented",
-            "docCommentLine": 380,
+            "docCommentLine": 379,
             "docComment": "/**\r\n\t\t * Filters the vehicle used to prefill a new trip summary route log entry.\r\n\t\t *\r\n\t\t * The initial value is the last vehicle recorded for the post, or null when\r\n\t\t * no vehicle is available. A null result is normalized to an empty string\r\n\t\t * and the final result is converted to string.\r\n\t\t *\r\n\t\t * @since 0.3.0\r\n\t\t * @category Trip Summary Management\r\n\t\t *\r\n\t\t * @param string|null $defaultVehicle The last vehicle recorded for the post, if available.\r\n\t\t * @param int $postId The ID of the post whose route log is being edited.\r\n\t\t */",
             "prefixEvidence": true
         },
@@ -624,8 +624,8 @@
             "enclosingClass": "Abp01_PluginModules_RouteLogPluginModule",
             "enclosingFunction": "_filterLogEntryValidation",
             "documentationStatus": "documented",
-            "docCommentLine": 488,
-            "docComment": "/**\r\n\t\t\t * Allows custom validation for trip summary route log entries.\r\n\t\t\t * Result is converted such that only boolean true is considered valid.\r\n\t\t\t * \r\n\t\t\t * @since 0.3.3\r\n\t\t\t * @category Trip Summary Management\r\n\t\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t\t * \r\n\t\t\t * @param bool $isValid Whether the log entry is valid or no\r\n\t\t\t * @param int $postId The post identifier\r\n\t\t\t * @param \\Abp01_Route_Log_Entry $logEntry The log entry to validate\r\n\t\t\t */",
+            "docCommentLine": 487,
+            "docComment": "/**\r\n\t\t\t * Filters the validation result for a trip summary route log entry.\r\n\t\t\t * The initial value is the result of the built-in input validation.\r\n\t\t\t * Result is converted such that only boolean true is considered valid.\r\n\t\t\t * \r\n\t\t\t * @since 0.3.3\r\n\t\t\t * @category Trip Summary Management\r\n\t\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t\t * \r\n\t\t\t * @param bool $isValid Whether the log entry is valid.\r\n\t\t\t * @param int $postId The post identifier\r\n\t\t\t * @param \\Abp01_Route_Log_Entry $logEntry The log entry to validate\r\n\t\t\t */",
             "prefixEvidence": true
         },
         {
@@ -644,7 +644,7 @@
             "enclosingFunction": "_onBeforeSave",
             "documentationStatus": "documented",
             "docCommentLine": 519,
-            "docComment": "/**\r\n\t\t\t * Fired before a trip summary log entry is saved. \r\n\t\t\t * Callbacks receive the current post identifier \r\n\t\t\t * and the log entry instance.\r\n\t\t\t * \r\n\t\t\t * @since 0.3.0\r\n\t\t\t * @category Trip Summary Management\r\n\t\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t\t * \r\n\t\t\t * @param int $postId The post identifier\r\n\t\t\t * @param \\Abp01_Route_Log_Entry $logEntry The log entry instance that is about to be saved\r\n\t\t\t */",
+            "docComment": "/**\r\n\t\t\t * Fires after validation succeeds and before a trip summary log entry is saved.\r\n\t\t\t * Callbacks receive the current post identifier \r\n\t\t\t * and the log entry instance.\r\n\t\t\t * \r\n\t\t\t * @since 0.3.0\r\n\t\t\t * @category Trip Summary Management\r\n\t\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t\t * \r\n\t\t\t * @param int $postId The post identifier\r\n\t\t\t * @param \\Abp01_Route_Log_Entry $logEntry The log entry instance that is about to be saved\r\n\t\t\t */",
             "prefixEvidence": true
         },
         {
@@ -664,7 +664,7 @@
             "enclosingFunction": "_onAfterSave",
             "documentationStatus": "documented",
             "docCommentLine": 545,
-            "docComment": "/**\r\n\t\t\t * Fired after a trip summary log entry has been saved. \r\n\t\t\t * Callbacks receive the current post identifier, \r\n\t\t\t * the log entry instance and whether the operation succeeded or not.\r\n\t\t\t * \r\n\t\t\t * @since 0.3.0\r\n\t\t\t * @category Trip Summary Management\r\n\t\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t\t * \r\n\t\t\t * @param int $postId The post identifier\r\n\t\t\t * @param \\Abp01_Route_Log_Entry $logEntry The log entry instance that is about to be saved\r\n\t\t\t * @param bool $success Whether the operation suceeded or not\r\n\t\t\t */",
+            "docComment": "/**\r\n\t\t\t * Fires after a trip summary log entry save attempt, including an unsuccessful attempt.\r\n\t\t\t * Callbacks receive the current post identifier, \r\n\t\t\t * the log entry instance and whether the operation succeeded or not.\r\n\t\t\t * \r\n\t\t\t * @since 0.3.0\r\n\t\t\t * @category Trip Summary Management\r\n\t\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\r\n\t\t\t * \r\n\t\t\t * @param int $postId The post identifier\r\n\t\t\t * @param \\Abp01_Route_Log_Entry $logEntry The log entry instance after the save attempt.\r\n\t\t\t * @param bool $success Whether the save operation succeeded.\r\n\t\t\t */",
             "prefixEvidence": true
         },
         {
@@ -718,7 +718,7 @@
             "enclosingFunction": "_filterAvailablePredefinedTileLayers",
             "documentationStatus": "documented",
             "docCommentLine": 223,
-            "docComment": "/**\n\t\t * Filters the list of available pre-defined tile layers offered \n\t\t * \tas options when configuring the tile layer used for the viewer.\n\t\t * The return value must be a non-empty array \n\t\t * \tof Abp01_Settings_PredefinedTileLayer instances.\n\t\t * \n\t\t * Invalid elements are fitlered out.\n\t\t * \n\t\t * If the resulting value is a empty array, \n\t\t * \tthe default list is used instead.\n\t\t * \n\t\t * @since 0.3.2\n\t\t * @category Settings - Trip Summary Map\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\n\t\t * \n\t\t * @param Abp01_Settings_PredefinedTileLayer[] $predefinedTileLayer The list of pre-defined tile layers.\n\t\t */",
+            "docComment": "/**\n\t\t * Filters the list of available pre-defined tile layers offered \n\t\t * \tas options when configuring the tile layer used for the viewer.\n\t\t * The return value must be a non-empty array \n\t\t * \tof Abp01_Settings_PredefinedTileLayer instances.\n\t\t * \n\t\t * Invalid elements are filtered out.\n\t\t * \n\t\t * If the resulting value is an empty array,\n\t\t * \tthe default list is used instead.\n\t\t * \n\t\t * @since 0.3.2\n\t\t * @category Settings - Trip Summary Map\n\t\t * @unstable Susceptible to breaking changes due to PSR-4 migration\n\t\t * \n\t\t * @param Abp01_Settings_PredefinedTileLayer[] $predefinedTileLayers The list of pre-defined tile layers.\n\t\t */",
             "prefixEvidence": true
         },
         {
@@ -774,7 +774,7 @@
             "enclosingFunction": "abp01_get_info_item_field_icon_mapping",
             "documentationStatus": "documented",
             "docCommentLine": 298,
-            "docComment": "/**\r\n\t\t\t * Filters the icon identifier assigned to each front-end trip summary information field.\r\n\t\t\t *\r\n\t\t\t * The array is keyed by information field name and each value is an icon identifier.\r\n\t\t\t * Built-in identifiers are represented by the ABP01_INFO_ITEM_ICON_* constants.\r\n\t\t\t * Custom identifiers may also be used when matching trusted SVG markup is registered\r\n\t\t\t * through the abp01_info_item_icons filter. A field mapped to an identifier that is\r\n\t\t\t * not present in the icon registry is rendered without an icon.\r\n\t\t\t *\r\n\t\t\t * The filtered mapping is cached for the remainder of the request. A non-array result\r\n\t\t\t * is ignored in favor of the defaults; an empty array intentionally disables all icons.\r\n\t\t\t *\r\n\t\t\t * @since 0.3.3\r\n\t\t\t * @category Front-end Viewer\r\n\t\t\t * @see abp01-plugin-header.php for the constants representing built-in icon identifiers.\r\n\t\t\t * @see abp01_info_item_icons for registering built-in or custom icon markup.\r\n\t\t\t *\r\n\t\t\t * @param array<string, string> $defaultMapping The default icon identifiers keyed by information field name.\r\n\t\t\t */",
+            "docComment": "/**\r\n\t\t\t * Filters the icon identifier assigned to each front-end trip summary information field.\r\n\t\t\t *\r\n\t\t\t * The array is keyed by information field name and each value is an icon identifier.\r\n\t\t\t * Built-in identifiers are represented by the ABP01_INFO_ITEM_ICON_* constants.\r\n\t\t\t * Custom identifiers may also be used when matching trusted SVG markup is registered\r\n\t\t\t * through the abp01_info_item_icons filter. A field mapped to an identifier that is\r\n\t\t\t * not present in the icon registry is rendered without an icon.\r\n\t\t\t *\r\n\t\t\t * The filtered mapping is cached for the remainder of the request. Non-array and\r\n\t\t\t * empty-array results are ignored in favor of the defaults.\r\n\t\t\t *\r\n\t\t\t * @since 0.3.3\r\n\t\t\t * @category Front-end Viewer\r\n\t\t\t * @see abp01-plugin-header.php for the constants representing built-in icon identifiers.\r\n\t\t\t * @see abp01_info_item_icons for registering built-in or custom icon markup.\r\n\t\t\t *\r\n\t\t\t * @param array<string, string> $defaultMapping The default icon identifiers keyed by information field name.\r\n\t\t\t */",
             "prefixEvidence": true
         },
         {
@@ -792,7 +792,7 @@
             "enclosingFunction": "abp01_get_info_item_icons",
             "documentationStatus": "documented",
             "docCommentLine": 377,
-            "docComment": "/**\r\n\t\t\t * Filters the SVG element markup used for front-end trip summary information icons.\r\n\t\t\t *\r\n\t\t\t * The array is keyed by icon identifier and each value contains the inner markup\r\n\t\t\t * inserted unescaped into the common 24x24 SVG wrapper. Icon identifiers are\r\n\t\t\t * resolved through the info item field-to-icon mapping. The filtered array is\r\n\t\t\t * cached for the remainder of the request. A non-array result is ignored in favor\r\n\t\t\t * of the defaults. Callbacks must provide trusted SVG element markup.\r\n\t\t\t *\r\n\t\t\t * @since 0.3.3\r\n\t\t\t * @category Front-end Viewer\r\n\t\t\t * @see abp01-plugin-header.php for ABP01_INFO_ITEM_ICON_* constants that represent built-in icon names.\r\n\t\t\t *\r\n\t\t\t * @param array<string, string> $defaultIcons The default raw SVG inner markup keyed by icon identifier.\r\n\t\t\t */",
+            "docComment": "/**\r\n\t\t\t * Filters the SVG element markup used for front-end trip summary information icons.\r\n\t\t\t *\r\n\t\t\t * The array is keyed by icon identifier and each value contains the inner markup\r\n\t\t\t * inserted unescaped into the common 24x24 SVG wrapper. Icon identifiers are\r\n\t\t\t * resolved through the info item field-to-icon mapping. The filtered array is\r\n\t\t\t * cached for the remainder of the request. Non-array and empty-array results are\r\n\t\t\t * ignored in favor of the defaults. Callbacks must provide trusted SVG element markup.\r\n\t\t\t *\r\n\t\t\t * @since 0.3.3\r\n\t\t\t * @category Front-end Viewer\r\n\t\t\t * @see abp01-plugin-header.php for ABP01_INFO_ITEM_ICON_* constants that represent built-in icon names.\r\n\t\t\t *\r\n\t\t\t * @param array<string, string> $defaultIcons The default raw SVG inner markup keyed by icon identifier.\r\n\t\t\t */",
             "prefixEvidence": true
         },
         {
@@ -937,11 +937,11 @@
                 "$data"
             ],
             "file": "views/wpts-frontend.php",
-            "line": 68,
+            "line": 70,
             "enclosingClass": null,
             "enclosingFunction": null,
             "documentationStatus": "documented",
-            "docCommentLine": 56,
+            "docCommentLine": 58,
             "docComment": "/**\r\n\t * Filters the subtitle displayed below the front-end viewer title.\r\n\t *\r\n\t * Defaults to null, which omits the subtitle element. Any non-null result\r\n\t * renders the element, including an empty string. The text is HTML-escaped.\r\n\t *\r\n\t * @since 0.3.3\r\n\t * @category Front-end Viewer\r\n\t *\r\n\t * @param string|null $subtitle The subtitle text, or null to omit the element.\r\n\t * @param stdClass $data The complete front-end viewer data for the current post.\r\n\t */",
             "prefixEvidence": true
         },
@@ -957,11 +957,11 @@
                 "$data"
             ],
             "file": "views/wpts-frontend.php",
-            "line": 200,
+            "line": 204,
             "enclosingClass": null,
             "enclosingFunction": null,
             "documentationStatus": "documented",
-            "docCommentLine": 184,
+            "docCommentLine": 188,
             "docComment": "/**\r\n\t\t\t\t\t\t\t * Fires when the content container for an additional front-end viewer tab is rendered.\r\n\t\t\t\t\t\t\t *\r\n\t\t\t\t\t\t\t * The action fires once for every tab registered through the\r\n\t\t\t\t\t\t\t * abp01_additional_frontend_viewer_tabs filter. Callbacks should inspect the tab\r\n\t\t\t\t\t\t\t * identifier and output safe HTML only for the tabs they handle. The output is\r\n\t\t\t\t\t\t\t * rendered directly inside the corresponding tab content container.\r\n\t\t\t\t\t\t\t *\r\n\t\t\t\t\t\t\t * @since 0.3.0\r\n\t\t\t\t\t\t\t * @category Front-end Viewer\r\n\t\t\t\t\t\t\t * @see abp01_additional_frontend_viewer_tabs for registering additional tabs.\r\n\t\t\t\t\t\t\t *\r\n\t\t\t\t\t\t\t * @param string $tabId The identifier of the additional tab being rendered.\r\n\t\t\t\t\t\t\t * @param array<string, mixed> $tabInfo The registered tab information, including its label and optional icon.\r\n\t\t\t\t\t\t\t * @param stdClass $data The complete front-end viewer data for the current post.\r\n\t\t\t\t\t\t\t */",
             "prefixEvidence": true
         }

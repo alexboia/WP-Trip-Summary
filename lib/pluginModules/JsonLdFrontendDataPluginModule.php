@@ -94,13 +94,12 @@ class Abp01_PluginModules_JsonLdFrontendDataPluginModule extends Abp01_PluginMod
 
 	private function _jsonLdFrontendDataEnabled(int $postId): bool {
 		/**
-		 * Whether or not to output JSON-LD frontend data for the given post.
+		 * Filters whether to output JSON-LD frontend data for the given post.
 		 * Defaults to the value of the corresponding plug-in setting.
 		 * Result is converted such that only boolean true enables the output.
 		 *
 		 * @since 0.3.3
 		 * @category Front-end Viewer
-		 * @unstable Susceptible to breaking changes due to PSR-4 migration
 		 *
 		 * @param bool $enabled Whether or not the JSON-LD frontend data output is enabled
 		 * @param int $postId The post identifier

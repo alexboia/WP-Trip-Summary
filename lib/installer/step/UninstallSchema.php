@@ -76,18 +76,18 @@ class Abp01_Installer_Step_UninstallSchema implements Abp01_Installer_Step {
 
 		/**
 		 * Filters custom database table names dropped during uninstallation.
-		 * Initial value is an empty array. Return an associative array whose values are
-		 * table names.
+		 * Initial value is an empty array. Return an array whose values are non-empty
+		 * table name strings; keys are ignored.
 		 *
-		 * Custom tables are dropped in the order provided.
+		 * Custom tables are processed in the order provided. Invalid entries are removed.
 		 * Empty or non-array results are ignored, and built-in tables 
 		 * are always appended to the final list, 
-		 * so they are always dropped from the databasae.
+		 * so the filter cannot remove built-in tables from the drop list.
 		 *
 		 * @since 0.3.3
 		 * @category Installer
 		 *
-		 * @param array<string, mixed> $customTables Custom table names.
+		 * @param string[] $customTables Custom table names.
 		 * @param string[] $ownTables Built-in table names in drop order.
 		 */
 		$customTables = apply_filters('abp01_uninstall_table_names',

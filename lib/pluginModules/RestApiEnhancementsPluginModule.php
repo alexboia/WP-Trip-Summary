@@ -62,8 +62,9 @@ class Abp01_PluginModules_RestApiEnhancementsPluginModule extends Abp01_PluginMo
 
 	private function _shouldAddTripSummaryToRestApi(): bool {
 		/**
-		 * Filters whether or not to add the trip summary endpoint to the WP REST APIs.
-		 * True by default.
+		 * Filters whether to register the read-only wpts_trip_summary field on supported
+		 * post types in the WordPress REST API.
+		 * Defaults to true. Only a literal boolean true enables registration.
 		 * 
 		 * @since 0.3.0
 		 * @category REST API
@@ -124,7 +125,8 @@ class Abp01_PluginModules_RestApiEnhancementsPluginModule extends Abp01_PluginMo
 	private function _shouldAddTripSummaryToRestApiListing(): bool {
 		/**
 		 * Filters whether to add trip summary data for each post when the request is for a post listing.
-		 * Default false.
+		 * Defaults to false. Only a literal boolean true includes the data in listings;
+		 * otherwise the registered field returns null for those requests.
 		 * 
 		 * @since 0.3.0
 		 * @category REST API

@@ -84,6 +84,7 @@ class Abp01_Viewer {
 		/**
 		 * Filters the additional front-end viewer tabs.
 		 * It cannot be used to modify the existing ones.
+		 * The initial value is an empty array. Non-array results are discarded.
 		 * 
 		 * Must be an array with tab codes as keys and, for each key, 
 		 * an array with a mandatory "label" key as values. 
@@ -96,7 +97,7 @@ class Abp01_Viewer {
 		 * @since 0.3.2
 		 * @category Front-end Viewer
 		 * 
-		 * @param array<string, array> $additionaTabs The list of additional tabs
+		 * @param array<string, array> $additionalTabs The list of additional tabs
 		 * @param ?int $postId The post ID or null
 		 */
 		$additionalTabs = apply_filters('abp01_additional_frontend_viewer_tabs', 

@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
+# Fail on unhandled command errors, unset variables and failed pipeline stages.
 set -euo pipefail
 
+# Resolve paths relative to this script, independently of the caller's directory.
 WPTS_SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
 source "$WPTS_SCRIPT_DIR/tools/release/common.sh"
 
@@ -24,6 +26,9 @@ wpts_release_prepare_assets() {
 	mkdir -- "$WPTS_RELEASE_WORK/assets"
 	local source destination
 
+	# $'\t' supplies a literal tab as the field separator; read -r keeps backslashes.
+	# The redirection after done feeds the whole loop, so read consumes one TSV row
+	# per iteration and assigns its columns to source and destination.
 	while IFS=$'\t' read -r source destination; do
 		cp -- "$WPTS_ROOT/assets/$source" "$WPTS_RELEASE_WORK/assets/$destination"
 	done < "$WPTS_RELEASE_TOOLS/assets.tsv"
@@ -39,6 +44,7 @@ wpts_release_checkout() {
 	local actual_url
 
 	actual_url=$(svn info --show-item url "$WPTS_EXPORT_ROOT")
+	# %/ removes one optional trailing slash for comparison without changing either URL.
 	if [[ "${actual_url%/}" != "${WPTS_RELEASE_SVN_URL%/}" ]]; then
 		wpts_release_fail "The SVN checkout does not belong to $WPTS_RELEASE_SVN_URL."
 	fi
@@ -50,6 +56,7 @@ wpts_release_sync_directory() {
 	wpts_release_ensure_directory "$destination"
 	
 	# rsync exclusions protect SVN metadata from deletion as well as copying.
+	# A trailing slash on the source copies its contents into the destination.
 	rsync -a --delete --exclude=.svn/ -- "$source/" "$destination/"
 }
 

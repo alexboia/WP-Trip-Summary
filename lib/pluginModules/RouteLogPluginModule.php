@@ -228,15 +228,14 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 
 	private function _shouldRenderFrontendRouteLogMeta(stdClass $viewerData): bool {
 		/**
-		 * Whether or not to display metadata information for each trip summary route log item.
-		 * Defaults to true. Result is converted to boolean.
+		 * Filters whether to display metadata for each front-end trip summary route log item.
+		 * Defaults to true. Only a literal boolean true enables the metadata.
 		 * 
 		 * @since 0.3.2
 		 * @category Front-end Viewer
-		 * @unstable Susceptible to breaking changes due to PSR-4 migration
 		 * 
 		 * @param bool $showMeta True to show the metadata information, false otherwise
-		 * @param stdClass $viewerData
+		 * @param stdClass $viewerData The complete front-end viewer data for the current post.
 		 */
 		return apply_filters('abp01_should_render_frontend_route_log_meta', 
 			true, 
@@ -486,14 +485,15 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 
 		try {
 			/**
-			 * Allows custom validation for trip summary route log entries.
+			 * Filters the validation result for a trip summary route log entry.
+			 * The initial value is the result of the built-in input validation.
 			 * Result is converted such that only boolean true is considered valid.
 			 * 
 			 * @since 0.3.3
 			 * @category Trip Summary Management
 			 * @unstable Susceptible to breaking changes due to PSR-4 migration
 			 * 
-			 * @param bool $isValid Whether the log entry is valid or no
+			 * @param bool $isValid Whether the log entry is valid.
 			 * @param int $postId The post identifier
 			 * @param \Abp01_Route_Log_Entry $logEntry The log entry to validate
 			 */
@@ -517,7 +517,7 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 	private function _onBeforeSave(int $postId, Abp01_Route_Log_Entry $logEntry): void {
 		try {
 			/**
-			 * Fired before a trip summary log entry is saved. 
+			 * Fires after validation succeeds and before a trip summary log entry is saved.
 			 * Callbacks receive the current post identifier 
 			 * and the log entry instance.
 			 * 
@@ -543,7 +543,7 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 	private function _onAfterSave(int $postId, Abp01_Route_Log_Entry $logEntry, bool $success): void {
 		try {
 			/**
-			 * Fired after a trip summary log entry has been saved. 
+			 * Fires after a trip summary log entry save attempt, including an unsuccessful attempt.
 			 * Callbacks receive the current post identifier, 
 			 * the log entry instance and whether the operation succeeded or not.
 			 * 
@@ -552,8 +552,8 @@ class Abp01_PluginModules_RouteLogPluginModule extends Abp01_PluginModules_Plugi
 			 * @unstable Susceptible to breaking changes due to PSR-4 migration
 			 * 
 			 * @param int $postId The post identifier
-			 * @param \Abp01_Route_Log_Entry $logEntry The log entry instance that is about to be saved
-			 * @param bool $success Whether the operation suceeded or not
+			 * @param \Abp01_Route_Log_Entry $logEntry The log entry instance after the save attempt.
+			 * @param bool $success Whether the save operation succeeded.
 			 */
 			do_action('abp01_trip_summary_log_after_save_entry', 
 				$postId, 

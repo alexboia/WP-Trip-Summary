@@ -226,16 +226,16 @@ class Abp01_Settings_PredefinedTileLayer {
 		 * The return value must be a non-empty array 
 		 * 	of Abp01_Settings_PredefinedTileLayer instances.
 		 * 
-		 * Invalid elements are fitlered out.
+		 * Invalid elements are filtered out.
 		 * 
-		 * If the resulting value is a empty array, 
+		 * If the resulting value is an empty array,
 		 * 	the default list is used instead.
 		 * 
 		 * @since 0.3.2
 		 * @category Settings - Trip Summary Map
 		 * @unstable Susceptible to breaking changes due to PSR-4 migration
 		 * 
-		 * @param Abp01_Settings_PredefinedTileLayer[] $predefinedTileLayer The list of pre-defined tile layers.
+		 * @param Abp01_Settings_PredefinedTileLayer[] $predefinedTileLayers The list of pre-defined tile layers.
 		 */
 		$finalTileLayers = apply_filters(self::FILTER_HOOK_GET_PREDEFINED_TILE_LAYERS, 
 			$predefinedTileLayers);

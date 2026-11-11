@@ -24,6 +24,10 @@ Readers of a travel post want answers before they read the story: how long is th
 - 🔎 **Search-engine friendly.** Optionally add schema.org `Place` structured data (JSON-LD) to posts that have a track.
 - 🌍 **Ready for your audience.** The plugin is available in English, French, German and Romanian, and it supports metric and imperial units.
 
+= Watch WP Trip Summary in action =
+
+https://vimeo.com/1238064833
+
 = Who it is for =
 
 - **Cycling and bikepacking bloggers** who want every tour to show distance, climb, surface and recommended bike at a glance.
@@ -228,6 +232,7 @@ Yes. WP Trip Summary is free and open source, under the BSD 3-Clause license.
 - Refreshed the admin settings, maintenance, lookup data, system logs and About pages, as well as the trip summary audit log viewer;
 - Improved the trip summary and rider's log editors with updated layouts, action button icons and better modal sizing;
 - Added front-end viewer credits, with the `abp01_show_frontend_viewer_credits` filter to control their visibility;
+- Added front-end viewer subtitle, with the `abp01_show_frontend_viewer_subtitle` filter to provide a custom value (default no subtitle);
 - Added an Nginx Access Directives Helper to the maintenance tools, generating access rules for protecting the plugin's storage directory;
 - Updated Romanian, French and German translations, and added German translations for predefined lookup values;
 - Fixed translation loading errors caused by initializing translated UI labels too early;
@@ -248,7 +253,8 @@ Yes. WP Trip Summary is free and open source, under the BSD 3-Clause license.
 - Expanded action/filter documentation and automated regression coverage, added a custom viewer tab example, and improved contributor and README generation tooling;
 - Added repository skills for coding conventions and license headers, hook documentation, namespace migrations and conservative typing, and product marketing, with supporting references and utilities (see Repository skills);
 - Removed the built-in Help page and its bundled resources;
-- Removed bundled styles targeting individual legacy WordPress themes.
+- Removed bundled styles targeting individual legacy WordPress themes;
+- Fixed an issue when filtering by route type, yielding `Notice: WP_Theme_JSON_Resolver::get_user_data(): Error when decoding a theme.json schema for user data`.
 
 = 0.3.2 =
 - Added German translation (issue #90);
@@ -352,6 +358,9 @@ Yes. WP Trip Summary is free and open source, under the BSD 3-Clause license.
 - First officially distributed version.
 
 == Upgrade Notice ==
+
+= 0.3.3 =
+Upgrade to this version for additional features, better user experience and improved plug-in stability. New requirements: minimum PHP 8.3 and minimum WordPress 7.0.
 
 = 0.3.2 =
 Upgrade to this version for additional features, better user experience and improved plug-in stability

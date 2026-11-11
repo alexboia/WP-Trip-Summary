@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
+# Fail on unhandled command errors, unset variables and failed pipeline stages.
 set -euo pipefail
 
+# BASH_SOURCE locates this script even when the caller's working directory differs.
 WPTS_SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
+# source loads the shared functions and variables into this shell.
 source "$WPTS_SCRIPT_DIR/tools/release/common.sh"
 
 case "${1:-}" in
@@ -20,6 +23,8 @@ wpts_release_prepare
 
 archive="wp-trip-summary.$WPTS_VERSION.zip"
 printf 'Creating %s...\n' "$archive"
+# Parentheses run a subshell: cd affects only ZIP creation, and the relative
+# input path produces a wp-trip-summary/ archive root instead of absolute paths.
 (
 	cd -- "$WPTS_RELEASE_WORK"
 	zip -qr "$archive" wp-trip-summary

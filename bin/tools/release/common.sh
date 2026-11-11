@@ -22,8 +22,11 @@ wpts_release_require_commands() {
 
 wpts_release_assert_build_path() {
 	local path=$1 resolved
+	# Resolve .. and existing symlinks before checking containment; -m also accepts
+	# destination directories that have not been created yet.
 	resolved=$(realpath -m -- "$path")
 
+	# The slash before * limits this match to children of build/, not build-other/.
 	case "$resolved" in
 		"$WPTS_ROOT/build/"*) ;;
 		*) wpts_release_fail "Refusing to write outside the plugin build directory: $path" ;;
@@ -40,6 +43,8 @@ wpts_release_ensure_directory() {
 }
 
 wpts_release_cleanup() {
+	# Capture the exit status before any cleanup command can replace $?. Removing
+	# the EXIT trap prevents re-entry; returning status preserves the original result.
 	local status=$?
 	trap - EXIT
 	if [[ -n "$WPTS_RELEASE_WORK" ]]; then
@@ -53,6 +58,7 @@ wpts_release_install_dependencies() {
 	local dependencies="$WPTS_RELEASE_WORK/dependencies"
 	mkdir -- "$dependencies"
 	cp -- "$WPTS_ROOT/composer.json" "$WPTS_ROOT/composer.lock" "$dependencies/"
+	# Changes to the working directory and Composer environment stay in this subshell.
 	(
 		# An inherited Composer project/vendor override must not redirect writes
 		# into the development installation or bypass platform requirements.
@@ -90,6 +96,8 @@ wpts_release_copy_sources() {
 	local directory
 	cp -- "$WPTS_ROOT/LICENSE.md" "$WPTS_RELEASE_PACKAGE/license.txt"
 	cp -- "$WPTS_RELEASE_WORK/readmes/README.txt" "$WPTS_RELEASE_PACKAGE/readme.txt"
+	# Keep the root quoted for spaces, but leave the wildcard outside the quotes
+	# so Bash expands the entry-point filenames. -- ends cp option parsing.
 	cp -- "$WPTS_ROOT/index.php" "$WPTS_ROOT/.htaccess" "$WPTS_ROOT"/abp01-plugin-*.php "$WPTS_RELEASE_PACKAGE/"
 
 	for directory in lib views media lang; do
@@ -104,8 +112,11 @@ wpts_release_prepare() {
 	wpts_release_require_commands php composer rsync realpath mktemp mkdir cp rm
 	wpts_release_ensure_directory "$WPTS_ROOT/build/release"
 
+	# mktemp replaces the Xs with a unique suffix, isolating concurrent builds.
 	WPTS_RELEASE_WORK=$(mktemp -d "$WPTS_ROOT/build/release/package.XXXXXXXX")
 
+	# EXIT covers success and errors; converting INT/TERM to exits also runs cleanup.
+	# 130 and 143 are the conventional exit statuses for those two signals.
 	trap wpts_release_cleanup EXIT
 	trap 'exit 130' INT
 	trap 'exit 143' TERM

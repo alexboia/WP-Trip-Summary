@@ -17,6 +17,7 @@
 	"variables": {
 		"repositoryUrl": "https://github.com/alexboia/WP-Trip-Summary",
 		"wporgUrl": "https://wordpress.org/plugins/wp-trip-summary/",
-		"donateUrl": "https://ko-fi.com/alexandruboia"
+		"donateUrl": "https://ko-fi.com/alexandruboia",
+		"demoVideoUrl": "https://vimeo.com/1238064833"
 	}
 }

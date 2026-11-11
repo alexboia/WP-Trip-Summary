@@ -64,8 +64,11 @@ class Abp01_Logger_Manager {
 		 *
 		 * The initial value is Abp01_Logger_MonologLogger. A custom class must be a
 		 * concrete implementation of Abp01_Logger and accept an Abp01_Logger_Config
-		 * instance as its constructor argument. Unsupported or non-instantiable classes
-		 * are ignored and the default logger is used instead.
+		 * instance as its constructor argument. Return an existing class name: the value
+		 * is passed directly to class_implements().
+		 * Existing classes that do not implement Abp01_Logger, abstract classes, and
+		 * constructors that throw an Exception fall back to the default logger.
+		 * Invalid names or other thrown errors are not guaranteed to be handled.
 		 *
 		 * @since 0.3.1
 		 * @category Log Management

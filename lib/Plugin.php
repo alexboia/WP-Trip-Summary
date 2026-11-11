@@ -505,6 +505,7 @@ class Abp01_Plugin {
 		 * @see Abp01_MaintenanceTool
 		 * @since 0.3.2
 		 * @category Maintenance Tools
+		 * @unstable Susceptible to breaking changes due to PSR-4 migration
 		 * 
 		 * @param Abp01_MaintenanceTool[] $tools The current list of additional tools.
 		 */

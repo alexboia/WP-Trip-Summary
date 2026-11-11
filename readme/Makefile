@@ -39,7 +39,7 @@ header[Requires PHP] = {{requiresPhp}}
 header[License] = Modified BSD License
 header[License URI] = https://opensource.org/licenses/BSD-3-Clause
 
-section[Description] = why, who-is-it-for, features, languages, roadmap, support
+section[Description] = why, video, who-is-it-for, features, languages, roadmap, support
 section[Installation] = getting-started, requirements
 section[Frequently Asked Questions] = faq
 section[Screenshots] = @screenshots

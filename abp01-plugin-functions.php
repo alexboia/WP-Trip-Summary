@@ -204,12 +204,12 @@ function abp01_get_logger_config() {
 	/**
 	 * Filters whether or not to rotate logs. 
 	 * Initial value is either the value of boolean constant ABP01_LOGS_ROTATE, 
-	 * if defined, or true by default
+	 * if defined, or true by default. Only a literal boolean true enables rotation.
 	 * 
 	 * @since 0.3.2
 	 * @category Log Management
 	 * 
-	 * @param bool $rotateLogs Whether logs should rotated or not
+	 * @param bool $rotateLogs Whether logs should be rotated.
 	 */
 	$rotateLogs = apply_filters('abp01_get_logger_config_rotate_logs', 
 		$rotateLogs) === true;
@@ -221,17 +221,19 @@ function abp01_get_logger_config() {
 	$maxLogFiles = $defaultMaxLogFiles;
 
 	/**
-	 * Filters the number of log files to retain (0 = no limit).
+	 * Filters the number of rotated log files to retain.
 	 * Initial and default value is either the value of the integer constant ABP01_LOGS_MAX_LOG_FILES, 
 	 * if defined, or 10 by default.
 	 * 
 	 * Automatically converted to integer. 
-	 * If less than 0, it will reset to the default value.
+	 * Zero and negative filtered values reset to the configured default.
+	 * To retain unlimited files, set ABP01_LOGS_MAX_LOG_FILES to 0; returning 0
+	 * from this filter alone does not override a positive configured default.
 	 * 
 	 * @since 0.3.2
 	 * @category Log Management
 	 * 
-	 * @var int $maxLogFiles The maximum number of log files
+	 * @param int $maxLogFiles The configured maximum number of rotated log files.
 	 */
 	$maxLogFiles = intval(apply_filters('abp01_get_logger_config_max_log_files', 
 		$maxLogFiles));
@@ -563,14 +565,15 @@ function abp01_get_lookup_type_label($type) {
 
 	/**
 	 * Filters the label for a lookup type. 
-	 * The initial value is the already translated lookup type label.
+	 * The initial value is the translated lookup type label, or null for an unknown type.
+	 * The filtered result is returned without further normalization.
 	 * 
 	 * @see Abp01_Lookup
 	 * 
 	 * @since 0.3.2
 	 * @category Lookup Types Management
 	 * 
-	 * @param string $translatedLabel The translated label for the lookup type
+	 * @param string|null $translatedLabel The translated label, or null for an unknown type.
 	 * @param string $type The lookup type, as defined by the Abp01_Lookup class.
 	 */
 	$filteredTranslatedLabel = apply_filters('abp01_get_lookup_type_label', 
