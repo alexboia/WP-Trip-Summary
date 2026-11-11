@@ -199,17 +199,19 @@ php .\vendor\bin\phpunit -c .\phpunit.xml
 bash bin/run-tool-tests.sh
 bash bin/run-tool-tests.sh --set=php
 bash bin/run-tool-tests.sh --set=hooks
+bash bin/run-tool-tests.sh --set=build
 bash bin/run-tool-tests.sh --help
 ```
 
 | Group | Runners |
 | --- | --- |
-| `all` | All seven runners; the default |
+| `all` | All eight runners; the default |
 | `php` | All six PHP runners |
 | `license` | License-header parser and CLI utility |
 | `hooks` | Hook extraction and hook-documentation parsing |
 | `namespaces` | Class-identifier conversion utility |
 | `compatinfo` | Per-file parser-error reset extension |
+| `build` | ZIP and SVN export regression tests with isolated local fixtures |
 | `screen-capture` | Python unit tests for the screenshot utility |
 
 The script preserves each runner's output, continues after failures and prints a final summary. Exit status is `0` when every selected runner passes, `1` when any runner fails or cannot start, and `2` for invalid arguments. Missing prerequisites are failures, not skipped tests. Keep the explicit runner list in the script current when adding utility tests; supporting files such as test helpers are not entry points.
@@ -225,6 +227,8 @@ Using the Windows environment from WSL requires [Windows interoperability](https
 The script prints the selected interpreter and fails if the virtual environment is unavailable; it does not implicitly fall back to the system Python. To use a different environment or the system interpreter intentionally, set `WPTS_TEST_PYTHON`.
 
 The Leaflet HTTP checks still use `bin/run-tests.sh --set=leaflet --host HOST`, with the live-site prerequisites below. WordPress PHPUnit tests continue to use `bin/run-tests.sh`.
+
+The build group requires Bash, PHP, `rsync`, `zip`, `unzip`, SVN (`svn`, `svnadmin`, `svnlook`) and standard Unix utilities. It uses temporary fixtures under `build/`, a fake Composer executable and a real local SVN repository. It checks package contents, source isolation, version mismatches, failure cleanup and repeated exports. It does not download dependencies, access WordPress.org or use the working WordPress database. PHP is selected from `PATH` for these shell-script checks; `WPTS_TEST_PHP` applies to the PHP runners.
 
 ### Testing the Leaflet script wrapper
 
@@ -347,24 +351,36 @@ The check uses an isolated reference database and retains its fixtures and repor
 
 ## Building a distribution package
 
-[bin/build.sh](bin/build.sh) creates `build/output/wp-trip-summary.<version>.zip`, using the version in `abp01-plugin-main.php`. Run it from the plugin root with Bash, PHP, `awk`, `zip` and the standard Unix file utilities available. The library path checker requires PHP 8.2 or newer.
-
-Prepare the package in a separate release checkout or staging copy so that its `vendor/` contains production dependencies only:
+[bin/build.sh](bin/build.sh) creates `build/output/wp-trip-summary.<version>.zip`, with one top-level `wp-trip-summary/` directory. It resolves the plugin root from its own location, so it can run from the root, `bin/` or another working directory. Requirements: Bash, PHP, Composer, `rsync`, `zip`, `unzip`, GNU `realpath` and standard Unix utilities. The PHP executable used by Composer must satisfy the locked production dependencies; the library checker requires PHP 8.2 or newer.
 
 ```bash
-composer install --no-dev --prefer-dist --optimize-autoloader
-php bin/tools/build-readme.php
-php bin/tools/check-lib-paths.php
 bash bin/build.sh
 ```
 
-Run the relevant tests and compatibility analysis with development dependencies before preparing this staging copy. Compile changed TypeScript and translation catalogs beforehand as well. The build copies the prepared files; it does not run PHPUnit, compile TypeScript/catalogs or regenerate the readmes. Its compatibility-analysis call is currently commented out, so run that check separately when needed.
+The shared preparation in [bin/tools/release/common.sh](bin/tools/release/common.sh) performs these steps for both ZIP and SVN export:
 
-The script clears `build/output/` and `build/tmp/`, stages the plugin files, copies all of `vendor/`, creates and checks the ZIP, then clears the temporary files. Keep anything you need to retain outside those directories. Inspect the archive contents and test installation/upgrade in a development WordPress instance before distribution; its final `DONE!` message alone does not establish that every external command succeeded.
+1. Check library paths and generate the readmes into a unique temporary directory under `build/release/`.
+2. Require the plugin `Version` header, `ABP01_VERSION` and generated readme `Stable tag` to agree.
+3. Copy runtime entry points, `lib/`, `views/`, `media/`, `lang/`, the license and generated WordPress readme. Copy only `data/dev/setup/` into `data/setup/`; create empty `data/cache/` and `data/storage/` directories.
+4. Exclude `node_modules`, Git/SVN metadata, `.env` files, npm/Yarn/pnpm manifests and lockfiles, and `tsconfig.json` from the copied source directories. Authored TypeScript and bundled third-party runtime assets remain available.
+5. Copy `composer.json` and `composer.lock` into a separate temporary dependency directory and run `composer install --no-dev --prefer-dist --no-plugins --no-scripts --optimize-autoloader`, followed by `composer check-platform-reqs --no-dev`. Copy the resulting production `vendor/` into the package. The source checkout's Composer files, `vendor/` and generated readmes are not changed.
 
-### WordPress.org export status
+Commands stop on failure. The build verifies the completed ZIP before replacing the same version's archive; archives for other versions remain untouched. Temporary files are removed on normal completion, failure and handled interruption. Writes and cleanup are restricted to resolved paths inside the plugin's `build/` directory; redirected/symlinked build destinations are rejected.
 
-[bin/export-wp-plugin-dir-svn.sh](bin/export-wp-plugin-dir-svn.sh) prepares a local WordPress.org SVN checkout under `build/wp-plugin-dir-svn/`; it does not commit it. It currently still invokes the removed `help/tools/make-help.php` and copies `data/help/`. Update and verify those obsolete steps before using it as a release workflow. The export also clears the local `trunk/` contents and copies the complete `vendor/`, so its staging inputs need the same review as the ZIP build.
+Run the relevant tests and compatibility analysis before packaging. Compile changed TypeScript and translation catalogs beforehand. Packaging does not run PHPUnit, compile assets or run CompatInfo. The platform check validates the build machine; install and test the ZIP in the minimum/latest compatibility sites to validate the packaged runtime. Test upgrades from the previous release separately.
+
+### WordPress.org export
+
+[bin/export-wp-plugin-dir-svn.sh](bin/export-wp-plugin-dir-svn.sh) prepares a local SVN checkout under `build/wp-plugin-dir-svn/` using the same package preparation as the ZIP build. It additionally requires SVN. Screenshot/banner/icon mappings live in [bin/tools/release/assets.tsv](bin/tools/release/assets.tsv).
+
+```bash
+bash bin/export-wp-plugin-dir-svn.sh
+bash bin/export-wp-plugin-dir-svn.sh --export-tag=true
+```
+
+The default updates local `trunk/` and `assets/`; `--export-tag=true` also updates `tags/<version>/`. Package generation, dependency checks and asset preparation finish before the checkout is changed. Existing checkouts must belong to the expected repository. Repeated exports replace local destination contents, including removal of stale hidden files, while preserving SVN metadata. The named local tag is also replaced when requested; review its status before using this option with an existing published tag. File synchronization itself is not transactional if interrupted.
+
+The script prints `svn status` but does not schedule additions/deletions or commit. Review changes and explicitly schedule the intended SVN additions/deletions before publication. `WPTS_RELEASE_SVN_URL` defaults to `https://plugins.svn.wordpress.org/wp-trip-summary`; override it only when deliberately using another repository, such as the isolated local test fixture.
 
 ## Capturing screenshots
 

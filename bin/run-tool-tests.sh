@@ -19,6 +19,7 @@ Groups:
   hooks           Hook extraction and documentation parsing.
   namespaces      Class-identifier conversion utility.
   compatinfo      Per-file parser error reset extension.
+  build           ZIP and SVN release scripts (isolated local fixtures).
   screen-capture  Python tests for the screenshot utility.
 
 Environment:
@@ -63,7 +64,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 case "$WPTS_TEST_SET" in
-	all|php|license|hooks|namespaces|compatinfo|screen-capture) ;;
+	all|php|license|hooks|namespaces|compatinfo|build|screen-capture) ;;
 	'') wpts_tool_tests_argument_error 'Missing value for --set.' ;;
 	*) wpts_tool_tests_argument_error "Unknown test group: $WPTS_TEST_SET." ;;
 esac
@@ -129,6 +130,11 @@ esac
 case "$WPTS_TEST_SET" in
 	all|php|compatinfo)
 		wpts_run_tool_test 'CompatInfo error reset' "$WPTS_TEST_PHP" bin/tools/compatinfo/test-reset-file-errors.php
+		;;
+esac
+case "$WPTS_TEST_SET" in
+	all|build)
+		wpts_run_tool_test 'Release scripts' bash bin/tools/release/tests/test-release.sh
 		;;
 esac
 case "$WPTS_TEST_SET" in

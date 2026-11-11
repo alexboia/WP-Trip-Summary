@@ -1,0 +1,1 @@
+{"packages": [{"name": "test/production", "version": "1.0.0"}], "packages-dev": [{"name": "test/development", "version": "1.0.0"}]}

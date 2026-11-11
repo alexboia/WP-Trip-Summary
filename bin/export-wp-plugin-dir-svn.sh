@@ -1,114 +1,79 @@
 #!/usr/bin/env bash
 
-# Move to plug-in root
-if [[ `pwd` == */bin ]]
-then
-	pushd ../ > /dev/null
-	WPTS_EXPORT_RESTORE_DIR=true
-else
-	WPTS_EXPORT_RESTORE_DIR=false
-fi
+set -euo pipefail
 
-# Store some stuff for later use
-WPTS_CDIR=$(pwd)
-WPTS_VERSION=$(awk '{IGNORECASE=1}/Version:/{print $NF}' ./abp01-plugin-main.php | awk '{gsub(/\s+/,""); print $0}')
+WPTS_SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
+source "$WPTS_SCRIPT_DIR/tools/release/common.sh"
 
-WPTS_EXPORT_ROOT="$WPTS_CDIR/build/wp-plugin-dir-svn"
-WPTS_EXPORT_TRUNK_DIR="$WPTS_EXPORT_ROOT/trunk"
-WPTS_EXPORT_ASSETS_DIR="$WPTS_EXPORT_ROOT/assets"
-WPTS_EXPORT_TAGS_DIR="$WPTS_EXPORT_ROOT/tags"
-WPTS_EXPORT_CURRENT_TAG_DIR="$WPTS_EXPORT_TAGS_DIR/$WPTS_VERSION"
+WPTS_EXPORT_TAG=false
+for argument in "$@"; do
+	case "$argument" in
+		--export-tag=true) WPTS_EXPORT_TAG=true ;;
+		--export-tag=false) WPTS_EXPORT_TAG=false ;;
+		-h|--help)
+			printf 'Usage: bash bin/export-wp-plugin-dir-svn.sh [--export-tag=true|false]\n'
+			printf 'Prepare the local SVN checkout under build/wp-plugin-dir-svn/. No commit is made.\n'
+			printf 'WPTS_RELEASE_SVN_URL overrides the repository URL for isolated local testing.\n'
+			exit 0
+			;;
+		*) wpts_release_fail "Unknown argument: $argument" ;;
+	esac
+done
 
-ensure_root_dir() {
-	echo "Ensuring root directory structure and checking out if needed..."
-	if [ ! -d $WPTS_EXPORT_ROOT ]
-	then
-		mkdir $WPTS_EXPORT_ROOT
-		svn co https://plugins.svn.wordpress.org/wp-trip-summary/ $WPTS_EXPORT_ROOT
+wpts_release_prepare_assets() {
+	mkdir -- "$WPTS_RELEASE_WORK/assets"
+	local source destination
+
+	while IFS=$'\t' read -r source destination; do
+		cp -- "$WPTS_ROOT/assets/$source" "$WPTS_RELEASE_WORK/assets/$destination"
+	done < "$WPTS_RELEASE_TOOLS/assets.tsv"
+}
+
+wpts_release_checkout() {
+	wpts_release_assert_build_path "$WPTS_EXPORT_ROOT"
+	
+	if [[ ! -e "$WPTS_EXPORT_ROOT" ]]; then
+		svn checkout "$WPTS_RELEASE_SVN_URL" "$WPTS_EXPORT_ROOT"
+	fi
+	
+	local actual_url
+
+	actual_url=$(svn info --show-item url "$WPTS_EXPORT_ROOT")
+	if [[ "${actual_url%/}" != "${WPTS_RELEASE_SVN_URL%/}" ]]; then
+		wpts_release_fail "The SVN checkout does not belong to $WPTS_RELEASE_SVN_URL."
 	fi
 }
 
-ensure_tag_dir() {
-    echo "Ensuring tag directory structure..."
-	if [ ! -d $WPTS_EXPORT_CURRENT_TAG_DIR ] 
-	then
-		mkdir $WPTS_EXPORT_CURRENT_TAG_DIR
-	fi
+wpts_release_sync_directory() {
+	local source=$1 destination=$2
+
+	wpts_release_ensure_directory "$destination"
+	
+	# rsync exclusions protect SVN metadata from deletion as well as copying.
+	rsync -a --delete --exclude=.svn/ -- "$source/" "$destination/"
 }
 
-clean_trunk_dir() {
-	echo "Ensuring trunk directory is clean..."
-	rm -rf $WPTS_EXPORT_TRUNK_DIR/* > /dev/null
-    rm -rf $WPTS_EXPORT_TRUNK_DIR/.htaccess > /dev/null
-}
+wpts_release_require_commands svn
+WPTS_RELEASE_SVN_URL=${WPTS_RELEASE_SVN_URL:-https://plugins.svn.wordpress.org/wp-trip-summary}
+WPTS_EXPORT_ROOT="$WPTS_ROOT/build/wp-plugin-dir-svn"
 
-copy_source_files() {
-    echo "Copying all source files to $1..."
-	cp ./LICENSE.md "$1/license.txt"
-	cp ./README.txt "$1/readme.txt"
-	cp ./index.php "$1"
-	cp ./abp01-plugin-*.php "$1"
-	cp ./.htaccess "$1"
+# Finish package and asset preparation before changing an existing checkout.
+wpts_release_prepare
+wpts_release_prepare_assets
+wpts_release_checkout
+wpts_release_assert_build_path "$WPTS_EXPORT_ROOT/trunk"
+wpts_release_assert_build_path "$WPTS_EXPORT_ROOT/assets"
 
-	mkdir "$1/media" && cp -r ./media/* "$1/media"
-	mkdir "$1/views" && cp -r ./views/* "$1/views"
-	mkdir "$1/lib" && cp -r ./lib/* "$1/lib"
-	mkdir "$1/vendor" && cp -r ./vendor/* "$1/vendor"
-	mkdir "$1/lang" && cp -r ./lang/* "$1/lang"
-
-	mkdir "$1/data"
-	mkdir "$1/data/cache" && mkdir "$1/data/storage"
-	mkdir "$1/data/setup"
-
-	cp -r ./data/dev/setup/* "$1/data/setup" > /dev/null
-}
-
-copy_asset_files() {
-    echo "Copying all asset files to $WPTS_EXPORT_ASSETS_DIR..."
-
-    cp ./assets/en_US/wpts-sample-post-viewer-info.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-1.png" > /dev/null
-    cp ./assets/en_US/wpts-sample-post-viewer-map.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-2.png" > /dev/null
-    cp ./assets/en_US/wpts-sample-post-viewer-map-alt-profile.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-3.png" > /dev/null
-    cp ./assets/en_US/wpts-sample-post-viewer-log.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-4.png" > /dev/null
-    cp ./assets/en_US/wpts-sample-post-teaser.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-5.png" > /dev/null
-    cp ./assets/en_US/wpts-admin-post-edit-launcher.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-6.png" > /dev/null
-    cp ./assets/en_US/wpts-admin-post-edit-info.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-7.png" > /dev/null
-    cp ./assets/en_US/wpts-admin-post-edit-map.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-8.png" > /dev/null
-    cp ./assets/en_US/wpts-admin-post-edit-route-log.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-9.png" > /dev/null
-    cp ./assets/en_US/wpts-admin-post-edit-route-log-form.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-10.png" > /dev/null
-    cp ./assets/en_US/wpts-admin-post-listing.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-11.png" > /dev/null
-    cp ./assets/en_US/wpts-admin-post-listing-audit-window.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-12.png" > /dev/null
-    cp ./assets/en_US/wpts-settings-viewer.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-13.png" > /dev/null
-    cp ./assets/en_US/wpts-settings-map.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-14.png" > /dev/null
-    cp ./assets/en_US/wpts-settings-map-predefined-layers.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-15.png" > /dev/null
-    cp ./assets/en_US/wpts-admin-lookup-data.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-16.png" > /dev/null
-    cp ./assets/en_US/wpts-maintenance-missing-track-files.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-17.png" > /dev/null
-    cp ./assets/en_US/wpts-maintenance-nginx.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-18.png" > /dev/null
-    cp ./assets/en_US/wpts-admin-system-logs.png    "$WPTS_EXPORT_ASSETS_DIR/screenshot-19.png" > /dev/null
-
-    cp ./assets/banner-772x250.jpg    "$WPTS_EXPORT_ASSETS_DIR/banner-772x250.jpg" > /dev/null
-    cp ./assets/banner-1544x500.jpg    "$WPTS_EXPORT_ASSETS_DIR/banner-1544x500.jpg" > /dev/null
-    cp ./assets/icon-128x128.png    "$WPTS_EXPORT_ASSETS_DIR/icon-128x128.png" > /dev/null
-    cp ./assets/icon-256x256.png    "$WPTS_EXPORT_ASSETS_DIR/icon-256x256.png" > /dev/null
-}
-
-echo "Using version: $WPTS_VERSION"
-
-ensure_root_dir
-clean_trunk_dir
-copy_source_files "$WPTS_EXPORT_TRUNK_DIR"
-
-if [ $# -eq 1 ] && [ "$1" = "--export-tag=true" ]
-then
-    ensure_tag_dir
-    copy_source_files "$WPTS_EXPORT_CURRENT_TAG_DIR"
+if [[ "$WPTS_EXPORT_TAG" == true ]]; then
+	wpts_release_assert_build_path "$WPTS_EXPORT_ROOT/tags/$WPTS_VERSION"
 fi
 
-copy_asset_files
+wpts_release_sync_directory "$WPTS_RELEASE_PACKAGE" "$WPTS_EXPORT_ROOT/trunk"
+wpts_release_sync_directory "$WPTS_RELEASE_WORK/assets" "$WPTS_EXPORT_ROOT/assets"
 
-echo "DONE!"
-
-if [ "$WPTS_EXPORT_RESTORE_DIR" = true ]
-then
-	popd > /dev/null
+if [[ "$WPTS_EXPORT_TAG" == true ]]; then
+	wpts_release_sync_directory "$WPTS_RELEASE_PACKAGE" "$WPTS_EXPORT_ROOT/tags/$WPTS_VERSION"
 fi
+
+svn status "$WPTS_EXPORT_ROOT"
+printf 'DONE: prepared %s. Review SVN additions/deletions and changes before committing.\n' "$WPTS_EXPORT_ROOT"

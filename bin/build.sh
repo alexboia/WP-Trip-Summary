@@ -1,122 +1,33 @@
 #!/usr/bin/env bash
 
-# Move to plug-in root
-if [[ `pwd` == */bin ]]
-then
-	pushd ../ > /dev/null
-	WPTS_RESTORE_DIR=true
-else
-	WPTS_RESTORE_DIR=false
+set -euo pipefail
+
+WPTS_SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
+source "$WPTS_SCRIPT_DIR/tools/release/common.sh"
+
+case "${1:-}" in
+	-h|--help)
+		printf 'Usage: bash bin/build.sh\nBuild a production ZIP in build/output/ from any working directory.\n'
+		exit 0
+		;;
+esac
+if [[ $# -ne 0 ]]; then
+	wpts_release_fail 'Unexpected arguments. Use --help for usage.'
 fi
 
-# Store some stuff for later use
-WPTS_CDIR=$(pwd)
+wpts_release_require_commands zip unzip mv
+wpts_release_prepare
 
-WPTS_BUILD_ROOTDIR="$WPTS_CDIR/build"
-WPTS_BUILD_OUTDIR="$WPTS_BUILD_ROOTDIR/output"
-WPTS_BUILD_COMPATDIR="$WPTS_BUILD_ROOTDIR/compat-info"
-WPTS_BUILD_TMPDIR="$WPTS_BUILD_ROOTDIR/tmp"
+archive="wp-trip-summary.$WPTS_VERSION.zip"
+printf 'Creating %s...\n' "$archive"
+(
+	cd -- "$WPTS_RELEASE_WORK"
+	zip -qr "$archive" wp-trip-summary
+	unzip -tq "$archive"
+)
 
-WPTS_VERSION=$(awk '{IGNORECASE=1}/Version:/{print $NF}' ./abp01-plugin-main.php | awk '{gsub(/\s+/,""); print $0}')
-WPTS_BUILD_NAME="wp-trip-summary.$WPTS_VERSION.zip"
-
-# Readmes are now built from dedicated sources
-build_readme() {
-	echo "Building readme files..."
-	php ./bin/tools/build-readme.php
-}
-
-# Ensure all output directories exist
-ensure_out_dirs() {
-	echo "Ensuring output directory structure..."
-
-	if [ ! -d $WPTS_BUILD_ROOTDIR ]
-	then
-		mkdir $WPTS_BUILD_ROOTDIR
-	fi
-
-	if [ ! -d $WPTS_BUILD_OUTDIR ] 
-	then
-		mkdir $WPTS_BUILD_OUTDIR
-	fi
-
-	if [ ! -d $WPTS_BUILD_COMPATDIR ] 
-	then
-		mkdir $WPTS_BUILD_COMPATDIR
-	fi
-
-	if [ ! -d $WPTS_BUILD_TMPDIR ] 
-	then
-		mkdir $WPTS_BUILD_TMPDIR
-	fi
-}
-
-# Scan library directory for integrity (dir names, expected class names)
-scan_lib_dir_or_fail() {
-	php ./bin/tools/check-lib-paths.php
-	if [ $? -ne 0 ];
-	then
-		echo "Please correct library directory issues and try again. Build failed.";
-		exit 1000
-	fi
-}
-
-clean_tmp_dir() {
-	echo "Cleaning up temporary directory..."
-	rm -rf $WPTS_BUILD_TMPDIR/*
-	rm -rf $WPTS_BUILD_TMPDIR/.htaccess
-}
-
-# Clean output directories
-clean_out_dirs() {
-	echo "Ensuring output directories are clean..."
-	rm -rf $WPTS_BUILD_OUTDIR/* > /dev/null
-	rm -rf $WPTS_BUILD_TMPDIR/* > /dev/null
-	rm -rf $WPTS_BUILD_TMPDIR/.htaccess > /dev/null
-}
-
-# Copy over all files
-copy_source_files() {
-	echo "Copying all files..."
-	cp ./LICENSE.md "$WPTS_BUILD_TMPDIR/license.txt"
-	cp ./README.txt "$WPTS_BUILD_TMPDIR/readme.txt"
-	cp ./index.php "$WPTS_BUILD_TMPDIR"
-	cp ./abp01-plugin-*.php "$WPTS_BUILD_TMPDIR"
-	cp ./.htaccess "$WPTS_BUILD_TMPDIR"
-
-	mkdir "$WPTS_BUILD_TMPDIR/media" && cp -r ./media/* "$WPTS_BUILD_TMPDIR/media"
-	mkdir "$WPTS_BUILD_TMPDIR/views" && cp -r ./views/* "$WPTS_BUILD_TMPDIR/views"
-	mkdir "$WPTS_BUILD_TMPDIR/lib" && cp -r ./lib/* "$WPTS_BUILD_TMPDIR/lib"
-	mkdir "$WPTS_BUILD_TMPDIR/vendor" && cp -r ./vendor/* "$WPTS_BUILD_TMPDIR/vendor"
-	mkdir "$WPTS_BUILD_TMPDIR/lang" && cp -r ./lang/* "$WPTS_BUILD_TMPDIR/lang"
-
-	mkdir "$WPTS_BUILD_TMPDIR/data"
-	mkdir "$WPTS_BUILD_TMPDIR/data/cache" && mkdir "$WPTS_BUILD_TMPDIR/data/storage"
-	mkdir "$WPTS_BUILD_TMPDIR/data/setup"
-
-	cp -r ./data/dev/setup/* "$WPTS_BUILD_TMPDIR/data/setup" > /dev/null
-}
-
-generate_package() {
-	echo "Generating archive..."
-	pushd $WPTS_BUILD_TMPDIR > /dev/null
-	zip -rT $WPTS_BUILD_OUTDIR/$WPTS_BUILD_NAME ./ > /dev/null
-	popd > /dev/null
-}
-
-echo "Using version: ${WPTS_VERSION}"
-
-scan_lib_dir_or_fail
-ensure_out_dirs
-clean_out_dirs
-build_readme
-copy_source_files
-generate_package
-clean_tmp_dir
-
-echo "DONE!"
-
-if [ "$WPTS_RESTORE_DIR" = true ]
-then
-	popd > /dev/null
-fi
+# Publish only a complete, tested archive. Keep previous releases and preserve
+# the last successful archive for this version when preparation or ZIP fails.
+wpts_release_ensure_directory "$WPTS_ROOT/build/output"
+mv -f -- "$WPTS_RELEASE_WORK/$archive" "$WPTS_ROOT/build/output/$archive"
+printf 'DONE: %s\n' "$WPTS_ROOT/build/output/$archive"
