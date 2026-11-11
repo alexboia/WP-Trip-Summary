@@ -209,20 +209,22 @@ Yes. WP Trip Summary is free and open source, under the BSD 3-Clause license.
 3. The altitude profile under the map shows where the climbing happens
 4. The public route log shows who did the route, when, how long it took and what they used
 5. An optional teaser at the top of the post takes readers straight to the trip summary
-6. Open the trip summary editor right from the post editor
-7. Fill in the trip details, choosing from options tailored to each trip type
-8. Upload a GPX, KML or GeoJSON file and preview the track before publishing
-9. Keep a log of everyone who did the route, alongside the post
-10. Add a route log entry and decide whether your readers can see it
-11. See which posts have trip information and a track, and filter them by route type
-12. Check when a post's trip information and track were last changed, and by whom
-13. Set the teaser texts, the tab readers see first and how multi-value fields are displayed
-14. Choose the map tiles and controls, the altitude display, track downloads and the track's look
-15. Start from a pre-defined tile layer instead of typing the configuration yourself
-16. Manage the options offered for difficulty levels, seasons, surfaces and other fields
-17. Find the posts whose track files have gone missing
-18. Generate Nginx rules that block direct web access to stored track files
-19. Read and manage the plugin's debug and error logs from the dashboard
+6. Your readers can explore the trip map and switch viewer tabs on a phone
+7. Expand the map to fill the phone screen and inspect the route in detail
+8. Open the trip summary editor right from the post editor
+9. Fill in the trip details, choosing from options tailored to each trip type
+10. Upload a GPX, KML or GeoJSON file and preview the track before publishing
+11. Keep a log of everyone who did the route, alongside the post
+12. Add a route log entry and decide whether your readers can see it
+13. See which posts have trip information and a track, and filter them by route type
+14. Check when a post's trip information and track were last changed, and by whom
+15. Set the teaser texts, the tab readers see first and how multi-value fields are displayed
+16. Choose the map tiles and controls, the altitude display, track downloads and the track's look
+17. Start from a pre-defined tile layer instead of typing the configuration yourself
+18. Manage the options offered for difficulty levels, seasons, surfaces and other fields
+19. Find the posts whose track files have gone missing
+20. Generate Nginx rules that block direct web access to stored track files
+21. Read and manage the plugin's debug and error logs from the dashboard
 
 == Changelog ==
 

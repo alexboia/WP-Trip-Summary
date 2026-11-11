@@ -61,6 +61,12 @@ Readers of a travel post want answers before they read the story: how long is th
 | --- | --- |
 | ![Viewer - Route log](assets/en_US/wpts-sample-post-viewer-log.png) | ![Viewer - Top teaser](assets/en_US/wpts-sample-post-teaser.png) |
 
+### On mobile
+
+| Mobile viewer | Full-screen map on mobile |
+| --- | --- |
+| ![Viewer - Map on mobile](assets/en_US/wpts-mobile-viewer.png) | ![Viewer - Full-screen map on mobile](assets/en_US/wpts-mobile-viewe-full.png) |
+
 ### What you work with in the editor
 
 | Trip information | Track upload and preview |
