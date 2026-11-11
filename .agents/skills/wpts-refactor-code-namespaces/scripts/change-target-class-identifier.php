@@ -320,7 +320,7 @@ function determineClassDependencies(array $tokens, string $legacyName): array {
 		}
 
 		if ($inFunctionDefinition === true && $token['text'] === '(') {
-			//Not doing this will add the function name as a depency, 
+			//Not doing this will add the function name as a depencdeny, 
 			//	since the token type is reported as T_STRING!!!
 			$hasPassedArgumentsDeclaration = true;
 			continue;
