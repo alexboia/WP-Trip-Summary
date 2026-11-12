@@ -7,7 +7,7 @@
  * Description: Aids a travel blogger to add structured information about his tours (biking, hiking, train travels etc.)
  * License: Modified BSD License
  * License URI: https://github.com/alexboia/WP-Trip-Summary/blob/master/LICENSE.md
- * Plugin URI: https://github.com/alexboia/WP-Trip-Summary
+ * Plugin URI: https://wp-trip-summary.org
  * Text Domain: abp01-trip-summary
  * Requires PHP: 8.3.0
  * Requires at least: 7.0.0

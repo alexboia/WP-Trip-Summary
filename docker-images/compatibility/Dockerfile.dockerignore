@@ -22,6 +22,7 @@
 !docker-images/
 !docker-images/compatibility/
 !docker-images/compatibility/entrypoint.sh
+!docker-images/compatibility/uploads.ini
 **/node_modules
 **/.git
 **/.env

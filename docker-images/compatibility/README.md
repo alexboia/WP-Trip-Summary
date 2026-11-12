@@ -95,7 +95,28 @@ profile, trip/rider-log editors, protected posts and translations in the browser
 WordPress writes debug output to `/var/www/html/wp-content/debug.log` when needed.
 Inspect both that file and the container logs after the checks.
 
-To test a built release ZIP in an already running site:
+### Uploading release ZIPs
+
+Both images include [uploads.ini](uploads.ini), setting PHP's
+`upload_max_filesize` to `32M` and `post_max_size` to `40M`. The larger POST limit
+leaves room for multipart form fields. These limits apply to browser uploads;
+WP-CLI installation bypasses the HTTP upload path. The default PHP limit of `2M`
+is too small for the current release ZIP.
+
+To rebuild the image and apply changed limits to an already running site without
+recreating its web root, run from this directory (replace `latest.env` with
+`minimum.env` for the other profile):
+
+```bash
+docker compose --env-file latest.env build wordpress
+docker compose --env-file latest.env cp uploads.ini wordpress:/usr/local/etc/php/conf.d/zz-wpts-uploads.ini
+docker compose --env-file latest.env exec wordpress apache2ctl -k graceful
+```
+
+The copy updates only that container; rebuilding the image retains the settings
+when a replacement container is created.
+
+To test a built release ZIP through WP-CLI in an already running site:
 
 ```bash
 docker compose --env-file minimum.env cp ../../build/output/wp-trip-summary.0.3.3.zip wordpress:/tmp/wp-trip-summary.zip

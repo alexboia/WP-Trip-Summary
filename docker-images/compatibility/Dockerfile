@@ -48,6 +48,7 @@ RUN mkdir -p /usr/src/wordpress/wp-content/plugins/wp-trip-summary/data/cache \
 		/usr/src/wordpress/wp-content/plugins/wp-trip-summary/data/storage \
 	&& chown -R www-data:www-data /usr/src/wordpress
 
+COPY docker-images/compatibility/uploads.ini /usr/local/etc/php/conf.d/zz-wpts-uploads.ini
 COPY --chmod=0755 docker-images/compatibility/entrypoint.sh /usr/local/bin/wpts-compat-entrypoint
 # Checkouts made on Windows may use CRLF even for executable shell scripts.
 RUN sed -i 's/\r$//' /usr/local/bin/wpts-compat-entrypoint
