@@ -63,7 +63,9 @@ if ! wp_command core is-installed >/dev/null 2>&1; then
 		--skip-email
 fi
 
-wp_command plugin activate wp-trip-summary
+# WP-CLI has no current WordPress user unless --user is supplied. The plugin
+# checks activate_plugins before installing its tables, even when WP-CLI reports success.
+wp_command --user="${WPTS_ADMIN_USER:-wpts}" plugin activate wp-trip-summary
 # Load the active plugin too: an active flag alone does not verify bootstrap.
 wp --allow-root --path="$wordpress_path" --skip-themes eval '
 	if (!function_exists("abp01_get_env")) {

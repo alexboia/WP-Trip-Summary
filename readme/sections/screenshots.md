@@ -33,7 +33,7 @@
 | --- | --- |
 | ![Editor - Route log](assets/en_US/wpts-admin-post-edit-route-log.png) | ![Editor - Add route log entry](assets/en_US/wpts-admin-post-edit-route-log-form.png) |
 
-<!-- TODO: consider a short GIF of the editor flow: upload a GPX file, fill in the fields, publish -->
+<!-- Post-release enhancement (after 0.3.3): consider a short GIF of the editor flow: upload a GPX file, fill in the fields, publish -->
 
 <details>
 <summary><h3>Settings, maintenance and the rest of the admin area</h3></summary>

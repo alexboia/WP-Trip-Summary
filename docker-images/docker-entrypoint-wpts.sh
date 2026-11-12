@@ -149,8 +149,10 @@ fi
 
 # Activation is idempotent, so the same code also works when a container is
 # recreated over the persistent database used by a previous release.
-wp_command plugin activate wp-trip-summary
-wp_command theme activate wp-alexboia-net
+# Select the WordPress administrator too: --allow-root only permits the OS user
+# to run WP-CLI and does not satisfy the plugin activation capability check.
+wp_command --user="${WPTS_ADMIN_USER:-wpts}" plugin activate wp-trip-summary
+wp_command --user="${WPTS_ADMIN_USER:-wpts}" theme activate wp-alexboia-net
 
 installed_wordpress_version="$(wp_command core version)"
 installed_plugin_version="$(wp_command plugin get wp-trip-summary --field=version)"

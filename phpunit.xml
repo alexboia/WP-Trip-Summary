@@ -84,6 +84,7 @@
 			<file>tests/test-RunPostInstallHooksInstallerStep.php</file>
 			<file>tests/test-RunPreInstallHooksInstallerStep.php</file>
 			<file>tests/test-SetPluginVersionInfoInstallerService.php</file>
+			<file>tests/test-UpdateTo033InstallerStep.php</file>
 		</testsuite>
 		<testsuite name="modules">
 			<file>tests/test-CallbackDependencySelector.php</file>

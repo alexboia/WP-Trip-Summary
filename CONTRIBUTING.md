@@ -99,7 +99,7 @@ docker compose --env-file minimum.env up --build --renew-anon-volumes --wait --w
 docker compose --env-file latest.env up --build --renew-anon-volumes --wait --wait-timeout 240
 ```
 
-The sites are available at `http://localhost:8083` and `http://localhost:8085`. See the linked guide for credentials, version inspection, rebuilds, package testing and cleanup. PHP uses patch releases within the selected branch; the minimum profile does not claim validation of the original PHP 8.3.0 binary. These runtime sites are separate from PHPUnit, whose locked development dependencies require PHP 8.4.1+ and a matching dedicated test core/database. Historical release images under [docker-images](docker-images/README.md) remain available to prepare upgrade baselines.
+The sites are available at `http://localhost:8083` and `http://localhost:8085`. See the linked guide for credentials, version inspection, rebuilds, package testing and cleanup. PHP uses patch releases within the selected branch; the minimum profile does not claim validation of the original PHP 8.3.0 binary. These runtime sites are separate from PHPUnit, whose locked development dependencies require PHP 8.4.1+ and a matching dedicated test core/database. Historical release images under [docker-images](docker-images/README.md) remain available to prepare upgrade baselines. When installing or activating via WP-CLI, select the WordPress administrator with `--user=wpts` (or the configured `WPTS_ADMIN_USER`); `--allow-root` alone does not satisfy the plugin's capability checks.
 
 #### Compiling TypeScript
 

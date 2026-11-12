@@ -99,8 +99,14 @@ To test a built release ZIP in an already running site:
 
 ```bash
 docker compose --env-file minimum.env cp ../../build/output/wp-trip-summary.0.3.3.zip wordpress:/tmp/wp-trip-summary.zip
-docker compose --env-file minimum.env exec wordpress wp --allow-root plugin install /tmp/wp-trip-summary.zip --force --activate
+docker compose --env-file minimum.env exec wordpress wp --allow-root --user=wpts plugin install /tmp/wp-trip-summary.zip --force --activate
 ```
+
+Use the configured WordPress administrator with `--user` (replace `wpts` when
+`WPTS_ADMIN_USER` differs). `--allow-root` only selects the operating-system
+permission policy; it does not grant WordPress capabilities. The plugin checks
+`activate_plugins` before installing its schema, so a CLI activation without a
+WordPress user can leave an active flag without installed tables.
 
 This replaces the running plugin; the next rebuild/recreation restores the image
 sources. Testing the source image does not by itself validate the ZIP contents.
