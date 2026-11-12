@@ -518,7 +518,7 @@ Inspect undocumented or unresolved occurrences, parser warnings, argument order,
 | Source | Purpose |
 | --- | --- |
 | [readme/manifest.json](readme/manifest.json) | Central configuration: Makefile location, source paths and variables |
-| [readme/Makefile](readme/Makefile) | One recipe per target (`[Github]`, `[WpOrg]`); every difference between the two readme files lives here |
+| [readme/Makefile](readme/Makefile) | One recipe per target (`[Github]`, `[WpOrg]`), selecting and ordering shared fragments and target-specific variants |
 | `readme/sections/*.md` | Section fragments, written in GitHub-flavored Markdown; a fragment is referenced by its file name without `.md` |
 | [CHANGELOG.md](CHANGELOG.md) | Changelog entries, used by `@changelog` |
 | `assets/en_US/` | WordPress.org screenshots, captioned in the `[WpOrg]` recipe |
@@ -526,6 +526,24 @@ Inspect undocumented or unresolved occurrences, parser warnings, argument order,
 | `readme/archive/` | The previous readme fragments, kept for reference; not assembled |
 
 To change the content, edit or add a fragment. To change where it appears, edit the Makefile. Fragments may contain HTML comments for maintainers: they are removed from both outputs, and comments containing `TODO` are reported as warnings.
+
+### Shared and target-specific content
+
+Keep shared headings, introductions and explanations in common fragments. When only part of a section needs a different format, extract that part into `-github.md` and `-wporg.md` variants and select each explicitly in the corresponding Makefile recipe. These suffixes are a naming convention; the generator does not select variants automatically.
+
+The current split is:
+
+| Content | Shared opening | GitHub variant | WordPress.org variant | Shared continuation |
+| --- | --- | --- | --- | --- |
+| Trip fields | `features.md` | `features-trip-fields-github.md` | `features-trip-fields-wporg.md` | `features-details.md` |
+| JSON-LD example | `features-details.md` | `features-json-ld-github.md` | `features-json-ld-wporg.md` | `features-json-ld-details.md` |
+| Languages | `languages.md` | `languages-list-github.md` | `languages-list-wporg.md` | `languages-contributing.md` |
+
+For trip fields and languages, the GitHub variants use tables and the WordPress.org variants use lists. WordPress.org removes table HTML from readme sections, so neither Markdown tables nor raw HTML tables retain their layout there. See the directory's [readme HTML filter](https://github.com/WordPress/wordpress.org/blob/trunk/wordpress.org/public_html/wp-content/plugins/plugin-directory/readme/class-parser.php). The local generator does not convert tables to lists.
+
+The JSON-LD HTML example is included only in the GitHub output. The WordPress.org variant links to that example in the GitHub README; both targets share the explanation of the bounding-box coordinates. Keep the link's heading anchor in sync if the GitHub developer section is renamed.
+
+Keep each opening, selected variant and continuation together, in that order. A fragment may contain only a table, a list, a code example or a continuation paragraph; it does not need a separate heading. Keep variants consistent when their subject matter changes, then regenerate and review both outputs.
 
 ### WordPress.org video
 
@@ -670,10 +688,10 @@ Fragments are converted to the WordPress.org readme format. Fenced code blocks a
 
 ### Writing fragments
 
-- Start each fragment with a `## Title` heading. Add an `<a name="wpts-...">` anchor below it if other sections link to it.
-- Write for GitHub first; check the WordPress.org output with `--output-dir` and the [readme validator](https://wordpress.org/plugins/developers/readme-validator/).
+- Start each complete section with a `## Title` heading. Add an `<a name="wpts-...">` anchor below it if other sections link to it. Fragments that continue a section should not repeat its heading or anchor.
+- Use shared Markdown for content supported by both targets. Check both outputs with `--output-dir` and the WordPress.org output with the [readme validator](https://wordpress.org/plugins/developers/readme-validator/).
 - Link to repository files with paths relative to the plug-in root, such as `readme/docs/file-formats.md`. They work on GitHub and become absolute in `README.txt`.
-- When the two targets need different content, create a separate fragment, such as `upgrade-notice.md`, and reference it only from the target that needs it.
+- When the two targets need different representations, use the paired variants described above. Content used by only one target, such as `upgrade-notice.md`, can remain a single fragment referenced only by that target.
 
 The changelog is read from `### Version X` headings. A version ends at the next heading of level 1 to 3, so sections such as `## Upgrade notices` are not included.
 

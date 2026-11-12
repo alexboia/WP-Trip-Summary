@@ -13,13 +13,18 @@
 #   @changelog         every version from the changelog file
 #   @changelog:N       the latest N versions
 #   @screenshots       the screenshots declared with screenshot[file] entries
+# Common fragments surround the -github / -wporg variants selected below.
+# WordPress.org uses lists for tables and a link to the JSON-LD HTML example.
 
 [Github]
 format = markdown
 output = README.md
 banner = <!-- Generated from readme/ by bin/tools/build-readme.php. Edit the sources, not this file. -->
-sections = hero, why, screenshots, who-is-it-for, features, getting-started, \
-	languages, whats-new, roadmap, faq, requirements, support, credits-license
+sections = hero, why, screenshots, who-is-it-for, \
+	features, features-trip-fields-github, features-details, \
+	features-json-ld-github, features-json-ld-details, getting-started, \
+	languages, languages-list-github, languages-contributing, \
+	whats-new, roadmap, faq, requirements, support, credits-license
 
 [WpOrg]
 format = wporg
@@ -39,7 +44,10 @@ header[Requires PHP] = {{requiresPhp}}
 header[License] = Modified BSD License
 header[License URI] = https://opensource.org/licenses/BSD-3-Clause
 
-section[Description] = why, video, who-is-it-for, features, languages, roadmap, support
+section[Description] = why, video, who-is-it-for, \
+	features, features-trip-fields-wporg, features-details, \
+	features-json-ld-wporg, features-json-ld-details, \
+	languages, languages-list-wporg, languages-contributing, roadmap, support
 section[Installation] = getting-started, requirements
 section[Frequently Asked Questions] = faq
 section[Screenshots] = @screenshots

@@ -1,0 +1,4 @@
+- English (default): `en_US`
+- French: `fr_FR`
+- German: `de_DE`
+- Romanian: `ro_RO`

@@ -43,15 +43,35 @@ WP Trip Summary attaches the trip information to the post itself. You write your
 
 Choose a trip type for each post and fill in the fields that matter for it:
 
-| Bike trips | Hiking trips | Train rides |
-| --- | --- | --- |
-| Total distance | Total distance | Total distance |
-| Total climb | Total climb | Number of train changes |
-| Difficulty level | Difficulty level | Line gauge |
-| Access information | Access information | Railroad operators |
-| Open during seasons | Open during seasons | Line status |
-| Path surface type | Path surface type | Electrification |
-| Recommended bike type | Route markers | Line type |
+**Bike trips**
+
+- Total distance
+- Total climb
+- Difficulty level
+- Access information
+- Open during seasons
+- Path surface type
+- Recommended bike type
+
+**Hiking trips**
+
+- Total distance
+- Total climb
+- Difficulty level
+- Access information
+- Open during seasons
+- Path surface type
+- Route markers
+
+**Train rides**
+
+- Total distance
+- Number of train changes
+- Line gauge
+- Railroad operators
+- Line status
+- Electrification
+- Line type
 
 Options such as difficulty levels, seasons and surface types are fully editable from the admin area, in every supported language.
 
@@ -87,30 +107,16 @@ Add as many log entries as you need to each route, with the rider, date, time sp
 - [Actions and filters are documented](https://github.com/alexboia/WP-Trip-Summary/tree/master/hook-docs), so you can customize the plugin.
 - Optional JSON-LD output (schema.org `Place` with a `GeoShape` bounding box):
 
-```html
-<script type="application/ld+json">
-{
-	"@context": "https://schema.org",
-	"@type": "Place",
-	"geo": {
-		"@type": "GeoShape",
-		"box": "45.69152 23.72547 46.01246 25.27592"
-	},
-	"name": "Towards Eagle's lake"
-}
-</script>
-```
+See an [example of the generated JSON-LD on GitHub](https://github.com/alexboia/WP-Trip-Summary#for-developers).
 
 The box is described by its south-west and north-east corners: `Lat1 Lng1 Lat2 Lng2`.
 
 = Languages =
 
-| Language | Code |
-| --- | --- |
-| English (default) | en_US |
-| French | fr_FR |
-| German | de_DE |
-| Romanian | ro_RO |
+- English (default): `en_US`
+- French: `fr_FR`
+- German: `de_DE`
+- Romanian: `ro_RO`
 
 The German translation was partly contributed by [Nico](https://wordpress.org/support/users/nida78/).
 
